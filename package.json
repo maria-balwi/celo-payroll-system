@@ -19,5 +19,8 @@
   "homepage": "https://github.com/maria-balwi/celo-payroll-system#readme",
   "devDependencies": {
     "tailwindcss": "^3.4.3"
-  }
+  },
+  "scripts": {
+    "build:css": "tailwindcss build assets/styles/styles.css -o assets/styles/output.css"
+  } 
 }
