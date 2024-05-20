@@ -9,6 +9,30 @@
             #sidebar {
                 z-index: 50;
             }
+
+            /* Transition styles for submenu */
+        .submenu-enter {
+            max-height: 0;
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        .submenu-enter-active {
+            max-height: 1000px;
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.3s ease-in-out;
+        }
+        .submenu-leave {
+            max-height: 1000px;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .submenu-leave-active {
+            max-height: 0;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease-in-out;
+        }
         </style>
     </head>
     <body class="bg-gray-100 h-screen flex">
@@ -34,9 +58,22 @@
                 <a href="../pages/leaves.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                     Leaves
                 </a>
-                <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <div>
+                    <button onclick="toggleSubMenu()" class="block w-full text-left py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white focus:outline-none">
                     Overtime
-                </a>
+                    <svg class="w-4 h-4 inline-block ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    
+                    <div id="subMenu" class="submenu-enter overflow-hidden pl-4">
+                        <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                        Pre-Rendered OT
+                        </a>
+                        <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                        Post-Rendered OT
+                        </a>
+                    </div>
+                </div>
+                
                 <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                     My Shifts
                 </a>
@@ -83,6 +120,17 @@
                 const sidebar = document.getElementById('sidebar');
                 if (!sidebar.contains(event.target) && !event.target.closest('button')) {
                     sidebar.classList.add('-translate-x-full');
+                }
+            }
+
+            function toggleSubMenu() {
+                const submenu = document.getElementById('subMenu');
+                if (submenu.classList.contains('submenu-enter')) {
+                    submenu.classList.remove('submenu-enter');
+                    submenu.classList.add('submenu-enter-active');
+                } else {
+                    submenu.classList.remove('submenu-enter-active');
+                    submenu.classList.add('submenu-enter');
                 }
             }
 
