@@ -11,7 +11,7 @@
             <!-- MAIN CONTENT -->
             <main class="flex-1 p-3">
                 <div class="flex-1 p-4 text-2xl font-bold overflow-auto">
-                    Dashboard
+                    Daily Time Record
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <!-- Card 1 -->
