@@ -16,20 +16,43 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <!-- Card 1 -->
                     <div class="bg-white p-4 rounded-lg shadow-md">
-                        <h2 class="text-xl font-bold mb-2">Card Title 1</h2>
-                        <p class="text-gray-700">This is a description for card 1.</p>
+                        <h2 class="text-xl font-bold mb-2">Hi, Maria Patrice Reyes!</h2>
+                        <p class="text-gray-700">It's nice to see you again.</p>
                     </div>
+
                     <!-- Card 2 -->
-                    <div class="bg-white p-4 rounded-lg shadow-md">
-                        <h2 class="text-xl font-bold mb-2">Card Title 2</h2>
-                        <p class="text-gray-700">This is a description for card 2.</p>
+                    <div class="">
                     </div>
+
                     <!-- Card 3 -->
                     <div class="bg-white p-4 rounded-lg shadow-md">
-                        <h2 class="text-xl font-bold mb-2">Card Title 3</h2>
-                        <p class="text-gray-700">This is a description for card 3.</p>
+                        <h2 class="text-xl font-bold mb-2">Face DTR</h2>
                     </div>
-                    <!-- Add more cards as needed -->
+
+                    <!-- Card 4 -->
+                    <div class="bg-white p-4 rounded-lg shadow-md">
+                        <h2 class="text-xl font-bold mb-2">Lates</h2>
+                    </div>
+
+                    <!-- Card 5 -->
+                    <div class="bg-white p-4 rounded-lg shadow-md">
+                        <h2 class="text-xl font-bold mb-2">Absences</h2>
+                    </div>
+
+                    <!-- Card 6 -->
+                    <div class="bg-white p-4 rounded-lg shadow-md">
+                        <h2 class="text-xl font-bold mb-2">Undertimes</h2>
+                    </div>
+
+                    <!-- Card 7 -->
+                    <div class="bg-white p-4 rounded-lg shadow-md">
+                        <h2 class="text-xl font-bold mb-2">Attendance</h2>
+                    </div>
+
+                    <!-- Card 8 -->
+                    <div class="bg-white p-4 rounded-lg shadow-md">
+                        <h2 class="text-xl font-bold mb-2">Leave Days</h2>
+                    </div>
                 </div>
             </main>
             
