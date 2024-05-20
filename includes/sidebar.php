@@ -18,20 +18,17 @@
     <body class="bg-gray-100 h-screen flex">
 
         <!-- Sidebar -->
-        <div class="bg-gray-800 text-gray-100 w-64 space-y-6 py-7 px-2 flex-shrink-0">
+        <div  class="bg-gray-800 text-gray-100 w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 md:flex-shrink-0 transition-transform duration-200 ease-in-out">
             <!-- Logo -->
             <a href="#" class="text-white flex items-center space-x-2 px-4">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v2H5v-2a2 2 0 012-2h2a2 2 0 012 2zM9 7v6m0 0v6m0-6H3m6 0h12M9 3h12M9 7H3m12 0h6M9 7V3m0 4h12"></path></svg>
-                <span class="text-xl font-extrabold">Payroll System</span>
+                <span class="text-xl font-bold">Payroll System</span>
             </a>
             
             <!-- Navigation -->
             <nav>
-                <hr>
                 <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                     Dashboard
                 </a>
-                <hr>
                 <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                     Daily Time Record
                 </a>
@@ -60,10 +57,10 @@
         <div class="flex-1 flex flex-col overflow-hidden">
             
             <!-- Navbar -->
-            <div class="bg-gray-800 p-4 flex justify-between items-center shadow">
-                <div class="text-lg font-semibold"></div>
+            <div class="bg-white p-4 flex justify-between items-center shadow hidden md:flex">
+                <div class="text-2xl font-bold">Celo Business Solutions Incorporated</div>
                 <div class="relative">
-                    <button onclick="toggleDropdown()" class="bg-white px-4 py-2 rounded">
+                    <button onclick="toggleDropdown()" class="bg-gray-800 text-white px-4 py-2 rounded">
                         User
                     </button>
                     <div id="dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg hidden">
@@ -76,6 +73,10 @@
         <script>
             function toggleDropdown() {
                 document.getElementById('dropdown').classList.toggle('hidden');
+            }
+
+            function toggleSidebar() {
+                document.getElementById('sidebar').classList.toggle('-translate-x-full');
             }
         </script>
     </body>

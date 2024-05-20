@@ -17,6 +17,6 @@
               
         <!-- WEBSITE LOGO AND TITLE -->
         <link rel="icon" href="../assets/images/logo.png" type="image/icon type">
-        <title>Celo Ticketing System</title>
+        <title>Celo Payroll System</title>
 
     </head>
