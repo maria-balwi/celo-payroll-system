@@ -6,35 +6,59 @@
     </head>
     <body>
         <!-- SIDEBAR -->
-        <?php include('../includes/sidebar.php'); ?>	
+        <?php include('../includes/sidebar.php'); ?>
  
             <!-- MAIN CONTENT -->
             <main class="flex-1 p-3">
                 <div class="flex-1 p-4 text-2xl font-bold overflow-auto">
                     Daily Time Record
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Card 1 -->
-                    <div class="bg-white p-4 rounded-lg shadow-md">
-                        <h2 class="text-xl font-bold mb-2">Card Title 1</h2>
-                        <p class="text-gray-700">This is a description for card 1.</p>
-                    </div>
-                    <!-- Card 2 -->
-                    <div class="bg-white p-4 rounded-lg shadow-md">
-                        <h2 class="text-xl font-bold mb-2">Card Title 2</h2>
-                        <p class="text-gray-700">This is a description for card 2.</p>
-                    </div>
-                    <!-- Card 3 -->
-                    <div class="bg-white p-4 rounded-lg shadow-md">
-                        <h2 class="text-xl font-bold mb-2">Card Title 3</h2>
-                        <p class="text-gray-700">This is a description for card 3.</p>
-                    </div>
-                    <!-- Add more cards as needed -->
+                <div class="container mx-auto mt-5">
+                    <table id="example" class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Position</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Office</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Age</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Start date</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Salary</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">John Doe</td>
+                                <td class="px-6 py-4 whitespace-nowrap">Software Engineer</td>
+                                <td class="px-6 py-4 whitespace-nowrap">New York</td>
+                                <td class="px-6 py-4 whitespace-nowrap">29</td>
+                                <td class="px-6 py-4 whitespace-nowrap">2012/03/29</td>
+                                <td class="px-6 py-4 whitespace-nowrap">$120,000</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">Jane Doe</td>
+                                <td class="px-6 py-4 whitespace-nowrap">Software Engineer</td>
+                                <td class="px-6 py-4 whitespace-nowrap">New York</td>
+                                <td class="px-6 py-4 whitespace-nowrap">29</td>
+                                <td class="px-6 py-4 whitespace-nowrap">2012/03/29</td>
+                                <td class="px-6 py-4 whitespace-nowrap">$120,000</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">Joe Doe</td>
+                                <td class="px-6 py-4 whitespace-nowrap">Software Engineer</td>
+                                <td class="px-6 py-4 whitespace-nowrap">New York</td>
+                                <td class="px-6 py-4 whitespace-nowrap">29</td>
+                                <td class="px-6 py-4 whitespace-nowrap">2012/03/29</td>
+                                <td class="px-6 py-4 whitespace-nowrap">$120,000</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </main>
             
         </div>
     
+        <script src="../assets/js/dtr.js"></script>
+
         <!-- FOOTER -->
         <?php include('../includes/footer.php'); ?>
     </body>
