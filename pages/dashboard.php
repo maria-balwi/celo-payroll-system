@@ -10,7 +10,7 @@
  
             <!-- MAIN CONTENT -->
             <main class="flex-1 p-3 overflow-auto">
-                <div class="flex-1 p-4 text-2xl font-bold overflow-auto">
+                <div class="flex-1 p-4 mt-none text-2xl font-bold overflow-auto">
                     Dashboard
                 </div>
 
