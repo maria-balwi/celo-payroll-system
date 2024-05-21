@@ -66,10 +66,10 @@
                     
                     <div id="subMenu" class="submenu-enter overflow-hidden pl-4">
                         <a href="../pages/pre-rendered.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
-                        Pre-Rendered OT
+                        Pre-Render OT
                         </a>
                         <a href="../pages/post-rendered.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
-                        Post-Rendered OT
+                        Post-Render OT
                         </a>
                     </div>
                 </div>
