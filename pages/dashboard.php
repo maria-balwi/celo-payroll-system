@@ -13,6 +13,9 @@
                 <div class="flex-1 p-4 text-2xl font-bold overflow-auto">
                     Dashboard
                 </div>
+
+                <!-- CONTENT -->
+                <!-- CARDS -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <!-- Card 1 -->
                     <div class="bg-white p-4 rounded-lg shadow-md">
