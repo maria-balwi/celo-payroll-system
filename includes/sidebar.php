@@ -65,22 +65,22 @@
                     </button>
                     
                     <div id="subMenu" class="submenu-enter overflow-hidden pl-4">
-                        <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                        <a href="../pages/pre-rendered.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                         Pre-Rendered OT
                         </a>
-                        <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                        <a href="../pages/post-rendered.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                         Post-Rendered OT
                         </a>
                     </div>
                 </div>
                 
-                <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../pages/shifts.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                     My Shifts
                 </a>
-                <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../pages/change_shift.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                     Change Shift
                 </a>
-                <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../pages/hr_requests.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                     HR Requests
                 </a>
             </nav>
