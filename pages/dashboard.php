@@ -10,13 +10,13 @@
  
             <!-- MAIN CONTENT -->
             <main class="flex-1 p-3 overflow-auto">
-                <div class="flex-1 p-4 mt-none text-2xl font-bold overflow-auto">
+                <div class="flex-1 p-2 mt-none text-2xl font-bold">
                     Dashboard
                 </div>
 
                 <!-- CONTENT -->
                 <!-- CARDS -->
-                <div class="flex grid grid-cols-1 md:grid-cols-2 md:grid-cols-5 gap-3">
+                <div class="grid grid-cols-1 md:grid-cols-2 md:grid-cols-5 gap-3 overflow-auto">
                     <!-- Card 1 -->
                     <div class="bg-white p-4 rounded-lg col-span-2 shadow-md">
                         <h2 class="text-xl font-bold mb-2">Hi, Maria Patrice Reyes!</h2>

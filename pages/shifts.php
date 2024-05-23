@@ -46,7 +46,7 @@
                     </div>
                 </div>
 
-                <div class="flex gap-4 p-3">
+                <div class="flex sm:grid-cols-1 gap-4 p-3 overflow-auto">
                     <div>Legend:</div>
                     <div class="flex gap-1">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-gray-400">
