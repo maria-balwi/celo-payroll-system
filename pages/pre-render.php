@@ -17,9 +17,10 @@
 
                 <!-- REQUEST PRE-RENDER BUTTON -->
                 <div class="relative inline-block text-right">
-                    <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none">
-                    Request Pre-Render OT
-                    </button>
+                    <!-- <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none">
+                    File HR Request
+                    </button> -->
+                    <a href="pre_render_form.php" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none">Request Pre-Render OT</a>
                 </div>
             </div>
             
