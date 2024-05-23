@@ -100,7 +100,7 @@
                         User
                     </button>
                     <div id="dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg hidden">
-                        <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Profile</a>
+                        <a href="../pages/profile.php" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Profile</a>
                         <a class="block px-4 py-2 text-gray-800 hover:bg-gray-200" id="btnLogout">Logout</a>
                     </div>
                 </div>
