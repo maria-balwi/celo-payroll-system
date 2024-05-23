@@ -9,7 +9,7 @@
         <?php include('../includes/sidebar.php'); ?>	
  
         <!-- MAIN CONTENT -->
-        <main class="flex-1 p-3">
+        <main class="flex-1 p-3 overflow-auto">
             <div class="flex flex-1 p-2 text-2xl font-bold justify-between items-center">
                 <div>
                     HR Requests
@@ -17,16 +17,17 @@
 
                 <!-- REQUEST PRE-RENDER BUTTON -->
                 <div class="relative inline-block text-right">
-                    <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none">
+                    <!-- <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none">
                     File HR Request
-                    </button>
+                    </button> -->
+                    <a href="file_request.php" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none">File HR Request</a>
                 </div>
             </div>
             
             <!-- CONTENT -->
             <div class="2xl:max-w-2xl p-4 m-1 bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
                 <!-- DATATABLE -->
-                <div class="container mx-auto mt-5">
+                <div class="container mx-auto mt-5 overflow-auto">
                     <table id="example" class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
@@ -59,7 +60,7 @@
             
         </main>
     
-        <script src="../assets/js/dtr.js"></script>
+        <script src="../assets/js/hr_requests.js"></script>
 
         <!-- FOOTER -->
         <?php include('../includes/footer.php'); ?>
