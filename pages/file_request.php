@@ -34,12 +34,12 @@
                             <div class="bg-white shadow rounded-lg p-4">
                                 <form id="fileRequestForm">
                                     <div class="flex flex-col items-center">
-                                        <h1 class="text-lg font-bold uppercase">Request Shift Change</h1>
+                                        <h1 class="text-lg font-bold uppercase">File HR Request</h1>
                                     </div>
                                     <hr class="my-2 border-t border-gray-300">
                                     <div class="flex flex-col py-1">
                                         <div class="flex flex-col gap-2 py-1">
-                                            <h3 class="text-sm font-bold text-gray-500">Shifts</h3>
+                                            <h3 class="text-sm text-gray-600">Shifts</h3>
                                             <select type="dropdown" class="p-2 text-md border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                                 <option value="1">Value 1</option>
                                                 <option value="2">Value 2</option>
@@ -47,7 +47,7 @@
                                             </select>
                                         </div>
                                         <div class="flex flex-col gap-2 py-1">
-                                            <h3 class="text-sm font-bold text-gray-500">Effective Dates</h3>
+                                            <h3 class="text-sm text-gray-600">Effective Dates</h3>
                                             <div class="flex">
                                                 <input type="date" class="w-full p-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                                 <svg class="h-8 w-8 text-neutral-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -57,7 +57,7 @@
                                             </div>
                                         </div>
                                         <div class="flex flex-col gap-2 py-1">
-                                            <h3 class="text-sm font-bold text-gray-500">Purpose</h3>
+                                            <h3 class="text-sm text-gray-600">Purpose</h3>
                                             <textarea name="" id="" class="p-2 text-md border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" rows="5"></textarea>
                                         </div>
                                         <div>
@@ -72,7 +72,7 @@
                         <div class="col-span-6 sm:col-span-7">
                             <div class="bg-white shadow rounded-lg p-4">
                                 <div class="flex flex-col items-center">
-                                    <h1 class="text-lg font-bold uppercase">Shift Change Requests</h1>
+                                    <h1 class="text-lg font-bold uppercase">HR Requests</h1>
                                 </div>
                                 <hr class="my-2 border-t border-gray-300">
                                 <!-- DATATABLE -->
