@@ -1,5 +1,6 @@
 $(document).ready(function() {    
 
+    // LOGOUT BUTTON FUNCTION
     $("#btnLogout").click(function (e) {
 
         e.preventDefault();
