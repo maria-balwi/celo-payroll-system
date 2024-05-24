@@ -9,9 +9,19 @@
         <?php include('../includes/sidebar.php'); ?>	
  
             <!-- MAIN CONTENT -->
-            <main class="flex-1 p-3">
-                <div class="flex-1 p-2 text-2xl font-bold">
-                    Leaves
+            <main class="flex-1 p-3 overflow-auto">
+                <div class="flex flex-1 p-2 text-2xl font-bold justify-between items-center">
+                    <div>
+                        Leaves
+                    </div>    
+
+                    <!-- REQUEST PRE-RENDER BUTTON -->
+                    <div class="relative inline-block text-right">
+                        <!-- <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none">
+                        File HR Request
+                        </button> -->
+                        <a href="leave_form.php" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none">File a Leave</a>
+                    </div>
                 </div>
 
                 <!-- CONTENT -->
@@ -36,42 +46,29 @@
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap">RC 1-1</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">RC 1-2</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">RC 1-3</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">RC 1-4</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">RC 1-5</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">RC 1-6</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">RC 1-7</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">RC 1-8</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">RC 1-9</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">RC 1-10</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">May 21, 2024</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">Leave</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">Subleave</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">15 days</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">May 25, 2024 - May 30, 2024</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">Remarks</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">Attachments</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">Paid</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">Pending</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">Action</td>
                                 </tr>
 
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap">RC 2-1</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">RC 2-2</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">RC 2-3</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">RC 2-4</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">RC 2-5</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">RC 2-6</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">RC 2-7</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">RC 2-8</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">RC 2-9</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">RC 2-10</td>
-                                </tr>
-
-                                <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap">RC 3-1</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">RC 3-2</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">RC 3-3</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">RC 3-4</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">RC 3-5</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">RC 3-6</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">RC 3-7</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">RC 3-8</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">RC 3-9</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">RC 3-10</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">May 21, 2024</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">Leave</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">Subleave</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">15 days</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">May 25, 2024 - May 30, 2024</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">Remarks</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">Attachments</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">Paid</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">Pending</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">Action</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -82,7 +79,7 @@
             
         </div>
 
-        <script src="../assets/js/dtr.js"></script>
+        <script src="../assets/js/leaves.js"></script>
 
         <!-- FOOTER -->
         <?php include('../includes/footer.php'); ?>
