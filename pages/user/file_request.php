@@ -2,17 +2,17 @@
 <html lang="en">
     <head>
         <!-- HEADER -->
-        <?php include('../includes/header.php'); ?>
+        <?php include('../../includes/header.php'); ?>
     </head>
     <body>
         <!-- SIDEBAR -->
-        <?php include('../includes/sidebar.php'); ?>	
+        <?php include('../../includes/sidebar.php'); ?>	
  
         <!-- MAIN CONTENT -->
         <main class="flex-1 p-3 overflow-auto">
             <div class="flex flex-1 p-2 text-2xl font-bold justify-between items-center">
                 <div>
-                    Change Shift Requests
+                    HR Requests
                 </div>    
 
                 <!-- REQUEST PRE-RENDER BUTTON -->
@@ -20,7 +20,7 @@
                     <!-- <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none">
                     File HR Request
                     </button> -->
-                    <a href="change_shift.php" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none">Back</a>
+                    <a href="hr_requests.php" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none">Back</a>
                 </div>
             </div>
             
@@ -34,7 +34,7 @@
                             <div class="bg-white shadow rounded-lg p-4">
                                 <form id="fileRequestForm">
                                     <div class="flex flex-col items-center">
-                                        <h1 class="text-lg font-bold uppercase">Request Shift Change</h1>
+                                        <h1 class="text-lg font-bold uppercase">File HR Request</h1>
                                     </div>
                                     <hr class="my-2 border-t border-gray-300">
                                     <div class="flex flex-col py-1">
@@ -72,7 +72,7 @@
                         <div class="col-span-6 sm:col-span-7">
                             <div class="bg-white shadow rounded-lg p-4">
                                 <div class="flex flex-col items-center">
-                                    <h1 class="text-lg font-bold uppercase">Shift Change Requests</h1>
+                                    <h1 class="text-lg font-bold uppercase">HR Requests</h1>
                                 </div>
                                 <hr class="my-2 border-t border-gray-300">
                                 <!-- DATATABLE -->
@@ -115,9 +115,9 @@
             
         </main>
     
-        <script src="../assets/js/change_shift.js"></script>
+        <script src="../../assets/js/hr_requests.js"></script>
 
         <!-- FOOTER -->
-        <?php include('../includes/footer.php'); ?>
+        <?php include('../../includes/footer.php'); ?>
     </body>
 </html>
