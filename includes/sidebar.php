@@ -46,16 +46,16 @@
             
             <!-- Navigation -->
             <nav>
-                <a href="../pages/dashboard.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../user/dashboard.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                     Dashboard
                 </a>
-                <a href="../pages/dtr.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../user/dtr.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                     Daily Time Record
                 </a>
-                <a href="../pages/payslip.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../user/payslip.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                     Payslip
                 </a>
-                <a href="../pages/leaves.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../user/leaves.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                     Leaves
                 </a>
                 <div>
@@ -65,22 +65,22 @@
                     </button>
                     
                     <div id="subMenu" class="submenu-enter overflow-hidden pl-4">
-                        <a href="../pages/pre-render.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                        <a href="../user/pre-render.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                         Pre-Render OT
                         </a>
-                        <a href="../pages/post-render.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                        <a href="../user/post-render.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                         Post-Render OT
                         </a>
                     </div>
                 </div>
                 
-                <a href="../pages/shifts.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../user/shifts.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                     My Shifts
                 </a>
-                <a href="../pages/change_shift.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../user/change_shift.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                     Change Shift
                 </a>
-                <a href="../pages/hr_requests.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../user/hr_requests.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                     HR Requests
                 </a>
             </nav>
@@ -100,7 +100,7 @@
                         User
                     </button>
                     <div id="dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg hidden">
-                        <a href="../pages/profile.php" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Profile</a>
+                        <a href="../profile.php" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Profile</a>
                         <a class="block px-4 py-2 text-gray-800 hover:bg-gray-200" id="btnLogout">Logout</a>
                     </div>
                 </div>
