@@ -2,17 +2,17 @@
 <html lang="en">
     <head>
         <!-- HEADER -->
-        <?php include('../../includes/header.php'); ?>
+        <?php include('../includes/header.php'); ?>
     </head>
     <body>
         <!-- SIDEBAR -->
-        <?php include('../../includes/sidebar.php'); ?>	
+        <?php include('../includes/sidebar.php'); ?>	
  
         <!-- MAIN CONTENT -->
         <main class="flex-1 p-3">
             <div class="flex flex-1 p-2 text-2xl font-bold items-center">
                 <div class="mr-4">
-                    Overtime Request and Approvals
+                    Post Render OT Requests
                 </div>  
 
                 <!-- DATA RANGE DROPDOWN MENU -->
@@ -39,19 +39,28 @@
             
             <!-- CONTENT -->
             <div class="2xl:max-w-2xl p-4 m-1 bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
-                <h1 class="text-lg font-bold">Pre-Render Overtime Requests</h1>
+                
                 <!-- DATATABLE -->
                 <div class="container mx-auto mt-5 overflow-auto">
-                    <table id="preRenderTable" class="min-w-full divide-y divide-gray-200">
+                    <table id="postRenderTable" class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date Filed</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Employee</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Shift</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">OT Date</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Purpose</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Details</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" rowspan="2">Date Filed</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" rowspan="2">Employee</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" rowspan="2">Date</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" colspan="2">Actual OT</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" colspan="2">Requested OT</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" colspan="2">Approved OT</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" rowspan="2">Purpose</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" rowspan="2">Attachments</th>
+                            </tr>
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time Range</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Minutes</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time Range</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Minutes</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time Range</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Minutes</th>
                             </tr>
                         </thead>
                         </tbody>
@@ -61,9 +70,9 @@
             
         </main>
     
-        <script src="../../assets/js/team_preRender.js"></script>
+        <script src="../assets/js/team_postRender.js"></script>
 
         <!-- FOOTER -->
-        <?php include('../../includes/footer.php'); ?>
+        <?php include('../includes/footer.php'); ?>
     </body>
 </html>

@@ -11,23 +11,45 @@
             }
 
             /* Transition styles for submenu */
-        .submenu-enter {
+        .admin-submenu-enter {
             max-height: 0;
             opacity: 0;
             transform: translateY(-20px);
         }
-        .submenu-enter-active {
+        .user-submenu-enter {
+            max-height: 0;
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        .admin-submenu-enter-active {
             max-height: 1000px;
             opacity: 1;
             transform: translateY(0);
             transition: all 0.3s ease-in-out;
         }
-        .submenu-leave {
+        .user-submenu-enter-active {
+            max-height: 1000px;
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.3s ease-in-out;
+        }
+        .admin-submenu-leave {
             max-height: 1000px;
             opacity: 1;
             transform: translateY(0);
         }
-        .submenu-leave-active {
+        .user-submenu-leave {
+            max-height: 1000px;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .admin-submenu-leave-active {
+            max-height: 0;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease-in-out;
+        }
+        .user-submenu-leave-active {
             max-height: 0;
             opacity: 0;
             transform: translateY(-20px);
@@ -52,35 +74,35 @@
                 <?php
                     if ($_SESSION['user'] == 'admin') {
                 ?>
-                <a href="../admin/team_dashboard.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../pages/team_dashboard.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                     Team Dashboard
                 </a>
-                <a href="../admin/team.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../pages/team.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                     My Team
                 </a>
-                <a href="../admin/team_dtr.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../pages/team_dtr.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                     Daily Time Records
                 </a>
-                <a href="../admin/team_leaves.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../pages/team_leaves.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                     Leave Applications
                 </a>
                 <div>
-                    <button onclick="toggleSubMenu()" class="block w-full text-left py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white focus:outline-none">
+                    <button onclick="toggleAdminSubMenu()" class="block w-full text-left py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white focus:outline-none">
                     Overtime
                     <svg class="w-4 h-4 inline-block ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                     </button>
                     
-                    <div id="subMenu" class="submenu-enter overflow-hidden pl-4">
-                        <a href="../admin/team_preRender.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                    <div id="admin_subMenu" class="admin-submenu-enter overflow-hidden pl-4">
+                        <a href="../pages/team_preRender.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                         Pre-Render OT
                         </a>
-                        <a href="../admin/team_postRender.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                        <a href="../pages/team_postRender.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                         Post-Render OT
                         </a>
                     </div>
                 </div>
                 
-                <a href="../admin/team_changeShift.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../pages/team_changeShift.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                     Change Shift Requests
                 </a>
 
@@ -91,41 +113,41 @@
                 <div class="menu-section">
                     <h4 class="text-primary text-sm font-bold text-gray-500 uppercase pt-6 pb-2">My Portal</h4>
                 </div>
-                <a href="../user/user_dashboard.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../pages/user_dashboard.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                     Dashboard
                 </a>
-                <a href="../user/user_dtr.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../pages/user_dtr.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                     Daily Time Record
                 </a>
-                <a href="../user/user_payslip.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../pages/user_payslip.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                     Payslip
                 </a>
-                <a href="../user/user_leaves.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../pages/user_leaves.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                     Leaves
                 </a>
                 <div>
-                    <button onclick="toggleSubMenu()" class="block w-full text-left py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white focus:outline-none">
+                    <button onclick="toggleUserSubMenu()" class="block w-full text-left py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white focus:outline-none">
                     Overtime
                     <svg class="w-4 h-4 inline-block ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                     </button>
                     
-                    <div id="subMenu" class="submenu-enter overflow-hidden pl-4">
-                        <a href="../user/user_preRender.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                    <div id="user_subMenu" class="user-submenu-enter overflow-hidden pl-4">
+                        <a href="../pages/user_preRender.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                         Pre-Render OT
                         </a>
-                        <a href="../user/user_postRender.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                        <a href="../pages/user_postRender.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                         Post-Render OT
                         </a>
                     </div>
                 </div>
                 
-                <a href="../user/user_shifts.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../pages/user_shifts.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                     My Shifts
                 </a>
-                <a href="../user/user_changeShift.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../pages/user_changeShift.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                     Change Shift
                 </a>
-                <a href="../user/user_hrRequests.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../pages/user_hrRequests.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                     HR Requests
                 </a>
 
@@ -147,7 +169,7 @@
                         User
                     </button>
                     <div id="dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg hidden">
-                        <a href="../profile.php" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Profile</a>
+                        <a href="../pages/profile.php" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Profile</a>
                         <a class="block px-4 py-2 text-gray-800 hover:bg-gray-200" id="btnLogout">Logout</a>
                     </div>
                 </div>
@@ -170,14 +192,25 @@
                 }
             }
 
-            function toggleSubMenu() {
-                const submenu = document.getElementById('subMenu');
-                if (submenu.classList.contains('submenu-enter')) {
-                    submenu.classList.remove('submenu-enter');
-                    submenu.classList.add('submenu-enter-active');
+            function toggleAdminSubMenu() {
+                const submenu = document.getElementById('admin_subMenu');
+                if (submenu.classList.contains('admin-submenu-enter')) {
+                    submenu.classList.remove('admin-submenu-enter');
+                    submenu.classList.add('admin-submenu-enter-active');
                 } else {
-                    submenu.classList.remove('submenu-enter-active');
-                    submenu.classList.add('submenu-enter');
+                    submenu.classList.remove('admin-submenu-enter-active');
+                    submenu.classList.add('admin-submenu-enter');
+                }
+            }
+
+            function toggleUserSubMenu() {
+                const submenu = document.getElementById('user_subMenu');
+                if (submenu.classList.contains('user-submenu-enter')) {
+                    submenu.classList.remove('user-submenu-enter');
+                    submenu.classList.add('user-submenu-enter-active');
+                } else {
+                    submenu.classList.remove('user-submenu-enter-active');
+                    submenu.classList.add('user-submenu-enter');
                 }
             }
 

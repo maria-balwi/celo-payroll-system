@@ -2,11 +2,11 @@
 <html lang="en">
     <head>
         <!-- HEADER -->
-        <?php include('../../includes/header.php'); ?>
+        <?php include('../includes/header.php'); ?>
     </head>
     <body>
         <!-- SIDEBAR -->
-        <?php include('../../includes/sidebar.php'); ?>	
+        <?php include('../includes/sidebar.php'); ?>	
  
         <!-- MAIN CONTENT -->
         <main class="flex-1 p-3 overflow-auto">
@@ -126,9 +126,9 @@
             
         </main>
     
-        <script src="../../assets/js/hr_requests.js"></script>
+        <script src="../assets/js/hr_requests.js"></script>
 
         <!-- FOOTER -->
-        <?php include('../../includes/footer.php'); ?>
+        <?php include('../includes/footer.php'); ?>
     </body>
 </html>

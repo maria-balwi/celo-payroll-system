@@ -46,10 +46,10 @@ $(document).ready(function() {
                         success: function (res) {
                             const data = JSON.parse(res);
                             if (data.level == 0) {
-                                window.location.href = "pages/user/user_dashboard.php";
+                                window.location.href = "pages/user_dashboard.php";
                             }
                             else if (data.level == 1) {
-                                window.location.href = "pages/admin/team_dashboard.php";
+                                window.location.href = "pages/team_dashboard.php";
                             }
                             else if (data.error == 0) {
                                 var message = data.em
