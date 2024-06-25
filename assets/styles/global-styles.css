@@ -1,0 +1,15 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.fixed-table {
+    width: 100vw; 
+    height: 100vh; 
+}
+
+.fixed-table td, .fixed-table th {
+    width: 100px; 
+    height: 40px; 
+}

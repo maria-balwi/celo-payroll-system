@@ -6,6 +6,7 @@
 
         <!-- STYLE -->
         <link href="../assets/styles/output.css" rel="stylesheet">
+        <link href="../assets/styles/global-styles.css" rel="stylesheet">
 
         <!-- TAILWIND CSS DATATABLES WITH JQUERY -->
         <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
@@ -20,5 +21,8 @@
         <!-- WEBSITE LOGO AND TITLE -->
         <link rel="icon" href="../assets/images/logo.png" type="image/icon type">
         <title>Celo Payroll System</title>
-
+        
+        <?php 
+            session_start();
+        ?>
     </head>
