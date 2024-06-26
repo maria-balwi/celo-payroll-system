@@ -4,8 +4,8 @@
     {
         private $employees = 'tbl_employee';
         private $users = 'tbl_users';
-        // private $department = 'tbl_department';
-        // private $designation = 'tbl_designation';
+        private $department = 'tbl_department';
+        private $designation = 'tbl_designation';
         private $dbConnect = false;
         public function __construct() {
             $this->dbConnect = $this->dbConnect();
@@ -74,6 +74,17 @@
             // DESTROY THE SESSION
             session_destroy();
             return TRUE;
+        }
+
+        public function viewUser($id) {
+            $user = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->department." AS department
+                ON employees.departmentID = department.departmentID
+                INNER JOIN ".$this->designation." AS designation
+                ON employees.designationID = designation.designationID
+                WHERE employees.id = '$id'";
+            return $user;
         }
     }
 
