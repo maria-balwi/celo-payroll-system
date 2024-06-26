@@ -12,9 +12,17 @@
 
     // ADMIN LEVEL
     if (isset($loginResult[0])) {
-        $error = array('level' => $loginResult[1]);
-        echo json_encode($error);
+        if ($loginResult[0] == 0) {
+            $em = "Incorrect email address or password.";
+            $error = array('error' => 1, 'em' => $em);
+            echo json_encode($error);
+            exit();
+        }
+        else {
+            $error = array('level' => $loginResult[1]);
+            echo json_encode($error);
         exit();
+        }
     }
 
     // SUPER ADMIN LEVEL 

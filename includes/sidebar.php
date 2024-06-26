@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="../assets/styles/sidebar.css">
     </head>
-    <body class="bg-gray-100 h-full flex">
+    <body class="bg-gray-100 h-lvh flex">
 
         <!-- Sidebar -->
         <div id="sidebar" class="bg-gray-800 text-gray-100 w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 md:flex-shrink-0 transition-transform duration-200 ease-in-out">
@@ -16,12 +16,12 @@
             
             <!-- Navigation -->
             <nav>
-                <div class="menu-section">
-                    <h4 class="text-sm font-bold text-gray-500 uppercase pt-2 pb-2">Team's Portal</h4>
-                </div>
                 <?php
                     if ($_SESSION['levelID'] == '2' || $_SESSION['levelID'] == '0') {
                 ?>
+                <div class="menu-section">
+                    <h4 class="text-sm font-bold text-gray-500 uppercase pt-2 pb-2">Team's Portal</h4>
+                </div>
                 <a href="../pages/team_dashboard.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 hover:text-white hover:no-underline">
                     Team Dashboard
                 </a>
@@ -89,13 +89,13 @@
                     </div>
                 </div>
                 
-                <a href="../pages/user_shifts.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../pages/user_shifts.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 hover:text-white hover:no-underline">
                     My Shifts
                 </a>
-                <a href="../pages/user_changeShift.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../pages/user_changeShift.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 hover:text-white hover:no-underline">
                     Change Shift
                 </a>
-                <a href="../pages/user_hrRequests.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../pages/user_hrRequests.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 hover:text-white hover:no-underline">
                     HR Requests
                 </a>
 
