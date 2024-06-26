@@ -3,37 +3,48 @@
     //LOGIN PROCESS
     include '../../init.php';
     session_start();
-    // $conn = $database->dbConnect();
+    $conn = $database->dbConnect();
 
     $email = $_POST['email'];
     $password = $_POST['password'];
 
+    $loginResult = $users->login();
+
     // ADMIN LEVEL
-    if ($email == 'admin@celoph.com' && $password == 'admin') {
-        $_SESSION["user"] = "admin";
-
-        // // ending a session in 1 hr from the starting time
-        // $_SESSION["expire"] = $_SESSION["start"] + (60 * 60);
-
-        $error = array('level' => 1);
+    if (isset($loginResult[0])) {
+        $error = array('level' => $loginResult[1]);
         echo json_encode($error);
+        exit();
     }
 
-    //  USER LEVEL
-    else if ($email == 'user@celoph.com' && $password == 'user') {
-        $_SESSION["user"] = "user";
+    // SUPER ADMIN LEVEL 
+    else if ($email == 'superadmin@celoph.com') {
+        if ($password == 'C3l0p@ssw0rd@65') {
+            $_SESSION['logged_in'] = TRUE;
+            $_SESSION['name'] = 'Super Admin';
+            $_SESSION['levelID'] = '0';
+            $_SESSION['activated'] = '1';
+            $_SESSION['start'] = time();
+            $_SESSION['expire'] = $_SESSION['start'] + (60 * 60);
 
-        // // ending a session in 1 hr from the starting time
-        // $_SESSION["expire"] = $_SESSION["start"] + (60 * 60);
-
-        $error = array('level' => 0);
-        echo json_encode($error);
+            $error = array('level' => 0);
+            echo json_encode($error);
+            exit();
+        }
+        // INCORRECT PASSWORD
+        else {
+            $em = "Incorrect email address or password.";
+            $error = array('error' => 1, 'em' => $em);
+            echo json_encode($error);
+            exit();
+        }
+        
     }
 
-
+    // USER DOES NOT EXIST
     else {
         $em = "Username does not exist in the system!";
-        $error = array('error' => 1, 'em' => $em);
+        $error = array('error' => 0, 'em' => $em);
         echo json_encode($error);
         exit();
     }

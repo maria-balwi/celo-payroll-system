@@ -45,10 +45,10 @@ $(document).ready(function() {
                         processData: false,
                         success: function (res) {
                             const data = JSON.parse(res);
-                            if (data.level == 0) {
+                            if (data.level == 1) {
                                 window.location.href = "pages/user_dashboard.php";
                             }
-                            else if (data.level == 1) {
+                            else if (data.level == 2 || data.level == 0) {
                                 window.location.href = "pages/team_dashboard.php";
                             }
                             else if (data.error == 0) {
