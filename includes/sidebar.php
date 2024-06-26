@@ -3,64 +3,12 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        
-        <style>
-            /* Ensure the sidebar z-index is higher than other elements */
-            #sidebar {
-                z-index: 50;
-            }
-
-            /* Transition styles for submenu */
-        .admin-submenu-enter {
-            max-height: 0;
-            opacity: 0;
-            transform: translateY(-20px);
-        }
-        .user-submenu-enter {
-            max-height: 0;
-            opacity: 0;
-            transform: translateY(-20px);
-        }
-        .admin-submenu-enter-active {
-            max-height: 1000px;
-            opacity: 1;
-            transform: translateY(0);
-            transition: all 0.3s ease-in-out;
-        }
-        .user-submenu-enter-active {
-            max-height: 1000px;
-            opacity: 1;
-            transform: translateY(0);
-            transition: all 0.3s ease-in-out;
-        }
-        .admin-submenu-leave {
-            max-height: 1000px;
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .user-submenu-leave {
-            max-height: 1000px;
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .admin-submenu-leave-active {
-            max-height: 0;
-            opacity: 0;
-            transform: translateY(-20px);
-            transition: all 0.3s ease-in-out;
-        }
-        .user-submenu-leave-active {
-            max-height: 0;
-            opacity: 0;
-            transform: translateY(-20px);
-            transition: all 0.3s ease-in-out;
-        }
-        </style>
+        <link rel="stylesheet" href="../assets/styles/sidebar.css">
     </head>
     <body class="bg-gray-100 h-full flex">
 
         <!-- Sidebar -->
-        <div id="sidebar" class="bg-gray-800 text-gray-100 w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 md:flex-shrink-0 transition-transform duration-200 ease-in-out">
+        <div id="sidebar" class="bg-gray-800 text-gray-100 w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 md:flex-shrink-0 h-full transition-transform duration-200 ease-in-out">
             <!-- Logo -->
             <a href="#" class="text-white flex items-center space-x-2 px-4">
                 <span class="text-xl font-bold">Payroll System</span>
@@ -72,7 +20,7 @@
                     <h4 class="text-primary text-sm font-bold text-gray-500 uppercase pt-2 pb-2">Team's Portal</h4>
                 </div>
                 <?php
-                    if ($_SESSION['user'] == 'admin') {
+                    if ($_SESSION['levelID'] == '2' || $_SESSION['levelID'] == '0') {
                 ?>
                 <a href="../pages/team_dashboard.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                     Team Dashboard
@@ -108,7 +56,7 @@
 
                 <?php 
                     }
-                    if ($_SESSION['user'] == 'user' || $_SESSION['user'] == 'admin') {
+                    if ($_SESSION['levelID'] == '1' || $_SESSION['levelID'] == '2' || $_SESSION['levelID'] == '0') {
                 ?>
                 <div class="menu-section">
                     <h4 class="text-primary text-sm font-bold text-gray-500 uppercase pt-6 pb-2">My Portal</h4>
