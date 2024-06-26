@@ -8,7 +8,7 @@
     <body class="bg-gray-100 h-full flex">
 
         <!-- Sidebar -->
-        <div id="sidebar" class="bg-gray-800 text-gray-100 w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 md:flex-shrink-0 h-full transition-transform duration-200 ease-in-out">
+        <div id="sidebar" class="bg-gray-800 text-gray-100 w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 md:flex-shrink-0 transition-transform duration-200 ease-in-out">
             <!-- Logo -->
             <a href="#" class="text-white flex items-center space-x-2 px-4">
                 <span class="text-xl font-bold">Payroll System</span>
@@ -17,21 +17,21 @@
             <!-- Navigation -->
             <nav>
                 <div class="menu-section">
-                    <h4 class="text-primary text-sm font-bold text-gray-500 uppercase pt-2 pb-2">Team's Portal</h4>
+                    <h4 class="text-sm font-bold text-gray-500 uppercase pt-2 pb-2">Team's Portal</h4>
                 </div>
                 <?php
                     if ($_SESSION['levelID'] == '2' || $_SESSION['levelID'] == '0') {
                 ?>
-                <a href="../pages/team_dashboard.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../pages/team_dashboard.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 hover:text-white hover:no-underline">
                     Team Dashboard
                 </a>
-                <a href="../pages/team.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../pages/team.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 hover:text-white hover:no-underline">
                     My Team
                 </a>
-                <a href="../pages/team_dtr.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../pages/team_dtr.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 hover:text-white hover:no-underline">
                     Daily Time Records
                 </a>
-                <a href="../pages/team_leaves.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../pages/team_leaves.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 hover:text-white hover:no-underline">
                     Leave Applications
                 </a>
                 <div>
@@ -41,16 +41,16 @@
                     </button>
                     
                     <div id="admin_subMenu" class="admin-submenu-enter overflow-hidden pl-4">
-                        <a href="../pages/team_preRender.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                        <a href="../pages/team_preRender.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 hover:text-white hover:no-underline">
                         Pre-Render OT
                         </a>
-                        <a href="../pages/team_postRender.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                        <a href="../pages/team_postRender.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 hover:text-white hover:no-underline">
                         Post-Render OT
                         </a>
                     </div>
                 </div>
                 
-                <a href="../pages/team_changeShift.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../pages/team_changeShift.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 hover:text-white hover:no-underline">
                     Change Shift Requests
                 </a>
 
@@ -59,18 +59,18 @@
                     if ($_SESSION['levelID'] == '1' || $_SESSION['levelID'] == '2' || $_SESSION['levelID'] == '0') {
                 ?>
                 <div class="menu-section">
-                    <h4 class="text-primary text-sm font-bold text-gray-500 uppercase pt-6 pb-2">My Portal</h4>
+                    <h4 class="text-sm font-bold text-gray-500 uppercase pt-6 pb-2">My Portal</h4>
                 </div>
-                <a href="../pages/user_dashboard.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../pages/user_dashboard.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 hover:text-white hover:no-underline">
                     Dashboard
                 </a>
-                <a href="../pages/user_dtr.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../pages/user_dtr.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 hover:text-white hover:no-underline">
                     Daily Time Record
                 </a>
-                <a href="../pages/user_payslip.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../pages/user_payslip.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 hover:text-white hover:no-underline">
                     Payslip
                 </a>
-                <a href="../pages/user_leaves.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../pages/user_leaves.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 hover:text-white hover:no-underline">
                     Leaves
                 </a>
                 <div>
@@ -80,22 +80,22 @@
                     </button>
                     
                     <div id="user_subMenu" class="user-submenu-enter overflow-hidden pl-4">
-                        <a href="../pages/user_preRender.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                        <a href="../pages/user_preRender.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 hover:text-white hover:no-underline">
                         Pre-Render OT
                         </a>
-                        <a href="../pages/user_postRender.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                        <a href="../pages/user_postRender.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 hover:text-white hover:no-underline">
                         Post-Render OT
                         </a>
                     </div>
                 </div>
                 
-                <a href="../pages/user_shifts.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../pages/user_shifts.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                     My Shifts
                 </a>
-                <a href="../pages/user_changeShift.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../pages/user_changeShift.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                     Change Shift
                 </a>
-                <a href="../pages/user_hrRequests.php" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+                <a href="../pages/user_hrRequests.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 hover:text-white">
                     HR Requests
                 </a>
 
@@ -113,11 +113,11 @@
                 </button>
                 <div class="text-2xl font-bold px-2">Celo Business Solutions Incorporated</div>
                 <div class="relative">
-                    <button onclick="toggleDropdown()" class="bg-gray-800 text-white px-4 py-2 rounded">
-                        User
+                    <button onclick="toggleDropdown()" class=" text-gray-800 font-bold px-4 py-2">
+                        <?php echo $_SESSION['employeeName']; ?> 
                     </button>
                     <div id="dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg hidden">
-                        <a href="../pages/profile.php" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Profile</a>
+                        <a href="../pages/profile.php" class="block px-4 py-2 text-gray-800 hover:text-gray-800 hover:bg-gray-200 hover:no-underline">Profile</a>
                         <a class="block px-4 py-2 text-gray-800 hover:bg-gray-200" id="btnLogout">Logout</a>
                     </div>
                 </div>
