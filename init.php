@@ -11,10 +11,10 @@
 
     require 'backend/Database.php';
     require 'backend/Users.php';
-    // require 'backend/Tickets.php';
+    require 'backend/Employees.php';
 
     $database = new Database;
     $users = new Users;
-    // $tickets = new Tickets;
+    $employees = new Employees;
 
 ?>
