@@ -23,6 +23,14 @@
         <title>Celo Payroll System</title>
         
         <?php 
+            include '../init.php';
+            $conn = $database->dbConnect();
             session_start();
+
+            // CHECKS IF SOMEONE IS LOGGED IN
+            if (!($users->isLoggedIn())) {
+                // FALSE
+                header("Location: ../index.php");
+            }
         ?>
     </head>
