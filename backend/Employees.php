@@ -9,6 +9,7 @@
         private $attendance = 'tbl_attendance';
         private $logtype = 'tbl_logtype';
         private $shift = 'tbl_shiftschedule';
+        private $changeShift = 'tbl_changeshiftrequests';
         private $dbConnect = false;
         public function __construct() {
             $this->dbConnect = $this->dbConnect();
@@ -24,13 +25,42 @@
 
         public function viewDTR($id) {
             $dtr = "
-                SELECT * FROM ".$this->attendance." AS attendance INNER JOIN ".$this->employees." AS employees
+                SELECT * FROM ".$this->attendance." AS attendance 
+                INNER JOIN ".$this->employees." AS employees
                 ON attendance.empID = employees.id
-                INNER JOIN ".$this->logtype." AS logtype ON attendance.logTypeID = logtype.logTypeID INNER JOIN ".$this->shift." AS shift ON employees.shiftID = shift.shiftID
+                INNER JOIN ".$this->logtype." AS logtype 
+                ON attendance.logTypeID = logtype.logTypeID 
+                INNER JOIN ".$this->shift." AS shift 
+                ON employees.shiftID = shift.shiftID
                 WHERE empID='$id'";
             return $dtr;
         }
 
+        public function viewChangeShift($id) {
+            $request = "
+                SELECT * FROM ".$this->changeShift." AS changeShift
+                INNER JOIN ".$this->employees." AS employees
+                ON changeShift.empID = employees.id
+                INNER JOIN ".$this->shift." AS shift
+                ON shift.shiftID = changeShift.requestedShift
+                WHERE empID='$id'";
+            return $request;
+        }
+
+        public function viewChangeShiftRequest() {
+            $request = "
+                SELECT id, dateFiled, employeeName, effectivityStartDate, 
+                effectivityEndDate, shift_1.time AS currentShift, 
+                shift_2.time AS requestedShift,  remarks, status  
+                FROM ".$this->changeShift." AS changeShift
+                INNER JOIN ".$this->employees." AS employees
+                ON changeShift.empID = employees.id
+                INNER JOIN ".$this->shift." AS shift_1
+                ON shift_1.shiftID = employees.shiftID
+                INNER JOIN ".$this->shift." AS shift_2
+                ON shift_2.shiftID = changeShift.requestedShift";
+            return $request;
+        }
     }
 
 ?>
