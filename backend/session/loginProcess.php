@@ -29,7 +29,7 @@
     else if ($email == 'superadmin@celoph.com') {
         if ($password == 'C3l0p@ssw0rd@65') {
             $_SESSION['logged_in'] = TRUE;
-            $_SESSION['name'] = 'Super Admin';
+            $_SESSION['employeeName'] = 'Super Admin';
             $_SESSION['levelID'] = '0';
             $_SESSION['activated'] = '1';
             $_SESSION['start'] = time();
