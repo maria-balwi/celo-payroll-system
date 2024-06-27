@@ -19,7 +19,7 @@
                 <div class="grid grid-cols-2 md:grid-cols-2 md:grid-cols-5 gap-3 overflow-auto">
                     <!-- Card 1 -->
                     <div class="bg-white p-4 rounded-lg col-span-2 shadow-md">
-                        <h2 class="text-xl font-bold mb-2">Hi, Maria Patrice Reyes!</h2>
+                        <h2 class="text-xl font-bold mb-2">Hi, <?php echo $_SESSION['employeeName'] ?>!</h2>
                         <p class="text-gray-700">It's nice to see you again.</p>
                     </div>
 
