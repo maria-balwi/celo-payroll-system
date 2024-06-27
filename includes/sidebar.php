@@ -95,9 +95,9 @@
                 <a href="../pages/user_changeShift.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 hover:text-white hover:no-underline">
                     Change Shift
                 </a>
-                <a href="../pages/user_hrRequests.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 hover:text-white hover:no-underline">
+                <!-- <a href="../pages/user_hrRequests.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 hover:text-white hover:no-underline">
                     HR Requests
-                </a>
+                </a> -->
 
                 <?php } ?>
             </nav>
