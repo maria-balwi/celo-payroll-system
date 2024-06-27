@@ -72,7 +72,7 @@
                         <h2 class="text-xl font-bold mb-2">Attendance for Today</h2>
                         <!-- DATATABLE -->
                         <div class="container mx-auto mt-5 overflow-auto">
-                            <table id="attendaceTable" class="min-w-full divide-y divide-gray-200">
+                            <table id="attendaceTable" class="min-w-full divide-y divide-gray-200 table-striped table-bordered">
                                 <thead class="bg-gray-50">
                                     <tr>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
