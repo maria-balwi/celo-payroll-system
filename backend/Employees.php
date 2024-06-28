@@ -10,6 +10,8 @@
         private $logtype = 'tbl_logtype';
         private $shift = 'tbl_shiftschedule';
         private $changeShift = 'tbl_changeshiftrequests';
+        private $leaves = 'tbl_leaveapplications';
+        private $leaveType = 'tbl_leavetype';
         private $dbConnect = false;
         public function __construct() {
             $this->dbConnect = $this->dbConnect();
@@ -59,6 +61,27 @@
                 ON shift_1.shiftID = employees.shiftID
                 INNER JOIN ".$this->shift." AS shift_2
                 ON shift_2.shiftID = changeShift.requestedShift";
+            return $request;
+        }
+
+        public function viewLeaves($id) {
+            $request = "
+                SELECT * FROM ".$this->leaves." AS leaves
+                INNER JOIN ".$this->employees." AS employees
+                ON leaves.empID = employees.id
+                INNER JOIN ".$this->leaveType." AS leaveType
+                ON leaveType.leaveTypeID = leaves.leaveTypeID
+                WHERE empID='$id'";
+            return $request;
+        }
+
+        public function viewLeaveRequests() {
+            $request = "
+                SELECT * FROM ".$this->leaves." AS leaves
+                INNER JOIN ".$this->employees." AS employees
+                ON leaves.empID = employees.id
+                INNER JOIN ".$this->leaveType." AS leaveType
+                ON leaveType.leaveTypeID = leaves.leaveTypeID";
             return $request;
         }
     }
