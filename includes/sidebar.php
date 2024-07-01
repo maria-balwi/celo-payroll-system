@@ -37,6 +37,9 @@
                 <a href="../pages/admin_deductions.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Deductions
                 </a>
+                <a href="../pages/admin_users.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
+                    Users
+                </a>
                 <?php }
                     if ($_SESSION['levelID'] == '2' || $_SESSION['levelID'] == '0') {
                 ?>
