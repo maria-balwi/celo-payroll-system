@@ -71,7 +71,7 @@
                     <div class="bg-white p-4 rounded-lg col-span-6 lg:col-span-4 shadow-md">
                         <h2 class="text-xl font-bold mb-2">Attendance for Today</h2>
                         <!-- DATATABLE -->
-                        <div class="container mx-auto mt-5 overflow-auto">
+                        <div class="container mx-auto overflow-auto">
                             <table id="attendaceTable" class="min-w-full divide-y divide-gray-200 table-striped table-bordered">
                                 <thead class="bg-gray-50">
                                     <tr>

@@ -27,7 +27,7 @@
             <!-- CONTENT -->
             <div class="2xl:max-w-2xl p-4 m-1 bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
                 <!-- DATA TABLE -->
-                <div class="container mx-auto mt-5 overflow-auto">
+                <div class="container mx-auto overflow-auto">
                     <table id="example" class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
