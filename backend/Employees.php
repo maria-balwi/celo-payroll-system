@@ -17,6 +17,14 @@
             $this->dbConnect = $this->dbConnect();
         }
 
+        public function viewEmployees() {
+            $team = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->department." AS department
+                ON employees.departmentID = department.departmentID";
+            return $team;
+        }
+
         public function viewTeam() {
             $team = "
                 SELECT * FROM ".$this->employees." AS employees
