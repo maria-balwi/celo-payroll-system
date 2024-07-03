@@ -264,27 +264,115 @@ $(document).ready(function() {
             });
         })
 
-        // // RESET PASSWORD USER
-        // $(document).on('click', '.userResetPassword', function() {
-        //     $('#viewUserModal').modal('hide');
-        //     var id_user = array[array.length - 1];
+        // RESET PASSWORD USER
+        $(document).on('click', '.userResetPassword', function() {
+            $('#viewUserModal').modal('hide');
+            var id_user = array[array.length - 1];
 
-        //     $.ajax({
-        //         type: "GET",
-        //         url: "../backend/users/userModal.php?user_ID=" + id_user,
-        //         success: function(response) {
+            $.ajax({
+                type: "GET",
+                url: "../backend/admin/userModal.php?user_ID=" + id_user,
+                success: function(response) {
 
-        //             var res = jQuery.parseJSON(response);
-        //             if (res.status == 404) {
-        //                 alert(res.message);
-        //             } 
-        //             else if (res.status == 200) {
-        //                 $('#viewID').val(res.data.userID);
-        //                 $('#resetPassModal').modal('show');
-        //             }
-        //         }
-        //     });
-        // })
+                    var res = jQuery.parseJSON(response);
+                    if (res.status == 404) {
+                        alert(res.message);
+                    } 
+                    else if (res.status == 200) {
+                        $('#viewID').val(res.data.userID);
+                        $('#resetPassModal').modal('show');
+                    }
+                }
+            });
+        })
+    });
+
+    // RESET PASSWORD 
+    $("#resetPasswordForm").submit(function (e) {
+        
+        e.preventDefault();
+
+        let resetPassword = new FormData();
+        var userID = $("#viewID").val();
+        var newPass = $("#newPass").val();
+        var retypePass = $("#retypePass").val();
+
+        if (userID == '' || newPass == '' || retypePass == '') {
+
+            Swal.fire({
+                icon: 'warning',
+                title: 'Required Information',
+                text: 'Please fill up all the required Information',
+
+            })
+
+        } else {
+            Swal.fire({
+                icon: 'question',
+                title: 'Reset Password',
+                text: 'Are you sure you want to save the changes you made?',
+                showCancelButton: true,
+                cancelButtonColor: '#6c757d',
+                confirmButtonColor: '#28a745',
+                confirmButtonText: 'Yes',
+
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    resetPassword.append("userID", userID);
+                    resetPassword.append("newPass", newPass);
+                    resetPassword.append("retypePass", retypePass);
+
+                    $.ajax({
+                        url: '../backend/admin/resetPassword.php',
+                        type: 'POST',
+                        data: resetPassword,
+                        contentType: false,
+                        processData: false,
+                        success: function(res) {
+                            const data = JSON.parse(res);
+                            var message = data.message
+                            if (data.status == 404) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Warning',
+                                    text: message,
+                                })
+                            }
+                            else if (data.status == 200 & data.result == 1) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Warning',
+                                    text: message,
+                                })
+                                $("#newPass").val('');
+                                $("#retypePass").val('');
+                            } 
+                            else if (data.status == 200 & data.result == 2) {
+                                Swal.fire({
+                                    icon: 'warning',
+                                    title: 'Warning',
+                                    text: message,
+                                })
+                                $("#newPass").val('');
+                                $("#retypePass").val('');
+                            }
+                            else {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: message,
+                                    timer: 2000, 
+                                    showConfirmButton: false,
+                                }).then(() => {
+                                    window.location.reload();
+                                })
+                            }
+                        }
+                    })
+                }
+            })
+        }       
+
     });
 
     // VIEW AND UPDATE INACTIVE USER

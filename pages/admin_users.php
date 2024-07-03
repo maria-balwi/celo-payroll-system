@@ -695,11 +695,52 @@
                     </div>
                 </div>
             </div>
+        
+            <!---------------------------------------------------------------------------------------------------------------------------------------------------------->
+            <!---------------------------------------------------------------- RESET PASSWORD FORM --------------------------------------------------------------------->
+            <form id="resetPasswordForm">
+                <div class="modal fade" id="resetPassModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="resetPassLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-sm modal-dialog-centered">
+                        <div class="modal-content" id="resetPassModal">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="resetPassLabel">Reset Password</h1>
+                                <input type="hidden" id="viewID">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <label for="newPass">New Password</label>
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-2">
+                                    <div class="col-12">
+                                        <input type="password" class="form-control" id="newPass" placeholder="Password">
+                                    </div>
+                                </div>
 
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <label for="retypePass">Retype New Password</label>
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-2">
+                                    <div class="col-12">
+                                        <input type="password" class="form-control" id="retypePass" placeholder="Password">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success" id="btnSavePass">Save</button>
+                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#viewUserModal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
 
             <!---------------------------------------------------------------------------------------------------------------------------------------------------------->
             <!------------------------------------------------------------------ INACTIVE USERS ------------------------------------------------------------------------>
-
 
             <!---------------------------------------------------------------------------------------------------------------------------------------------------------->
             <!------------------------------------------------------------------ VIEW USER FORM ------------------------------------------------------------------------>
@@ -765,7 +806,6 @@
                     </div>
                 </div>
             </div>
-
 
             <!---------------------------------------------------------------------------------------------------------------------------------------------------------->
             <!-------------------------------------------------------------- PASSWORD CONFIRMATION FORM ---------------------------------------------------------------->
