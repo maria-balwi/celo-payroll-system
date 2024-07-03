@@ -212,58 +212,57 @@ $(document).ready(function() {
         //     });
         // })
 
-        // // DEACTIVATE USER
-        // $(document).on('click', '.userDeactivate', function() {
-        //     $('#updateUserModal').modal('hide');
-        //     var id_user = array[array.length - 1];
+        // DEACTIVATE USER
+        $(document).on('click', '.userDeactivate', function() {
+            var id_user = array[array.length - 1];
 
-        //     $.ajax({
-        //         type: "GET",
-        //         url: "../backend/users/userModal.php?user_ID=" + id_user,
-        //         success: function(response) {
+            $.ajax({
+                type: "GET",
+                url: "../backend/admin/userModal.php?user_ID=" + id_user,
+                success: function(response) {
 
-        //             var res = jQuery.parseJSON(response);
-        //             if (res.status == 404) {
-        //                 alert(res.message);
-        //             } else if (res.status == 200) {
+                    var res = jQuery.parseJSON(response);
+                    if (res.status == 404) {
+                        alert(res.message);
+                    } else if (res.status == 200) {
 
-        //                 Swal.fire({
-        //                     icon: 'question',
-        //                     title: 'Deactivate User Account',
-        //                     text: 'Are you sure you want to deactivate this user account?',
-        //                     showCancelButton: true,
-        //                     cancelButtonColor: '#6c757d',
-        //                     confirmButtonColor: '#28a745',
-        //                     confirmButtonText: 'Yes',
+                        Swal.fire({
+                            icon: 'question',
+                            title: 'Deactivate User Account',
+                            text: 'Are you sure you want to deactivate this user account?',
+                            showCancelButton: true,
+                            cancelButtonColor: '#6c757d',
+                            confirmButtonColor: '#28a745',
+                            confirmButtonText: 'Yes',
 
-        //                 }).then((result) => {
-        //                     if (result.isConfirmed) {
+                        }).then((result) => {
+                            if (result.isConfirmed) {
 
-        //                         $.ajax({
-        //                             url: "../backend/users/deactivateUser.php",
-        //                             type: 'POST',
-        //                             data: {
-        //                                 id_user: id_user
-        //                             },
-        //                             cache: false,
-        //                             success: function(data) {
-        //                                 Swal.fire({
-        //                                     icon: 'success',
-        //                                     title: 'Success',
-        //                                     text: 'User Account Deactivated Successfully',
-        //                                     timer: 2000,
-        //                                     showConfirmButton: false,
-        //                                 }).then(() => {
-        //                                     window.location.reload();
-        //                                 })
-        //                             }
-        //                         })
-        //                     }
-        //                 })
-        //             }
-        //         }
-        //     });
-        // })
+                                $.ajax({
+                                    url: "../backend/admin/deactivateUser.php",
+                                    type: 'POST',
+                                    data: {
+                                        id_user: id_user
+                                    },
+                                    cache: false,
+                                    success: function(data) {
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Success',
+                                            text: 'User Account Deactivated Successfully',
+                                            timer: 2000,
+                                            showConfirmButton: false,
+                                        }).then(() => {
+                                            window.location.reload();
+                                        })
+                                    }
+                                })
+                            }
+                        })
+                    }
+                }
+            });
+        })
 
         // // RESET PASSWORD USER
         // $(document).on('click', '.userResetPassword', function() {
