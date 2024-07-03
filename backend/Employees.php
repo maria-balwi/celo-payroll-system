@@ -30,7 +30,8 @@
             $team = "
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->department." AS department
-                ON employees.departmentID = department.departmentID";
+                ON employees.departmentID = department.departmentID
+                WHERE employees.departmentID = 4";
             return $team;
         }
 
@@ -214,7 +215,7 @@
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
                 ON employees.id = users.employeeID
-                WHERE users.status = 'Active'";
+                WHERE users.status = 'Active' AND departmentID = 4";
             return $allAdmin;
         }
 
@@ -223,7 +224,7 @@
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
                 ON employees.id = users.employeeID
-                WHERE users.status = 'Inactive'";
+                WHERE users.status = 'Inactive' AND departmentID = 4";
             return $inactiveAdmin;
         }
 
@@ -241,6 +242,14 @@
                 WHERE employees.id = '$id'";
             return $currentShift;
         } 
+
+        public function viewAllEmployee() {
+            $allEmployee = "
+                SELECT * FROM ".$this->employees."
+                WHERE id NOT IN 
+                    (SELECT employeeID FROM ".$this->users.")";
+            return $allEmployee;
+        }
     }
 
 ?>

@@ -86,6 +86,13 @@
                 WHERE employees.id = '$id'";
             return $user;
         }
+
+        public function addUser($employeeID, $levelID, $password, $activated, $status) {
+            $addUser = "
+                INSERT INTO ".$this->users." (employeeID, levelID, password, activated, status)
+                VALUES ('$employeeID', '$levelID', '$password', '$activated', '$status')";
+            return $addUser;
+        }
     }
 
 ?>

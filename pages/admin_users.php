@@ -555,6 +555,79 @@
                     </div>
                 </div>
             </div>
+
+
+            <!-- ======================================================================================================================================= -->
+            <!-- ================================================================= MODAL =============================================================== -->
+            <!-- ======================================================================================================================================= -->
+
+            <!--------------------------------------------------------------------------------------------------------------------------------------------->
+            <!------------------------------------------------------------------- ADD USER FORM ----------------------------------------------------------->
+            <form id="addUserForm">
+                <div class="modal fade" id="addUserModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-none modal-sm modal-dialog-centered">
+                        <div class="modal-content" id="addUserModal">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="userFormLabel">New User</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row g-3 mb-2">
+                                    <div class="col-12">
+                                        <label for="name">Name:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mb-2">
+                                    <div class="col-12">
+                                        <select class="form-select border border-1" id="employeeID" required>
+                                            <option selected disabled>Choose Employee</option>
+                                            <?php
+                                            $allEmployee = mysqli_query($conn, $employees->viewAllEmployee());
+                                            while ($allEmployeeResult = mysqli_fetch_array($allEmployee)) {
+                                            ?>
+                                                <option value="<?php echo $allEmployeeResult['id']; ?>">
+                                                    <?php echo $allEmployeeResult['employeeName']; ?>
+                                                </option>
+                                            <?php
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>     
+                                
+                                <div class="row g-3 mb-2">
+                                    <div class="col-12">
+                                        <label for="password">Password:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mb-2">
+                                    <div class="col-12">
+                                        <input type="password" class="form-control" id="password" placeholder="Password">
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mb-2">
+                                    <div class="col-12">
+                                        <label for="retypePassword">Retype Password:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mb-2">
+                                    <div class="col-12">
+                                        <input type="password" class="form-control" id="retypePassword" placeholder="Name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">Add</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </main>
     
         <script src="../assets/js/users.js"></script>
