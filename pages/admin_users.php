@@ -776,7 +776,7 @@
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="confirmPassLabel">
                                     Confirm Password
-                                    <input type="hidden" id="loggedInUserPassword" name="loggedInUserPassword"  value="<?php echo $_SESSION["password"]; ?>">
+                                    <input type="hidden" id="loggedInUserPassword" value="<?php echo $_SESSION["password"]; ?>">
                                 </h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
@@ -784,23 +784,23 @@
                                 
                                     <div class="row g-3">
                                         <div class="col-12">
-                                            <label for="password">Enter Password</label>
+                                            <label for="reactivate_password">Enter Password</label>
                                         </div>
                                     </div>
                                     <div class="row g-3 mb-2">
                                         <div class="col-12">
-                                            <input type="password" class="form-control" id="password" placeholder="Password">
+                                            <input type="password" class="form-control" id="reactivate_password" placeholder="Password">
                                         </div>
                                     </div>
 
                                     <div class="row g-3">
                                         <div class="col-12">
-                                            <label for="retypePassword">Retype Password</label>
+                                            <label for="reactivate_retypePassword">Retype Password</label>
                                         </div>
                                     </div>
                                     <div class="row g-3 mb-2">
                                         <div class="col-12">
-                                            <input type="password" class="form-control" id="retypePassword" placeholder="Retype Password">
+                                            <input type="password" class="form-control" id="reactivate_retypePassword" placeholder="Retype Password">
                                         </div>
                                     </div>  
                             </div>

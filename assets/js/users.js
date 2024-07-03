@@ -316,25 +316,116 @@ $(document).ready(function() {
             }
         });
 
-        // // REACTIVATE USER
-        // $(document).on('click', '.userReactivate', function() {
-        //     $('#viewInactiveUserModal').modal('hide');
-        //     var id_user = inactive_array[inactive_array.length - 1];
+        // REACTIVATE USER
+        $(document).on('click', '.userReactivate', function() {
+            $('#viewInactiveUserModal').modal('hide');
+            var id_user = inactive_array[inactive_array.length - 1];
 
-        //     $.ajax({
-        //         type: "GET",
-        //         url: "../backend/users/userModal.php?user_ID=" + id_user,
-        //         success: function(response) {
+            $.ajax({
+                type: "GET",
+                url: "../backend/admin/userModal.php?user_ID=" + id_user,
+                success: function(response) {
 
-        //             var res = jQuery.parseJSON(response);
-        //             if (res.status == 404) {
-        //                 alert(res.message);
-        //             } else if (res.status == 200) {
-        //                 $('#confirmPassModal').modal('show');
-        //             }
-        //         }
-        //     });
-        // })
+                    var res = jQuery.parseJSON(response);
+                    if (res.status == 404) {
+                        alert(res.message);
+                    } else if (res.status == 200) {
+                        $('#confirmPassModal').modal('show');
+                    }
+                }
+            });
+        })
+
+    });
+
+    // REACTIVATE USER ACOUNT
+    $("#reactivateForm").submit(function (e) {
+        
+        e.preventDefault();
+
+        let reactivateForm = new FormData();
+        var loggedInUserPassword = $("#loggedInUserPassword").val();
+        var password = $("#reactivate_password").val();
+        var retypePassword = $("#reactivate_retypePassword").val();
+        var id_user = inactive_array[inactive_array.length - 1];
+
+        console.log({loggedInUserPassword});
+        console.log({password});
+        console.log({retypePassword});
+
+        if (loggedInUserPassword == '' || password == '' || retypePassword == '') {
+
+            Swal.fire({
+                icon: 'warning',
+                title: 'Required Information',
+                text: 'Please fill up all the required Information',
+            })
+
+        } else {
+
+            if (password == retypePassword) {
+
+                Swal.fire({
+                    icon: 'question',
+                    title: 'Reactivate User Account',
+                    text: 'Are you sure you want to reactivate this user account?',
+                    showCancelButton: true,
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonColor: '#28a745',
+                    confirmButtonText: 'Yes',
+    
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        reactivateForm.append("loggedInUserPassword", loggedInUserPassword);
+                        reactivateForm.append("password", password);
+                        reactivateForm.append("userID", id_user);
+                        
+                        $.ajax({
+                            url: "../backend/admin/reactivateUser.php",
+                            type: 'POST',
+                            data: reactivateForm,
+                            contentType: false,
+                            processData: false,
+                            success: function(res) {
+                                const data = JSON.parse(res);
+                                var message = data.em;
+                                if (data.error == 0) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Success',
+                                        text: 'User Account Reactivated Successfully',
+                                        timer: 2000,
+                                        showConfirmButton: false,
+                                    }).then(() => {
+                                        window.location.reload();
+                                    })
+                                }
+                                else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Incorrect Password', 
+                                        text: message,
+                                    })
+                                    $("#reactivate_password").val('');
+                                    $("#reactivate_retypePassword").val('');
+                                }
+                            }
+                        })
+                    }
+                })
+                
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Password Mismatch',
+                    text: 'Password does not match.',
+                })
+                $("#reactivate_password").val('');
+                $("#reactivate_retypePassword").val('');
+            }
+
+            
+        }       
 
     });
 }); 
