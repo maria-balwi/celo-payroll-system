@@ -20,7 +20,7 @@
                     <!-- <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none">
                     File HR Request
                     </button> -->
-                    <a href="user_leaves.php" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none">Back</a>
+                    <a href="user_leaves.php" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none no-underline">Back</a>
                 </div>
             </div>
             
@@ -42,10 +42,10 @@
                                             <h3 class="text-sm text-gray-600">Leave Type</h3>
                                             <select type="dropdown" class="p-2 text-md border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                                 <option selected disabled>Choose one of the following</option>
-                                                <option value="1">RA No. 9262 - Leave for victims of Violence Against Women and Their Children</option>
-                                                <option value="2">RA No. 9710 - Special Leave Benefits for Women</option>
-                                                <option value="3">Maternity Leave - Expanded Maternity Leave Law 105 Days</option>
-                                                <option value="3">Maternity Leave - Miscarriage and emergency termination of pregnancy</option>
+                                                <option value="RA No. 9262 - Leave for victims of Violence Against Women and Their Children">RA No. 9262 - Leave for victims of Violence Against Women and Their Children</option>
+                                                <option value="RA No. 9710 - Special Leave Benefits for Women">RA No. 9710 - Special Leave Benefits for Women</option>
+                                                <option value="Maternity Leave - Expanded Maternity Leave Law 105 Days">Maternity Leave - Expanded Maternity Leave Law 105 Days</option>
+                                                <option value="Maternity Leave - Miscarriage and emergency termination of pregnancy">Maternity Leave - Miscarriage and emergency termination of pregnancy</option>
                                             </select>
                                         </div>
                                         <div class="flex flex-col gap-2 py-1 mt-2">
