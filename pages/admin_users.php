@@ -628,6 +628,73 @@
                     </div>
                 </div>
             </form>
+
+            <!---------------------------------------------------------------------------------------------------------------------------------------------------------->
+            <!------------------------------------------------------------------ VIEW USER FORM ------------------------------------------------------------------------>
+            <div class="modal fade" id="viewUserModal" tabindex="-1" aria-labelledby="viewUserLabel" aria-hidden="true">
+                <div class="modal-dialog modal-none modal-dialog-centered">
+                    <div class="modal-content" id="viewUserModal">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="viewUserLabel">View User</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="row g-3 mb-2">
+                                    <div class="col-3">
+                                        <label for="viewUserID">User ID</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input type="text" class="form-control" id="viewUserID" disabled readonly>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mb-2">
+                                    <div class="col-3">
+                                        <label for="viewName">Name</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input type="text" class="form-control" id="viewEmployeeName" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mb-2">
+                                    <div class="col-3">
+                                        <label for="viewEmailAdd">Email</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input type="email" class="form-control" id="viewEmailAdd" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mb-2">
+                                    <div class="col-3">
+                                        <label for="viewEmployeeID">Employee ID</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input type="text" class="form-control" id="viewEmployeeID"disabled>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mb-2">
+                                    <div class="col-3">
+                                        <label for="viewDepartment">Department</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input type="text" class="form-control" id="viewDepartment" disabled>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <!-- <button type="button" class="btn btn-primary userUpdate">Update</button> -->
+                            <button type="button" class="btn btn-warning userResetPassword">Reset Password</button>
+                            <button type="button" class="btn btn-danger userDeactivate">Deactivate</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
     
         <script src="../assets/js/users.js"></script>

@@ -93,6 +93,19 @@
                 VALUES ('$employeeID', '$levelID', '$password', '$activated', '$status')";
             return $addUser;
         }
+
+        public function getUserInfo($userID) {
+            $userInfo = "
+                SELECT * FROM ".$this->users." AS users
+                INNER JOIN ".$this->employees." AS employees
+                ON users.employeeID = employees.id
+                INNER JOIN ".$this->department." AS department
+                ON employees.departmentID = department.departmentID
+                INNER JOIN ".$this->designation." AS designation
+                ON employees.designationID = designation.designationID
+                WHERE userID = ".$userID."";
+            return $userInfo;
+        }
     }
 
 ?>
