@@ -695,6 +695,123 @@
                     </div>
                 </div>
             </div>
+
+
+            <!---------------------------------------------------------------------------------------------------------------------------------------------------------->
+            <!------------------------------------------------------------------ INACTIVE USERS ------------------------------------------------------------------------>
+
+
+            <!---------------------------------------------------------------------------------------------------------------------------------------------------------->
+            <!------------------------------------------------------------------ VIEW USER FORM ------------------------------------------------------------------------>
+            <div class="modal fade" id="viewInactiveUserModal" tabindex="-1" aria-labelledby="viewInactiveUserLabel" aria-hidden="true">
+                <div class="modal-dialog modal-none modal-dialog-centered">
+                    <div class="modal-content" id="viewInactiveUserModal">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="viewInactiveUserLabel">View User</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="row g-3 mb-2">
+                                    <div class="col-3">
+                                        <label for="viewInactiveUserID">User ID</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input type="text" class="form-control" id="viewInactiveUserID" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mb-2">
+                                    <div class="col-3">
+                                        <label for="viewInactiveEmployeeName">Name</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input type="text" class="form-control" id="viewInactiveEmployeeName" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mb-2">
+                                    <div class="col-3">
+                                        <label for="viewInactiveEmailAdd">Email</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input type="email" class="form-control" id="viewInactiveEmailAdd" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mb-2">
+                                    <div class="col-3">
+                                        <label for="viewInactiveEmpID">Employee ID</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input type="text" class="form-control" id="viewInactiveEmpID" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mb-2">
+                                    <div class="col-3">
+                                        <label for="viewInactiveDept">Department</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input type="text" class="form-control" id="viewInactiveDept" disabled>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary userReactivate">Reactivate</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!---------------------------------------------------------------------------------------------------------------------------------------------------------->
+            <!-------------------------------------------------------------- PASSWORD CONFIRMATION FORM ---------------------------------------------------------------->
+            <form id="reactivateForm">
+                <div class="modal fade" id="confirmPassModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="confirmPassLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-sm modal-dialog-centered">
+                        <div class="modal-content" id="confirmPassModal">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="confirmPassLabel">
+                                    Confirm Password
+                                    <input type="hidden" id="loggedInUserPassword" name="loggedInUserPassword"  value="<?php echo $_SESSION["password"]; ?>">
+                                </h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                
+                                    <div class="row g-3">
+                                        <div class="col-12">
+                                            <label for="password">Enter Password</label>
+                                        </div>
+                                    </div>
+                                    <div class="row g-3 mb-2">
+                                        <div class="col-12">
+                                            <input type="password" class="form-control" id="password" placeholder="Password">
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-3">
+                                        <div class="col-12">
+                                            <label for="retypePassword">Retype Password</label>
+                                        </div>
+                                    </div>
+                                    <div class="row g-3 mb-2">
+                                        <div class="col-12">
+                                            <input type="password" class="form-control" id="retypePassword" placeholder="Retype Password">
+                                        </div>
+                                    </div>  
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">Submit</button>
+                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#viewInactiveUserModal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </main>
     
         <script src="../assets/js/users.js"></script>

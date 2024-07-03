@@ -286,4 +286,55 @@ $(document).ready(function() {
         //     });
         // })
     });
+
+    // VIEW AND UPDATE INACTIVE USER
+    var inactive_array = [];
+    $(document).on('click', '.inactiveUserView', function() {
+        var user_ID = $(this).data('id');
+        inactive_array.push(user_ID);
+        var id_user = inactive_array[inactive_array.length - 1];
+
+        // VIEW USER
+        $.ajax({
+            type: "GET",
+            url: "../backend/admin/userModal.php?user_ID=" + id_user,
+            success: function(response) {
+
+                var res = jQuery.parseJSON(response);
+
+                if (res.status == 404) {
+                    alert(res.message);
+                } 
+                else if (res.status == 200) {
+                    $('#viewInactiveUserID').val(res.data.userID);
+                    $('#viewInactiveEmployeeName').val(res.data.employeeName);
+                    $('#viewInactiveEmailAdd').val(res.data.emailAddress);
+                    $('#viewInactiveEmpID').val(res.data.employeeID);
+                    $('#viewInactiveDept').val(res.data.departmentName + ' - ' + res.data.position);
+                    $('#viewInactiveUserModal').modal('show');
+                }
+            }
+        });
+
+        // // REACTIVATE USER
+        // $(document).on('click', '.userReactivate', function() {
+        //     $('#viewInactiveUserModal').modal('hide');
+        //     var id_user = inactive_array[inactive_array.length - 1];
+
+        //     $.ajax({
+        //         type: "GET",
+        //         url: "../backend/users/userModal.php?user_ID=" + id_user,
+        //         success: function(response) {
+
+        //             var res = jQuery.parseJSON(response);
+        //             if (res.status == 404) {
+        //                 alert(res.message);
+        //             } else if (res.status == 200) {
+        //                 $('#confirmPassModal').modal('show');
+        //             }
+        //         }
+        //     });
+        // })
+
+    });
 }); 
