@@ -41,6 +41,4 @@
         echo json_encode($error);
         exit();
     }
-    
-
 ?>
