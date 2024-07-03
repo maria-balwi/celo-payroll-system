@@ -12,6 +12,7 @@
         private $changeShift = 'tbl_changeshiftrequests';
         private $leaves = 'tbl_leaveapplications';
         private $leaveType = 'tbl_leavetype';
+        private $shifts = 'tbl_shiftschedule';
         private $dbConnect = false;
         public function __construct() {
             $this->dbConnect = $this->dbConnect();
@@ -225,6 +226,21 @@
                 WHERE users.status = 'Inactive'";
             return $inactiveAdmin;
         }
+
+        public function viewShifts() {
+            $allShifts = "
+                SELECT * FROM ".$this->shifts;
+            return $allShifts;
+        }
+
+        public function viewCurrentShift($id) {
+            $currentShift = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->shifts." AS shifts
+                ON employees.shiftID = shifts.shiftID
+                WHERE employees.id = '$id'";
+            return $currentShift;
+        } 
     }
 
 ?>
