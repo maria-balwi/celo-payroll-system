@@ -58,7 +58,7 @@
                         <svg class="h-16 w-16 text-gray-600"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                         </svg>
-                        <h2 class="text-xl font-bold mb-2">2</h2>
+                        <h2 class="text-xl font-bold mb-2">0</h2>
                         <p class="text-gray-700">On Leave</p>
                     </div>
 
@@ -72,7 +72,7 @@
                         <h2 class="text-xl font-bold mb-2">Attendance for Today</h2>
                         <!-- DATATABLE -->
                         <div class="container mx-auto overflow-auto">
-                            <table id="attendaceTable" class="min-w-full divide-y divide-gray-200 table-striped table-bordered">
+                            <table id="attendaceTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered">
                                 <thead class="bg-gray-50">
                                     <tr>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
@@ -84,32 +84,32 @@
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">PALENCIA, CHRISTIAN JAY MANAHAN</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">9pm - 6am</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">-</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">-</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">Absent</td>
+                                        <td class="px-6 whitespace-nowrap">PALENCIA, CHRISTIAN JAY MANAHAN</td>
+                                        <td class="px-6 whitespace-nowrap">9pm - 6am</td>
+                                        <td class="px-6 whitespace-nowrap">-</td>
+                                        <td class="px-6 whitespace-nowrap">-</td>
+                                        <td class="px-6 whitespace-nowrap">Absent</td>
                                     </tr>
                                     <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">SAMPANG, JOHN PAUL PELIAZAR</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">9pm - 6am</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">11:20:47 AM</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">8:52:48 PM</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">Undertime</td>
+                                        <td class="px-6 whitespace-nowrap">SAMPANG, JOHN PAUL PELIAZAR</td>
+                                        <td class="px-6 whitespace-nowrap">9pm - 6am</td>
+                                        <td class="px-6 whitespace-nowrap">11:20:47 AM</td>
+                                        <td class="px-6 whitespace-nowrap">8:52:48 PM</td>
+                                        <td class="px-6 whitespace-nowrap">Undertime</td>
                                     </tr>
                                     <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">ODLUIO, JOSEPH PAUL GAVINO</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">6am - 3pm</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">-</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">-</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">Absent</td>
+                                        <td class="px-6 whitespace-nowrap">ODLUIO, JOSEPH PAUL GAVINO</td>
+                                        <td class="px-6 whitespace-nowrap">6am - 3pm</td>
+                                        <td class="px-6 whitespace-nowrap">-</td>
+                                        <td class="px-6 whitespace-nowrap">-</td>
+                                        <td class="px-6 whitespace-nowrap">Absent</td>
                                     </tr>
                                     <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">REYES, MARIA PATRICE ALVAREZ</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">9am - 6pm</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">8:04:59 AM</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">7:07:00 PM</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">Overtime</td>
+                                        <td class="px-6 whitespace-nowrap">REYES, MARIA PATRICE ALVAREZ</td>
+                                        <td class="px-6 whitespace-nowrap">9am - 6pm</td>
+                                        <td class="px-6 whitespace-nowrap">8:04:59 AM</td>
+                                        <td class="px-6 whitespace-nowrap">7:07:00 PM</td>
+                                        <td class="px-6 whitespace-nowrap">Overtime</td>
                                     </tr>
                                 </tbody>
                             </table>

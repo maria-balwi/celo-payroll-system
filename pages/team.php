@@ -21,7 +21,7 @@
                 
                 <!-- DATATABLE -->
                 <div class="container mx-auto overflow-auto">
-                    <table id="teamTable" class="min-w-full divide-y divide-gray-200 table-striped table-bordered">
+                    <table id="teamTable" class="table min-w-full divide-y divide-gray-200 table-striped table-bordered">
                         <thead class="bg-gray-50">
                             <tr>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
@@ -43,10 +43,10 @@
 
 
                                     echo "<tr data-id='" . $team_id . "' class='odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700'>";
-                                    echo "<td ='px-6 py-4 whitespace-nowrap'>" . $team_employeeName . "</td>";
-                                    echo "<td ='px-6 py-4 whitespace-nowrap'>" . $team_emailAddress . "</td>";
-                                    echo "<td ='px-6 py-4 whitespace-nowrap'>" . $team_mobileNumber . "</td>";
-                                    echo "<td ='px-6 py-4 whitespace-nowrap'>" . $team_department . "</td>";
+                                    echo "<td ='px-6 whitespace-nowrap'>" . $team_employeeName . "</td>";
+                                    echo "<td ='px-6 whitespace-nowrap'>" . $team_emailAddress . "</td>";
+                                    echo "<td ='px-6 whitespace-nowrap'>" . $team_mobileNumber . "</td>";
+                                    echo "<td ='px-6 whitespace-nowrap'>" . $team_department . "</td>";
                                     echo "</td>";
                                 }
                             ?>

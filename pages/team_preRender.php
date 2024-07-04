@@ -42,7 +42,7 @@
                 <h1 class="text-lg font-bold">Pre-Render Overtime Requests</h1>
                 <!-- DATATABLE -->
                 <div class="container mx-auto overflow-auto">
-                    <table id="preRenderTable" class="min-w-full divide-y divide-gray-200">
+                    <table id="preRenderTable" class="table table-striped table-bordered min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date Filed</th>
@@ -54,6 +54,7 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Details</th>
                             </tr>
                         </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
                         </tbody>
                     </table>
                 </div>

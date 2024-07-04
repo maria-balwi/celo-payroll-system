@@ -42,7 +42,7 @@
                 
                 <!-- DATATABLE -->
                 <div class="container mx-auto overflow-auto">
-                    <table id="postRenderTable" class="min-w-full divide-y divide-gray-200">
+                    <table id="postRenderTable" class="table table-bordered table-striped min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" rowspan="2">Date Filed</th>
@@ -63,6 +63,7 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Minutes</th>
                             </tr>
                         </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
                         </tbody>
                     </table>
                 </div>
