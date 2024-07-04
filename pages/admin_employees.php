@@ -22,7 +22,7 @@
                     <div class="card-body">
                         <!-- DATATABLE -->
                         <div class="container mx-auto overflow-auto">
-                            <table id="employeeTable" class="table min-w-full divide-y divide-gray-200 table-striped table-bordered">
+                            <table id="employeeTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered">
                                 <thead class="bg-gray-50">
                                     <tr>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
