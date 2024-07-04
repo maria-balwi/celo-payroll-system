@@ -86,7 +86,7 @@
                                 <hr class="my-2 border-t border-gray-300">
                                 <!-- DATATABLE -->
                                 <div class="container mx-auto overflow-auto">
-                                <table id="changeShiftTable2" class="min-w-full divide-y divide-gray-200 table-auto">
+                                <table id="changeShiftTable2" class="table table-striped table-bordered min-w-full divide-y divide-gray-200 table-auto">
                                     <thead class="bg-gray-50">
                                         <tr>
                                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date Filed</th>
@@ -123,10 +123,10 @@
                                                 $shift_effectivityDate = $shift_effectivityStartDate . " - " . $shift_effectivityEndDate;
 
                                                 echo "<tr data-id='" . $shift_id . "' class='odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700'>";
-                                                echo "<td ='px-6 py-4 whitespace-nowrap'>" . $shift_dateFiled . "</td>";
-                                                echo "<td ='px-6 py-4 whitespace-nowrap'>" . $shift_shiftID . "</td>";
-                                                echo "<td ='px-6 py-4 whitespace-nowrap'>" . $shift_effectivityDate . "</td>";
-                                                echo "<td ='px-6 py-4 whitespace-nowrap'>" . $shift_remarks . "</td>";
+                                                echo "<td ='px-6 whitespace-nowrap'>" . $shift_dateFiled . "</td>";
+                                                echo "<td ='px-6 whitespace-nowrap'>" . $shift_shiftID . "</td>";
+                                                echo "<td ='px-6 whitespace-nowrap'>" . $shift_effectivityDate . "</td>";
+                                                echo "<td ='px-6 whitespace-nowrap'>" . $shift_remarks . "</td>";
                                                 if ($shift_status == "Pending") {
                                                     echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 mt-3 rounded-full text-sm'>". $shift_status . "</p></td>";
                                                 }

@@ -20,7 +20,7 @@
                     <!-- <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none">
                     File HR Request
                     </button> -->
-                    <a href="user_preRender.php" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none">Back</a>
+                    <a href="user_preRender.php" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none no-underline">Back</a>
                 </div>
             </div>
             
@@ -75,7 +75,7 @@
                                 <hr class="my-2 border-t border-gray-300">
                                 <!-- DATATABLE -->
                                 <div class="container mx-auto mt-5 overflow-auto">
-                                    <table id="example" class="min-w-full divide-y divide-gray-200">
+                                    <table id="example" class="table table-striped table-bordered min-w-full divide-y divide-gray-200">
                                         <thead class="bg-gray-50">
                                             <tr>
                                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date Filed</th>
@@ -88,30 +88,30 @@
                                         </thead>
                                         <tbody class="bg-white divide-y divide-gray-200">
                                             <tr>
-                                                <td class="px-6 py-4 whitespace-nowrap">05/21/2024</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">05/20/2024</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">1 HR</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">Meeting</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">Pending</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">Action</td>
+                                                <td class="px-6 whitespace-nowrap">05/21/2024</td>
+                                                <td class="px-6 whitespace-nowrap">05/20/2024</td>
+                                                <td class="px-6 whitespace-nowrap">1 HR</td>
+                                                <td class="px-6 whitespace-nowrap">Meeting</td>
+                                                <td class="px-6 whitespace-nowrap">Pending</td>
+                                                <td class="px-6 whitespace-nowrap">Action</td>
                                             </tr>
 
                                             <tr>
-                                                <td class="px-6 py-4 whitespace-nowrap">04/30/2024</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">04/30/2024</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">1 HR</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">Meeting</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">Approved</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">Action</td>
+                                                <td class="px-6 whitespace-nowrap">04/30/2024</td>
+                                                <td class="px-6 whitespace-nowrap">04/30/2024</td>
+                                                <td class="px-6 whitespace-nowrap">1 HR</td>
+                                                <td class="px-6 whitespace-nowrap">Meeting</td>
+                                                <td class="px-6 whitespace-nowrap">Approved</td>
+                                                <td class="px-6 whitespace-nowrap">Action</td>
                                             </tr>
 
                                             <tr>
-                                                <td class="px-6 py-4 whitespace-nowrap">03/27/2024</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">03/27/2024</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">2 HRS</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">Meeting</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">Approved</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">Action</td>
+                                                <td class="px-6 whitespace-nowrap">03/27/2024</td>
+                                                <td class="px-6 whitespace-nowrap">03/27/2024</td>
+                                                <td class="px-6 whitespace-nowrap">2 HRS</td>
+                                                <td class="px-6 whitespace-nowrap">Meeting</td>
+                                                <td class="px-6 whitespace-nowrap">Approved</td>
+                                                <td class="px-6 whitespace-nowrap">Action</td>
                                             </tr>
                                         </tbody>
                                     </table>

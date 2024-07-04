@@ -72,50 +72,50 @@
                                 </div>
                                 <hr class="my-2 border-t border-gray-300">
                                 <!-- DATATABLE -->
-                                <div class="container mx-auto mt-5 overflow-auto">
-                                    <table id="example" class="min-w-full divide-y divide-gray-200">
+                                <div class="container mx-auto overflow-auto">
+                                    <table id="example" class="table table-bordered table-striped min-w-full divide-y divide-gray-200">
                                         <thead class="bg-gray-50">
                                             <tr>
-                                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Onhold</th>
-                                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Overall</th>
-                                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Default</th>
-                                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Starting</th>
-                                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Current Overall</th>
-                                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Leave Type</th>
+                                                <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Onhold</th>
+                                                <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Overall</th>
+                                                <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Default</th>
+                                                <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Starting</th>
+                                                <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Current Overall</th>
+                                                <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Leave Type</th>
                                             </tr>
                                         </thead>
                                         <tbody class="bg-white divide-y divide-gray-200">
                                             <tr>
-                                                <td class="px-6 py-4 whitespace-nowrap">0</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">10</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">10</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">N/A</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">10</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">RA No. 9262 - Leave for victims of Violence Against Women and Their Children</td>
+                                                <td class="px-6 whitespace-nowrap">0</td>
+                                                <td class="px-6 whitespace-nowrap">10</td>
+                                                <td class="px-6 whitespace-nowrap">10</td>
+                                                <td class="px-6 whitespace-nowrap">N/A</td>
+                                                <td class="px-6 whitespace-nowrap">10</td>
+                                                <td class="px-6 whitespace-nowrap">RA No. 9262 - Leave for victims of Violence Against Women and Their Children</td>
                                             </tr>
                                             <tr>
-                                                <td class="px-6 py-4 whitespace-nowrap">0</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">60</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">60</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">N/A</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">60</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">RA No. 9710 - Special Leave Benefits for Women</td>
+                                                <td class="px-6 whitespace-nowrap">0</td>
+                                                <td class="px-6 whitespace-nowrap">60</td>
+                                                <td class="px-6 whitespace-nowrap">60</td>
+                                                <td class="px-6 whitespace-nowrap">N/A</td>
+                                                <td class="px-6 whitespace-nowrap">60</td>
+                                                <td class="px-6 whitespace-nowrap">RA No. 9710 - Special Leave Benefits for Women</td>
                                             </tr>
                                             <tr>
-                                                <td class="px-6 py-4 whitespace-nowrap">0</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">105</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">105</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">N/A</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">105</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">Maternity Leave - Expanded Maternity Leave Law 105 Days</td>
+                                                <td class="px-6 whitespace-nowrap">0</td>
+                                                <td class="px-6 whitespace-nowrap">105</td>
+                                                <td class="px-6 whitespace-nowrap">105</td>
+                                                <td class="px-6 whitespace-nowrap">N/A</td>
+                                                <td class="px-6 whitespace-nowrap">105</td>
+                                                <td class="px-6 whitespace-nowrap">Maternity Leave - Expanded Maternity Leave Law 105 Days</td>
                                             </tr>
                                             <tr>
-                                                <td class="px-6 py-4 whitespace-nowrap">0</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">60</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">60</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">N/A</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">60</td>
-                                                <td class="px-6 py-4 whitespace-nowrap">Maternity Leave - Miscarriage and emergency termination of pregnancy</td>
+                                                <td class="px-6 whitespace-nowrap">0</td>
+                                                <td class="px-6 whitespace-nowrap">60</td>
+                                                <td class="px-6 whitespace-nowrap">60</td>
+                                                <td class="px-6 whitespace-nowrap">N/A</td>
+                                                <td class="px-6 whitespace-nowrap">60</td>
+                                                <td class="px-6 whitespace-nowrap">Maternity Leave - Miscarriage and emergency termination of pregnancy</td>
                                             </tr>
                                         </tbody>
                                     </table>

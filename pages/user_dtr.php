@@ -60,7 +60,7 @@
                                         $dtr_attendanceDate = $dtrDetails['attendanceDate'];
                                         $dtr_attendanceTime = $dtrDetails['attendanceTime'];
                                         $dtr_logType = $dtrDetails['logType'];
-                                        $dtr_time = $dtrDetails['time'];
+                                        $dtr_time = $dtrDetails['startTime'] . ' - ' . $dtrDetails['endTime'];
 
                                         $dateTime = new DateTime($dtr_attendanceDate);
                                         $formattedDate = $dateTime->format('M d, Y');                                      
@@ -75,19 +75,19 @@
                                         echo "<td ='whitespace-nowrap'>" . $formattedDate . "</td>";
                                         echo "<td ='whitespace-nowrap'>" . $dtr_time . "</td>";
                                         if ($dtr_logType == "Time In") {
-                                            echo "<td><p class='inline-block bg-green-500 text-white px-3 py-1 rounded-full text-sm'>". $dtr_logType . "</p></td>";
+                                            echo "<td><p class='inline-block bg-green-500 text-white px-3 rounded-full text-sm'>". $dtr_logType . "</p></td>";
                                         }
                                         else if ($dtr_logType == "Time Out" || $dtr_logType == "OT Out") {
-                                            echo "<td><p class='inline-block bg-red-500 text-white px-3 py-1 rounded-full text-sm'>". $dtr_logType . "</p></td>";
+                                            echo "<td><p class='inline-block bg-red-500 text-white px-3 rounded-full text-sm'>". $dtr_logType . "</p></td>";
                                         }
                                         else if ($dtr_logType == "Start of Break" || $dtr_logType == "End of Break") {
-                                            echo "<td><p class='inline-block bg-purple-500 text-white px-3 py-1 rounded-full text-sm'>". $dtr_logType . "</p></td>";
+                                            echo "<td><p class='inline-block bg-purple-500 text-white px-3 rounded-full text-sm'>". $dtr_logType . "</p></td>";
                                         }
                                         else if ($dtr_logType == "OT In") {
-                                            echo "<td><p class='inline-block bg-blue-500 text-white px-3 py-1 rounded-full text-sm'>". $dtr_logType . "</p></td>";
+                                            echo "<td><p class='inline-block bg-blue-500 text-white px-3 rounded-full text-sm'>". $dtr_logType . "</p></td>";
                                         }
                                         else if ($dtr_logType == "Late" || $dtr_logType == "Undertime") {
-                                            echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 rounded-full text-sm'>". $dtr_logType . "</p></td>";
+                                            echo "<td><p class='inline-block bg-yellow-500 text-white px-3 rounded-full text-sm'>". $dtr_logType . "</p></td>";
                                         }
                                         echo "<td =' whitespace-nowrap'>" . $dtr_attendanceTime . "</td>";
                                         echo "</td>";
