@@ -11,7 +11,7 @@
     $placeOfBirth = $_POST['placeOfBirth'];
     $sss = $_POST['sss'];
     $pagIbig = $_POST['pagIbig'];
-    $philheatlh = $_POST['philheatlh'];
+    $philhealth = $_POST['philhealth'];
     $emailAddress = $_POST['emailAddress'];
     $employeeID = $_POST['employeeID'];
     $mobileNumber = $_POST['mobileNumber'];
@@ -50,7 +50,7 @@
     }
     else {
         mysqli_query($conn, $employees->addNewEmployee($employeeName, $gender, $civilStatus, $address, $dateOfBirth, $placeOfBirth, 
-        $sss, $pagIbig, $philheatlh, $emailAddress, $employeeID, $mobileNumber, $departmentID, $designationID, $shiftID));
+        $sss, $pagIbig, $philhealth, $emailAddress, $employeeID, $mobileNumber, $departmentID, $designationID, $shiftID));
 
         $em = "Employee Added Successfully";
         $error = array('error' => 0, 'em' => $em);

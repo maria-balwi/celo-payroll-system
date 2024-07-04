@@ -263,6 +263,13 @@
             return $designation;
         }
 
+        public function viewAllShifts() {
+            $allShifts = "
+                SELECT shiftID, CONCAT(startTime, ' - ', endTime) AS shift 
+                FROM ".$this->shifts;
+            return $allShifts;
+        }
+
         public function checkEmail($emailAddress) {
             $checkEmail = "
                 SELECT * FROM ".$this->employees." 
@@ -278,14 +285,51 @@
         }
 
         public function addNewEmployee($employeeName, $gender, $civilStatus, $address, $dateOfBirth, $placeOfBirth, 
-            $sss, $pagIbig, $philheatlh, $emailAddress, $employeeID, $mobileNumber, $departmentID, $designationID, $shiftID) {
+            $sss, $pagIbig, $philhealth, $emailAddress, $employeeID, $mobileNumber, $departmentID, $designationID, $shiftID) {
             $addPersonnel = "
                 INSERT INTO ".$this->employees." (employeeName, gender, civilStatus, address, dateOfBirth, placeOfBirth, 
                 sss, pagIbig, philhealth, emailAddress, employeeID, mobileNumber, departmentID, designationID, shiftID)
                 VALUES ('".$employeeName."', '".$gender."', '".$civilStatus."', '".$address."', '".$dateOfBirth."', '".$placeOfBirth."',
-                '".$sss."', '".$pagIbig."', '".$philheatlh."', '".$emailAddress."', '".$employeeID."', '".$mobileNumber."', 
+                '".$sss."', '".$pagIbig."', '".$philhealth."', '".$emailAddress."', '".$employeeID."', '".$mobileNumber."', 
                 '".$departmentID."', '".$designationID."', '".$shiftID."')";
             return $addPersonnel;
+        }
+
+        public function updateEmployeeInfo($updateUserID, $updateEmployeeName, $updateGender, $updateCivilStatus, $updateAddress, 
+            $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateEmailAddress, 
+            $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID) {
+            $updateEmployee = "
+                UPDATE ".$this->employees." AS employees 
+                SET employeeName = '$updateEmployeeName',
+                gender = '$updateGender',
+                civilStatus = '$updateCivilStatus',
+                address = '$updateAddress',
+                dateOfBirth = '$updateDateOfBirth',
+                placeOfBirth = '$updatePlaceOfBirth',
+                sss = '$updateSSS',
+                pagIbig = '$updatePagIbig',
+                philhealth = '$updatePhilhealth',
+                emailAddress = '$updateEmailAddress',
+                employeeID = '$updateEmployeeID',
+                mobileNumber = '$updateMobileNumber',
+                departmentID = '$updateDepartmentID',
+                designationID = '$updateDesignationID',
+                shiftID = '$updateShiftID'
+                WHERE id = '$updateUserID'";
+            return $updateEmployee;
+        }
+
+        public function getEmployeeInfo($id) {
+            $employeeInfo = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->shifts." AS shifts
+                ON shifts.shiftID = employees.shiftID
+                INNER JOIN ".$this->department." AS department
+                ON department.departmentID = employees.departmentID
+                INNER JOIN ".$this->designation." AS designation
+                ON designation.designationID = employees.designationID
+                WHERE id = '$id'";
+            return $employeeInfo;
         }
     }
 
