@@ -54,7 +54,7 @@
 
                                     $shift_id = $shiftDetails['id'];
                                     $shift_dateFiled = $shiftDetails['dateFiled'];
-                                    $shift_logType = $shiftDetails['time'];
+                                    $shift_shiftID = $shiftDetails['startTime'] . " - " . $shiftDetails['endTime'];
                                     $shift_effectivityStartDate = $shiftDetails['effectivityStartDate'];
                                     $shift_effectivityEndDate = $shiftDetails['effectivityEndDate'];
                                     $shift_remarks = $shiftDetails['remarks'];
@@ -67,7 +67,7 @@
 
                                     echo "<tr data-id='" . $shift_id . "' class='odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700'>";
                                     echo "<td ='px-6 py-4 whitespace-nowrap'>" . $shift_dateFiled . "</td>";
-                                    echo "<td ='px-6 py-4 whitespace-nowrap'>" . $shift_logType . "</td>";
+                                    echo "<td ='px-6 py-4 whitespace-nowrap'>" . $shift_shiftID . "</td>";
                                     echo "<td ='px-6 py-4 whitespace-nowrap'>" . $shift_effectivityDate . "</td>";
                                     echo "<td ='px-6 py-4 whitespace-nowrap'>" . $shift_remarks . "</td>";
                                     if ($shift_status == "Pending") {

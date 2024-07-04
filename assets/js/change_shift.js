@@ -1,6 +1,7 @@
 $(document).ready(function() {
 
     $('#changeShiftTable').DataTable();
+    $('#changeShiftTable2').DataTable();
 
     $('#dropdownButton').on('click', function() {
         $('#dropdownMenu').toggleClass('hidden');
