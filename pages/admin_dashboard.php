@@ -58,7 +58,7 @@
                         <svg class="h-16 w-16 text-gray-600"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                         </svg>
-                        <h2 class="text-xl font-bold mb-2">2</h2>
+                        <h2 class="text-xl font-bold mb-2">0</h2>
                         <p class="text-gray-700">On Leave</p>
                     </div>
 
@@ -69,48 +69,38 @@
 
                     <!-- Card 7 -->
                     <div class="bg-white p-4 rounded-lg col-span-6 lg:col-span-4 shadow-md">
-                        <h2 class="text-xl font-bold mb-2">Attendance for Today</h2>
+                        <h2 class="text-xl font-bold mb-2">Recently Added Employees</h2>
                         <!-- DATATABLE -->
                         <div class="container mx-auto overflow-auto">
-                            <table id="attendaceTable" class="min-w-full divide-y divide-gray-200 table-striped table-bordered">
-                                <thead class="bg-gray-50">
+                            <table id="recentlyAddedEmployeesTable" class="table table-striped table-bordered">
+                            <thead class="bg-gray-50">
                                     <tr>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Shift</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Log In</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Log Out</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">PALENCIA, CHRISTIAN JAY MANAHAN</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">9pm - 6am</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">-</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">-</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">Absent</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">SAMPANG, JOHN PAUL PELIAZAR</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">9pm - 6am</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">11:20:47 AM</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">8:52:48 PM</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">Undertime</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">ODLUIO, JOSEPH PAUL GAVINO</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">6am - 3pm</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">-</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">-</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">Absent</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">REYES, MARIA PATRICE ALVAREZ</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">9am - 6pm</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">8:04:59 AM</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">7:07:00 PM</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">Overtime</td>
-                                    </tr>
+                                    <?php
+                                        $employeeQuery = mysqli_query($conn, $employees->viewEmployees());
+                                        while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+
+                                            $employee_id = $employeeDetails['id'];
+                                            $employee_employeeName = $employeeDetails['employeeName'];
+                                            $employee_emailAddress = $employeeDetails['emailAddress'];
+                                            $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                            $employee_department = $employeeDetails['departmentName'];
+
+
+                                            echo "<tr data-id='" . $employee_id . "' class='employeeView'>";
+                                            echo "<td ='px-6 py-4 whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                            echo "<td ='px-6 py-4 whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                            echo "<td ='px-6 py-4 whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
+                                            echo "<td ='px-6 py-4 whitespace-nowrap'>" . $employee_department . "</td>";
+                                            echo "</td>";
+                                        }
+                                    ?>
                                 </tbody>
                             </table>
                         </div>
@@ -120,7 +110,7 @@
             
         </div>
 
-        <script src="../assets/js/team_dashboard.js"></script>
+        <script src="../assets/js/admin_dashboard.js"></script>
     
         <!-- FOOTER -->
         <?php include('../includes/footer.php'); ?>
