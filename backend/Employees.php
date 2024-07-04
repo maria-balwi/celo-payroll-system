@@ -5,7 +5,7 @@
         private $employees = 'tbl_employee';
         private $users = 'tbl_users';
         private $department = 'tbl_department';
-        // private $designation = 'tbl_designation';
+        private $designation = 'tbl_designation';
         private $attendance = 'tbl_attendance';
         private $logtype = 'tbl_logtype';
         private $shift = 'tbl_shiftschedule';
@@ -62,8 +62,8 @@
         public function viewAdminChangeShiftRequest() {
             $request = "
                 SELECT id, dateFiled, employeeName, effectivityStartDate, 
-                effectivityEndDate, shift_1.time AS currentShift, 
-                shift_2.time AS requestedShift,  remarks, status  
+                effectivityEndDate, CONCAT(shift_1.startTime, ' - ', shift_1.endTime) AS currentShift, 
+                CONCAT(shift_2.startTime, ' - ', shift_2.endTime) AS requestedShift,  remarks, status  
                 FROM ".$this->changeShift." AS changeShift
                 INNER JOIN ".$this->employees." AS employees
                 ON changeShift.empID = employees.id
@@ -77,8 +77,8 @@
         public function viewChangeShiftRequest() {
             $request = "
                 SELECT id, dateFiled, employeeName, effectivityStartDate, 
-                effectivityEndDate, shift_1.time AS currentShift, 
-                shift_2.time AS requestedShift,  remarks, status  
+                effectivityEndDate, CONCAT(shift_1.startTime, ' - ', shift_1.endTime) AS currentShift, 
+                CONCAT(shift_2.startTime, ' - ', shift_2.endTime) AS requestedShift,  remarks, status  
                 FROM ".$this->changeShift." AS changeShift
                 INNER JOIN ".$this->employees." AS employees
                 ON changeShift.empID = employees.id
@@ -249,6 +249,43 @@
                 WHERE id NOT IN 
                     (SELECT employeeID FROM ".$this->users.")";
             return $allEmployee;
+        }
+
+        public function viewDepartment() {
+            $department = "
+                SELECT * FROM ".$this->department."";
+            return $department;
+        }
+
+        public function viewDesignation() {
+            $designation = "
+                SELECT * FROM ".$this->designation."";
+            return $designation;
+        }
+
+        public function checkEmail($emailAddress) {
+            $checkEmail = "
+                SELECT * FROM ".$this->employees." 
+                WHERE emailAddress = '".$emailAddress."'";
+            return $checkEmail;
+        }
+
+        public function checkEmployeeID($employeeID) {
+            $checkEmployeeID = "
+                SELECT * FROM ".$this->employees." 
+                WHERE employeeID = '".$employeeID."'";
+            return $checkEmployeeID;
+        }
+
+        public function addNewEmployee($employeeName, $gender, $civilStatus, $address, $dateOfBirth, $placeOfBirth, 
+            $sss, $pagIbig, $philheatlh, $emailAddress, $employeeID, $mobileNumber, $departmentID, $designationID, $shiftID) {
+            $addPersonnel = "
+                INSERT INTO ".$this->employees." (employeeName, gender, civilStatus, address, dateOfBirth, placeOfBirth, 
+                sss, pagIbig, philhealth, emailAddress, employeeID, mobileNumber, departmentID, designationID, shiftID)
+                VALUES ('".$employeeName."', '".$gender."', '".$civilStatus."', '".$address."', '".$dateOfBirth."', '".$placeOfBirth."',
+                '".$sss."', '".$pagIbig."', '".$philheatlh."', '".$emailAddress."', '".$employeeID."', '".$mobileNumber."', 
+                '".$departmentID."', '".$designationID."', '".$shiftID."')";
+            return $addPersonnel;
         }
     }
 

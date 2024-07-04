@@ -17,11 +17,14 @@
             <!-- Navigation -->
             <nav>
                 <?php
-                    if ($_SESSION['levelID'] == '2') { // it should be 3
+                    if ($_SESSION['levelID'] == '3' || $_SESSION['levelID'] == '0') {
                 ?>
                 <div class="menu-section">
                     <h4 class="text-sm font-bold text-gray-500 uppercase pt-2 pb-2">Admin's Portal</h4>
                 </div>
+                <a href="../pages/admin_dashboard.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
+                    Admin Dashboard
+                </a>
                 <a href="../pages/admin_dtr.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Daily Time Records
                 </a>
@@ -41,7 +44,7 @@
                     Users
                 </a>
                 <?php }
-                    if ($_SESSION['levelID'] == '2' || $_SESSION['levelID'] == '0') {
+                    if ($_SESSION['levelID'] == '2' || $_SESSION['levelID'] == '3') {
                 ?>
                 <div class="menu-section">
                     <h4 class="text-sm font-bold text-gray-500 uppercase pt-2 pb-2">Team's Portal</h4>
@@ -78,7 +81,7 @@
                 </a>
                 <?php 
                     }
-                    if ($_SESSION['levelID'] == '1' || $_SESSION['levelID'] == '2' || $_SESSION['levelID'] == '0') {
+                    if ($_SESSION['levelID'] == '1' || $_SESSION['levelID'] == '2' || $_SESSION['levelID'] == '3' || $_SESSION['levelID'] == '0') {
                 ?>
                 <div class="menu-section">
                     <h4 class="text-sm font-bold text-gray-500 uppercase pt-2 pb-2">My Portal</h4>
