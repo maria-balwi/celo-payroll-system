@@ -21,7 +21,7 @@
                 
                 <!-- DATATABLE -->
                 <div class="container mx-auto my-3 overflow-auto">
-                    <table id="example" class="table table-auto table-striped table-bordered min-w-full divide-y divide-gray-200 text-center">
+                    <table id="dtr" class="table table-auto table-striped table-bordered min-w-full divide-y divide-gray-200 text-center">
                         <thead class="bg-gray-50">
                             <tr>
                                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
@@ -52,6 +52,12 @@
                                     echo "<td ='px-6 py-4 whitespace-nowrap'>" . $attendance_employeeID . "</td>";
                                     echo "<td ='px-6 py-4 text-left whitespace-nowrap'>" . $attendance_employeeName . "</td>";
                                     echo "<td ='px-6 py-4 whitespace-nowrap'>" . $attendance_shift . "</td>";
+                                    echo "<td ='px-6 py-4 whitespace-nowrap'>1</td>";
+                                    echo "<td ='px-6 py-4 whitespace-nowrap'>2</td>";
+                                    echo "<td ='px-6 py-4 whitespace-nowrap'>3</td>";
+                                    echo "<td ='px-6 py-4 whitespace-nowrap'>4</td>";
+                                    echo "<td ='px-6 py-4 whitespace-nowrap'>5</td>";
+                                    echo "<td ='px-6 py-4 whitespace-nowrap'>6</td>";
                                     echo "</td>";
                                 }
                             ?>
@@ -62,7 +68,7 @@
             
         </main>
     
-        <script src="../assets/js/team_dtr.js"></script>
+        <script src="../assets/js/admin_dtr.js"></script>
 
         <!-- FOOTER -->
         <?php include('../includes/footer.php'); ?>
