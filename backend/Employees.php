@@ -22,7 +22,9 @@
             $team = "
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->department." AS department
-                ON employees.departmentID = department.departmentID";
+                ON employees.departmentID = department.departmentID
+                INNER JOIN ".$this->shifts." AS shifts
+                ON employees.shiftID = shifts.shiftID";
             return $team;
         }
 
@@ -340,6 +342,18 @@
                 ON designation.designationID = employees.designationID
                 WHERE id = '$id'";
             return $employeeInfo;
+        }
+
+        public function viewAttendance(){
+            $attendance = "
+                SELECT * FROM ".$this->attendance." AS attendance
+                INNER JOIN ".$this->employees." AS employees
+                ON attendance.empID = employees.id
+                INNER JOIN ".$this->logtype." AS logtype
+                ON attendance.logTypeID = logtype.logTypeID
+                INNER JOIN ".$this->shift." AS shift
+                ON employees.shiftID = shift.shiftID";
+            return $attendance;
         }
     }
 

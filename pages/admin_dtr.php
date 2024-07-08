@@ -20,92 +20,41 @@
             <div class="2xl:max-w-2xl px-3 bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
                 
                 <!-- DATATABLE -->
-                <div class="container mx-auto mt-3 overflow-auto">
-                    <table id="example" class="table table-auto table-striped table-bordered min-w-full divide-y divide-gray-200">
+                <div class="container mx-auto my-3 overflow-auto">
+                    <table id="example" class="table table-auto table-striped table-bordered min-w-full divide-y divide-gray-200 text-center">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Emp ID</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Branch</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Shift</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Days Worked</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Leave</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Absents</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lates</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Undertime</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Overtime</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Details</th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Shift</th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Days Worked</th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Leave</th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Absents</th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Lates</th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Undertime</th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Overtime</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <tr>
-                                <td class="px-6 whitespace-nowrap">00114</td>
-                                <td class="px-6 whitespace-nowrap">SAMPANG, JOHN PAUL PELIAZAR</td>
-                                <td class="px-6 whitespace-nowrap">Celo Business Solutions Inc.</td>
-                                <td class="px-6 whitespace-nowrap">9pm - 6am</td>
-                                <td class="px-6 whitespace-nowrap">5</td>
-                                <td class="px-6 whitespace-nowrap">0</td>
-                                <td class="px-6 whitespace-nowrap">2</td>
-                                <td class="px-6 whitespace-nowrap">196</td>
-                                <td class="px-6 whitespace-nowrap">547</td>
-                                <td class="px-6 whitespace-nowrap">512</td>
-                                <td class="px-6 whitespace-nowrap">
-                                    <svg class="h-6 w-6 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
-                                    </svg>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="px-6 whitespace-nowrap">00115</td>
-                                <td class="px-6 whitespace-nowrap">PALENCIA, CHRISTIAN  JAY MANAHAN</td>
-                                <td class="px-6 whitespace-nowrap">Celo Business Solutions Inc.</td>
-                                <td class="px-6 whitespace-nowrap">9pm - 6am</td>
-                                <td class="px-6 whitespace-nowrap">6</td>
-                                <td class="px-6 whitespace-nowrap">0</td>
-                                <td class="px-6 whitespace-nowrap">0</td>
-                                <td class="px-6 whitespace-nowrap">49</td>
-                                <td class="px-6 whitespace-nowrap">0</td>
-                                <td class="px-6 whitespace-nowrap">0</td>
-                                <td class="px-6 whitespace-nowrap">
-                                    <svg class="h-6 w-6 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
-                                    </svg>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="px-6 whitespace-nowrap">00116</td>
-                                <td class="px-6 whitespace-nowrap">ODULIO, JOSEPH PAUL GAVINO</td>
-                                <td class="px-6 whitespace-nowrap">Celo Business Solutions Inc.</td>
-                                <td class="px-6 whitespace-nowrap">6am - 3pm</td>
-                                <td class="px-6 whitespace-nowrap">4</td>
-                                <td class="px-6 whitespace-nowrap">0</td>
-                                <td class="px-6 whitespace-nowrap">1</td>
-                                <td class="px-6 whitespace-nowrap">60</td>
-                                <td class="px-6 whitespace-nowrap">1482</td>
-                                <td class="px-6 whitespace-nowrap">0</td>
-                                <td class="px-6 whitespace-nowrap">
-                                    <svg class="h-6 w-6 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
-                                    </svg>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="px-6 whitespace-nowrap">00117</td>
-                                <td class="px-6 whitespace-nowrap">REYES, MARIA PATRICE ALVAREZ</td>
-                                <td class="px-6 whitespace-nowrap">Celo Business Solutions Inc.</td>
-                                <td class="px-6 whitespace-nowrap">9am - 6pm</td>
-                                <td class="px-6 whitespace-nowrap">5</td>
-                                <td class="px-6 whitespace-nowrap">0</td>
-                                <td class="px-6 whitespace-nowrap">0</td>
-                                <td class="px-6 whitespace-nowrap">0</td>
-                                <td class="px-6 whitespace-nowrap">170</td>
-                                <td class="px-6 whitespace-nowrap">204</td>
-                                <td class="px-6 whitespace-nowrap">
-                                    <svg class="h-6 w-6 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
-                                    </svg>
-                                </td>
-                            </tr>
+                            <?php
+                                $attendanceQuery = mysqli_query($conn, $employees->viewAttendance());
+                                while ($attendanceDetails = mysqli_fetch_array($attendanceQuery)) {
+
+                                    $attendance_id = $attendanceDetails['id'];
+                                    $attendance_employeeName = $attendanceDetails['employeeName'];
+                                    $attendance_emailAddress = $attendanceDetails['emailAddress'];
+                                    $attendance_mobileNumber = $attendanceDetails['mobileNumber'];
+                                    $attendance_employeeID = $attendanceDetails['employeeID'];
+                                    $attendance_shift = $attendanceDetails['startTime'] . " - " . $attendanceDetails['endTime'];
+
+
+                                    echo "<tr data-id='" . $attendance_id . "' class='attendanceView'>";
+                                    echo "<td ='px-6 py-4 whitespace-nowrap'>" . $attendance_employeeID . "</td>";
+                                    echo "<td ='px-6 py-4 text-left whitespace-nowrap'>" . $attendance_employeeName . "</td>";
+                                    echo "<td ='px-6 py-4 whitespace-nowrap'>" . $attendance_shift . "</td>";
+                                    echo "</td>";
+                                }
+                            ?>
                         </tbody>
                     </table>
                 </div>
