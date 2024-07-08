@@ -113,7 +113,7 @@
                                         </div>
                                         <div class="flex gap-2 py-1">
                                             <h2 class="text-sm text-gray-500">SSS No.:</h2>
-                                            <h2 class="text-sm text-gray-400"><?php echo $userDetails['SSS'] ?></h2>
+                                            <h2 class="text-sm text-gray-400"><?php echo $userDetails['sss'] ?></h2>
                                         </div>
                                         <div class="flex gap-2 py-1">
                                             <h2 class="text-sm text-gray-500">Pag-Ibig No.:</h2>
