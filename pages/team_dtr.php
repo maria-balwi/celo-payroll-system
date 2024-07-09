@@ -17,7 +17,7 @@
             </div>
             
             <!-- CONTENT -->
-            <div class="2xl:max-w-2xl p-4 m-1 bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
+            <div class="p-4 m-1 bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
                 
                 <!-- DATATABLE -->
                 <div class="container mx-auto overflow-auto">
@@ -34,7 +34,6 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lates</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Undertime</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Overtime</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Details</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -49,11 +48,6 @@
                                 <td class="px-6 whitespace-nowrap">196</td>
                                 <td class="px-6 whitespace-nowrap">547</td>
                                 <td class="px-6 whitespace-nowrap">512</td>
-                                <td class="px-6 whitespace-nowrap">
-                                    <svg class="h-6 w-6 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
-                                    </svg>
-                                </td>
                             </tr>
                             <tr>
                                 <td class="px-6 whitespace-nowrap">00115</td>
@@ -66,11 +60,6 @@
                                 <td class="px-6 whitespace-nowrap">49</td>
                                 <td class="px-6 whitespace-nowrap">0</td>
                                 <td class="px-6 whitespace-nowrap">0</td>
-                                <td class="px-6 whitespace-nowrap">
-                                    <svg class="h-6 w-6 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
-                                    </svg>
-                                </td>
                             </tr>
                             <tr>
                                 <td class="px-6 whitespace-nowrap">00116</td>
@@ -83,11 +72,6 @@
                                 <td class="px-6 whitespace-nowrap">60</td>
                                 <td class="px-6 whitespace-nowrap">1482</td>
                                 <td class="px-6 whitespace-nowrap">0</td>
-                                <td class="px-6 whitespace-nowrap">
-                                    <svg class="h-6 w-6 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
-                                    </svg>
-                                </td>
                             </tr>
                             <tr>
                                 <td class="px-6 whitespace-nowrap">00117</td>
@@ -100,11 +84,6 @@
                                 <td class="px-6 whitespace-nowrap">0</td>
                                 <td class="px-6 whitespace-nowrap">170</td>
                                 <td class="px-6 whitespace-nowrap">204</td>
-                                <td class="px-6 whitespace-nowrap">
-                                    <svg class="h-6 w-6 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
-                                    </svg>
-                                </td>
                             </tr>
                         </tbody>
                     </table>

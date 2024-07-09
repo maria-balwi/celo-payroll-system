@@ -38,7 +38,7 @@
             </div>
             
             <!-- CONTENT -->
-            <div class="2xl:max-w-2xl p-4 m-1 bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
+            <div class="p-4 m-1 bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
                 <h1 class="text-lg font-bold">Pre-Render Overtime Requests</h1>
                 <!-- DATATABLE -->
                 <div class="container mx-auto overflow-auto">
