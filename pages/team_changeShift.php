@@ -80,7 +80,7 @@
                                 $shiftQuery = mysqli_query($conn, $employees->viewChangeShiftRequest());
                                 while ($shiftDetails = mysqli_fetch_array($shiftQuery)) {
 
-                                    $shift_id = $shiftDetails['id'];
+                                    $shift_id = $shiftDetails['requestID'];
                                     $shift_dateFiled = $shiftDetails['dateFiled'];
                                     $shift_employeeName = $shiftDetails['employeeName'];
                                     $shift_currentShift = $shiftDetails['currentShift'];
@@ -95,7 +95,7 @@
                                     $shift_effectivityEndDate = formatDate($shift_effectivityEndDate);
                                     $shift_effectivityDate = $shift_effectivityStartDate . " - " . $shift_effectivityEndDate;
 
-                                    echo "<tr data-id='" . $shift_id . "' class='odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700'>";
+                                    echo "<tr data-id='" . $shift_id . "' class='changeshiftView'>";
                                     echo "<td ='px-6 whitespace-nowrap'>" . $shift_dateFiled . "</td>";
                                     echo "<td ='px-6 whitespace-nowrap'>" . $shift_employeeName . "</td>";
                                     echo "<td ='px-6 whitespace-nowrap'>" . $shift_currentShift . "</td>";
@@ -118,7 +118,114 @@
                     </table>
                 </div>
             </div>
-            
+
+
+            <!-- ======================================================================================================================================= -->
+            <!-- ================================================================= MODAL =============================================================== -->
+            <!-- ======================================================================================================================================= -->
+
+            <!--------------------------------------------------------------------------------------------------------------------------------------------->
+            <!------------------------------------------------------------------ VIEW CHANGE SHIFT FORM --------------------------------------------------->
+            <div class="modal fade" id="viewChangeShiftModal" tabindex="-1" aria-labelledby="viewLeaveLabel" aria-hidden="true">
+                <div class="modal-dialog modal-none modal-dialog-centered modal-scrollable">
+                    <div class="modal-content" id="viewChangeShiftModal">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="viewLeaveLabel">View Leave</h1>
+                            <input type="hidden" id="viewLeaveID">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="row g-2 mb-2">
+                                    <div class="col-6">
+                                        <label for="viewDateFiled">Date Filed</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="viewStatus">Status</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <div class="col-6">
+                                        <input type="text" class="form-control" id="viewDateFiled" disabled readonly>
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" class="form-control" id="viewStatus" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <div class="col-3">
+                                        <label for="viewEmpID">Employee ID</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <label for="viewName">Employee Name</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <div class="col-3">
+                                        <input type="text" class="form-control" id="viewEmpID" disabled>
+                                    </div>
+                                    <div class="col-9">
+                                        <input type="text" class="form-control" id="viewName" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <div class="col-6">
+                                        <label for="viewCurrentShift">Current Shift</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="viewRequestedShift">Requested Shift</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <div class="col-6">
+                                        <input type="text" class="form-control" id="viewCurrentShift" disabled>
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" class="form-control" id="viewRequestedShift" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <div class="col-3">
+                                        <label for="viewStartDate">Inclusive Dates</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <div class="col-6">
+                                        <input type="text" class="form-control" id="viewStartDate" disabled>
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" class="form-control" id="viewEndDate" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <div class="col-3">
+                                        <label for="viewPurpose">Purpose</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <div class="col-12">
+                                        <textarea type="text" class="form-control" id="viewPurpose" rows="3" disabled readonly>
+                                        </textarea>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <!-- <button type="button" class="btn btn-primary leaveUpdate">Update</button> -->
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
     
         <script src="../assets/js/team_changeShift.js"></script>
