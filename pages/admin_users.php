@@ -854,7 +854,7 @@
             </form>
         </main>
     
-        <script src="../assets/js/users.js"></script>
+        <script src="../assets/js/admin_users.js"></script>
         
 
         <!-- FOOTER -->
