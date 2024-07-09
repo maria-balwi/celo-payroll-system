@@ -23,10 +23,10 @@
                     </button>
                     <div id="dropdownMenu" class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden">
                         <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">2023</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">2022</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">2021</a>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">2023</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">2022</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">2021</option>
                         </div>
                     </div> -->
                     <select id="" class="form-control inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-3 bg-white text-sm font-medium text-gray-700">
@@ -36,7 +36,7 @@
                 </div>
 
                 <!-- PAYSLIP TYPE DROPDOWN MENU -->
-                <div class="static inline-block text-right">
+                <!-- <div class="static inline-block text-right">
                     <button id="dropdownButton" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none">
                     Select Payslip Type
                     <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -45,15 +45,15 @@
                     </button>
                     <div id="dropdownMenu" class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden">
                         <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Detailed</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Summarized</a>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Detailed</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Summarized</option>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- PAYSLIP CYCLYE RANGE FROM DROPDOWN MENU -->
                 <div class="static inline-block text-right">
-                    <button id="dropdownButton" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none">
+                    <!-- <button id="dropdownButton" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none">
                     Select Payroll Cycle FROM
                     <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                         <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.23 8.29a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
@@ -61,37 +61,64 @@
                     </button>
                     <div id="dropdownMenu" class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden">
                         <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">1 - Dec 26, 2024 to Jan 10, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">2 - Jan 11, 2024 to Jan 25, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">3 - Jan 26, 2024 to Feb 10, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">4 - Feb 11, 2024 to Feb 25, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">5 - Feb 26, 2024 to Mar 10, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">6 - Mar 11, 2024 to Mar 25, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">7 - Mar 26, 2024 to Apr 10, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">8 - Apr 11, 2024 to Apr 25, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">9 - Apr 26, 2024 to May 10, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">10 - May 11, 2024 to May 25, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">11 - May 26, 2024 to Jun 10, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">12 - Jun 11, 2024 to Jun 25, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">13 - Jun 26, 2024 to Jul 10, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">14 - Jul 11, 2024 to Jul 25, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">15 - Jul 26, 2024 to Aug 10, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">16 - Aug 11, 2024 to Aug 25, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">17 - Aug 26, 2024 to Sep 10, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">18 - Sep 11, 2024 to Sep 25, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">19 - Sep 26, 2024 to Oct 10, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">20 - Oct 11, 2024 to Oct 25, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">21 - Oct 26, 2024 to Nov 10, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">22 - Nov 11, 2024 to Nov 25, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">23 - Nov 26, 2024 to Dec 10, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">24 - Dec 11, 2024 to Dec 25, 2024</a>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">1 - Dec 26, 2024 to Jan 10, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">2 - Jan 11, 2024 to Jan 25, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">3 - Jan 26, 2024 to Feb 10, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">4 - Feb 11, 2024 to Feb 25, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">5 - Feb 26, 2024 to Mar 10, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">6 - Mar 11, 2024 to Mar 25, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">7 - Mar 26, 2024 to Apr 10, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">8 - Apr 11, 2024 to Apr 25, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">9 - Apr 26, 2024 to May 10, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">10 - May 11, 2024 to May 25, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">11 - May 26, 2024 to Jun 10, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">12 - Jun 11, 2024 to Jun 25, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">13 - Jun 26, 2024 to Jul 10, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">14 - Jul 11, 2024 to Jul 25, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">15 - Jul 26, 2024 to Aug 10, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">16 - Aug 11, 2024 to Aug 25, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">17 - Aug 26, 2024 to Sep 10, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">18 - Sep 11, 2024 to Sep 25, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">19 - Sep 26, 2024 to Oct 10, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">20 - Oct 11, 2024 to Oct 25, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">21 - Oct 26, 2024 to Nov 10, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">22 - Nov 11, 2024 to Nov 25, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">23 - Nov 26, 2024 to Dec 10, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">24 - Dec 11, 2024 to Dec 25, 2024</option>
                         </div>
-                    </div>
+                    </div> -->
+                    <select id="" class="form-control inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-3 bg-white text-sm font-medium text-gray-700">
+                        <option disabled selected>Select Payroll Cycle FROM</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">1 - Dec 26, 2024 to Jan 10, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">2 - Jan 11, 2024 to Jan 25, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">3 - Jan 26, 2024 to Feb 10, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">4 - Feb 11, 2024 to Feb 25, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">5 - Feb 26, 2024 to Mar 10, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">6 - Mar 11, 2024 to Mar 25, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">7 - Mar 26, 2024 to Apr 10, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">8 - Apr 11, 2024 to Apr 25, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">9 - Apr 26, 2024 to May 10, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">10 - May 11, 2024 to May 25, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">11 - May 26, 2024 to Jun 10, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">12 - Jun 11, 2024 to Jun 25, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">13 - Jun 26, 2024 to Jul 10, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">14 - Jul 11, 2024 to Jul 25, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">15 - Jul 26, 2024 to Aug 10, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">16 - Aug 11, 2024 to Aug 25, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">17 - Aug 26, 2024 to Sep 10, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">18 - Sep 11, 2024 to Sep 25, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">19 - Sep 26, 2024 to Oct 10, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">20 - Oct 11, 2024 to Oct 25, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">21 - Oct 26, 2024 to Nov 10, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">22 - Nov 11, 2024 to Nov 25, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">23 - Nov 26, 2024 to Dec 10, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">24 - Dec 11, 2024 to Dec 25, 2024</option>
+                    </select>
                 </div>
 
                 <!-- PAYSLIP CYCLYE RANGE UNTIL DROPDOWN MENU -->
                 <div class="static inline-block text-right">
-                    <button id="dropdownButton" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none">
+                    <!-- <button id="dropdownButton" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none">
                     Select Payroll Cycle UNTIL
                     <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                         <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.23 8.29a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
@@ -99,32 +126,59 @@
                     </button>
                     <div id="dropdownMenu" class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden">
                         <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">1 - Dec 26, 2024 to Jan 10, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">2 - Jan 11, 2024 to Jan 25, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">3 - Jan 26, 2024 to Feb 10, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">4 - Feb 11, 2024 to Feb 25, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">5 - Feb 26, 2024 to Mar 10, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">6 - Mar 11, 2024 to Mar 25, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">7 - Mar 26, 2024 to Apr 10, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">8 - Apr 11, 2024 to Apr 25, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">9 - Apr 26, 2024 to May 10, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">10 - May 11, 2024 to May 25, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">11 - May 26, 2024 to Jun 10, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">12 - Jun 11, 2024 to Jun 25, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">13 - Jun 26, 2024 to Jul 10, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">14 - Jul 11, 2024 to Jul 25, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">15 - Jul 26, 2024 to Aug 10, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">16 - Aug 11, 2024 to Aug 25, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">17 - Aug 26, 2024 to Sep 10, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">18 - Sep 11, 2024 to Sep 25, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">19 - Sep 26, 2024 to Oct 10, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">20 - Oct 11, 2024 to Oct 25, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">21 - Oct 26, 2024 to Nov 10, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">22 - Nov 11, 2024 to Nov 25, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">23 - Nov 26, 2024 to Dec 10, 2024</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">24 - Dec 11, 2024 to Dec 25, 2024</a>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">1 - Dec 26, 2024 to Jan 10, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">2 - Jan 11, 2024 to Jan 25, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">3 - Jan 26, 2024 to Feb 10, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">4 - Feb 11, 2024 to Feb 25, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">5 - Feb 26, 2024 to Mar 10, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">6 - Mar 11, 2024 to Mar 25, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">7 - Mar 26, 2024 to Apr 10, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">8 - Apr 11, 2024 to Apr 25, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">9 - Apr 26, 2024 to May 10, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">10 - May 11, 2024 to May 25, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">11 - May 26, 2024 to Jun 10, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">12 - Jun 11, 2024 to Jun 25, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">13 - Jun 26, 2024 to Jul 10, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">14 - Jul 11, 2024 to Jul 25, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">15 - Jul 26, 2024 to Aug 10, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">16 - Aug 11, 2024 to Aug 25, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">17 - Aug 26, 2024 to Sep 10, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">18 - Sep 11, 2024 to Sep 25, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">19 - Sep 26, 2024 to Oct 10, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">20 - Oct 11, 2024 to Oct 25, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">21 - Oct 26, 2024 to Nov 10, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">22 - Nov 11, 2024 to Nov 25, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">23 - Nov 26, 2024 to Dec 10, 2024</option>
+                            <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">24 - Dec 11, 2024 to Dec 25, 2024</option>
                         </div>
-                    </div>
+                    </div> -->
+                    <select id="" class="form-control inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-3 bg-white text-sm font-medium text-gray-700">
+                        <option disabled selected>Select Payroll Cycle UNTIL</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">1 - Dec 26, 2024 to Jan 10, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">2 - Jan 11, 2024 to Jan 25, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">3 - Jan 26, 2024 to Feb 10, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">4 - Feb 11, 2024 to Feb 25, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">5 - Feb 26, 2024 to Mar 10, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">6 - Mar 11, 2024 to Mar 25, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">7 - Mar 26, 2024 to Apr 10, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">8 - Apr 11, 2024 to Apr 25, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">9 - Apr 26, 2024 to May 10, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">10 - May 11, 2024 to May 25, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">11 - May 26, 2024 to Jun 10, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">12 - Jun 11, 2024 to Jun 25, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">13 - Jun 26, 2024 to Jul 10, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">14 - Jul 11, 2024 to Jul 25, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">15 - Jul 26, 2024 to Aug 10, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">16 - Aug 11, 2024 to Aug 25, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">17 - Aug 26, 2024 to Sep 10, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">18 - Sep 11, 2024 to Sep 25, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">19 - Sep 26, 2024 to Oct 10, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">20 - Oct 11, 2024 to Oct 25, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">21 - Oct 26, 2024 to Nov 10, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">22 - Nov 11, 2024 to Nov 25, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">23 - Nov 26, 2024 to Dec 10, 2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">24 - Dec 11, 2024 to Dec 25, 2024</option>
+                    </select>
                 </div>
 
                  <!-- GENERATE PAYSLIP CHANGE BUTTON -->
