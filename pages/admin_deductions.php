@@ -17,7 +17,7 @@
             </div>
             
             <!-- CONTENT -->
-            <div class="2xl:max-w-2xl px-3 m-1 bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
+            <div class="px-3 m-1 bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
                 
                 <!-- DATATABLE -->
                 <div class="container mx-auto mt-3 overflow-auto">

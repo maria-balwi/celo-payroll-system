@@ -17,7 +17,7 @@
             </div>
             
             <!-- CONTENT -->
-            <div class="2xl:max-w-2xl bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
+            <div class="bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
                 <div class="card shadow-sm bInfo">
                     <div class="card-body">
                         <!-- DATATABLE -->
