@@ -355,6 +355,22 @@
                 ON employees.shiftID = shift.shiftID";
             return $attendance;
         }
+
+        public function getLeaveInfo($leaveID) {
+            $request = "
+                SELECT requestID, employeeName, employees.id AS employeeID,
+                leaveType, remarks, status,
+                DATE_FORMAT(dateFiled, '%M %d, %Y') AS dateFiled,
+                DATE_FORMAT(effectivityStartDate, '%M %d, %Y') AS effectivityStartDate,
+                DATE_FORMAT(effectivityEndDate, '%M %d, %Y') AS effectivityEndDate
+                FROM ".$this->leaves." AS leaves
+                INNER JOIN ".$this->employees." AS employees
+                ON leaves.empID = employees.id
+                INNER JOIN ".$this->leaveType." AS leaveType
+                ON leaveType.leaveTypeID = leaves.leaveTypeID
+                WHERE requestID = '$leaveID'";
+            return $request;
+        }
     }
 
 ?>
