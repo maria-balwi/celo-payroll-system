@@ -14,8 +14,8 @@
                 Payslip
 
                 <!-- YEAR DROPDOWN MENU -->
-                <div class="relative inline-block text-right">
-                    <button id="dropdownButton" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none">
+                <div class="static inline-block text-right">
+                    <!-- <button id="dropdownButton" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none">
                     Year
                     <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                         <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.23 8.29a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
@@ -28,11 +28,15 @@
                             <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">2022</a>
                             <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">2021</a>
                         </div>
-                    </div>
+                    </div> -->
+                    <select id="" class="form-control inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-3 bg-white text-sm font-medium text-gray-700">
+                        <option disabled selected>Year</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="2024">2024</option>
+                    </select>
                 </div>
 
                 <!-- PAYSLIP TYPE DROPDOWN MENU -->
-                <div class="relative inline-block text-right">
+                <div class="static inline-block text-right">
                     <button id="dropdownButton" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none">
                     Select Payslip Type
                     <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -48,7 +52,7 @@
                 </div>
 
                 <!-- PAYSLIP CYCLYE RANGE FROM DROPDOWN MENU -->
-                <div class="relative inline-block text-right">
+                <div class="static inline-block text-right">
                     <button id="dropdownButton" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none">
                     Select Payroll Cycle FROM
                     <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -86,7 +90,7 @@
                 </div>
 
                 <!-- PAYSLIP CYCLYE RANGE UNTIL DROPDOWN MENU -->
-                <div class="relative inline-block text-right">
+                <div class="static inline-block text-right">
                     <button id="dropdownButton" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none">
                     Select Payroll Cycle UNTIL
                     <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -124,7 +128,7 @@
                 </div>
 
                  <!-- GENERATE PAYSLIP CHANGE BUTTON -->
-                 <div class="relative inline-block text-right">
+                 <div class="static inline-block text-right">
                     <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none">
                     Generate Payslip
                     </button>
@@ -132,7 +136,7 @@
             </div>
             
             <!-- CONTENT -->
-            <div class="2xl:max-w-2xl p-4 m-1 bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
+            <div class="p-4 m-1 bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
                 
                 <!-- DATA TABLE -->
                 <div class="container mx-auto overflow-auto">

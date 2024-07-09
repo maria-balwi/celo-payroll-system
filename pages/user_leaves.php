@@ -16,7 +16,7 @@
                     </div>    
 
                     <!-- REQUEST PRE-RENDER BUTTON -->
-                    <div class="relative inline-block text-right">
+                    <div class="static inline-block text-right">
                         <!-- <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none">
                         File HR Request
                         </button> -->
@@ -25,7 +25,7 @@
                 </div>
 
                 <!-- CONTENT -->
-                <div class="2xl:max-w-2xl p-4 m-0 bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
+                <div class="p-4 m-0 bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
 
                     <!-- DATATABLE -->
                     <div class="container mx-auto overflow-auto">
