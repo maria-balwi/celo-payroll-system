@@ -73,7 +73,7 @@
 
         public function viewAdminChangeShiftRequest() {
             $request = "
-                SELECT id, dateFiled, employeeName, effectivityStartDate, 
+                SELECT requestID, dateFiled, employeeName, effectivityStartDate, 
                 effectivityEndDate, CONCAT(shift_1.startTime, ' - ', shift_1.endTime) AS currentShift, 
                 CONCAT(shift_2.startTime, ' - ', shift_2.endTime) AS requestedShift,  remarks, status  
                 FROM ".$this->changeShift." AS changeShift
@@ -358,7 +358,7 @@
 
         public function getLeaveInfo($leaveID) {
             $request = "
-                SELECT requestID, employeeName, employees.id AS employeeID,
+                SELECT requestID, employeeName, employeeID,
                 leaveType, remarks, status,
                 DATE_FORMAT(dateFiled, '%M %d, %Y') AS dateFiled,
                 DATE_FORMAT(effectivityStartDate, '%M %d, %Y') AS effectivityStartDate,
@@ -369,6 +369,24 @@
                 INNER JOIN ".$this->leaveType." AS leaveType
                 ON leaveType.leaveTypeID = leaves.leaveTypeID
                 WHERE requestID = '$leaveID'";
+            return $request;
+        }
+
+        public function getChangeShiftInfo($changeShiftID) {
+            $request = "
+                SELECT requestID, employeeID, employeeName, CONCAT(shift_1.startTime, ' - ', shift_1.endTime) AS currentShift, 
+                CONCAT(shift_2.startTime, ' - ', shift_2.endTime) AS requestedShift,  remarks, status,
+                DATE_FORMAT(dateFiled, '%M %d, %Y') AS dateFiled,
+                DATE_FORMAT(effectivityStartDate, '%M %d, %Y') AS effectivityStartDate, 
+                DATE_FORMAT(effectivityEndDate, '%M %d, %Y') AS effectivityEndDate
+                FROM ".$this->changeShift." AS changeShift
+                INNER JOIN ".$this->employees." AS employees
+                ON changeShift.empID = employees.id
+                INNER JOIN ".$this->shift." AS shift_1
+                ON shift_1.shiftID = employees.shiftID
+                INNER JOIN ".$this->shift." AS shift_2
+                ON shift_2.shiftID = changeShift.requestedShift
+                WHERE requestID = '$changeShiftID'";
             return $request;
         }
     }
