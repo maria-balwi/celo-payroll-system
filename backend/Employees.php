@@ -389,6 +389,18 @@
                 WHERE requestID = '$changeShiftID'";
             return $request;
         }
+
+        public function viewAllLeaveType() {
+            $leaveType = "SELECT * FROM ".$this->leaveType;
+            return $leaveType;
+        }
+
+        public function fileLeave($employeeID, $leaveTypeID, $effectivityStartDate, $effectivityEndDate, $remarks, $status) {
+            $fileLeave = "
+                INSERT INTO ".$this->leaves." (empID, dateFiled, leaveTypeID, effectivityStartDate, effectivityEndDate, remarks, status)
+                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$leaveTypeID', '$effectivityStartDate', '$effectivityEndDate', '$remarks', '$status')";
+            return $fileLeave;
+        }
     }
 
 ?>
