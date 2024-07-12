@@ -225,7 +225,8 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <!-- <button type="button" class="btn btn-primary leaveUpdate">Update</button> -->
+                            <button type="button" class="btn btn-success approveLeave" id="approveLeave">Approve</button>
+                            <button type="button" class="btn btn-danger disapproveLeave" id="disapproveLeave">Disapprove</button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         </div>
                     </div>
