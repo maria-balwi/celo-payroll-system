@@ -17,10 +17,9 @@
 
                 <!-- REQUEST SHIFT CHANGE BUTTON -->
                 <div class="static inline-block text-right">
-                    <!-- <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none">
-                    File HR Request
-                    </button> -->
-                    <a href="user_changeShiftForm.php" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none no-underline">Request Shift Change</a>
+                    <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none" data-bs-toggle="modal" data-bs-target="#fileRequestModal">
+                    Request Shift Change
+                    </button>
                 </div>
             </div>
             
@@ -93,9 +92,96 @@
                 </div>
             </div>
             
+
+            <!-- ======================================================================================================================================= -->
+            <!-- ================================================================= MODAL =============================================================== -->
+            <!-- ======================================================================================================================================= -->
+
+            <!--------------------------------------------------------------------------------------------------------------------------------------------->
+            <!--------------------------------------------------------- FILE CHANGE SHIFT REQUEST --------------------------------------------------------->
+            <form id="fileRequestForm">
+                <div class="modal fade" id="fileRequestModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-none modal-sm modal-dialog-centered">
+                        <div class="modal-content" id="fileRequestModal">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="userFormLabel">New User</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row g-3 mb-2">
+                                    <div class="col-12">
+                                        <label for="newShift">Shifts:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mb-2">
+                                    <div class="col-12">
+                                        <select type="dropdown" id="newShift" class="form-select border border-1">
+                                            <option value="" selected disabled>Choose Shift</option>
+                                            <?php
+                                                $shift = mysqli_query($conn, $employees->viewShifts());
+                                                while ($shiftResult = mysqli_fetch_array($shift)) {
+                                                ?>
+                                                <option value="<?php echo $shiftResult['shiftID']; ?>">
+                                                    <?php echo $shiftResult['startTime'] . ' - ' . $shiftResult['endTime']; ?>
+                                                </option>
+                                                
+                                            <?php        
+                                                }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>   
+                                
+                                <div class="row g-3 mb-2">
+                                    <div class="col-12">
+                                        <label for="effectivityStartDate">Start Date</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mb-2">
+                                    <div class="col-12">
+                                        <input type="date" class="form-control" id="effectivityStartDate">
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mb-2">
+                                    <div class="col-12">
+                                        <label for="effectivityEndDate">End Date</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mb-2">
+                                    <div class="col-12">
+                                        <input type="date" class="form-control" id="effectivityEndDate">
+                                    </div>
+                                </div>
+                                
+                                <div class="row g-3 mb-2">
+                                    <div class="col-12">
+                                        <label for="purpose">Purpose:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mb-2">
+                                    <div class="col-12">
+                                        <textarea type="text" id="purpose" placeholder="Purpose" rows="3" class="form-control" required></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">Add</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+
         </main>
     
-        <script src="../assets/js/change_shift.js"></script>
+        <script src="../assets/js/user_changeShift.js"></script>
 
         <!-- FOOTER -->
         <?php include('../includes/footer.php'); ?>

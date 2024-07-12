@@ -3,14 +3,16 @@
     $conn = $database->dbConnect();
     session_start();
 
+    $employeeID = $_SESSION['id'];
     $newShift = $_POST['newShift'];
     $startDate = $_POST['startDate'];
     $endDate = $_POST['endDate'];
     $purpose = $_POST['purpose'];
-    $employeeID = $_SESSION['id'];
+
+    // DEFAULT VALUES
     $status = "Pending";
 
-    $currentShiftQuery = mysqli_query($conn, $employees->viewCurrentShift($_SESSION['id']));
+    $currentShiftQuery = mysqli_query($conn, $employees->viewCurrentShift($employeeID));
     $currentShiftDetails = mysqli_fetch_array($currentShiftQuery);
     $currentShift = $currentShiftDetails['shiftID'];
 
@@ -20,12 +22,9 @@
         exit();
     }
     else {
-        $addRequest = $conn->query("INSERT INTO `tbl_changeshiftrequests` 
-        (`empID`, `dateFiled`, `requestedShift`, `effectivityStartDate`, `effectivityEndDate`, `remarks`, `status`) 
-        VALUES 
-        ('$employeeID', CURRENT_TIMESTAMP(), '$newShift', '$startDate', '$endDate', '$purpose', '$status')");
+        mysqli_query($conn, $employees->fileRequest($employeeID, $newShift, $startDate, $endDate, $purpose, $status));
         
-        $em = "Request Filed     Successfully";
+        $em = "Request Filed Successfully";
         $error = array('error' => 0, 'em' => $em);
         echo json_encode($error);
         exit();

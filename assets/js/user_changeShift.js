@@ -1,7 +1,6 @@
 $(document).ready(function() {
 
     $('#changeShiftTable').DataTable();
-    $('#changeShiftTable2').DataTable();
 
     $('#dropdownButton').on('click', function() {
         $('#dropdownMenu').toggleClass('hidden');
@@ -20,12 +19,13 @@ $(document).ready(function() {
         e.preventDefault();
 
         let requestForm = new FormData();
+        var employeeID = $('#employeeID').val();
         var newShift = $('#newShift').val();
         var startDate = $('#startDate').val();
         var endDate = $('#endDate').val();
         var purpose = $('#purpose').val();
 
-        if (newShift == "" || startDate == "" || endDate == "" || purpose == "") {
+        if (employeeID == "" || newShift == "" || startDate == "" || endDate == "" || purpose == "") {
             Swal.fire({
                 icon: 'warning',
                 title: 'Required Information',
@@ -42,6 +42,7 @@ $(document).ready(function() {
                 confirmButtonText: 'Yes',
             }).then((result) => {
                 if (result.isConfirmed) {
+                    requestForm.append("employeeID", employeeID);
                     requestForm.append("newShift", newShift);
                     requestForm.append("startDate", startDate);
                     requestForm.append("endDate", endDate);
@@ -49,7 +50,7 @@ $(document).ready(function() {
 
                     $.ajax({
                         type: "POST",
-                        url: "../backend/user/addChangeShiftRequest.php",
+                        url: "../backend/user/fileRequest.php",
                         data: requestForm,
                         processData: false,
                         contentType: false,
