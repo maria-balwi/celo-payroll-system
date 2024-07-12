@@ -18,6 +18,7 @@ $(document).ready(function() {
     $('#inactiveAdminTable').DataTable();
 
     $('#directorsTable').DataTable();
+    $('#inactiveDirectorsTable').DataTable();
 
     // ADD USER
     $("#addUserForm").submit(function (e) {

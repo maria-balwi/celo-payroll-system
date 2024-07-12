@@ -240,6 +240,24 @@
             return $inactiveAdmin;
         }
 
+        public function viewDirectors() {
+            $allAdmin = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->users." AS users
+                ON employees.id = users.employeeID
+                WHERE users.status = 'Active' AND departmentID = 5";
+            return $allAdmin;
+        }
+
+        public function viewInactiveDirectors() {
+            $inactiveAdmin = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->users." AS users
+                ON employees.id = users.employeeID
+                WHERE users.status = 'Inactive' AND departmentID = 5";
+            return $inactiveAdmin;
+        }
+
         public function viewShifts() {
             $allShifts = "
                 SELECT * FROM ".$this->shifts;

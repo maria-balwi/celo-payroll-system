@@ -48,6 +48,10 @@
                                 <!--HR BUTTON-->
                                 <button class="nav-link uncheck" id="pills-hr-tab" data-bs-toggle="pill" data-bs-target="#pills-hr" type="button" role="tab" aria-controls="pills-hr" aria-selected="false">HR</button>
                             </li>
+                            <li class="nav-item" role="presentation">
+                                <!--DIRECTORS BUTTON-->
+                                <button class="nav-link uncheck" id="pills-directors-tab" data-bs-toggle="pill" data-bs-target="#pills-directors" type="button" role="tab" aria-controls="pills-directors" aria-selected="false">Directors</button>
+                            </li>
                         </ul>
                     </div>
 
@@ -546,6 +550,87 @@
                                 </div>
                             </div>
                             
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <!-- -------------------------------------------- IT TAB --------------------------------------------- -->
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <div class="tab-pane fade" id="pills-directors" role="tabpanel" aria-labelledby="pills-directors-tab">
+                                <div class="card border-0">
+                                    <ul class="nav nav-pills mt-0 mb-3" id="pills-tab-inactive" role="tablist">
+                                        <!-- ACTIVE BUTTON -->
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link active" id="directors-active-tab" data-bs-toggle="pill" data-bs-target="#directors-active" type="button" role="tab" aria-controls="directors-active" aria-selected="true">Active</button>
+                                        </li>
+                                        <!-- INACTIVE BUTTON -->
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="directors-inactive-tab" data-bs-toggle="pill" data-bs-target="#directors-inactive" type="button" role="tab" aria-controls="directors-inactive" aria-selected="false">Inactive</button>
+                                        </li>
+                                    </ul>
+
+                                    <div class="tab-content" id="pills-tabContent">
+                                        <!-- ACTIVE IT TABLE  -->
+                                        <div class="tab-pane fade show active" id="directors-active" role="tabpanel" aria-labelledby="directors-active-tab">
+                                            <table class="table table-striped table-bordered pt-2" id="directorsTable">
+                                                <thead class="table-light">
+                                                    <th>Employee ID</th>
+                                                    <th>Name</th>
+                                                    <th>Email Address</th>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                        $director = mysqli_query($conn, $employees->viewDirectors());
+                                                        while ($directorDetails = mysqli_fetch_array($director)) {
+                                                            
+                                                            $userID = $directorDetails['userID'];
+                                                            $employeeID = $directorDetails['employeeID'];
+                                                            $directorName = $directorDetails['employeeName'];
+                                                            $directorEmailAdd = $directorDetails['emailAddress'];
+                                                
+
+                                                            echo "<tr data-id='".$userID."' class='userView'>";
+                                                            echo "<td>".$employeeID."</td>";
+                                                            echo "<td>".$directorName."</td>";
+                                                            echo "<td>".$directorEmailAdd."</td>";
+                                                            echo "</td>";
+
+                                                        }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <!-- INACTIVE IT TABLE  -->
+                                        <div class="tab-pane fade" id="directors-inactive" role="tabpanel" aria-labelledby="directors-inactive-tab">
+                                            <table class="table table-striped table-bordered  pt-2" id="inactiveDirectorsTable">
+                                                <thead class="table-light">
+                                                    <th>Employee ID</th>
+                                                    <th>Name</th>
+                                                    <th>Email Address</th>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                        $inactiveDirector = mysqli_query($conn, $employees->viewInactiveDirectors());
+                                                        while ($inactiveDirectorDetails = mysqli_fetch_array($inactiveDirector)) {
+                                                            
+                                                            $userID = $inactiveDirectorDetails['userID'];
+                                                            $employeeID = $inactiveDirectorDetails['employeeID'];
+                                                            $inactiveDirectorName = $inactiveDirectorDetails['employeeName'];
+                                                            $inactiveDirectorEmailAdd = $inactiveDirectorDetails['emailAddress'];
+                                                
+
+                                                            echo "<tr data-id='".$userID."' class='inactiveUserView'>";
+                                                            echo "<td>".$employeeID."</td>";
+                                                            echo "<td>".$inactiveDirectorName."</td>";
+                                                            echo "<td>".$inactiveDirectorEmailAdd."</td>";
+                                                            echo "</td>";
+
+                                                        }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
