@@ -3,7 +3,7 @@
     $conn = $database->dbConnect();
     session_start();
 
-    $employeeID = $_POST['employeeID'];
+    $employeeID = $_SESSION['id'];
     $leaveType = $_POST['leaveType'];
     $startDate = $_POST['startDate'];
     $endDate = $_POST['endDate'];

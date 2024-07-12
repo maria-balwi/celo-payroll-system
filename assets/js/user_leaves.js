@@ -48,13 +48,12 @@ $(document).ready(function() {
         e.preventDefault();
 
         let fileLeaveForm = new FormData();
-        var employeeID = $('#employeeID').val();
         var leaveType = $('#leaveType').val();
         var startDate = $('#effectivityStartDate').val();
         var endDate = $('#effectivityEndDate').val();
         var purpose = $('#purpose').val();
 
-        if (employeeID == "" || leaveType == "" || startDate == "" || endDate == "" || purpose == "") {
+        if (leaveType == "" || startDate == "" || endDate == "" || purpose == "") {
             Swal.fire({
                 icon: 'warning',
                 title: 'Required Information',
@@ -71,7 +70,6 @@ $(document).ready(function() {
                 confirmButtonText: 'Yes',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    fileLeaveForm.append("employeeID", employeeID);
                     fileLeaveForm.append("leaveType", leaveType);
                     fileLeaveForm.append("startDate", startDate);
                     fileLeaveForm.append("endDate", endDate);
@@ -91,7 +89,7 @@ $(document).ready(function() {
                                 timer: 2000,
                                 showConfirmButton: false,
                             }).then(() => {
-                                // window.location.reload();
+                                window.location.reload();
                             })
                         }
                     })
@@ -110,7 +108,7 @@ $(document).ready(function() {
         // VIEW LEAVE
         $.ajax({
             type: "GET",
-            url: "../backend/admin/leaveModal.php?leave_id=" + id_leave,
+            url: "../backend/user/leaveModal.php?leave_id=" + id_leave,
             success: function(response) {
 
                 var res = jQuery.parseJSON(response);
@@ -119,20 +117,7 @@ $(document).ready(function() {
                     alert(res.message);
                 } 
                 // LEAVE ALREADY APPROVED
-                else if (res.status == 200 && (res.data.status == "Approved" || res.data.status == "Disapproved")) {
-                    $('#viewLeaveID').val(res.data.requestID);
-                    $('#viewEmpID').val(res.data.employeeID);
-                    $('#viewDateFiled').val(res.data.dateFiled);
-                    $('#viewName').val(res.data.employeeName);
-                    $('#viewLeaveType').val(res.data.leaveType);
-                    // $('#viewInclusiveDates').val(res.data.effectivityStartDate+' - '+res.data.effectivityEndDate);
-                    $('#viewStartDate').val(res.data.effectivityStartDate);
-                    $('#viewEndDate').val(res.data.effectivityEndDate);
-                    $('#viewPurpose').val(res.data.remarks);
-                    $('#viewStatus').val(res.data.status);
-                    $('#viewLeaveModal').modal('show');
-                }
-                else if (res.status == 200 && res.data.status == "Pending") {
+                else if (res.status == 200) {
                     $('#viewLeaveID').val(res.data.requestID);
                     $('#viewEmpID').val(res.data.employeeID);
                     $('#viewDateFiled').val(res.data.dateFiled);
