@@ -77,7 +77,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <div class="row g-3 mb-2">
+                                <div class="row g-2 mb-2">
                                     <div class="col-6">
                                         <label for="employeeName">Name:</label>
                                     </div>
@@ -89,7 +89,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-3 mb-2">
+                                <div class="row g-2 mb-2">
                                     <div class="col-6">
                                         <input type="text" class="form-control" id="employeeName" placeholder="Name">
                                     </div>
@@ -112,7 +112,7 @@
                                     </div>
                                 </div>     
                                 
-                                <div class="row g-3 mb-2">
+                                <div class="row g-2 mb-2">
                                     <div class="col-6">
                                         <label for="address">Address:</label>
                                     </div>
@@ -124,7 +124,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-3 mb-2">
+                                <div class="row g-2 mb-2">
                                     <div class="col-6">
                                         <input type="text" class="form-control" id="address" placeholder="Address">
                                     </div>
@@ -136,7 +136,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-3 mb-2">
+                                <div class="row g-2 mb-2">
                                     <div class="col-4">
                                         <label for="sss">SSS:</label>
                                     </div>
@@ -148,7 +148,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-3 mb-2">
+                                <div class="row g-2 mb-2">
                                     <div class="col-4">
                                         <input type="text" class="form-control" id="sss" placeholder="SSS">
                                     </div>
@@ -160,7 +160,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-3 mb-2">
+                                <div class="row g-2 mb-2">
                                     <div class="col-6">
                                         <label for="emailAddress">Email Address:</label>
                                     </div>
@@ -172,7 +172,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-3 mb-2">
+                                <div class="row g-2 mb-2">
                                     <div class="col-6">
                                         <input type="email" class="form-control" id="emailAddress" placeholder="Email Address">
                                     </div>
@@ -184,7 +184,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-3 mb-2">
+                                <div class="row g-2 mb-2">
                                     <div class="col-4">
                                         <label for="department">Department:</label>
                                     </div>
@@ -196,7 +196,7 @@
                                     </div>
                                 </div>
                             
-                                <div class="row g-3 mb-2">
+                                <div class="row g-2 mb-2">
                                     <div class="col-4">
                                         <select class="form-select" id="department">
                                             <option value="" selected disabled>Choose</option>
@@ -249,14 +249,20 @@
             <!--------------------------------------------------------------------------------------------------------------------------------------------->
             <!------------------------------------------------------------------ VIEW EMPLOYEE FORM ------------------------------------------------------->
             <div class="modal fade" id="viewEmployeeModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
-                <div class="modal-dialog modal-none modal-lg modal-dialog-centered">
+                <div class="modal-dialog modal-none modal-lg modal-dialog-centered modal-scrollable">
                     <div class="modal-content" id="viewEmployeModal">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="userFormLabel">View Employee</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <div class="row g-3 mb-2">
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <h2 class="text-xl font-bold">Personal Information</h2>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-2">
                                 <div class="col-6">
                                     <label for="viewEmployeeName">Name:</label>
                                 </div>
@@ -268,7 +274,7 @@
                                 </div>
                             </div>
 
-                            <div class="row g-3 mb-2">
+                            <div class="row g-2 mb-2">
                                 <div class="col-6">
                                     <input type="text" class="form-control" id="viewEmployeeName" disabled readonly>
                                 </div>
@@ -280,7 +286,7 @@
                                 </div>
                             </div>     
                             
-                            <div class="row g-3 mb-2">
+                            <div class="row g-2 mb-2">
                                 <div class="col-6">
                                     <label for="viewAddress">Address:</label>
                                 </div>
@@ -292,7 +298,7 @@
                                 </div>
                             </div>
 
-                            <div class="row g-3 mb-2">
+                            <div class="row g-2 mb-2">
                                 <div class="col-6">
                                     <input type="text" class="form-control" id="viewAddress" disabled readonly>
                                 </div>
@@ -304,31 +310,45 @@
                                 </div>
                             </div>
 
-                            <div class="row g-3 mb-2">
-                                <div class="col-4">
+                            <div class="row g-2 mb-2">
+                                <div class="col-3">
                                     <label for="viewsss">SSS:</label>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-3">
                                     <label for="viewpagIbig">Pag-Ibig:</label>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-3">
                                     <label for="viewphilheatlh">PhilHealth:</label>
+                                </div>
+                                <div class="col-3">
+                                    <label for="viewphilheatlh">TIN:</label>
                                 </div>
                             </div>
 
-                            <div class="row g-3 mb-2">
-                                <div class="col-4">
+                            <div class="row g-2 mb-2">
+                                <div class="col-3">
                                     <input type="text" class="form-control" id="viewsss" disabled readonly>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-3">
                                     <input type="text" class="form-control" id="viewpagIbig" disabled readonly>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-3">
+                                    <input type="text" class="form-control" id="viewphilheatlh" disabled readonly>
+                                </div>
+                                <div class="col-3">
                                     <input type="text" class="form-control" id="viewphilheatlh" disabled readonly>
                                 </div>
                             </div>
 
-                            <div class="row g-3 mb-2">
+                            <hr>
+
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <h2 class="text-xl font-bold">Work Information</h2>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-2">
                                 <div class="col-6">
                                     <label for="viewEmailAddress">Email Address:</label>
                                 </div>
@@ -340,7 +360,7 @@
                                 </div>
                             </div>
 
-                            <div class="row g-3 mb-2">
+                            <div class="row g-2 mb-2">
                                 <div class="col-6">
                                     <input type="email" class="form-control" id="viewEmailAddress" disabled readonly>
                                 </div>
@@ -352,7 +372,7 @@
                                 </div>
                             </div>
 
-                            <div class="row g-3 mb-2">
+                            <div class="row g-2 mb-2">
                                 <div class="col-4">
                                     <label for="viewDepartment">Department:</label>
                                 </div>
@@ -364,7 +384,7 @@
                                 </div>
                             </div>
                         
-                            <div class="row g-3 mb-2">
+                            <div class="row g-2 mb-2">
                                 <div class="col-4">
                                     <input type="text" class="form-control" id="viewDepartment" disabled readonly>
                                 </div>
@@ -374,6 +394,11 @@
                                 <div class="col-4">
                                     <input type="text" class="form-control" id="viewShiftID" disabled readonly>
                                 </div>
+                            </div>
+
+                            <div class="row g-2 mb-2">
+                                <h2 class="text-lg font-semibold">Requirements:</h2>
+                                <!-- <input type="checkbox" class="form-check" disabled readonly> -->
                             </div>
                         </div>
 
@@ -399,7 +424,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <div class="row g-3 mb-2">
+                                <div class="row g-2 mb-2">
                                     <div class="col-6">
                                         <label for="updateEmployeeName">Name:</label>
                                     </div>
@@ -411,7 +436,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-3 mb-2">
+                                <div class="row g-2 mb-2">
                                     <div class="col-6">
                                         <input type="text" class="form-control" id="updateEmployeeName" placeholder="Name">
                                     </div>
@@ -434,7 +459,7 @@
                                     </div>
                                 </div>     
                                 
-                                <div class="row g-3 mb-2">
+                                <div class="row g-2 mb-2">
                                     <div class="col-6">
                                         <label for="updateAddress">Address:</label>
                                     </div>
@@ -446,7 +471,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-3 mb-2">
+                                <div class="row g-2 mb-2">
                                     <div class="col-6">
                                         <input type="text" class="form-control" id="updateAddress" placeholder="Address">
                                     </div>
@@ -458,7 +483,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-3 mb-2">
+                                <div class="row g-2 mb-2">
                                     <div class="col-4">
                                         <label for="updateSSS">SSS:</label>
                                     </div>
@@ -470,7 +495,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-3 mb-2">
+                                <div class="row g-2 mb-2">
                                     <div class="col-4">
                                         <input type="text" class="form-control" id="updateSSS" placeholder="SSS">
                                     </div>
@@ -482,7 +507,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-3 mb-2">
+                                <div class="row g-2 mb-2">
                                     <div class="col-6">
                                         <label for="updateEmailAddress">Email Address:</label>
                                     </div>
@@ -494,7 +519,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-3 mb-2">
+                                <div class="row g-2 mb-2">
                                     <div class="col-6">
                                         <input type="email" class="form-control" id="updateEmailAddress" placeholder="Email Address">
                                     </div>
@@ -506,7 +531,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-3 mb-2">
+                                <div class="row g-2 mb-2">
                                     <div class="col-4">
                                         <label for="updateDepartment">Department:</label>
                                     </div>
@@ -518,7 +543,7 @@
                                     </div>
                                 </div>
                             
-                                <div class="row g-3 mb-2">
+                                <div class="row g-2 mb-2">
                                     <div class="col-4">
                                         <select class="form-select" id="updateDepartment">
                                             <option value="" selected disabled>Choose</option>
