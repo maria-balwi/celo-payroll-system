@@ -42,7 +42,7 @@
                                     $team_department = $teamDetails['departmentName'];
 
 
-                                    echo "<tr data-id='" . $team_id . "' class='odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700'>";
+                                    echo "<tr data-id='" . $team_id . "' class='teamView'>";
                                     echo "<td ='px-6 whitespace-nowrap'>" . $team_employeeName . "</td>";
                                     echo "<td ='px-6 whitespace-nowrap'>" . $team_emailAddress . "</td>";
                                     echo "<td ='px-6 whitespace-nowrap'>" . $team_mobileNumber . "</td>";
@@ -55,6 +55,91 @@
                 </div>
             </div>
             
+            <!-- ======================================================================================================================================= -->
+            <!-- ================================================================= MODAL =============================================================== -->
+            <!-- ======================================================================================================================================= -->
+             
+            <!--------------------------------------------------------------------------------------------------------------------------------------------->
+            <!------------------------------------------------------------------ VIEW EMPLOYEE FORM ------------------------------------------------------->
+            <div class="modal fade" id="viewTeamModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
+                <div class="modal-dialog modal-none modal-dialog-centered">
+                    <div class="modal-content" id="viewTeamModal">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="userFormLabel">View Team</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row g-1 mb-2">
+                                <div class="col-4">
+                                    <label for="viewEmployeeName">Name:</label>
+                                </div>
+                                <div class="col-8">
+                                    <input type="text" class="form-control" id="viewEmployeeName" disabled readonly>
+                                </div>
+                            </div> 
+
+                            <div class="row g-1 mb-2">
+                                <div class="col-4">
+                                    <label for="viewEmailAddress">Email Address:</label>
+                                </div>
+                                <div class="col-8">
+                                    <input type="email" class="form-control" id="viewEmailAddress" disabled readonly>
+                                </div>
+                            </div>
+
+                            <div class="row g-1 mb-2">
+                                <div class="col-4">
+                                    <label for="viewEmployeeID">Employee ID:</label>
+                                </div>
+                                <div class="col-8">
+                                    <input type="text" class="form-control" id="viewEmployeeID" disabled readonly>
+                                </div>
+                            </div>
+
+                            <div class="row g-1 mb-2">
+                                <div class="col-4">
+                                    <label for="viewMobileNumber">Mobile Number:</label>
+                                </div>
+                                <div class="col-8">
+                                    <input type="text" class="form-control" id="viewMobileNumber" disabled readonly>
+                                </div>
+                            </div>
+
+                            <div class="row g-1 mb-2">
+                                <div class="col-4">
+                                    <label for="viewDepartment">Department:</label>
+                                </div>
+                                <div class="col-8">
+                                    <input type="text" class="form-control" id="viewDepartment" disabled readonly>
+                                </div>
+                            </div>
+
+                            <div class="row g-1 mb-2">
+                                <div class="col-4">
+                                    <label for="viewDesignation">Designation:</label>
+                                </div>
+                                <div class="col-8">
+                                    <input type="text" class="form-control" id="viewDesignation" disabled readonly>
+                                </div>
+                            </div>
+                        
+                            <div class="row g-1 mb-2">
+                                <div class="col-4">
+                                    <label for="viewShiftID">Shift:</label>
+                                </div>
+                                <div class="col-8">
+                                    <input type="text" class="form-control" id="viewShiftID" disabled readonly>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <!-- <button type="button" class="btn btn-primary employeeUpdate">Update</button> -->
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
     
         <script src="../assets/js/team.js"></script>
