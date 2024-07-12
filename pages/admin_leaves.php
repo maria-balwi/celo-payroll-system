@@ -70,7 +70,7 @@
                                 $leaveQuery = mysqli_query($conn, $employees->viewAdminLeaveRequests());
                                 while ($leaveDetails = mysqli_fetch_array($leaveQuery)) {
 
-                                    $leave_id = $leaveDetails['id'];
+                                    $leave_id = $leaveDetails['requestID'];
                                     $leave_dateFiled = $leaveDetails['dateFiled'];
                                     $leave_employeeName = $leaveDetails['employeeName'];
                                     $leave_leaveType = $leaveDetails['leaveType'];
