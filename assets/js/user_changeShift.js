@@ -21,8 +21,8 @@ $(document).ready(function() {
         let requestForm = new FormData();
         var employeeID = $('#employeeID').val();
         var newShift = $('#newShift').val();
-        var startDate = $('#startDate').val();
-        var endDate = $('#endDate').val();
+        var startDate = $('#effectivityStartDate').val();
+        var endDate = $('#effectivityEndDate').val();
         var purpose = $('#purpose').val();
 
         if (employeeID == "" || newShift == "" || startDate == "" || endDate == "" || purpose == "") {
@@ -80,6 +80,42 @@ $(document).ready(function() {
             });
         }
         
+
+    });
+
+    // VIEW CHANGE SHIFT REQUEST
+    var array = [];
+    $(document).on('click', '.changeshiftView', function() {
+        var changeshift_id = $(this).data('id');
+        array.push(changeshift_id);
+        var id_changeshift = array[array.length - 1];
+
+        // VIEW CHANGE SHIFT REQUEST
+        $.ajax({
+            type: "GET",
+            url: "../backend/user/changeShiftModal.php?changeshift_id=" + id_changeshift,
+            success: function(response) {
+
+                var res = jQuery.parseJSON(response);
+
+                if (res.status == 404) {
+                    alert(res.message);
+                } 
+                else if (res.status == 200) {
+                    $('#viewLeaveID').val(res.data.requestID);
+                    $('#viewEmpID').val(res.data.employeeID);
+                    $('#viewDateFiled').val(res.data.dateFiled);
+                    $('#viewName').val(res.data.employeeName);
+                    $('#viewRequestedShift').val(res.data.requestedShift);
+                    // $('#viewInclusiveDates').val(res.data.effectivityStartDate+' - '+res.data.effectivityEndDate);
+                    $('#viewStartDate').val(res.data.effectivityStartDate);
+                    $('#viewEndDate').val(res.data.effectivityEndDate);
+                    $('#viewPurpose').val(res.data.remarks);
+                    $('#viewStatus').val(res.data.status);
+                    $('#viewRequestModal').modal('show');
+                }
+            }
+        });
 
     });
     
