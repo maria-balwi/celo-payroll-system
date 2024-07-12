@@ -13,35 +13,6 @@ $(document).ready(function() {
         }
     });
 
-    // // FILE REQUEST BUTTON
-    // $("#btnFileRequest").click(function (e) {
-
-    //     e.preventDefault();
-        
-    //     Swal.fire({
-    //         icon: 'question',
-    //         title: 'Submit File Leave',
-    //         text: 'Are you sure you want to file this leave?',
-    //         showCancelButton: true,
-    //         cancelButtonColor: '#6c757d',
-    //         confirmButtonColor: '#28a745',
-    //         confirmButtonText: 'Yes',
-    //     }).then((result) => {
-    //         if (result.isConfirmed) {
-    //             Swal.fire({
-    //                 icon: 'success',
-    //                 title: 'Success',
-    //                 text: 'Leave Filed Successfully',
-    //                 timer: 2000,
-    //                 showConfirmButton: false,
-    //             }).then(() => {
-    //                 window.location.reload();
-    //             })
-    //         }
-    //     })
-
-    // });
-
     // FILE A LEAVE BUTTON
     $("#fileLeaveForm").submit(function (e) {
 
@@ -116,7 +87,6 @@ $(document).ready(function() {
                 if (res.status == 404) {
                     alert(res.message);
                 } 
-                // LEAVE ALREADY APPROVED
                 else if (res.status == 200) {
                     $('#viewLeaveID').val(res.data.requestID);
                     $('#viewEmpID').val(res.data.employeeID);
