@@ -69,7 +69,7 @@
                                 $leaveQuery = mysqli_query($conn, $employees->viewLeaveRequests());
                                 while ($leaveDetails = mysqli_fetch_array($leaveQuery)) {
 
-                                    $leave_id = $leaveDetails['id'];
+                                    $leave_id = $leaveDetails['requestID'];
                                     $leave_dateFiled = $leaveDetails['dateFiled'];
                                     $leave_employeeName = $leaveDetails['employeeName'];
                                     $leave_leaveType = $leaveDetails['leaveType'];
@@ -225,7 +225,8 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <!-- <button type="button" class="btn btn-primary leaveUpdate">Update</button> -->
+                            <button type="button" class="btn btn-success approveLeave" id="approveLeave">Approve</button>
+                            <button type="button" class="btn btn-danger disapproveLeave" id="disapproveLeave">Disapprove</button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         </div>
                     </div>
