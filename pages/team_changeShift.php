@@ -220,7 +220,8 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <!-- <button type="button" class="btn btn-primary leaveUpdate">Update</button> -->
+                            <button type="button" class="btn btn-success approveChangeShift" id="approveChangeShift">Approve</button>
+                            <button type="button" class="btn btn-danger disapproveChangeShift" id="disapproveChangeShift">Disapprove</button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         </div>
                     </div>
