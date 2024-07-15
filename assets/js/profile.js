@@ -13,6 +13,82 @@ $(document).ready(function() {
         }
     });
 
+    // UPDATE PASSWORD
+    $("#updatePasswordForm").submit(function (e) {
+        
+        e.preventDefault();
+
+        let updatePassword = new FormData();
+        var userID = $("#userID").val();
+        var newPassword = $("#newPassword").val();
+        var retypePassword = $("#retypePassword").val();
+
+        console.log({userID});
+        console.log({newPassword});
+        console.log({retypePassword});
+
+        if (newPassword == '' || retypePassword == '') {
+
+            Swal.fire({
+                icon: 'warning',
+                title: 'Required Information',
+                text: 'Please fill up all the required Information',
+
+            })
+
+        } else {
+            Swal.fire({
+                icon: 'question',
+                title: 'Change Password',
+                text: 'Are you sure you want to change your password?',
+                showCancelButton: true,
+                cancelButtonColor: '#6c757d',
+                confirmButtonColor: '#28a745',
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                if (result.isConfirmed)
+                {
+                    updatePassword.append("userID", userID);
+                    updatePassword.append("newPassword", newPassword);
+                    updatePassword.append("retypePassword", retypePassword);
+
+                    $.ajax({
+                        url: '../backend/profile/updatePassword.php',
+                        type: 'POST',
+                        data: updatePassword,
+                        contentType: false,
+                        processData: false,
+                        success: function(res) {
+                            const data = JSON.parse(res);
+                            var message = data.message;
+                            if (data.status == 200 && data.error == 1) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Warning',
+                                    text: message,
+                                })
+                                $("#newPassword").val('');
+                                $("#retypePassword").val('');
+                            }
+                            else {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: message,
+                                    timer: 2000,
+                                    showConfirmButton: false,
+                                }).then(() => {
+                                    window.location.reload();
+                                })
+                            }
+                        }
+                    })
+                }
+            })
+        }         
+
+    });
+
     // CHANGE PASSWORD
     $("#changePasswordForm").submit(function (e) {
         

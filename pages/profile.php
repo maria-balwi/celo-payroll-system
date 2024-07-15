@@ -51,9 +51,17 @@
                                         <h2 class="text-sm text-gray-400"><?php echo $userDetails['departmentName'] ?></h2>
                                     </div>
                                     <div class="flex gap-2 py-1">
-                                        <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 text-sm font-medium bg-blue-500 text-white" data-bs-target="#changePasswordModal" data-bs-toggle="modal">
+                                        <!-- <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 text-sm font-medium bg-blue-500 text-white" data-bs-target="#changePasswordModal" data-bs-toggle="modal">
                                             Change Password
-                                        </button>
+                                        </button> -->
+                                            <?php if ($_SESSION['activated'] == 0) 
+                                            { ?>
+                                                <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 text-sm font-medium bg-blue-500 text-white" data-bs-toggle="modal" data-bs-target="#updatePasswordModal">Update Password</button>
+                                            <?php }
+                                            else 
+                                            { ?>
+                                                <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 text-sm font-medium bg-blue-500 text-white" data-bs-toggle="modal" data-bs-target="#changePasswordModal">Change Password</button>
+                                            <?php } ?>
                                     </div>
                                 </div>
                             </div>
@@ -134,15 +142,19 @@
                     </div>
                 </div>
             </div>
+
+            <!---------------------------------------------------------------------------------------------------------------------------------------------------------->
+            <!-------------------------------------------------------------------------- MODAL ------------------------------------------------------------------------->
+            <!---------------------------------------------------------------------------------------------------------------------------------------------------------->
             
-            <!--------------------------------------------------------------------------------------------------------------------------------------------->
-            <!------------------------------------------------------------------- ADD USER FORM ----------------------------------------------------------->
+            <!---------------------------------------------------------------------------------------------------------------------------------------------------------->
+            <!---------------------------------------------------------------- CHANGE PASSWORD FORM -------------------------------------------------------------------->
             <form id="changePasswordForm">
                 <div class="modal fade" id="changePasswordModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="resetPassLabel" aria-hidden="true">
                     <div class="modal-dialog modal-sm modal-dialog-centered">
                         <div class="modal-content" id="changePasswordModal">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="resetPassLabel">Update Password</h1>
+                                <h1 class="modal-title fs-5" id="resetPassLabel">Change Password</h1>
                                 <input type="hidden" id="currentPassword" value="<?php echo $_SESSION['hashedPassword']; ?>">
                                 <input type="hidden" id="userID" value="<?php echo $_SESSION['userID']; ?>">
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -178,6 +190,48 @@
                                 <div class="row g-3 mb-2">
                                     <div class="col-12">
                                         <input type="password" class="form-control" id="retypePass" placeholder="Password">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">Save</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <!---------------------------------------------------------------------------------------------------------------------------------------------------------->
+            <!---------------------------------------------------------------- UPDATE PASSWORD FORM -------------------------------------------------------------------->
+            <form id="updatePasswordForm">
+                <div class="modal fade" id="updatePasswordModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="resetPassLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-sm modal-dialog-centered">
+                        <div class="modal-content" id="updatePasswordModal">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="resetPassLabel">Update Password</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <label for="newPassword">New Password</label>
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-2">
+                                    <div class="col-12">
+                                        <input type="password" class="form-control" id="newPassword" placeholder="Password">
+                                    </div>
+                                </div>
+
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <label for="retypePassword">Retype New Password</label>
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-2">
+                                    <div class="col-12">
+                                        <input type="password" class="form-control" id="retypePassword" placeholder="Password">
                                     </div>
                                 </div>
                             </div>

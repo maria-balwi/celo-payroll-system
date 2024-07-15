@@ -87,6 +87,15 @@
             return $changePassword;
         }
 
+        public function updatePassword($userID, $newPass) {
+            $updatePassword = "
+                UPDATE ".$this->users." SET
+                password = '$newPass', 
+                activated = 1
+                WHERE userID = ".$userID."";
+            return $updatePassword;
+        }
+
         public function viewUser($id) {
             $user = "
                 SELECT * FROM ".$this->employees." AS employees
