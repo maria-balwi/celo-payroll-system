@@ -10,7 +10,7 @@
 
     $loginResult = $users->login();
 
-    // ADMIN LEVEL
+    // USER LEVEL
     if (isset($loginResult[0])) {
         if ($loginResult[0] == 0) {
             $em = "Incorrect email address or password.";
@@ -19,7 +19,7 @@
             exit();
         }
         else {
-            $error = array('level' => $loginResult[1]);
+            $error = array('level' => $loginResult[1], 'activated' => $_SESSION['activated']);
             echo json_encode($error);
         exit();
         }

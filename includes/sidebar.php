@@ -17,7 +17,7 @@
             <!-- Navigation -->
             <nav>
                 <?php
-                    if ($_SESSION['levelID'] == '3' || $_SESSION['levelID'] == '0') {
+                    if (($_SESSION['levelID'] == '3' || $_SESSION['levelID'] == '0') && $_SESSION['activated'] == 1) {
                 ?>
                 <div class="menu-section">
                     <h4 class="text-sm font-bold text-gray-500 uppercase pt-2 pb-2">Admin's Portal</h4>
@@ -47,7 +47,7 @@
                     Users
                 </a>
                 <?php }
-                    if ($_SESSION['levelID'] == '2' || $_SESSION['levelID'] == '0') {
+                    if (($_SESSION['levelID'] == '2' || $_SESSION['levelID'] == '0') && $_SESSION['activated'] == 1) {
                 ?>
                 <div class="menu-section">
                     <h4 class="text-sm font-bold text-gray-500 uppercase pt-2 pb-2">Team's Portal</h4>
@@ -84,7 +84,7 @@
                 </a>
                 <?php 
                     }
-                    if ($_SESSION['levelID'] == '1' || $_SESSION['levelID'] == '2' || $_SESSION['levelID'] == '3' || $_SESSION['levelID'] == '0') {
+                    if (($_SESSION['levelID'] == '1' || $_SESSION['levelID'] == '2' || $_SESSION['levelID'] == '3' || $_SESSION['levelID'] == '0') && $_SESSION['activated'] == 1) {
                 ?>
                 <div class="menu-section">
                     <h4 class="text-sm font-bold text-gray-500 uppercase pt-2 pb-2">My Portal</h4>
