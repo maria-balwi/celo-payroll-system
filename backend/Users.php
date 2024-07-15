@@ -6,6 +6,7 @@
         private $users = 'tbl_users';
         private $department = 'tbl_department';
         private $designation = 'tbl_designation';
+        private $shifts = 'tbl_shiftschedule';
         private $dbConnect = false;
         public function __construct() {
             $this->dbConnect = $this->dbConnect();
@@ -23,6 +24,7 @@
         public function login() {
             $email = $_POST['email'];
             $password = $_POST['password'];
+            $pass_word = $password;
             
             $userQuery = "SELECT * FROM ".$this->users." AS users INNER JOIN ".$this->employees." AS employees ON users.employeeID = employees.id WHERE emailAddress = '$email'";
 
@@ -45,7 +47,8 @@
                     // $_SESSION['designation'] = $userDetails['position'];
                     $_SESSION['levelID'] = $userDetails['levelID']; 
                     $_SESSION['email'] = $userDetails['emailAddress'];
-                    $_SESSION['password'] = $userDetails['password'];
+                    $_SESSION['hashedPassword'] = $userDetails['password'];
+                    $_SESSION['password'] = $pass_word;
                     $_SESSION['activated'] = $userDetails['activated']; 
 
                     // 1 HR SESSION 
@@ -76,12 +79,12 @@
             return TRUE;
         }
 
-        public function changePassword($userID, $newPass) {
-            $resetPassword = "
+        public function changePassword($id, $newPass) {
+            $changePassword = "
                 UPDATE ".$this->users." SET
                 password = '$newPass'
-                WHERE userID = ".$userID."";
-            return $resetPassword;
+                WHERE employeeID = ".$id."";
+            return $changePassword;
         }
 
         public function viewUser($id) {
@@ -91,6 +94,8 @@
                 ON employees.departmentID = department.departmentID
                 INNER JOIN ".$this->designation." AS designation
                 ON employees.designationID = designation.designationID
+                INNER JOIN ".$this->shifts." AS shifts
+                ON employees.shiftID = shifts.shiftID
                 WHERE employees.id = '$id'";
             return $user;
         }

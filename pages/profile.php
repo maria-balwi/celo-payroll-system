@@ -51,7 +51,7 @@
                                         <h2 class="text-sm text-gray-400"><?php echo $userDetails['departmentName'] ?></h2>
                                     </div>
                                     <div class="flex gap-2 py-1">
-                                        <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-black-400 hover:bg-blue-500 hover:text-white focus:outline-none">
+                                        <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 text-sm font-medium bg-blue-500 text-white" data-bs-target="#changePasswordModal" data-bs-toggle="modal">
                                             Change Password
                                         </button>
                                     </div>
@@ -125,7 +125,7 @@
                                         </div>
                                         <div class="flex gap-2 py-1">
                                             <h2 class="text-sm text-gray-500">Shift:</h2>
-                                            <h2 class="text-sm text-gray-400">9am - 6pm</h2>
+                                            <h2 class="text-sm text-gray-400"><?php echo $userDetails['startTime']." - ".$userDetails['endTime'] ?></h2>
                                     </div>
                                 </div>
                             </div>
@@ -135,9 +135,63 @@
                 </div>
             </div>
             
+            <!--------------------------------------------------------------------------------------------------------------------------------------------->
+            <!------------------------------------------------------------------- ADD USER FORM ----------------------------------------------------------->
+            <form id="changePasswordForm">
+                <div class="modal fade" id="changePasswordModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="resetPassLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-sm modal-dialog-centered">
+                        <div class="modal-content" id="changePasswordModal">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="resetPassLabel">Update Password</h1>
+                                <input type="hidden" id="currentPassword" value="<?php echo $_SESSION['hashedPassword']; ?>">
+                                <input type="hidden" id="userID" value="<?php echo $_SESSION['userID']; ?>">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <label for="currentPass">Current Password</label>
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-2">
+                                    <div class="col-12">
+                                        <input type="password" class="form-control" id="currentPass" placeholder="Password">
+                                    </div>
+                                </div>
+
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <label for="newPass">New Password</label>
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-2">
+                                    <div class="col-12">
+                                        <input type="password" class="form-control" id="newPass" placeholder="Password">
+                                    </div>
+                                </div>
+
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <label for="retypePass">Retype New Password</label>
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-2">
+                                    <div class="col-12">
+                                        <input type="password" class="form-control" id="retypePass" placeholder="Password">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">Save</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </main>
     
-        <script src="../assets/js/dtr.js"></script>
+        <script src="../assets/js/profile.js"></script>
 
         <!-- FOOTER -->
         <?php include('../includes/footer.php'); ?>
