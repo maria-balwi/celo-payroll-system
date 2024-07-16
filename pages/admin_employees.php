@@ -25,6 +25,7 @@
                             <table id="employeeTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered">
                                 <thead class="bg-gray-50">
                                     <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
@@ -37,6 +38,7 @@
                                         while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
 
                                             $employee_id = $employeeDetails['id'];
+                                            $employee_employeeID = $employeeDetails['employeeID'];
                                             $employee_employeeName = $employeeDetails['employeeName'];
                                             $employee_emailAddress = $employeeDetails['emailAddress'];
                                             $employee_mobileNumber = $employeeDetails['mobileNumber'];
@@ -44,6 +46,7 @@
 
 
                                             echo "<tr data-id='" . $employee_id . "' class='employeeView'>";
+                                            echo "<td ='px-6 py-4 whitespace-nowrap'>" . $employee_employeeID . "</td>";
                                             echo "<td ='px-6 py-4 whitespace-nowrap'>" . $employee_employeeName . "</td>";
                                             echo "<td ='px-6 py-4 whitespace-nowrap'>" . $employee_emailAddress . "</td>";
                                             echo "<td ='px-6 py-4 whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
@@ -402,9 +405,45 @@
                                 </div>
                             </div>
 
-                            <div class="row g-2 mb-2">
-                                <h2 class="text-lg font-semibold">Requirements:</h2>
-                                <!-- <input type="checkbox" class="form-check" disabled readonly> -->
+                            <h2 class="text-lg font-semibold">Requirements:</h2>
+                            <div class="row g-3">
+                                <div class="col-md-3">
+                                    <!-- SSS -->
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="view_req_sss" name="view_req_sss" value="view_req_sss" disabled readonly>
+                                        <label class="form-check-label" for="view_req_sss">
+                                            SSS
+                                        </label>
+                                    </div>
+                                    <!-- PAG-IBIG -->
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="view_req_pagIbig" name="view_req_pagIbig" value="view_req_pagIbig" disabled readonly>
+                                        <label class="form-check-label" for="view_req_pagIbig">
+                                            Pag-Ibig
+                                        </label>
+                                    </div>
+                                    <!-- PHILHEALTH -->
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="view_req_philhealth" name="view_req_philhealth" value="view_req_philhealth" disabled readonly>
+                                        <label class="form-check-label" for="view_req_philhealth">
+                                            PhilHealth
+                                        </label>
+                                    </div>
+                                    <!-- TIN -->
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="view_req_tin" name="view_req_tin" value="view_req_tin" disabled readonly>
+                                        <label class="form-check-label" for="view_req_tin">
+                                            TIN
+                                        </label>
+                                    </div>
+                                    <!-- NBI CLEARANCE -->
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="view_req_nbi" name="view_req_nbi" value="view_req_nbi" disabled readonly>
+                                        <label class="form-check-label" for="view_req_nbi">
+                                            NBI Clearance
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 

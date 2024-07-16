@@ -13,6 +13,7 @@
         private $leaves = 'tbl_leaveapplications';
         private $leaveType = 'tbl_leavetype';
         private $shifts = 'tbl_shiftschedule';
+        private $requirements = 'tbl_requirements';
         private $dbConnect = false;
         public function __construct() {
             $this->dbConnect = $this->dbConnect();
@@ -359,6 +360,8 @@
                 ON department.departmentID = employees.departmentID
                 INNER JOIN ".$this->designation." AS designation
                 ON designation.designationID = employees.designationID
+                INNER JOIN ".$this->requirements." AS requirements
+                ON requirements.empID = employees.id
                 WHERE id = '$id'";
             return $employeeInfo;
         }
