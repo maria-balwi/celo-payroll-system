@@ -351,6 +351,18 @@
             return $updateEmployee;
         }
 
+        public function updateEmployeeRequirements($empID, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateNBI) {
+            $updateRequirement = "
+                UPDATE ".$this->requirements." AS requirements SET
+                req_sss = '$updateSSS',
+                req_pagIbig = '$updatePagIbig',
+                req_philhealth = '$updatePhilhealth',
+                req_tin = '$updateTIN',
+                req_nbi = '$updateNBI'
+                WHERE empID = '$empID'";
+            return $updateRequirement;
+        }
+
         public function getEmployeeInfo($id) {
             $employeeInfo = "
                 SELECT * FROM ".$this->employees." AS employees

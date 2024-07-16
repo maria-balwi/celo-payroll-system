@@ -459,16 +459,22 @@
             <!---------------------------------------------------------------- UPDATE EMPLOYEE FORM ------------------------------------------------------->
             <form id="updateEmployeeForm">
                 <div class="modal fade" id="updateEmployeeModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="employeeFormLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-none modal-lg modal-dialog-centered">
+                    <div class="modal-dialog modal-none modal-lg modal-dialog-centered modal-scrollable">
                         <div class="modal-content" id="updateEmployeeModal">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="employeeFormLabel">New Employee</h1>
-                                <input type="hidden" id="updateID">
-                                <input type="hidden" id="oldEmailAddress">
-                                <input type="hidden" id="oldEmployeeID">
+                                <input type="hidden" id="updateID" name="updateID">
+                                <input type="hidden" id="oldEmailAddress" name="oldEmailAddress">
+                                <input type="hidden" id="oldEmployeeID" name="oldEmployeeID">
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <h2 class="text-xl font-bold">Personal Information</h2>
+                                    </div>
+                                </div>
+
                                 <div class="row g-2 mb-2">
                                     <div class="col-6">
                                         <label for="updateEmployeeName">Name:</label>
@@ -483,17 +489,17 @@
 
                                 <div class="row g-2 mb-2">
                                     <div class="col-6">
-                                        <input type="text" class="form-control" id="updateEmployeeName" placeholder="Name">
+                                        <input type="text" class="form-control" id="updateEmployeeName" name="updateEmployeeName" placeholder="Name">
                                     </div>
                                     <div class="col-3">
-                                        <select id="updateGender" class="form-select">
+                                        <select id="updateGender" name="updateGender" class="form-select">
                                             <option value="" selected disabled>Choose</option>
                                             <option value="Male">Male</option>
                                             <option value="Female">Female</option>
                                         </select>
                                     </div>
                                     <div class="col-3">
-                                        <select id="updateCivilStatus" class="form-select">
+                                        <select id="updateCivilStatus" name="updateCivilStatus" class="form-select">
                                             <option selected disabled>Choose</option>
                                             <option value="Single">Single</option>
                                             <option value="Married">Married</option>
@@ -518,13 +524,13 @@
 
                                 <div class="row g-2 mb-2">
                                     <div class="col-6">
-                                        <input type="text" class="form-control" id="updateAddress" placeholder="Address">
+                                        <input type="text" class="form-control" id="updateAddress" name="updateAddress" placeholder="Address">
                                     </div>
                                     <div class="col-3">
-                                        <input type="date" class="form-control" id="updateDateOfBirth" placeholder="Date of Birth">
+                                        <input type="date" class="form-control" id="updateDateOfBirth" name="updateDateOfBirth" placeholder="Date of Birth">
                                     </div>
                                     <div class="col-3">
-                                        <input type="text" class="form-control" id="updatePlaceOfBirth" placeholder="Place of Birth">
+                                        <input type="text" class="form-control" id="updatePlaceOfBirth" name="updatePlaceOfBirth" placeholder="Place of Birth">
                                     </div>
                                 </div>
 
@@ -545,16 +551,24 @@
 
                                 <div class="row g-2 mb-2">
                                     <div class="col-3">
-                                        <input type="text" class="form-control" id="updateSSS" placeholder="SSS">
+                                        <input type="text" class="form-control" id="updateSSS" name="updateSSS"  placeholder="SSS">
                                     </div>
                                     <div class="col-3">
-                                        <input type="text" class="form-control" id="updatePagIbig" placeholder="Pag-Ibig">
+                                        <input type="text" class="form-control" id="updatePagIbig" name="updatePagIbig" placeholder="Pag-Ibig">
                                     </div>
                                     <div class="col-3">
-                                        <input type="text" class="form-control" id="updatePhilhealth" placeholder="PhilHealth">
+                                        <input type="text" class="form-control" id="updatePhilhealth" name="updatePhilhealth" placeholder="PhilHealth">
                                     </div>
                                     <div class="col-3">
-                                        <input type="text" class="form-control" id="updateTIN" placeholder="TIN">
+                                        <input type="text" class="form-control" id="updateTIN" name="updateTIN" placeholder="TIN">
+                                    </div>
+                                </div>
+
+                                <hr>
+
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <h2 class="text-xl font-bold">Work Information</h2>
                                     </div>
                                 </div>
 
@@ -572,13 +586,13 @@
 
                                 <div class="row g-2 mb-2">
                                     <div class="col-6">
-                                        <input type="email" class="form-control" id="updateEmailAddress" placeholder="Email Address">
+                                        <input type="email" class="form-control" id="updateEmailAddress" name="updateEmailAddress" placeholder="Email Address">
                                     </div>
                                     <div class="col-3">
-                                        <input type="text" class="form-control" id="updateEmployeeID" placeholder="Employee ID">
+                                        <input type="text" class="form-control" id="updateEmployeeID" name="updateEmployeeID" placeholder="Employee ID">
                                     </div>
                                     <div class="col-3">
-                                        <input type="text" class="form-control" id="updateMobileNumber" placeholder="Mobile Number">
+                                        <input type="text" class="form-control" id="updateMobileNumber" name="updateMobileNumber" placeholder="Mobile Number">
                                     </div>
                                 </div>
 
@@ -596,7 +610,7 @@
                             
                                 <div class="row g-2 mb-2">
                                     <div class="col-4">
-                                        <select class="form-select" id="updateDepartment">
+                                        <select class="form-select" id="updateDepartment" name="updateDepartment">
                                             <option value="" selected disabled>Choose</option>
                                             <?php
                                                 $department = mysqli_query($conn, $employees->viewDepartment());
@@ -612,7 +626,7 @@
                                         </select>
                                     </div>
                                     <div class="col-4">
-                                        <select class="form-select" id="updateDesignation">
+                                        <select class="form-select" id="updateDesignation" name="updateDesignation">
                                                 <option disabled selected>Choose</option>
                                                 <?php
                                                     $designation = mysqli_query($conn, $employees->viewDesignation());
@@ -628,7 +642,7 @@
                                             </select>
                                     </div>
                                     <div class="col-4">
-                                        <select type="dropdown" id="updateShiftID" class="form-select">
+                                        <select type="dropdown" id="updateShiftID" name="updateShiftID" class="form-select">
                                             <option value="" selected disabled>Choose</option>
                                             <?php
                                                 $shift = mysqli_query($conn, $employees->viewShifts());
@@ -644,11 +658,52 @@
                                         </select>
                                     </div>
                                 </div>
+
+                                <h2 class="text-lg font-semibold">Requirements:</h2>
+                                <div class="row g-3">
+                                    <div class="col-md-3">
+                                        <!-- SSS -->
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="update_req_sss" name="update_req_sss" value="update_req_sss">
+                                            <label class="form-check-label" for="update_req_sss">
+                                                SSS
+                                            </label>
+                                        </div>
+                                        <!-- PAG-IBIG -->
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="update_req_pagIbig" name="update_req_pagIbig" value="update_req_pagIbig">
+                                            <label class="form-check-label" for="update_req_pagIbig">
+                                                Pag-Ibig
+                                            </label>
+                                        </div>
+                                        <!-- PHILHEALTH -->
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="update_req_philhealth" name="update_req_philhealth" value="update_req_philhealth">
+                                            <label class="form-check-label" for="update_req_philhealth">
+                                                PhilHealth
+                                            </label>
+                                        </div>
+                                        <!-- TIN -->
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="update_req_tin" name="update_req_tin" value="update_req_tin">
+                                            <label class="form-check-label" for="update_req_tin">
+                                                TIN
+                                            </label>
+                                        </div>
+                                        <!-- NBI CLEARANCE -->
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="update_req_nbi" name="update_req_nbi" value="update_req_nbi">
+                                            <label class="form-check-label" for="update_req_nbi">
+                                                NBI Clearance
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-success">Save Changes</button>
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#viewEmployeeModal">Cancel</button>
                             </div>
                         </div>
                     </div>

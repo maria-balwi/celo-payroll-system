@@ -278,6 +278,11 @@ $(document).ready(function() {
                         $('#updateDepartment').val(res.data.departmentName);
                         $('#updateDesignation').val(res.data.position);
                         $('#updateShiftID').val(res.data.startTime + ' - ' + res.data.endTime);
+                        $('#update_req_sss').val(res.data.req_sss == 1 ? $('#update_req_sss').prop('checked', true) : $('#update_req_sss').prop('checked', false));
+                        $('#update_req_pagIbig').val(res.data.req_pagIbig == 1 ? $('#update_req_pagIbig').prop('checked', true) : $('#update_req_pagIbig').prop('checked', false));
+                        $('#update_req_philhealth').val(res.data.req_philhealth == 1 ? $('#update_req_philhealth').prop('checked', true) : $('#update_req_philhealth').prop('checked', false));
+                        $('#update_req_tin').val(res.data.req_tin == 1 ? $('#update_req_tin').prop('checked', true) : $('#update_req_tin').prop('checked', false));
+                        $('#update_req_nbi').val(res.data.req_nbi == 1 ? $('#update_req_nbi').prop('checked', true) : $('#update_req_nbi').prop('checked', false));
                         $('#oldEmailAddress').val(res.data.emailAddress);
                         $('#oldEmployeeID').val(res.data.employeeID);
                         $('#updateEmployeeModal').modal('show');
@@ -292,7 +297,7 @@ $(document).ready(function() {
         
         e.preventDefault();
 
-        let updateEmployeeForm = new FormData();
+        // let updateEmployeeForm = new FormData();
         var updateID = $("#updateID").val();
         var updateEmployeeName = $("#updateEmployeeName").val();
         var updateGender = $("#updateGender").val();
@@ -338,32 +343,34 @@ $(document).ready(function() {
 
             }).then((result) => {
                 if (result.isConfirmed) {
-                    updateEmployeeForm.append("updateID", updateID);
-                    updateEmployeeForm.append("updateEmployeeName", updateEmployeeName);
-                    updateEmployeeForm.append("updateGender", updateGender);
-                    updateEmployeeForm.append("updateCivilStatus", updateCivilStatus);
-                    updateEmployeeForm.append("updateAddress", updateAddress);
-                    updateEmployeeForm.append("updateDateOfBirth", updateDateOfBirth);
-                    updateEmployeeForm.append("updatePlaceOfBirth", updatePlaceOfBirth);
-                    updateEmployeeForm.append("updateSSS", updateSSS);
-                    updateEmployeeForm.append("updatePagIbig", updatePagIbig);
-                    updateEmployeeForm.append("updatePhilhealth", updatePhilhealth);
-                    updateEmployeeForm.append("updateTIN", updateTIN);
-                    updateEmployeeForm.append("updateEmailAddress", updateEmailAddress);
-                    updateEmployeeForm.append("updateEmployeeID", updateEmployeeID);
-                    updateEmployeeForm.append("updateMobileNumber", updateMobileNumber);
-                    updateEmployeeForm.append("updateDepartment", updateDepartment);
-                    updateEmployeeForm.append("updateDesignation", updateDesignation);
-                    updateEmployeeForm.append("updateShiftID", updateShiftID);
-                    updateEmployeeForm.append("oldEmailAddress", oldEmailAddress);
-                    updateEmployeeForm.append("oldEmployeeID", oldEmployeeID);
+                    // updateEmployeeForm.append("updateID", updateID);
+                    // updateEmployeeForm.append("updateEmployeeName", updateEmployeeName);
+                    // updateEmployeeForm.append("updateGender", updateGender);
+                    // updateEmployeeForm.append("updateCivilStatus", updateCivilStatus);
+                    // updateEmployeeForm.append("updateAddress", updateAddress);
+                    // updateEmployeeForm.append("updateDateOfBirth", updateDateOfBirth);
+                    // updateEmployeeForm.append("updatePlaceOfBirth", updatePlaceOfBirth);
+                    // updateEmployeeForm.append("updateSSS", updateSSS);
+                    // updateEmployeeForm.append("updatePagIbig", updatePagIbig);
+                    // updateEmployeeForm.append("updatePhilhealth", updatePhilhealth);
+                    // updateEmployeeForm.append("updateTIN", updateTIN);
+                    // updateEmployeeForm.append("updateEmailAddress", updateEmailAddress);
+                    // updateEmployeeForm.append("updateEmployeeID", updateEmployeeID);
+                    // updateEmployeeForm.append("updateMobileNumber", updateMobileNumber);
+                    // updateEmployeeForm.append("updateDepartment", updateDepartment);
+                    // updateEmployeeForm.append("updateDesignation", updateDesignation);
+                    // updateEmployeeForm.append("updateShiftID", updateShiftID);
+                    // updateEmployeeForm.append("oldEmailAddress", oldEmailAddress);
+                    // updateEmployeeForm.append("oldEmployeeID", oldEmployeeID);
 
                     $.ajax({
                         url: '../backend/admin/updateEmployee.php',
                         type: 'POST',
-                        data: updateEmployeeForm,
-                        contentType: false,
-                        processData: false,
+                        // data: updateEmployeeForm,
+                        // contentType: false,
+                        // processData: false,
+                        data: $(this).serialize(),
+                        cache: false,
                         success: function(res) {
                             const data = JSON.parse(res);
                             if (data.error == 0) {

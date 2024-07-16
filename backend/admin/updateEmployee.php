@@ -22,6 +22,37 @@
     $updateDesignationID = $_POST['updateDesignation'];
     $updateShiftID = $_POST['updateShiftID'];
 
+    if(isset($_POST['update_req_sss'])) {
+		$req_sss = 1;
+	}
+	else {
+		$req_sss = 0;
+	}
+    if(isset($_POST['update_req_pagIbig'])) {
+		$req_pagIbig = 1;
+	}
+	else {
+		$req_pagIbig = 0;
+	}
+    if(isset($_POST['update_req_philhealth'])) {
+		$req_philhealth = 1;
+	}
+	else {
+		$req_philhealth = 0;
+	}
+    if(isset($_POST['update_req_tin'])) {
+		$req_tin = 1;
+	}
+	else {
+		$req_tin = 0;
+	}
+    if(isset($_POST['update_req_nbi'])) {
+		$req_nbi = 1;
+	}
+	else {
+		$req_nbi = 0;
+	}
+
     // OLD DATA
     $oldEmailAddress = $_POST['oldEmailAddress'];
     $oldEmployeeID = $_POST['oldEmployeeID'];
@@ -67,6 +98,8 @@
             $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
             $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID));
 
+            mysqli_query($conn, $employees->updateEmployeeRequirements($updateID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi));
+
             $em = "Employee Updated Successfully";
             $error = array('error' => 0, 'em' => $em);
             echo json_encode($error);
@@ -89,6 +122,8 @@
                 mysqli_query($conn, $employees->updateEmployeeInfo($updateID, $updateEmployeeName, $updateGender, $updateCivilStatus, $updateAddress, 
                 $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
                 $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID));
+
+                mysqli_query($conn, $employees->updateEmployeeRequirements($updateID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi));
 
                 $em = "Employee Updated Successfully";
                 $error = array('error' => 0, 'em' => $em);
@@ -117,6 +152,8 @@
                 $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
                 $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID));
 
+                mysqli_query($conn, $employees->updateEmployeeRequirements($updateID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi));
+
                 $em = "Employee Updated Successfully";
                 $error = array('error' => 0, 'em' => $em);
                 echo json_encode($error);
@@ -139,6 +176,8 @@
                     mysqli_query($conn, $employees->updateEmployeeInfo($updateID, $updateEmployeeName, $updateGender, $updateCivilStatus, $updateAddress, 
                     $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
                     $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID));
+
+                    mysqli_query($conn, $employees->updateEmployeeRequirements($updateID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi));
 
                     $em = "Employee Updated Successfully";
                     $error = array('error' => 0, 'em' => $em);
