@@ -20,6 +20,51 @@
     $designationID = $_POST['designation'];
     $shiftID = $_POST['shiftID'];
 
+    if (isset($_POST['req_sss']))
+    {
+        $req_sss = 1;
+    }
+    else
+    {
+        $req_sss = 0;
+    }
+
+    if (isset($_POST['req_pagIbig']))
+    {
+        $req_pagIbig = 1;
+    }
+    else
+    {
+        $req_pagIbig = 0;
+    }
+
+    if (isset($_POST['req_philhealth']))
+    {
+        $req_philhealth = 1;
+    }
+    else
+    {
+        $req_philhealth = 0;
+    }
+
+    if (isset($_POST['req_tin']))
+    {
+        $req_tin = 1;
+    }
+    else
+    {
+        $req_tin = 0;
+    }
+
+    if (isset($_POST['req_nbi']))
+    {
+        $req_nbi = 1;
+    }
+    else
+    {
+        $req_nbi = 0;
+    }
+
     // PENDING TO GET ID
     $designationQuery = mysqli_query($conn, $employees->viewDesignation());
     while ($designationDetails = mysqli_fetch_array($designationQuery)) {
@@ -51,7 +96,13 @@
     }
     else {
         mysqli_query($conn, $employees->addNewEmployee($employeeName, $gender, $civilStatus, $address, $dateOfBirth, $placeOfBirth, 
-        $sss, $pagIbig, $philhealth, $emailAddress, $employeeID, $mobileNumber, $departmentID, $designationID, $shiftID));
+        $sss, $pagIbig, $philhealth, $tin, $emailAddress, $employeeID, $mobileNumber, $departmentID, $designationID, $shiftID));
+
+        $lastIDQuery = mysqli_query($conn, $employees->viewLastEmployee());
+        $lastIDResult = mysqli_fetch_array($lastIDQuery);
+        $lastID = $lastIDResult['id'];
+
+        mysqli_query($conn, $employees->addEmployeeRequirements($lastID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi));
 
         $em = "Employee Added Successfully";
         $error = array('error' => 0, 'em' => $em);

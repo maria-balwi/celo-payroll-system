@@ -151,29 +151,31 @@ $(document).ready(function() {
                 confirmButtonText: 'Yes',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    newEmployeeForm.append('employeeName', employeeName);
-                    newEmployeeForm.append('gender', gender);
-                    newEmployeeForm.append('civilStatus', civilStatus);
-                    newEmployeeForm.append('address', address);
-                    newEmployeeForm.append('dateOfBirth', dateOfBirth);
-                    newEmployeeForm.append('placeOfBirth', placeOfBirth);
-                    newEmployeeForm.append('sss', sss);
-                    newEmployeeForm.append('pagIbig', pagIbig);
-                    newEmployeeForm.append('philhealth', philhealth);
-                    newEmployeeForm.append('tin', tin);
-                    newEmployeeForm.append('emailAddress', emailAddress);
-                    newEmployeeForm.append('employeeID', employeeID);
-                    newEmployeeForm.append('mobileNumber', mobileNumber);
-                    newEmployeeForm.append('department', department);
-                    newEmployeeForm.append('designation', designation);
-                    newEmployeeForm.append('shiftID', shiftID);
+                    // newEmployeeForm.append('employeeName', employeeName);
+                    // newEmployeeForm.append('gender', gender);
+                    // newEmployeeForm.append('civilStatus', civilStatus);
+                    // newEmployeeForm.append('address', address);
+                    // newEmployeeForm.append('dateOfBirth', dateOfBirth);
+                    // newEmployeeForm.append('placeOfBirth', placeOfBirth);
+                    // newEmployeeForm.append('sss', sss);
+                    // newEmployeeForm.append('pagIbig', pagIbig);
+                    // newEmployeeForm.append('philhealth', philhealth);
+                    // newEmployeeForm.append('tin', tin);
+                    // newEmployeeForm.append('emailAddress', emailAddress);
+                    // newEmployeeForm.append('employeeID', employeeID);
+                    // newEmployeeForm.append('mobileNumber', mobileNumber);
+                    // newEmployeeForm.append('department', department);
+                    // newEmployeeForm.append('designation', designation);
+                    // newEmployeeForm.append('shiftID', shiftID);
 
                     $.ajax({
                         type: "POST",
                         url: "../backend/admin/addEmployee.php",
-                        data: newEmployeeForm,
-                        processData: false,
-                        contentType: false,
+                        // data: newEmployeeForm,
+                        // processData: false,
+                        // contentType: false,
+                        data: $(this).serialize(),
+                        cache: false,
                         success: function (res) {
                             const data = JSON.parse(res);
                             var message = data.em;

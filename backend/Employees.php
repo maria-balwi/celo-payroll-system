@@ -326,6 +326,20 @@
             return $addPersonnel;
         }
 
+        public function viewLastEmployee() {
+            $lastEmployee = "
+                SELECT id FROM ".$this->employees." 
+                ORDER BY id DESC LIMIT 1";
+            return $lastEmployee;
+        }
+
+        public function addEmployeeRequirements($employeeID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi) {
+            $addRequirement = "
+                INSERT INTO ".$this->requirements." (empID, req_sss, req_pagIbig, req_philhealth, req_tin, req_nbi)
+                VALUES ('".$employeeID."', '".$req_sss."', '".$req_pagIbig."', '".$req_philhealth."', '".$req_tin."', '".$req_nbi."')";
+            return $addRequirement;
+        }
+
         public function updateEmployeeInfo($updateUserID, $updateEmployeeName, $updateGender, $updateCivilStatus, $updateAddress, 
             $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
             $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID) {
