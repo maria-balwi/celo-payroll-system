@@ -26,7 +26,7 @@
             $password = $_POST['password'];
             $pass_word = $password;
             
-            $userQuery = "SELECT * FROM ".$this->users." AS users INNER JOIN ".$this->employees." AS employees ON users.employeeID = employees.id WHERE emailAddress = '$email'";
+            $userQuery = "SELECT * FROM ".$this->users." AS users INNER JOIN ".$this->employees." AS employees ON users.empID = employees.id WHERE emailAddress = '$email'";
 
             $userResult = mysqli_query($this->dbConnect, $userQuery);
             $isUserValid = mysqli_num_rows($userResult);
@@ -120,7 +120,7 @@
             $userInfo = "
                 SELECT * FROM ".$this->users." AS users
                 INNER JOIN ".$this->employees." AS employees
-                ON users.employeeID = employees.id
+                ON users.empID = employees.id
                 INNER JOIN ".$this->department." AS department
                 ON employees.departmentID = department.departmentID
                 INNER JOIN ".$this->designation." AS designation

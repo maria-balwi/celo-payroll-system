@@ -137,7 +137,7 @@
             $allPersonnel = "
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
-                ON employees.id = users.employeeID
+                ON employees.id = users.empID
                 WHERE users.status = 'Active' AND designationID = 1";
             return $allPersonnel;
         }
@@ -146,7 +146,7 @@
             $inactivePersonnel = "
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
-                ON employees.id = users.employeeID
+                ON employees.id = users.empID
                 WHERE users.status = 'Inactive'";
             return $inactivePersonnel;
         }
@@ -155,7 +155,7 @@
             $allTLQA = "
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
-                ON employees.id = users.employeeID
+                ON employees.id = users.empID
                 WHERE users.status = 'Active' AND designationID IN (2,3,4,5) ";
             return $allTLQA;
         }
@@ -164,7 +164,7 @@
             $allTLQA = "
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
-                ON employees.id = users.employeeID
+                ON employees.id = users.empID
                 WHERE users.status = 'Inactive' AND designationID IN (2,3,4,5) ";
             return $allTLQA;
         }
@@ -173,7 +173,7 @@
             $allHR = "
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
-                ON employees.id = users.employeeID
+                ON employees.id = users.empID
                 WHERE users.status = 'Active' AND designationID = 6";
             return $allHR;
         }
@@ -182,7 +182,7 @@
             $allHR = "
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
-                ON employees.id = users.employeeID
+                ON employees.id = users.empID
                 WHERE users.status = 'Inactive' AND designationID = 6";
             return $allHR;
         }
@@ -191,7 +191,7 @@
             $allHR = "
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
-                ON employees.id = users.employeeID
+                ON employees.id = users.empID
                 WHERE users.status = 'Active' AND designationID = 7";
             return $allHR;
         }
@@ -200,7 +200,7 @@
             $inactiveHR = "
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
-                ON employees.id = users.employeeID
+                ON employees.id = users.empID
                 WHERE users.status = 'Inactive' AND designationID = 7";
             return $inactiveHR;
         }
@@ -209,7 +209,7 @@
             $allFinance = "
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
-                ON employees.id = users.employeeID
+                ON employees.id = users.empID
                 WHERE users.status = 'Active' AND designationID = 8";
             return $allFinance;
         }
@@ -218,7 +218,7 @@
             $inactiveFinance = "
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
-                ON employees.id = users.employeeID
+                ON employees.id = users.empID
                 WHERE users.status = 'Inactive' AND designationID = 8";
             return $inactiveFinance;
         }
@@ -227,7 +227,7 @@
             $allAdmin = "
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
-                ON employees.id = users.employeeID
+                ON employees.id = users.empID
                 WHERE users.status = 'Active' AND departmentID = 4";
             return $allAdmin;
         }
@@ -236,7 +236,7 @@
             $inactiveAdmin = "
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
-                ON employees.id = users.employeeID
+                ON employees.id = users.empID
                 WHERE users.status = 'Inactive' AND departmentID = 4";
             return $inactiveAdmin;
         }
@@ -245,7 +245,7 @@
             $allAdmin = "
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
-                ON employees.id = users.employeeID
+                ON employees.id = users.empID
                 WHERE users.status = 'Active' AND departmentID = 5";
             return $allAdmin;
         }
@@ -254,7 +254,7 @@
             $inactiveAdmin = "
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
-                ON employees.id = users.employeeID
+                ON employees.id = users.empID
                 WHERE users.status = 'Inactive' AND departmentID = 5";
             return $inactiveAdmin;
         }
