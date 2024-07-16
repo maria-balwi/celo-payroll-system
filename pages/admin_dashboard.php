@@ -75,9 +75,9 @@
                             <table id="recentlyAddedEmployeesTable" class="table table-striped table-bordered">
                             <thead class="bg-gray-50">
                                     <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
                                     </tr>
                                 </thead>
@@ -89,14 +89,14 @@
                                             $employee_id = $employeeDetails['id'];
                                             $employee_employeeName = $employeeDetails['employeeName'];
                                             $employee_emailAddress = $employeeDetails['emailAddress'];
-                                            $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                            $employee_employeeID = $employeeDetails['employeeID'];
                                             $employee_department = $employeeDetails['departmentName'];
 
 
                                             echo "<tr data-id='" . $employee_id . "' class='employeeView'>";
+                                            echo "<td ='px-6 py-4 whitespace-nowrap'>" . $employee_employeeID . "</td>";
                                             echo "<td ='px-6 py-4 whitespace-nowrap'>" . $employee_employeeName . "</td>";
                                             echo "<td ='px-6 py-4 whitespace-nowrap'>" . $employee_emailAddress . "</td>";
-                                            echo "<td ='px-6 py-4 whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
                                             echo "<td ='px-6 py-4 whitespace-nowrap'>" . $employee_department . "</td>";
                                             echo "</td>";
                                         }

@@ -1,6 +1,7 @@
 $(document).ready(function() {
 
-    $('#recentlyAddedEmployeesTable').DataTable();
+    var recentlyAddedEmployeesTable = $('#recentlyAddedEmployeesTable').DataTable();
+    recentlyAddedEmployeesTable.order([[0, "desc"]]).draw();
 
     $('#dropdownButton').on('click', function() {
         $('#dropdownMenu').toggleClass('hidden');
