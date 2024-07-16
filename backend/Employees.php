@@ -315,18 +315,18 @@
         }
 
         public function addNewEmployee($employeeName, $gender, $civilStatus, $address, $dateOfBirth, $placeOfBirth, 
-            $sss, $pagIbig, $philhealth, $emailAddress, $employeeID, $mobileNumber, $departmentID, $designationID, $shiftID) {
+            $sss, $pagIbig, $philhealth, $tin, $emailAddress, $employeeID, $mobileNumber, $departmentID, $designationID, $shiftID) {
             $addPersonnel = "
                 INSERT INTO ".$this->employees." (employeeName, gender, civilStatus, address, dateOfBirth, placeOfBirth, 
-                sss, pagIbig, philhealth, emailAddress, employeeID, mobileNumber, departmentID, designationID, shiftID)
+                sss, pagIbig, philhealth, tin, emailAddress, employeeID, mobileNumber, departmentID, designationID, shiftID)
                 VALUES ('".$employeeName."', '".$gender."', '".$civilStatus."', '".$address."', '".$dateOfBirth."', '".$placeOfBirth."',
-                '".$sss."', '".$pagIbig."', '".$philhealth."', '".$emailAddress."', '".$employeeID."', '".$mobileNumber."', 
+                '".$sss."', '".$pagIbig."', '".$philhealth."', '".$tin."', '".$emailAddress."', '".$employeeID."', '".$mobileNumber."', 
                 '".$departmentID."', '".$designationID."', '".$shiftID."')";
             return $addPersonnel;
         }
 
         public function updateEmployeeInfo($updateUserID, $updateEmployeeName, $updateGender, $updateCivilStatus, $updateAddress, 
-            $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateEmailAddress, 
+            $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
             $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID) {
             $updateEmployee = "
                 UPDATE ".$this->employees." AS employees 
@@ -339,6 +339,7 @@
                 sss = '$updateSSS',
                 pagIbig = '$updatePagIbig',
                 philhealth = '$updatePhilhealth',
+                tin = '$updateTIN',
                 emailAddress = '$updateEmailAddress',
                 employeeID = '$updateEmployeeID',
                 mobileNumber = '$updateMobileNumber',

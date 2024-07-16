@@ -70,7 +70,7 @@
             <!------------------------------------------------------------------- ADD EMPLOYEE FORM ------------------------------------------------------->
             <form id="addEmployeeForm">
                 <div class="modal fade" id="addEmployeeModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-none modal-lg modal-dialog-centered">
+                    <div class="modal-dialog modal-none modal-xl modal-dialog-centered">
                         <div class="modal-content" id="addEmployeeModal">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="userFormLabel">New Employee</h1>
@@ -137,26 +137,32 @@
                                 </div>
 
                                 <div class="row g-2 mb-2">
-                                    <div class="col-4">
+                                    <div class="col-3">
                                         <label for="sss">SSS:</label>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-3">
                                         <label for="pagIbig">Pag-Ibig:</label>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-3">
                                         <label for="philhealth">PhilHealth:</label>
+                                    </div>
+                                    <div class="col-3">
+                                        <label for="tin">TIN:</label>
                                     </div>
                                 </div>
 
                                 <div class="row g-2 mb-2">
-                                    <div class="col-4">
-                                        <input type="text" class="form-control" id="sss" placeholder="SSS">
+                                    <div class="col-3">
+                                        <input type="text" class="form-control" id="sss" placeholder ="SSS">
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-3">
                                         <input type="text" class="form-control" id="pagIbig" placeholder="Pag-Ibig">
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-3">
                                         <input type="text" class="form-control" id="philhealth" placeholder="PhilHealth">
+                                    </div>
+                                    <div class="col-3">
+                                        <input type="text" class="form-control" id="tin" placeholder="TIN">
                                     </div>
                                 </div>
 
@@ -318,10 +324,10 @@
                                     <label for="viewpagIbig">Pag-Ibig:</label>
                                 </div>
                                 <div class="col-3">
-                                    <label for="viewphilheatlh">PhilHealth:</label>
+                                    <label for="viewphilhealth">PhilHealth:</label>
                                 </div>
                                 <div class="col-3">
-                                    <label for="viewphilheatlh">TIN:</label>
+                                    <label for="viewtin">TIN:</label>
                                 </div>
                             </div>
 
@@ -333,10 +339,10 @@
                                     <input type="text" class="form-control" id="viewpagIbig" disabled readonly>
                                 </div>
                                 <div class="col-3">
-                                    <input type="text" class="form-control" id="viewphilheatlh" disabled readonly>
+                                    <input type="text" class="form-control" id="viewphilhealth" disabled readonly>
                                 </div>
                                 <div class="col-3">
-                                    <input type="text" class="form-control" id="viewphilheatlh" disabled readonly>
+                                    <input type="text" class="form-control" id="viewtin" disabled readonly>
                                 </div>
                             </div>
 
@@ -484,26 +490,32 @@
                                 </div>
 
                                 <div class="row g-2 mb-2">
-                                    <div class="col-4">
+                                    <div class="col-3">
                                         <label for="updateSSS">SSS:</label>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-3">
                                         <label for="updatePagIbig">Pag-Ibig:</label>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-3">
                                         <label for="updatePhilhealth">PhilHealth:</label>
+                                    </div>
+                                    <div class="col-3">
+                                        <label for="updateTIN">TIN:</label>
                                     </div>
                                 </div>
 
                                 <div class="row g-2 mb-2">
-                                    <div class="col-4">
+                                    <div class="col-3">
                                         <input type="text" class="form-control" id="updateSSS" placeholder="SSS">
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-3">
                                         <input type="text" class="form-control" id="updatePagIbig" placeholder="Pag-Ibig">
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-3">
                                         <input type="text" class="form-control" id="updatePhilhealth" placeholder="PhilHealth">
+                                    </div>
+                                    <div class="col-3">
+                                        <input type="text" class="form-control" id="updateTIN" placeholder="TIN">
                                     </div>
                                 </div>
 

@@ -13,6 +13,8 @@
     $updateSSS = $_POST['updateSSS'];
     $updatePagIbig = $_POST['updatePagIbig'];
     $updatePhilhealth = $_POST['updatePhilhealth'];
+    $updateTIN = $_POST['updateTIN'];
+    $updatePhilhealth = $_POST['updatePhilhealth'];
     $updateEmailAddress = $_POST['updateEmailAddress'];
     $updateEmployeeID = $_POST['updateEmployeeID'];
     $updateMobileNumber = $_POST['updateMobileNumber'];
@@ -62,7 +64,7 @@
         if ($updateEmployeeID == $oldEmployeeID)
         {
             mysqli_query($conn, $employees->updateEmployeeInfo($updateID, $updateEmployeeName, $updateGender, $updateCivilStatus, $updateAddress, 
-            $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateEmailAddress, 
+            $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
             $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID));
 
             $em = "Employee Updated Successfully";
@@ -85,10 +87,10 @@
             else 
             {
                 mysqli_query($conn, $employees->updateEmployeeInfo($updateID, $updateEmployeeName, $updateGender, $updateCivilStatus, $updateAddress, 
-                $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateEmailAddress, 
+                $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
                 $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID));
 
-                $em = "Employee Added Successfully";
+                $em = "Employee Updated Successfully";
                 $error = array('error' => 0, 'em' => $em);
                 echo json_encode($error);
                 exit();
@@ -112,7 +114,7 @@
             if ($updateEmployeeID == $oldEmployeeID)
             {
                 mysqli_query($conn, $employees->updateEmployeeInfo($updateID, $updateEmployeeName, $updateGender, $updateCivilStatus, $updateAddress, 
-                $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateEmailAddress, 
+                $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
                 $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID));
 
                 $em = "Employee Updated Successfully";
@@ -135,10 +137,10 @@
                 else 
                 {
                     mysqli_query($conn, $employees->updateEmployeeInfo($updateID, $updateEmployeeName, $updateGender, $updateCivilStatus, $updateAddress, 
-                    $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateEmailAddress, 
+                    $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
                     $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID));
 
-                    $em = "Employee Added Successfully";
+                    $em = "Employee Updated Successfully";
                     $error = array('error' => 0, 'em' => $em);
                     echo json_encode($error);
                     exit();

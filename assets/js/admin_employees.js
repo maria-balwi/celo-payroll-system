@@ -57,6 +57,56 @@ $(document).ready(function() {
         });
     });
 
+    // INPUT MASK - ADD EMPLOYEE
+    $('#sss').inputmask('99-9999999-9', {
+        placeholder: '00-0000000-0'
+    });
+
+    $('#pagIbig').inputmask('99-9999999-9', {
+        placeholder: '00-0000000-0'
+    });
+
+    $('#philhealth').inputmask('99-999999999-9', {
+        placeholder: '00-000000000-0'
+    });
+
+    $('#tin').inputmask('99-9999999-9', {
+        placeholder: '00-0000000-0'
+    });
+
+    $('#mobileNumber').inputmask('0999-999-9999', {
+        placeholder: 'XXXX-XXX-XXXX'
+    });
+
+    $('#employeeID').inputmask('999-999', {
+        placeholder: 'XXX-XXX'
+    });
+
+    // INPUT MASK - UPDATE EMPLOYEE
+    $('#updateSSS').inputmask('99-9999999-9', {
+        placeholder: '00-0000000-0'
+    });
+
+    $('#updatePagIbig').inputmask('99-9999999-9', {
+        placeholder: '00-0000000-0'
+    });
+
+    $('#updatePhilhealth').inputmask('99-999999999-9', {
+        placeholder: '00-000000000-0'
+    });
+
+    $('#updateTIN').inputmask('99-9999999-9', {
+        placeholder: '00-0000000-0'
+    });
+
+    $('#updateMobileNumber').inputmask('0999-999-9999', {
+        placeholder: 'XXXX-XXX-XXXX'
+    });
+
+    $('#updateEmployeeID').inputmask('999-999', {
+        placeholder: 'XXX-XXX'
+    });
+
     // ADD EMPLOYEE
     $("#addEmployeeForm").submit(function (e) {
 
@@ -72,6 +122,7 @@ $(document).ready(function() {
         var sss = $("#sss").val();
         var pagIbig = $("#pagIbig").val();
         var philhealth = $("#philhealth").val();
+        var tin = $("#tin").val();
         var emailAddress = $("#emailAddress").val();
         var employeeID = $("#employeeID").val();
         var mobileNumber = $("#mobileNumber").val();
@@ -81,7 +132,7 @@ $(document).ready(function() {
 
         if (employeeName == "" || gender == "" || civilStatus == "" || 
             address == "" || dateOfBirth == "" || placeOfBirth == "" ||
-            sss == "" || pagIbig == "" || philhealth == "" ||
+            sss == "" || pagIbig == "" || philhealth == "" || tin == "" ||
             emailAddress == "" || employeeID == "" || mobileNumber == "" ||
             department == "" || designation == "" || shiftID == "") {
             Swal.fire({
@@ -109,6 +160,7 @@ $(document).ready(function() {
                     newEmployeeForm.append('sss', sss);
                     newEmployeeForm.append('pagIbig', pagIbig);
                     newEmployeeForm.append('philhealth', philhealth);
+                    newEmployeeForm.append('tin', tin);
                     newEmployeeForm.append('emailAddress', emailAddress);
                     newEmployeeForm.append('employeeID', employeeID);
                     newEmployeeForm.append('mobileNumber', mobileNumber);
@@ -156,7 +208,7 @@ $(document).ready(function() {
         array.push(employee_id);
         var id_employee = array[array.length - 1];
 
-        // VIEW USER
+        // VIEW EMPLOYEE
         $.ajax({
             type: "GET",
             url: "../backend/admin/employeeModal.php?employee_id=" + id_employee,
@@ -176,7 +228,8 @@ $(document).ready(function() {
                     $('#viewPlaceOfBirth').val(res.data.placeOfBirth);
                     $('#viewsss').val(res.data.sss);
                     $('#viewpagIbig').val(res.data.pagIbig);
-                    $('#viewphilheatlh').val(res.data.philhealth);
+                    $('#viewphilhealth').val(res.data.philhealth);
+                    $('#viewtin').val(res.data.tin);
                     $('#viewEmailAddress').val(res.data.emailAddress);
                     $('#viewEmployeeID').val(res.data.employeeID);
                     $('#viewMobileNumber').val(res.data.mobileNumber);
@@ -213,6 +266,7 @@ $(document).ready(function() {
                         $('#updateSSS').val(res.data.sss);
                         $('#updatePagIbig').val(res.data.pagIbig);
                         $('#updatePhilhealth').val(res.data.philhealth);
+                        $('#updateTIN').val(res.data.tin);
                         $('#updateEmailAddress').val(res.data.emailAddress);
                         $('#updateEmployeeID').val(res.data.employeeID);
                         $('#updateMobileNumber').val(res.data.mobileNumber);
@@ -244,6 +298,7 @@ $(document).ready(function() {
         var updateSSS = $("#updateSSS").val();
         var updatePagIbig = $("#updatePagIbig").val();
         var updatePhilhealth = $("#updatePhilhealth").val();
+        var updateTIN = $("#updateTIN").val();
         var updateEmailAddress = $("#updateEmailAddress").val();
         var updateEmployeeID = $("#updateEmployeeID").val();
         var updateMobileNumber = $("#updateMobileNumber").val();
@@ -255,7 +310,7 @@ $(document).ready(function() {
 
         if (updateEmployeeName == "" || updateGender == "" || updateCivilStatus == "" || 
             updateAddress == "" || updateDateOfBirth == "" || updatePlaceOfBirth == "" ||
-            updateSSS == "" || updatePagIbig == "" || updatePhilhealth == "" ||
+            updateSSS == "" || updatePagIbig == "" || updatePhilhealth == "" || updateTIN == "" ||
             updateEmailAddress == "" || updateEmployeeID == "" || updateMobileNumber == "" ||
             updateDepartment == "" || updateDesignation == "" || updateShiftID == "") {
 
@@ -288,6 +343,7 @@ $(document).ready(function() {
                     updateEmployeeForm.append("updateSSS", updateSSS);
                     updateEmployeeForm.append("updatePagIbig", updatePagIbig);
                     updateEmployeeForm.append("updatePhilhealth", updatePhilhealth);
+                    updateEmployeeForm.append("updateTIN", updateTIN);
                     updateEmployeeForm.append("updateEmailAddress", updateEmailAddress);
                     updateEmployeeForm.append("updateEmployeeID", updateEmployeeID);
                     updateEmployeeForm.append("updateMobileNumber", updateMobileNumber);

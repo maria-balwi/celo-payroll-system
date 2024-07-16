@@ -12,6 +12,7 @@
     $sss = $_POST['sss'];
     $pagIbig = $_POST['pagIbig'];
     $philhealth = $_POST['philhealth'];
+    $tin = $_POST['tin'];
     $emailAddress = $_POST['emailAddress'];
     $employeeID = $_POST['employeeID'];
     $mobileNumber = $_POST['mobileNumber'];
