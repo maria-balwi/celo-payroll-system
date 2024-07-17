@@ -19,47 +19,55 @@
                 <div class="grid grid-cols-6 md:grid-cols-6 gap-3 overflow-auto">
                     <!-- Card 1 -->
                     <div class="bg-white p-4 rounded-lg col-span-6 lg:col-span-2 shadow-md">
-                        <svg class="h-16 w-16 text-gray-600"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="h-16 w-16 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                         </svg>
-                        <h2 class="text-xl font-bold mb-2">4</h2>
+                        <h2 class="text-xl font-bold mb-1">
+                            <?php  
+                                $totalEmployeesQuery = mysqli_query($conn, $employees->viewEmployees());
+                                $totalEmployees = mysqli_num_rows($totalEmployeesQuery);
+                                echo $totalEmployees;
+                            ?>
+                        </h2>
                         <p class="text-gray-700">Total Employees</p>
                     </div>
 
                     <!-- Card 2 -->
-                    <div class="bg-white p-4 rounded-lg col-span-3 lg:col-span-1 shadow-md">
-                        <svg class="h-16 w-16 text-gray-600"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div class="bg-white p-4 rounded-lg col-span-3 lg:col-span-1 shadow-md text-center">
+                        <svg class="h-16 w-16 text-gray-600 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                        <h2 class="text-xl font-bold mb-2">4</h2>
+                        <h2 class="text-xl font-bold mb-1">4</h2>
                         <p class="text-gray-700">Present</p>
                     </div>
 
                     <!-- Card 3 -->
-                    <div class="bg-white p-4 rounded-lg col-span-3 lg:col-span-1 shadow-md">
-                        <svg class="h-16 w-16 text-gray-600"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div class="bg-white p-4 rounded-lg col-span-3 lg:col-span-1 shadow-md text-center">
+                        <svg class="h-16 w-16 text-gray-600 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                        <h2 class="text-xl font-bold mb-2">0</h2>
+                        <h2 class="text-xl font-bold mb-1">0</h2>
                         <p class="text-gray-700">Absent</p>
                     </div>
 
                     <!-- Card 4 -->
-                    <div class="bg-white p-4 rounded-lg col-span-3 lg:col-span-1 shadow-md">
-                        <svg class="h-16 w-16 text-gray-600"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div class="bg-white p-4 rounded-lg col-span-3 lg:col-span-1 shadow-md text-center">
+                        <svg class="h-16 w-16 text-gray-600 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                        <h2 class="text-xl font-bold mb-2">2</h2>
+                        <h2 class="text-xl font-bold mb-1">2</h2>
                         <p class="text-gray-700">Late</p>
                     </div>
 
                     <!-- Card 5 -->
-                    <div class="bg-white p-4 rounded-lg col-span-3 lg:col-span-1 shadow-md">
-                        <svg class="h-16 w-16 text-gray-600"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div class="bg-white p-4 rounded-lg col-span-3 lg:col-span-1 shadow-md text-center">
+                        <svg class="h-16 w-16 text-gray-600 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                         </svg>
-                        <h2 class="text-xl font-bold mb-2">0</h2>
-                        <p class="text-gray-700">On Leave</p>
+                        <h2 class="text-xl font-bold mb-1">0</h2>
+                        <p class="text-gray-700">
+                            On Leave
+                        </p>
                     </div>
 
                     <!-- Card 6 -->
