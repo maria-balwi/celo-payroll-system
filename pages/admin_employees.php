@@ -282,7 +282,7 @@
                                         <input type="number" class="form-control" id="basicPay" name="basicPay" placeholder="Basic Pay">
                                     </div>
                                     <div class="col-4">
-                                        <input type="number" class="form-control" id="dailyRate" name="dailyRate" placeholder="1.0" step="0.01">
+                                        <input type="number" class="form-control" id="dailyRate" name="dailyRate" placeholder="1.0" step="0.01" readonly>
                                     </div>
                                     <div class="col-4">
                                         <input type="number" class="form-control" id="hourlyRate" name="hourlyRate" placeholder="1.0" step="0.01" readonly>
@@ -797,7 +797,7 @@
                                         <input type="number" class="form-control" id="updateBasicPay" name="updateBasicPay" placeholder="Basic Pay">
                                     </div>
                                     <div class="col-4">
-                                        <input type="number" class="form-control" id="updateDailyRate" name="updateDailyRate" placeholder="1.0" step="0.01">
+                                        <input type="number" class="form-control" id="updateDailyRate" name="updateDailyRate" placeholder="1.0" step="0.01" readonly>
                                     </div>
                                     <div class="col-4">
                                         <input type="number" class="form-control" id="updateHourlyRate" name="updateHourlyRate" placeholder="1.0" step="0.01" readonly>

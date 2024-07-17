@@ -1,3 +1,7 @@
+function formatNumberWithCommas(number) {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 $(document).ready(function() {
 
     $('#employeeTable').DataTable();
@@ -107,18 +111,29 @@ $(document).ready(function() {
         placeholder: 'XXX-XXX'
     });
 
-    // HOURLY RATE COMPUTATION
+    // HOURLY RATE COMPUTATION - ADD EMPLOYEE
+    $("input[id='basicPay']").on("input", function() {
+        var basicPay = $(this).val();
+        var dailyRate = (basicPay * 12 / 261).toFixed(2);
+        $('#dailyRate').val(dailyRate).trigger('input');
+    });
+
     $("input[id='dailyRate']").on("input", function() {
         var dailyRate = $(this).val();
-        var hourlyRate = dailyRate / 8;
-        hourlyRate = hourlyRate.toFixed(2);
+        var hourlyRate = (dailyRate / 8).toFixed(2);
         $('#hourlyRate').val(hourlyRate);
+    });
+
+    // HOURLY RATE COMPUTATION - UPDATE EMPLOYEE
+    $("input[id='updateBasicPay']").on("input", function() {
+        var basicPay = $(this).val();
+        var dailyRate = (basicPay * 12 / 261).toFixed(2);
+        $('#updateDailyRate').val(dailyRate).trigger('input');
     });
 
     $("input[id='updateDailyRate']").on("input", function() {
         var dailyRate = $(this).val();
-        var hourlyRate = dailyRate / 8;
-        hourlyRate = hourlyRate.toFixed(2);
+        var hourlyRate = (dailyRate / 8).toFixed(2);
         $('#updateHourlyRate').val(hourlyRate);
     });
 
