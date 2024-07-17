@@ -89,7 +89,7 @@
 
         public function viewChangeShiftRequest() {
             $request = "
-                SELECT requestID, dateFiled, employeeName, effectivityStartDate, 
+                SELECT requestID, dateFiled, lastName, firstName, effectivityStartDate, 
                 effectivityEndDate, CONCAT(shift_1.startTime, ' - ', shift_1.endTime) AS currentShift, 
                 CONCAT(shift_2.startTime, ' - ', shift_2.endTime) AS requestedShift,  remarks, status  
                 FROM ".$this->changeShift." AS changeShift

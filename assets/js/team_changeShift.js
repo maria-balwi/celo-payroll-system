@@ -36,7 +36,7 @@ $(document).ready(function() {
                     $('#viewLeaveID').val(res.data.requestID);
                     $('#viewEmpID').val(res.data.employeeID);
                     $('#viewDateFiled').val(res.data.dateFiled);
-                    $('#viewName').val(res.data.employeeName);
+                    $('#viewName').val(res.data.firstName + ' ' + res.data.lastName);
                     $('#viewCurrentShift').val(res.data.currentShift);
                     $('#viewRequestedShift').val(res.data.requestedShift);
                     $('#viewLeaveType').val(res.data.leaveType);
@@ -52,7 +52,7 @@ $(document).ready(function() {
                     $('#viewLeaveID').val(res.data.requestID);
                     $('#viewEmpID').val(res.data.employeeID);
                     $('#viewDateFiled').val(res.data.dateFiled);
-                    $('#viewName').val(res.data.employeeName);
+                    $('#viewName').val(res.data.firstName + ' ' + res.data.lastName);
                     $('#viewCurrentShift').val(res.data.currentShift);
                     $('#viewRequestedShift').val(res.data.requestedShift);
                     $('#viewLeaveType').val(res.data.leaveType);

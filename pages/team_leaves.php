@@ -71,7 +71,7 @@
 
                                     $leave_id = $leaveDetails['requestID'];
                                     $leave_dateFiled = $leaveDetails['dateFiled'];
-                                    $leave_employeeName = $leaveDetails['employeeName'];
+                                    $leave_employeeName = $leaveDetails['firstName'] . " " . $leaveDetails['lastName'];
                                     $leave_leaveType = $leaveDetails['leaveType'];
                                     $leave_effectivityStartDate = $leaveDetails['effectivityStartDate'];
                                     $leave_effectivityEndDate = $leaveDetails['effectivityEndDate'];

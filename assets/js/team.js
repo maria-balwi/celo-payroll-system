@@ -32,7 +32,7 @@ $(document).ready(function() {
                     alert(res.message);
                 } 
                 else if (res.status == 200) {
-                    $('#viewEmployeeName').val(res.data.employeeName);
+                    $('#viewEmployeeName').val(res.data.firstName + ' ' + res.data.lastName);
                     $('#viewGender').val(res.data.gender);
                     $('#viewCivilStatus').val(res.data.civilStatus);
                     $('#viewAddress').val(res.data.address);

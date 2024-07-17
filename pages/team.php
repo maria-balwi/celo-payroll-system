@@ -36,7 +36,7 @@
                                 while ($teamDetails = mysqli_fetch_array($teamQuery)) {
 
                                     $team_id = $teamDetails['id'];
-                                    $team_employeeName = $teamDetails['employeeName'];
+                                    $team_employeeName = $teamDetails['firstName'] . " " . $teamDetails['lastName'];
                                     $team_emailAddress = $teamDetails['emailAddress'];
                                     $team_mobileNumber = $teamDetails['mobileNumber'];
                                     $team_department = $teamDetails['departmentName'];
