@@ -223,7 +223,8 @@ $(document).ready(function() {
                     alert(res.message);
                 } 
                 else if (res.status == 200) {
-                    $('#viewEmployeeName').val(res.data.employeeName);
+                    $('#viewLastName').val(res.data.lastName);
+                    $('#viewFirstName').val(res.data.firstName);
                     $('#viewGender').val(res.data.gender);
                     $('#viewCivilStatus').val(res.data.civilStatus);
                     $('#viewAddress').val(res.data.address);

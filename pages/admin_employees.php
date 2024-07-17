@@ -333,25 +333,31 @@
                             </div>
 
                             <div class="row g-2 mb-2">
-                                <div class="col-6">
-                                    <label for="viewEmployeeName">Name:</label>
+                                <div class="col-4">
+                                    <label for="viewLastName">Last Name:</label>
                                 </div>
-                                <div class="col-3">
+                                <div class="col-4">
+                                    <label for="viewFirstName">First Name:</label>
+                                </div>
+                                <div class="col-2">
                                     <label for="viewGender">Gender:</label>
                                 </div>
-                                <div class="col-3">
+                                <div class="col-2">
                                     <label for="viewCivilStatus">Civil Status:</label>
                                 </div>
                             </div>
 
                             <div class="row g-2 mb-2">
-                                <div class="col-6">
-                                    <input type="text" class="form-control" id="viewEmployeeName" disabled readonly>
+                                <div class="col-4">
+                                    <input type="text" class="form-control" id="viewLastName" disabled readonly>
                                 </div>
-                                <div class="col-3">
+                                <div class="col-4">
+                                    <input type="text" class="form-control" id="viewFirstName" disabled readonly>
+                                </div>
+                                <div class="col-2">
                                     <input type="text" class="form-control" id="viewGender" disabled readonly>
                                 </div>
-                                <div class="col-3">
+                                <div class="col-2">
                                     <input type="text" class="form-control" id="viewCivilStatus" disabled readonly>
                                 </div>
                             </div>     
