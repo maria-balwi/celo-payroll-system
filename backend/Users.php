@@ -42,7 +42,7 @@
                     $_SESSION["logged_in"] = TRUE;
                     $_SESSION['userID'] = $userDetails['userID'];
                     $_SESSION['id'] = $userDetails['id'];
-                    $_SESSION['employeeName'] = $userDetails['employeeName'];
+                    $_SESSION['employeeName'] = $userDetails['firstName']." ".$userDetails['lastName'];
                     // $_SESSION['department'] = $userDetails['departmentName'];
                     // $_SESSION['designation'] = $userDetails['position'];
                     $_SESSION['levelID'] = $userDetails['levelID']; 

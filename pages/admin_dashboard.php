@@ -95,7 +95,7 @@
                                         while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
 
                                             $employee_id = $employeeDetails['id'];
-                                            $employee_employeeName = $employeeDetails['employeeName'];
+                                            $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
                                             $employee_emailAddress = $employeeDetails['emailAddress'];
                                             $employee_employeeID = $employeeDetails['employeeID'];
                                             $employee_department = $employeeDetails['departmentName'];

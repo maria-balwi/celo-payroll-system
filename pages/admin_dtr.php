@@ -41,7 +41,7 @@
                                 while ($attendanceDetails = mysqli_fetch_array($attendanceQuery)) {
 
                                     $attendance_id = $attendanceDetails['id'];
-                                    $attendance_employeeName = $attendanceDetails['employeeName'];
+                                    $attendance_employeeName = $attendanceDetails['firstName'] . " " . $attendanceDetails['lastName'];
                                     $attendance_emailAddress = $attendanceDetails['emailAddress'];
                                     $attendance_mobileNumber = $attendanceDetails['mobileNumber'];
                                     $attendance_employeeID = $attendanceDetails['employeeID'];

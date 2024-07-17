@@ -82,7 +82,7 @@
 
                                     $shift_id = $shiftDetails['requestID'];
                                     $shift_dateFiled = $shiftDetails['dateFiled'];
-                                    $shift_employeeName = $shiftDetails['employeeName'];
+                                    $shift_employeeName = $shiftDetails['firstName'] . " " . $shiftDetails['lastName'];
                                     $shift_currentShift = $shiftDetails['currentShift'];
                                     $shift_requestedShift = $shiftDetails['requestedShift'];
                                     $shift_effectivityStartDate = $shiftDetails['effectivityStartDate'];

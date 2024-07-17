@@ -90,7 +90,7 @@
                                                             
                                                             $userID = $personnelDetails['userID'];
                                                             $employeeID = $personnelDetails['employeeID'];
-                                                            $personnelName = $personnelDetails['employeeName'];
+                                                            $personnelName = $personnelDetails['firstName'] . " " . $personnelDetails['lastName'];
                                                             $personnelEmailAdd = $personnelDetails['emailAddress'];
                                                 
 
@@ -121,7 +121,7 @@
                                                             
                                                             $userID = $inactivePersonnelDetails['userID'];
                                                             $employeeID = $inactivePersonnelDetails['employeeID'];
-                                                            $inactivePersonnelName = $inactivePersonnelDetails['employeeName'];
+                                                            $inactivePersonnelName = $inactivePersonnelDetails['firstName'] . " " . $inactivePersonnelDetails['lastName'];
                                                             $inactivePersonnelEmailAdd = $inactivePersonnelDetails['emailAddress'];
                                                 
 
@@ -172,7 +172,7 @@
                                                             
                                                             $userID = $tlqaDetails['userID'];
                                                             $employeeID = $tlqaDetails['employeeID'];
-                                                            $personnelName = $tlqaDetails['employeeName'];
+                                                            $personnelName = $tlqaDetails['firstName'] . " " . $tlqaDetails['lastName'];
                                                             $emailAdd = $tlqaDetails['emailAddress'];
                                                 
 
@@ -203,7 +203,7 @@
                                                             
                                                             $userID = $inactiveTLQAdetails['userID'];
                                                             $employeeID = $inactiveTLQAdetails['employeeID'];
-                                                            $inactivePersonnelName = $inactiveTLQAdetails['employeeName'];
+                                                            $inactivePersonnelName = $inactiveTLQAdetails['firstName'] . " " . $inactiveTLQAdetails['lastName'];
                                                             $inactiveEmailAdd = $inactiveTLQAdetails['emailAddress'];
                                                 
 
@@ -254,7 +254,7 @@
                                                             
                                                             $userID = $facilitiesDetails['userID'];
                                                             $employeeID = $facilitiesDetails['employeeID'];
-                                                            $facilitiesName = $facilitiesDetails['employeeName'];
+                                                            $facilitiesName = $facilitiesDetails['firstName'] . " " . $facilitiesDetails['lastName'];
                                                             $emailAdd = $facilitiesDetails['emailAddress'];
                                                 
 
@@ -285,7 +285,7 @@
                                                             
                                                             $userID = $inactiveFacilitiesDetails['userID'];
                                                             $employeeID = $inactiveFacilitiesDetails['employeeID'];
-                                                            $inactiveFacilitiesName = $inactiveFacilitiesDetails['employeeName'];
+                                                            $inactiveFacilitiesName = $inactiveFacilitiesDetails['firstName'] . " " . $inactiveFacilitiesDetails['lastName'];
                                                             $inactiveFacilitiesEmailAdd = $inactiveFacilitiesDetails['emailAddress'];
                                                 
 
@@ -336,7 +336,7 @@
                                                             
                                                             $userID = $hrDetails['userID'];
                                                             $employeeID = $hrDetails['employeeID'];
-                                                            $hrstaffName = $hrDetails['employeeName'];
+                                                            $hrstaffName = $hrDetails['firstName'] . " " . $hrDetails['lastName'];
                                                             $emailAdd = $hrDetails['emailAddress'];
                                                 
 
@@ -367,7 +367,7 @@
                                                             
                                                             $userID = $inactiveHRdetails['userID'];
                                                             $employeeID = $inactiveHRdetails['employeeID'];
-                                                            $inactiveHR = $inactiveHRdetails['employeeName'];
+                                                            $inactiveHR = $inactiveHRdetails['firstName'] . " " . $inactiveHRdetails['lastName'];
                                                             $inactiveAdminEmailAdd = $inactiveHRdetails['emailAddress'];
                                                 
 
@@ -418,7 +418,7 @@
                                                             
                                                             $userID = $financeDetails['userID'];
                                                             $employeeID = $financeDetails['employeeID'];
-                                                            $financestaffName = $financeDetails['employeeName'];
+                                                            $financestaffName = $financeDetails['firstName'] . " " . $financeDetails['lastName'];
                                                             $emailAdd = $financeDetails['emailAddress'];
                                                 
 
@@ -449,7 +449,7 @@
                                                             
                                                             $userID = $inactiveFinanceDetails['userID'];
                                                             $employeeID = $inactiveFinanceDetails['employeeID'];
-                                                            $inactiveFinance = $inactiveFinanceDetails['employeeName'];
+                                                            $inactiveFinance = $inactiveFinanceDetails['firstName'] . " " . $inactiveFinanceDetails['lastName'];
                                                             $inactiveFinanceEmailAdd = $inactiveFinanceDetails['emailAddress'];
                                                 
 
@@ -500,7 +500,7 @@
                                                             
                                                             $userID = $adminDetails['userID'];
                                                             $employeeID = $adminDetails['employeeID'];
-                                                            $itstaffName = $adminDetails['employeeName'];
+                                                            $itstaffName = $adminDetails['firstName'] . " " . $adminDetails['lastName'];
                                                             $itEmailAdd = $adminDetails['emailAddress'];
                                                 
 
@@ -531,7 +531,7 @@
                                                             
                                                             $userID = $inactiveAdminDetails['userID'];
                                                             $employeeID = $inactiveAdminDetails['employeeID'];
-                                                            $inactiveAdminName = $inactiveAdminDetails['employeeName'];
+                                                            $inactiveAdminName = $inactiveAdminDetails['firstName'] . " " . $inactiveAdminDetails['lastName'];
                                                             $inactiveAdminEmailAdd = $inactiveAdminDetails['emailAddress'];
                                                 
 
@@ -582,7 +582,7 @@
                                                             
                                                             $userID = $directorDetails['userID'];
                                                             $employeeID = $directorDetails['employeeID'];
-                                                            $directorName = $directorDetails['employeeName'];
+                                                            $directorName = $directorDetails['firstName'] . " " . $directorDetails['lastName'];
                                                             $directorEmailAdd = $directorDetails['emailAddress'];
                                                 
 
@@ -613,7 +613,7 @@
                                                             
                                                             $userID = $inactiveDirectorDetails['userID'];
                                                             $employeeID = $inactiveDirectorDetails['employeeID'];
-                                                            $inactiveDirectorName = $inactiveDirectorDetails['employeeName'];
+                                                            $inactiveDirectorName = $inactiveDirectorDetails['firstName'] . " " . $inactiveDirectorDetails['lastName'];
                                                             $inactiveDirectorEmailAdd = $inactiveDirectorDetails['emailAddress'];
                                                 
 

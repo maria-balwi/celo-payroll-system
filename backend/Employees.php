@@ -74,7 +74,7 @@
 
         public function viewAdminChangeShiftRequest() {
             $request = "
-                SELECT requestID, dateFiled, employeeName, effectivityStartDate, 
+                SELECT requestID, dateFiled, lastName, firstName, effectivityStartDate, 
                 effectivityEndDate, CONCAT(shift_1.startTime, ' - ', shift_1.endTime) AS currentShift, 
                 CONCAT(shift_2.startTime, ' - ', shift_2.endTime) AS requestedShift,  remarks, status  
                 FROM ".$this->changeShift." AS changeShift
@@ -407,7 +407,7 @@
 
         public function getLeaveInfo($leaveID) {
             $request = "
-                SELECT requestID, employeeName, employeeID,
+                SELECT requestID, lastName, firstName, employeeID,
                 leaveType, remarks, status,
                 DATE_FORMAT(dateFiled, '%M %d, %Y') AS dateFiled,
                 DATE_FORMAT(effectivityStartDate, '%M %d, %Y') AS effectivityStartDate,
@@ -423,7 +423,7 @@
 
         public function getChangeShiftInfo($changeShiftID) {
             $request = "
-                SELECT requestID, employeeID, employeeName, CONCAT(shift_1.startTime, ' - ', shift_1.endTime) AS currentShift, 
+                SELECT requestID, employeeID, lastName, firstName, CONCAT(shift_1.startTime, ' - ', shift_1.endTime) AS currentShift, 
                 CONCAT(shift_2.startTime, ' - ', shift_2.endTime) AS requestedShift,  remarks, status,
                 DATE_FORMAT(dateFiled, '%M %d, %Y') AS dateFiled,
                 DATE_FORMAT(effectivityStartDate, '%M %d, %Y') AS effectivityStartDate, 

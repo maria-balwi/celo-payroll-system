@@ -33,7 +33,7 @@
                                     <img src="https://randomuser.me/api/portraits/men/94.jpg" class="w-32 h-32 bg-gray-300 rounded-md mb-4 shrink-0">
 
                                     </img>
-                                    <h1 class="text-lg font-bold uppercase"><?php echo $userDetails['employeeName'] ?></h1>
+                                    <h1 class="text-lg font-bold uppercase"><?php echo $userDetails['firstName']. " " . $userDetails['lastName'] ?></h1>
                                     <p class=" text-sm  uppercase text-gray-700"><?php echo $userDetails['departmentName']." - ". $userDetails['position'] ?></p>
                                 </div>
                                 <hr class="my-2 border-t border-gray-300">
@@ -75,7 +75,7 @@
                                     <div class="flex flex-col py-1 pr-6">
                                         <div class="flex gap-2 py-1">
                                             <h2 class="text-sm text-gray-500">Name:</h2>
-                                            <h2 class="text-sm text-gray-400"><?php echo $userDetails['employeeName'] ?></h2>
+                                            <h2 class="text-sm text-gray-400"><?php echo $userDetails['firstName']. " " . $userDetails['lastName'] ?></h2>
                                         </div>
                                         <div class="flex gap-2 py-1">
                                             <h2 class="text-sm text-gray-500">Email:</h2>
