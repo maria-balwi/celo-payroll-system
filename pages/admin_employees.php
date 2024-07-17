@@ -543,29 +543,35 @@
                                 </div>
 
                                 <div class="row g-2 mb-2">
-                                    <div class="col-6">
-                                        <label for="updateEmployeeName">Name:</label>
+                                    <div class="col-4">
+                                        <label for="updateLastName">Last Name:</label>
                                     </div>
-                                    <div class="col-3">
+                                    <div class="col-4">
+                                        <label for="updateFirstName">First Name:</label>
+                                    </div>
+                                    <div class="col-2">
                                         <label for="updateGender">Gender:</label>
                                     </div>
-                                    <div class="col-3">
+                                    <div class="col-2">
                                         <label for="updateCivilStatus">Civil Status:</label>
                                     </div>
                                 </div>
 
                                 <div class="row g-2 mb-2">
-                                    <div class="col-6">
-                                        <input type="text" class="form-control" id="updateEmployeeName" name="updateEmployeeName" placeholder="Name">
+                                    <div class="col-4">
+                                        <input type="text" class="form-control" id="updateLastName" name="updateLastName" placeholder="Name">
                                     </div>
-                                    <div class="col-3">
+                                    <div class="col-4">
+                                        <input type="text" class="form-control" id="updateFirstName" name="updateFirstName" placeholder="Name">
+                                    </div>
+                                    <div class="col-2">
                                         <select id="updateGender" name="updateGender" class="form-select">
                                             <option value="" selected disabled>Choose</option>
                                             <option value="Male">Male</option>
                                             <option value="Female">Female</option>
                                         </select>
                                     </div>
-                                    <div class="col-3">
+                                    <div class="col-2">
                                         <select id="updateCivilStatus" name="updateCivilStatus" class="form-select">
                                             <option selected disabled>Choose</option>
                                             <option value="Single">Single</option>

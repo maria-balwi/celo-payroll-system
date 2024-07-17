@@ -340,12 +340,13 @@
             return $addRequirement;
         }
 
-        public function updateEmployeeInfo($updateUserID, $updateEmployeeName, $updateGender, $updateCivilStatus, $updateAddress, 
+        public function updateEmployeeInfo($updateUserID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
             $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
             $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID) {
             $updateEmployee = "
                 UPDATE ".$this->employees." AS employees 
-                SET employeeName = '$updateEmployeeName',
+                SET lastName = '$updateLastName',
+                firstName = '$updateFirstName',
                 gender = '$updateGender',
                 civilStatus = '$updateCivilStatus',
                 address = '$updateAddress',

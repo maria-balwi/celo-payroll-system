@@ -4,7 +4,8 @@
     session_start();
 
     $updateID = $_POST['updateID'];
-    $updateEmployeeName = $_POST['updateEmployeeName'];
+    $updateLastName = $_POST['updateLastName'];
+    $updateFirstName = $_POST['updateFirstName'];
     $updateGender = $_POST['updateGender'];
     $updateCivilStatus = $_POST['updateCivilStatus'];
     $updateAddress = $_POST['updateAddress'];
@@ -94,7 +95,7 @@
         // IF SAME EMPLOYEE ID (OLD AND NEW)
         if ($updateEmployeeID == $oldEmployeeID)
         {
-            mysqli_query($conn, $employees->updateEmployeeInfo($updateID, $updateEmployeeName, $updateGender, $updateCivilStatus, $updateAddress, 
+            mysqli_query($conn, $employees->updateEmployeeInfo($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
             $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
             $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID));
 
@@ -119,7 +120,7 @@
             // IF NEW EMPLOYEE ID DOES NOT EXISTS
             else 
             {
-                mysqli_query($conn, $employees->updateEmployeeInfo($updateID, $updateEmployeeName, $updateGender, $updateCivilStatus, $updateAddress, 
+                mysqli_query($conn, $employees->updateEmployeeInfo($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
                 $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
                 $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID));
 
@@ -148,7 +149,7 @@
             // IF SAME EMPLOYEE ID (OLD AND NEW)
             if ($updateEmployeeID == $oldEmployeeID)
             {
-                mysqli_query($conn, $employees->updateEmployeeInfo($updateID, $updateEmployeeName, $updateGender, $updateCivilStatus, $updateAddress, 
+                mysqli_query($conn, $employees->updateEmployeeInfo($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
                 $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
                 $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID));
 
@@ -173,7 +174,7 @@
                 // IF NEW EMPLOYEE ID DOES NOT EXISTS
                 else 
                 {
-                    mysqli_query($conn, $employees->updateEmployeeInfo($updateID, $updateEmployeeName, $updateGender, $updateCivilStatus, $updateAddress, 
+                    mysqli_query($conn, $employees->updateEmployeeInfo($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
                     $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
                     $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID));
 
