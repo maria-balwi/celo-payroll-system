@@ -266,7 +266,8 @@ $(document).ready(function() {
                     } 
                     else if (res.status == 200) {
                         $('#updateID').val(res.data.id);
-                        $('#updateEmployeeName').val(res.data.employeeName);
+                        $('#updateLastName').val(res.data.lastName);
+                        $('#updateFirstName').val(res.data.firstName);
                         $('#updateGender').val(res.data.gender);
                         $('#updateCivilStatus').val(res.data.civilStatus);
                         $('#updateAddress').val(res.data.address);
@@ -303,7 +304,8 @@ $(document).ready(function() {
 
         // let updateEmployeeForm = new FormData();
         var updateID = $("#updateID").val();
-        var updateEmployeeName = $("#updateEmployeeName").val();
+        var updateLastName = $("#updateLastName").val();
+        var updateFirstName = $("#updateFirstName").val();
         var updateGender = $("#updateGender").val();
         var updateCivilStatus = $("#updateCivilStatus").val();
         var updateAddress = $("#updateAddress").val();
@@ -322,7 +324,7 @@ $(document).ready(function() {
         var oldEmailAddress = $("#oldEmailAddress").val();
         var oldEmployeeID = $("#oldEmployeeID").val();
 
-        if (updateEmployeeName == "" || updateGender == "" || updateCivilStatus == "" || 
+        if (updateLastName == "" || updateFirstName == "" || updateGender == "" || updateCivilStatus == "" || 
             updateAddress == "" || updateDateOfBirth == "" || updatePlaceOfBirth == "" ||
             updateSSS == "" || updatePagIbig == "" || updatePhilhealth == "" || updateTIN == "" ||
             updateEmailAddress == "" || updateEmployeeID == "" || updateMobileNumber == "" ||
