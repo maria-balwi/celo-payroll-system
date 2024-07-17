@@ -39,7 +39,7 @@
 
                                             $employee_id = $employeeDetails['id'];
                                             $employee_employeeID = $employeeDetails['employeeID'];
-                                            $employee_employeeName = $employeeDetails['employeeName'];
+                                            $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
                                             $employee_emailAddress = $employeeDetails['emailAddress'];
                                             $employee_mobileNumber = $employeeDetails['mobileNumber'];
                                             $employee_department = $employeeDetails['departmentName'];
@@ -87,29 +87,35 @@
                                 </div>
 
                                 <div class="row g-2 mb-2">
-                                    <div class="col-6">
-                                        <label for="employeeName">Name:</label>
+                                    <div class="col-4">
+                                        <label for="lastName">Last Name:</label>
                                     </div>
-                                    <div class="col-3">
+                                    <div class="col-4">
+                                        <label for="firstName">First Name:</label>
+                                    </div>
+                                    <div class="col-2">
                                         <label for="gender">Gender:</label>
                                     </div>
-                                    <div class="col-3">
+                                    <div class="col-2">
                                         <label for="civilStatus">Civil Status:</label>
                                     </div>
                                 </div>
 
                                 <div class="row g-2 mb-2">
-                                    <div class="col-6">
-                                        <input type="text" class="form-control" id="employeeName" name="employeeName" placeholder="Name">
+                                    <div class="col-4">
+                                        <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last Name">
                                     </div>
-                                    <div class="col-3">
+                                    <div class="col-4">
+                                        <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First Name">
+                                    </div>
+                                    <div class="col-2">
                                         <select id="gender" name="gender" class="form-select">
                                             <option value="" selected disabled>Choose</option>
                                             <option value="Male">Male</option>
                                             <option value="Female">Female</option>
                                         </select>
                                     </div>
-                                    <div class="col-3">
+                                    <div class="col-2">
                                         <select id="civilStatus" name="civilStatus" class="form-select">
                                             <option selected disabled>Choose</option>
                                             <option value="Single">Single</option>

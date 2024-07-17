@@ -315,12 +315,12 @@
             return $checkEmployeeID;
         }
 
-        public function addNewEmployee($employeeName, $gender, $civilStatus, $address, $dateOfBirth, $placeOfBirth, 
+        public function addNewEmployee($lastName, $firstName, $gender, $civilStatus, $address, $dateOfBirth, $placeOfBirth, 
             $sss, $pagIbig, $philhealth, $tin, $emailAddress, $employeeID, $mobileNumber, $departmentID, $designationID, $shiftID) {
             $addPersonnel = "
-                INSERT INTO ".$this->employees." (employeeName, gender, civilStatus, address, dateOfBirth, placeOfBirth, 
+                INSERT INTO ".$this->employees." (lastName, firstName, gender, civilStatus, address, dateOfBirth, placeOfBirth, 
                 sss, pagIbig, philhealth, tin, emailAddress, employeeID, mobileNumber, departmentID, designationID, shiftID)
-                VALUES ('".$employeeName."', '".$gender."', '".$civilStatus."', '".$address."', '".$dateOfBirth."', '".$placeOfBirth."',
+                VALUES ('".$lastName."', '".$firstName."', '".$gender."', '".$civilStatus."', '".$address."', '".$dateOfBirth."', '".$placeOfBirth."',
                 '".$sss."', '".$pagIbig."', '".$philhealth."', '".$tin."', '".$emailAddress."', '".$employeeID."', '".$mobileNumber."', 
                 '".$departmentID."', '".$designationID."', '".$shiftID."')";
             return $addPersonnel;

@@ -3,7 +3,8 @@
     $conn = $database->dbConnect();
     session_start();
 
-    $employeeName = $_POST['employeeName'];
+    $lastName = $_POST['lastName'];
+    $firstName = $_POST['firstName'];
     $gender = $_POST['gender'];
     $civilStatus = $_POST['civilStatus'];
     $address = $_POST['address'];
@@ -95,7 +96,7 @@
         exit();
     }
     else {
-        mysqli_query($conn, $employees->addNewEmployee($employeeName, $gender, $civilStatus, $address, $dateOfBirth, $placeOfBirth, 
+        mysqli_query($conn, $employees->addNewEmployee($lastName, $firstName, $gender, $civilStatus, $address, $dateOfBirth, $placeOfBirth, 
         $sss, $pagIbig, $philhealth, $tin, $emailAddress, $employeeID, $mobileNumber, $departmentID, $designationID, $shiftID));
 
         $lastIDQuery = mysqli_query($conn, $employees->viewLastEmployee());

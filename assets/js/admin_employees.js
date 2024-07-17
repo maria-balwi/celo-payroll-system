@@ -112,8 +112,9 @@ $(document).ready(function() {
 
         e.preventDefault();
 
-        let newEmployeeForm = new FormData();
-        var employeeName = $("#employeeName").val();
+        // let newEmployeeForm = new FormData();
+        var lastName = $("#lastName").val();
+        var firstName = $("#firstName").val();
         var gender = $("#gender").val();
         var civilStatus = $("#civilStatus").val();
         var address = $("#address").val();
@@ -130,7 +131,7 @@ $(document).ready(function() {
         var designation = $("#designation").val();
         var shiftID = $("#shiftID").val();
 
-        if (employeeName == "" || gender == "" || civilStatus == "" || 
+        if (lastName == "" || firstName == "" || gender == "" || civilStatus == "" || 
             address == "" || dateOfBirth == "" || placeOfBirth == "" ||
             sss == "" || pagIbig == "" || philhealth == "" || tin == "" ||
             emailAddress == "" || employeeID == "" || mobileNumber == "" ||
