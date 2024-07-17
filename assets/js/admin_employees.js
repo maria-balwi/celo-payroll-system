@@ -107,6 +107,21 @@ $(document).ready(function() {
         placeholder: 'XXX-XXX'
     });
 
+    // HOURLY RATE COMPUTATION
+    $("input[id='dailyRate']").on("input", function() {
+        var dailyRate = $(this).val();
+        var hourlyRate = dailyRate / 8;
+        hourlyRate = hourlyRate.toFixed(2);
+        $('#hourlyRate').val(hourlyRate);
+    });
+
+    $("input[id='updateDailyRate']").on("input", function() {
+        var dailyRate = $(this).val();
+        var hourlyRate = dailyRate / 8;
+        hourlyRate = hourlyRate.toFixed(2);
+        $('#updateHourlyRate').val(hourlyRate);
+    });
+
     // ADD EMPLOYEE
     $("#addEmployeeForm").submit(function (e) {
 
@@ -130,12 +145,17 @@ $(document).ready(function() {
         var department = $("#department").val();
         var designation = $("#designation").val();
         var shiftID = $("#shiftID").val();
+        var basicPay = $("#basicPay").val();
+        var dailyRate = $("#dailyRate").val();
+        var hourlyRate = $("#hourlyRate").val();
+        console.log({hourlyRate});
 
         if (lastName == "" || firstName == "" || gender == "" || civilStatus == "" || 
             address == "" || dateOfBirth == "" || placeOfBirth == "" ||
             sss == "" || pagIbig == "" || philhealth == "" || tin == "" ||
             emailAddress == "" || employeeID == "" || mobileNumber == "" ||
-            department == "" || designation == "" || shiftID == "") {
+            department == "" || designation == "" || shiftID == "" || 
+            basicPay == "" || dailyRate == "" || hourlyRate == "") {
             Swal.fire({
                 icon: 'warning',
                 title: 'Required Information',
@@ -240,6 +260,9 @@ $(document).ready(function() {
                     $('#viewDepartment').val(res.data.departmentName);
                     $('#viewDesignation').val(res.data.position);
                     $('#viewShiftID').val(res.data.startTime + ' - ' + res.data.endTime);
+                    $('#viewBasicPay').val(res.data.basicPay);
+                    $('#viewDailyRate').val(res.data.dailyRate);
+                    $('#viewHourlyRate').val(res.data.hourlyRate);
                     $('#view_req_sss').val(res.data.req_sss == 1 ? $('#view_req_sss').prop('checked', true) : $('#view_req_sss').prop('checked', false));
                     $('#view_req_pagIbig').val(res.data.req_pagIbig == 1 ? $('#view_req_pagIbig').prop('checked', true) : $('#view_req_pagIbig').prop('checked', false));
                     $('#view_req_philhealth').val(res.data.req_philhealth == 1 ? $('#view_req_philhealth').prop('checked', true) : $('#view_req_philhealth').prop('checked', false));
@@ -283,6 +306,9 @@ $(document).ready(function() {
                         $('#updateDepartment').val(res.data.departmentName);
                         $('#updateDesignation').val(res.data.position);
                         $('#updateShiftID').val(res.data.startTime + ' - ' + res.data.endTime);
+                        $('#updateBasicPay').val(res.data.basicPay);
+                        $('#updateDailyRate').val(res.data.dailyRate);
+                        $('#updateHourlyRate').val(res.data.hourlyRate);
                         $('#update_req_sss').val(res.data.req_sss == 1 ? $('#update_req_sss').prop('checked', true) : $('#update_req_sss').prop('checked', false));
                         $('#update_req_pagIbig').val(res.data.req_pagIbig == 1 ? $('#update_req_pagIbig').prop('checked', true) : $('#update_req_pagIbig').prop('checked', false));
                         $('#update_req_philhealth').val(res.data.req_philhealth == 1 ? $('#update_req_philhealth').prop('checked', true) : $('#update_req_philhealth').prop('checked', false));
@@ -303,7 +329,6 @@ $(document).ready(function() {
         e.preventDefault();
 
         // let updateEmployeeForm = new FormData();
-        var updateID = $("#updateID").val();
         var updateLastName = $("#updateLastName").val();
         var updateFirstName = $("#updateFirstName").val();
         var updateGender = $("#updateGender").val();
@@ -321,14 +346,16 @@ $(document).ready(function() {
         var updateDepartment = $("#updateDepartment").val();
         var updateDesignation = $("#updateDesignation").val();
         var updateShiftID = $("#updateShiftID").val();
-        var oldEmailAddress = $("#oldEmailAddress").val();
-        var oldEmployeeID = $("#oldEmployeeID").val();
+        var updateBasicPay = $("#updateBasicPay").val();
+        var updateDailyRate = $("#updateDailyRate").val();
+        var updateHourlyRate = $("#updateHourlyRate").val();
 
         if (updateLastName == "" || updateFirstName == "" || updateGender == "" || updateCivilStatus == "" || 
             updateAddress == "" || updateDateOfBirth == "" || updatePlaceOfBirth == "" ||
             updateSSS == "" || updatePagIbig == "" || updatePhilhealth == "" || updateTIN == "" ||
             updateEmailAddress == "" || updateEmployeeID == "" || updateMobileNumber == "" ||
-            updateDepartment == "" || updateDesignation == "" || updateShiftID == "") {
+            updateDepartment == "" || updateDesignation == "" || updateShiftID == "" || 
+            updateBasicPay == "" || updateDailyRate == "" || updateHourlyRate == "") {
 
             Swal.fire({
                 icon: 'warning',

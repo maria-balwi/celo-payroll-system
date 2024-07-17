@@ -265,6 +265,30 @@
                                     </div>
                                 </div>
 
+                                <div class="row g-2 mb-2">
+                                    <div class="col-4">
+                                        <label for="basicPay">Basic Pay:</label>
+                                    </div>
+                                    <div class="col-4">
+                                        <label for="dailyRate">Daily Rate:</label>
+                                    </div>
+                                    <div class="col-4">
+                                        <label for="hourlyRate">Hourly Rate:</label>
+                                    </div>
+                                </div>
+                            
+                                <div class="row g-2 mb-2">
+                                    <div class="col-4">
+                                        <input type="number" class="form-control" id="basicPay" name="basicPay" placeholder="Basic Pay">
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="number" class="form-control" id="dailyRate" name="dailyRate" placeholder="1.0" step="0.01">
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="number" class="form-control" id="hourlyRate" name="hourlyRate" placeholder="1.0" step="0.01" readonly>
+                                    </div>
+                                </div>
+
                                 <h2 class="text-lg font-semibold">Requirements:</h2>
                                 <div class="row g-3">
                                     <div class="col-md-3">
@@ -469,6 +493,30 @@
                                 </div>
                                 <div class="col-4">
                                     <input type="text" class="form-control" id="viewShiftID" disabled readonly>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-2">
+                                <div class="col-4">
+                                    <label for="viewBasicPay">Basic Pay:</label>
+                                </div>
+                                <div class="col-4">
+                                    <label for="viewDailyRate">Daily Rate:</label>
+                                </div>
+                                <div class="col-4">
+                                    <label for="viewHourlyRate">Hourly Rate:</label>
+                                </div>
+                            </div>
+                            
+                            <div class="row g-2 mb-2">
+                                <div class="col-4">
+                                    <input type="number" class="form-control" id="viewBasicPay" name="viewBasicPay" disabled readonly>
+                                </div>
+                                <div class="col-4">
+                                    <input type="number" class="form-control" id="viewDailyRate" name="viewDailyRate" disabled readonly>
+                                </div>
+                                <div class="col-4">
+                                    <input type="number" class="form-control" id="viewHourlyRate" name="viewHourlyRate" disabled readonly>
                                 </div>
                             </div>
 
@@ -700,19 +748,19 @@
                                     </div>
                                     <div class="col-4">
                                         <select class="form-select" id="updateDesignation" name="updateDesignation">
-                                                <option disabled selected>Choose</option>
-                                                <?php
-                                                    $designation = mysqli_query($conn, $employees->viewDesignation());
-                                                    while ($designationResult = mysqli_fetch_array($designation)) {
-                                                    ?>
-                                                    <option value="<?php echo $designationResult['position']; ?>">
-                                                        <?php echo $designationResult['position']; ?>
-                                                    </option>
-                                                    
-                                                <?php        
-                                                    }
+                                            <option disabled selected>Choose</option>
+                                            <?php
+                                                $designation = mysqli_query($conn, $employees->viewDesignation());
+                                                while ($designationResult = mysqli_fetch_array($designation)) {
                                                 ?>
-                                            </select>
+                                                <option value="<?php echo $designationResult['position']; ?>">
+                                                    <?php echo $designationResult['position']; ?>
+                                                </option>
+                                                
+                                            <?php        
+                                                }
+                                            ?>
+                                        </select>
                                     </div>
                                     <div class="col-4">
                                         <select type="dropdown" id="updateShiftID" name="updateShiftID" class="form-select">
@@ -729,6 +777,30 @@
                                                 }
                                             ?>
                                         </select>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <div class="col-4">
+                                        <label for="updateBasicPay">Basic Pay:</label>
+                                    </div>
+                                    <div class="col-4">
+                                        <label for="updateDailyRate">Daily Rate:</label>
+                                    </div>
+                                    <div class="col-4">
+                                        <label for="updateHourlyRate">Hourly Rate:</label>
+                                    </div>
+                                </div>
+                            
+                                <div class="row g-2 mb-2">
+                                    <div class="col-4">
+                                        <input type="number" class="form-control" id="updateBasicPay" name="updateBasicPay" placeholder="Basic Pay">
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="number" class="form-control" id="updateDailyRate" name="updateDailyRate" placeholder="1.0" step="0.01">
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="number" class="form-control" id="updateHourlyRate" name="updateHourlyRate" placeholder="1.0" step="0.01" readonly>
                                     </div>
                                 </div>
 
