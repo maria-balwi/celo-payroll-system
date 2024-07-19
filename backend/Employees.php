@@ -14,6 +14,7 @@
         private $leaveType = 'tbl_leavetype';
         private $shifts = 'tbl_shiftschedule';
         private $requirements = 'tbl_requirements';
+        private $deductions = 'tbl_deductions';
         private $dbConnect = false;
         public function __construct() {
             $this->dbConnect = $this->dbConnect();
@@ -460,6 +461,34 @@
                 INSERT INTO ".$this->changeShift." (empID, dateFiled, requestedShift, effectivityStartDate, effectivityEndDate, remarks, status)
                 VALUES ('$employeeID', CURRENT_TIMESTAMP, '$newshift', '$effectivityStartDate', '$effectivityEndDate', '$remarks', '$status')";
             return $fileRequest;
+        }
+
+        public function viewDeductions() {
+            $deduction = "SELECT * FROM ".$this->deductions;
+            return $deduction;
+        }
+
+        public function getDeductionInfo($deductionID) {
+            $deduction = "
+                SELECT * FROM ".$this->deductions."
+                WHERE deductionID = '$deductionID'";
+            return $deduction;
+        }
+
+        public function addDeduction($deductionName, $deductionAmount) {
+            $addDeduction = "
+                INSERT INTO ".$this->deductions." (deductionName, deductionAmount)
+                VALUES ('$deductionName', '$deductionAmount')";
+            return $addDeduction;
+        }
+
+        public function updateDeduction($deductionID, $deductionName, $deductionAmount) {
+            $updateDeduction = "
+                UPDATE ".$this->deductions."
+                SET deductionName = '$deductionName', 
+                deductionAmount = '$deductionAmount'
+                WHERE deductionID = '$deductionID'";
+            return $updateDeduction;
         }
     }
 
