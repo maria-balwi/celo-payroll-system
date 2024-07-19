@@ -47,6 +47,7 @@
                     // $_SESSION['designation'] = $userDetails['position'];
                     $_SESSION['levelID'] = $userDetails['levelID']; 
                     $_SESSION['email'] = $userDetails['emailAddress'];
+                    $_SESSION['employeeID'] = $userDetails['employeeID'];
                     $_SESSION['hashedPassword'] = $userDetails['password'];
                     $_SESSION['password'] = $pass_word;
                     $_SESSION['activated'] = $userDetails['activated']; 
