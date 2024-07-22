@@ -109,13 +109,13 @@
                                     echo "<td ='px-6 whitespace-nowrap'>" . $leave_effectivityDate . "</td>";
                                     echo "<td ='px-6 whitespace-nowrap'>" . $leave_remarks . "</td>";
                                     if ($leave_status == "Pending") {
-                                        echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 mt-3 rounded-full text-sm'>". $leave_status . "</p></td>";
+                                        echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $leave_status . "</p></td>";
                                     }
                                     else if ($leave_status == "Approved") {
-                                        echo "<td><p class='inline-block bg-green-500 text-white px-3 py-1 mt-3 rounded-full text-sm'>". $leave_status . "</p></td>";
+                                        echo "<td><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $leave_status . "</p></td>";
                                     }
                                     else if ($leave_status == "Disapproved") {
-                                        echo "<td><p class='inline-block bg-red-500 text-white px-3 py-1 mt-3 rounded-full text-sm'>". $leave_status . "</p></td>";
+                                        echo "<td><p class='inline-block bg-red-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $leave_status . "</p></td>";
                                     }
                                     // echo "<td class='px-6 whitespace-nowrap'>
                                     //     <svg class='h-6 w-6 text-gray-500'  fill='none' viewBox='0 0 24 24' stroke='currentColor'>

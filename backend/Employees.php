@@ -490,6 +490,13 @@
                 WHERE deductionID = '$deductionID'";
             return $updateDeduction;
         }
+
+        public function saveDTR($id, $logTypeID) {
+            $saveDTR = "
+                INSERT INTO ".$this->attendance." (empID, logTypeID, attendanceDate, attendanceTime)
+                VALUES ('$id', '$logTypeID', CURRENT_TIMESTAMP(), CURRENT_TIME())";
+            return $saveDTR;
+        }
     }
 
 ?>

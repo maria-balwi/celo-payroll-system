@@ -103,13 +103,13 @@
                                     echo "<td ='px-6 whitespace-nowrap'>" . $shift_effectivityDate . "</td>";
                                     echo "<td ='px-6 whitespace-nowrap'>" . $shift_remarks . "</td>";
                                     if ($shift_status == "Pending") {
-                                        echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 mt-3 rounded-full text-sm'>". $shift_status . "</p></td>";
+                                        echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $shift_status . "</p></td>";
                                     }
                                     else if ($shift_status == "Approved") {
-                                        echo "<td><p class='inline-block bg-green-500 text-white px-3 py-1 mt-3 rounded-full text-sm'>". $shift_status . "</p></td>";
+                                        echo "<td><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $shift_status . "</p></td>";
                                     }
                                     else if ($shift_status == "Disapproved") {
-                                        echo "<td><p class='inline-block bg-red-500 text-white px-3 py-1 mt-3 rounded-full text-sm'>". $shift_status . "</p></td>";
+                                        echo "<td><p class='inline-block bg-red-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $shift_status . "</p></td>";
                                     }
                                     echo "</td>";
                                 }

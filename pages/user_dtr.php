@@ -67,7 +67,7 @@
 
                                         echo "<tr data-id='" . $dtr_id . "' class='odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700'>";
                                         echo "<td class=' whitespace-nowrap'>
-                                                <svg class='h-8 w-8 text-gray-500'  fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+                                                <svg class='h-8 w-8 text-gray-500 mx-auto'  fill='none' viewBox='0 0 24 24' stroke='currentColor'>
                                                     <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z'/>
                                                     <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M15 13a3 3 0 11-6 0 3 3 0 016 0z'/>
                                                 </svg>
@@ -75,19 +75,19 @@
                                         echo "<td ='whitespace-nowrap'>" . $formattedDate . "</td>";
                                         echo "<td ='whitespace-nowrap'>" . $dtr_time . "</td>";
                                         if ($dtr_logType == "Time In") {
-                                            echo "<td><p class='inline-block bg-green-500 text-white px-3 rounded-full text-sm'>". $dtr_logType . "</p></td>";
+                                            echo "<td><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $dtr_logType . "</p></td>";
                                         }
                                         else if ($dtr_logType == "Time Out" || $dtr_logType == "OT Out") {
-                                            echo "<td><p class='inline-block bg-red-500 text-white px-3 rounded-full text-sm'>". $dtr_logType . "</p></td>";
+                                            echo "<td><p class='inline-block bg-red-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $dtr_logType . "</p></td>";
                                         }
                                         else if ($dtr_logType == "Start of Break" || $dtr_logType == "End of Break") {
-                                            echo "<td><p class='inline-block bg-purple-500 text-white px-3 rounded-full text-sm'>". $dtr_logType . "</p></td>";
+                                            echo "<td><p class='inline-block bg-purple-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $dtr_logType . "</p></td>";
                                         }
                                         else if ($dtr_logType == "OT In") {
-                                            echo "<td><p class='inline-block bg-blue-500 text-white px-3 rounded-full text-sm'>". $dtr_logType . "</p></td>";
+                                            echo "<td><p class='inline-block bg-blue-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $dtr_logType . "</p></td>";
                                         }
                                         else if ($dtr_logType == "Late" || $dtr_logType == "Undertime") {
-                                            echo "<td><p class='inline-block bg-yellow-500 text-white px-3 rounded-full text-sm'>". $dtr_logType . "</p></td>";
+                                            echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $dtr_logType . "</p></td>";
                                         }
                                         echo "<td =' whitespace-nowrap'>" . $dtr_attendanceTime . "</td>";
                                         echo "</td>";
