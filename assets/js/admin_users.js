@@ -115,7 +115,7 @@ $(document).ready(function() {
                 // EMPLOYEE
                 else if (res.status == 200) {
                     $('#viewUserID').val(res.data.userID);
-                    $('#viewEmployeeName').val(res.data.employeeName);
+                    $('#viewEmployeeName').val(res.data.firstName+' '+res.data.lastName);
                     $('#viewEmailAdd').val(res.data.emailAddress);
                     $('#viewEmployeeID').val(res.data.employeeID);
                     $('#viewDepartment').val(res.data.departmentName+' - '+res.data.position);
