@@ -36,7 +36,7 @@ $(document).ready(function() {
                     $('#viewLeaveID').val(res.data.requestID);
                     $('#viewEmpID').val(res.data.employeeID);
                     $('#viewDateFiled').val(res.data.dateFiled);
-                    $('#viewName').val(res.data.firstName + ' ' + res.data.lastName);
+                    $('#viewName').val(res.data.employeeName);
                     $('#viewLeaveType').val(res.data.leaveType);
                     // $('#viewInclusiveDates').val(res.data.effectivityStartDate+' - '+res.data.effectivityEndDate);
                     $('#viewStartDate').val(res.data.effectivityStartDate);
@@ -51,7 +51,7 @@ $(document).ready(function() {
                     $('#viewLeaveID').val(res.data.requestID);
                     $('#viewEmpID').val(res.data.employeeID);
                     $('#viewDateFiled').val(res.data.dateFiled);
-                    $('#viewName').val(res.data.firstName + ' ' + res.data.lastName);
+                    $('#viewName').val(res.data.employeeName);
                     $('#viewLeaveType').val(res.data.leaveType);
                     // $('#viewInclusiveDates').val(res.data.effectivityStartDate+' - '+res.data.effectivityEndDate);
                     $('#viewStartDate').val(res.data.effectivityStartDate);

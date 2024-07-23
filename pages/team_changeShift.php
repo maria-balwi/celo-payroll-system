@@ -130,7 +130,7 @@
                 <div class="modal-dialog modal-none modal-dialog-centered modal-scrollable">
                     <div class="modal-content" id="viewChangeShiftModal">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="viewLeaveLabel">View Leave</h1>
+                            <h1 class="modal-title fs-5" id="viewLeaveLabel">View Change Shift</h1>
                             <input type="hidden" id="viewLeaveID">
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
