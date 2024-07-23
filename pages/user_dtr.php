@@ -19,7 +19,7 @@
 
                     <!-- DATATABLE -->
                     <div class="container mx-auto overflow-auto">
-                        <table id="example" class="min-w-full divide-y divide-gray-200 text-center table-striped table-bordered">
+                        <table id="dtrTable" class="min-w-full divide-y divide-gray-200 text-center table-striped table-bordered">
                             <thead class="bg-gray-50">
                                 <tr>
                                     <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Face DTR</th>
@@ -102,7 +102,7 @@
             
         </div>
     
-        <script src="../assets/js/dtr.js"></script>
+        <script src="../assets/js/user_dtr.js"></script>
 
         <!-- FOOTER -->
         <?php include('../includes/footer.php'); ?>
