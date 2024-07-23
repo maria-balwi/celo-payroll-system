@@ -12,7 +12,7 @@
         $id = $_SESSION['id'];
         $faceDTR_action = $_POST['faceDTR_action'];
 
-        $shiftQuery = mysqli_query($conn, $employees->getShiftInfo($id));
+        $shiftQuery = mysqli_query($conn, $users->getShiftInfo($id));
         $shiftResult = mysqli_fetch_array($shiftQuery); 
         $startTime = $shiftResult['startTime'];
         $endTime = $shiftResult['endTime'];
@@ -45,7 +45,7 @@
         // GENERATE CUSTOM FILE NAME USING USER EMPLOYEE ID, DATE, AND ACTION
         $fileName = isset($_POST['faceDTR_action']) ? preg_replace('/-/', '', $_SESSION['employeeID']) . '_' . date("Y.m.d") . '_' . $_POST['faceDTR_action'] . '.png' : 'image_' . uniqid() . '.png';
 
-        mysqli_query($conn, $employees->saveDTR($_SESSION['id'], $logTypeID));
+        mysqli_query($conn, $users->saveDTR($_SESSION['id'], $logTypeID));
 
         // SAVE THE FILE
         $file = $uploadDir. '/' . $fileName;
