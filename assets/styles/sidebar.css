@@ -1,6 +1,7 @@
 /* Ensure the sidebar z-index is higher than other elements */
 #sidebar {
     z-index: auto;
+    overflow-y: auto;
 }
 /* Transition styles for submenu */
 .admin-submenu-enter {

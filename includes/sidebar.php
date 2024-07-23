@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="../assets/styles/sidebar.css">
     </head>
-    <body class="bg-gray-100 h-lvh flex">
+    <body class="bg-gray-100 h-screen flex">
 
         <!-- Sidebar -->
         <div id="sidebar" class="bg-gray-800 text-gray-100 w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 md:flex-shrink-0 transition-transform duration-200 ease-in-out">
@@ -132,7 +132,7 @@
         </div>
 
         <!-- Main Content Area -->
-        <div class="flex-1 flex flex-col overflow-hidden">
+        <div class="flex-1 flex-col overflow-auto">
             
             <!-- Navbar inside Main Content -->
             <div class="bg-white p-4 flex justify-between items-center shadow md:flex">
