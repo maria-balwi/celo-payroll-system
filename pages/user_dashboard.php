@@ -124,13 +124,21 @@
                                 <div class="row g-2">
                                     <div class="col-12">
                                         <h2 class="text-xxl font-semibold text-center" id="clock"></h2>
-                                    </div>
+                                    </div>  
                                 </div>
                             </div>
 
                             <div class="modal-footer">
+                            <?php if($_SESSION['dtr'] == 'forTimeIn') { ?>
                                 <button type="button" class="btn btn-primary faceDTR" data-bs-toggle="modal" data-bs-target="#timeInModal">Time In</button>
                                 <button type="button" class="btn btn-primary faceDTR" data-bs-toggle="modal" data-bs-target="#timeOutModal">Time Out</button>
+                            <?php } else if ($_SESSION['dtr'] == 'forTimeOut') { ?>
+                                <button type="button" class="btn btn-primary faceDTR" data-bs-toggle="modal" data-bs-target="#timeInModal" disabled>Time In</button>
+                                <button type="button" class="btn btn-primary faceDTR" data-bs-toggle="modal" data-bs-target="#timeOutModal">Time Out</button>
+                            <?php } else {?>
+                                <button type="button" class="btn btn-primary faceDTR" data-bs-toggle="modal" data-bs-target="#timeInModal" disabled>Time In</button>
+                                <button type="button" class="btn btn-primary faceDTR" data-bs-toggle="modal" data-bs-target="#timeOutModal" disabled>Time Out</button>
+                            <?php } ?>
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             </div>
                         </div>

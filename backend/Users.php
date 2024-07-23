@@ -6,7 +6,9 @@
         private $users = 'tbl_users';
         private $department = 'tbl_department';
         private $designation = 'tbl_designation';
-        private $shifts = 'tbl_shiftschedule';
+        private $attendance = 'tbl_attendance';
+        private $logtype = 'tbl_logtype';
+        private $shift = 'tbl_shiftschedule';
         private $dbConnect = false;
         public function __construct() {
             $this->dbConnect = $this->dbConnect();
@@ -128,6 +130,34 @@
                 ON employees.designationID = designation.designationID
                 WHERE userID = ".$userID."";
             return $userInfo;
+        }
+
+        public function saveDTR($id, $logTypeID) {
+            $saveDTR = "
+                INSERT INTO ".$this->attendance." (empID, logTypeID, attendanceDate, attendanceTime)
+                VALUES ('$id', '$logTypeID', CURRENT_TIMESTAMP(), CURRENT_TIME())";
+            return $saveDTR;
+        }
+
+        public function getShiftInfo($id){
+            $shift = "
+                SELECT shifts.shiftID, startTime, endTime
+                FROM ".$this->shift." AS shifts
+                INNER JOIN ".$this->employees." AS employees
+                ON employees.shiftID = shifts.shiftID
+                WHERE employees.id = '$id'";
+            return $shift;
+        }
+
+        public function checkLastDTR($id) {
+            $checkLastDTR = "
+                SELECT * FROM ".$this->attendance." AS attendance
+                INNER JOIN ".$this->logtype." AS logtype
+                ON attendance.logTypeID = logtype.logTypeID
+                WHERE attendance.empID = '$id'
+                ORDER BY attendanceID DESC
+                LIMIT 1";
+            return $checkLastDTR;
         }
     }
 

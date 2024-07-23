@@ -35,5 +35,54 @@
                 // FALSE
                 header("Location: ../index.php");
             }
+
+            // ====== CHECK LAST DTR INFO ========
+            // FETCH DATA FROM DATABASE
+            $lastDTRQuery = mysqli_query($conn, $users->checkLastDTR($_SESSION['id']));
+            if (mysqli_num_rows($lastDTRQuery) == 0) {
+
+            }
+            else {
+                $lastDTR = mysqli_fetch_array($lastDTRQuery);
+                $logType = $lastDTR['logType'];
+                $attendanceDate = $lastDTR['attendanceDate'];
+                $attendanceTime = $lastDTR['attendanceTime'];
+
+                // COMBINE DATE AND TIME
+                $dtrDateTime = $attendanceDate . " " . $attendanceTime;
+                $dtrDateTime = new DateTime($dtrDateTime);
+
+                // ADD 20 HOURS
+                $interval = new DateInterval('PT20H');
+                $updatedDateTime = $dtrDateTime->add($interval);
+
+                // SETTING TIME BEFORE GETTING CURRENT DATE AND TIME
+                date_default_timezone_set('Asia/Manila');
+                $currentDateTime = new DateTime(); 
+
+                // $currentDateTime_str = $currentDateTime->format('Y-m-d H:i:s');
+                // $updatedDateTime_str = $updatedDateTime->format('Y-m-d H:i:s');
+
+                // echo 'updatedDateTime: ' . $updatedDateTime_str . '<br>';
+                // echo 'currentDateTime: ' . $currentDateTime_str . '<br>';
+                
+                // SESSION VARIABLE FOR DTR
+                $_SESSION['dtr'] = 'forTimeIn';
+
+                if ($logType == "Time In" || $logType == "Late") 
+                {
+                    if ($currentDateTime < $updatedDateTime) 
+                    {
+                        $_SESSION['dtr'] = 'forTimeOut';
+                    }
+                }
+                else if ($logType == "Time Out" || $logType == "Undertime")
+                {
+                    if ($currentDateTime < $updatedDateTime)
+                    {
+                        $_SESSION['dtr'] = 'forWaiting';
+                    }
+                }
+            }
         ?>
     </head>

@@ -512,23 +512,7 @@
                 WHERE deductionID = '$deductionID'";
             return $updateDeduction;
         }
-
-        public function saveDTR($id, $logTypeID) {
-            $saveDTR = "
-                INSERT INTO ".$this->attendance." (empID, logTypeID, attendanceDate, attendanceTime)
-                VALUES ('$id', '$logTypeID', CURRENT_TIMESTAMP(), CURRENT_TIME())";
-            return $saveDTR;
-        }
-
-        public function getShiftInfo($id){
-            $shift = "
-                SELECT shifts.shiftID, startTime, endTime
-                FROM ".$this->shift." AS shifts
-                INNER JOIN ".$this->employees." AS employees
-                ON employees.shiftID = shifts.shiftID
-                WHERE employees.id = '$id'";
-            return $shift;
-        }
+        
     }
 
 ?>
