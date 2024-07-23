@@ -144,7 +144,6 @@
                         <div class="modal-content" id="timeInModal">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="timeInModalLabel">Face DTR</h1>
-                                <input type="hidden" id="faceDTR_action" value="timeIn">
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
 
@@ -172,7 +171,6 @@
                         <div class="modal-content" id="timeOutModal">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="timeOutModalLabel">Face DTR - Time Out</h1>
-                                <input type="hidden" id="faceDTR_action" value="timeOut">
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">

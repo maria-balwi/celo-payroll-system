@@ -51,14 +51,19 @@
 
         public function viewDTR($id) {
             $dtr = "
-                SELECT * FROM ".$this->attendance." AS attendance 
+                SELECT attendanceDate, id, logType,   
+                DATE_FORMAT(attendanceTime, '%h:%i %p') AS attendanceTime, 
+                DATE_FORMAT(startTime, '%h:%i %p') AS startTime, 
+                DATE_FORMAT(endTime, '%h:%i %p') AS endTime
+                FROM ".$this->attendance." AS attendance 
                 INNER JOIN ".$this->employees." AS employees
                 ON attendance.empID = employees.id
                 INNER JOIN ".$this->logtype." AS logtype 
                 ON attendance.logTypeID = logtype.logTypeID 
                 INNER JOIN ".$this->shift." AS shift 
                 ON employees.shiftID = shift.shiftID
-                WHERE empID='$id'";
+                WHERE empID='$id'
+                ORDER BY attendanceDate DESC, attendanceTime DESC";
             return $dtr;
         }
 
@@ -76,8 +81,9 @@
         public function viewAdminChangeShiftRequest() {
             $request = "
                 SELECT requestID, dateFiled, lastName, firstName, effectivityStartDate, 
-                effectivityEndDate, CONCAT(shift_1.startTime, ' - ', shift_1.endTime) AS currentShift, 
-                CONCAT(shift_2.startTime, ' - ', shift_2.endTime) AS requestedShift,  remarks, status  
+                effectivityEndDate, remarks, status, 
+                CONCAT(DATE_FORMAT(shift_1.startTime, '%h:%i %p'), ' - ', DATE_FORMAT(shift_1.endTime, '%h:%i %p')) AS currentShift, 
+                CONCAT(DATE_FORMAT(shift_2.startTime, '%h:%i %p'), ' - ', DATE_FORMAT(shift_2.endTime, '%h:%i %p')) AS requestedShift
                 FROM ".$this->changeShift." AS changeShift
                 INNER JOIN ".$this->employees." AS employees
                 ON changeShift.empID = employees.id
@@ -90,9 +96,9 @@
 
         public function viewChangeShiftRequest() {
             $request = "
-                SELECT requestID, dateFiled, lastName, firstName, effectivityStartDate, 
-                effectivityEndDate, CONCAT(shift_1.startTime, ' - ', shift_1.endTime) AS currentShift, 
-                CONCAT(shift_2.startTime, ' - ', shift_2.endTime) AS requestedShift,  remarks, status  
+                SELECT requestID, dateFiled, lastName, firstName, effectivityStartDate, remarks, status, effectivityEndDate, 
+                CONCAT(DATE_FORMAT(shift_1.startTime, '%h:%i %p'), ' - ', DATE_FORMAT(shift_1.endTime, '%h:%i %p')) AS currentShift, 
+                CONCAT(DATE_FORMAT(shift_2.startTime, '%h:%i %p'), ' - ', DATE_FORMAT(shift_2.endTime, '%h:%i %p')) AS requestedShift
                 FROM ".$this->changeShift." AS changeShift
                 INNER JOIN ".$this->employees." AS employees
                 ON changeShift.empID = employees.id
@@ -262,7 +268,10 @@
 
         public function viewShifts() {
             $allShifts = "
-                SELECT * FROM ".$this->shifts;
+                SELECT shiftID, 
+                DATE_FORMAT(startTime, '%h:%i %p') AS startTime, 
+                DATE_FORMAT(endTime, '%h:%i %p') AS endTime 
+                FROM ".$this->shifts;
             return $allShifts;
         }
 
@@ -385,7 +394,13 @@
 
         public function getEmployeeInfo($id) {
             $employeeInfo = "
-                SELECT * FROM ".$this->employees." AS employees
+                SELECT id, lastName, firstName, gender, civilStatus, address, dateOfBirth, 
+                placeOfBirth, sss, pagIbig, philhealth, tin, emailAddress, employeeID, 
+                mobileNumber, departmentName, position, basicPay, dailyRate, hourlyRate,
+                req_sss, req_pagIbig, req_philhealth, req_tin, req_nbi,
+                DATE_FORMAT(shifts.startTime, '%h:%i %p') AS startTime, 
+                DATE_FORMAT(shifts.endTime, '%h:%i %p') AS endTime
+                 FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->shifts." AS shifts
                 ON shifts.shiftID = employees.shiftID
                 INNER JOIN ".$this->department." AS department
@@ -400,7 +415,11 @@
 
         public function viewAttendance(){
             $attendance = "
-                SELECT * FROM ".$this->attendance." AS attendance
+                SELECT id, firstName, lastName, emailAddress, 
+                mobileNumber, employeeID, 
+                DATE_FORMAT(startTime, '%h:%i %p') AS startTime, 
+                DATE_FORMAT(endTime, '%h:%i %p') AS endTime
+                FROM ".$this->attendance." AS attendance
                 INNER JOIN ".$this->employees." AS employees
                 ON attendance.empID = employees.id
                 INNER JOIN ".$this->logtype." AS logtype
@@ -412,8 +431,9 @@
 
         public function getLeaveInfo($leaveID) {
             $request = "
-                SELECT requestID, lastName, firstName, employeeID,
+                SELECT requestID, employeeID,
                 leaveType, remarks, status,
+                CONCAT(firstName, ' ', lastName) AS employeeName,
                 DATE_FORMAT(dateFiled, '%M %d, %Y') AS dateFiled,
                 DATE_FORMAT(effectivityStartDate, '%M %d, %Y') AS effectivityStartDate,
                 DATE_FORMAT(effectivityEndDate, '%M %d, %Y') AS effectivityEndDate
@@ -428,8 +448,10 @@
 
         public function getChangeShiftInfo($changeShiftID) {
             $request = "
-                SELECT requestID, employeeID, lastName, firstName, CONCAT(shift_1.startTime, ' - ', shift_1.endTime) AS currentShift, 
-                CONCAT(shift_2.startTime, ' - ', shift_2.endTime) AS requestedShift,  remarks, status,
+                SELECT requestID, employeeID, remarks, status,
+                CONCAT(firstName, ' ', lastName) AS employeeName,
+                CONCAT(DATE_FORMAT(shift_1.startTime, '%h:%i %p'), ' - ', DATE_FORMAT(shift_1.endTime, '%h:%i %p')) AS currentShift,
+                CONCAT(DATE_FORMAT(shift_2.startTime, '%h:%i %p'), ' - ', DATE_FORMAT(shift_2.endTime, '%h:%i %p')) AS requestedShift,
                 DATE_FORMAT(dateFiled, '%M %d, %Y') AS dateFiled,
                 DATE_FORMAT(effectivityStartDate, '%M %d, %Y') AS effectivityStartDate, 
                 DATE_FORMAT(effectivityEndDate, '%M %d, %Y') AS effectivityEndDate
@@ -496,6 +518,16 @@
                 INSERT INTO ".$this->attendance." (empID, logTypeID, attendanceDate, attendanceTime)
                 VALUES ('$id', '$logTypeID', CURRENT_TIMESTAMP(), CURRENT_TIME())";
             return $saveDTR;
+        }
+
+        public function getShiftInfo($id){
+            $shift = "
+                SELECT shifts.shiftID, startTime, endTime
+                FROM ".$this->shift." AS shifts
+                INNER JOIN ".$this->employees." AS employees
+                ON employees.shiftID = shifts.shiftID
+                WHERE employees.id = '$id'";
+            return $shift;
         }
     }
 

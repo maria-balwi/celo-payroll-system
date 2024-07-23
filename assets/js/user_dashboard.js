@@ -30,21 +30,18 @@ $(document).ready(function() {
             const context = canvasElement.getContext('2d');
             context.drawImage(videoElement, 0, 0, 640, 480);
 
-            // Get the data URL of the image
+            // GET THE DATA URL OF THE IMAGE 
             const dataURL = canvasElement.toDataURL('image/png');
-            // const fileName = $('#fileName').val() + '_' + action;
-            var faceDTR_action = $("#faceDTR_action").val();
 
-            // Send the image data to the server
+            // SEND THE IMAGE TO THE SERVER
             $.ajax({
                 type: 'POST',
                 url: '../backend/user/saveDTR.php',
                 data: {
                     imgBase64: dataURL,
-                    faceDTR_action: faceDTR_action
+                    faceDTR_action: action
                 },
                 success: function(response) {
-                    // alert(action.charAt(0).toUpperCase() + action.slice(1) + ' image saved successfully: ' + response);
                     Swal.fire({
                         icon: 'success',
                         title: 'Success',
@@ -104,60 +101,5 @@ $(document).ready(function() {
         });
     });
     
-    // // FOR FACE RECOGNITION - OUT
-    // $(document).on('click', '.faceDTROut', function() {
-    //     const video = document.getElementById('videoOut');
-    //     let stream;
-
-    //     // Get access to the webcam
-    //     if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-    //         navigator.mediaDevices.getUserMedia({ video: true }).then(function(s) {
-    //             stream = s;
-    //             video.srcObject = stream;
-    //             video.play();
-    //         });
-    //     }
-
-    //     // Trigger photo take
-    //     $('#captureOut').on('click', function() {
-    //         const canvas = document.getElementById('canvasOut');
-    //         const context = canvas.getContext('2d');
-    //         context.drawImage(video, 0, 0, 640, 480);
-
-    //         // Get the data URL of the image
-    //         const dataURL = canvas.toDataURL('image/png');
-    //         const fileName = $('#fileName').val();
-
-    //         // Send the image data to the server
-    //         $.ajax({
-    //             type: 'POST',
-    //             url: 'save_image.php',
-    //             data: {
-    //                 imgBase64: dataURL,
-    //                 fileName: fileName
-    //             },
-    //             success: function(response) {
-    //                 alert('Image saved successfully: ' + response);
-    //                 stopStream();
-    //             },
-    //             error: function(xhr, status, error) {
-    //                 console.error(xhr.responseText);
-    //                 stopStream();
-    //             }
-    //         });
-    //     });
-
-    //     // Handle cancel button
-    //     $('#cancelOut').on('click', function() {
-    //         stopStream();
-    //         video.pause();
-    //     });
-
-    //     function stopStream() {
-    //         if (stream) {
-    //             stream.getTracks().forEach(track => track.stop());
-    //             video.srcObject = null;
-    //         }
-    //     }
-    // });
+    
 });
