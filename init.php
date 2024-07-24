@@ -12,9 +12,10 @@
     require 'backend/Database.php';
     require 'backend/Users.php';
     require 'backend/Employees.php';
+    require 'backend/Attendance.php';
 
     $database = new Database;
     $users = new Users;
     $employees = new Employees;
-
+    $attendance = new Attendance;
 ?>

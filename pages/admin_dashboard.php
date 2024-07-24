@@ -37,7 +37,13 @@
                         <svg class="h-16 w-16 text-gray-600 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                        <h2 class="text-xl font-bold mb-1">4</h2>
+                        <h2 class="text-xl font-bold mb-1">
+                            <?php  
+                                $presentEmployeesQuery = mysqli_query($conn, $attendance->getPresentEmployees());
+                                $presentEmployees = mysqli_num_rows($presentEmployeesQuery);
+                                echo $presentEmployees;
+                            ?>
+                        </h2>
                         <p class="text-gray-700">Present</p>
                     </div>
 
@@ -46,7 +52,13 @@
                         <svg class="h-16 w-16 text-gray-600 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                        <h2 class="text-xl font-bold mb-1">0</h2>
+                        <h2 class="text-xl font-bold mb-1">
+                            <?php  
+                                $absentEmployeesQuery = mysqli_query($conn, $attendance->getAbsentEmployees());
+                                $absentEmployees = mysqli_num_rows($absentEmployeesQuery);
+                                echo $absentEmployees;
+                            ?>
+                        </h2>
                         <p class="text-gray-700">Absent</p>
                     </div>
 
@@ -55,7 +67,13 @@
                         <svg class="h-16 w-16 text-gray-600 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                        <h2 class="text-xl font-bold mb-1">2</h2>
+                        <h2 class="text-xl font-bold mb-1">
+                            <?php  
+                                $lateEmployeesQuery = mysqli_query($conn, $attendance->getLateEmployees());
+                                $lateEmployees = mysqli_num_rows($lateEmployeesQuery);
+                                echo $lateEmployees;
+                            ?>
+                        </h2>
                         <p class="text-gray-700">Late</p>
                     </div>
 
@@ -64,15 +82,71 @@
                         <svg class="h-16 w-16 text-gray-600 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                         </svg>
-                        <h2 class="text-xl font-bold mb-1">0</h2>
-                        <p class="text-gray-700">
-                            On Leave
-                        </p>
+                        <h2 class="text-xl font-bold mb-1">
+                            <?php  
+                                $undertimeEmployeesQuery = mysqli_query($conn, $attendance->getUndertimeEmployees());
+                                $undertimeEmployees = mysqli_num_rows($undertimeEmployeesQuery);
+                                echo $undertimeEmployees;
+                            ?>
+                        </h2>
+                        <p class="text-gray-700">Undertime</p>
+                        <!-- <p class="text-gray-700">On Leave</p> -->
                     </div>
 
                     <!-- Card 6 -->
                     <div class="bg-white p-4 rounded-lg col-span-6 lg:col-span-2 shadow-md">
                         <h2 class="text-xl font-bold mb-2">Pending Requests</h2>
+                        <?php  
+                            $getPendingLeavesQuery = mysqli_query($conn, $attendance->getPendingLeaves());
+                            $getPendingLeaves = mysqli_num_rows($getPendingLeavesQuery);
+
+                            $getPendingChangeShiftQuery = mysqli_query($conn, $attendance->getPendingChangeShift());
+                            $getPendingChangeShift = mysqli_num_rows($getPendingChangeShiftQuery);
+
+                            if ($getPendingLeaves != 0) { ?>
+                                <!-- ======== LEAVE APPLICATIONS ======== -->
+                                <a href="admin_leaves.php" class="no-underline text-gray-700">
+                                    <div class="flex gap-2 p-2 rounded-lg hover:bg-blue-100 px-auto">
+                                        <div class="my-auto">
+                                            <svg class="h-10 w-10 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+                                            </svg>
+                                        </div>
+                                        <div class="py-auto px-auto">
+                                            <h2 class="text-lg mb-0 font-semibold">Leave Applications</h2>
+                                            <p class="text-gray-500 text-sm">Pending leave requests</p>
+                                        </div>
+                                        <div class="bg-yellow-200 text-gray-700 px-3 py-2 rounded-lg my-auto text-center font-semibold">
+                                            <?php echo $getPendingLeaves ?>
+                                        </div>
+                                    </div>
+                                </a>
+                        <?php } 
+                            if ($getPendingChangeShift != 0) { ?>
+                                <!-- ======== CHANGE SHIFT REQUESTS ======== -->
+                                <a href="admin_changeShift.php" class="no-underline text-gray-700">
+                                    <div class="flex gap-2 p-2 rounded-lg hover:bg-blue-100 px-auto">
+                                        <div class="my-auto">
+                                            <svg class="h-10 w-10 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+                                            </svg>
+                                        </div>
+                                        <div class="py-auto px-auto">
+                                            <h2 class="text-lg mb-0 font-semibold">Change of Shift</h2>
+                                            <p class="text-gray-500 text-sm">Pending change of shift requests</p>
+                                        </div>
+                                        <div class="bg-yellow-200 text-gray-700 px-3 py-2 rounded-lg my-auto text-center font-semibold">
+                                            <?php echo $getPendingChangeShift ?>
+                                        </div>
+                                    </div>
+                                </a>
+                        <?php }
+                            else { ?>
+                                <!-- ======== NO PENDING REQUESTS ======== -->
+                                <div class="mt-3">
+                                    <p class="text-gray-700">There are no pending requests at the moment.</p>
+                                </div>
+                        <?php } ?>
                     </div>
 
                     <!-- Card 7 -->
