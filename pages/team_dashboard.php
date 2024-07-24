@@ -37,7 +37,13 @@
                         <svg class="h-16 w-16 text-gray-600 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                        <h2 class="text-xl font-bold mb-1">4</h2>
+                        <h2 class="text-xl font-bold mb-1">
+                            <?php  
+                                $presentITQuery = mysqli_query($conn, $attendance->getPresentIT());
+                                $presentIT = mysqli_num_rows($presentITQuery);
+                                echo $presentIT;
+                            ?>
+                        </h2>
                         <p class="text-gray-700">Present</p>
                     </div>
 
@@ -46,7 +52,13 @@
                         <svg class="h-16 w-16 text-gray-600 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                        <h2 class="text-xl font-bold mb-1">0</h2>
+                        <h2 class="text-xl font-bold mb-1">
+                            <?php  
+                                $absentITQuery = mysqli_query($conn, $attendance->getAbsentIT());
+                                $absentIT = mysqli_num_rows($absentITQuery);
+                                echo $absentIT;
+                            ?>
+                        </h2>
                         <p class="text-gray-700">Absent</p>
                     </div>
 
@@ -55,67 +67,164 @@
                         <svg class="h-16 w-16 text-gray-600 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                        <h2 class="text-xl font-bold mb-1">2</h2>
+                        <h2 class="text-xl font-bold mb-1">
+                            <?php  
+                                $lateITQuery = mysqli_query($conn, $attendance->getLateIT());
+                                $lateIT = mysqli_num_rows($lateITQuery);
+                                echo $lateIT;
+                            ?>
+                        </h2>
                         <p class="text-gray-700">Late</p>
                     </div>
 
                     <!-- Card 5 -->
                     <div class="bg-white p-4 rounded-lg col-span-3 lg:col-span-1 shadow-md text-center">
                         <svg class="h-16 w-16 text-gray-600 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                        <h2 class="text-xl font-bold mb-1">0</h2>
-                        <p class="text-gray-700">On Leave</p>
+                        <h2 class="text-xl font-bold mb-1">
+                            <?php  
+                                $undertimeITQuery = mysqli_query($conn, $attendance->getUndertimeIT());
+                                $undertimeIT = mysqli_num_rows($undertimeITQuery);
+                                echo $undertimeIT;
+                            ?>
+                        </h2>
+                        <p class="text-gray-700">Undertime</p>
+                        <!-- <p class="text-gray-700">On Leave</p> -->
                     </div>
 
                     <!-- Card 6 -->
                     <div class="bg-white p-4 rounded-lg col-span-6 lg:col-span-2 shadow-md">
                         <h2 class="text-xl font-bold mb-2">Pending Requests</h2>
+                        <?php  
+                            $getPendingLeavesQuery = mysqli_query($conn, $attendance->getPendingITLeaves());
+                            $getPendingLeaves = mysqli_num_rows($getPendingLeavesQuery);
+
+                            $getPendingChangeShiftQuery = mysqli_query($conn, $attendance->getPendingITChangeShift());
+                            $getPendingChangeShift = mysqli_num_rows($getPendingChangeShiftQuery);
+
+                            if ($getPendingLeaves != 0) { ?>
+                                <!-- ======== LEAVE APPLICATIONS ======== -->
+                                <a href="admin_leaves.php" class="no-underline text-gray-700">
+                                    <div class="flex gap-2 p-2 rounded-lg hover:bg-blue-100 px-auto">
+                                        <div class="my-auto">
+                                            <svg class="h-10 w-10 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                            </svg>
+                                        </div>
+                                        <div class="py-auto px-auto">
+                                            <h2 class="text-lg mb-0 font-semibold">Leave Applications</h2>
+                                            <p class="text-gray-500 text-sm">Pending leave requests</p>
+                                        </div>
+                                        <div class="bg-yellow-200 text-gray-700 px-3 py-2 rounded-lg my-auto text-center font-semibold">
+                                            <?php echo $getPendingLeaves ?>
+                                        </div>
+                                    </div>
+                                </a>
+                        <?php } 
+                            if ($getPendingChangeShift != 0) { ?>
+                                <!-- ======== CHANGE SHIFT REQUESTS ======== -->
+                                <a href="admin_changeShift.php" class="no-underline text-gray-700">
+                                    <div class="flex gap-2 p-2 rounded-lg hover:bg-blue-100 px-auto">
+                                        <div class="my-auto">
+                                            <svg class="h-10 w-10 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+                                            </svg>
+                                        </div>
+                                        <div class="py-auto px-auto">
+                                            <h2 class="text-lg mb-0 font-semibold">Change of Shift</h2>
+                                            <p class="text-gray-500 text-sm">Pending change of shift requests</p>
+                                        </div>
+                                        <div class="bg-yellow-200 text-gray-700 px-3 py-2 rounded-lg my-auto text-center font-semibold">
+                                            <?php echo $getPendingChangeShift ?>
+                                        </div>
+                                    </div>
+                                </a>
+                        <?php }
+                            else { ?>
+                                <!-- ======== NO PENDING REQUESTS ======== -->
+                                <div class="mt-3">
+                                    <p class="text-gray-700">There are no pending requests at the moment.</p>
+                                </div>
+                        <?php } ?>
                     </div>
 
                     <!-- Card 7 -->
                     <div class="bg-white p-4 rounded-lg col-span-6 lg:col-span-4 shadow-md">
-                        <h2 class="text-xl font-bold mb-2">Attendance for Today</h2>
+                        <h2 class="text-xl font-bold mb-2">
+                            Attendance for Today: 
+                            <?php 
+                                // GET CURRENT DATE
+                                $currentDate = date('Y-m-d');
+
+                                // Create a DateTime object from the string
+                                $dateTime = new DateTime($currentDate);
+                                
+                                // Format the date
+                                echo $dateTime->format('F j, Y - l');
+                            ?>
+                        </h2>
                         <!-- DATATABLE -->
                         <div class="container mx-auto overflow-auto">
-                            <table id="attendaceTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered">
+                            <table id="attendaceTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center">
                                 <thead class="bg-gray-50">
                                     <tr>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Shift</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Log In</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Log Out</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Shift</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Log In</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Log Out</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
-                                    <tr>
-                                        <td class="px-6 whitespace-nowrap">PALENCIA, CHRISTIAN JAY MANAHAN</td>
-                                        <td class="px-6 whitespace-nowrap">9pm - 6am</td>
-                                        <td class="px-6 whitespace-nowrap">-</td>
-                                        <td class="px-6 whitespace-nowrap">-</td>
-                                        <td class="px-6 whitespace-nowrap">Absent</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-6 whitespace-nowrap">SAMPANG, JOHN PAUL PELIAZAR</td>
-                                        <td class="px-6 whitespace-nowrap">9pm - 6am</td>
-                                        <td class="px-6 whitespace-nowrap">11:20:47 AM</td>
-                                        <td class="px-6 whitespace-nowrap">8:52:48 PM</td>
-                                        <td class="px-6 whitespace-nowrap">Undertime</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-6 whitespace-nowrap">ODLUIO, JOSEPH PAUL GAVINO</td>
-                                        <td class="px-6 whitespace-nowrap">6am - 3pm</td>
-                                        <td class="px-6 whitespace-nowrap">-</td>
-                                        <td class="px-6 whitespace-nowrap">-</td>
-                                        <td class="px-6 whitespace-nowrap">Absent</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-6 whitespace-nowrap">REYES, MARIA PATRICE ALVAREZ</td>
-                                        <td class="px-6 whitespace-nowrap">9am - 6pm</td>
-                                        <td class="px-6 whitespace-nowrap">8:04:59 AM</td>
-                                        <td class="px-6 whitespace-nowrap">7:07:00 PM</td>
-                                        <td class="px-6 whitespace-nowrap">Overtime</td>
+                                    <?php
+                                        $itTeamQuery = mysqli_query($conn, $attendance->viewITTeam());
+                                        while ($itTeamDetails = mysqli_fetch_array($itTeamQuery)) {
+
+                                            $teamIT_id = $itTeamDetails['id'];
+                                            $teamIT_employeeName = $itTeamDetails['firstName'] . " " . $itTeamDetails['lastName'];
+                                            $teamIT_shift = $itTeamDetails['startTime'] . " - " . $itTeamDetails['endTime'];
+                                            $teamIT_status = "Absent";
+
+                                            // GET ATTENDANCE TIME - TIME IN
+                                            $dailyAttendanceITQuery_timeIn = mysqli_query($conn, $attendance->dailyAttendanceIT_timeIn($teamIT_id));
+                                            $dailyAttendanceIT_timeInDetails = mysqli_fetch_array($dailyAttendanceITQuery_timeIn);
+                                            if (isset($dailyAttendanceIT_timeInDetails['attendanceTime']))
+                                            {
+                                                $teamIT_timeIn = $dailyAttendanceIT_timeInDetails['attendanceTime'];
+                                                $teamIT_status = "Present";
+                                            }
+                                            else  
+                                            {
+                                                $teamIT_timeIn = "-";
+                                            }
+
+                                            // GET ATTENDANCE TIME - TIME OUT
+                                            $dailyAttendanceITQuery_timeOut = mysqli_query($conn, $attendance->dailyAttendanceIT_timeOut($teamIT_id));
+                                            $dailyAttendanceIT_timeOutDetails = mysqli_fetch_array($dailyAttendanceITQuery_timeOut);
+                                            if (isset($dailyAttendanceIT_timeOutDetails['attendanceTime']))
+                                            {
+                                                $teamIT_timeOut = $dailyAttendanceIT_timeOutDetails['attendanceTime'];
+                                                $teamIT_status = "Present";
+                                            }
+                                            else  
+                                            {
+                                                $teamIT_timeOut = "-";
+                                            }
+                                            echo "<tr data-id='" . $teamIT_id . "'>"; 
+                                            ?>
+                                            
+                                            <td class="whitespace-nowrap text-left"><?php echo $teamIT_employeeName ?></td>
+                                            <td class="whitespace-nowrap"><?php echo $teamIT_shift ?></td>
+                                            <td class="whitespace-nowrap"><?php echo $teamIT_timeIn ?></td>
+                                            <td class="whitespace-nowrap"><?php echo $teamIT_timeOut ?></td>
+                                            <?php 
+                                                if ($teamIT_status == "Present") { ?>
+                                            <td class="whitespace-nowrap text-green-600"><?php echo $teamIT_status ?></td>
+                                            <?php }
+                                                else { ?>
+                                            <td class="whitespace-nowrap text-red-600"><?php echo $teamIT_status ?></td>
+                                        <?php } } ?>
                                     </tr>
                                 </tbody>
                             </table>

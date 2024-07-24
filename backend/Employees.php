@@ -109,6 +109,24 @@
             return $request;
         }
 
+        public function viewChangeShiftRequestIT() {
+            $request = "
+                SELECT requestID, dateFiled, lastName, firstName, effectivityStartDate, remarks, status, effectivityEndDate, 
+                CONCAT(DATE_FORMAT(shift_1.startTime, '%h:%i %p'), ' - ', DATE_FORMAT(shift_1.endTime, '%h:%i %p')) AS currentShift, 
+                CONCAT(DATE_FORMAT(shift_2.startTime, '%h:%i %p'), ' - ', DATE_FORMAT(shift_2.endTime, '%h:%i %p')) AS requestedShift
+                FROM ".$this->changeShift." AS changeShift
+                INNER JOIN ".$this->employees." AS employees
+                ON changeShift.empID = employees.id
+                INNER JOIN ".$this->department." AS department
+                ON department.departmentID = employees.departmentID
+                INNER JOIN ".$this->shift." AS shift_1
+                ON shift_1.shiftID = employees.shiftID
+                INNER JOIN ".$this->shift." AS shift_2
+                ON shift_2.shiftID = changeShift.requestedShift
+                WHERE employees.departmentID = 4";
+            return $request;
+        }
+
         public function viewLeaves($id) {
             $request = "
                 SELECT * FROM ".$this->leaves." AS leaves
@@ -137,6 +155,19 @@
                 ON leaves.empID = employees.id
                 INNER JOIN ".$this->leaveType." AS leaveType
                 ON leaveType.leaveTypeID = leaves.leaveTypeID";
+            return $request;
+        }
+
+        public function viewLeaveRequestsIT() {
+            $request = "
+                SELECT * FROM ".$this->leaves." AS leaves
+                INNER JOIN ".$this->employees." AS employees
+                ON leaves.empID = employees.id
+                INNER JOIN ".$this->department." AS department
+                ON department.departmentID = employees.departmentID
+                INNER JOIN ".$this->leaveType." AS leaveType
+                ON leaveType.leaveTypeID = leaves.leaveTypeID
+                WHERE employees.departmentID = 4";
             return $request;
         }
 
