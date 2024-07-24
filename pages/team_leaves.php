@@ -66,7 +66,7 @@
                                     return $dateTime->format('M d, Y');
                                 }
 
-                                $leaveQuery = mysqli_query($conn, $employees->viewLeaveRequests());
+                                $leaveQuery = mysqli_query($conn, $employees->viewLeaveRequestsIT());
                                 while ($leaveDetails = mysqli_fetch_array($leaveQuery)) {
 
                                     $leave_id = $leaveDetails['requestID'];
