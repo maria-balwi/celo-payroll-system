@@ -77,7 +77,7 @@
                                     return $dateTime->format('M d, Y');
                                 }
 
-                                $shiftQuery = mysqli_query($conn, $employees->viewChangeShiftRequest());
+                                $shiftQuery = mysqli_query($conn, $employees->viewChangeShiftRequestIT());
                                 while ($shiftDetails = mysqli_fetch_array($shiftQuery)) {
 
                                     $shift_id = $shiftDetails['requestID'];
