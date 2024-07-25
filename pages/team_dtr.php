@@ -21,70 +21,77 @@
                 
                 <!-- DATATABLE -->
                 <div class="container mx-auto overflow-auto">
-                    <table id="example" class="table table-striped table-bordered min-w-full divide-y divide-gray-200">
+                    <table id="teamDTRTable" class="table table-striped table-bordered min-w-full divide-y divide-gray-200 text-center">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Emp ID</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Branch</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Shift</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Days Worked</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Leave</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Absents</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lates</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Undertime</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Overtime</th>
+                                <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+                                <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Shift</th>
+                                <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Days Worked</th>
+                                <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Leaves</th>
+                                <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Absences</th>
+                                <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Lates</th>
+                                <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Undertime</th>
+                                <!-- <th class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Overtime</th> -->
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <tr>
-                                <td class="px-6 whitespace-nowrap">00114</td>
-                                <td class="px-6 whitespace-nowrap">SAMPANG, JOHN PAUL PELIAZAR</td>
-                                <td class="px-6 whitespace-nowrap">Celo Business Solutions Inc.</td>
-                                <td class="px-6 whitespace-nowrap">9pm - 6am</td>
-                                <td class="px-6 whitespace-nowrap">5</td>
-                                <td class="px-6 whitespace-nowrap">0</td>
-                                <td class="px-6 whitespace-nowrap">2</td>
-                                <td class="px-6 whitespace-nowrap">196</td>
-                                <td class="px-6 whitespace-nowrap">547</td>
-                                <td class="px-6 whitespace-nowrap">512</td>
-                            </tr>
-                            <tr>
-                                <td class="px-6 whitespace-nowrap">00115</td>
-                                <td class="px-6 whitespace-nowrap">PALENCIA, CHRISTIAN  JAY MANAHAN</td>
-                                <td class="px-6 whitespace-nowrap">Celo Business Solutions Inc.</td>
-                                <td class="px-6 whitespace-nowrap">9pm - 6am</td>
-                                <td class="px-6 whitespace-nowrap">6</td>
-                                <td class="px-6 whitespace-nowrap">0</td>
-                                <td class="px-6 whitespace-nowrap">0</td>
-                                <td class="px-6 whitespace-nowrap">49</td>
-                                <td class="px-6 whitespace-nowrap">0</td>
-                                <td class="px-6 whitespace-nowrap">0</td>
-                            </tr>
-                            <tr>
-                                <td class="px-6 whitespace-nowrap">00116</td>
-                                <td class="px-6 whitespace-nowrap">ODULIO, JOSEPH PAUL GAVINO</td>
-                                <td class="px-6 whitespace-nowrap">Celo Business Solutions Inc.</td>
-                                <td class="px-6 whitespace-nowrap">6am - 3pm</td>
-                                <td class="px-6 whitespace-nowrap">4</td>
-                                <td class="px-6 whitespace-nowrap">0</td>
-                                <td class="px-6 whitespace-nowrap">1</td>
-                                <td class="px-6 whitespace-nowrap">60</td>
-                                <td class="px-6 whitespace-nowrap">1482</td>
-                                <td class="px-6 whitespace-nowrap">0</td>
-                            </tr>
-                            <tr>
-                                <td class="px-6 whitespace-nowrap">00117</td>
-                                <td class="px-6 whitespace-nowrap">REYES, MARIA PATRICE ALVAREZ</td>
-                                <td class="px-6 whitespace-nowrap">Celo Business Solutions Inc.</td>
-                                <td class="px-6 whitespace-nowrap">9am - 6pm</td>
-                                <td class="px-6 whitespace-nowrap">5</td>
-                                <td class="px-6 whitespace-nowrap">0</td>
-                                <td class="px-6 whitespace-nowrap">0</td>
-                                <td class="px-6 whitespace-nowrap">0</td>
-                                <td class="px-6 whitespace-nowrap">170</td>
-                                <td class="px-6 whitespace-nowrap">204</td>
-                            </tr>
+                            <?php
+                                $year = date('Y');
+                                $month = date('m');
+
+                                function getWorkingDaysInMonth($year, $month) {
+                                    $start_date = date("$year-$month-01");
+                                    $end_date = date("Y-m-t", strtotime($start_date)); // last day of the month
+                                    
+                                    $work_days = 0;
+                                    $day_counter = $start_date;
+                                
+                                    while (strtotime($day_counter) <= strtotime($end_date)) {
+                                        if (date('N', strtotime($day_counter)) < 6) { // 1 (for Monday) through 5 (for Friday)
+                                            $work_days++;
+                                        }
+                                        $day_counter = date("Y-m-d", strtotime($day_counter . ' +1 day'));
+                                    }
+                                    
+                                    return $work_days;
+                                }
+
+                                // GET IT TEAM
+                                $itTeamQuery = mysqli_query($conn, $attendance->viewITTeam());
+                                while ($itTeamDetails = mysqli_fetch_array($itTeamQuery)) {
+
+                                    $teamIT_id = $itTeamDetails['id'];
+                                    $teamIT_employeeID = $itTeamDetails['employeeID'];
+                                    $teamIT_employeeName = $itTeamDetails['firstName'] . " " . $itTeamDetails['lastName'];
+                                    $teamIT_shift = $itTeamDetails['startTime'] . " - " . $itTeamDetails['endTime'];
+                        
+                                    // GET MONTHLY ATTENDANCE
+                                    $monthlyAttendanceQuery = mysqli_query($conn, $attendance->getMonthlyAttendance($itTeamDetails['id']));
+                                    $monthlyAttendance = mysqli_num_rows($monthlyAttendanceQuery);
+
+                                    // GET MONTHLY ABSENCES
+                                    $workingDays = getWorkingDaysInMonth($year, $month);
+                                    $monthlyAbsences = $workingDays - $monthlyAttendance;
+
+                                    // GET MONTHLY LATES
+                                    $monthlyLatesQuery = mysqli_query($conn, $attendance->getMonthlyLates($itTeamDetails['id']));
+                                    $monthlyLates = mysqli_num_rows($monthlyLatesQuery);
+
+                                    // GET MONTHLY UNDERTIMES
+                                    $monthlyUndertimesQuery = mysqli_query($conn, $attendance->getMonthlyUndertimes($itTeamDetails['id']));
+                                    $monthlyUndertimes = mysqli_num_rows($monthlyUndertimesQuery); 
+                                    $availableLeaves = $itTeamDetails['availableLeaves']; ?>
+                                <tr data-id="<?php echo $teamIT_id ?>">
+                                    <td class="whitespace-nowrap"><?php echo $teamIT_employeeID ?></td>
+                                    <td class="whitespace-nowrap text-left"><?php echo $teamIT_employeeName ?></td>
+                                    <td class="whitespace-nowrap"><?php echo $teamIT_shift ?></td>
+                                    <td class="whitespace-nowrap"><?php echo $monthlyAttendance ?></td>
+                                    <td class="whitespace-nowrap"><?php echo $availableLeaves ?></td>
+                                    <td class="whitespace-nowrap"><?php echo $monthlyAbsences ?></td>
+                                    <td class="whitespace-nowrap"><?php echo $monthlyLates ?></td>
+                                    <td class="whitespace-nowrap"><?php echo $monthlyUndertimes; } ?></td>
+                                </tr>
                         </tbody>
                     </table>
                 </div>

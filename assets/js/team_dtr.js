@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-    $('#example').DataTable();
+    $('#teamDTRTable').DataTable();
 
     $('#dropdownButton').on('click', function() {
         $('#dropdownMenu').toggleClass('hidden');

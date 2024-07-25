@@ -139,7 +139,7 @@
 
         public function viewITTeam() {
             $ITteam = "
-                SELECT id, firstName, lastName, 
+                SELECT id, firstName, lastName, employeeID, availableLeaves,
                 DATE_FORMAT(startTime, '%h:%i %p') AS startTime, 
                 DATE_FORMAT(endTime, '%h:%i %p') AS endTime,
                 departmentName
