@@ -65,7 +65,13 @@
                         <svg class="h-16 w-16 text-gray-600 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                        <h2 class="text-xl font-bold mt-1 mb-0">4</h2>
+                        <h2 class="text-xl font-bold mt-1 mb-0">
+                            <?php 
+                                $monthlyAttendanceQuery = mysqli_query($conn, $attendance->getMonthlyAttendance($_SESSION['id']));
+                                $monthlyAttendance = mysqli_num_rows($monthlyAttendanceQuery);
+                                echo $monthlyAttendance;
+                            ?>
+                        </h2>
                         <p class="text-gray-700 text-lg font-semibold">Attendance</p>
                     </div>
 
@@ -74,7 +80,35 @@
                         <svg class="h-16 w-16 text-gray-600 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                        <h2 class="text-xl font-bold mt-1 mb-0">2</h2>
+                        <h2 class="text-xl font-bold mt-1 mb-0">
+                            <?php 
+                                $year = date('Y');
+                                $month = date('m');
+
+                                function getWorkingDaysInMonth($year, $month) {
+                                    $start_date = date("$year-$month-01");
+                                    $end_date = date("Y-m-t", strtotime($start_date)); // last day of the month
+                                    
+                                    $work_days = 0;
+                                    $day_counter = $start_date;
+                                
+                                    while (strtotime($day_counter) <= strtotime($end_date)) {
+                                        if (date('N', strtotime($day_counter)) < 6) { // 1 (for Monday) through 5 (for Friday)
+                                            $work_days++;
+                                        }
+                                        $day_counter = date("Y-m-d", strtotime($day_counter . ' +1 day'));
+                                    }
+                                    
+                                    return $work_days;
+                                }
+
+                                $workingDays = getWorkingDaysInMonth($year, $month);
+                                $monthlyAttendanceQuery = mysqli_query($conn, $attendance->getMonthlyAttendance($_SESSION['id']));
+                                $monthlyAttendance = mysqli_num_rows($monthlyAttendanceQuery);
+                                $absences = $workingDays - $monthlyAttendance;
+                                echo $absences;
+                            ?>
+                        </h2>  
                         <p class="text-gray-700 text-lg font-semibold">Absences</p>
                     </div>
 
@@ -83,7 +117,13 @@
                         <svg class="h-16 w-16 text-gray-600 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                        <h2 class="text-xl font-bold mt-1 mb-0">1</h2>
+                        <h2 class="text-xl font-bold mt-1 mb-0">
+                            <?php 
+                                $monthlyUndertimesQuery = mysqli_query($conn, $attendance->getMonthlyUndertimes($_SESSION['id']));
+                                $monthlyUndertimes = mysqli_num_rows($monthlyUndertimesQuery);
+                                echo $monthlyUndertimes;
+                            ?>
+                        </h2>
                         <p class="text-gray-700 text-lg font-semibold">Undertimes</p>
                     </div>
 
@@ -92,7 +132,13 @@
                         <svg class="h-16 w-16 text-gray-600 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                        <h2 class="text-xl font-bold mt-1 mb-0">1</h2>
+                        <h2 class="text-xl font-bold mt-1 mb-0">
+                            <?php 
+                                $monthlyLatesQuery = mysqli_query($conn, $attendance->getMonthlyLates($_SESSION['id']));
+                                $monthlyLates = mysqli_num_rows($monthlyLatesQuery);
+                                echo $monthlyLates;
+                            ?>
+                        </h2>
                         <p class="text-gray-700 text-lg font-semibold">Tardiness</p>
                     </div>
 
@@ -101,7 +147,7 @@
                         <svg class="h-16 w-16 text-gray-600 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                         </svg>
-                        <h2 class="text-xl font-bold mt-1 mb-0">1</h2>
+                        <h2 class="text-xl font-bold mt-1 mb-0">Pending</h2>
                         <p class="text-gray-700 text-lg font-semibold">Leave Days</p>
                     </div>
                 </div>

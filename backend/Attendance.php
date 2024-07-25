@@ -171,6 +171,36 @@
                 logTypeID IN (3, 4)";
             return $dailyAttendanceIT_timeOut;
         }
+
+        public function getMonthlyAttendance($id) {
+            $monthlyAttendance = "
+                SELECT * FROM ".$this->attendance."
+                WHERE empID = $id AND
+                logTypeID IN (1, 2) AND
+                YEAR(attendanceDate) = YEAR(CURRENT_DATE())
+                AND MONTH(attendanceDate) = MONTH(CURRENT_DATE())";
+            return $monthlyAttendance;
+        }
+
+        public function getMonthlyUndertimes($id) {
+            $monthlyUndertimes = "
+                SELECT * FROM ".$this->attendance."
+                WHERE empID = $id AND
+                logTypeID = 3 AND
+                YEAR(attendanceDate) = YEAR(CURRENT_DATE())
+                AND MONTH(attendanceDate) = MONTH(CURRENT_DATE())";
+            return $monthlyUndertimes;
+        }
+
+        public function getMonthlyLates($id) {
+            $monthlyLates = "
+                SELECT * FROM ".$this->attendance."
+                WHERE empID = $id AND
+                logTypeID = 4 AND
+                YEAR(attendanceDate) = YEAR(CURRENT_DATE())
+                AND MONTH(attendanceDate) = MONTH(CURRENT_DATE())";
+            return $monthlyLates;
+        }
     }
 
 ?>
