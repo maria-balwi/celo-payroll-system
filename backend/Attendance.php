@@ -5,7 +5,6 @@
         private $employees = 'tbl_employee';
         private $users = 'tbl_users';
         private $department = 'tbl_department';
-        // private $designation = 'tbl_designation';
         private $attendance = 'tbl_attendance';
         private $logtype = 'tbl_logtype';
         private $shifts = 'tbl_shiftschedule';
@@ -139,7 +138,7 @@
 
         public function viewITTeam() {
             $ITteam = "
-                SELECT id, firstName, lastName, employeeID, availableLeaves,
+                SELECT id, firstName, lastName, employeeID, availableVL, availableSL,
                 DATE_FORMAT(startTime, '%h:%i %p') AS startTime, 
                 DATE_FORMAT(endTime, '%h:%i %p') AS endTime,
                 departmentName
@@ -200,6 +199,22 @@
                 YEAR(attendanceDate) = YEAR(CURRENT_DATE())
                 AND MONTH(attendanceDate) = MONTH(CURRENT_DATE())";
             return $monthlyLates;
+        }
+
+        public function getTeamMemberInfo($id) {
+            $employeeInfo = "
+                SELECT id, lastName, firstName, gender, civilStatus, address, dateOfBirth, 
+                placeOfBirth, sss, pagIbig, philhealth, tin, emailAddress, employeeID, 
+                mobileNumber, departmentName, basicPay, dailyRate, hourlyRate,
+                DATE_FORMAT(shifts.startTime, '%h:%i %p') AS startTime, 
+                DATE_FORMAT(shifts.endTime, '%h:%i %p') AS endTime
+                FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->shifts." AS shifts
+                ON shifts.shiftID = employees.shiftID
+                INNER JOIN ".$this->department." AS department
+                ON department.departmentID = employees.departmentID
+                WHERE id = '$id'";
+            return $employeeInfo;
         }
     }
 

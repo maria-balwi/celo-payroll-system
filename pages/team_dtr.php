@@ -20,15 +20,16 @@
             <div class="p-4 m-1 bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
                 
                 <!-- DATATABLE -->
-                <div class="container mx-auto overflow-auto">
-                    <table id="teamDTRTable" class="table table-striped table-bordered min-w-full divide-y divide-gray-200 text-center">
+                <div class="container mx-auto overflow-auto relative z-10">
+                    <table id="teamDTRTable" class="table table-striped table-bordered min-w-full divide-y divide-gray-200 text-center relative">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+                                <th class="text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Employee ID</th>
                                 <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                                 <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Shift</th>
                                 <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Days Worked</th>
-                                <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Leaves</th>
+                                <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Vacation Leaves</th>
+                                <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Sick Leaves</th>
                                 <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Absences</th>
                                 <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Lates</th>
                                 <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Undertime</th>
@@ -81,22 +82,84 @@
                                     // GET MONTHLY UNDERTIMES
                                     $monthlyUndertimesQuery = mysqli_query($conn, $attendance->getMonthlyUndertimes($itTeamDetails['id']));
                                     $monthlyUndertimes = mysqli_num_rows($monthlyUndertimesQuery); 
-                                    $availableLeaves = $itTeamDetails['availableLeaves']; ?>
-                                <tr data-id="<?php echo $teamIT_id ?>">
+                                    $availableVL = $itTeamDetails['availableVL'];
+                                    $availableSL = $itTeamDetails['availableSL'];
+
+                                    echo "<tr data-id='" . $teamIT_id . "' class='teamDTRview'>";
+                                ?>
+                                <!-- <tr data-id="< ?php echo $teamIT_id ?>" class="teamDTRview"> -->
                                     <td class="whitespace-nowrap"><?php echo $teamIT_employeeID ?></td>
                                     <td class="whitespace-nowrap text-left"><?php echo $teamIT_employeeName ?></td>
                                     <td class="whitespace-nowrap"><?php echo $teamIT_shift ?></td>
                                     <td class="whitespace-nowrap"><?php echo $monthlyAttendance ?></td>
-                                    <td class="whitespace-nowrap"><?php echo $availableLeaves ?></td>
+                                    <td class="whitespace-nowrap"><?php echo $availableVL ?></td>
+                                    <td class="whitespace-nowrap"><?php echo $availableSL ?></td>
                                     <td class="whitespace-nowrap"><?php echo $monthlyAbsences ?></td>
                                     <td class="whitespace-nowrap"><?php echo $monthlyLates ?></td>
-                                    <td class="whitespace-nowrap"><?php echo $monthlyUndertimes; } ?></td>
+                                    <td class="whitespace-nowrap"><?php echo $monthlyUndertimes ?></td>
                                 </tr>
+                            <?php } ?>
                         </tbody>
                     </table>
                 </div>
             </div>
             
+
+            <!-- ======================================================================================================================================= -->
+            <!-- ================================================================= MODAL =============================================================== -->
+            <!-- ======================================================================================================================================= -->
+
+            <!--------------------------------------------------------------------------------------------------------------------------------------------->
+            <!--------------------------------------------------------------- VIEW TEAM MEMBER DTR -------------------------------------------------------->
+            <div class="modal fade" id="viewTeamDTRModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
+                <div class="modal-dialog modal-none modal-xl modal-dialog-centered">
+                    <div class="modal-content" id="viewTeamDTRModal">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="userFormLabel">View Team Member DTR</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row g-2 mb-2">
+                                <div class="col-2">
+                                    <label for="viewEmployeeID">Employee ID:</label>
+                                </div>
+                                <div class="col-3">
+                                    <label for="viewEmployeeName">Name:</label>
+                                </div>
+                                <div class="col-4">
+                                    <label for="viewEmailAddress">Email Address:</label>
+                                </div>
+                                <div class="col-3">
+                                    <label for="viewShiftID">Shift:</label>
+                                </div>
+                            </div> 
+
+                            <div class="row g-2 mb-2">
+                                <div class="col-2">
+                                    <input type="email" class="form-control" id="viewEmployeeID" disabled readonly>
+                                </div>
+                                <div class="col-3">
+                                    <input type="text" class="form-control" id="viewEmployeeName" disabled readonly>
+                                </div>
+                                <div class="col-4">
+                                    <input type="email" class="form-control" id="viewEmailAddress" disabled readonly>
+                                </div>
+                                <div class="col-3">
+                                    <input type="email" class="form-control" id="viewShiftID" disabled readonly>
+                                </div>
+                            </div>
+                            <div class="row g-2 mb-2">
+                                
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <!-- <button type="button" class="btn btn-primary employeeUpdate">Update</button> -->
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
     
         <script src="../assets/js/team_dtr.js"></script>
