@@ -196,7 +196,7 @@
             $monthlyLates = "
                 SELECT * FROM ".$this->attendance."
                 WHERE empID = $id AND
-                logTypeID = 4 AND
+                logTypeID = 2 AND
                 YEAR(attendanceDate) = YEAR(CURRENT_DATE())
                 AND MONTH(attendanceDate) = MONTH(CURRENT_DATE())";
             return $monthlyLates;

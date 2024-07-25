@@ -169,11 +169,11 @@
                             <table id="attendaceTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center">
                                 <thead class="bg-gray-50">
                                     <tr>
-                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Shift</th>
-                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Log In</th>
-                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Log Out</th>
-                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                        <th class="text-xs font-medium text-yellow-500 uppercase tracking-wider">Name</th>
+                                        <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Shift</th>
+                                        <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Log In</th>
+                                        <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Log Out</th>
+                                        <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
@@ -185,6 +185,8 @@
                                             $teamIT_employeeName = $itTeamDetails['firstName'] . " " . $itTeamDetails['lastName'];
                                             $teamIT_shift = $itTeamDetails['startTime'] . " - " . $itTeamDetails['endTime'];
                                             $teamIT_status = "Absent";
+                                            $teamIT_timeIn = "-";
+                                            $teamIT_timeOut = "-";
 
                                             // GET ATTENDANCE TIME - TIME IN
                                             $dailyAttendanceITQuery_timeIn = mysqli_query($conn, $attendance->dailyAttendanceIT_timeIn($teamIT_id));
@@ -193,10 +195,6 @@
                                             {
                                                 $teamIT_timeIn = $dailyAttendanceIT_timeInDetails['attendanceTime'];
                                                 $teamIT_status = "Present";
-                                            }
-                                            else  
-                                            {
-                                                $teamIT_timeIn = "-";
                                             }
 
                                             // GET ATTENDANCE TIME - TIME OUT
@@ -207,10 +205,6 @@
                                                 $teamIT_timeOut = $dailyAttendanceIT_timeOutDetails['attendanceTime'];
                                                 $teamIT_status = "Present";
                                             }
-                                            else  
-                                            {
-                                                $teamIT_timeOut = "-";
-                                            }
                                             echo "<tr data-id='" . $teamIT_id . "'>"; 
                                             ?>
                                             
@@ -220,10 +214,10 @@
                                             <td class="whitespace-nowrap"><?php echo $teamIT_timeOut ?></td>
                                             <?php 
                                                 if ($teamIT_status == "Present") { ?>
-                                            <td class="whitespace-nowrap text-green-600"><?php echo $teamIT_status ?></td>
+                                            <td class="whitespace-nowrap text-green-500"><?php echo $teamIT_status ?></td>
                                             <?php }
                                                 else { ?>
-                                            <td class="whitespace-nowrap text-red-600"><?php echo $teamIT_status ?></td>
+                                            <td class="whitespace-nowrap text-red-500"><?php echo $teamIT_status ?></td>
                                         <?php } } ?>
                                     </tr>
                                 </tbody>
