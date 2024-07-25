@@ -47,7 +47,7 @@
                                     echo "<td ='px-6 whitespace-nowrap'>" . $team_emailAddress . "</td>";
                                     echo "<td ='px-6 whitespace-nowrap'>" . $team_mobileNumber . "</td>";
                                     echo "<td ='px-6 whitespace-nowrap'>" . $team_department . "</td>";
-                                    echo "</td>";
+                                    echo "</tr>";
                                 }
                             ?>
                         </tbody>
