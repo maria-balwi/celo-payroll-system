@@ -431,7 +431,7 @@
                 req_sss, req_pagIbig, req_philhealth, req_tin, req_nbi,
                 DATE_FORMAT(shifts.startTime, '%h:%i %p') AS startTime, 
                 DATE_FORMAT(shifts.endTime, '%h:%i %p') AS endTime
-                 FROM ".$this->employees." AS employees
+                FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->shifts." AS shifts
                 ON shifts.shiftID = employees.shiftID
                 INNER JOIN ".$this->department." AS department
