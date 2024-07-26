@@ -142,7 +142,6 @@ $(document).ready(function() {
 
         e.preventDefault();
 
-        // let newEmployeeForm = new FormData();
         var lastName = $("#lastName").val();
         var firstName = $("#firstName").val();
         var gender = $("#gender").val();
@@ -163,14 +162,16 @@ $(document).ready(function() {
         var basicPay = $("#basicPay").val();
         var dailyRate = $("#dailyRate").val();
         var hourlyRate = $("#hourlyRate").val();
-        console.log({hourlyRate});
+        var vacationLeaves = $("#vacationLeaves").val();
+        var sickLeaves = $("#sickLeaves").val();
 
         if (lastName == "" || firstName == "" || gender == "" || civilStatus == "" || 
             address == "" || dateOfBirth == "" || placeOfBirth == "" ||
             sss == "" || pagIbig == "" || philhealth == "" || tin == "" ||
             emailAddress == "" || employeeID == "" || mobileNumber == "" ||
             department == "" || designation == "" || shiftID == "" || 
-            basicPay == "" || dailyRate == "" || hourlyRate == "") {
+            basicPay == "" || dailyRate == "" || hourlyRate == "" || 
+            vacationLeaves == "" || sickLeaves == "") {
             Swal.fire({
                 icon: 'warning',
                 title: 'Required Information',
@@ -187,29 +188,9 @@ $(document).ready(function() {
                 confirmButtonText: 'Yes',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // newEmployeeForm.append('employeeName', employeeName);
-                    // newEmployeeForm.append('gender', gender);
-                    // newEmployeeForm.append('civilStatus', civilStatus);
-                    // newEmployeeForm.append('address', address);
-                    // newEmployeeForm.append('dateOfBirth', dateOfBirth);
-                    // newEmployeeForm.append('placeOfBirth', placeOfBirth);
-                    // newEmployeeForm.append('sss', sss);
-                    // newEmployeeForm.append('pagIbig', pagIbig);
-                    // newEmployeeForm.append('philhealth', philhealth);
-                    // newEmployeeForm.append('tin', tin);
-                    // newEmployeeForm.append('emailAddress', emailAddress);
-                    // newEmployeeForm.append('employeeID', employeeID);
-                    // newEmployeeForm.append('mobileNumber', mobileNumber);
-                    // newEmployeeForm.append('department', department);
-                    // newEmployeeForm.append('designation', designation);
-                    // newEmployeeForm.append('shiftID', shiftID);
-
                     $.ajax({
                         type: "POST",
                         url: "../backend/admin/addEmployee.php",
-                        // data: newEmployeeForm,
-                        // processData: false,
-                        // contentType: false,
                         data: $(this).serialize(),
                         cache: false,
                         success: function (res) {

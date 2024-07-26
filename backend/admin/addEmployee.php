@@ -23,6 +23,8 @@
     $basicPay = $_POST['basicPay'];
     $dailyRate = $_POST['dailyRate'];
     $hourlyRate = $_POST['hourlyRate'];
+    $vacationLeaves = $_POST['vacationLeaves'];
+    $sickLeaves = $_POST['sickLeaves'];
 
     if (isset($_POST['req_sss']))
     {
@@ -100,7 +102,7 @@
     }
     else {
         mysqli_query($conn, $employees->addNewEmployee($lastName, $firstName, $gender, $civilStatus, $address, $dateOfBirth, $placeOfBirth, 
-        $sss, $pagIbig, $philhealth, $tin, $emailAddress, $employeeID, $mobileNumber, $departmentID, $designationID, $shiftID, $basicPay, $dailyRate, $hourlyRate));
+        $sss, $pagIbig, $philhealth, $tin, $emailAddress, $employeeID, $mobileNumber, $departmentID, $designationID, $shiftID, $basicPay, $dailyRate, $hourlyRate, $vacationLeaves, $sickLeaves));
 
         $lastIDQuery = mysqli_query($conn, $employees->viewLastEmployee());
         $lastIDResult = mysqli_fetch_array($lastIDQuery);

@@ -289,6 +289,24 @@
                                     </div>
                                 </div>
 
+                                <div class="row g-2 mb-2">
+                                    <div class="col-4">
+                                        <label for="vacationLeaves">Vacation Leaves:</label>
+                                    </div>
+                                    <div class="col-4">
+                                        <label for="sickLeaves">Sick Leaves:</label>
+                                    </div>
+                                </div>
+                            
+                                <div class="row g-2 mb-2">
+                                    <div class="col-4">
+                                        <input type="number" class="form-control" id="vacationLeaves" name="vacationLeaves" placeholder="Vacation Leaves">
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="number" class="form-control" id="sickLeaves" name="sickLeaves" placeholder="Sick Leaves">
+                                    </div>
+                                </div>
+
                                 <h2 class="text-lg font-semibold">Requirements:</h2>
                                 <div class="row g-3">
                                     <div class="col-md-3">
