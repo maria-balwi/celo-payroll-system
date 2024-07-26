@@ -384,7 +384,8 @@
 
         public function updateEmployeeInfo($updateUserID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
             $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
-            $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate) {
+            $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, 
+            $updateVacationLeaves, $updateSickLeaves) {
             $updateEmployee = "
                 UPDATE ".$this->employees." AS employees 
                 SET lastName = '$updateLastName',
@@ -406,7 +407,9 @@
                 shiftID = '$updateShiftID', 
                 basicPay = '$updateBasicPay',
                 dailyRate = '$updateDailyRate',
-                hourlyRate = '$updateHourlyRate'
+                hourlyRate = '$updateHourlyRate',
+                availableVL = '$updateVacationLeaves',
+                availableSL = '$updateSickLeaves'
                 WHERE id = '$updateUserID'";
             return $updateEmployee;
         }
@@ -428,7 +431,7 @@
                 SELECT id, lastName, firstName, gender, civilStatus, address, dateOfBirth, 
                 placeOfBirth, sss, pagIbig, philhealth, tin, emailAddress, employeeID, 
                 mobileNumber, departmentName, position, basicPay, dailyRate, hourlyRate,
-                req_sss, req_pagIbig, req_philhealth, req_tin, req_nbi,
+                availableVL, availableSL, req_sss, req_pagIbig, req_philhealth, req_tin, req_nbi,
                 DATE_FORMAT(shifts.startTime, '%h:%i %p') AS startTime, 
                 DATE_FORMAT(shifts.endTime, '%h:%i %p') AS endTime
                 FROM ".$this->employees." AS employees

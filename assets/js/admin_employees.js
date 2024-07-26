@@ -259,6 +259,8 @@ $(document).ready(function() {
                     $('#viewBasicPay').val(res.data.basicPay);
                     $('#viewDailyRate').val(res.data.dailyRate);
                     $('#viewHourlyRate').val(res.data.hourlyRate);
+                    $('#viewVacationLeaves').val(res.data.availableVL);
+                    $('#viewSickLeaves').val(res.data.availableSL);
                     $('#view_req_sss').val(res.data.req_sss == 1 ? $('#view_req_sss').prop('checked', true) : $('#view_req_sss').prop('checked', false));
                     $('#view_req_pagIbig').val(res.data.req_pagIbig == 1 ? $('#view_req_pagIbig').prop('checked', true) : $('#view_req_pagIbig').prop('checked', false));
                     $('#view_req_philhealth').val(res.data.req_philhealth == 1 ? $('#view_req_philhealth').prop('checked', true) : $('#view_req_philhealth').prop('checked', false));
@@ -305,6 +307,8 @@ $(document).ready(function() {
                         $('#updateBasicPay').val(res.data.basicPay);
                         $('#updateDailyRate').val(res.data.dailyRate);
                         $('#updateHourlyRate').val(res.data.hourlyRate);
+                        $('#updateVacationLeaves').val(res.data.availableVL);
+                        $('#updateSickLeaves').val(res.data.availableSL);
                         $('#update_req_sss').val(res.data.req_sss == 1 ? $('#update_req_sss').prop('checked', true) : $('#update_req_sss').prop('checked', false));
                         $('#update_req_pagIbig').val(res.data.req_pagIbig == 1 ? $('#update_req_pagIbig').prop('checked', true) : $('#update_req_pagIbig').prop('checked', false));
                         $('#update_req_philhealth').val(res.data.req_philhealth == 1 ? $('#update_req_philhealth').prop('checked', true) : $('#update_req_philhealth').prop('checked', false));
@@ -324,7 +328,6 @@ $(document).ready(function() {
         
         e.preventDefault();
 
-        // let updateEmployeeForm = new FormData();
         var updateLastName = $("#updateLastName").val();
         var updateFirstName = $("#updateFirstName").val();
         var updateGender = $("#updateGender").val();
@@ -345,13 +348,16 @@ $(document).ready(function() {
         var updateBasicPay = $("#updateBasicPay").val();
         var updateDailyRate = $("#updateDailyRate").val();
         var updateHourlyRate = $("#updateHourlyRate").val();
+        var updateVacationLeaves = $("#updateVacationLeaves").val();
+        var updateSickLeaves = $("#updateSickLeaves").val();
 
         if (updateLastName == "" || updateFirstName == "" || updateGender == "" || updateCivilStatus == "" || 
             updateAddress == "" || updateDateOfBirth == "" || updatePlaceOfBirth == "" ||
             updateSSS == "" || updatePagIbig == "" || updatePhilhealth == "" || updateTIN == "" ||
             updateEmailAddress == "" || updateEmployeeID == "" || updateMobileNumber == "" ||
             updateDepartment == "" || updateDesignation == "" || updateShiftID == "" || 
-            updateBasicPay == "" || updateDailyRate == "" || updateHourlyRate == "") {
+            updateBasicPay == "" || updateDailyRate == "" || updateHourlyRate == "" || 
+            updateVacationLeaves == "" || updateSickLeaves == "") {
 
             Swal.fire({
                 icon: 'warning',
@@ -372,32 +378,10 @@ $(document).ready(function() {
 
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // updateEmployeeForm.append("updateID", updateID);
-                    // updateEmployeeForm.append("updateEmployeeName", updateEmployeeName);
-                    // updateEmployeeForm.append("updateGender", updateGender);
-                    // updateEmployeeForm.append("updateCivilStatus", updateCivilStatus);
-                    // updateEmployeeForm.append("updateAddress", updateAddress);
-                    // updateEmployeeForm.append("updateDateOfBirth", updateDateOfBirth);
-                    // updateEmployeeForm.append("updatePlaceOfBirth", updatePlaceOfBirth);
-                    // updateEmployeeForm.append("updateSSS", updateSSS);
-                    // updateEmployeeForm.append("updatePagIbig", updatePagIbig);
-                    // updateEmployeeForm.append("updatePhilhealth", updatePhilhealth);
-                    // updateEmployeeForm.append("updateTIN", updateTIN);
-                    // updateEmployeeForm.append("updateEmailAddress", updateEmailAddress);
-                    // updateEmployeeForm.append("updateEmployeeID", updateEmployeeID);
-                    // updateEmployeeForm.append("updateMobileNumber", updateMobileNumber);
-                    // updateEmployeeForm.append("updateDepartment", updateDepartment);
-                    // updateEmployeeForm.append("updateDesignation", updateDesignation);
-                    // updateEmployeeForm.append("updateShiftID", updateShiftID);
-                    // updateEmployeeForm.append("oldEmailAddress", oldEmailAddress);
-                    // updateEmployeeForm.append("oldEmployeeID", oldEmployeeID);
 
                     $.ajax({
                         url: '../backend/admin/updateEmployee.php',
                         type: 'POST',
-                        // data: updateEmployeeForm,
-                        // contentType: false,
-                        // processData: false,
                         data: $(this).serialize(),
                         cache: false,
                         success: function(res) {

@@ -538,6 +538,24 @@
                                 </div>
                             </div>
 
+                            <div class="row g-2 mb-2">
+                                <div class="col-4">
+                                    <label for="viewVacationLeaves">Vacation Leaves:</label>
+                                </div>
+                                <div class="col-4">
+                                    <label for="viewSickLeaves">Sick Leaves:</label>
+                                </div>
+                            </div>
+                            
+                            <div class="row g-2 mb-2">
+                                <div class="col-4">
+                                    <input type="number" class="form-control" id="viewVacationLeaves" name="viewVacationLeaves" disabled readonly>
+                                </div>
+                                <div class="col-4">
+                                    <input type="number" class="form-control" id="viewSickLeaves" name="viewSickLeaves" disabled readonly>
+                                </div>
+                            </div>
+
                             <h2 class="text-lg font-semibold">Requirements:</h2>
                             <div class="row g-3">
                                 <div class="col-md-3">
@@ -819,6 +837,24 @@
                                     </div>
                                     <div class="col-4">
                                         <input type="number" class="form-control" id="updateHourlyRate" name="updateHourlyRate" placeholder="1.0" step="0.01" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <div class="col-4">
+                                        <label for="updateVacationLeaves">Vacation Leaves:</label>
+                                    </div>
+                                    <div class="col-4">
+                                        <label for="updateSickLeaves">Sick Leaves:</label>
+                                    </div>
+                                </div>
+                                
+                                <div class="row g-2 mb-2">
+                                    <div class="col-4">
+                                        <input type="number" class="form-control" id="updateVacationLeaves" name="updateVacationLeaves">
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="number" class="form-control" id="updateSickLeaves" name="updateSickLeaves">
                                     </div>
                                 </div>
 
