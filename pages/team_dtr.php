@@ -148,8 +148,56 @@
                                     <input type="email" class="form-control" id="viewShiftID" disabled readonly>
                                 </div>
                             </div>
+
                             <div class="row g-2 mb-2">
-                                
+                                <div class="container mx-auto overflow-auto">
+                                    <table id="attendaceTable" class="table table-auto table-striped table-bordered text-center">
+                                        <thead class="bg-gray-50">
+                                            <tr>
+                                                <th class="text-xs font-medium text-yellow-500 uppercase tracking-wider">Date</th>
+                                                <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Log In</th>
+                                                <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Log Out</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="bg-white divide-y divide-gray-200">
+                                            <?php
+                                                $itTeamQuery = mysqli_query($conn, $attendance->viewITTeam());
+                                                while ($itTeamDetails = mysqli_fetch_array($itTeamQuery)) {
+
+                                                    $teamIT_id = $itTeamDetails['id'];
+                                                    $teamIT_employeeName = $itTeamDetails['firstName'] . " " . $itTeamDetails['lastName'];
+                                                    $teamIT_status = "Absent";
+                                                    $teamIT_timeIn = "-";
+                                                    $teamIT_timeOut = "-";
+
+                                                    // GET ATTENDANCE TIME - TIME IN
+                                                    $dailyAttendanceITQuery_timeIn = mysqli_query($conn, $attendance->dailyAttendanceIT_timeIn($teamIT_id));
+                                                    $dailyAttendanceIT_timeInDetails = mysqli_fetch_array($dailyAttendanceITQuery_timeIn);
+                                                    if (isset($dailyAttendanceIT_timeInDetails['attendanceTime']))
+                                                    {
+                                                        $teamIT_timeIn = $dailyAttendanceIT_timeInDetails['attendanceTime'];
+                                                        $teamIT_status = "Present";
+                                                    }
+
+                                                    // GET ATTENDANCE TIME - TIME OUT
+                                                    $dailyAttendanceITQuery_timeOut = mysqli_query($conn, $attendance->dailyAttendanceIT_timeOut($teamIT_id));
+                                                    $dailyAttendanceIT_timeOutDetails = mysqli_fetch_array($dailyAttendanceITQuery_timeOut);
+                                                    if (isset($dailyAttendanceIT_timeOutDetails['attendanceTime']))
+                                                    {
+                                                        $teamIT_timeOut = $dailyAttendanceIT_timeOutDetails['attendanceTime'];
+                                                        $teamIT_status = "Present";
+                                                    }
+                                                    echo "<tr data-id='" . $teamIT_id . "'>"; 
+                                                    ?>
+                                                    
+                                                    <td class="whitespace-nowrap text-left"><?php echo $teamIT_employeeName ?></td>
+                                                    <td class="whitespace-nowrap"><?php echo $teamIT_timeIn ?></td>
+                                                    <td class="whitespace-nowrap"><?php echo $teamIT_timeOut ?></td>
+                                                <?php } ?>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
 
