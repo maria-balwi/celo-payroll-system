@@ -32,6 +32,9 @@
                     <select id="" class="form-control inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-3 bg-white text-sm font-medium text-gray-700">
                         <option disabled selected>Year</option>
                         <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="2024">2024</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="2023">2023</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="2022">2022</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="2021">2021</option>
                     </select>
                 </div>
 
@@ -194,7 +197,7 @@
                 
                 <!-- DATA TABLE -->
                 <div class="container mx-auto overflow-auto">
-                    <table id="example" class="table table-striped table-bordered min-w-full divide-y divide-gray-200">
+                    <table id="payslipTable" class="table table-striped table-bordered min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date Filed</th>
@@ -255,7 +258,7 @@
             </div>
         </main>
     
-        <script src="../assets/js/dtr.js"></script>
+        <script src="../assets/js/user_payslip.js"></script>
 
         <!-- FOOTER -->
         <?php include('../includes/footer.php'); ?>
