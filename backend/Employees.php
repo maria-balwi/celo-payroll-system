@@ -30,6 +30,17 @@
             return $team;
         }
 
+        public function recentlyAddedEmployees() {
+            $team = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->department." AS department
+                ON employees.departmentID = department.departmentID
+                INNER JOIN ".$this->shifts." AS shifts
+                ON employees.shiftID = shifts.shiftID
+                LIMIT 5";
+            return $team;
+        }
+
         public function viewRecentEmployees() {
             $team = "
                 SELECT * FROM ".$this->employees." AS employees

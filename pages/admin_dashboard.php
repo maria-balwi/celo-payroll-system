@@ -168,7 +168,7 @@
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     <?php
-                                        $employeeQuery = mysqli_query($conn, $employees->viewEmployees());
+                                        $employeeQuery = mysqli_query($conn, $employees->recentlyAddedEmployees());
                                         while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
 
                                             $employee_id = $employeeDetails['id'];
