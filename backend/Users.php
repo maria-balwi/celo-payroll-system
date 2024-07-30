@@ -9,6 +9,7 @@
         private $attendance = 'tbl_attendance';
         private $logtype = 'tbl_logtype';
         private $shift = 'tbl_shiftschedule';
+        private $requirements = 'tbl_requirements';
         private $dbConnect = false;
         public function __construct() {
             $this->dbConnect = $this->dbConnect();
@@ -101,13 +102,23 @@
 
         public function viewUser($id) {
             $user = "
-                SELECT * FROM ".$this->employees." AS employees
+                SELECT CONCAT(employees.firstName, ' ', employees.lastName) AS employeeName, 
+                departmentName, position, emailAddress, mobileNumber, 
+                address, dateOfBirth, placeOfBirth, gender, 
+                civilStatus, sss, pagIbig, philhealth, tin, 
+                DATE_FORMAT(startTime, '%h:%i %p') AS startTime,
+                DATE_FORMAT(endTime, '%h:%i %p') AS endTime, 
+                basicPay, dailyRate, hourlyRate,
+                req_sss, req_pagIbig, req_philhealth, req_tin, req_nbi
+                FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->department." AS department
                 ON employees.departmentID = department.departmentID
                 INNER JOIN ".$this->designation." AS designation
                 ON employees.designationID = designation.designationID
-                INNER JOIN ".$this->shifts." AS shifts
+                INNER JOIN ".$this->shift." AS shifts
                 ON employees.shiftID = shifts.shiftID
+                INNER JOIN ".$this->requirements." AS requirements
+                ON employees.id = requirements.empID
                 WHERE employees.id = '$id'";
             return $user;
         }
