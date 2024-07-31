@@ -216,6 +216,41 @@
                 WHERE id = '$id'";
             return $employeeInfo;
         }
+
+        public function checkDTR($id) {
+            $checkDTR = "
+                SELECT 
+                    id, 
+                    attendanceDate,
+                    DATE_FORMAT(attendanceTime, '%h:%i %p') AS attendanceTime
+                FROM 
+                    (SELECT 
+                        CURDATE() - INTERVAL (DAY(CURDATE()) - 1) DAY + INTERVAL seq.day DAY AS date
+                    FROM 
+                        (SELECT 0 AS day UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS a
+                        CROSS JOIN (SELECT 0 AS day UNION ALL SELECT 10 UNION ALL SELECT 20 UNION ALL SELECT 30) AS b
+                        CROSS JOIN (SELECT 0 AS day UNION ALL SELECT 100) AS c
+                        CROSS JOIN (SELECT 0 AS day UNION ALL SELECT 200) AS d
+                        CROSS JOIN (SELECT 0 AS day UNION ALL SELECT 400) AS e
+                        CROSS JOIN (SELECT 0 AS day UNION ALL SELECT 800) AS f
+                        CROSS JOIN (
+                            SELECT 
+                                (a.day + b.day + c.day + d.day + e.day + f.day) AS day
+                            FROM 
+                                (SELECT 0 AS day UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS a
+                                CROSS JOIN (SELECT 0 AS day UNION ALL SELECT 10 UNION ALL SELECT 20 UNION ALL SELECT 30) AS b
+                        ) AS seq
+                    WHERE 
+                        CURDATE() - INTERVAL (DAY(CURDATE()) - 1) DAY + INTERVAL seq.day DAY <= LAST_DAY(CURDATE())
+                    ) d
+                CROSS JOIN 
+                    (SELECT DISTINCT id FROM ".$this->employees." WHERE id = $id) e
+                LEFT JOIN 
+                    ".$this->attendance." a ON a.empID = e.id AND a.date = d.date
+                ORDER BY 
+                    e.id, d.date";
+            return $checkDTR;
+        }
     }
 
 ?>
