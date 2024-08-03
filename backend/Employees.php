@@ -557,7 +557,19 @@
                 WHERE deductionID = '$deductionID'";
             return $updateDeduction;
         }
-        
+
+        public function viewEmployeeAttendance() {
+            $employeeAttendance = "
+                SELECT id, firstName, lastName, mobileNumber, employeeID, emailAddress,
+                DATE_FORMAT(startTime, '%h:%i %p') AS startTime, 
+                DATE_FORMAT(endTime, '%h:%i %p') AS endTime 
+                FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->department." AS department
+                ON employees.departmentID = department.departmentID
+                INNER JOIN ".$this->shifts." AS shifts
+                ON employees.shiftID = shifts.shiftID";
+            return $employeeAttendance;
+        }        
     }
 
 ?>
