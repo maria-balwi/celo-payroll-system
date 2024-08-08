@@ -3,31 +3,32 @@ $(document).ready(function() {
     $('#payslipTable').DataTable();
     $('#bntPrintPayslip').hide();
 
-    $('#btnGeneratePayslip').on('click', function() {
+    $('#btnGeneratePayslip').click(function(e) {
         $('#loader').show();
-                $('#payslipContainer').hide();
-                $.ajax({
-                    url: '../backend/user/generate_payslip.php',
-                    type: 'POST',
-                    data: {
-                        employeeId: 12345 // You can make this dynamic as needed
-                    },
-                    success: function(response) {
-                        $('#loader').hide();
-                        $('#payslipContainer').html(response).show();
-                    },
-                    error: function(xhr, status, error) {
-                        $('#loader').hide();
-                        console.error(error);
-                    }
-                });
+        $('#payslipContainer').hide();
+
+        $.ajax({
+            url: '../backend/user/generate_payslip.php',
+            type: 'POST',
+            data: {
+                employeeId: 12345 // You can make this dynamic as needed
+            },
+            success: function(response) {
+                $('#loader').hide();
+                $('#payslipContainer').html(response).show();
+            },
+            error: function(xhr, status, error) {
+                $('#loader').hide();
+                console.error(error);
+            }
+        });
         $('#bntPrintPayslip').show();
     });
 
-    $("#btnPrint").click(function (e) {
+    $("#bntPrintPayslip").click(function (e) {
         e.preventDefault();
 
-        var payslip = document.getElementById("payslipTable");
+        var payslip = document.getElementById("payslip");
         var style = "<style>";
         style += "table {width: 100%; border-collapse: collapse;}";
         style += "th, td {border: 1px solid #000; padding: 8px;}";

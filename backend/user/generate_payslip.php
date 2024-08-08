@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // ];
 
     $payslip = "
-        <table class='table table-striped table-bordered text-center table-responsive' id='payslipTable'>
+        <table class='table table-striped table-bordered text-center table-responsive' id='payslip'>
             <thead>
                 <!-- <tr><th colspan='4'>Jul 11, 2024 - Jul 25, 2025</th></tr> -->
                 <tr><th colspan='4'>CELO BUSINES SOLUTIONS, INC.</th></tr>
