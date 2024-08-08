@@ -425,14 +425,20 @@
             return $updateEmployee;
         }
 
-        public function updateEmployeeRequirements($empID, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateNBI) {
+        public function updateEmployeeRequirements($empID, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateNBI, $updateMedicalExam, $update2x2pic, $updateVaccineCard, $updatePSA, $updateValidID, $updateHelloMoney) {
             $updateRequirement = "
                 UPDATE ".$this->requirements." AS requirements SET
                 req_sss = '$updateSSS',
                 req_pagIbig = '$updatePagIbig',
                 req_philhealth = '$updatePhilhealth',
                 req_tin = '$updateTIN',
-                req_nbi = '$updateNBI'
+                req_nbi = '$updateNBI', 
+                req_medicalExam = '$updateMedicalExam',
+                req_2x2pic = '$update2x2pic',
+                req_vaccineCard = '$updateVaccineCard',
+                req_psa = '$updatePSA',
+                req_validID = '$updateValidID',
+                req_helloMoney = '$updateHelloMoney'
                 WHERE empID = '$empID'";
             return $updateRequirement;
         }
@@ -443,6 +449,7 @@
                 placeOfBirth, sss, pagIbig, philhealth, tin, emailAddress, employeeID, 
                 mobileNumber, departmentName, position, basicPay, dailyRate, hourlyRate,
                 availableVL, availableSL, req_sss, req_pagIbig, req_philhealth, req_tin, req_nbi,
+                req_medicalExam, req_2x2pic, req_vaccineCard, req_psa, req_validID, req_helloMoney,
                 DATE_FORMAT(shifts.startTime, '%h:%i %p') AS startTime, 
                 DATE_FORMAT(shifts.endTime, '%h:%i %p') AS endTime
                 FROM ".$this->employees." AS employees

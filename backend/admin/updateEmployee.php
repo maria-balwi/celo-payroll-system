@@ -58,6 +58,43 @@
 	else {
 		$req_nbi = 0;
 	}
+    if(isset($_POST['update_req_medicalExam'])) {
+		$req_medicalExam = 1;
+	}
+	else {
+		$req_medicalExam = 0;
+	}
+    if(isset($_POST['update_req_2x2pic'])) {
+		$req_2x2pic = 1;
+	}
+	else {
+		$req_2x2pic = 0;
+	}
+    if(isset($_POST['update_req_vaccineCard'])) {
+		$req_vaccineCard = 1;
+	}
+	else {
+		$req_vaccineCard = 0;
+	}
+    if(isset($_POST['update_req_psa'])) {
+		$req_psa = 1;
+	}
+	else {
+		$req_psa = 0;
+	}
+    if(isset($_POST['update_req_validID'])) {
+		$req_validID = 1;
+	}
+	else {
+		$req_validID = 0;
+	}
+    if(isset($_POST['update_req_helloMoney'])) {
+		$req_helloMoney = 1;
+	}
+	else {
+		$req_helloMoney = 0;
+	}
+
 
     // OLD DATA
     $oldEmailAddress = $_POST['oldEmailAddress'];
@@ -104,7 +141,7 @@
             $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
             $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves));
 
-            mysqli_query($conn, $employees->updateEmployeeRequirements($updateID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi));
+            mysqli_query($conn, $employees->updateEmployeeRequirements($updateID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi, $req_medicalExam, $req_2x2pic, $req_vaccineCard, $req_psa, $req_validID, $req_helloMoney));
 
             $em = "Employee Updated Successfully";
             $error = array('error' => 0, 'em' => $em);
@@ -129,7 +166,7 @@
                 $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
                 $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves));
 
-                mysqli_query($conn, $employees->updateEmployeeRequirements($updateID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi));
+                mysqli_query($conn, $employees->updateEmployeeRequirements($updateID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi, $req_medicalExam, $req_2x2pic, $req_vaccineCard, $req_psa, $req_validID, $req_helloMoney));
 
                 $em = "Employee Updated Successfully";
                 $error = array('error' => 0, 'em' => $em);
@@ -158,7 +195,7 @@
                 $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
                 $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves));
 
-                mysqli_query($conn, $employees->updateEmployeeRequirements($updateID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi));
+                mysqli_query($conn, $employees->updateEmployeeRequirements($updateID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi, $req_medicalExam, $req_2x2pic, $req_vaccineCard, $req_psa, $req_validID, $req_helloMoney));
 
                 $em = "Employee Updated Successfully";
                 $error = array('error' => 0, 'em' => $em);
@@ -183,7 +220,7 @@
                     $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
                     $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves));
 
-                    mysqli_query($conn, $employees->updateEmployeeRequirements($updateID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi));
+                    mysqli_query($conn, $employees->updateEmployeeRequirements($updateID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi, $req_medicalExam, $req_2x2pic, $req_vaccineCard, $req_psa, $req_validID, $req_helloMoney));
 
                     $em = "Employee Updated Successfully";
                     $error = array('error' => 0, 'em' => $em);
