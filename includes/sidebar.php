@@ -40,6 +40,9 @@
                 <a href="../pages/admin_changeShift.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Change Shift Requests
                 </a>
+                <a href="../pages/admin_overtime.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
+                    Overtime
+                </a>
                 <a href="../pages/admin_deductions.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Deductions
                 </a>
@@ -64,21 +67,9 @@
                 <a href="../pages/team_leaves.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Leave Applications
                 </a>
-                <div>
-                    <button onclick="toggleAdminSubMenu()" class="block w-full text-left py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white focus:outline-none">
+                <a href="../pages/team_overtime.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Overtime
-                    <svg class="w-4 h-4 inline-block ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </button>
-                    
-                    <div id="admin_subMenu" class="admin-submenu-enter overflow-hidden pl-4">
-                        <a href="../pages/team_preRender.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
-                        Pre-Render OT
-                        </a>
-                        <a href="../pages/team_postRender.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
-                        Post-Render OT
-                        </a>
-                    </div>
-                </div>
+                </a>
                 <a href="../pages/team_changeShift.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Change Shift Requests
                 </a>
@@ -101,32 +92,15 @@
                 <a href="../pages/user_leaves.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Leaves
                 </a>
-                <div>
-                    <button onclick="toggleUserSubMenu()" class="block w-full text-left py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white focus:outline-none">
+                <a href="../pages/user_overtime.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Overtime
-                    <svg class="w-4 h-4 inline-block ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </button>
-                    
-                    <div id="user_subMenu" class="user-submenu-enter overflow-hidden pl-4">
-                        <a href="../pages/user_preRender.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
-                        Pre-Render OT
-                        </a>
-                        <a href="../pages/user_postRender.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
-                        Post-Render OT
-                        </a>
-                    </div>
-                </div>
-                
+                </a>
                 <a href="../pages/user_shifts.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     My Shifts
                 </a>
                 <a href="../pages/user_changeShift.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Change Shift
                 </a>
-                <!-- <a href="../pages/user_hrRequests.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 hover:text-white hover:no-underline">
-                    HR Requests
-                </a> -->
-
                 <?php } ?>
             </nav>
         </div>
