@@ -109,7 +109,9 @@
                 DATE_FORMAT(startTime, '%h:%i %p') AS startTime,
                 DATE_FORMAT(endTime, '%h:%i %p') AS endTime, 
                 basicPay, dailyRate, hourlyRate,
-                req_sss, req_pagIbig, req_philhealth, req_tin, req_nbi
+                req_sss, req_pagIbig, req_philhealth, req_tin, req_nbi, 
+                req_medicalExam, req_2x2pic, req_vaccineCard, req_psa,
+                req_validID, req_helloMoney
                 FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->department." AS department
                 ON employees.departmentID = department.departmentID
