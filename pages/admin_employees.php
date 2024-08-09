@@ -347,39 +347,48 @@
                                         </div>
                                     </div>
                                     <div class="col-md-3">
-                                        <!-- SSS -->
+                                        <!-- MEDICAL EXAM -->
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" id="req_medicalExam" name="req_medicalExam">
                                             <label class="form-check-label" for="req_medicalExam">
-                                                SSS
+                                                Medical Exam
                                             </label>
                                         </div>
-                                        <!-- PAG-IBIG -->
+                                        <!-- 2x2 PICTURE -->
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" id="req_2x2pic" name="req_2x2pic">
                                             <label class="form-check-label" for="req_2x2pic">
-                                                Pag-Ibig
+                                                2x2 Picture
                                             </label>
                                         </div>
-                                        <!-- PHILHEALTH -->
+                                        <!-- VACCINE CARD -->
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" id="req_vaccineCard" name="req_vaccineCard">
                                             <label class="form-check-label" for="req_vaccineCard">
-                                                PhilHealth
+                                                Vaccine Card
                                             </label>
                                         </div>
-                                        <!-- TIN -->
+                                        <!-- PSA - BIRTH CERTIFICATE -->
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" id="req_psa" name="req_psa">
                                             <label class="form-check-label" for="req_psa">
-                                                TIN
+                                                PSA - Birth Certificate
                                             </label>
                                         </div>
-                                        <!-- NBI CLEARANCE -->
+                                        <!-- VALID IDs -->
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" id="req_validID" name="req_validID">
                                             <label class="form-check-label" for="req_validID">
-                                                NBI Clearance
+                                                2 Valid IDs
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <!-- HELLO MONEY AUB ACC NUM -->
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="req_helloMoney" name="req_helloMoney">
+                                            <label class="form-check-label" for="req_helloMoney">
+                                                Account Number in Hello Money (AUB)
                                             </label>
                                         </div>
                                     </div>

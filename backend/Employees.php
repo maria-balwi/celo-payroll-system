@@ -386,10 +386,10 @@
             return $lastEmployee;
         }
 
-        public function addEmployeeRequirements($employeeID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi) {
+        public function addEmployeeRequirements($employeeID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi, $req_medicalExam, $req_2x2pic, $req_vaccineCard, $req_psa, $req_validID, $req_helloMoney) {
             $addRequirement = "
-                INSERT INTO ".$this->requirements." (empID, req_sss, req_pagIbig, req_philhealth, req_tin, req_nbi)
-                VALUES ('".$employeeID."', '".$req_sss."', '".$req_pagIbig."', '".$req_philhealth."', '".$req_tin."', '".$req_nbi."')";
+                INSERT INTO ".$this->requirements." (empID, req_sss, req_pagIbig, req_philhealth, req_tin, req_nbi, req_medicalExam, req_2x2pic, req_vaccineCard, req_psa, req_validID, req_helloMoney)
+                VALUES ('".$employeeID."', '".$req_sss."', '".$req_pagIbig."', '".$req_philhealth."', '".$req_tin."', '".$req_nbi."', '".$req_medicalExam."', '".$req_2x2pic."', '".$req_vaccineCard."', '".$req_psa."', '".$req_validID."', '".$req_helloMoney."')";
             return $addRequirement;
         }
 
