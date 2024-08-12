@@ -6,14 +6,33 @@
     </head>
     <body>
         <!-- SIDEBAR -->
-        <?php include('../includes/sidebar.php'); ?>	
+        <?php include('../includes/sidebar.php'); ?>
+        <?php include('../backend/team/processViewID.php'); ?>	
  
         <!-- MAIN CONTENT -->
         <main class="flex-1 p-3">
-            <div class="flex flex-1 p-2 text-2xl font-bold justify-between items-center">
-                <div>
+            <div class="flex flex-1 p-2 text-2xl font-bold items-center">
+                <div class="mr-4">
                     Daily Time Records
-                </div>    
+                </div>   
+                
+                <!-- DATA RANGE DROPDOWN MENU -->
+                <div class="relative inline-block text-right">
+                    <select class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-2 py-2 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:outline-none">
+                        <option value="2024-01">January</option>
+                        <option value="2024-02">February</option>
+                        <option value="2024-03">March</option>
+                        <option value="2024-04">April</option>
+                        <option value="2024-05">May</option>
+                        <option value="2024-06">June</option>
+                        <option value="2024-07">July</option>
+                        <option value="2024-08">August</option>
+                        <option value="2024-09">September</option>
+                        <option value="2024-10">October</option>
+                        <option value="2024-11">November</option>
+                        <option value="2024-12">December</option>
+                    </select>
+                </div>
             </div>
             
             <!-- CONTENT -->
@@ -116,6 +135,7 @@
                     <div class="modal-content" id="viewTeamDTRModal">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="userFormLabel">View Team Member DTR</h1>
+                            <input type="hidden" id="viewID">
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
@@ -134,7 +154,7 @@
                                 </div>
                             </div> 
 
-                            <div class="row g-2 mb-2">
+                            <div class="row g-2 mb-4">
                                 <div class="col-2">
                                     <input type="email" class="form-control" id="viewEmployeeID" disabled readonly>
                                 </div>
@@ -151,7 +171,7 @@
 
                             <div class="row g-2 mb-2">
                                 <div class="container mx-auto overflow-auto">
-                                    <table id="attendaceTable" class="table table-auto table-striped table-bordered text-center">
+                                    <table id="attendanceTable" class="table table-auto table-striped table-bordered text-center">
                                         <thead class="bg-gray-50">
                                             <tr>
                                                 <th class="text-xs font-medium text-yellow-500 uppercase tracking-wider">Date</th>
@@ -161,36 +181,20 @@
                                         </thead>
                                         <tbody class="bg-white divide-y divide-gray-200">
                                             <?php
-                                                $itTeamQuery = mysqli_query($conn, $attendance->viewITTeam());
+                                                $yearMonth = date('2024-07');
+                                                globalVariable();
+
+                                                $itTeamQuery = mysqli_query($conn, $employees->viewDTR($id));
                                                 while ($itTeamDetails = mysqli_fetch_array($itTeamQuery)) {
 
-                                                    $teamIT_id = $itTeamDetails['id'];
-                                                    $teamIT_employeeName = $itTeamDetails['firstName'] . " " . $itTeamDetails['lastName'];
-                                                    $teamIT_status = "Absent";
-                                                    $teamIT_timeIn = "-";
-                                                    $teamIT_timeOut = "-";
-
-                                                    // GET ATTENDANCE TIME - TIME IN
-                                                    $dailyAttendanceITQuery_timeIn = mysqli_query($conn, $attendance->dailyAttendanceIT_timeIn($teamIT_id));
-                                                    $dailyAttendanceIT_timeInDetails = mysqli_fetch_array($dailyAttendanceITQuery_timeIn);
-                                                    if (isset($dailyAttendanceIT_timeInDetails['attendanceTime']))
-                                                    {
-                                                        $teamIT_timeIn = $dailyAttendanceIT_timeInDetails['attendanceTime'];
-                                                        $teamIT_status = "Present";
-                                                    }
-
-                                                    // GET ATTENDANCE TIME - TIME OUT
-                                                    $dailyAttendanceITQuery_timeOut = mysqli_query($conn, $attendance->dailyAttendanceIT_timeOut($teamIT_id));
-                                                    $dailyAttendanceIT_timeOutDetails = mysqli_fetch_array($dailyAttendanceITQuery_timeOut);
-                                                    if (isset($dailyAttendanceIT_timeOutDetails['attendanceTime']))
-                                                    {
-                                                        $teamIT_timeOut = $dailyAttendanceIT_timeOutDetails['attendanceTime'];
-                                                        $teamIT_status = "Present";
-                                                    }
-                                                    echo "<tr data-id='" . $teamIT_id . "'>"; 
+                                                    // $teamIT_id = $itTeamDetails['id'];
+                                                    $teamIT_attendanceDate = $itTeamDetails['attendanceDate'];
+                                                    $teamIT_timeIn = $itTeamDetails['attendanceTime'];
+                                                    $teamIT_timeOut = $itTeamDetails['attendanceTime'];
+                                                    echo "<tr>"; 
                                                     ?>
                                                     
-                                                    <td class="whitespace-nowrap text-left"><?php echo $teamIT_employeeName ?></td>
+                                                    <td class="whitespace-nowrap text-left"><?php echo $teamIT_attendanceDate ?></td>
                                                     <td class="whitespace-nowrap"><?php echo $teamIT_timeIn ?></td>
                                                     <td class="whitespace-nowrap"><?php echo $teamIT_timeOut ?></td>
                                                 <?php } ?>

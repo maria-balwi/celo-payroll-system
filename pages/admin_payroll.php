@@ -116,7 +116,7 @@
 
 
                                     echo "<tr data-id='" . $employee_id . "' class='employeeView'>";
-                                    echo "<td ='px-6whitespace-nowrap'>" . $employee_employeeID . "</td>"; ?>
+                                    echo "<td ='px-6 whitespace-nowrap'>" . $employee_employeeID . "</td>"; ?>
                                     <!-- echo "<td ='px-6 whitespace-nowrap'>" . $employee_employeeName . "</td>"; 
                                     echo "<td ='px-6 text-right whitespace-nowrap'>".$employee_basicPay."</td>";
                                     echo "<td ='px-6 text-right whitespace-nowrap'>".$employee_dailyRate."</td>";

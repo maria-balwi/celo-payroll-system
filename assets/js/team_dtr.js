@@ -1,6 +1,7 @@
 $(document).ready(function() {
 
     $('#teamDTRTable').DataTable();
+    $('#attendanceTable').DataTable();
 
     // VIEW TEAM MEMBER DTR 
     var array = [];
@@ -21,22 +22,28 @@ $(document).ready(function() {
                     alert(res.message);
                 } 
                 else if (res.status == 200) {
+                    $('#viewID').val(res.data.id);
                     $('#viewEmployeeName').val(res.data.firstName + ' ' + res.data.lastName);
-                    $('#viewGender').val(res.data.gender);
-                    $('#viewCivilStatus').val(res.data.civilStatus);
-                    $('#viewAddress').val(res.data.address);
-                    $('#viewDateOfBirth').val(res.data.dateOfBirth);
-                    $('#viewPlaceOfBirth').val(res.data.placeOfBirth);
-                    $('#viewsss').val(res.data.sss);
-                    $('#viewpagIbig').val(res.data.pagIbig);
-                    $('#viewphilheatlh').val(res.data.philhealth);
                     $('#viewEmailAddress').val(res.data.emailAddress);
                     $('#viewEmployeeID').val(res.data.employeeID);
-                    $('#viewMobileNumber').val(res.data.mobileNumber);
-                    $('#viewDepartment').val(res.data.departmentName);
-                    $('#viewDesignation').val(res.data.civilStatus);
                     $('#viewShiftID').val(res.data.startTime + ' - ' + res.data.endTime);
                     $('#viewTeamDTRModal').modal('show');
+
+                    // AUTOMATICALLY SEND VIEWID TO PHP
+                    var viewID = $('#viewID').val();
+
+                    $.ajax({
+                        type: "POST",
+                        url: "../backend/team/processViewID.php", // The PHP file that will process the data
+                        data: { id: viewID },
+                        success: function(response) {
+                            // console.log('Response from PHP: ' + response);
+                            // Additional actions after success (if needed)
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error: ' + error);
+                        }
+                    });
                 }
             }
         });

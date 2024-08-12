@@ -21,18 +21,19 @@
                 
                 <!-- DATATABLE -->
                 <div class="container mx-auto my-3 overflow-auto">
-                    <table id="dtr" class="table table-auto table-striped table-bordered min-w-full divide-y divide-gray-200 text-center">
+                    <table id="dtr" class="table table-striped table-bordered table-auto text-center">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Shift</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Days Worked</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Leave</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Absents</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Lates</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Undertime</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Overtime</th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Employee ID</th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Name</th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Shift</th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Days Worked</th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Vacation Leave</th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Sick Leave</th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Absents</th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Lates</th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Undertime</th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Overtime</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -46,6 +47,8 @@
                                     $attendance_mobileNumber = $attendanceDetails['mobileNumber'];
                                     $attendance_employeeID = $attendanceDetails['employeeID'];
                                     $attendance_shift = $attendanceDetails['startTime'] . " - " . $attendanceDetails['endTime'];
+                                    $attendance_vl = $attendanceDetails['availableVL'];
+                                    $attendance_sl = $attendanceDetails['availableSL'];
 
                                     // GET DAYS wORKED
                                     $monthlyAttendanceQuery = mysqli_query($conn, $attendance->getMonthlyAttendance($attendance_id));
@@ -67,16 +70,17 @@
                                     $attendance_undertimes = mysqli_num_rows($monthlyUndertimesQuery);
 
 
-                                    echo "<tr data-id='" . $attendance_id . "' class='attendanceView'>";
-                                    echo "<td ='px-6 py-4 whitespace-nowrap'>" . $attendance_employeeID . "</td>";
-                                    echo "<td ='px-6 py-4 text-left whitespace-nowrap'>" . $attendance_employeeName . "</td>";
-                                    echo "<td ='px-6 py-4 whitespace-nowrap'>" . $attendance_shift . "</td>";
-                                    echo "<td ='px-6 py-4 whitespace-nowrap'>". $attendance_daysWorked ."</td>";
-                                    echo "<td ='px-6 py-4 whitespace-nowrap'>5</td>";
-                                    echo "<td ='px-6 py-4 whitespace-nowrap'>".$attendance_absences."</td>";
-                                    echo "<td ='px-6 py-4 whitespace-nowrap'>".$attendance_lates."</td>";
-                                    echo "<td ='px-6 py-4 whitespace-nowrap'>".$attendance_undertimes."</td>";
-                                    echo "<td ='px-6 py-4 whitespace-nowrap'>6</td>";
+                                    echo "<tr data-id='" . $attendance_id . "'>";
+                                    echo "<td ='px-6 whitespace-nowrap'>" . $attendance_employeeID . "</td>";
+                                    echo "<td ='px-6 text-left whitespace-nowrap'>" . $attendance_employeeName . "</td>";
+                                    echo "<td ='px-6 whitespace-nowrap'>" . $attendance_shift . "</td>";
+                                    echo "<td ='px-6 whitespace-nowrap'>". $attendance_daysWorked ."</td>";
+                                    echo "<td ='px-6 whitespace-nowrap'>".$attendance_vl."</td>";
+                                    echo "<td ='px-6 whitespace-nowrap'>".$attendance_sl."</td>";
+                                    echo "<td ='px-6 whitespace-nowrap'>".$attendance_absences."</td>";
+                                    echo "<td ='px-6 whitespace-nowrap'>".$attendance_lates."</td>";
+                                    echo "<td ='px-6 whitespace-nowrap'>".$attendance_undertimes."</td>";
+                                    echo "<td ='px-6 whitespace-nowrap'>0</td>";
                                     echo "</td>";
                                 }
                             ?>

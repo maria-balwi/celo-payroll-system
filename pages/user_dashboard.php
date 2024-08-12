@@ -85,24 +85,7 @@
                                 $year = date('Y');
                                 $month = date('m');
 
-                                function getWorkingDaysInMonth($year, $month) {
-                                    $start_date = date("$year-$month-01");
-                                    $end_date = date("Y-m-t", strtotime($start_date)); // last day of the month
-                                    
-                                    $work_days = 0;
-                                    $day_counter = $start_date;
-                                
-                                    while (strtotime($day_counter) <= strtotime($end_date)) {
-                                        if (date('N', strtotime($day_counter)) < 6) { // 1 (for Monday) through 5 (for Friday)
-                                            $work_days++;
-                                        }
-                                        $day_counter = date("Y-m-d", strtotime($day_counter . ' +1 day'));
-                                    }
-                                    
-                                    return $work_days;
-                                }
-
-                                $workingDays = getWorkingDaysInMonth($year, $month);
+                                $workingDays = $attendance->getWorkingDaysInMonth($year, $month);
                                 $monthlyAttendanceQuery = mysqli_query($conn, $attendance->getMonthlyAttendance($_SESSION['id']));
                                 $monthlyAttendance = mysqli_num_rows($monthlyAttendanceQuery);
                                 $absences = $workingDays - $monthlyAttendance;

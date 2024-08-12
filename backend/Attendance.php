@@ -220,36 +220,51 @@
         public function checkDTR($id) {
             $checkDTR = "
                 SELECT 
-                    id, 
                     attendanceDate,
-                    DATE_FORMAT(attendanceTime, '%h:%i %p') AS attendanceTime
+                    attendanceTime
                 FROM 
                     (SELECT 
-                        CURDATE() - INTERVAL (DAY(CURDATE()) - 1) DAY + INTERVAL seq.day DAY AS date
+                        CURDATE() - INTERVAL (DAY(CURDATE()) - 1) DAY + INTERVAL seq.seq DAY AS date
                     FROM 
-                        (SELECT 0 AS day UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS a
-                        CROSS JOIN (SELECT 0 AS day UNION ALL SELECT 10 UNION ALL SELECT 20 UNION ALL SELECT 30) AS b
-                        CROSS JOIN (SELECT 0 AS day UNION ALL SELECT 100) AS c
-                        CROSS JOIN (SELECT 0 AS day UNION ALL SELECT 200) AS d
-                        CROSS JOIN (SELECT 0 AS day UNION ALL SELECT 400) AS e
-                        CROSS JOIN (SELECT 0 AS day UNION ALL SELECT 800) AS f
-                        CROSS JOIN (
-                            SELECT 
-                                (a.day + b.day + c.day + d.day + e.day + f.day) AS day
-                            FROM 
-                                (SELECT 0 AS day UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS a
-                                CROSS JOIN (SELECT 0 AS day UNION ALL SELECT 10 UNION ALL SELECT 20 UNION ALL SELECT 30) AS b
-                        ) AS seq
+                        (SELECT 0 AS seq UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9
+                        UNION ALL SELECT 10 UNION ALL SELECT 11 UNION ALL SELECT 12 UNION ALL SELECT 13 UNION ALL SELECT 14 UNION ALL SELECT 15 UNION ALL SELECT 16 UNION ALL SELECT 17 UNION ALL SELECT 18 UNION ALL SELECT 19
+                        UNION ALL SELECT 20 UNION ALL SELECT 21 UNION ALL SELECT 22 UNION ALL SELECT 23 UNION ALL SELECT 24 UNION ALL SELECT 25 UNION ALL SELECT 26 UNION ALL SELECT 27 UNION ALL SELECT 28 UNION ALL SELECT 29
+                        UNION ALL SELECT 30 UNION ALL SELECT 31) AS seq
                     WHERE 
-                        CURDATE() - INTERVAL (DAY(CURDATE()) - 1) DAY + INTERVAL seq.day DAY <= LAST_DAY(CURDATE())
+                        CURDATE() - INTERVAL (DAY(CURDATE()) - 1) DAY + INTERVAL seq.seq DAY <= LAST_DAY(CURDATE())
                     ) d
                 CROSS JOIN 
-                    (SELECT DISTINCT id FROM ".$this->employees." WHERE id = $id) e
+                    (SELECT DISTINCT empID FROM ".$this->attendance." WHERE empID = $id) attendance
                 LEFT JOIN 
-                    ".$this->attendance." a ON a.empID = e.id AND a.date = d.date
+                    ".$this->attendance." a ON a.empID = e.empID AND a.attendanceDate = d.date
                 ORDER BY 
-                    e.id, d.date";
+                    e.empID, d.date";
             return $checkDTR;
+        }
+
+        public function getWorkingDaysInMonth($year, $month) {
+            $start_date = date("$year-$month-01");
+            $end_date = date("Y-m-t", strtotime($start_date)); // last day of the month
+            
+            $work_days = 0;
+            $day_counter = $start_date;
+            
+            while (strtotime($day_counter) <= strtotime($end_date)) {
+                if (date('N', strtotime($day_counter)) < 6) { // 1 (for Monday) through 5 (for Friday)
+                    $work_days++;
+                }
+                $day_counter = date("Y-m-d", strtotime($day_counter . ' +1 day'));
+            }
+            
+            return $work_days;
+        }
+
+        public function getITAttendance($id, $date) {
+            $attendance = "
+                SELECT * FROM ".$this->attendance." 
+                WHERE empID = $id AND 
+                DATE_FORMAT(attendanceDate, '%Y-%m') = '$date'";
+            return $attendance;
         }
     }
 

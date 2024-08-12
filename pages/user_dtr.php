@@ -40,7 +40,7 @@
                                         $dtr_attendanceTime = $dtrDetails['attendanceTime'];
                                         $dtr_logType = $dtrDetails['logType'];
                                         $dtr_time = $dtrDetails['startTime'] . ' - ' . $dtrDetails['endTime'];
-
+                                        
                                         $dateTime = new DateTime($dtr_attendanceDate);
                                         $formattedDate = $dateTime->format('M d, Y');                                      
 
@@ -74,6 +74,19 @@
                                         echo "<td =' whitespace-nowrap'>" . $dtr_attendanceTime . "</td>";
                                         echo "</td>";
                                     }
+                                ?>
+
+                                <?php 
+                                    // $dtrQuery = mysqli_query($conn, $attendance->checkDTR($_SESSION['id']));
+                                    // while ($dtrDetails = mysqli_fetch_array($dtrQuery)) {
+
+                                    //     $dtr_id = $dtrDetails['id'];
+                                    //     $dtr_attendanceDate = $dtrDetails['attendanceDate'];
+                                    //     $dtr_attendanceTime = $dtrDetails['attendanceTime'];
+                                    //     $dtr_logType = $dtrDetails['attendanceDate'];
+                                    //     $dtr_time = $dtrDetails['attendanceTime'] . ' - ' . $dtrDetails['attendanceTime '];
+                                        
+                                    // }
                                 ?>
                             </tbody>
                         </table>
