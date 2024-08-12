@@ -25,6 +25,7 @@
                             $userQuery = mysqli_query($conn, $users->viewUser($_SESSION['id']));
                             while ($userDetails = mysqli_fetch_array($userQuery)) {
                         ?>
+                        
                         <!-- LEFT CARD -->
                         <div class="col-span-12 md:col-span-4">
                             <div class="bg-white shadow rounded-lg p-4">
@@ -33,28 +34,54 @@
 
                                     </img>
                                     <h1 class="text-lg font-bold uppercase"><?php echo $userDetails['employeeName'] ?></h1>
+                                    <p class=" text-sm  uppercase text-gray-700"><?php echo $userDetails['departmentName']." - ". $userDetails['position'] ?></p>
                                 </div>
                                 <hr class="my-2 border-t border-gray-300">
-                                <h2 class="text-lg font-bold">Personal Information</h2>
                                 <div class="flex flex-col py-1">
+                                    <div class="flex gap-2 py-1">
+                                        <h2 class="text-sm font-bold text-gray-500">Email:</h2>
+                                        <h2 class="text-sm text-gray-400"><?php echo $userDetails['emailAddress'] ?></h2>
+                                    </div>
                                     <div class="flex gap-2 py-1">
                                         <h2 class="text-sm font-bold text-gray-500">Mobile:</h2>
                                         <h2 class="text-sm text-gray-400"><?php echo $userDetails['mobileNumber'] ?></h2>
                                     </div>
-                                    <!-- <div class="flex gap-2 py-1">
-                                        < !-- <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 text-sm font-medium bg-blue-500 text-white" data-bs-target="#changePasswordModal" data-bs-toggle="modal">
+                                    <div class="flex gap-2 py-1">
+                                        <h2 class="text-sm font-bold text-gray-500">Department:</h2>
+                                        <h2 class="text-sm text-gray-400"><?php echo $userDetails['departmentName'] ?></h2>
+                                    </div>
+                                    <div class="flex gap-2 py-1">
+                                        <!-- <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 text-sm font-medium bg-blue-500 text-white" data-bs-target="#changePasswordModal" data-bs-toggle="modal">
                                             Change Password
-                                        </button> - ->
-                                            < ?php if ($_SESSION['activated'] == 0) 
+                                        </button> -->
+                                            <?php if ($_SESSION['activated'] == 0) 
                                             { ?>
                                                 <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 text-sm font-medium bg-blue-500 text-white" data-bs-toggle="modal" data-bs-target="#updatePasswordModal">Update Password</button>
-                                            < ?php }
+                                            <?php }
                                             else 
                                             { ?>
                                                 <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 text-sm font-medium bg-blue-500 text-white" data-bs-toggle="modal" data-bs-target="#changePasswordModal">Change Password</button>
-                                            < ?php } ?>
-                                    </div> -->
-                                    <div class="flex gap-2 py-1">
+                                            <?php } ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- RIGHT CARD -->
+                        <div class="col-span-12 md:col-span-8">
+                            <div class="bg-white shadow rounded-lg p-6 grid grid-cols-1 md:grid-cols-2 justify-center">
+                                <div>
+                                    <h2 class="text-lg font-bold">Personal Information</h2>
+                                    <div class="flex flex-col py-1 pr-6">
+                                        <div class="flex gap-2 py-1">
+                                            <h2 class="text-sm text-gray-500">Name:</h2>
+                                            <h2 class="text-sm text-gray-400"><?php echo $userDetails['employeeName'] ?></h2>
+                                        </div>
+                                        <div class="flex gap-2 py-1">
+                                            <h2 class="text-sm text-gray-500">Email:</h2>
+                                            <h2 class="text-sm text-gray-400"><?php echo $userDetails['emailAddress'] ?></h2>
+                                        </div>
+                                        <div class="flex gap-2 py-1">
                                             <h2 class="text-sm text-gray-500">Address:</h2>
                                             <h2 class="text-sm text-gray-400"><?php echo $userDetails['address'] ?></h2>
                                         </div>
@@ -78,20 +105,12 @@
                                             <h2 class="text-sm text-gray-500">Civil Status:</h2>
                                             <h2 class="text-sm text-gray-400"><?php echo $userDetails['civilStatus'] ?></h2>
                                         </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
 
-                        <!-- RIGHT CARD -->
-                        <div class="col-span-12 md:col-span-8">
-                            <div class="bg-white shadow rounded-lg p-6 grid grid-cols-1 md:grid-cols-2 justify-center">
                                 <div>
                                     <h2 class="text-lg font-bold">Employment Information</h2>
-                                    <div class="flex flex-col py-1 pr-6">
-                                        <div class="flex gap-2 py-1">
-                                            <h2 class="text-sm text-gray-500">Email:</h2>
-                                            <h2 class="text-sm text-gray-400"><?php echo $userDetails['emailAddress'] ?></h2>
-                                        </div>
+                                    <div class="flex flex-col py-1">
                                         <div class="flex gap-2 py-1">
                                             <h2 class="text-sm text-gray-500">Job Title:</h2>
                                             <h2 class="text-sm text-gray-400"><?php echo $userDetails['departmentName']." - ". $userDetails['position'] ?></h2>
@@ -119,134 +138,6 @@
                                         <div class="flex gap-2 py-1">
                                             <h2 class="text-sm text-gray-500">Shift:</h2>
                                             <h2 class="text-sm text-gray-400"><?php echo $userDetails['startTime']." - ".$userDetails['endTime'] ?></h2>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <h2 class="text-lg font-bold">Requirements</h2>
-                                    <div class="flex flex-col py-1">
-                                        <div class="flex gap-2 py-1">
-                                            <?php 
-                                                if ($userDetails['req_sss'] == 0) { ?>
-                                                <input class="form-check-input" type="checkbox" id="req_sss" name="req_sss" disabled readonly>
-                                            <?php } else { ?>
-                                                <input class="form-check-input" type="checkbox" id="req_sss" name="req_sss" checked disabled readonly>
-                                            <?php }; ?>
-                                            <label class="form-check-label text-sm text-gray-800" for="req_sss">
-                                                SSS
-                                            </label>  
-                                        </div>
-                                        <div class="flex gap-2 py-1">
-                                            <?php 
-                                                if ($userDetails['req_pagIbig'] == 0) { ?>
-                                                <input class="form-check-input" type="checkbox" id="req_pagIbig" name="req_pagIbig" disabled readonly>
-                                            <?php } else { ?>
-                                                <input class="form-check-input" type="checkbox" id="req_pagIbig" name="req_pagIbig" checked disabled readonly>
-                                            <?php }; ?>
-                                            <label class="form-check-label text-sm text-gray-800" for="req_pagIbig">
-                                                Pag-Ibig
-                                            </label>  
-                                        </div>
-                                        <div class="flex gap-2 py-1">
-                                            <?php 
-                                                if ($userDetails['req_philhealth'] == 0) { ?>
-                                                <input class="form-check-input" type="checkbox" id="req_philhealth" name="req_philhealth" disabled readonly>
-                                            <?php } else { ?>
-                                                <input class="form-check-input" type="checkbox" id="req_philhealth" name="req_philhealth" checked disabled readonly>
-                                            <?php }; ?>
-                                            <label class="form-check-label text-sm text-gray-800" for="req_philhealth">
-                                                PhilHealth
-                                            </label>  
-                                        </div>
-                                        <div class="flex gap-2 py-1">
-                                            <?php 
-                                                if ($userDetails['req_tin'] == 0) { ?>
-                                                <input class="form-check-input" type="checkbox" id="req_tin" name="req_tin" disabled readonly>
-                                            <?php } else { ?>
-                                                <input class="form-check-input" type="checkbox" id="req_tin" name="req_tin" checked disabled readonly>
-                                            <?php }; ?>
-                                            <label class="form-check-label text-sm text-gray-800" for="req_tin">
-                                                TIN
-                                            </label>  
-                                        </div>
-                                        <div class="flex gap-2 py-1">
-                                            <?php 
-                                                if ($userDetails['req_nbi'] == 0) { ?>
-                                                <input class="form-check-input" type="checkbox" id="req_nbi" name="req_nbi" disabled readonly>
-                                            <?php } else { ?>
-                                                <input class="form-check-input" type="checkbox" id="req_nbi" name="req_nbi" checked disabled readonly>
-                                            <?php }; ?>
-                                            <label class="form-check-label text-sm text-gray-800" for="req_nbi">
-                                                TIN
-                                            </label>  
-                                        </div>
-                                        <div class="flex gap-2 py-1">
-                                            <?php 
-                                                if ($userDetails['req_medicalExam'] == 0) { ?>
-                                                <input class="form-check-input" type="checkbox" id="req_medicalExam" name="req_medicalExam" disabled readonly>
-                                            <?php } else { ?>
-                                                <input class="form-check-input" type="checkbox" id="req_medicalExam" name="req_medicalExam" checked disabled readonly>
-                                            <?php }; ?>
-                                            <label class="form-check-label text-sm text-gray-800" for="req_medicalExam">
-                                                TIN
-                                            </label>  
-                                        </div>
-                                        <div class="flex gap-2 py-1">
-                                            <?php 
-                                                if ($userDetails['req_2x2pic'] == 0) { ?>
-                                                <input class="form-check-input" type="checkbox" id="req_2x2pic" name="req_2x2pic" disabled readonly>
-                                            <?php } else { ?>
-                                                <input class="form-check-input" type="checkbox" id="req_2x2pic" name="req_2x2pic" checked disabled readonly>
-                                            <?php }; ?>
-                                            <label class="form-check-label text-sm text-gray-800" for="req_2x2pic">
-                                                2x2 Picture
-                                            </label>  
-                                        </div>
-                                        <div class="flex gap-2 py-1">
-                                            <?php 
-                                                if ($userDetails['req_vaccineCard'] == 0) { ?>
-                                                <input class="form-check-input" type="checkbox" id="req_vaccineCard" name="req_vaccineCard" disabled readonly>
-                                            <?php } else { ?>
-                                                <input class="form-check-input" type="checkbox" id="req_vaccineCard" name="req_vaccineCard" checked disabled readonly>
-                                            <?php }; ?>
-                                            <label class="form-check-label text-sm text-gray-800" for="req_vaccineCard">
-                                                Vaccine Card
-                                            </label>  
-                                        </div>
-                                        <div class="flex gap-2 py-1">
-                                            <?php 
-                                                if ($userDetails['req_psa'] == 0) { ?>
-                                                <input class="form-check-input" type="checkbox" id="req_psa" name="req_psa" disabled readonly>
-                                            <?php } else { ?>
-                                                <input class="form-check-input" type="checkbox" id="req_psa" name="req_psa" checked disabled readonly>
-                                            <?php }; ?>
-                                            <label class="form-check-label text-sm text-gray-800" for="req_psa">
-                                                PSA - Birth Certificate
-                                            </label>  
-                                        </div>
-                                        <div class="flex gap-2 py-1">
-                                            <?php 
-                                                if ($userDetails['req_validID'] == 0) { ?>
-                                                <input class="form-check-input" type="checkbox" id="req_validID" name="req_validID" disabled readonly>
-                                            <?php } else { ?>
-                                                <input class="form-check-input" type="checkbox" id="req_validID" name="req_validID" checked disabled readonly>
-                                            <?php }; ?>
-                                            <label class="form-check-label text-sm text-gray-800" for="req_validID">
-                                                2 Valid IDs
-                                            </label>  
-                                        </div>
-                                        <div class="flex gap-2 py-1">
-                                            <?php 
-                                                if ($userDetails['req_validID'] == 0) { ?>
-                                                <input class="form-check-input" type="checkbox" id="req_helloMoney" name="req_helloMoney" disabled readonly>
-                                            <?php } else { ?>
-                                                <input class="form-check-input" type="checkbox" id="req_helloMoney" name="req_helloMoney" checked disabled readonly>
-                                            <?php }; ?>
-                                            <label class="form-check-label text-sm text-gray-800" for="req_helloMoney">
-                                                Account Number in Hello Money (AUB)
-                                            </label>  
-                                        </div>
                                     </div>
                                 </div>
                             </div>

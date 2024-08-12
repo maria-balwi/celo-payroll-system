@@ -11,14 +11,14 @@
         <!-- MAIN CONTENT -->
         <main class="flex-1 p-3">
             <div class="flex-1 p-2 text-2xl font-bold">
-                Post-Render Overtime
+                Overtime
             </div>
             
             <!-- CONTENT -->
             <div class="p-4 m-1 bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
                 <!-- DATA TABLE -->
                 <div class="container mx-auto overflow-auto">
-                    <table id="example" class="table table-bordered table-striped min-w-full divide-y divide-gray-200">
+                    <table id="overtimeTable" class="table table-bordered table-striped min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
                                 <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Date Filed</th>
@@ -79,7 +79,7 @@
             
         </main>
     
-        <script src="../assets/js/dtr.js"></script>
+        <script src="../assets/js/user_overtime.js"></script>
 
         <!-- FOOTER -->
         <?php include('../includes/footer.php'); ?>

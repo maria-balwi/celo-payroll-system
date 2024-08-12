@@ -70,6 +70,54 @@
     {
         $req_nbi = 0;
     }
+    if (isset($_POST['req_medicalExam']))
+    {
+        $req_medicalExam = 1;
+    }
+    else
+    {
+        $req_medicalExam = 0;
+    }
+    if (isset($_POST['req_2x2pic']))
+    {
+        $req_2x2pic = 1;
+    }
+    else
+    {
+        $req_2x2pic = 0;
+    }
+    if (isset($_POST['req_vaccineCard']))
+    {
+        $req_vaccineCard = 1;
+    }
+    else
+    {
+        $req_vaccineCard = 0;
+    }
+    if (isset($_POST['req_psa']))
+    {
+        $req_psa = 1;
+    }
+    else
+    {
+        $req_psa = 0;
+    }
+    if (isset($_POST['req_validID']))
+    {
+        $req_validID = 1;
+    }
+    else
+    {
+        $req_validID = 0;
+    }
+    if (isset($_POST['req_helloMoney']))
+    {
+        $req_helloMoney = 1;
+    }
+    else
+    {
+        $req_helloMoney = 0;
+    }
 
     // PENDING TO GET ID
     $designationQuery = mysqli_query($conn, $employees->viewDesignation());
@@ -108,7 +156,7 @@
         $lastIDResult = mysqli_fetch_array($lastIDQuery);
         $lastID = $lastIDResult['id'];
 
-        mysqli_query($conn, $employees->addEmployeeRequirements($lastID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi));
+        mysqli_query($conn, $employees->addEmployeeRequirements($lastID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi, $req_medicalExam, $req_2x2pic, $req_vaccineCard, $req_psa, $req_validID, $req_helloMoney));
 
         $em = "Employee Added Successfully";
         $error = array('error' => 0, 'em' => $em);

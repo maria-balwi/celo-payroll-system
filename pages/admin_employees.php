@@ -346,6 +346,52 @@
                                             </label>
                                         </div>
                                     </div>
+                                    <div class="col-md-3">
+                                        <!-- MEDICAL EXAM -->
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="req_medicalExam" name="req_medicalExam">
+                                            <label class="form-check-label" for="req_medicalExam">
+                                                Medical Exam
+                                            </label>
+                                        </div>
+                                        <!-- 2x2 PICTURE -->
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="req_2x2pic" name="req_2x2pic">
+                                            <label class="form-check-label" for="req_2x2pic">
+                                                2x2 Picture
+                                            </label>
+                                        </div>
+                                        <!-- VACCINE CARD -->
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="req_vaccineCard" name="req_vaccineCard">
+                                            <label class="form-check-label" for="req_vaccineCard">
+                                                Vaccine Card
+                                            </label>
+                                        </div>
+                                        <!-- PSA - BIRTH CERTIFICATE -->
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="req_psa" name="req_psa">
+                                            <label class="form-check-label" for="req_psa">
+                                                PSA - Birth Certificate
+                                            </label>
+                                        </div>
+                                        <!-- VALID IDs -->
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="req_validID" name="req_validID">
+                                            <label class="form-check-label" for="req_validID">
+                                                2 Valid IDs
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <!-- HELLO MONEY AUB ACC NUM -->
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="req_helloMoney" name="req_helloMoney">
+                                            <label class="form-check-label" for="req_helloMoney">
+                                                Account Number in Hello Money (AUB)
+                                            </label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -592,6 +638,52 @@
                                         <input class="form-check-input" type="checkbox" id="view_req_nbi" name="view_req_nbi" value="view_req_nbi" disabled readonly>
                                         <label class="form-check-label" for="view_req_nbi">
                                             NBI Clearance
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <!-- MEDICAL EXAM -->
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="view_req_medicalExam" name="view_req_medicalExam" value="view_req_medicalExam" disabled readonly>
+                                        <label class="form-check-label" for="view_req_medicalExam">
+                                            Medical Exam
+                                        </label>
+                                    </div>
+                                    <!-- 2x2 PICTURE -->
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="view_req_2x2pic" name="view_req_2x2pic" value="view_req_2x2pic" disabled readonly>
+                                        <label class="form-check-label" for="view_req_2x2pic">
+                                            2x2 Picture
+                                        </label>
+                                    </div>
+                                    <!-- VACCINE CARD -->
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="view_req_vaccineCard" name="view_req_vaccineCard" value="view_req_vaccineCard" disabled readonly>
+                                        <label class="form-check-label" for="view_req_vaccineCard">
+                                            Vaccine Card
+                                        </label>
+                                    </div>
+                                    <!-- PSA BIRT CERTIFICATE -->
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="view_req_psa" name="view_req_psa" value="view_req_psa" disabled readonly>
+                                        <label class="form-check-label" for="view_req_psa">
+                                            PSA - Birth Certificate
+                                        </label>
+                                    </div>
+                                    <!-- 2 VALID IDs -->
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="view_req_validID" name="view_req_validID" value="view_req_validID" disabled readonly>
+                                        <label class="form-check-label" for="view_req_validID">
+                                            2 Valid IDs
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <!-- HELLO MONEY AUB ACC NUM -->
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="view_req_helloMoney" name="view_req_helloMoney" value="view_req_helloMoney" disabled readonly>
+                                        <label class="form-check-label" for="view_req_helloMoney">
+                                            Account Number in Hello Money (AUB)
                                         </label>
                                     </div>
                                 </div>
@@ -894,6 +986,52 @@
                                             <input class="form-check-input" type="checkbox" id="update_req_nbi" name="update_req_nbi" value="update_req_nbi">
                                             <label class="form-check-label" for="update_req_nbi">
                                                 NBI Clearance
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <!-- MEDICAL EXAM -->
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="update_req_medicalExam" name="update_req_medicalExam" value="update_req_medicalExam">
+                                            <label class="form-check-label" for="update_req_medicalExam">
+                                                Medical Exam
+                                            </label>
+                                        </div>
+                                        <!-- 2x2 PICTURE -->
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="update_req_2x2pic" name="update_req_2x2pic" value="update_req_2x2pic">
+                                            <label class="form-check-label" for="update_req_2x2pic">
+                                                2x2 Picture
+                                            </label>
+                                        </div>
+                                        <!-- VACCINE CARD -->
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="update_req_vaccineCard" name="update_req_vaccineCard" value="update_req_vaccineCard">
+                                            <label class="form-check-label" for="update_req_vaccineCard">
+                                                Vaccine Card
+                                            </label>
+                                        </div>
+                                        <!-- PSA BIRT CERTIFICATE -->
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="update_req_psa" name="update_req_psa" value="update_req_psa">
+                                            <label class="form-check-label" for="update_req_psa">
+                                                PSA - Birth Certificate
+                                            </label>
+                                        </div>
+                                        <!-- 2 VALID IDs -->
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="update_req_validID" name="update_req_validID" value="update_req_validID">
+                                            <label class="form-check-label" for="update_req_validID">
+                                                2 Valid IDs
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <!-- HELLO MONEY AUB ACC NUM -->
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="update_req_helloMoney" name="update_req_helloMoney" value="update_req_helloMoney">
+                                            <label class="form-check-label" for="update_req_helloMoney">
+                                                Account Number in Hello Money (AUB)
                                             </label>
                                         </div>
                                     </div>
