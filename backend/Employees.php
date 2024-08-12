@@ -560,7 +560,8 @@
 
         public function viewEmployeeAttendance() {
             $employeeAttendance = "
-                SELECT id, firstName, lastName, mobileNumber, employeeID, emailAddress,
+                SELECT id, firstName, lastName, mobileNumber, employeeID, 
+                emailAddress, availableVL, availableSL,
                 DATE_FORMAT(startTime, '%h:%i %p') AS startTime, 
                 DATE_FORMAT(endTime, '%h:%i %p') AS endTime 
                 FROM ".$this->employees." AS employees
