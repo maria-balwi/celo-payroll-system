@@ -105,6 +105,22 @@
             return $request;
         }
 
+        public function viewTeamFiledOT() {
+            $request = "
+                SELECT requestID, dateFiled, otDate, employeeID,
+                CONCAT(firstName , ' ', lastName) AS employeeName,
+                actualOThours, actualOTmins,
+                approvedOThours, approvedOTmins,
+                remarks, status
+                FROM ".$this->filedOT." AS filedOT
+                INNER JOIN ".$this->employees." AS employees
+                ON filedOT.empID = employees.id
+                INNER JOIN ".$this->department." AS department
+                ON department.departmentID = employees.departmentID
+                WHERE employees.departmentID = 4";
+            return $request;
+        }
+
         public function viewChangeShift($id) {
             $request = "
                 SELECT requestID, dateFiled, remarks, status, 
