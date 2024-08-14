@@ -39,7 +39,7 @@
                                             $deduction_amount = $employeeDetails['deductionAmount'];
 
 
-                                            echo "<tr data-id='" . $deduction_id . "' class='deductionView'>";
+                                            echo "<tr data-id='" . $deduction_id . "' class='deductionView cursor-pointer'>";
                                             echo "<td ='px-6 py-4 whitespace-nowrap'>" . $deduction_name . "</td>";
                                             echo "<td ='px-6 py-4 whitespace-nowrap'>" . $deduction_amount . "</td>";
                                             echo "</td>";

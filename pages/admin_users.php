@@ -94,7 +94,7 @@
                                                             $personnelEmailAdd = $personnelDetails['emailAddress'];
                                                 
 
-                                                            echo "<tr data-id='".$userID."' class='userView'>";
+                                                            echo "<tr data-id='".$userID."' class='userView cursor-pointer'>";
                                                             echo "<td>".$employeeID."</td>";
                                                             echo "<td>".$personnelName."</td>";
                                                             echo "<td>".$personnelEmailAdd."</td>";
@@ -125,7 +125,7 @@
                                                             $inactivePersonnelEmailAdd = $inactivePersonnelDetails['emailAddress'];
                                                 
 
-                                                            echo "<tr data-id='".$userID."' class='inactiveUserView'>";
+                                                            echo "<tr data-id='".$userID."' class='inactiveUserView cursor-pointer'>";
                                                             echo "<td>".$employeeID."</td>";
                                                             echo "<td>".$inactivePersonnelName."</td>";
                                                             echo "<td>".$inactivePersonnelEmailAdd."</td>";
@@ -176,7 +176,7 @@
                                                             $emailAdd = $tlqaDetails['emailAddress'];
                                                 
 
-                                                            echo "<tr data-id='".$userID."' class='userView'>";
+                                                            echo "<tr data-id='".$userID."' class='userView cursor-pointer'>";
                                                             echo "<td>".$employeeID."</td>";
                                                             echo "<td>".$personnelName."</td>";
                                                             echo "<td>".$emailAdd."</td>";
@@ -207,7 +207,7 @@
                                                             $inactiveEmailAdd = $inactiveTLQAdetails['emailAddress'];
                                                 
 
-                                                            echo "<tr data-id='".$userID."' class='inactiveUserView'>";
+                                                            echo "<tr data-id='".$userID."' class='inactiveUserView cursor-pointer'>";
                                                             echo "<td>".$employeeID."</td>";
                                                             echo "<td>".$inactivePersonnelName."</td>";
                                                             echo "<td>".$inactiveEmailAdd."</td>";
@@ -258,7 +258,7 @@
                                                             $emailAdd = $facilitiesDetails['emailAddress'];
                                                 
 
-                                                            echo "<tr data-id='".$userID."' class='userView'>";
+                                                            echo "<tr data-id='".$userID."' class='userView cursor-pointer'>";
                                                             echo "<td>".$employeeID."</td>";
                                                             echo "<td>".$facilitiesName."</td>";
                                                             echo "<td>".$emailAdd."</td>";
@@ -289,7 +289,7 @@
                                                             $inactiveFacilitiesEmailAdd = $inactiveFacilitiesDetails['emailAddress'];
                                                 
 
-                                                            echo "<tr data-id='".$userID."' class='inactiveUserView'>";
+                                                            echo "<tr data-id='".$userID."' class='inactiveUserView cursor-pointer'>";
                                                             echo "<td>".$employeeID."</td>";
                                                             echo "<td>".$inactiveFacilitiesName."</td>";
                                                             echo "<td>".$inactiveFacilitiesEmailAdd."</td>";
@@ -340,7 +340,7 @@
                                                             $emailAdd = $hrDetails['emailAddress'];
                                                 
 
-                                                            echo "<tr data-id='".$userID."' class='userView'>";
+                                                            echo "<tr data-id='".$userID."' class='userView cursor-pointer'>";
                                                             echo "<td>".$employeeID."</td>";
                                                             echo "<td>".$hrstaffName."</td>";
                                                             echo "<td>".$emailAdd."</td>";
@@ -371,7 +371,7 @@
                                                             $inactiveAdminEmailAdd = $inactiveHRdetails['emailAddress'];
                                                 
 
-                                                            echo "<tr data-id='".$userID."' class='inactiveUserView'>";
+                                                            echo "<tr data-id='".$userID."' class='inactiveUserView cursor-pointer'>";
                                                             echo "<td>".$employeeID."</td>";
                                                             echo "<td>".$inactiveHR."</td>";
                                                             echo "<td>".$inactiveAdminEmailAdd."</td>";
@@ -422,7 +422,7 @@
                                                             $emailAdd = $financeDetails['emailAddress'];
                                                 
 
-                                                            echo "<tr data-id='".$userID."' class='userView'>";
+                                                            echo "<tr data-id='".$userID."' class='userView cursor-pointer'>";
                                                             echo "<td>".$employeeID."</td>";
                                                             echo "<td>".$financestaffName."</td>";
                                                             echo "<td>".$emailAdd."</td>";
@@ -453,7 +453,7 @@
                                                             $inactiveFinanceEmailAdd = $inactiveFinanceDetails['emailAddress'];
                                                 
 
-                                                            echo "<tr data-id='".$userID."' class='inactiveUserView'>";
+                                                            echo "<tr data-id='".$userID."' class='inactiveUserView cursor-pointer'>";
                                                             echo "<td>".$employeeID."</td>";
                                                             echo "<td>".$inactiveFinance."</td>";
                                                             echo "<td>".$inactiveFinanceEmailAdd."</td>";
@@ -504,7 +504,7 @@
                                                             $itEmailAdd = $adminDetails['emailAddress'];
                                                 
 
-                                                            echo "<tr data-id='".$userID."' class='userView'>";
+                                                            echo "<tr data-id='".$userID."' class='userView cursor-pointer'>";
                                                             echo "<td>".$employeeID."</td>";
                                                             echo "<td>".$itstaffName."</td>";
                                                             echo "<td>".$itEmailAdd."</td>";
@@ -535,7 +535,7 @@
                                                             $inactiveAdminEmailAdd = $inactiveAdminDetails['emailAddress'];
                                                 
 
-                                                            echo "<tr data-id='".$userID."' class='inactiveUserView'>";
+                                                            echo "<tr data-id='".$userID."' class='inactiveUserView cursor-pointer'>";
                                                             echo "<td>".$employeeID."</td>";
                                                             echo "<td>".$inactiveAdminName."</td>";
                                                             echo "<td>".$inactiveAdminEmailAdd."</td>";
@@ -586,7 +586,7 @@
                                                             $directorEmailAdd = $directorDetails['emailAddress'];
                                                 
 
-                                                            echo "<tr data-id='".$userID."' class='userView'>";
+                                                            echo "<tr data-id='".$userID."' class='userView cursor-pointer'>";
                                                             echo "<td>".$employeeID."</td>";
                                                             echo "<td>".$directorName."</td>";
                                                             echo "<td>".$directorEmailAdd."</td>";
@@ -617,7 +617,7 @@
                                                             $inactiveDirectorEmailAdd = $inactiveDirectorDetails['emailAddress'];
                                                 
 
-                                                            echo "<tr data-id='".$userID."' class='inactiveUserView'>";
+                                                            echo "<tr data-id='".$userID."' class='inactiveUserView cursor-pointer'>";
                                                             echo "<td>".$employeeID."</td>";
                                                             echo "<td>".$inactiveDirectorName."</td>";
                                                             echo "<td>".$inactiveDirectorEmailAdd."</td>";
@@ -672,7 +672,7 @@
                                             while ($allEmployeeResult = mysqli_fetch_array($allEmployee)) {
                                             ?>
                                                 <option value="<?php echo $allEmployeeResult['id']; ?>">
-                                                    <?php echo $allEmployeeResult['employeeName']; ?>
+                                                    <?php echo $allEmployeeResult['lastName'] . ", " . $allEmployeeResult['firstName']; ?>
                                                 </option>
                                             <?php
                                             }

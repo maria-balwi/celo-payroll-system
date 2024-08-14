@@ -45,7 +45,7 @@
                                             $employee_department = $employeeDetails['departmentName'];
 
 
-                                            echo "<tr data-id='" . $employee_id . "' class='employeeView'>";
+                                            echo "<tr data-id='" . $employee_id . "' class='employeeView cursor-pointer'>";
                                             echo "<td ='px-6 py-4 whitespace-nowrap'>" . $employee_employeeID . "</td>";
                                             echo "<td ='px-6 py-4 whitespace-nowrap'>" . $employee_employeeName . "</td>";
                                             echo "<td ='px-6 py-4 whitespace-nowrap'>" . $employee_emailAddress . "</td>";
