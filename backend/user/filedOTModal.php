@@ -15,7 +15,7 @@
             
             $res = [
                 'status' => 200,
-                'message' => 'Leave Fetch Successfully by id',
+                'message' => 'Filed OT Fetch Successfully by id',
                 'data' => $ot
             ];
 
@@ -26,7 +26,7 @@
         {
             $res = [
                 'status' => 404,
-                'message' => 'Leave Id not found'
+                'message' => 'OT id not found'
             ];
             echo json_encode($res);
             return;

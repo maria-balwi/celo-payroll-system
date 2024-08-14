@@ -35,6 +35,7 @@
                                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider" colspan="2">Actual OT</th>
                                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider" colspan="2">Approved OT</th>
                                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider" rowspan="2">Purpose</th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider" rowspan="2">Status</th>
                             </tr>
                             <tr>
                                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Hours</th>
@@ -73,21 +74,35 @@
                                     echo "<td ='px-6 whitespace-nowrap'>" . $OT_dateFiled . "</td>";
                                     echo "<td ='px-6 whitespace-nowrap'>" . $OT_otDate . "</td>";
                                     echo "<td ='px-6 whitespace-nowrap'>" . $OT_actualOThours . "</td>";
-                                    echo "<td ='px-6 whitespace-nowrap'>" . $OT_actualOTmins . "</td>";
+                                    
+                                    if ($OT_actualOTmins == 0) {
+                                        echo "<td ='px-6 whitespace-nowrap'>-</td>";
+                                    }
+                                    else {
+                                        echo "<td ='px-6 whitespace-nowrap'>" . $OT_actualOTmins . "</td>";
+                                    }
 
                                     if ($OT_status == "Pending") {
                                         echo "<td ='px-6 whitespace-nowrap'>-</td>";
                                         echo "<td ='px-6 whitespace-nowrap'>-</td>";
+                                        echo "<td ='px-6 whitespace-nowrap'>" . $OT_remarks . "</td>";
                                         echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $OT_status . "</p></td>";
                                     }
                                     else if ($OT_status == "Approved") {
                                         echo "<td ='px-6 whitespace-nowrap'>" . $OT_approvedOThours . "</td>";
-                                        echo "<td ='px-6 whitespace-nowrap'>" . $OT_approvedOTmins . "</td>";
+                                        if ($OT_approvedOTmins == 0) {
+                                            echo "<td ='px-6 whitespace-nowrap'>-</td>";
+                                        }
+                                        else {
+                                            echo "<td ='px-6 whitespace-nowrap'>" . $OT_approvedOTmins . "</td>";
+                                        }
+                                        echo "<td ='px-6 whitespace-nowrap'>" . $OT_remarks . "</td>";
                                         echo "<td><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $OT_status . "</p></td>";
                                     }
                                     else if ($OT_status == "Disapproved") {
                                         echo "<td ='px-6 whitespace-nowrap'>-</td>";
                                         echo "<td ='px-6 whitespace-nowrap'>-</td>";
+                                        echo "<td ='px-6 whitespace-nowrap'>" . $OT_remarks . "</td>";
                                         echo "<td><p class='inline-block bg-red-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $OT_status . "</p></td>";
                                     }
                                     echo "</td>";
