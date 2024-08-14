@@ -61,7 +61,7 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                        <?php
+                            <?php
                                 function formatDate($date) {
                                     // Create a DateTime object from the string
                                     $dateTime = new DateTime($date);
