@@ -86,8 +86,13 @@ $(document).ready(function() {
                     $('#viewOTDate').val(res.data.otDate);
                     $('#viewDateFiled').val(res.data.dateFiled);
                     $('#viewName').val(res.data.employeeName);
-                    $('#viewActualOTHours').val(res.data.actualOThours);
-                    $('#viewActualOTMins').val(res.data.actualOTmins);
+                    $('#viewActualOTHours').val(res.data.actualOThours + " hour/s");
+                    if (res.data.actualOTmins == null) {
+                        $('#viewActualOTMins').val("-");
+                    }
+                    else {
+                        $('#viewActualOTMins').val(res.data.actualOTmins + " minute/s");
+                    }
                     $('#viewPurpose').val(res.data.remarks);
                     $('#viewStatus').val(res.data.status);
                     $('#approvedLabelRow').hide();
@@ -100,7 +105,12 @@ $(document).ready(function() {
                     $('#viewDateFiled').val(res.data.dateFiled);
                     $('#viewName').val(res.data.employeeName);
                     $('#viewActualOTHours').val(res.data.actualOThours + " hour/s");
-                    $('#viewActualOTMins').val(res.data.actualOTmins + " minute/s");
+                    if (res.data.actualOTmins == null) {
+                        $('#viewActualOTMins').val("-");
+                    }
+                    else {
+                        $('#viewActualOTMins').val(res.data.actualOTmins + " minute/s");
+                    }
                     $('#viewApprovedOTHours').val(res.data.approvedOThours + " hour/s");
                     if (res.data.approvedOTmins == null) {
                         $('#viewApprovedOTMins').val("-");
