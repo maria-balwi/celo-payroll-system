@@ -64,7 +64,7 @@
                                     $shift_effectivityEndDate = formatDate($shift_effectivityEndDate);
                                     $shift_effectivityDate = $shift_effectivityStartDate . " - " . $shift_effectivityEndDate;
 
-                                    echo "<tr data-id='" . $shift_id . "' class='changeshiftView'>";
+                                    echo "<tr data-id='" . $shift_id . "' class='changeshiftView cursor-pointer'>";
                                     echo "<td ='px-6 whitespace-nowrap'>" . $shift_dateFiled . "</td>";
                                     echo "<td ='px-6 whitespace-nowrap'>" . $shift_shiftID . "</td>";
                                     echo "<td ='px-6 whitespace-nowrap'>" . $shift_effectivityDate . "</td>";
