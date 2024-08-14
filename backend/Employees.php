@@ -12,6 +12,7 @@
         private $changeShift = 'tbl_changeshiftrequests';
         private $leaves = 'tbl_leaveapplications';
         private $leaveType = 'tbl_leavetype';
+        private $filedOT = 'tbl_filedot';
         private $shifts = 'tbl_shiftschedule';
         private $requirements = 'tbl_requirements';
         private $deductions = 'tbl_deductions';
@@ -78,9 +79,26 @@
             return $dtr;
         }
 
+        public function viewFiledOT($id) {
+            $request = "
+                SELECT requestID, dateFiled, otDate,
+                actualOThours, actualOTmins,
+                approvedOThours, approvedOTmins,
+                remarks, status
+                FROM ".$this->filedOT." AS filedOT
+                INNER JOIN ".$this->employees." AS employees
+                ON filedOT.empID = employees.id
+                WHERE empID='$id'";
+            return $request;
+        }
+
         public function viewChangeShift($id) {
             $request = "
-                SELECT * FROM ".$this->changeShift." AS changeShift
+                SELECT requestID, dateFiled, remarks, status, 
+                effectivityStartDate, effectivityEndDate,
+                DATE_FORMAT(shift.startTime, '%h:%i %p') AS startTime,
+                DATE_FORMAT(shift.endTime, '%h:%i %p') AS endTime
+                FROM ".$this->changeShift." AS changeShift
                 INNER JOIN ".$this->employees." AS employees
                 ON changeShift.empID = employees.id
                 INNER JOIN ".$this->shift." AS shift
@@ -521,6 +539,13 @@
         public function viewAllLeaveType() {
             $leaveType = "SELECT * FROM ".$this->leaveType;
             return $leaveType;
+        }
+
+        public function fileOT($employeeID, $otDate, $actualOThours, $actualOTmins, $remarks, $status) {
+            $fileOT = "
+                INSERT INTO ".$this->filedOT." (empID, dateFiled, otDate, actualOThours, actualOTmins, remarks, status)
+                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$otDate', '$actualOThours', '$actualOTmins', '$remarks', '$status')";
+            return $fileOT;
         }
 
         public function fileLeave($employeeID, $leaveTypeID, $effectivityStartDate, $effectivityEndDate, $remarks, $status) {
