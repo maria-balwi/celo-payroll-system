@@ -536,6 +536,20 @@
             return $request;
         }
 
+        public function getOTInfo($otID) {
+            $request = "
+                SELECT requestID, employeeID, remarks, status,
+                actualOThours, actualOTmins, approvedOThours, approvedOTmins,
+                CONCAT(firstName, ' ', lastName) AS employeeName,
+                DATE_FORMAT(dateFiled, '%M %d, %Y') AS dateFiled, 
+                DATE_FORMAT(otDate, '%M %d, %Y') AS otDate
+                FROM ".$this->filedOT." AS filedOT
+                INNER JOIN ".$this->employees." AS employees
+                ON filedOT.empID = employees.id
+                WHERE requestID = '$otID'";
+            return $request;
+        }
+
         public function viewAllLeaveType() {
             $leaveType = "SELECT * FROM ".$this->leaveType;
             return $leaveType;

@@ -7,7 +7,6 @@ $(document).ready(function() {
 
         e.preventDefault();
 
-        // let fileOT = new FormData();
         var otDate = $('#otDate').val();
         var actualOThours = $('#actualOThours').val();
         var actualOTmins = $('#actualOTmins').val();
@@ -30,19 +29,11 @@ $(document).ready(function() {
                 confirmButtonText: 'Yes',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // fileOT.append('otDate', otDate);
-                    // fileOT.append('actualOThours', actualOThours);
-                    // fileOT.append('actualOTmins', actualOTmins);
-                    // fileOT.append('purpose', purpose);
-
                     $.ajax({
                         type: "POST",
                         url: "../backend/user/fileOT.php",
                         data: $(this).serialize(),
                         cache: false,
-                        // data: fileOT,
-                        // processData: false,
-                        // contentType: false,
                         success: function (res) {
                             const data = JSON.parse(res);
                             var message = data.em
@@ -54,7 +45,7 @@ $(document).ready(function() {
                                     timer: 2000,
                                     showConfirmButton: false,
                                 }).then(() => {
-                                    // window.location.reload();
+                                    window.location.reload();
                                 })
                             } else {
                                 Swal.fire({
@@ -69,6 +60,60 @@ $(document).ready(function() {
             });
         }
         
+
+    });
+
+    // VIEW FILED OT
+    var array = [];
+    $(document).on('click', '.filedOTview', function() {
+        var ot_id = $(this).data('id');
+        array.push(ot_id);
+        var id_ot = array[array.length - 1];
+
+        // VIEW CHANGE SHIFT REQUEST
+        $.ajax({
+            type: "GET",
+            url: "../backend/user/filedOTModal.php?ot_id=" + id_ot,
+            success: function(response) {
+
+                var res = jQuery.parseJSON(response);
+
+                if (res.status == 404) {
+                    alert(res.message);
+                } 
+                else if (res.status == 200 && (res.data.status == "Pending" || res.data.status == "Disapproved")) {
+                    $('#viewFiledOTID').val(res.data.requestID);
+                    $('#viewOTDate').val(res.data.otDate);
+                    $('#viewDateFiled').val(res.data.dateFiled);
+                    $('#viewName').val(res.data.employeeName);
+                    $('#viewActualOTHours').val(res.data.actualOThours);
+                    $('#viewActualOTMins').val(res.data.actualOTmins);
+                    $('#viewPurpose').val(res.data.remarks);
+                    $('#viewStatus').val(res.data.status);
+                    $('#approvedLabelRow').hide();
+                    $('#approvedInputRow').hide();
+                    $('#viewFiledOTModal').modal('show');
+                }
+                else if (res.status == 200 && res.data.status == "Approved") {
+                    $('#viewFiledOTID').val(res.data.requestID);
+                    $('#viewOTDate').val(res.data.otDate);
+                    $('#viewDateFiled').val(res.data.dateFiled);
+                    $('#viewName').val(res.data.employeeName);
+                    $('#viewActualOTHours').val(res.data.actualOThours + " hour/s");
+                    $('#viewActualOTMins').val(res.data.actualOTmins + " minute/s");
+                    $('#viewApprovedOTHours').val(res.data.approvedOThours + " hour/s");
+                    if (res.data.approvedOTmins == null) {
+                        $('#viewApprovedOTMins').val("-");
+                    }
+                    else {
+                        $('#viewApprovedOTMins').val(res.data.approvedOTmins + " minute/s");
+                    }
+                    $('#viewPurpose').val(res.data.remarks);
+                    $('#viewStatus').val(res.data.status);
+                    $('#viewFiledOTModal').modal('show');
+                }
+            }
+        });
 
     });
 });
