@@ -94,7 +94,18 @@
                                         </div>
                                         <div class="flex gap-2 py-1">
                                             <h2 class="text-sm text-gray-500">Job Title:</h2>
-                                            <h2 class="text-sm text-gray-400"><?php echo $userDetails['departmentName']." - ". $userDetails['position'] ?></h2>
+                                            <h2 class="text-sm text-gray-400">
+                                                <?php 
+                                                    if ($userDetails['departmentName'] == "Operations")
+                                                    {
+                                                        echo $userDetails['departmentName']." - ". $userDetails['position'];
+                                                    }
+                                                    else 
+                                                    {
+                                                        echo $userDetails['position'];
+                                                    }
+                                                ?>
+                                            </h2>
                                         </div>
                                         <div class="flex gap-2 py-1">
                                             <h2 class="text-sm text-gray-500">Date Hired:</h2>
