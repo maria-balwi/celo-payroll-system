@@ -19,7 +19,7 @@
 
                     <!-- DATATABLE -->
                     <div class="container mx-auto overflow-auto">
-                        <table id="dtrTable" class="table text-center table-striped table-bordered table-auto" style="width: 100%;">
+                        <table id="dtrTable" class="table text-center table-striped table-bordered table-auto pt-3" style="width: 100%;">
                             <thead class="bg-gray-50">
                                 <tr>
                                     <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Face DTR</th>

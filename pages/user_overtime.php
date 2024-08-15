@@ -27,7 +27,7 @@
             <div class="p-4 m-1 bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
                 <!-- DATA TABLE -->
                 <div class="container mx-auto overflow-auto">
-                    <table id="overtimeTable" class="table table-bordered table-striped min-w-full divide-y divide-gray-200 text-center">
+                    <table id="overtimeTable" class="table table-bordered table-striped min-w-full divide-y divide-gray-200 text-center pt-3">
                         <thead class="bg-gray-50">
                             <tr>
                                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider" rowspan="2">Date Filed</th>

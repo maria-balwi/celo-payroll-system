@@ -28,7 +28,7 @@
                 
                 <!-- DATATABLE -->
                 <div class="container mx-auto overflow-auto">
-                    <table id="changeShiftTable" class="table min-w-full divide-y divide-gray-200 text-center table-auto table-striped table-bordered">
+                    <table id="changeShiftTable" class="table min-w-full divide-y divide-gray-200 text-center table-auto table-striped table-bordered pt-3">
                         <thead class="bg-gray-50">
                             <tr>
                                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Date Filed</th>
