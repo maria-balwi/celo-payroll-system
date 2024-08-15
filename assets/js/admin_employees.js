@@ -131,10 +131,28 @@ $(document).ready(function() {
         $('#updateDailyRate').val(dailyRate).trigger('input');
     });
 
-    $("input[id='updateDailyRate']").on("input", function() {
+    $("input[id='sss']").on("input", function() {
         var dailyRate = $(this).val();
         var hourlyRate = (dailyRate / 8).toFixed(2);
         $('#updateHourlyRate').val(hourlyRate);
+    });
+
+    
+    // CHECKBOXES FOR REQUIREMENTS - SSS, PAGIBIG, PHILHEALTH, TIN 
+    $("input[id='sss']").on("input", function() {
+        $('#req_sss').prop('checked', true);
+    });
+
+    $("input[id='pagIbig']").on("input", function() {
+        $('#req_pagIbig').prop('checked', true);
+    });
+
+    $("input[id='philhealth']").on("input", function() {
+        $('#req_philhealth').prop('checked', true);
+    });
+
+    $("input[id='tin']").on("input", function() {
+        $('#req_tin').prop('checked', true);
     });
 
     // ADD EMPLOYEE
@@ -149,10 +167,10 @@ $(document).ready(function() {
         var address = $("#address").val();
         var dateOfBirth = $("#dateOfBirth").val();
         var placeOfBirth = $("#placeOfBirth").val();
-        var sss = $("#sss").val();
-        var pagIbig = $("#pagIbig").val();
-        var philhealth = $("#philhealth").val();
-        var tin = $("#tin").val();
+        // var sss = $("#sss").val();
+        // var pagIbig = $("#pagIbig").val();
+        // var philhealth = $("#philhealth").val();
+        // var tin = $("#tin").val();
         var emailAddress = $("#emailAddress").val();
         var employeeID = $("#employeeID").val();
         var mobileNumber = $("#mobileNumber").val();
@@ -167,7 +185,7 @@ $(document).ready(function() {
 
         if (lastName == "" || firstName == "" || gender == "" || civilStatus == "" || 
             address == "" || dateOfBirth == "" || placeOfBirth == "" ||
-            sss == "" || pagIbig == "" || philhealth == "" || tin == "" ||
+            // sss == "" || pagIbig == "" || philhealth == "" || tin == "" ||
             emailAddress == "" || employeeID == "" || mobileNumber == "" ||
             department == "" || designation == "" || shiftID == "" || 
             basicPay == "" || dailyRate == "" || hourlyRate == "" || 
