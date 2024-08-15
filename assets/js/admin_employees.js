@@ -6,61 +6,6 @@ $(document).ready(function() {
 
     $('#employeeTable').DataTable();
 
-    $('#dropdownButton').on('click', function() {
-        $('#dropdownMenu').toggleClass('hidden');
-    });
-
-    // Close the dropdown if the user clicks outside of it
-    $(document).on('click', function(event) {
-        if (!$(event.target).closest('#dropdownButton').length && !$(event.target).closest('#dropdownMenu').length) {
-        $('#dropdownMenu').addClass('hidden');
-        }
-    });
-
-    // LIST FOR EVERY DEPARTMENT AND DESIGNATION
-    var designationList = [
-        {Department:'1', Designation:'Agent'},
-        {Department:'1', Designation:'QA'},
-        {Department:'1', Designation:'SME'},
-        {Department:'1', Designation:'TL'},
-        {Department:'1', Designation:'Manager'},
-        {Department:'3', Designation:'Facilities'},
-        {Department:'3', Designation:'HR'},
-        {Department:'3', Designation:'Finance'},
-        {Department:'4', Designation:'IT'},
-        {Department:'5', Designation:'Director'},
-        {Department:'Operations', Designation:'Agent'},
-        {Department:'Operations', Designation:'QA'},
-        {Department:'Operations', Designation:'SME'},
-        {Department:'Operations', Designation:'TL'},
-        {Department:'Operations', Designation:'Manager'},
-        {Department:'HR/Admin', Designation:'Facilities'},
-        {Department:'HR/Admin', Designation:'HR'},
-        {Department:'HR/Admin', Designation:'Finance'},
-        {Department:'IT', Designation:'IT'},
-        {Department:'Directors', Designation:'Director'}
-    ];
-
-    // DROPDOWN FOR DESIGNATION ADDING USER - DROPDOWN WILL APPEAR WITH SPECIFIED OPTIONS ONLY WHEN DEPARTMENT IS CHOSEN
-    $("#department").change(function() {
-        $("#designation").html("<option selected>Chooose Designation</option>");
-        const designations = designationList.filter(m=>m.Department == $("#department").val());
-        designations.forEach(element => {
-            const option = "<option value='" + element.Designation + "'>" + element.Designation + "</option>";
-            $("#designation").append(option);
-        });
-    });
-
-    // DROPDOWN FOR DESIGNATION UPDATING USER - DROPDOWN WILL APPEAR WITH SPECIFIED OPTIONS ONLY WHEN DEPARTMENT IS CHOSEN
-    $("#updateDepartment").change(function() {
-        $("#updateDesignation").html("<option selected>Chooose Designation</option>");
-        const designations = designationList.filter(m=>m.Department == $("#updateDepartment").val());
-        designations.forEach(element => {
-            const option = "<option value='" + element.Designation + "'>" + element.Designation + "</option>";
-            $("#updateDesignation").append(option);
-        });
-    });
-
     // INPUT MASK - ADD EMPLOYEE
     $('#sss').inputmask('99-9999999-9', {
         placeholder: '00-0000000-0'
