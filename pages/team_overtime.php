@@ -66,7 +66,7 @@
                                     $OT_dateFiled = formatDate($OT_dateFiled);
                                     $OT_otDate = formatDate($OT_otDate);
 
-                                    echo "<tr data-id='" . $OT_id . "' class='filedOTview'>";
+                                    echo "<tr data-id='" . $OT_id . "' class='filedOTview cursor-pointer'>";
                                     echo "<td ='px-6 whitespace-nowrap'>" . $OT_dateFiled . "</td>";
                                     echo "<td ='px-6 whitespace-nowrap'>" . $OT_employeeName . "</td>";
                                     echo "<td ='px-6 whitespace-nowrap'>" . $OT_otDate . "</td>";

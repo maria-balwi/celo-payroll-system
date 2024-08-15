@@ -100,7 +100,7 @@
                                         $leave_days = $leave_days . " days";
                                     }
 
-                                    echo "<tr data-id='" . $leave_id . "' class='leaveView'>";
+                                    echo "<tr data-id='" . $leave_id . "' class='leaveView cursor-pointer'>";
                                     echo "<td ='px-6 whitespace-nowrap'>" . $leave_dateFiled . "</td>";
                                     echo "<td ='px-6 whitespace-nowrap'>" . $leave_employeeName . "</td>";
                                     echo "<td ='px-6 whitespace-nowrap'>" . $leave_leaveType . "</td>";

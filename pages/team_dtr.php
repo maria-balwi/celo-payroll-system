@@ -47,7 +47,8 @@
                                 <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                                 <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Shift</th>
                                 <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Days Worked</th>
-                                <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Leaves</th>
+                                <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Vacation Leave</th>
+                                <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Sick Leave</th>
                                 <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Absences</th>
                                 <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Lates</th>
                                 <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Undertime</th>
@@ -57,23 +58,6 @@
                     <?php
                         $year = date('Y');
                         $month = date('m');
-
-                        function getWorkingDaysInMonth($year, $month) {
-                            $start_date = date("$year-$month-01");
-                            $end_date = date("Y-m-t", strtotime($start_date)); // last day of the month
-
-                            $work_days = 0;
-                            $day_counter = $start_date;
-
-                            while (strtotime($day_counter) <= strtotime($end_date)) {
-                                if (date('N', strtotime($day_counter)) < 6) { // 1 (for Monday) through 5 (for Friday)
-                                    $work_days++;
-                                }
-                                $day_counter = date("Y-m-d", strtotime($day_counter . ' +1 day'));
-                            }
-
-                            return $work_days;
-                        }
 
                         // GET IT TEAM
                         $itTeamQuery = mysqli_query($conn, $attendance->viewITTeam());
@@ -89,7 +73,7 @@
                             $monthlyAttendance = mysqli_num_rows($monthlyAttendanceQuery);
 
                             // GET MONTHLY ABSENCES
-                            $workingDays = getWorkingDaysInMonth($year, $month);
+                            $workingDays = $attendance->getWorkingDaysInMonth($year, $month);
                             $monthlyAbsences = $workingDays - $monthlyAttendance;
 
                             // GET MONTHLY LATES
@@ -99,14 +83,16 @@
                             // GET MONTHLY UNDERTIMES
                             $monthlyUndertimesQuery = mysqli_query($conn, $attendance->getMonthlyUndertimes($itTeamDetails['id']));
                             $monthlyUndertimes = mysqli_num_rows($monthlyUndertimesQuery); 
-                            $availableLeaves = $itTeamDetails['availableLeaves']; 
+                            $availableSL = $itTeamDetails['availableSL']; 
+                            $availableVL = $itTeamDetails['availableVL']; 
                     ?>
                             <tr data-id="<?php echo $teamIT_id ?>">
                                 <td class="whitespace-nowrap"><?php echo $teamIT_employeeID ?></td>
                                 <td class="whitespace-nowrap text-left"><?php echo $teamIT_employeeName ?></td>
                                 <td class="whitespace-nowrap"><?php echo $teamIT_shift ?></td>
                                 <td class="whitespace-nowrap"><?php echo $monthlyAttendance ?></td>
-                                <td class="whitespace-nowrap"><?php echo $availableLeaves ?></td>
+                                <td class="whitespace-nowrap"><?php echo $availableVL ?></td>
+                                <td class="whitespace-nowrap"><?php echo $availableSL ?></td>
                                 <td class="whitespace-nowrap"><?php echo $monthlyAbsences ?></td>
                                 <td class="whitespace-nowrap"><?php echo $monthlyLates ?></td>
                                 <td class="whitespace-nowrap"><?php echo $monthlyUndertimes; } ?></td>
@@ -162,7 +148,7 @@
                                 </div>
                             </div>
 
-                            <div class="row g-2 mb-2">
+                            <!-- <div class="row g-2 mb-2">
                                 <div class="container mx-auto overflow-auto">
                                     <table id="attendanceTable" class="table table-auto table-striped table-bordered text-center">
                                         <thead class="bg-gray-50">
@@ -173,7 +159,7 @@
                                             </tr>
                                         </thead>
                                         <tbody class="bg-white divide-y divide-gray-200">
-                                            <?php
+                                            < ?php
                                                 $yearMonth = date('2024-07');
                                                 globalVariable();
 
@@ -187,15 +173,15 @@
                                                     echo "<tr>"; 
                                                     ?>
                                                     
-                                                    <td class="whitespace-nowrap text-left"><?php echo $teamIT_attendanceDate ?></td>
-                                                    <td class="whitespace-nowrap"><?php echo $teamIT_timeIn ?></td>
-                                                    <td class="whitespace-nowrap"><?php echo $teamIT_timeOut ?></td>
-                                                <?php } ?>
+                                                    <td class="whitespace-nowrap text-left">< ?php echo $teamIT_attendanceDate ?></td>
+                                                    <td class="whitespace-nowrap">< ?php echo $teamIT_timeIn ?></td>
+                                                    <td class="whitespace-nowrap">< ?php echo $teamIT_timeOut ?></td>
+                                                < ?php } ?>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
 
                         <div class="modal-footer">

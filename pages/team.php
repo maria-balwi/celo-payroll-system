@@ -42,7 +42,7 @@
                                     $team_department = $teamDetails['departmentName'];
 
 
-                                    echo "<tr data-id='" . $team_id . "' class='teamView'>";
+                                    echo "<tr data-id='" . $team_id . "' class='teamView cursor-pointer'>";
                                     echo "<td ='px-6 whitespace-nowrap'>" . $team_employeeName . "</td>";
                                     echo "<td ='px-6 whitespace-nowrap'>" . $team_emailAddress . "</td>";
                                     echo "<td ='px-6 whitespace-nowrap'>" . $team_mobileNumber . "</td>";
