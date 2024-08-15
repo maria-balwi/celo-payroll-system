@@ -172,17 +172,17 @@
                                         while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
 
                                             $employee_id = $employeeDetails['id'];
-                                            $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                            $employee_employeeName = $employeeDetails['lastName'] . ", " . $employeeDetails['firstName'];
                                             $employee_emailAddress = $employeeDetails['emailAddress'];
                                             $employee_employeeID = $employeeDetails['employeeID'];
                                             $employee_department = $employeeDetails['departmentName'];
 
 
                                             echo "<tr data-id='" . $employee_id . "' class='employeeView'>";
-                                            echo "<td ='px-6 py-4 whitespace-nowrap'>" . $employee_employeeID . "</td>";
-                                            echo "<td ='px-6 py-4 whitespace-nowrap'>" . $employee_employeeName . "</td>";
-                                            echo "<td ='px-6 py-4 whitespace-nowrap'>" . $employee_emailAddress . "</td>";
-                                            echo "<td ='px-6 py-4 whitespace-nowrap'>" . $employee_department . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                            echo "<td class ='text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
                                             echo "</td>";
                                         }
                                     ?>

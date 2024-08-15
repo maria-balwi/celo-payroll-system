@@ -22,11 +22,11 @@
                     <div class="card-body">
                         <!-- DATATABLE -->
                         <div class="container mx-auto my-3 overflow-auto">
-                            <table id="deductionsTable" class="table table-striped table-bordered table-auto min-w-full divide-y divide-gray-200 pt-3">
+                            <table id="deductionsTable" class="table table-striped table-bordered table-auto min-w-full divide-y divide-gray-200 text-center pt-3">
                                 <thead class="bg-gray-50">
                                     <tr>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                        <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                        <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
@@ -40,8 +40,8 @@
 
 
                                             echo "<tr data-id='" . $deduction_id . "' class='deductionView cursor-pointer'>";
-                                            echo "<td ='px-6 py-4 whitespace-nowrap'>" . $deduction_name . "</td>";
-                                            echo "<td ='px-6 py-4 whitespace-nowrap'>" . $deduction_amount . "</td>";
+                                            echo "<td class = 'whitespace-nowrap'>" . $deduction_name . "</td>";
+                                            echo "<td class = 'whitespace-nowrap'>" . $deduction_amount . "</td>";
                                             echo "</td>";
                                         }
                                     ?>

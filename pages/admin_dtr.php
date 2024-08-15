@@ -24,16 +24,16 @@
                     <table id="dtr" class="table table-striped table-bordered table-auto text-center">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Employee ID</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Name</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Shift</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Days Worked</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Vacation Leave</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Sick Leave</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Absents</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Lates</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Undertime</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Overtime</th>
+                                <th class="py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Employee ID</th>
+                                <th class="py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Name</th>
+                                <th class="py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Shift</th>
+                                <th class="py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Days Worked</th>
+                                <th class="py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Vacation Leave</th>
+                                <th class="py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Sick Leave</th>
+                                <th class="py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Absents</th>
+                                <th class="py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Lates</th>
+                                <th class="py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Undertime</th>
+                                <th class="py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Overtime</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -42,7 +42,7 @@
                                 while ($attendanceDetails = mysqli_fetch_array($attendanceQuery)) {
 
                                     $attendance_id = $attendanceDetails['id'];
-                                    $attendance_employeeName = $attendanceDetails['firstName'] . " " . $attendanceDetails['lastName'];
+                                    $attendance_employeeName = $attendanceDetails['lastName'] . ", " . $attendanceDetails['firstName'];
                                     $attendance_emailAddress = $attendanceDetails['emailAddress'];
                                     $attendance_mobileNumber = $attendanceDetails['mobileNumber'];
                                     $attendance_employeeID = $attendanceDetails['employeeID'];
@@ -71,16 +71,16 @@
 
 
                                     echo "<tr data-id='" . $attendance_id . "'>";
-                                    echo "<td ='px-6 whitespace-nowrap'>" . $attendance_employeeID . "</td>";
-                                    echo "<td ='px-6 text-left whitespace-nowrap'>" . $attendance_employeeName . "</td>";
-                                    echo "<td ='px-6 whitespace-nowrap'>" . $attendance_shift . "</td>";
-                                    echo "<td ='px-6 whitespace-nowrap'>". $attendance_daysWorked ."</td>";
-                                    echo "<td ='px-6 whitespace-nowrap'>".$attendance_vl."</td>";
-                                    echo "<td ='px-6 whitespace-nowrap'>".$attendance_sl."</td>";
-                                    echo "<td ='px-6 whitespace-nowrap'>".$attendance_absences."</td>";
-                                    echo "<td ='px-6 whitespace-nowrap'>".$attendance_lates."</td>";
-                                    echo "<td ='px-6 whitespace-nowrap'>".$attendance_undertimes."</td>";
-                                    echo "<td ='px-6 whitespace-nowrap'>0</td>";
+                                    echo "<td class ='whitespace-nowrap'>" . $attendance_employeeID . "</td>";
+                                    echo "<td class ='text-left whitespace-nowrap'>" . $attendance_employeeName . "</td>";
+                                    echo "<td class ='whitespace-nowrap'>" . $attendance_shift . "</td>";
+                                    echo "<td class ='whitespace-nowrap'>". $attendance_daysWorked ."</td>";
+                                    echo "<td class ='whitespace-nowrap'>".$attendance_vl."</td>";
+                                    echo "<td class ='whitespace-nowrap'>".$attendance_sl."</td>";
+                                    echo "<td class ='whitespace-nowrap'>".$attendance_absences."</td>";
+                                    echo "<td class ='whitespace-nowrap'>".$attendance_lates."</td>";
+                                    echo "<td class ='whitespace-nowrap'>".$attendance_undertimes."</td>";
+                                    echo "<td class ='whitespace-nowrap'>0</td>";
                                     echo "</td>";
                                 }
                             ?>
