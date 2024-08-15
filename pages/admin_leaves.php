@@ -42,7 +42,7 @@
                 
                 <!-- DATATABLE -->
                 <div class="container mx-auto my-3 overflow-auto">
-                    <table id="leavesTable" class="table table-auto table-striped table-bordered min-w-full divide-y divide-gray-200 text-center">
+                    <table id="leavesTable" class="table table-auto table-striped table-bordered min-w-full divide-y divide-gray-200 text-center pt-3">
                         <thead class="bg-gray-50">
                             <tr>
                                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Date Filed</th>

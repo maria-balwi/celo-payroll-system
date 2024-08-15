@@ -26,7 +26,7 @@
                 
                 <!-- DATATABLE -->
                 <div class="container mx-auto my-3 py-2 overflow-auto">
-                    <table id="payrollTable" class="table table-striped table-bordered table-auto text-center">
+                    <table id="payrollTable" class="table table-striped table-bordered table-auto text-center pt-3">
                         <thead class="bg-gray-50">
                             <tr>
                                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap" rowspan="2">Employee ID</th>

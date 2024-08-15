@@ -22,7 +22,7 @@
                     <div class="card-body">
                         <!-- DATATABLE -->
                         <div class="container mx-auto my-3 overflow-auto">
-                            <table id="deductionsTable" class="table table-striped table-bordered table-auto min-w-full divide-y divide-gray-200">
+                            <table id="deductionsTable" class="table table-striped table-bordered table-auto min-w-full divide-y divide-gray-200 pt-3">
                                 <thead class="bg-gray-50">
                                     <tr>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>

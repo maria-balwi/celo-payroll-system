@@ -377,7 +377,7 @@
             $allEmployee = "
                 SELECT * FROM ".$this->employees."
                 WHERE id NOT IN 
-                    (SELECT employeeID FROM ".$this->users.")";
+                    (SELECT empID FROM ".$this->users.")";
             return $allEmployee;
         }
 

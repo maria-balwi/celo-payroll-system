@@ -701,7 +701,7 @@
 
                                 <div class="row g-3 mb-2">
                                     <div class="col-12">
-                                        <input type="password" class="form-control" id="retypePassword" placeholder="Name">
+                                        <input type="password" class="form-control" id="retypePassword" placeholder="Password">
                                     </div>
                                 </div>
                             </div>

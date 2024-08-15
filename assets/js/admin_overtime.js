@@ -1,6 +1,8 @@
 $(document).ready(function() {
 
-    $('#overtimeTable').DataTable();
+    // $('#overtimeTable').DataTable();
+    var overtimeTable = $('#overtimeTable').DataTable();
+    overtimeTable.order([[0, "desc"], [2, "desc"]]).draw();
     
     // VIEW FILED OT
     var array = [];
