@@ -127,7 +127,7 @@
 
         public function addUser($employeeID, $levelID, $password, $activated, $status) {
             $addUser = "
-                INSERT INTO ".$this->users." (employeeID, levelID, password, activated, status)
+                INSERT INTO ".$this->users." (empID, levelID, password, activated, status)
                 VALUES ('$employeeID', '$levelID', '$password', '$activated', '$status')";
             return $addUser;
         }
