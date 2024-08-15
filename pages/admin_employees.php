@@ -39,7 +39,7 @@
 
                                             $employee_id = $employeeDetails['id'];
                                             $employee_employeeID = $employeeDetails['employeeID'];
-                                            $employee_employeeName = $employeeDetails['lastName'] . ", " . $employeeDetails['firstName'];
+                                            $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
                                             $employee_emailAddress = $employeeDetails['emailAddress'];
                                             $employee_mobileNumber = $employeeDetails['mobileNumber'];
                                             $employee_department = $employeeDetails['departmentName'];
