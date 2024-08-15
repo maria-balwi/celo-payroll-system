@@ -166,7 +166,7 @@
                         </h2>
                         <!-- DATATABLE -->
                         <div class="container mx-auto overflow-auto">
-                            <table id="attendaceTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center">
+                            <table id="attendaceTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3">
                                 <thead class="bg-gray-50">
                                     <tr>
                                         <th class="text-xs font-medium text-yellow-500 uppercase tracking-wider">Name</th>
