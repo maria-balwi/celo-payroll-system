@@ -43,10 +43,10 @@
 
 
                                     echo "<tr data-id='" . $team_id . "' class='teamView cursor-pointer'>";
-                                    echo "<td ='px-6 whitespace-nowrap'>" . $team_employeeName . "</td>";
-                                    echo "<td ='px-6 whitespace-nowrap'>" . $team_emailAddress . "</td>";
-                                    echo "<td ='px-6 whitespace-nowrap'>" . $team_mobileNumber . "</td>";
-                                    echo "<td ='px-6 whitespace-nowrap'>" . $team_department . "</td>";
+                                    echo "<td class = ' whitespace-nowrap'>" . $team_employeeName . "</td>";
+                                    echo "<td class = ' whitespace-nowrap'>" . $team_emailAddress . "</td>";
+                                    echo "<td class = ' whitespace-nowrap'>" . $team_mobileNumber . "</td>";
+                                    echo "<td class = ' whitespace-nowrap'>" . $team_department . "</td>";
                                     echo "</tr>";
                                 }
                             ?>

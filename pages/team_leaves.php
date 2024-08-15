@@ -101,12 +101,12 @@
                                     }
 
                                     echo "<tr data-id='" . $leave_id . "' class='leaveView cursor-pointer'>";
-                                    echo "<td ='px-6 whitespace-nowrap'>" . $leave_dateFiled . "</td>";
-                                    echo "<td ='px-6 whitespace-nowrap'>" . $leave_employeeName . "</td>";
-                                    echo "<td ='px-6 whitespace-nowrap'>" . $leave_leaveType . "</td>";
-                                    echo "<td ='px-6 whitespace-nowrap'>" . $leave_days . "</td>";
-                                    echo "<td ='px-6 whitespace-nowrap'>" . $leave_effectivityDate . "</td>";
-                                    echo "<td ='px-6 whitespace-nowrap'>" . $leave_remarks . "</td>";
+                                    echo "<td class = ' whitespace-nowrap'>" . $leave_dateFiled . "</td>";
+                                    echo "<td class = ' whitespace-nowrap'>" . $leave_employeeName . "</td>";
+                                    echo "<td class = ' whitespace-nowrap'>" . $leave_leaveType . "</td>";
+                                    echo "<td class = ' whitespace-nowrap'>" . $leave_days . "</td>";
+                                    echo "<td class = ' whitespace-nowrap'>" . $leave_effectivityDate . "</td>";
+                                    echo "<td class = ' whitespace-nowrap'>" . $leave_remarks . "</td>";
                                     if ($leave_status == "Pending") {
                                         echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $leave_status . "</p></td>";
                                     }
