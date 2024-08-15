@@ -35,49 +35,49 @@
                                     <h1 class="text-lg font-bold uppercase"><?php echo $userDetails['employeeName'] ?></h1>
                                 </div>
                                 <hr class="my-2 border-t border-gray-300">
-                                <h2 class="text-lg font-bold">Personal Information</h2>
+                                <h2 class="text-lg font-bold">Personal Information:</h2>
                                 <div class="flex flex-col py-1">
                                     <div class="flex gap-2 py-1">
                                         <h2 class="text-sm font-bold text-gray-500">Mobile:</h2>
                                         <h2 class="text-sm text-gray-400"><?php echo $userDetails['mobileNumber'] ?></h2>
                                     </div>
-                                    <!-- <div class="flex gap-2 py-1">
-                                        < !-- <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 text-sm font-medium bg-blue-500 text-white" data-bs-target="#changePasswordModal" data-bs-toggle="modal">
+                                    <div class="flex gap-2 py-1">
+                                        <h2 class="text-sm text-gray-500">Address:</h2>
+                                        <h2 class="text-sm text-gray-400"><?php echo $userDetails['address'] ?></h2>
+                                    </div>
+                                    <div class="flex gap-2 py-1">
+                                        <h2 class="text-sm text-gray-500">Mobile:</h2>
+                                        <h2 class="text-sm text-gray-400"><?php echo $userDetails['mobileNumber'] ?></h2>
+                                    </div>
+                                    <div class="flex gap-2 py-1">
+                                        <h2 class="text-sm text-gray-500">Birthday:</h2>
+                                        <h2 class="text-sm text-gray-400"><?php echo $userDetails['dateOfBirth'] ?></h2>
+                                    </div>
+                                    <div class="flex gap-2 py-1">
+                                        <h2 class="text-sm text-gray-500">Gender:</h2>
+                                        <h2 class="text-sm text-gray-400"><?php echo $userDetails['gender'] ?></h2>
+                                    </div>
+                                    <div class="flex gap-2 py-1">
+                                        <h2 class="text-sm text-gray-500">Place of Birth:</h2>
+                                        <h2 class="text-sm text-gray-400"><?php echo $userDetails['placeOfBirth'] ?></h2>
+                                    </div>
+                                    <div class="flex gap-2 py-1">
+                                        <h2 class="text-sm text-gray-500">Civil Status:</h2>
+                                        <h2 class="text-sm text-gray-400"><?php echo $userDetails['civilStatus'] ?></h2>
+                                    </div>
+                                    <div class="flex gap-2 py-1">
+                                        <!-- <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 text-sm font-medium bg-blue-500 text-white" data-bs-target="#changePasswordModal" data-bs-toggle="modal">
                                             Change Password
-                                        </button> - ->
-                                            < ?php if ($_SESSION['activated'] == 0) 
+                                        </button> -->
+                                            <?php if ($_SESSION['activated'] == 0) 
                                             { ?>
                                                 <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 text-sm font-medium bg-blue-500 text-white" data-bs-toggle="modal" data-bs-target="#updatePasswordModal">Update Password</button>
-                                            < ?php }
+                                            <?php }
                                             else 
                                             { ?>
                                                 <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 text-sm font-medium bg-blue-500 text-white" data-bs-toggle="modal" data-bs-target="#changePasswordModal">Change Password</button>
-                                            < ?php } ?>
-                                    </div> -->
-                                    <div class="flex gap-2 py-1">
-                                            <h2 class="text-sm text-gray-500">Address:</h2>
-                                            <h2 class="text-sm text-gray-400"><?php echo $userDetails['address'] ?></h2>
-                                        </div>
-                                        <div class="flex gap-2 py-1">
-                                            <h2 class="text-sm text-gray-500">Mobile:</h2>
-                                            <h2 class="text-sm text-gray-400"><?php echo $userDetails['mobileNumber'] ?></h2>
-                                        </div>
-                                        <div class="flex gap-2 py-1">
-                                            <h2 class="text-sm text-gray-500">Birthday:</h2>
-                                            <h2 class="text-sm text-gray-400"><?php echo $userDetails['dateOfBirth'] ?></h2>
-                                        </div>
-                                        <div class="flex gap-2 py-1">
-                                            <h2 class="text-sm text-gray-500">Gender:</h2>
-                                            <h2 class="text-sm text-gray-400"><?php echo $userDetails['gender'] ?></h2>
-                                        </div>
-                                        <div class="flex gap-2 py-1">
-                                            <h2 class="text-sm text-gray-500">Place of Birth:</h2>
-                                            <h2 class="text-sm text-gray-400"><?php echo $userDetails['placeOfBirth'] ?></h2>
-                                        </div>
-                                        <div class="flex gap-2 py-1">
-                                            <h2 class="text-sm text-gray-500">Civil Status:</h2>
-                                            <h2 class="text-sm text-gray-400"><?php echo $userDetails['civilStatus'] ?></h2>
-                                        </div>
+                                            <?php } ?>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -86,7 +86,7 @@
                         <div class="col-span-12 md:col-span-8">
                             <div class="bg-white shadow rounded-lg p-6 grid grid-cols-1 md:grid-cols-2 justify-center">
                                 <div>
-                                    <h2 class="text-lg font-bold">Employment Information</h2>
+                                    <h2 class="text-lg font-bold">Employment Information:</h2>
                                     <div class="flex flex-col py-1 pr-6">
                                         <div class="flex gap-2 py-1">
                                             <h2 class="text-sm text-gray-500">Email:</h2>
@@ -124,7 +124,7 @@
                                 </div>
 
                                 <div>
-                                    <h2 class="text-lg font-bold">Requirements</h2>
+                                    <h2 class="text-lg font-bold">Requirements:</h2>
                                     <div class="flex flex-col py-1">
                                         <div class="flex gap-2 py-1">
                                             <?php 
