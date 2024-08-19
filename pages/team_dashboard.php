@@ -24,12 +24,21 @@
                         </svg>
                         <h2 class="text-xl font-bold mb-2">
                             <?php  
-                                $totalITTeamQuery = mysqli_query($conn, $employees->viewTeam());
-                                $totalITTeam = mysqli_num_rows($totalITTeamQuery);
-                                echo $totalITTeam;
+                                if ($_SESSION['departmentID'] == 1) 
+                                {
+                                    $totalOperationsTeamQuery = mysqli_query($conn, $employees->viewTeamOperations());
+                                    $totalOperationsTeam = mysqli_num_rows($totalOperationsTeamQuery);
+                                    echo $totalOperationsTeam;
+                                }
+                                else 
+                                {
+                                    $totalITTeamQuery = mysqli_query($conn, $employees->viewTeam());
+                                    $totalITTeam = mysqli_num_rows($totalITTeamQuery);
+                                    echo $totalITTeam;
+                                }
                             ?>
                         </h2>
-                        <p class="text-gray-700 font-semibold">Total IT Team</p>
+                        <p class="text-gray-700 font-semibold">Total Team Members</p>
                     </div>
 
                     <!-- Card 2 -->
@@ -39,9 +48,18 @@
                         </svg>
                         <h2 class="text-xl font-bold mb-1">
                             <?php  
-                                $presentITQuery = mysqli_query($conn, $attendance->getPresentIT());
-                                $presentIT = mysqli_num_rows($presentITQuery);
-                                echo $presentIT;
+                                if ($_SESSION['departmentID'] == 1) 
+                                {
+                                    $presentOperationsQuery = mysqli_query($conn, $attendance->getPresentOperations());
+                                    $presentOperations = mysqli_num_rows($presentOperationsQuery);
+                                    echo $presentOperations;
+                                }
+                                else
+                                {
+                                    $presentITQuery = mysqli_query($conn, $attendance->getPresentIT());
+                                    $presentIT = mysqli_num_rows($presentITQuery);
+                                    echo $presentIT;
+                                }
                             ?>
                         </h2>
                         <p class="text-gray-700">Present</p>
@@ -54,9 +72,18 @@
                         </svg>
                         <h2 class="text-xl font-bold mb-1">
                             <?php  
-                                $absentITQuery = mysqli_query($conn, $attendance->getAbsentIT());
-                                $absentIT = mysqli_num_rows($absentITQuery);
-                                echo $absentIT;
+                                if ($_SESSION['departmentID'] == 1) 
+                                {
+                                    $absentOperationsQuery = mysqli_query($conn, $attendance->getAbsentOperations());
+                                    $absentOperations = mysqli_num_rows($absentOperationsQuery);
+                                    echo $absentOperations;
+                                }
+                                else
+                                {
+                                    $absentITQuery = mysqli_query($conn, $attendance->getAbsentIT());
+                                    $absentIT = mysqli_num_rows($absentITQuery);
+                                    echo $absentIT;
+                                }
                             ?>
                         </h2>
                         <p class="text-gray-700">Absent</p>
@@ -69,9 +96,18 @@
                         </svg>
                         <h2 class="text-xl font-bold mb-1">
                             <?php  
-                                $lateITQuery = mysqli_query($conn, $attendance->getLateIT());
-                                $lateIT = mysqli_num_rows($lateITQuery);
-                                echo $lateIT;
+                                if ($_SESSION['departmentID'] == 1) 
+                                {
+                                    $lateOperationsQuery = mysqli_query($conn, $attendance->getLateOperations());
+                                    $lateOperations = mysqli_num_rows($lateOperationsQuery);
+                                    echo $lateOperations;
+                                }
+                                else
+                                {
+                                    $lateITQuery = mysqli_query($conn, $attendance->getLateIT());
+                                    $lateIT = mysqli_num_rows($lateITQuery);
+                                    echo $lateIT;
+                                }
                             ?>
                         </h2>
                         <p class="text-gray-700">Late</p>
@@ -84,9 +120,18 @@
                         </svg>
                         <h2 class="text-xl font-bold mb-1">
                             <?php  
-                                $undertimeITQuery = mysqli_query($conn, $attendance->getUndertimeIT());
-                                $undertimeIT = mysqli_num_rows($undertimeITQuery);
-                                echo $undertimeIT;
+                                if ($_SESSION['departmentID'] == 1) 
+                                {
+                                    $undertimeOperationsQuery = mysqli_query($conn, $attendance->getUndertimeOperations());
+                                    $undertimeOperations = mysqli_num_rows($undertimeOperationsQuery);
+                                    echo $undertimeOperations;
+                                }
+                                else
+                                {
+                                    $undertimeITQuery = mysqli_query($conn, $attendance->getUndertimeIT());
+                                    $undertimeIT = mysqli_num_rows($undertimeITQuery);
+                                    echo $undertimeIT;
+                                }
                             ?>
                         </h2>
                         <p class="text-gray-700">Undertime</p>
@@ -97,15 +142,32 @@
                     <div class="bg-white p-4 rounded-lg col-span-6 lg:col-span-2 shadow-md">
                         <h2 class="text-xl font-bold mb-2">Pending Requests</h2>
                         <?php  
-                            $getPendingLeavesQuery = mysqli_query($conn, $attendance->getPendingITLeaves());
-                            $getPendingLeaves = mysqli_num_rows($getPendingLeavesQuery);
+                            if ($_SESSION['departmentID'] == 1) 
+                            {
+                                $getPendingLeavesQuery = mysqli_query($conn, $attendance->getPendingOperationsLeaves());
+                                $getPendingLeaves = mysqli_num_rows($getPendingLeavesQuery);
 
-                            $getPendingChangeShiftQuery = mysqli_query($conn, $attendance->getPendingITChangeShift());
-                            $getPendingChangeShift = mysqli_num_rows($getPendingChangeShiftQuery);
+                                $getPendingChangeShiftQuery = mysqli_query($conn, $attendance->getPendingOperationsChangeShift());
+                                $getPendingChangeShift = mysqli_num_rows($getPendingChangeShiftQuery);
+                                
+                                $getPendingOvertimeQuery = mysqli_query($conn, $attendance->getPendingOperationsOvertime());
+                                $getPendingOvertime = mysqli_num_rows($getPendingOvertimeQuery);
+                            }
+                            else 
+                            {
+                                $getPendingLeavesQuery = mysqli_query($conn, $attendance->getPendingITLeaves());
+                                $getPendingLeaves = mysqli_num_rows($getPendingLeavesQuery);
+
+                                $getPendingChangeShiftQuery = mysqli_query($conn, $attendance->getPendingITChangeShift());
+                                $getPendingChangeShift = mysqli_num_rows($getPendingChangeShiftQuery);
+
+                                $getPendingOvertimeQuery = mysqli_query($conn, $attendance->getPendingITOvertime());
+                                $getPendingOvertime = mysqli_num_rows($getPendingOvertimeQuery);
+                            }
 
                             if ($getPendingLeaves != 0) { ?>
                                 <!-- ======== LEAVE APPLICATIONS ======== -->
-                                <a href="admin_leaves.php" class="no-underline text-gray-700">
+                                <a href="team_leaves.php" class="no-underline text-gray-700">
                                     <div class="flex gap-2 p-2 rounded-lg hover:bg-blue-100 px-auto">
                                         <div class="my-auto">
                                             <svg class="h-10 w-10 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -124,7 +186,7 @@
                         <?php } 
                             if ($getPendingChangeShift != 0) { ?>
                                 <!-- ======== CHANGE SHIFT REQUESTS ======== -->
-                                <a href="admin_changeShift.php" class="no-underline text-gray-700">
+                                <a href="team_changeShift.php" class="no-underline text-gray-700">
                                     <div class="flex gap-2 p-2 rounded-lg hover:bg-blue-100 px-auto">
                                         <div class="my-auto">
                                             <svg class="h-10 w-10 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -140,8 +202,28 @@
                                         </div>
                                     </div>
                                 </a>
+
+                        <?php } 
+                            if ($getPendingOvertime != 0) { ?>
+                                <!-- ======== FILED OTs ======== -->
+                                <a href="team_overtime.php" class="no-underline text-gray-700">
+                                    <div class="flex gap-2 p-2 rounded-lg hover:bg-blue-100 px-auto">
+                                        <div class="my-auto">
+                                            <svg class="h-10 w-10 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+                                            </svg>
+                                        </div>
+                                        <div class="py-auto px-auto">
+                                            <h2 class="text-lg mb-0 font-semibold">Filed OTs</h2>
+                                            <p class="text-gray-500 text-sm">Pending filed overtimes</p>
+                                        </div>
+                                        <div class="bg-yellow-200 text-gray-700 px-3 py-2 rounded-lg my-auto text-center font-semibold">
+                                            <?php echo $getPendingOvertime ?>
+                                        </div>
+                                    </div>
+                                </a>
                         <?php }
-                            else { ?>
+                            if ($getPendingLeaves == 0 && $getPendingChangeShift == 0 && $getPendingOvertime == 0) { ?>
                                 <!-- ======== NO PENDING REQUESTS ======== -->
                                 <div class="mt-3">
                                     <p class="text-gray-700">There are no pending requests at the moment.</p>
@@ -166,7 +248,7 @@
                         </h2>
                         <!-- DATATABLE -->
                         <div class="container mx-auto overflow-auto">
-                            <table id="attendaceTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3">
+                            <table id="attendanceTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3">
                                 <thead class="bg-gray-50">
                                     <tr>
                                         <th class="text-xs font-medium text-yellow-500 uppercase tracking-wider">Name</th>
@@ -178,48 +260,96 @@
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     <?php
-                                        $itTeamQuery = mysqli_query($conn, $attendance->viewITTeam());
-                                        while ($itTeamDetails = mysqli_fetch_array($itTeamQuery)) {
+                                        if ($_SESSION['departmentID'] == 1) 
+                                        {
+                                            $operationsTeamQuery = mysqli_query($conn, $attendance->viewOperationsTeam());
+                                            while ($operationsTeamDetails = mysqli_fetch_array($operationsTeamQuery)) {
+                                                $teamOperations_id = $operationsTeamDetails['id'];
+                                                $teamOperations_employeeName = $operationsTeamDetails['firstName'] . " " . $operationsTeamDetails['lastName'];
+                                                $teamOperations_shift = $operationsTeamDetails['startTime'] . " - " . $operationsTeamDetails['endTime'];
+                                                $teamOperations_status = "Absent";
+                                                $team_timeIn = "-";
+                                                $team_timeOut = "-";
 
-                                            $teamIT_id = $itTeamDetails['id'];
-                                            $teamIT_employeeName = $itTeamDetails['firstName'] . " " . $itTeamDetails['lastName'];
-                                            $teamIT_shift = $itTeamDetails['startTime'] . " - " . $itTeamDetails['endTime'];
-                                            $teamIT_status = "Absent";
-                                            $teamIT_timeIn = "-";
-                                            $teamIT_timeOut = "-";
+                                                // GET ATTENDANCE TIME - TIME IN
+                                                $dailyAttendanceQuery_timeIn = mysqli_query($conn, $attendance->dailyAttendance_timeIn($teamOperations_id));
+                                                $dailyAttendance_timeInDetails = mysqli_fetch_array($dailyAttendanceQuery_timeIn);
+                                                if (isset($dailyAttendance_timeInDetails['attendanceTime']))
+                                                {
+                                                    $team_timeIn = $dailyAttendance_timeInDetails['attendanceTime'];
+                                                    $team_status = "Present";
+                                                }
 
-                                            // GET ATTENDANCE TIME - TIME IN
-                                            $dailyAttendanceITQuery_timeIn = mysqli_query($conn, $attendance->dailyAttendanceIT_timeIn($teamIT_id));
-                                            $dailyAttendanceIT_timeInDetails = mysqli_fetch_array($dailyAttendanceITQuery_timeIn);
-                                            if (isset($dailyAttendanceIT_timeInDetails['attendanceTime']))
-                                            {
-                                                $teamIT_timeIn = $dailyAttendanceIT_timeInDetails['attendanceTime'];
-                                                $teamIT_status = "Present";
+                                                // GET ATTENDANCE TIME - TIME OUT
+                                                $dailyAttendanceQuery_timeOut = mysqli_query($conn, $attendance->dailyAttendance_timeOut($teamOperations_id));
+                                                $dailyAttendance_timeOutDetails = mysqli_fetch_array($dailyAttendanceQuery_timeOut);
+                                                if (isset($dailyAttendance_timeOutDetails['attendanceTime']))
+                                                {
+                                                    $team_timeOut = $dailyAttendance_timeOutDetails['attendanceTime'];
+                                                    $team_status = "Present";
+                                                }
+                                                echo "<tr data-id='" . $teamOperations_id . "'>"; 
+                                                echo "<td class ='whitespace-nowrap text-left'>" . $teamOperations_employeeName . "</td>";
+                                                echo "<td class ='whitespace-nowrap'>" . $teamOperations_shift . "</td>";
+                                                echo "<td class ='whitespace-nowrap'>" . $team_timeIn . "</td>";
+                                                echo "<td class ='whitespace-nowrap'>" . $team_timeOut . "</td>";
+                                                if ($teamOperations_status == "Present") { 
+                                                    echo "<td class ='whitespace-nowrap text-green-500'>" . $teamOperations_status . "</td>";
+                                                }
+                                                else { 
+                                                    echo "<td class ='whitespace-nowrap text-red-500'>" . $teamOperations_status . "</td>";
+                                                }
+                                                echo "</tr>";
                                             }
+                                        }
+                                        else 
+                                        {
+                                            $itTeamQuery = mysqli_query($conn, $attendance->viewITTeam());
+                                            while ($itTeamDetails = mysqli_fetch_array($itTeamQuery)) {
+                                                $teamIT_id = $itTeamDetails['id'];
+                                                $teamIT_employeeName = $itTeamDetails['firstName'] . " " . $itTeamDetails['lastName'];
+                                                $teamIT_shift = $itTeamDetails['startTime'] . " - " . $itTeamDetails['endTime'];
+                                                $teamIT_status = "Absent";
+                                                $team_timeIn = "-";
+                                                $team_timeOut = "-";
 
-                                            // GET ATTENDANCE TIME - TIME OUT
-                                            $dailyAttendanceITQuery_timeOut = mysqli_query($conn, $attendance->dailyAttendanceIT_timeOut($teamIT_id));
-                                            $dailyAttendanceIT_timeOutDetails = mysqli_fetch_array($dailyAttendanceITQuery_timeOut);
-                                            if (isset($dailyAttendanceIT_timeOutDetails['attendanceTime']))
-                                            {
-                                                $teamIT_timeOut = $dailyAttendanceIT_timeOutDetails['attendanceTime'];
-                                                $teamIT_status = "Present";
+                                                // GET ATTENDANCE TIME - TIME IN
+                                                $dailyAttendanceQuery_timeIn = mysqli_query($conn, $attendance->dailyAttendance_timeIn($teamIT_id));
+                                                $dailyAttendance_timeInDetails = mysqli_fetch_array($dailyAttendanceQuery_timeIn);
+                                                if (isset($dailyAttendance_timeInDetails['attendanceTime']))
+                                                {
+                                                    $team_timeIn = $dailyAttendance_timeInDetails['attendanceTime'];
+                                                    $team_status = "Present";
+                                                }
+
+                                                // GET ATTENDANCE TIME - TIME OUT
+                                                $dailyAttendanceQuery_timeOut = mysqli_query($conn, $attendance->dailyAttendance_timeOut($teamIT_id));
+                                                $dailyAttendance_timeOutDetails = mysqli_fetch_array($dailyAttendanceQuery_timeOut);
+                                                if (isset($dailyAttendance_timeOutDetails['attendanceTime']))
+                                                {
+                                                    $team_timeOut = $dailyAttendance_timeOutDetails['attendanceTime'];
+                                                    $team_status = "Present";
+                                                }
+                                                echo "<tr data-id='" . $teamIT_id . "'>"; 
+                                                echo "<td class ='whitespace-nowrap text-left'>" . $teamIT_employeeName . "</td>";
+                                                echo "<td class ='whitespace-nowrap'>" . $teamIT_shift . "</td>";
+                                                echo "<td class ='whitespace-nowrap'>" . $team_timeIn . "</td>";
+                                                echo "<td class ='whitespace-nowrap'>" . $team_timeOut . "</td>";
+                                                if ($teamIT_status == "Present") { 
+                                                    echo "<td class ='whitespace-nowrap text-green-500'>" . $teamIT_status . "</td>";
+                                                }
+                                                else { 
+                                                    echo "<td class ='whitespace-nowrap text-red-500'>" . $teamIT_status . "</td>";
+                                                }
+                                                echo "</tr>";
                                             }
-                                            echo "<tr data-id='" . $teamIT_id . "'>"; 
-                                            ?>
+                                        }
+                                    ?>
+                                        
+
                                             
-                                            <td class="whitespace-nowrap text-left"><?php echo $teamIT_employeeName ?></td>
-                                            <td class="whitespace-nowrap"><?php echo $teamIT_shift ?></td>
-                                            <td class="whitespace-nowrap"><?php echo $teamIT_timeIn ?></td>
-                                            <td class="whitespace-nowrap"><?php echo $teamIT_timeOut ?></td>
-                                            <?php 
-                                                if ($teamIT_status == "Present") { ?>
-                                            <td class="whitespace-nowrap text-green-500"><?php echo $teamIT_status ?></td>
-                                            <?php }
-                                                else { ?>
-                                            <td class="whitespace-nowrap text-red-500"><?php echo $teamIT_status ?></td>
-                                        <?php } } ?>
-                                    </tr>
+
+                                           
                                 </tbody>
                             </table>
                         </div>
