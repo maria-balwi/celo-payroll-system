@@ -12,7 +12,7 @@ $(document).ready(function() {
         // VIEW FILED OT
         $.ajax({
             type: "GET",
-            url: "../backend/admin/filedOTModal.php?ot_id=" + id_ot,
+            url: "../backend/team/filedOTModal.php?ot_id=" + id_ot,
             success: function(response) {
 
                 var res = jQuery.parseJSON(response);
@@ -71,7 +71,7 @@ $(document).ready(function() {
                         $('#viewActualOTMins').val(res.data.actualOTmins + " minute/s");
                     }
                     $('#viewApprovedOTHours').val(res.data.approvedOThours + " hour/s");
-                    if (res.data.approvedOTmins == null) {
+                    if (res.data.approvedOTmins == null || res.data.approvedOTmins == 0) {
                         $('#viewApprovedOTMins').val("-");
                     }
                     else {
@@ -92,7 +92,7 @@ $(document).ready(function() {
 
             $.ajax({
                 type: "GET",
-                url: "../backend/admin/filedOTModal.php?ot_id=" + id_ot,
+                url: "../backend/team/filedOTModal.php?ot_id=" + id_ot,
                 success: function(response) {
 
                     var res = jQuery.parseJSON(response);
@@ -112,7 +112,7 @@ $(document).ready(function() {
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 $.ajax({
-                                    url: "../backend/admin/otAction.php",
+                                    url: "../backend/team/otAction.php",
                                     type: 'POST',
                                     data: {
                                         id_ot: id_ot,
@@ -127,7 +127,7 @@ $(document).ready(function() {
                                             timer: 2000,
                                             showConfirmButton: false,
                                         }).then(() => {
-                                            window.location.reload();
+                                            // window.location.reload();
                                         })
                                     }
                                 })
@@ -144,7 +144,7 @@ $(document).ready(function() {
 
             $.ajax({
                 type: "GET",
-                url: "../backend/admin/filedOTModal.php?ot_id=" + id_ot,
+                url: "../backend/team/filedOTModal.php?ot_id=" + id_ot,
                 success: function(response) {
 
                     var res = jQuery.parseJSON(response);
@@ -164,7 +164,7 @@ $(document).ready(function() {
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 $.ajax({
-                                    url: "../backend/admin/otAction.php",
+                                    url: "../backend/team/otAction.php",
                                     type: 'POST',
                                     data: {
                                         id_ot: id_ot,
