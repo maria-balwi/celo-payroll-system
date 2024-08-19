@@ -98,6 +98,7 @@ $(document).ready(function() {
 
     $("input[id='tin']").on("input", function() {
         $('#req_tin').prop('checked', true);
+        console.log($('#req_tin').val());
     });
 
     // ADD EMPLOYEE

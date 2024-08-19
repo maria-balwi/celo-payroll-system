@@ -312,28 +312,28 @@
                                     <div class="col-md-3">
                                         <!-- SSS -->
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="req_sss" name="req_sss" disabled readonly>
+                                            <input class="form-check-input" type="checkbox" id="req_sss" name="req_sss" disabled>
                                             <label class="form-check-label" for="req_sss">
                                                 SSS
                                             </label>
                                         </div>
                                         <!-- PAG-IBIG -->
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="req_pagIbig" name="req_pagIbig" disabled readonly>
+                                            <input class="form-check-input" type="checkbox" id="req_pagIbig" name="req_pagIbig" disabled>
                                             <label class="form-check-label" for="req_pagIbig">
                                                 Pag-Ibig
                                             </label>
                                         </div>
                                         <!-- PHILHEALTH -->
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="req_philhealth" name="req_philhealth" disabled readonly>
+                                            <input class="form-check-input" type="checkbox" id="req_philhealth" name="req_philhealth" disabled>
                                             <label class="form-check-label" for="req_philhealth">
                                                 PhilHealth
                                             </label>
                                         </div>
                                         <!-- TIN -->
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="req_tin" name="req_tin" disabled readonly>
+                                            <input class="form-check-input" type="checkbox" id="req_tin" name="req_tin" disabled>
                                             <label class="form-check-label" for="req_tin">
                                                 TIN
                                             </label>

@@ -26,7 +26,43 @@
     $vacationLeaves = $_POST['vacationLeaves'];
     $sickLeaves = $_POST['sickLeaves'];
 
-    if (isset($_POST['req_sss']))
+    // if (isset($_POST['req_sss']))
+    // {
+    //     $req_sss = 1;
+    // }
+    // else
+    // {
+    //     $req_sss = 0;
+    // }
+
+    // if (isset($_POST['req_pagIbig']))
+    // {
+    //     $req_pagIbig = 1;
+    // }
+    // else
+    // {
+    //     $req_pagIbig = 0;
+    // }
+
+    // if (isset($_POST['req_philhealth']))
+    // {
+    //     $req_philhealth = 1;
+    // }
+    // else
+    // {
+    //     $req_philhealth = 0;
+    // }
+
+    // if (isset($_POST['req_tin']))
+    // {
+    //     $req_tin = 1;
+    // }
+    // else
+    // {
+    //     $req_tin = 0;
+    // }
+
+    if (isset($_POST['sss']))
     {
         $req_sss = 1;
     }
@@ -35,7 +71,7 @@
         $req_sss = 0;
     }
 
-    if (isset($_POST['req_pagIbig']))
+    if (isset($_POST['pagIbig']))
     {
         $req_pagIbig = 1;
     }
@@ -44,7 +80,7 @@
         $req_pagIbig = 0;
     }
 
-    if (isset($_POST['req_philhealth']))
+    if (isset($_POST['philhealth']))
     {
         $req_philhealth = 1;
     }
@@ -53,7 +89,7 @@
         $req_philhealth = 0;
     }
 
-    if (isset($_POST['req_tin']))
+    if (isset($_POST['tin']))
     {
         $req_tin = 1;
     }
