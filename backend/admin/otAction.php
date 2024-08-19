@@ -8,8 +8,16 @@
     $action = $_POST['action'];
 
     if ($action == "approve") {
+        $filedOTQuery = mysqli_query($conn, $employees->viewOT($ot_id));
+        $filedOTResult = mysqli_fetch_array($filedOTQuery);
+        $actualOThours = $filedOTResult['actualOThours'];
+        $actualOTmins = $filedOTResult['actualOTmins'] == NULL ? NULL : $filedOTResult['actualOTmins'];
+        echo $actualOTmins;
+
         $sql = $conn->query("
             UPDATE tbl_filedot SET
+            approvedOThours = '$actualOThours',
+            approvedOTmins = '$actualOTmins',
             status = 'Approved'
             WHERE requestID = '$ot_id'");
         // ERROR MESSAGE
