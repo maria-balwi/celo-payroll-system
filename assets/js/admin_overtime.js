@@ -73,7 +73,7 @@ $(document).ready(function() {
                         $('#viewActualOTMins').val(res.data.actualOTmins + " minute/s");
                     }
                     $('#viewApprovedOTHours').val(res.data.approvedOThours + " hour/s");
-                    if (res.data.approvedOTmins == null) {
+                    if (res.data.approvedOTmins == null || res.data.approvedOTmins == 0) {
                         $('#viewApprovedOTMins').val("-");
                     }
                     else {
