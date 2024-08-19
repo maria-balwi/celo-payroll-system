@@ -46,8 +46,8 @@
                     $_SESSION['userID'] = $userDetails['userID'];
                     $_SESSION['id'] = $userDetails['id'];
                     $_SESSION['employeeName'] = $userDetails['firstName']." ".$userDetails['lastName'];
-                    // $_SESSION['department'] = $userDetails['departmentName'];
-                    // $_SESSION['designation'] = $userDetails['position'];
+                    $_SESSION['departmentID'] = $userDetails['departmentID'];
+                    $_SESSION['designationID'] = $userDetails['designationID'];
                     $_SESSION['levelID'] = $userDetails['levelID']; 
                     $_SESSION['email'] = $userDetails['emailAddress'];
                     $_SESSION['employeeID'] = $userDetails['employeeID'];
