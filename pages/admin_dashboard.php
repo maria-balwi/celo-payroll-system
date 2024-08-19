@@ -79,9 +79,6 @@
 
                     <!-- Card 5 -->
                     <div class="bg-white p-4 rounded-lg col-span-3 lg:col-span-1 shadow-md text-center">
-                        <!-- <svg class="h-16 w-16 text-gray-600 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                        </svg> -->
                         <svg class="h-16 w-16 text-gray-600 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
@@ -105,6 +102,9 @@
 
                             $getPendingChangeShiftQuery = mysqli_query($conn, $attendance->getPendingChangeShift());
                             $getPendingChangeShift = mysqli_num_rows($getPendingChangeShiftQuery);
+                            
+                            $getPendingOvertimeQuery = mysqli_query($conn, $attendance->getPendingOvertimes());
+                            $getPendingOvertime = mysqli_num_rows($getPendingOvertimeQuery);
 
                             if ($getPendingLeaves != 0) { ?>
                                 <!-- ======== LEAVE APPLICATIONS ======== -->
@@ -140,6 +140,25 @@
                                         </div>
                                         <div class="bg-yellow-200 text-gray-700 px-3 py-2 rounded-lg my-auto text-center font-semibold">
                                             <?php echo $getPendingChangeShift ?>
+                                        </div>
+                                    </div>
+                                </a>
+                        <?php } 
+                            if ($getPendingOvertime != 0) { ?>
+                                <!-- ======== FILED OTs ======== -->
+                                <a href="team_overtime.php" class="no-underline text-gray-700">
+                                    <div class="flex gap-2 p-2 rounded-lg hover:bg-blue-100 px-auto">
+                                        <div class="my-auto">
+                                            <svg class="h-10 w-10 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+                                            </svg>
+                                        </div>
+                                        <div class="py-auto px-auto">
+                                            <h2 class="text-lg mb-0 font-semibold">Filed OTs</h2>
+                                            <p class="text-gray-500 text-sm">Pending filed overtimes</p>
+                                        </div>
+                                        <div class="bg-yellow-200 text-gray-700 px-3 py-2 rounded-lg my-auto text-center font-semibold">
+                                            <?php echo $getPendingOvertime ?>
                                         </div>
                                     </div>
                                 </a>
