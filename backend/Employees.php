@@ -645,7 +645,14 @@
                 INNER JOIN ".$this->shifts." AS shifts
                 ON employees.shiftID = shifts.shiftID";
             return $employeeAttendance;
-        }        
+        }
+        
+        public function viewEmployee($id) {
+            $employee = "
+                SELECT * FROM ".$this->employees."
+                WHERE id = '$id'";
+            return $employee;
+        }
     }
 
 ?>

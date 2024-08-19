@@ -679,7 +679,7 @@
                                             ?>
                                         </select>
                                     </div>
-                                </div>     
+                                </div>
                                 
                                 <div class="row g-3 mb-2">
                                     <div class="col-12">
