@@ -32,22 +32,45 @@
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             <?php
-                                $teamQuery = mysqli_query($conn, $employees->viewTeam());
-                                while ($teamDetails = mysqli_fetch_array($teamQuery)) {
+                                if ($_SESSION['departmentID'] == 1) 
+                                {
+                                    $teamQuery = mysqli_query($conn, $employees->viewTeamOperations());
+                                    while ($teamDetails = mysqli_fetch_array($teamQuery)) {
 
-                                    $team_id = $teamDetails['id'];
-                                    $team_employeeName = $teamDetails['firstName'] . " " . $teamDetails['lastName'];
-                                    $team_emailAddress = $teamDetails['emailAddress'];
-                                    $team_mobileNumber = $teamDetails['mobileNumber'];
-                                    $team_department = $teamDetails['departmentName'];
+                                        $team_id = $teamDetails['id'];
+                                        $team_employeeName = $teamDetails['firstName'] . " " . $teamDetails['lastName'];
+                                        $team_emailAddress = $teamDetails['emailAddress'];
+                                        $team_mobileNumber = $teamDetails['mobileNumber'];
+                                        $team_department = $teamDetails['departmentName'];
 
 
-                                    echo "<tr data-id='" . $team_id . "' class='teamView cursor-pointer'>";
-                                    echo "<td class = ' whitespace-nowrap'>" . $team_employeeName . "</td>";
-                                    echo "<td class = ' whitespace-nowrap'>" . $team_emailAddress . "</td>";
-                                    echo "<td class = ' whitespace-nowrap'>" . $team_mobileNumber . "</td>";
-                                    echo "<td class = ' whitespace-nowrap'>" . $team_department . "</td>";
-                                    echo "</tr>";
+                                        echo "<tr data-id='" . $team_id . "' class='teamView cursor-pointer'>";
+                                        echo "<td class = ' whitespace-nowrap'>" . $team_employeeName . "</td>";
+                                        echo "<td class = ' whitespace-nowrap'>" . $team_emailAddress . "</td>";
+                                        echo "<td class = ' whitespace-nowrap'>" . $team_mobileNumber . "</td>";
+                                        echo "<td class = ' whitespace-nowrap'>" . $team_department . "</td>";
+                                        echo "</tr>";
+                                    }
+                                }
+                                else 
+                                {
+                                    $teamQuery = mysqli_query($conn, $employees->viewTeam());
+                                    while ($teamDetails = mysqli_fetch_array($teamQuery)) {
+
+                                        $team_id = $teamDetails['id'];
+                                        $team_employeeName = $teamDetails['firstName'] . " " . $teamDetails['lastName'];
+                                        $team_emailAddress = $teamDetails['emailAddress'];
+                                        $team_mobileNumber = $teamDetails['mobileNumber'];
+                                        $team_department = $teamDetails['departmentName'];
+
+
+                                        echo "<tr data-id='" . $team_id . "' class='teamView cursor-pointer'>";
+                                        echo "<td class = ' whitespace-nowrap'>" . $team_employeeName . "</td>";
+                                        echo "<td class = ' whitespace-nowrap'>" . $team_emailAddress . "</td>";
+                                        echo "<td class = ' whitespace-nowrap'>" . $team_mobileNumber . "</td>";
+                                        echo "<td class = ' whitespace-nowrap'>" . $team_department . "</td>";
+                                        echo "</tr>";
+                                    }
                                 }
                             ?>
                         </tbody>
