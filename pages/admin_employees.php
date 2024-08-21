@@ -624,7 +624,7 @@
 
                             <div class="row g-2 mb-2">
                                 <div class="col-4">
-                                    <button id="viewProfilePicture">View Picture</button>
+                                    <button id="viewProfilePicture" class="text-lg text-blue-500">View Photo</button>
                                 </div>
                             </div>
 
