@@ -29,7 +29,20 @@
                         <div class="col-span-12 md:col-span-4">
                             <div class="bg-white shadow rounded-lg p-4">
                                 <div class="flex flex-col items-center">
-                                    <img src="https://randomuser.me/api/portraits/men/94.jpg" class="w-32 h-32 bg-gray-300 rounded-md mb-4 shrink-0">
+                                    <?php
+                                        $baseDirectory = "../assets/images/profiles/";
+                                        $employeeID = str_replace("-", "", $_SESSION['employeeID']);
+                                        $filename = $employeeID.".png";
+
+                                        $filepath = $baseDirectory . $filename;
+
+                                        if (file_exists($filepath)) {
+                                            // EXISITING PROFILE PICTURE
+                                        } else {
+                                            $filename = "profile.png";
+                                        }
+                                    ?>
+                                    <img src="../assets/images/profiles/<?php echo $filename ?>" class="w-32 h-32 bg-gray-300 rounded-md mb-4 shrink-0">
 
                                     </img>
                                     <h1 class="text-lg font-bold uppercase"><?php echo $userDetails['employeeName'] ?></h1>
