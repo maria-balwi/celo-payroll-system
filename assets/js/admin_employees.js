@@ -83,7 +83,7 @@ $(document).ready(function() {
     });
 
     
-    // CHECKBOXES FOR REQUIREMENTS - SSS, PAGIBIG, PHILHEALTH, TIN 
+    // CHECKBOXES FOR REQUIREMENTS - SSS, PAGIBIG, PHILHEALTH, TIN (ADD EMPLOYEE)
     $("input[id='sss']").on("input", function() {
         $('#req_sss').prop('checked', true);
     });
@@ -100,6 +100,25 @@ $(document).ready(function() {
         $('#req_tin').prop('checked', true);
     });
 
+    // CHECKBOXES FOR REQUIREMENTS - SSS, PAGIBIG, PHILHEALTH, TIN (ADD EMPLOYEE)
+    $("input[id='updateSSS']").on("input", function() {
+        $('#update_req_sss').prop('checked', true);
+    });
+
+    $("input[id='updatePagIbig']").on("input", function() {
+        $('#update_req_pagIbig').prop('checked', true);
+    });
+
+    $("input[id='updatePhilhealth']").on("input", function() {
+        $('#update_req_philhealth').prop('checked', true);
+    });
+
+    $("input[id='updateTIN']").on("input", function() {
+        $('#update_req_tin').prop('checked', true);
+    });
+    
+
+    // ADD EMPLOYEE - UPLOAD PHOTO
     $('#photo').change(function() {
         const [file] = photo.files;
         const acceptedImageTypes = ['image/jpeg', 'image/png'];
@@ -119,9 +138,45 @@ $(document).ready(function() {
             $('#viewPhoto').attr('disabled', true);  // Disable the view button if no file is selected
         }
     });
-    
+
     $('#viewPhoto').click(function() {
         const [file] = photo.files;
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                Swal.fire({
+                    title: 'Profile Picture',
+                    imageUrl: e.target.result,
+                    imageHeight: 200,
+                });
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // UPDATE EMPLOYEE - UPLOAD PHOTO
+    $('#updateProfilePicture').change(function() {
+        const [file] = updateProfilePicture.files;
+        const acceptedImageTypes = ['image/jpeg', 'image/png'];
+        if (file) {
+            const fileType = file['type'];
+            if ($.inArray(fileType, acceptedImageTypes) < 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Invalid Picture',
+                    text: 'Invalid File only accept (JPG/PNG) file',
+                })
+                $('#viewUploadPhoto').attr('disabled', true);
+            } else {
+                $('#viewUploadPhoto').attr('disabled', false);  // Enable the view button
+            }
+        } else {
+            $('#viewUploadPhoto').attr('disabled', true);  // Disable the view button if no file is selected
+        }
+    });
+    
+    $('#viewUploadPhoto').click(function() {
+        const [file] = updateProfilePicture.files;
         if (file) {
             const reader = new FileReader();
             reader.onload = (e) => {
@@ -285,9 +340,9 @@ $(document).ready(function() {
                                     });
                                 } else {
                                     Swal.fire({
-                                        icon: 'error',
-                                        title: 'Error',
-                                        text: 'Failed to fetch the image. Image not found.',
+                                        title: 'Profile Picture',
+                                        imageUrl: "../assets/images/profiles/profile.png",
+                                        imageHeight: 300,
                                     });
                                 }
                             })
@@ -368,6 +423,7 @@ $(document).ready(function() {
         
         e.preventDefault();
 
+        let updateEmployee = new FormData(this);
         var updateLastName = $("#updateLastName").val();
         var updateFirstName = $("#updateFirstName").val();
         var updateGender = $("#updateGender").val();
@@ -375,10 +431,6 @@ $(document).ready(function() {
         var updateAddress = $("#updateAddress").val();
         var updateDateOfBirth = $("#updateDateOfBirth").val();
         var updatePlaceOfBirth = $("#updatePlaceOfBirth").val();
-        var updateSSS = $("#updateSSS").val();
-        var updatePagIbig = $("#updatePagIbig").val();
-        var updatePhilhealth = $("#updatePhilhealth").val();
-        var updateTIN = $("#updateTIN").val();
         var updateEmailAddress = $("#updateEmailAddress").val();
         var updateEmployeeID = $("#updateEmployeeID").val();
         var updateMobileNumber = $("#updateMobileNumber").val();
@@ -422,8 +474,9 @@ $(document).ready(function() {
                     $.ajax({
                         url: '../backend/admin/updateEmployee.php',
                         type: 'POST',
-                        data: $(this).serialize(),
-                        cache: false,
+                        data: updateEmployee,
+                        contentType: false,
+                        processData: false,
                         success: function(res) {
                             const data = JSON.parse(res);
                             if (data.error == 0) {

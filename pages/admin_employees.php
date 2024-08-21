@@ -313,7 +313,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row mb-2">
+                                <div class="row mb-2 g-2">
                                     <div class="col-6">
                                         <input type="file" class="form-control" id="photo" name="photo" accept="image/*">
                                     </div>
@@ -726,7 +726,7 @@
 
             <!--------------------------------------------------------------------------------------------------------------------------------------------->
             <!---------------------------------------------------------------- UPDATE EMPLOYEE FORM ------------------------------------------------------->
-            <form id="updateEmployeeForm">
+            <form id="updateEmployeeForm" enctype="multipart/form-data">
                 <div class="modal fade" id="updateEmployeeModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="employeeFormLabel" aria-hidden="true">
                     <div class="modal-dialog modal-none modal-lg modal-dialog-centered modal-scrollable">
                         <div class="modal-content" id="updateEmployeeModal">
@@ -744,7 +744,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-2">
+                                <div class="row g-2 mb-1">
                                     <div class="col-4">
                                         <label for="updateLastName">Last Name:</label>
                                     </div>
@@ -785,7 +785,7 @@
                                     </div>
                                 </div>     
                                 
-                                <div class="row g-2 mb-2">
+                                <div class="row g-2 mb-1">
                                     <div class="col-6">
                                         <label for="updateAddress">Address:</label>
                                     </div>
@@ -809,7 +809,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-2">
+                                <div class="row g-2 mb-1">
                                     <div class="col-3">
                                         <label for="updateSSS">SSS:</label>
                                     </div>
@@ -847,7 +847,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-2">
+                                <div class="row g-2 mb-1">
                                     <div class="col-6">
                                         <label for="updateEmailAddress">Email Address:</label>
                                     </div>
@@ -871,7 +871,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-2">
+                                <div class="row g-2 mb-1">
                                     <div class="col-4">
                                         <label for="updateDepartment">Department:</label>
                                     </div>
@@ -934,7 +934,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-2">
+                                <div class="row g-2 mb-1">
                                     <div class="col-4">
                                         <label for="updateBasicPay">Basic Pay:</label>
                                     </div>
@@ -958,7 +958,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-2">
+                                <div class="row g-2 mb-1">
                                     <div class="col-4">
                                         <label for="updateVacationLeaves">Vacation Leaves:</label>
                                     </div>
@@ -976,11 +976,23 @@
                                     </div>
                                 </div>
 
+                                <div class="row g-2 mb-1">
+                                    <div class="col-6">
+                                        <label for="updateProfilePicture">Upload Photo:</label>
+                                    </div>
+                                </div>
+
                                 <div class="row g-2 mb-2">
-                                    <div class="col-4">
-                                        <input type="file" id="photo" name="photo">
-                                        <button id="viewPhoto" disabled>View Selected Photo</button>
-                                        <button id="changePhoto">Change Photo</button>
+                                    <div class="col-6">
+                                        <input type="file" id="updateProfilePicture" name="updateProfilePicture" class="form-control" accept="image/*">
+                                    </div>
+                                    <div class="col-1 pt-2 text-left">
+                                        <button id="viewUploadPhoto" disabled>
+                                            <svg class="h-5 w-5 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                            </svg>
+                                        </button>
                                     </div>
                                 </div>
 
@@ -989,28 +1001,28 @@
                                     <div class="col-md-3">
                                         <!-- SSS -->
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="update_req_sss" name="update_req_sss" value="update_req_sss">
+                                            <input class="form-check-input" type="checkbox" id="update_req_sss" name="update_req_sss" value="update_req_sss" disabled>
                                             <label class="form-check-label" for="update_req_sss">
                                                 SSS
                                             </label>
                                         </div>
                                         <!-- PAG-IBIG -->
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="update_req_pagIbig" name="update_req_pagIbig" value="update_req_pagIbig">
+                                            <input class="form-check-input" type="checkbox" id="update_req_pagIbig" name="update_req_pagIbig" value="update_req_pagIbig" disabled>
                                             <label class="form-check-label" for="update_req_pagIbig">
                                                 Pag-Ibig
                                             </label>
                                         </div>
                                         <!-- PHILHEALTH -->
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="update_req_philhealth" name="update_req_philhealth" value="update_req_philhealth">
+                                            <input class="form-check-input" type="checkbox" id="update_req_philhealth" name="update_req_philhealth" value="update_req_philhealth" disabled>
                                             <label class="form-check-label" for="update_req_philhealth">
                                                 PhilHealth
                                             </label>
                                         </div>
                                         <!-- TIN -->
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="update_req_tin" name="update_req_tin" value="update_req_tin">
+                                            <input class="form-check-input" type="checkbox" id="update_req_tin" name="update_req_tin" value="update_req_tin" disabled>
                                             <label class="form-check-label" for="update_req_tin">
                                                 TIN
                                             </label>

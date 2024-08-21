@@ -15,7 +15,6 @@
     $updatePagIbig = $_POST['updatePagIbig'];
     $updatePhilhealth = $_POST['updatePhilhealth'];
     $updateTIN = $_POST['updateTIN'];
-    $updatePhilhealth = $_POST['updatePhilhealth'];
     $updateEmailAddress = $_POST['updateEmailAddress'];
     $updateEmployeeID = $_POST['updateEmployeeID'];
     $updateMobileNumber = $_POST['updateMobileNumber'];
@@ -28,25 +27,25 @@
     $updateVacationLeaves = $_POST['updateVacationLeaves'];
     $updateSickLeaves = $_POST['updateSickLeaves'];
 
-    if(isset($_POST['update_req_sss'])) {
+    if(isset($_POST['updateSSS'])) {
 		$req_sss = 1;
 	}
 	else {
 		$req_sss = 0;
 	}
-    if(isset($_POST['update_req_pagIbig'])) {
+    if(isset($_POST['updatePagIbig'])) {
 		$req_pagIbig = 1;
 	}
 	else {
 		$req_pagIbig = 0;
 	}
-    if(isset($_POST['update_req_philhealth'])) {
+    if(isset($_POST['updatePhilhealth'])) {
 		$req_philhealth = 1;
 	}
 	else {
 		$req_philhealth = 0;
 	}
-    if(isset($_POST['update_req_tin'])) {
+    if(isset($_POST['updateTIN'])) {
 		$req_tin = 1;
 	}
 	else {
@@ -143,6 +142,59 @@
 
             mysqli_query($conn, $employees->updateEmployeeRequirements($updateID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi, $req_medicalExam, $req_2x2pic, $req_vaccineCard, $req_psa, $req_validID, $req_helloMoney));
 
+            if (isset($_FILES['updateProfilePicture']) && $_FILES['updateProfilePicture']['error'] == 0) {
+                $uploadDir = '../../assets/images/profiles/'; // DIRECTORY TO SAVE UPLOADED FILES
+
+                // EXTRACT THE ORIGINAL FILE EXTENSION
+                // $fileExtension = pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION);
+
+                // GENERATE NEW NAME
+                $modified_employeeID = str_replace("-", "", $updateEmployeeID);
+                $newFileName = $modified_employeeID. '.png';
+
+                // The complete path to save the uploaded file
+                $uploadFile = $uploadDir . $newFileName;
+
+                // CHECK THE DIRECTORY FOLDER IF EXISTING, IF NOT CREATES IT
+                if (!file_exists($uploadDir)) {
+                    mkdir($uploadDir, 0755, true);
+                }
+
+                // VALIDATE FILE TYPE
+                $allowedTypes = ['image/jpeg', 'image/png'];
+                if (in_array($_FILES['updateProfilePicture']['type'], $allowedTypes)) {
+                    // DELETE EXISTING FILE
+                    $oldEmployeeID = str_replace("-", "", $_SESSION['employeeID']);
+                    $oldFileName = $oldEmployeeID. '.png';
+                    $filepath = $uploadDir . $oldFileName;
+
+                    if (file_exists($filepath)) {
+                        // Attempt to delete the file
+                        if (unlink($filepath)) {
+                            echo "File '$oldFileName' was successfully deleted.";
+                        } else {
+                            echo "Error: Could not delete the file.";
+                        }
+                    }
+                    if (move_uploaded_file($_FILES['updateProfilePicture']['tmp_name'], $uploadFile)) {
+                        // SUCCESSFULLY UPLOADED FILE
+
+                    } 
+                    else {
+                        $em = "Failed to move uploaded file.";
+                        $error = array('error' => 2, 'em' => $em);
+                        echo json_encode($error);
+                        exit();
+                    }
+                } 
+                else {
+                    $em = "Invalid file type";
+                    $error = array('error' => 2, 'em' => $em);
+                    echo json_encode($error);
+                    exit();
+                }
+            }
+
             $em = "Employee Updated Successfully";
             $error = array('error' => 0, 'em' => $em);
             echo json_encode($error);
@@ -167,6 +219,59 @@
                 $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves));
 
                 mysqli_query($conn, $employees->updateEmployeeRequirements($updateID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi, $req_medicalExam, $req_2x2pic, $req_vaccineCard, $req_psa, $req_validID, $req_helloMoney));
+
+                if (isset($_FILES['updateProfilePicture']) && $_FILES['updateProfilePicture']['error'] == 0) {
+                    $uploadDir = '../../assets/images/profiles/'; // DIRECTORY TO SAVE UPLOADED FILES
+    
+                    // EXTRACT THE ORIGINAL FILE EXTENSION
+                    // $fileExtension = pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION);
+    
+                    // GENERATE NEW NAME
+                    $modified_employeeID = str_replace("-", "", $updateEmployeeID);
+                    $newFileName = $modified_employeeID. '.png';
+    
+                    // The complete path to save the uploaded file
+                    $uploadFile = $uploadDir . $newFileName;
+    
+                    // CHECK THE DIRECTORY FOLDER IF EXISTING, IF NOT CREATES IT
+                    if (!file_exists($uploadDir)) {
+                        mkdir($uploadDir, 0755, true);
+                    }
+    
+                    // VALIDATE FILE TYPE
+                    $allowedTypes = ['image/jpeg', 'image/png'];
+                    if (in_array($_FILES['updateProfilePicture']['type'], $allowedTypes)) {
+                        // DELETE EXISTING FILE
+                        $oldEmployeeID = str_replace("-", "", $_SESSION['employeeID']);
+                        $oldFileName = $oldEmployeeID. '.png';
+                        $filepath = $uploadDir . $oldFileName;
+    
+                        if (file_exists($filepath)) {
+                            // Attempt to delete the file
+                            if (unlink($filepath)) {
+                                echo "File '$oldFileName' was successfully deleted.";
+                            } else {
+                                echo "Error: Could not delete the file.";
+                            }
+                        }
+                        if (move_uploaded_file($_FILES['updateProfilePicture']['tmp_name'], $uploadFile)) {
+                            // SUCCESSFULLY UPLOADED FILE
+    
+                        } 
+                        else {
+                            $em = "Failed to move uploaded file.";
+                            $error = array('error' => 2, 'em' => $em);
+                            echo json_encode($error);
+                            exit();
+                        }
+                    } 
+                    else {
+                        $em = "Invalid file type";
+                        $error = array('error' => 2, 'em' => $em);
+                        echo json_encode($error);
+                        exit();
+                    }
+                }
 
                 $em = "Employee Updated Successfully";
                 $error = array('error' => 0, 'em' => $em);
@@ -196,6 +301,59 @@
                 $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves));
 
                 mysqli_query($conn, $employees->updateEmployeeRequirements($updateID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi, $req_medicalExam, $req_2x2pic, $req_vaccineCard, $req_psa, $req_validID, $req_helloMoney));
+                
+                if (isset($_FILES['updateProfilePicture']) && $_FILES['updateProfilePicture']['error'] == 0) {
+                    $uploadDir = '../../assets/images/profiles/'; // DIRECTORY TO SAVE UPLOADED FILES
+    
+                    // EXTRACT THE ORIGINAL FILE EXTENSION
+                    // $fileExtension = pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION);
+    
+                    // GENERATE NEW NAME
+                    $modified_employeeID = str_replace("-", "", $updateEmployeeID);
+                    $newFileName = $modified_employeeID. '.png';
+    
+                    // The complete path to save the uploaded file
+                    $uploadFile = $uploadDir . $newFileName;
+    
+                    // CHECK THE DIRECTORY FOLDER IF EXISTING, IF NOT CREATES IT
+                    if (!file_exists($uploadDir)) {
+                        mkdir($uploadDir, 0755, true);
+                    }
+    
+                    // VALIDATE FILE TYPE
+                    $allowedTypes = ['image/jpeg', 'image/png'];
+                    if (in_array($_FILES['updateProfilePicture']['type'], $allowedTypes)) {
+                        // DELETE EXISTING FILE
+                        $oldEmployeeID = str_replace("-", "", $_SESSION['employeeID']);
+                        $oldFileName = $oldEmployeeID. '.png';
+                        $filepath = $uploadDir . $oldFileName;
+    
+                        if (file_exists($filepath)) {
+                            // Attempt to delete the file
+                            if (unlink($filepath)) {
+                                echo "File '$oldFileName' was successfully deleted.";
+                            } else {
+                                echo "Error: Could not delete the file.";
+                            }
+                        }
+                        if (move_uploaded_file($_FILES['updateProfilePicture']['tmp_name'], $uploadFile)) {
+                            // SUCCESSFULLY UPLOADED FILE
+    
+                        } 
+                        else {
+                            $em = "Failed to move uploaded file.";
+                            $error = array('error' => 2, 'em' => $em);
+                            echo json_encode($error);
+                            exit();
+                        }
+                    } 
+                    else {
+                        $em = "Invalid file type";
+                        $error = array('error' => 2, 'em' => $em);
+                        echo json_encode($error);
+                        exit();
+                    }
+                }
 
                 $em = "Employee Updated Successfully";
                 $error = array('error' => 0, 'em' => $em);
@@ -221,6 +379,59 @@
                     $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves));
 
                     mysqli_query($conn, $employees->updateEmployeeRequirements($updateID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi, $req_medicalExam, $req_2x2pic, $req_vaccineCard, $req_psa, $req_validID, $req_helloMoney));
+
+                    if (isset($_FILES['updateProfilePicture']) && $_FILES['updateProfilePicture']['error'] == 0) {
+                        $uploadDir = '../../assets/images/profiles/'; // DIRECTORY TO SAVE UPLOADED FILES
+        
+                        // EXTRACT THE ORIGINAL FILE EXTENSION
+                        // $fileExtension = pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION);
+        
+                        // GENERATE NEW NAME
+                        $modified_employeeID = str_replace("-", "", $updateEmployeeID);
+                        $newFileName = $modified_employeeID. '.png';
+        
+                        // The complete path to save the uploaded file
+                        $uploadFile = $uploadDir . $newFileName;
+        
+                        // CHECK THE DIRECTORY FOLDER IF EXISTING, IF NOT CREATES IT
+                        if (!file_exists($uploadDir)) {
+                            mkdir($uploadDir, 0755, true);
+                        }
+        
+                        // VALIDATE FILE TYPE
+                        $allowedTypes = ['image/jpeg', 'image/png'];
+                        if (in_array($_FILES['updateProfilePicture']['type'], $allowedTypes)) {
+                            // DELETE EXISTING FILE
+                            $oldEmployeeID = str_replace("-", "", $_SESSION['employeeID']);
+                            $oldFileName = $oldEmployeeID. '.png';
+                            $filepath = $uploadDir . $oldFileName;
+        
+                            if (file_exists($filepath)) {
+                                // Attempt to delete the file
+                                if (unlink($filepath)) {
+                                    echo "File '$oldFileName' was successfully deleted.";
+                                } else {
+                                    echo "Error: Could not delete the file.";
+                                }
+                            }
+                            if (move_uploaded_file($_FILES['updateProfilePicture']['tmp_name'], $uploadFile)) {
+                                // SUCCESSFULLY UPLOADED FILE
+        
+                            } 
+                            else {
+                                $em = "Failed to move uploaded file.";
+                                $error = array('error' => 2, 'em' => $em);
+                                echo json_encode($error);
+                                exit();
+                            }
+                        } 
+                        else {
+                            $em = "Invalid file type";
+                            $error = array('error' => 2, 'em' => $em);
+                            echo json_encode($error);
+                            exit();
+                        }
+                    }
 
                     $em = "Employee Updated Successfully";
                     $error = array('error' => 0, 'em' => $em);
