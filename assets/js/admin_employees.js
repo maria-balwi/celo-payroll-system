@@ -131,11 +131,18 @@ $(document).ready(function() {
                     text: 'Invalid File only accept (JPG/PNG) file',
                 })
                 $('#viewPhoto').attr('disabled', true);
+                $('#previewPhoto').hide();  // Hide the preview if the file is invalid
             } else {
                 $('#viewPhoto').attr('disabled', false);  // Enable the view button
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    $('#previewPhoto').attr('src', e.target.result).show();
+                };
+                reader.readAsDataURL(file);
             }
         } else {
             $('#viewPhoto').attr('disabled', true);  // Disable the view button if no file is selected
+            $('#previewPhoto').hide();  // Hide the preview if no file is selected
         }
     });
 
@@ -167,11 +174,18 @@ $(document).ready(function() {
                     text: 'Invalid File only accept (JPG/PNG) file',
                 })
                 $('#viewUploadPhoto').attr('disabled', true);
+                $('#previewUploadPhoto').hide();  // Hide the preview if the file is invalid
             } else {
                 $('#viewUploadPhoto').attr('disabled', false);  // Enable the view button
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    $('#previewUploadPhoto').attr('src', e.target.result).show();
+                };
+                reader.readAsDataURL(file);
             }
         } else {
             $('#viewUploadPhoto').attr('disabled', true);  // Disable the view button if no file is selected
+            $('#previewUploadPhoto').hide();  // Hide the preview if the file is invalid
         }
     });
     
@@ -355,7 +369,6 @@ $(document).ready(function() {
                                 console.error('Error fetching image:', error);
                             });
                     });
-                    
                 }
             }
         });

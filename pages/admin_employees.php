@@ -316,6 +316,7 @@
                                 <div class="row mb-2 g-2">
                                     <div class="col-6">
                                         <input type="file" class="form-control" id="photo" name="photo" accept="image/*">
+                                        <img id="previewPhoto" src="" alt="Selected Photo" style="display:none; max-height: 200px; margin-top: 10px;">
                                     </div>
                                     <div class="col-1 pt-2 text-left">
                                         <button id="viewPhoto" disabled>
@@ -327,7 +328,7 @@
                                     </div>
                                 </div>
 
-                                <h2 class="text-lg font-semibold">Requirements:</h2>
+                                <h2 class="text-lg font-semibold mb-0">Requirements:</h2>
                                 <div class="row g-3">
                                     <div class="col-md-3">
                                         <!-- SSS -->
@@ -440,7 +441,7 @@
                                 </div>
                             </div>
 
-                            <div class="row g-2 mb-2">
+                            <div class="row g-2 mb-1">
                                 <div class="col-4">
                                     <label for="viewLastName">Last Name:</label>
                                 </div>
@@ -470,7 +471,7 @@
                                 </div>
                             </div>     
                             
-                            <div class="row g-2 mb-2">
+                            <div class="row g-2 mb-1">
                                 <div class="col-6">
                                     <label for="viewAddress">Address:</label>
                                 </div>
@@ -494,7 +495,7 @@
                                 </div>
                             </div>
 
-                            <div class="row g-2 mb-2">
+                            <div class="row g-2 mb-1">
                                 <div class="col-3">
                                     <label for="viewsss">SSS:</label>
                                 </div>
@@ -532,7 +533,7 @@
                                 </div>
                             </div>
 
-                            <div class="row g-2 mb-2">
+                            <div class="row g-2 mb-1">
                                 <div class="col-6">
                                     <label for="viewEmailAddress">Email Address:</label>
                                 </div>
@@ -556,7 +557,7 @@
                                 </div>
                             </div>
 
-                            <div class="row g-2 mb-2">
+                            <div class="row g-2 mb-1">
                                 <div class="col-4">
                                     <label for="viewDepartment">Department:</label>
                                 </div>
@@ -580,7 +581,7 @@
                                 </div>
                             </div>
 
-                            <div class="row g-2 mb-2">
+                            <div class="row g-2 mb-1">
                                 <div class="col-4">
                                     <label for="viewBasicPay">Basic Pay:</label>
                                 </div>
@@ -604,7 +605,7 @@
                                 </div>
                             </div>
 
-                            <div class="row g-2 mb-2">
+                            <div class="row g-2 mb-1">
                                 <div class="col-4">
                                     <label for="viewVacationLeaves">Vacation Leaves:</label>
                                 </div>
@@ -622,13 +623,13 @@
                                 </div>
                             </div>
 
-                            <div class="row g-2 mb-2">
+                            <div class="row g-2 mb-1">
                                 <div class="col-4">
                                     <button id="viewProfilePicture" class="text-lg text-blue-500">View Photo</button>
                                 </div>
                             </div>
 
-                            <h2 class="text-lg font-semibold">Requirements:</h2>
+                            <h2 class="text-lg font-semibold mb-0">Requirements:</h2>
                             <div class="row g-3">
                                 <div class="col-md-3">
                                     <!-- SSS -->
@@ -985,6 +986,7 @@
                                 <div class="row g-2 mb-2">
                                     <div class="col-6">
                                         <input type="file" id="updateProfilePicture" name="updateProfilePicture" class="form-control" accept="image/*">
+                                        <img id="previewUploadPhoto" src="" alt="Selected Photo" style="display:none; max-height: 200px; margin-top: 10px;">
                                     </div>
                                     <div class="col-1 pt-2 text-left">
                                         <button id="viewUploadPhoto" disabled>
@@ -996,7 +998,7 @@
                                     </div>
                                 </div>
 
-                                <h2 class="text-lg font-semibold">Requirements:</h2>
+                                <h2 class="text-lg font-semibold mb-0">Requirements:</h2>
                                 <div class="row g-3">
                                     <div class="col-md-3">
                                         <!-- SSS -->
