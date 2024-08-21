@@ -185,18 +185,69 @@
         exit();
     }
     else {
-        mysqli_query($conn, $employees->addNewEmployee($lastName, $firstName, $gender, $civilStatus, $address, $dateOfBirth, $placeOfBirth, 
-        $sss, $pagIbig, $philhealth, $tin, $emailAddress, $employeeID, $mobileNumber, $departmentID, $designationID, $shiftID, $basicPay, $dailyRate, $hourlyRate, $vacationLeaves, $sickLeaves));
+        if (isset($_FILES['photo']) && $_FILES['photo']['error'] == 0) {
+            $uploadDir = '../../assets/images/profiles/'; // DIRECTORY TO SAVE UPLOADED FILES
 
-        $lastIDQuery = mysqli_query($conn, $employees->viewLastEmployee());
-        $lastIDResult = mysqli_fetch_array($lastIDQuery);
-        $lastID = $lastIDResult['id'];
+            // EXTRACT THE ORIGINAL FILE EXTENSION
+            // $fileExtension = pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION);
 
-        mysqli_query($conn, $employees->addEmployeeRequirements($lastID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi, $req_medicalExam, $req_2x2pic, $req_vaccineCard, $req_psa, $req_validID, $req_helloMoney));
+            // GENERATE NEW NAME
+            $modified_employeeID = str_replace("-", "", $employeeID);
+            $newFileName = $modified_employeeID. '.png';
 
-        $em = "Employee Added Successfully";
-        $error = array('error' => 0, 'em' => $em);
-        echo json_encode($error);
-        exit();
+            // The complete path to save the uploaded file
+            $uploadFile = $uploadDir . $newFileName;
+
+            // CHECK THE DIRECTORY FOLDER IF EXISTING, IF NOT CREATES IT
+            if (!file_exists($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
+
+            // VALIDATE FILE TYPE
+            $allowedTypes = ['image/jpeg', 'image/png'];
+            if (in_array($_FILES['photo']['type'], $allowedTypes)) {
+                if (move_uploaded_file($_FILES['photo']['tmp_name'], $uploadFile)) {
+                    // ADD EMPLOYEE
+                    mysqli_query($conn, $employees->addNewEmployee($lastName, $firstName, $gender, $civilStatus, $address, $dateOfBirth, $placeOfBirth, 
+                    $sss, $pagIbig, $philhealth, $tin, $emailAddress, $employeeID, $mobileNumber, $departmentID, $designationID, $shiftID, $basicPay, $dailyRate, $hourlyRate, $vacationLeaves, $sickLeaves));
+
+                    $lastIDQuery = mysqli_query($conn, $employees->viewLastEmployee());
+                    $lastIDResult = mysqli_fetch_array($lastIDQuery);
+                    $lastID = $lastIDResult['id'];
+
+                    mysqli_query($conn, $employees->addEmployeeRequirements($lastID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi, $req_medicalExam, $req_2x2pic, $req_vaccineCard, $req_psa, $req_validID, $req_helloMoney));
+
+                    $em = "Employee Added Successfully";
+                    $error = array('error' => 0, 'em' => $em);
+                    echo json_encode($error);
+                    exit();
+                } 
+                else {
+                    $em = "Failed to move uploaded file.";
+                    $error = array('error' => 2, 'em' => $em);
+                    echo json_encode($error);
+                    exit();
+                }
+            } 
+            else {
+                $em = "Invalid file type";
+                $error = array('error' => 2, 'em' => $em);
+                echo json_encode($error);
+                exit();
+            }
+        }
+        // mysqli_query($conn, $employees->addNewEmployee($lastName, $firstName, $gender, $civilStatus, $address, $dateOfBirth, $placeOfBirth, 
+        // $sss, $pagIbig, $philhealth, $tin, $emailAddress, $employeeID, $mobileNumber, $departmentID, $designationID, $shiftID, $basicPay, $dailyRate, $hourlyRate, $vacationLeaves, $sickLeaves));
+
+        // $lastIDQuery = mysqli_query($conn, $employees->viewLastEmployee());
+        // $lastIDResult = mysqli_fetch_array($lastIDQuery);
+        // $lastID = $lastIDResult['id'];
+
+        // mysqli_query($conn, $employees->addEmployeeRequirements($lastID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi, $req_medicalExam, $req_2x2pic, $req_vaccineCard, $req_psa, $req_validID, $req_helloMoney));
+
+        // $em = "Employee Added Successfully";
+        // $error = array('error' => 0, 'em' => $em);
+        // echo json_encode($error);
+        // exit();
     }
 ?>

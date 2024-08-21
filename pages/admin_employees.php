@@ -71,7 +71,7 @@
 
             <!--------------------------------------------------------------------------------------------------------------------------------------------->
             <!------------------------------------------------------------------- ADD EMPLOYEE FORM ------------------------------------------------------->
-            <form id="addEmployeeForm">
+            <form id="addEmployeeForm" enctype="multipart/form-data">
                 <div class="modal fade" id="addEmployeeModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
                     <div class="modal-dialog modal-none modal-lg modal-dialog-centered">
                         <div class="modal-content" id="addEmployeeModal">
@@ -86,7 +86,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-2">
+                                <div class="row g-2 mb-1">
                                     <div class="col-4">
                                         <label for="lastName">Last Name:</label>
                                     </div>
@@ -103,10 +103,10 @@
 
                                 <div class="row g-2 mb-2">
                                     <div class="col-4">
-                                        <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last Name">
+                                        <input type="text" class="form-control" id="lastName" name="lastName">
                                     </div>
                                     <div class="col-4">
-                                        <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First Name">
+                                        <input type="text" class="form-control" id="firstName" name="firstName">
                                     </div>
                                     <div class="col-2">
                                         <select id="gender" name="gender" class="form-select">
@@ -127,7 +127,7 @@
                                     </div>
                                 </div>     
                                 
-                                <div class="row g-2 mb-2">
+                                <div class="row g-2 mb-1">
                                     <div class="col-6">
                                         <label for="address">Address:</label>
                                     </div>
@@ -141,17 +141,17 @@
 
                                 <div class="row g-2 mb-2">
                                     <div class="col-6">
-                                        <input type="text" class="form-control" id="address" name="address" placeholder="Address">
+                                        <input type="text" class="form-control" id="address" name="address">
                                     </div>
                                     <div class="col-3">
-                                        <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth" placeholder="Date of Birth">
+                                        <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth">
                                     </div>
                                     <div class="col-3">
-                                        <input type="text" class="form-control" id="placeOfBirth" name="placeOfBirth" placeholder="Place of Birth">
+                                        <input type="text" class="form-control" id="placeOfBirth" name="placeOfBirth">
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-2">
+                                <div class="row g-2 mb-1">
                                     <div class="col-3">
                                         <label for="sss">SSS:</label>
                                     </div>
@@ -168,16 +168,16 @@
 
                                 <div class="row g-2 mb-2">
                                     <div class="col-3">
-                                        <input type="text" class="form-control" id="sss" name="sss" placeholder ="SSS">
+                                        <input type="text" class="form-control" id="sss" name="sss">
                                     </div>
                                     <div class="col-3">
-                                        <input type="text" class="form-control" id="pagIbig" name="pagIbig" placeholder="Pag-Ibig">
+                                        <input type="text" class="form-control" id="pagIbig" name="pagIbig">
                                     </div>
                                     <div class="col-3">
-                                        <input type="text" class="form-control" id="philhealth" name="philhealth" placeholder="PhilHealth">
+                                        <input type="text" class="form-control" id="philhealth" name="philhealth">
                                     </div>
                                     <div class="col-3">
-                                        <input type="text" class="form-control" id="tin" name="tin" placeholder="TIN">
+                                        <input type="text" class="form-control" id="tin" name="tin">
                                     </div>
                                 </div>
 
@@ -189,7 +189,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-2">
+                                <div class="row g-2 mb-1">
                                     <div class="col-6">
                                         <label for="emailAddress">Email Address:</label>
                                     </div>
@@ -203,17 +203,17 @@
 
                                 <div class="row g-2 mb-2">
                                     <div class="col-6">
-                                        <input type="email" class="form-control" id="emailAddress" name="emailAddress" placeholder="Email Address">
+                                        <input type="email" class="form-control" id="emailAddress" name="emailAddress">
                                     </div>
                                     <div class="col-3">
-                                        <input type="text" class="form-control" id="employeeID" name="employeeID" placeholder="Employee ID">
+                                        <input type="text" class="form-control" id="employeeID" name="employeeID">
                                     </div>
                                     <div class="col-3">
-                                        <input type="text" class="form-control" id="mobileNumber" name="mobileNumber" placeholder="Mobile Number">
+                                        <input type="text" class="form-control" id="mobileNumber" name="mobileNumber">
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-2">
+                                <div class="row g-2 mb-1">
                                     <div class="col-4">
                                         <label for="department">Department:</label>
                                     </div>
@@ -265,7 +265,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-2">
+                                <div class="row g-2 mb-1">
                                     <div class="col-4">
                                         <label for="basicPay">Basic Pay:</label>
                                     </div>
@@ -279,7 +279,7 @@
                             
                                 <div class="row g-2 mb-2">
                                     <div class="col-4">
-                                        <input type="number" class="form-control" id="basicPay" name="basicPay" placeholder="Basic Pay">
+                                        <input type="number" class="form-control" id="basicPay" name="basicPay">
                                     </div>
                                     <div class="col-4">
                                         <input type="number" class="form-control" id="dailyRate" name="dailyRate" placeholder="1.0" step="0.01" readonly>
@@ -289,7 +289,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-2">
+                                <div class="row g-2 mb-1">
                                     <div class="col-4">
                                         <label for="vacationLeaves">Vacation Leaves:</label>
                                     </div>
@@ -300,10 +300,30 @@
                             
                                 <div class="row g-2 mb-2">
                                     <div class="col-4">
-                                        <input type="number" class="form-control" id="vacationLeaves" name="vacationLeaves" placeholder="Vacation Leaves">
+                                        <input type="number" class="form-control" id="vacationLeaves" name="vacationLeaves">
                                     </div>
                                     <div class="col-4">
-                                        <input type="number" class="form-control" id="sickLeaves" name="sickLeaves" placeholder="Sick Leaves">
+                                        <input type="number" class="form-control" id="sickLeaves" name="sickLeaves">
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-1">
+                                    <div class="col-6">
+                                        <label for="photo">Upload Photo:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-2">
+                                    <div class="col-6">
+                                        <input type="file" class="form-control" id="photo" name="photo" accept="image/*">
+                                    </div>
+                                    <div class="col-1 pt-2 text-left">
+                                        <button id="viewPhoto" disabled>
+                                            <svg class="h-5 w-5 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                            </svg>
+                                        </button>
                                     </div>
                                 </div>
 
@@ -599,6 +619,12 @@
                                 </div>
                                 <div class="col-4">
                                     <input type="number" class="form-control" id="viewSickLeaves" name="viewSickLeaves" disabled readonly>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-2">
+                                <div class="col-4">
+                                    <button id="viewProfilePicture">View Picture</button>
                                 </div>
                             </div>
 
@@ -947,6 +973,14 @@
                                     </div>
                                     <div class="col-4">
                                         <input type="number" class="form-control" id="updateSickLeaves" name="updateSickLeaves">
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <div class="col-4">
+                                        <input type="file" id="photo" name="photo">
+                                        <button id="viewPhoto" disabled>View Selected Photo</button>
+                                        <button id="changePhoto">Change Photo</button>
                                     </div>
                                 </div>
 

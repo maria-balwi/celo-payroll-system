@@ -98,14 +98,50 @@ $(document).ready(function() {
 
     $("input[id='tin']").on("input", function() {
         $('#req_tin').prop('checked', true);
-        console.log($('#req_tin').val());
     });
+
+    $('#photo').change(function() {
+        const [file] = photo.files;
+        const acceptedImageTypes = ['image/jpeg', 'image/png'];
+        if (file) {
+            const fileType = file['type'];
+            if ($.inArray(fileType, acceptedImageTypes) < 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Invalid Picture',
+                    text: 'Invalid File only accept (JPG/PNG) file',
+                })
+                $('#viewPhoto').attr('disabled', true);
+            } else {
+                $('#viewPhoto').attr('disabled', false);  // Enable the view button
+            }
+        } else {
+            $('#viewPhoto').attr('disabled', true);  // Disable the view button if no file is selected
+        }
+    });
+    
+    $('#viewPhoto').click(function() {
+        const [file] = photo.files;
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                Swal.fire({
+                    title: 'Profile Picture',
+                    imageUrl: e.target.result,
+                    imageHeight: 200,
+                });
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+    
 
     // ADD EMPLOYEE
     $("#addEmployeeForm").submit(function (e) {
 
         e.preventDefault();
 
+        let addEmployee = new FormData(this);
         var lastName = $("#lastName").val();
         var firstName = $("#firstName").val();
         var gender = $("#gender").val();
@@ -113,10 +149,6 @@ $(document).ready(function() {
         var address = $("#address").val();
         var dateOfBirth = $("#dateOfBirth").val();
         var placeOfBirth = $("#placeOfBirth").val();
-        // var sss = $("#sss").val();
-        // var pagIbig = $("#pagIbig").val();
-        // var philhealth = $("#philhealth").val();
-        // var tin = $("#tin").val();
         var emailAddress = $("#emailAddress").val();
         var employeeID = $("#employeeID").val();
         var mobileNumber = $("#mobileNumber").val();
@@ -131,7 +163,6 @@ $(document).ready(function() {
 
         if (lastName == "" || firstName == "" || gender == "" || civilStatus == "" || 
             address == "" || dateOfBirth == "" || placeOfBirth == "" ||
-            // sss == "" || pagIbig == "" || philhealth == "" || tin == "" ||
             emailAddress == "" || employeeID == "" || mobileNumber == "" ||
             department == "" || designation == "" || shiftID == "" || 
             basicPay == "" || dailyRate == "" || hourlyRate == "" || 
@@ -155,8 +186,9 @@ $(document).ready(function() {
                     $.ajax({
                         type: "POST",
                         url: "../backend/admin/addEmployee.php",
-                        data: $(this).serialize(),
-                        cache: false,
+                        data: addEmployee,
+                        contentType: false,
+                        processData: false,
                         success: function (res) {
                             const data = JSON.parse(res);
                             var message = data.em;
@@ -237,6 +269,38 @@ $(document).ready(function() {
                     $('#view_req_validID').val(res.data.req_validID == 1 ? $('#view_req_validID').prop('checked', true) : $('#view_req_validID').prop('checked', false));
                     $('#view_req_helloMoney').val(res.data.req_helloMoney == 1 ? $('#view_req_helloMoney').prop('checked', true) : $('#view_req_helloMoney').prop('checked', false));
                     $('#viewEmployeeModal').modal('show');
+
+                    let employeeID_string = res.data.employeeID;
+                    $('#viewProfilePicture').click(function() {
+                        const imagePath = '../assets/images/profiles/' + employeeID_string.replace("-", "") + '.png'; // Set your directory path here
+                    
+                        // Use the fetch API to check if the image exists
+                        fetch(imagePath)
+                            .then(response => {
+                                if (response.ok) {
+                                    Swal.fire({
+                                        title: 'Profile Picture',
+                                        imageUrl: imagePath,
+                                        imageHeight: 300,
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error',
+                                        text: 'Failed to fetch the image. Image not found.',
+                                    });
+                                }
+                            })
+                            .catch(error => {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: 'An error occurred while fetching the image.',
+                                });
+                                console.error('Error fetching image:', error);
+                            });
+                    });
+                    
                 }
             }
         });
