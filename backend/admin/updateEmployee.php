@@ -27,66 +27,76 @@
     $updateVacationLeaves = $_POST['updateVacationLeaves'];
     $updateSickLeaves = $_POST['updateSickLeaves'];
 
-    if(isset($_POST['updateSSS'])) {
+    if (str_replace(" ", "",$_POST['updateSSS'])) {
 		$req_sss = 1;
 	}
 	else {
 		$req_sss = 0;
 	}
-    if(isset($_POST['updatePagIbig'])) {
+
+    if(str_replace(" ", "",$_POST['updatePagIbig'])) {
 		$req_pagIbig = 1;
 	}
 	else {
 		$req_pagIbig = 0;
 	}
-    if(isset($_POST['updatePhilhealth'])) {
+
+    if(str_replace(" ", "",$_POST['updatePhilhealth'])) {
 		$req_philhealth = 1;
 	}
 	else {
 		$req_philhealth = 0;
 	}
-    if(isset($_POST['updateTIN'])) {
+
+    if(str_replace(" ", "",$_POST['updateTIN'])) {
 		$req_tin = 1;
 	}
 	else {
 		$req_tin = 0;
 	}
+
     if(isset($_POST['update_req_nbi'])) {
 		$req_nbi = 1;
 	}
 	else {
 		$req_nbi = 0;
 	}
+
     if(isset($_POST['update_req_medicalExam'])) {
 		$req_medicalExam = 1;
 	}
 	else {
 		$req_medicalExam = 0;
 	}
+
     if(isset($_POST['update_req_2x2pic'])) {
 		$req_2x2pic = 1;
 	}
 	else {
 		$req_2x2pic = 0;
 	}
+
     if(isset($_POST['update_req_vaccineCard'])) {
 		$req_vaccineCard = 1;
 	}
 	else {
 		$req_vaccineCard = 0;
 	}
+
     if(isset($_POST['update_req_psa'])) {
 		$req_psa = 1;
 	}
 	else {
 		$req_psa = 0;
 	}
+
     if(isset($_POST['update_req_validID'])) {
 		$req_validID = 1;
 	}
 	else {
 		$req_validID = 0;
 	}
+    
     if(isset($_POST['update_req_helloMoney'])) {
 		$req_helloMoney = 1;
 	}

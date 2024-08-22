@@ -24,7 +24,7 @@ $(document).ready(function() {
     });
 
     $('#mobileNumber').inputmask('0999-999-9999', {
-        placeholder: 'XXXX-XXX-XXXX'
+        placeholder: 'XXXX-XXX-XXXX',
     });
 
     $('#employeeID').inputmask('999-999', {
@@ -76,7 +76,7 @@ $(document).ready(function() {
         $('#updateDailyRate').val(dailyRate).trigger('input');
     });
 
-    $("input[id='sss']").on("input", function() {
+    $("input[id='updateDailyRate']").on("input", function() {
         var dailyRate = $(this).val();
         var hourlyRate = (dailyRate / 8).toFixed(2);
         $('#updateHourlyRate').val(hourlyRate);
@@ -85,36 +85,68 @@ $(document).ready(function() {
     
     // CHECKBOXES FOR REQUIREMENTS - SSS, PAGIBIG, PHILHEALTH, TIN (ADD EMPLOYEE)
     $("input[id='sss']").on("input", function() {
-        $('#req_sss').prop('checked', true);
+        if ($(this).val().trim() !== "") {
+            $('#req_sss').prop('checked', true);
+        } else {
+            $('#req_sss').prop('checked', false);
+        }
     });
 
     $("input[id='pagIbig']").on("input", function() {
-        $('#req_pagIbig').prop('checked', true);
+        if ($(this).val().trim() !== "") {
+            $('#req_pagIbig').prop('checked', true);
+        } else {
+            $('#req_pagIbig').prop('checked', false);
+        }
     });
 
     $("input[id='philhealth']").on("input", function() {
-        $('#req_philhealth').prop('checked', true);
+        if ($(this).val().trim() !== "") {
+            $('#req_philhealth').prop('checked', true);
+        } else {
+            $('#req_philhealth').prop('checked', false);
+        }
     });
 
     $("input[id='tin']").on("input", function() {
-        $('#req_tin').prop('checked', true);
+        if ($(this).val().trim() !== "") {
+            $('#req_tin').prop('checked', true);
+        } else {
+            $('#req_tin').prop('checked', false);
+        }
     });
 
     // CHECKBOXES FOR REQUIREMENTS - SSS, PAGIBIG, PHILHEALTH, TIN (ADD EMPLOYEE)
     $("input[id='updateSSS']").on("input", function() {
-        $('#update_req_sss').prop('checked', true);
+        if ($(this).val().trim() !== "") {
+            $('#update_req_sss').prop('checked', true);
+        } else {
+            $('#update_req_sss').prop('checked', false);
+        }
     });
 
     $("input[id='updatePagIbig']").on("input", function() {
-        $('#update_req_pagIbig').prop('checked', true);
+        if ($(this).val().trim() !== "") {
+            $('#update_req_pagIbig').prop('checked', true);
+        } else {
+            $('#update_req_pagIbig').prop('checked', false);
+        }
     });
 
     $("input[id='updatePhilhealth']").on("input", function() {
-        $('#update_req_philhealth').prop('checked', true);
+        if ($(this).val().trim() !== "") {
+            $('#update_req_philhealth').prop('checked', true);
+        } else {
+            $('#update_req_philhealth').prop('checked', false);
+        }
     });
 
     $("input[id='updateTIN']").on("input", function() {
-        $('#update_req_tin').prop('checked', true);
+        if ($(this).val().trim() !== "") {
+            $('#update_req_tin').prop('checked', true);
+        } else {
+            $('#update_req_tin').prop('checked', false);
+        }
     });
     
 
@@ -229,6 +261,10 @@ $(document).ready(function() {
         var hourlyRate = $("#hourlyRate").val();
         var vacationLeaves = $("#vacationLeaves").val();
         var sickLeaves = $("#sickLeaves").val();
+        var req_sss = $("#req_sss").val();
+        var req_pagIbig = $("#req_pagIbig").val();
+        console.log({req_sss});
+        console.log({req_pagIbig});
 
         if (lastName == "" || firstName == "" || gender == "" || civilStatus == "" || 
             address == "" || dateOfBirth == "" || placeOfBirth == "" ||
@@ -262,6 +298,8 @@ $(document).ready(function() {
                             const data = JSON.parse(res);
                             var message = data.em;
                             if (data.error == 0) {
+                                var id = data.id;
+                                loadEmployeeData(id);
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Success',
@@ -269,7 +307,10 @@ $(document).ready(function() {
                                     timer: 2000,
                                     showConfirmButton: false
                                 }).then(() => {
-                                    window.location.reload();
+                                    // window.location.reload();
+                                    // Refresh the View Employee Modal with new added data
+                                    $('#addEmployeeModal').modal('hide');
+                                    $('#viewEmployeeModal').modal('show');
                                 })
                             } else {
                                 Swal.fire({
@@ -437,6 +478,7 @@ $(document).ready(function() {
         e.preventDefault();
 
         let updateEmployee = new FormData(this);
+        var updateID = $("#updateID").val();
         var updateLastName = $("#updateLastName").val();
         var updateFirstName = $("#updateFirstName").val();
         var updateGender = $("#updateGender").val();
@@ -501,7 +543,11 @@ $(document).ready(function() {
                                     timer: 2000, 
                                     showConfirmButton: false,
                                 }).then(() => {
-                                    window.location.reload();
+                                    // window.location.reload();
+                                    // Refresh the View Employee Modal with updated data
+                                    loadEmployeeData(updateID);
+                                    $('#updateEmployeeModal').modal('hide');
+                                    $('#viewEmployeeModal').modal('show');
                                 })
                             } else {
                                 var message = data.em
@@ -518,4 +564,81 @@ $(document).ready(function() {
         }       
 
     });
+
+    function loadEmployeeData(employee_id) {
+        $.ajax({
+            type: "GET",
+            url: "../backend/admin/employeeModal.php?employee_id=" + employee_id,
+            success: function(response) {
+                var res = jQuery.parseJSON(response);
+    
+                if (res.status == 404) {
+                    alert(res.message);
+                } else if (res.status == 200) {
+                    $('#viewLastName').val(res.data.lastName);
+                    $('#viewFirstName').val(res.data.firstName);
+                    $('#viewGender').val(res.data.gender);
+                    $('#viewCivilStatus').val(res.data.civilStatus);
+                    $('#viewAddress').val(res.data.address);
+                    $('#viewDateOfBirth').val(res.data.dateOfBirth);
+                    $('#viewPlaceOfBirth').val(res.data.placeOfBirth);
+                    $('#viewsss').val(res.data.sss);
+                    $('#viewpagIbig').val(res.data.pagIbig);
+                    $('#viewphilhealth').val(res.data.philhealth);
+                    $('#viewtin').val(res.data.tin);
+                    $('#viewEmailAddress').val(res.data.emailAddress);
+                    $('#viewEmployeeID').val(res.data.employeeID);
+                    $('#viewMobileNumber').val(res.data.mobileNumber);
+                    $('#viewDepartment').val(res.data.departmentName);
+                    $('#viewDesignation').val(res.data.position);
+                    $('#viewShiftID').val(res.data.startTime + ' - ' + res.data.endTime);
+                    $('#viewBasicPay').val(res.data.basicPay);
+                    $('#viewDailyRate').val(res.data.dailyRate);
+                    $('#viewHourlyRate').val(res.data.hourlyRate);
+                    $('#viewVacationLeaves').val(res.data.availableVL);
+                    $('#viewSickLeaves').val(res.data.availableSL);
+                    $('#view_req_sss').prop('checked', res.data.req_sss == 1);
+                    $('#view_req_pagIbig').prop('checked', res.data.req_pagIbig == 1);
+                    $('#view_req_philhealth').prop('checked', res.data.req_philhealth == 1);
+                    $('#view_req_tin').prop('checked', res.data.req_tin == 1);
+                    $('#view_req_nbi').prop('checked', res.data.req_nbi == 1);
+                    $('#view_req_medicalExam').prop('checked', res.data.req_medicalExam == 1);
+                    $('#view_req_2x2pic').prop('checked', res.data.req_2x2pic == 1);
+                    $('#view_req_vaccineCard').prop('checked', res.data.req_vaccineCard == 1);
+                    $('#view_req_psa').prop('checked', res.data.req_psa == 1);
+                    $('#view_req_validID').prop('checked', res.data.req_validID == 1);
+                    $('#view_req_helloMoney').prop('checked', res.data.req_helloMoney == 1);
+    
+                    let employeeID_string = res.data.employeeID;
+                    $('#viewProfilePicture').off('click').on('click', function() {
+                        const imagePath = '../assets/images/profiles/' + employeeID_string.replace("-", "") + '.png';
+                        fetch(imagePath)
+                            .then(response => {
+                                if (response.ok) {
+                                    Swal.fire({
+                                        title: 'Profile Picture',
+                                        imageUrl: imagePath,
+                                        imageHeight: 300,
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        title: 'Profile Picture',
+                                        imageUrl: "../assets/images/profiles/profile.png",
+                                        imageHeight: 300,
+                                    });
+                                }
+                            })
+                            .catch(error => {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: 'An error occurred while fetching the image.',
+                                });
+                                console.error('Error fetching image:', error);
+                            });
+                    });
+                }
+            }
+        });
+    }
 });
