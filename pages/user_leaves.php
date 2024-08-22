@@ -130,7 +130,7 @@
 
                                     <div class="row g-3 mb-2">
                                         <div class="col-12">
-                                            <select class="form-select border border-1" id="leaveType" required>
+                                            <select class="form-select border border-1" id="leaveType" name="leaveType" required>
                                                 <option selected disabled>Choose Leave Type</option>
                                                 <?php
                                                 $allLeaveType = mysqli_query($conn, $employees->viewAllLeaveType());
@@ -154,7 +154,7 @@
 
                                     <div class="row g-3 mb-2">
                                         <div class="col-12">
-                                            <input type="date" class="form-control" id="effectivityStartDate">
+                                            <input type="date" class="form-control" id="effectivityStartDate" name="effectivityStartDate">
                                         </div>
                                     </div>
 
@@ -166,7 +166,7 @@
 
                                     <div class="row g-3 mb-2">
                                         <div class="col-12">
-                                            <input type="date" class="form-control" id="effectivityEndDate">
+                                            <input type="date" class="form-control" id="effectivityEndDate" name="effectivityEndDate">
                                         </div>
                                     </div>
                                     
@@ -178,7 +178,7 @@
 
                                     <div class="row g-3 mb-2">
                                         <div class="col-12">
-                                            <textarea type="text" id="purpose" placeholder="Purpose" rows="3" class="form-control" required></textarea>
+                                            <textarea type="text" id="purpose" name="purpose" placeholder="Purpose" rows="3" class="form-control" required></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -281,7 +281,7 @@
                                 </form>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnClose">Close</button>
                             </div>
                         </div>
                     </div>

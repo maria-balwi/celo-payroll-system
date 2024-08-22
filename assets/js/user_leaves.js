@@ -18,7 +18,7 @@ $(document).ready(function() {
 
         e.preventDefault();
 
-        let fileLeaveForm = new FormData();
+        let fileLeaveForm = new FormData(this);
         var leaveType = $('#leaveType').val();
         var startDate = $('#effectivityStartDate').val();
         var endDate = $('#effectivityEndDate').val();
@@ -41,11 +41,6 @@ $(document).ready(function() {
                 confirmButtonText: 'Yes',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    fileLeaveForm.append("leaveType", leaveType);
-                    fileLeaveForm.append("startDate", startDate);
-                    fileLeaveForm.append("endDate", endDate);
-                    fileLeaveForm.append("purpose", purpose);
-
                     $.ajax({
                         type: "POST",
                         url: "../backend/user/fileLeave.php",
@@ -53,15 +48,29 @@ $(document).ready(function() {
                         processData: false,
                         contentType: false,
                         success: function(response) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Success',
-                                text: 'Leave Filed Successfully',
-                                timer: 2000,
-                                showConfirmButton: false,
-                            }).then(() => {
-                                window.location.reload();
-                            })
+                            const data = JSON.parse(response);
+                            var message = data.em
+                            if (data.error == 0) {
+                                var id = data.id;
+                                loadEmployeeData(id);
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: message,
+                                    timer: 2000,
+                                    showConfirmButton: false,
+                                }).then(() => {
+                                    // window.location.reload();
+                                    $('#fileLeaveModal').modal('hide');
+                                    $('#viewLeaveModal').modal('show');
+                                })
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: message,
+                                })
+                            }
                         }
                     })
                 }
@@ -102,7 +111,36 @@ $(document).ready(function() {
                 }
             }
         });
-
     });
-    
+
+    function loadEmployeeData(id_leave) {
+        $.ajax({
+            type: "GET",
+            url: "../backend/user/leaveModal.php?leave_id=" + id_leave,
+            success: function(response) {
+
+                var res = jQuery.parseJSON(response);
+
+                if (res.status == 404) {
+                    alert(res.message);
+                } 
+                else if (res.status == 200) {
+                    $('#viewLeaveID').val(res.data.requestID);
+                    $('#viewEmpID').val(res.data.employeeID);
+                    $('#viewDateFiled').val(res.data.dateFiled);
+                    $('#viewName').val(res.data.employeeName);
+                    $('#viewLeaveType').val(res.data.leaveType);
+                    $('#viewStartDate').val(res.data.effectivityStartDate);
+                    $('#viewEndDate').val(res.data.effectivityEndDate);
+                    $('#viewPurpose').val(res.data.remarks);
+                    $('#viewStatus').val(res.data.status);
+                    $('#viewLeaveModal').modal('show');
+                }
+            }
+        });
+
+        $('#btnClose').on('click', function() {
+            window.location.reload();
+        });
+    }
 });

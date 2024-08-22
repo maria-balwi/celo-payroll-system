@@ -668,6 +668,15 @@
             return $fileLeave;
         }
 
+        public function viewLastLeave() {
+            $request = "
+                SELECT requestID
+                FROM ".$this->leaves."
+                ORDER BY requestID DESC
+                LIMIT 1";
+            return $request;
+        }
+
         public function fileRequest($employeeID, $newshift, $effectivityStartDate, $effectivityEndDate, $remarks, $status) {
             $fileRequest = "
                 INSERT INTO ".$this->changeShift." (empID, dateFiled, requestedShift, effectivityStartDate, effectivityEndDate, remarks, status)
