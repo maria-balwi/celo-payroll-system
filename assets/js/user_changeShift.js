@@ -47,6 +47,8 @@ $(document).ready(function() {
                             const data = JSON.parse(res);
                             var message = data.em
                             if (data.error == 0) {
+                                var id = data.id;
+                                loadEmployeeData(id);
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Success',
@@ -54,7 +56,9 @@ $(document).ready(function() {
                                     timer: 2000,
                                     showConfirmButton: false,
                                 }).then(() => {
-                                    window.location.reload();
+                                    // window.location.reload();
+                                    $('#fileRequestModal').modal('hide');
+                                    $('#viewRequestModal').modal('show');
                                 })
                             } else {
                                 Swal.fire({
@@ -105,7 +109,36 @@ $(document).ready(function() {
                 }
             }
         });
-
     });
     
+    function loadEmployeeData(changeshift_id) {
+        $.ajax({
+            type: "GET",
+            url: "../backend/user/changeShiftModal.php?changeshift_id=" + changeshift_id,
+            success: function(response) {
+
+                var res = jQuery.parseJSON(response);
+
+                if (res.status == 404) {
+                    alert(res.message);
+                } 
+                else if (res.status == 200) {
+                    $('#viewLeaveID').val(res.data.requestID);
+                    $('#viewEmpID').val(res.data.employeeID);
+                    $('#viewDateFiled').val(res.data.dateFiled);
+                    $('#viewName').val(res.data.employeeName);
+                    $('#viewRequestedShift').val(res.data.requestedShift);
+                    $('#viewStartDate').val(res.data.effectivityStartDate);
+                    $('#viewEndDate').val(res.data.effectivityEndDate);
+                    $('#viewPurpose').val(res.data.remarks);
+                    $('#viewStatus').val(res.data.status);
+                    $('#viewRequestModal').modal('show');
+                }
+            }
+        });
+
+        $('#btnClose').on('click', function() {
+            window.location.reload();
+        });
+    }
 });

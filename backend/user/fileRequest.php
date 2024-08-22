@@ -23,9 +23,13 @@
     }
     else {
         mysqli_query($conn, $employees->fileRequest($employeeID, $newShift, $startDate, $endDate, $purpose, $status));
+
+        $lastIDQuery = mysqli_query($conn, $employees->viewLastRequest());
+        $lastIDResult = mysqli_fetch_array($lastIDQuery);
+        $lastID = $lastIDResult['requestID'];
         
         $em = "Request Filed Successfully";
-        $error = array('error' => 0, 'em' => $em);
+        $error = array('error' => 0, 'id' => $lastID, 'em' => $em);
         echo json_encode($error);
         exit();
     }

@@ -675,6 +675,15 @@
             return $fileRequest;
         }
 
+        public function viewLastRequest() {
+            $request = "
+                SELECT requestID
+                FROM ".$this->changeShift."
+                ORDER BY requestID DESC
+                LIMIT 1";
+            return $request;
+        }
+
         public function viewAllowances() {
             $allowance = "SELECT * FROM ".$this->allowances;
             return $allowance;
