@@ -146,25 +146,43 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <div class="row g-3 mb-2">
+                            <div class="row g-3 mb-1">
                                 <div class="col-6">
-                                    <label for="viewDateFiled">Date Filed:</label>
-                                </div>
+                                        <label for="viewDateFiled">Date Filed:</label>
+                                    </div>    
                                 <div class="col-6">
-                                    <label for="viewOTDate">OT Date:</label>
+                                    <label for="viewStatus">Status</label>
                                 </div>
                             </div>
-
+                
                             <div class="row g-3 mb-2">
                                 <div class="col-6">
                                     <input type="text" class="form-control" id="viewDateFiled" disabled readonly>
                                 </div>
                                 <div class="col-6">
+                                    <input type="text" class="form-control" id="viewStatus" name="viewStatus" disabled readonly>
+                                </div>
+                            </div>
+
+                            <div class="row g-3 mb-1">
+                                <div class="col-6">
+                                    <label for="viewOTDate">OT Date:</label>
+                                </div>
+                                <div class="col-6">
+                                    <label for="viewName">Employee Name</label>
+                                </div>
+                            </div>
+
+                            <div class="row g-3 mb-2">
+                                <div class="col-6">
                                     <input type="text" class="form-control" id="viewOTDate" name="viewOTDate" disabled readonly>
+                                </div>
+                                <div class="col-6">
+                                    <input type="text" class="form-control" id="viewName" name="viewName" disabled readonly>
                                 </div>
                             </div>   
                                 
-                            <div class="row g-3 mb-2">
+                            <div class="row g-3 mb-1">
                                 <div class="col-6">
                                     <label for="viewActualOTHours">Actual OT - Hours</label>
                                 </div>
@@ -182,7 +200,7 @@
                                 </div>  
                             </div>
 
-                            <div class="row g-3 mb-2" id="approvedLabelRow">
+                            <div class="row g-3 mb-1" id="approvedLabelRow">
                                 <div class="col-6">
                                     <label for="viewApprovedOTHours">Approved OT - Hours</label>
                                 </div>
@@ -200,7 +218,7 @@
                                 </div>  
                             </div>
                             
-                            <div class="row g-3 mb-2">
+                            <div class="row g-3 mb-1">
                                 <div class="col-12">
                                     <label for="viewPurpose">Purpose:</label>
                                 </div>
@@ -210,12 +228,12 @@
                                 <div class="col-12">
                                     <textarea type="text" id="viewPurpose" name="viewPurpose" placeholder="Purpose" rows="3" class="form-control" disabled readonly></textarea>
                                 </div>
-                            </div>
+                            </div>                            
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-success approveOT" id="approveOT">Approve</button>
                             <button type="button" class="btn btn-danger disapproveOT" id="disapproveOT">Disapprove</button>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnClose">Close</button>
                         </div>
                     </div>
                 </div>
