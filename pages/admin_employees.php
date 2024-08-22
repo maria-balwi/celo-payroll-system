@@ -715,6 +715,76 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <hr>
+
+                            <div class="row g-2">
+                                <div class="flex space-x-4">
+                                    <div class="flex-1 bg-lightblue p-2 border border-gray-300">
+                                        <div class="mb-4">
+                                            <div class="flex justify-between items-center mb-2 px-1">
+                                                <h2 class="text-lg font-semibold">Allowances</h2>
+                                                <button class="bg-blue-500 p-2 rounded">
+                                                    <svg class="h-5 w-5 text-gray-100"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                    </svg>
+                                                </button>
+                                            </div>
+
+                                            <div class="space-y-2">
+                                                <div class="flex justify-between items-center bg-white p-2 border border-gray-200">
+                                                    <span>Allowance 1</span><p class="text-sm bg-green-500 text-white p-1 rounded-full my-auto">₱ 500.00</p>
+                                                    <button class="p-2 rounded" data-bs-toggle="modal" data-bs-target="#allowanceModal">
+                                                        <svg class="h-5 w-5 text-gray-800"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                                <div class="flex justify-between items-center bg-white p-2 border border-gray-200">
+                                                    <span>Allowance 2</span><p class="text-sm bg-green-500 text-white p-1 rounded-full my-auto">₱ 500.00</p>
+                                                    <button class="p-2 rounded">
+                                                        <svg class="h-5 w-5 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                                <!-- Add more allowance items here -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex-1 bg-lightblue p-2 border border-gray-300">
+                                        <div class="mb-4">
+                                            <div class="flex justify-between items-center mb-2 px-1">
+                                                <h2 class="text-lg font-semibold">Deductions</h2>
+                                                <button class="bg-blue-500 p-2 rounded" data-bs-toggle="modal" data-bs-target="#deductionModal">
+                                                    <svg class="h-5 w-5 text-gray-100"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                            <div class="space-y-2">
+                                                <div class="flex justify-between items-center bg-white p-2 border border-gray-200">
+                                                    <span>Deduction 1</span><p class="text-sm bg-red-500 text-white p-1 rounded-full my-auto">₱ 500.00</p>
+                                                    <button class="p-2 rounded">
+                                                        <svg class="h-5 w-5 text-gray-800"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                                <div class="flex justify-between items-center bg-white p-2 border border-gray-200">
+                                                    <span>Deduction 2</span><p class="text-sm bg-red-500 text-white p-1 rounded-full my-auto">₱ 500.00</p>
+                                                    <button class="p-2 rounded">
+                                                        <svg class="h-5 w-5 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                                <!-- Add more deduction items here -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="modal-footer">
