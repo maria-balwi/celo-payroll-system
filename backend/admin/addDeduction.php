@@ -4,9 +4,10 @@
     session_start();
 
     $deductionName = $_POST['deductionName'];
-    $deductionAmount = $_POST['deductionAmount'];
+    // $deductionAmount = $_POST['deductionAmount'];
     
-    mysqli_query($conn, $employees->addDeduction($deductionName, $deductionAmount));
+    // mysqli_query($conn, $employees->addDeduction($deductionName, $deductionAmount));
+    mysqli_query($conn, $employees->addDeduction($deductionName));
 
     $em = "Deduction Added Successfully";
     $error = array('error' => 0, 'em' => $em);
