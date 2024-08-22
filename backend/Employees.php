@@ -15,6 +15,7 @@
         private $filedOT = 'tbl_filedot';
         private $shifts = 'tbl_shiftschedule';
         private $requirements = 'tbl_requirements';
+        private $allowances = 'tbl_allowances';
         private $deductions = 'tbl_deductions';
         private $dbConnect = false;
         public function __construct() {
@@ -674,6 +675,40 @@
             return $fileRequest;
         }
 
+        public function viewAllowances() {
+            $allowance = "SELECT * FROM ".$this->allowances;
+            return $allowance;
+        }
+
+        public function getAllowanceInfo($allowanceID) {
+            $allowance = "
+                SELECT * FROM ".$this->allowances."
+                WHERE allowanceID = '$allowanceID'";
+            return $allowance;
+        }
+
+        public function addAllowance($allowanceName) {
+            $addAllowance = "
+                INSERT INTO ".$this->allowances." (allowanceName)
+                VALUES ('$allowanceName')";
+            return $addAllowance;
+        }
+
+        public function updateAllowance($allowanceID, $allowanceName) {
+            $updateAllowance = "
+                UPDATE ".$this->allowances."
+                SET allowanceName = '$allowanceName'
+                WHERE allowanceID = '$allowanceID'";
+            return $updateAllowance;
+        }
+
+        public function deleteAllowance($allowanceID) {
+            $deleteAllowance = "
+                DELETE FROM ".$this->allowances."
+                WHERE allowanceID = '$allowanceID'";
+            return $deleteAllowance;
+        }
+
         public function viewDeductions() {
             $deduction = "SELECT * FROM ".$this->deductions;
             return $deduction;
@@ -686,20 +721,34 @@
             return $deduction;
         }
 
-        public function addDeduction($deductionName, $deductionAmount) {
+        public function addDeduction($deductionName) {
+            // $addDeduction = "
+            //     INSERT INTO ".$this->deductions." (deductionName, deductionAmount)
+            //     VALUES ('$deductionName', '$deductionAmount')";
             $addDeduction = "
-                INSERT INTO ".$this->deductions." (deductionName, deductionAmount)
-                VALUES ('$deductionName', '$deductionAmount')";
+                INSERT INTO ".$this->deductions." (deductionName)
+                VALUES ('$deductionName')";
             return $addDeduction;
         }
 
-        public function updateDeduction($deductionID, $deductionName, $deductionAmount) {
+        public function updateDeduction($deductionID, $deductionName) {
+            // $updateDeduction = "
+            //     UPDATE ".$this->deductions."
+            //     SET deductionName = '$deductionName', 
+            //     deductionAmount = '$deductionAmount'
+            //     WHERE deductionID = '$deductionID'";
             $updateDeduction = "
                 UPDATE ".$this->deductions."
-                SET deductionName = '$deductionName', 
-                deductionAmount = '$deductionAmount'
+                SET deductionName = '$deductionName'
                 WHERE deductionID = '$deductionID'";
             return $updateDeduction;
+        }
+
+        public function deleteDeduction($deductionID) {
+            $deleteDeduction = "
+                DELETE FROM ".$this->deductions."
+                WHERE deductionID = '$deductionID'";
+            return $deleteDeduction;
         }
 
         public function viewEmployeeAttendance() {
