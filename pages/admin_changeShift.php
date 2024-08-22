@@ -208,7 +208,7 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-success approveChangeShift" id="approveChangeShift">Approve</button>
                             <button type="button" class="btn btn-danger disapproveChangeShift" id="disapproveChangeShift">Disapprove</button>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnClose">Close</button>
                         </div>
                     </div>
                 </div>
