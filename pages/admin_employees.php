@@ -762,10 +762,10 @@
 
                                 <div class="row g-2 mb-2">
                                     <div class="col-4">
-                                        <input type="text" class="form-control" id="updateLastName" name="updateLastName" placeholder="Name">
+                                        <input type="text" class="form-control" id="updateLastName" name="updateLastName">
                                     </div>
                                     <div class="col-4">
-                                        <input type="text" class="form-control" id="updateFirstName" name="updateFirstName" placeholder="Name">
+                                        <input type="text" class="form-control" id="updateFirstName" name="updateFirstName">
                                     </div>
                                     <div class="col-2">
                                         <select id="updateGender" name="updateGender" class="form-select">
@@ -800,13 +800,13 @@
 
                                 <div class="row g-2 mb-2">
                                     <div class="col-6">
-                                        <input type="text" class="form-control" id="updateAddress" name="updateAddress" placeholder="Address">
+                                        <input type="text" class="form-control" id="updateAddress" name="updateAddress">
                                     </div>
                                     <div class="col-3">
-                                        <input type="date" class="form-control" id="updateDateOfBirth" name="updateDateOfBirth" placeholder="Date of Birth">
+                                        <input type="date" class="form-control" id="updateDateOfBirth" name="updateDateOfBirth">
                                     </div>
                                     <div class="col-3">
-                                        <input type="text" class="form-control" id="updatePlaceOfBirth" name="updatePlaceOfBirth" placeholder="Place of Birth">
+                                        <input type="text" class="form-control" id="updatePlaceOfBirth" name="updatePlaceOfBirth">
                                     </div>
                                 </div>
 
@@ -827,16 +827,16 @@
 
                                 <div class="row g-2 mb-2">
                                     <div class="col-3">
-                                        <input type="text" class="form-control" id="updateSSS" name="updateSSS"  placeholder="SSS">
+                                        <input type="text" class="form-control" id="updateSSS" name="updateSSS">
                                     </div>
                                     <div class="col-3">
-                                        <input type="text" class="form-control" id="updatePagIbig" name="updatePagIbig" placeholder="Pag-Ibig">
+                                        <input type="text" class="form-control" id="updatePagIbig" name="updatePagIbig">
                                     </div>
                                     <div class="col-3">
-                                        <input type="text" class="form-control" id="updatePhilhealth" name="updatePhilhealth" placeholder="PhilHealth">
+                                        <input type="text" class="form-control" id="updatePhilhealth" name="updatePhilhealth">
                                     </div>
                                     <div class="col-3">
-                                        <input type="text" class="form-control" id="updateTIN" name="updateTIN" placeholder="TIN">
+                                        <input type="text" class="form-control" id="updateTIN" name="updateTIN">
                                     </div>
                                 </div>
 
@@ -862,13 +862,13 @@
 
                                 <div class="row g-2 mb-2">
                                     <div class="col-6">
-                                        <input type="email" class="form-control" id="updateEmailAddress" name="updateEmailAddress" placeholder="Email Address">
+                                        <input type="email" class="form-control" id="updateEmailAddress" name="updateEmailAddress">
                                     </div>
                                     <div class="col-3">
-                                        <input type="text" class="form-control" id="updateEmployeeID" name="updateEmployeeID" placeholder="Employee ID">
+                                        <input type="text" class="form-control" id="updateEmployeeID" name="updateEmployeeID">
                                     </div>
                                     <div class="col-3">
-                                        <input type="text" class="form-control" id="updateMobileNumber" name="updateMobileNumber" placeholder="Mobile Number">
+                                        <input type="text" class="form-control" id="updateMobileNumber" name="updateMobileNumber">
                                     </div>
                                 </div>
 
@@ -949,7 +949,7 @@
                             
                                 <div class="row g-2 mb-2">
                                     <div class="col-4">
-                                        <input type="number" class="form-control" id="updateBasicPay" name="updateBasicPay" placeholder="Basic Pay">
+                                        <input type="number" class="form-control" id="updateBasicPay" name="updateBasicPay">
                                     </div>
                                     <div class="col-4">
                                         <input type="number" class="form-control" id="updateDailyRate" name="updateDailyRate" placeholder="1.0" step="0.01" readonly>

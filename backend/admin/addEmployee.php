@@ -26,43 +26,7 @@
     $vacationLeaves = $_POST['vacationLeaves'];
     $sickLeaves = $_POST['sickLeaves'];
 
-    // if (isset($_POST['req_sss']))
-    // {
-    //     $req_sss = 1;
-    // }
-    // else
-    // {
-    //     $req_sss = 0;
-    // }
-
-    // if (isset($_POST['req_pagIbig']))
-    // {
-    //     $req_pagIbig = 1;
-    // }
-    // else
-    // {
-    //     $req_pagIbig = 0;
-    // }
-
-    // if (isset($_POST['req_philhealth']))
-    // {
-    //     $req_philhealth = 1;
-    // }
-    // else
-    // {
-    //     $req_philhealth = 0;
-    // }
-
-    // if (isset($_POST['req_tin']))
-    // {
-    //     $req_tin = 1;
-    // }
-    // else
-    // {
-    //     $req_tin = 0;
-    // }
-
-    if (isset($_POST['sss']))
+    if (str_replace(" ", "",$_POST['sss']))
     {
         $req_sss = 1;
     }
@@ -71,7 +35,7 @@
         $req_sss = 0;
     }
 
-    if (isset($_POST['pagIbig']))
+    if (str_replace(" ", "",$_POST['pagIbig']))
     {
         $req_pagIbig = 1;
     }
@@ -80,7 +44,7 @@
         $req_pagIbig = 0;
     }
 
-    if (isset($_POST['philhealth']))
+    if (str_replace(" ", "",$_POST['philhealth']))
     {
         $req_philhealth = 1;
     }
@@ -89,7 +53,7 @@
         $req_philhealth = 0;
     }
 
-    if (isset($_POST['tin']))
+    if (str_replace(" ", "",$_POST['tin']))
     {
         $req_tin = 1;
     }
@@ -106,6 +70,7 @@
     {
         $req_nbi = 0;
     }
+
     if (isset($_POST['req_medicalExam']))
     {
         $req_medicalExam = 1;
@@ -114,6 +79,7 @@
     {
         $req_medicalExam = 0;
     }
+
     if (isset($_POST['req_2x2pic']))
     {
         $req_2x2pic = 1;
@@ -122,6 +88,7 @@
     {
         $req_2x2pic = 0;
     }
+
     if (isset($_POST['req_vaccineCard']))
     {
         $req_vaccineCard = 1;
@@ -130,6 +97,7 @@
     {
         $req_vaccineCard = 0;
     }
+
     if (isset($_POST['req_psa']))
     {
         $req_psa = 1;
@@ -138,6 +106,7 @@
     {
         $req_psa = 0;
     }
+
     if (isset($_POST['req_validID']))
     {
         $req_validID = 1;
@@ -146,6 +115,7 @@
     {
         $req_validID = 0;
     }
+
     if (isset($_POST['req_helloMoney']))
     {
         $req_helloMoney = 1;
@@ -194,8 +164,12 @@
 
         mysqli_query($conn, $employees->addEmployeeRequirements($lastID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi, $req_medicalExam, $req_2x2pic, $req_vaccineCard, $req_psa, $req_validID, $req_helloMoney));
 
+        $lastIDQuery = mysqli_query($conn, $employees->viewLastEmployee());
+        $lastIDResult = mysqli_fetch_array($lastIDQuery);
+        $lastID = $lastIDResult['id'];
+
         $em = "Employee Added Successfully";
-        $error = array('error' => 0, 'em' => $em);
+        $error = array('error' => 0, 'id' => $lastID, 'em' => $em);
         echo json_encode($error);
         
         if (isset($_FILES['photo']) && $_FILES['photo']['error'] == 0) {
