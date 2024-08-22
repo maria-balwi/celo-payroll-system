@@ -221,7 +221,7 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-success approveLeave" id="approveLeave">Approve</button>
                             <button type="button" class="btn btn-danger disapproveLeave" id="disapproveLeave">Disapprove</button>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnClose">Close</button>
                         </div>
                     </div>
                 </div>
