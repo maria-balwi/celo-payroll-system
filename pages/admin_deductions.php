@@ -25,8 +25,9 @@
                             <table id="deductionsTable" class="table table-striped table-bordered table-auto min-w-full divide-y divide-gray-200 text-center pt-3">
                                 <thead class="bg-gray-50">
                                     <tr>
+                                        <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
                                         <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                        <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                        <!-- <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th> -->
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
@@ -40,8 +41,8 @@
 
 
                                             echo "<tr data-id='" . $deduction_id . "' class='deductionView cursor-pointer'>";
+                                            echo "<td class = 'whitespace-nowrap'>" . $deduction_id . "</td>";
                                             echo "<td class = 'whitespace-nowrap'>" . $deduction_name . "</td>";
-                                            echo "<td class = 'whitespace-nowrap'>" . $deduction_amount . "</td>";
                                             echo "</td>";
                                         }
                                     ?>
@@ -84,7 +85,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-2">
+                                <!-- <div class="row g-2 mb-2">
                                     <div class="col-12">
                                         <label for="deductionAmount">Amount:</label>
                                     </div>
@@ -94,7 +95,7 @@
                                     <div class="col-12">
                                         <input type="number" class="form-control" id="deductionAmount" name="deductionAmount" placeholder="Amount" step="0.01">
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
 
                             <div class="modal-footer">
@@ -129,7 +130,7 @@
                                 </div>
                             </div>
 
-                            <div class="row g-2 mb-2">
+                            <!-- <div class="row g-2 mb-2">
                                 <div class="col-12">
                                     <label for="viewDeductionAmount">Amount:</label>
                                 </div>
@@ -139,11 +140,12 @@
                                 <div class="col-12">
                                     <input type="number" class="form-control" id="viewDeductionAmount" disabled readonly>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary deductionUpdate">Update</button>
+                            <button type="button" class="btn btn-danger deductionDelete">Delete</button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         </div>
                     </div>
@@ -174,7 +176,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-2">
+                                <!-- <div class="row g-2 mb-2">
                                     <div class="col-12">
                                         <label for="updateDeductionAmount">Amount:</label>
                                     </div>
@@ -184,7 +186,7 @@
                                     <div class="col-12">
                                         <input type="number" class="form-control" id="updateDeductionAmount" name="updateDeductionAmount" placeholder="Amount" step="0.01">
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
 
                             <div class="modal-footer">
