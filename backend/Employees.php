@@ -661,6 +661,22 @@
             return $fileOT;
         }
 
+        public function fileOT_null($employeeID, $otDate, $actualOThours, $actualOTmins, $remarks, $status) {
+            $fileOT = "
+                INSERT INTO ".$this->filedOT." (empID, dateFiled, otDate, actualOThours, actualOTmins, remarks, status)
+                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$otDate', '$actualOThours', NULL, '$remarks', '$status')";
+            return $fileOT;
+        }
+
+        public function viewLastOT() {
+            $request = "
+                SELECT requestID
+                FROM ".$this->filedOT."
+                ORDER BY requestID DESC
+                LIMIT 1";
+            return $request;
+        }
+
         public function fileLeave($employeeID, $leaveTypeID, $effectivityStartDate, $effectivityEndDate, $remarks, $status) {
             $fileLeave = "
                 INSERT INTO ".$this->leaves." (empID, dateFiled, leaveTypeID, effectivityStartDate, effectivityEndDate, remarks, status)

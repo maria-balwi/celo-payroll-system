@@ -12,7 +12,7 @@ $(document).ready(function() {
         var actualOTmins = $('#actualOTmins').val();
         var purpose = $('#purpose').val();
 
-        if (otDate == "" || actualOThours == "" || actualOTmins == "" || purpose == "") {
+        if (otDate == "" || actualOThours == "" || purpose == "") {
             Swal.fire({
                 icon: 'warning',
                 title: 'Required Information',
@@ -38,6 +38,8 @@ $(document).ready(function() {
                             const data = JSON.parse(res);
                             var message = data.em
                             if (data.error == 0) {
+                                var id = data.id;
+                                loadEmployeeData(id);
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Success',
@@ -45,7 +47,9 @@ $(document).ready(function() {
                                     timer: 2000,
                                     showConfirmButton: false,
                                 }).then(() => {
-                                    window.location.reload();
+                                    // window.location.reload();
+                                    $('#fileOTmodal').modal('hide');
+                                    $('#viewFiledOTModal').modal('show');
                                 })
                             } else {
                                 Swal.fire({
@@ -70,7 +74,63 @@ $(document).ready(function() {
         array.push(ot_id);
         var id_ot = array[array.length - 1];
 
-        // VIEW CHANGE SHIFT REQUEST
+        // VIEW FILED OT
+        $.ajax({
+            type: "GET",
+            url: "../backend/user/filedOTModal.php?ot_id=" + id_ot,
+            success: function(response) {
+
+                var res = jQuery.parseJSON(response);
+
+                if (res.status == 404) {
+                    alert(res.message);
+                } 
+                else if (res.status == 200 && (res.data.status == "Pending" || res.data.status == "Disapproved")) {
+                    $('#viewFiledOTID').val(res.data.requestID);
+                    $('#viewOTDate').val(res.data.otDate);
+                    $('#viewDateFiled').val(res.data.dateFiled);
+                    $('#viewName').val(res.data.employeeName);
+                    $('#viewActualOTHours').val(res.data.actualOThours + " hour/s");
+                    if (res.data.actualOTmins == null) {
+                        $('#viewActualOTMins').val("-");
+                    }
+                    else {
+                        $('#viewActualOTMins').val(res.data.actualOTmins + " minute/s");
+                    }
+                    $('#viewPurpose').val(res.data.remarks);
+                    $('#viewStatus').val(res.data.status);
+                    $('#approvedLabelRow').hide();
+                    $('#approvedInputRow').hide();
+                    $('#viewFiledOTModal').modal('show');
+                }
+                else if (res.status == 200 && res.data.status == "Approved") {
+                    $('#viewFiledOTID').val(res.data.requestID);
+                    $('#viewOTDate').val(res.data.otDate);
+                    $('#viewDateFiled').val(res.data.dateFiled);
+                    $('#viewName').val(res.data.employeeName);
+                    $('#viewActualOTHours').val(res.data.actualOThours + " hour/s");
+                    if (res.data.actualOTmins == null) {
+                        $('#viewActualOTMins').val("-");
+                    }
+                    else {
+                        $('#viewActualOTMins').val(res.data.actualOTmins + " minute/s");
+                    }
+                    $('#viewApprovedOTHours').val(res.data.approvedOThours + " hour/s");
+                    if (res.data.approvedOTmins == null) {
+                        $('#viewApprovedOTMins').val("-");
+                    }
+                    else {
+                        $('#viewApprovedOTMins').val(res.data.approvedOTmins + " minute/s");
+                    }
+                    $('#viewPurpose').val(res.data.remarks);
+                    $('#viewStatus').val(res.data.status);
+                    $('#viewFiledOTModal').modal('show');
+                }
+            }
+        });
+    });
+
+    function loadEmployeeData(id_ot) {
         $.ajax({
             type: "GET",
             url: "../backend/user/filedOTModal.php?ot_id=" + id_ot,
@@ -125,5 +185,8 @@ $(document).ready(function() {
             }
         });
 
-    });
+        $('#btnClose').on('click', function() {
+            window.location.reload();
+        });
+    }
 });
