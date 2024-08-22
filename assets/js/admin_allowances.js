@@ -36,6 +36,8 @@ $(document).ready(function() {
                             const data = JSON.parse(res);
                             var message = data.em;
                             if (data.error == 0) {
+                                var id = data.id;
+                                loadAllowanceData(id);
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Success',
@@ -43,7 +45,10 @@ $(document).ready(function() {
                                     timer: 2000,
                                     showConfirmButton: false
                                 }).then(() => {
-                                    window.location.reload();
+                                    // window.location.reload();
+                                    // Refresh the View Employee Modal with new added data
+                                    $('#addAllowanceModal').modal('hide');
+                                    $('#viewAllowanceModal').modal('show');
                                 })
                             } else {
                                 Swal.fire({
@@ -108,7 +113,7 @@ $(document).ready(function() {
             });
         })
 
-        // DEACTIVATE ALLOWANCE
+        // DELETE ALLOWANCE
         $(document).on('click', '.allowanceDelete', function() {
             var id_allowance = array[array.length - 1];
 
@@ -161,11 +166,12 @@ $(document).ready(function() {
         })
     });
 
-    // UPDATE DEDUCTION
+    // UPDATE ALLOWANCE
     $("#updateAllowanceForm").submit(function (e) {
         
         e.preventDefault();
 
+        var updateAllowanceID = $("#updateAllowanceID").val();
         var updateAllowanceName = $("#updateAllowanceName").val();
 
         if (updateAllowanceName == '') {
@@ -206,7 +212,10 @@ $(document).ready(function() {
                                     timer: 2000, 
                                     showConfirmButton: false,
                                 }).then(() => {
-                                    window.location.reload();
+                                    // window.location.reload();
+                                    loadAllowanceData(updateAllowanceID);
+                                    $('#updateAllowanceModal').modal('hide');
+                                    $('#viewAllowanceModal').modal('show');
                                 })
                             } else {
                                 var message = data.em
@@ -222,5 +231,28 @@ $(document).ready(function() {
             })
         }       
 
+    });
+
+    function loadAllowanceData(id_allowance) {
+        $.ajax({
+            type: "GET",
+            url: "../backend/admin/allowanceModal.php?allowance_id=" + id_allowance,
+            success: function(response) {
+
+                var res = jQuery.parseJSON(response);
+
+                if (res.status == 404) {
+                    alert(res.message);
+                } 
+                else if (res.status == 200) {
+                    $('#viewAllowanceID').val(res.data.allowanceID);
+                    $('#viewAllowanceName').val(res.data.allowanceName);
+                }
+            }
+        });
+    }
+
+    $('#btnClose').on('click', function() {
+        window.location.reload();
     });
 });

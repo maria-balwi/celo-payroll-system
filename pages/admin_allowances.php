@@ -144,7 +144,7 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary allowanceUpdate">Update</button>
                             <button type="button" class="btn btn-danger allowanceDelete">Delete</button>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnClose">Close</button>
                         </div>
                     </div>
                 </div>

@@ -743,6 +743,15 @@
             return $deleteAllowance;
         }
 
+        public function viewLastAllowance() {
+            $allowance = "
+                SELECT allowanceID
+                FROM ".$this->allowances."
+                ORDER BY allowanceID DESC
+                LIMIT 1";
+            return $allowance;
+        }
+
         public function viewDeductions() {
             $deduction = "SELECT * FROM ".$this->deductions;
             return $deduction;
