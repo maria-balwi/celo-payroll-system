@@ -216,9 +216,9 @@ $(document).ready(function() {
                 }
             }
         });
-
-        $('#btnClose').on('click', function() {
-            window.location.reload();
-        });
     }
+    
+    $('#btnClose').on('click', function() {
+        window.location.reload();
+    });
 });
