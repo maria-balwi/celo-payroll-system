@@ -116,7 +116,7 @@
 
                                 <div class="row g-3 mb-2">
                                     <div class="col-12">
-                                        <select type="dropdown" id="newShift" class="form-select border border-1">
+                                        <select type="dropdown" id="newShift" name="newShift" class="form-select border border-1">
                                             <option value="" selected disabled>Choose Shift</option>
                                             <?php
                                                 $shift = mysqli_query($conn, $employees->viewShifts());
@@ -141,7 +141,7 @@
 
                                 <div class="row g-3 mb-2">
                                     <div class="col-12">
-                                        <input type="date" class="form-control" id="effectivityStartDate">
+                                        <input type="date" class="form-control" id="effectivityStartDate" name="effectivityStartDate">
                                     </div>
                                 </div>
 
@@ -153,7 +153,7 @@
 
                                 <div class="row g-3 mb-2">
                                     <div class="col-12">
-                                        <input type="date" class="form-control" id="effectivityEndDate">
+                                        <input type="date" class="form-control" id="effectivityEndDate" name="effectivityEndDate">
                                     </div>
                                 </div>
                                 
@@ -165,7 +165,7 @@
 
                                 <div class="row g-3 mb-2">
                                     <div class="col-12">
-                                        <textarea type="text" id="purpose" placeholder="Purpose" rows="3" class="form-control" required></textarea>
+                                        <textarea type="text" id="purpose" name="purpose" placeholder="Purpose" rows="3" class="form-control" required></textarea>
                                     </div>
                                 </div>
                             </div>

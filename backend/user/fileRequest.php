@@ -5,8 +5,8 @@
 
     $employeeID = $_SESSION['id'];
     $newShift = $_POST['newShift'];
-    $startDate = $_POST['startDate'];
-    $endDate = $_POST['endDate'];
+    $startDate = $_POST['effectivityStartDate'];
+    $endDate = $_POST['effectivityEndDate'];
     $purpose = $_POST['purpose'];
 
     // DEFAULT VALUES

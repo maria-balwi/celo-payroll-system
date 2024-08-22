@@ -7,7 +7,7 @@ $(document).ready(function() {
 
         e.preventDefault();
 
-        let requestForm = new FormData();
+        let requestForm = new FormData(this);
         var employeeID = $('#employeeID').val();
         var newShift = $('#newShift').val();
         var startDate = $('#effectivityStartDate').val();
@@ -31,12 +31,6 @@ $(document).ready(function() {
                 confirmButtonText: 'Yes',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    requestForm.append("employeeID", employeeID);
-                    requestForm.append("newShift", newShift);
-                    requestForm.append("startDate", startDate);
-                    requestForm.append("endDate", endDate);
-                    requestForm.append("purpose", purpose);
-
                     $.ajax({
                         type: "POST",
                         url: "../backend/user/fileRequest.php",
