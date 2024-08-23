@@ -13,9 +13,11 @@
     require 'backend/Users.php';
     require 'backend/Employees.php';
     require 'backend/Attendance.php';
+    require 'backend/Payroll.php';
 
     $database = new Database;
     $users = new Users;
     $employees = new Employees;
     $attendance = new Attendance;
+    $payroll = new Payroll;
 ?>

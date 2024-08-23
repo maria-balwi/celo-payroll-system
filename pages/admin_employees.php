@@ -724,7 +724,7 @@
                                         <div class="mb-4">
                                             <div class="flex justify-between items-center mb-2 px-1">
                                                 <h2 class="text-lg font-semibold">Allowances</h2>
-                                                <button class="bg-blue-500 p-2 rounded">
+                                                <button class="bg-blue-500 p-2 rounded" data-bs-toggle="modal" data-bs-target="#allowanceModal">
                                                     <svg class="h-5 w-5 text-gray-100"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                                     </svg>
@@ -1164,6 +1164,202 @@
                     </div>
                 </div>
             </form>
+
+            <!--------------------------------------------------------------------------------------------------------------------------------------------->
+            <!---------------------------------------------------------------- ADD ALLOWANCE MODAL -------------------------------------------------------->
+            <div class="modal fade" id="allowanceModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
+                <div class="modal-dialog modal-none modal-dialog-centered">
+                    <div class="modal-content" id="allowanceModal">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="userFormLabel">Allowances</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        
+                        <div class="modal-body">
+                            <div class="row g-2 mb-2">
+                                <form id="deductionForm">
+                                    <div class="row g-2 mb-1">
+                                        <div class="col-6">
+                                            <label for="allowanceName">Allowance:</label>
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="allowanceAmount">Amount:</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-2 mb-2">
+                                        <div class="col-6">
+                                            <select name="allowanceName" id="allowanceName" class="form-select">
+                                                <option selected disabled>Choose</option>
+                                                <?php
+                                                    $allAllowances = mysqli_query($conn, $payroll->viewAllAllowances());
+                                                    while ($allAllowancesResult = mysqli_fetch_array($allAllowances)) {
+                                                ?>
+                                                    <option value="<?php echo $allAllowancesResult['allowanceID']; ?>">
+                                                        <?php echo $allAllowancesResult['allowanceName']; ?>
+                                                    </option>
+                                                <?php
+                                                    }
+                                                ?>
+                                            </select>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="number" class="form-control" id="allowanceAmount" name="allowanceAmount">
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-2 mb-1">
+                                        <div class="col-6">
+                                            <label for="allowanceType">Type:</label>
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="effectivityDate_allowance">Effectivity Date:</label>
+                                        </div>
+                                    </div>
+                                    <div class="row g-2 mb-3">
+                                        <div class="col-6">
+                                            <select name="allowanceType" id="allowanceType" class="form-select">
+                                                <option selected disabled>Choose</option>
+                                                <option value="1">Monthly</option>
+                                                <option value="2">Semi-Monthly</option>
+                                                <option value="3">Once</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="date" class="form-control" id="effectivityDate_allowance" name="effectivityDate_allowance">
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-2 mb-2 text-end">
+                                        <div class="col-12">
+                                            <button type="submit" class="btn btn-success w-50 justify-center">Add</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="row g-2 mb-2">
+                                <table id="allowanceTable" class="table table-bordered table-striped text-center">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Allowance</th>
+                                            <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                                            <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                            <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success allowanceSave">Save</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnClose">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--------------------------------------------------------------------------------------------------------------------------------------------->
+            <!---------------------------------------------------------------- ADD DEDUCTION MODAL -------------------------------------------------------->
+            <div class="modal fade" id="deductionModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
+                <div class="modal-dialog modal-none modal-dialog-centered">
+                    <div class="modal-content" id="deductionModal">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="userFormLabel">Deductions</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="row g-2 mb-2">
+                                <form id="deductionForm">
+                                    <div class="row g-2 mb-1">
+                                        <div class="col-6">
+                                            <label for="deductionName">Deduction:</label>
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="deductionAmount">Amount:</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-2 mb-2">
+                                        <div class="col-6">
+                                            <select name="deductionName" id="deductionName" class="form-select">
+                                                <option selected disabled>Choose</option>
+                                                <?php
+                                                    $allDeductions = mysqli_query($conn, $payroll->viewAllDeductions());
+                                                    while ($allDeductionsResult = mysqli_fetch_array($allDeductions)) {
+                                                ?>
+                                                    <option value="<?php echo $allDeductionsResult['deductionID']; ?>">
+                                                        <?php echo $allDeductionsResult['deductionName']; ?>
+                                                    </option>
+                                                <?php
+                                                    }
+                                                ?>
+                                            </select>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="number" class="form-control" id="deductionAmount" name="deductionAmount">
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-2 mb-1">
+                                        <div class="col-6">
+                                            <label for="deductionType">Type:</label>
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="effectivityDate_deduction">Effectivity Date:</label>
+                                        </div>
+                                    </div>
+                                    <div class="row g-2 mb-3">
+                                        <div class="col-6">
+                                            <select name="deductionType" id="deductionType" class="form-select">
+                                                <option selected disabled>Choose</option>
+                                                <option value="1">Monthly</option>
+                                                <option value="2">Semi-Monthly</option>
+                                                <option value="3">Once</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="date" class="form-control" id="effectivityDate_deduction" name="effectivityDate_deduction">
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-2 mb-2 text-end">
+                                        <div class="col-12">
+                                            <button type="submit" class="btn btn-success w-50 justify-center">Add</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="row g-2 mb-2">
+                                <table id="deductionTable" class="table table-bordered table-striped text-center">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Deduction</th>
+                                            <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                                            <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                            <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success deductionSave">Save</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnClose">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
     
         <script src="../assets/js/admin_employees.js"></script>
