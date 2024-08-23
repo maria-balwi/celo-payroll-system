@@ -71,7 +71,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <div class="row g-2 mb-2">
+                                <div class="row g-2 mb-1">
                                     <div class="col-12">
                                         <label for="allowanceName">Allowance:</label>
                                     </div>
@@ -79,7 +79,7 @@
 
                                 <div class="row g-2 mb-2">
                                     <div class="col-12">
-                                        <input type="text" class="form-control" id="allowanceName" name="allowanceName" placeholder="Allowance Name">
+                                        <input type="text" class="form-control" id="allowanceName" name="allowanceName">
                                     </div>
                                 </div>
 
@@ -116,7 +116,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <div class="row g-2 mb-2">
+                            <div class="row g-2 mb-1">
                                 <div class="col-12">
                                     <label for="viewAllowanceName">Allowance:</label>
                                 </div>
@@ -162,7 +162,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <div class="row g-2 mb-2">
+                                <div class="row g-2 mb-1">
                                     <div class="col-12">
                                         <label for="updateAllowanceName">Allowance:</label>
                                     </div>
@@ -170,7 +170,7 @@
 
                                 <div class="row g-2 mb-2">
                                     <div class="col-12">
-                                        <input type="text" class="form-control" id="updateAllowanceName" name="updateAllowanceName" placeholder="Allowance Name">
+                                        <input type="text" class="form-control" id="updateAllowanceName" name="updateAllowanceName">
                                     </div>
                                 </div>
 
