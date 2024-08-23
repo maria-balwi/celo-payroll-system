@@ -141,7 +141,7 @@
                         </div>
                         <div class="modal-body">
                             <form>
-                                <div class="row g-2 mb-2">
+                                <div class="row g-2 mb-1">
                                     <div class="col-6">
                                         <label for="viewDateFiled">Date Filed</label>
                                     </div>
@@ -177,7 +177,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-2">
+                                <div class="row g-2 mb-1">
                                     <div class="col-12">
                                         <label for="viewLeaveType">Leave Type</label>
                                     </div>
@@ -189,7 +189,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-2">
+                                <div class="row g-2 mb-1">
                                     <div class="col-3">
                                         <label for="viewStartDate">Inclusive Dates</label>
                                     </div>
@@ -204,7 +204,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-2">
+                                <div class="row g-2 mb-1">
                                     <div class="col-3">
                                         <label for="viewPurpose">Purpose</label>
                                     </div>
