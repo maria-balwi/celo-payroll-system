@@ -11,8 +11,11 @@
         // private $changeShift = 'tbl_changeshiftrequests';
         // private $leaves = 'tbl_leaveapplications';
         // private $filedOT = 'tbl_filedot';
+        private $employees = 'tbl_employee';
         private $allowances = 'tbl_allowances';
         private $deductions = 'tbl_deductions';
+        private $empAllowances = 'tbl_empallowances';
+        private $empDeductions = 'tbl_empdeductions';
 
         private $dbConnect = false;
         public function __construct() {
@@ -29,6 +32,19 @@
             $deductions = "
                 SELECT * FROM ".$this->deductions;
             return $deductions;
+        }
+
+        public function getAllEmpAllowances($id) {
+            $empAllowances = "
+                SELECT id, empAllowances.allowanceID, 
+                empAllowanceID, allowanceName, amount
+                FROM ".$this->empAllowances." AS empAllowances
+                INNER JOIN ".$this->allowances." AS allowances
+                ON empAllowances.allowanceID = allowances.allowanceID
+                INNER JOIN ".$this->employees." AS employees
+                ON empAllowances.empID = employees.id
+                WHERE empAllowances.empID = '$id'";
+            return $empAllowances;
         }
     }
 ?>
