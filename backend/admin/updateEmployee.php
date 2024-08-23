@@ -174,7 +174,7 @@
                 $allowedTypes = ['image/jpeg', 'image/png'];
                 if (in_array($_FILES['updateProfilePicture']['type'], $allowedTypes)) {
                     // DELETE EXISTING FILE
-                    $oldEmployeeID = str_replace("-", "", $_SESSION['employeeID']);
+                    $oldEmployeeID = str_replace("-", "", $updateEmployeeID);
                     $oldFileName = $oldEmployeeID. '.png';
                     $filepath = $uploadDir . $oldFileName;
 
@@ -252,7 +252,7 @@
                     $allowedTypes = ['image/jpeg', 'image/png'];
                     if (in_array($_FILES['updateProfilePicture']['type'], $allowedTypes)) {
                         // DELETE EXISTING FILE
-                        $oldEmployeeID = str_replace("-", "", $_SESSION['employeeID']);
+                        $oldEmployeeID = str_replace("-", "", $updateEmployeeID);
                         $oldFileName = $oldEmployeeID. '.png';
                         $filepath = $uploadDir . $oldFileName;
     
@@ -334,7 +334,7 @@
                     $allowedTypes = ['image/jpeg', 'image/png'];
                     if (in_array($_FILES['updateProfilePicture']['type'], $allowedTypes)) {
                         // DELETE EXISTING FILE
-                        $oldEmployeeID = str_replace("-", "", $_SESSION['employeeID']);
+                        $oldEmployeeID = str_replace("-", "", $updateEmployeeID);
                         $oldFileName = $oldEmployeeID. '.png';
                         $filepath = $uploadDir . $oldFileName;
     
@@ -412,7 +412,7 @@
                         $allowedTypes = ['image/jpeg', 'image/png'];
                         if (in_array($_FILES['updateProfilePicture']['type'], $allowedTypes)) {
                             // DELETE EXISTING FILE
-                            $oldEmployeeID = str_replace("-", "", $_SESSION['employeeID']);
+                            $oldEmployeeID = str_replace("-", "", $updateEmployeeID);
                             $oldFileName = $oldEmployeeID. '.png';
                             $filepath = $uploadDir . $oldFileName;
         
