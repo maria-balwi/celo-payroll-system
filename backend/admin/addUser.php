@@ -36,8 +36,13 @@
         {
             $password = md5($password);
             mysqli_query($conn, $users->addUser($employeeID, $levelID, $password, $activated, $status));
+
+            $lastIDQuery = mysqli_query($conn, $users->viewLastUser());
+            $lastIDResult = mysqli_fetch_array($lastIDQuery);
+            $lastID = $lastIDResult['userID'];
+
             $em = "User Added Successfully";
-            $error = array('error' => 0, 'em' => $em);
+            $error = array('error' => 0, 'id' => $lastID, 'em' => $em);
             echo json_encode($error);
             exit();
         }

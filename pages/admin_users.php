@@ -567,7 +567,7 @@
                                     </ul>
 
                                     <div class="tab-content" id="pills-tabContent">
-                                        <!-- ACTIVE IT TABLE  -->
+                                        <!-- ACTIVE DIRECTORS TABLE  -->
                                         <div class="tab-pane fade show active" id="directors-active" role="tabpanel" aria-labelledby="directors-active-tab">
                                             <table class="table table-striped table-bordered pt-2" id="directorsTable">
                                                 <thead class="table-light">
@@ -598,7 +598,7 @@
                                             </table>
                                         </div>
 
-                                        <!-- INACTIVE IT TABLE  -->
+                                        <!-- INACTIVE DIRECTORS TABLE  -->
                                         <div class="tab-pane fade" id="directors-inactive" role="tabpanel" aria-labelledby="directors-inactive-tab">
                                             <table class="table table-striped table-bordered  pt-2" id="inactiveDirectorsTable">
                                                 <thead class="table-light">

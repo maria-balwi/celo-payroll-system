@@ -145,6 +145,13 @@
             return $userInfo;
         }
 
+        public function viewLastUser() {
+            $lastUser = "
+                SELECT userID FROM ".$this->users." 
+                ORDER BY userID DESC LIMIT 1";
+            return $lastUser;
+        }
+
         public function saveDTR($id, $logTypeID) {
             $saveDTR = "
                 INSERT INTO ".$this->attendance." (empID, logTypeID, attendanceDate, attendanceTime)

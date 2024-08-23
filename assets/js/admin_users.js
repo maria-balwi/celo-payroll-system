@@ -60,6 +60,8 @@ $(document).ready(function() {
                             const data = JSON.parse(res);
                             var message = data.em;
                             if (data.error == 0) {
+                                var id = data.id;
+                                loadUserData(id);
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Success',
@@ -67,7 +69,10 @@ $(document).ready(function() {
                                     timer: 2000,
                                     showConfirmButton: false,
                                 }).then(() => {
-                                    window.location.reload();
+                                    // window.location.reload();
+                                    // Refresh the View Employee Modal with new added data
+                                    $('#addUserModal').modal('hide');
+                                    $('#viewUserModal').modal('show');
                                 })
                             } else if (data.error == 1) {
                                 $("#password").val('');
@@ -427,5 +432,32 @@ $(document).ready(function() {
             
         }       
 
+    });
+
+    function loadUserData(id_user) {
+        $.ajax({
+            type: "GET",
+            url: "../backend/admin/userModal.php?user_ID=" + id_user,
+            success: function(response) {
+
+                var res = jQuery.parseJSON(response);
+
+                if (res.status == 404) {
+                    alert(res.message);
+                } 
+                // EMPLOYEE
+                else if (res.status == 200) {
+                    $('#viewUserID').val(res.data.userID);
+                    $('#viewEmployeeName').val(res.data.firstName+' '+res.data.lastName);
+                    $('#viewEmailAdd').val(res.data.emailAddress);
+                    $('#viewEmployeeID').val(res.data.employeeID);
+                    $('#viewDepartment').val(res.data.departmentName+' - '+res.data.position);
+                }
+            }
+        });
+    }
+
+    $('#btnClose').on('click', function() {
+        window.location.reload();
     });
 }); 
