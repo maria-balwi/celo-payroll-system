@@ -39,6 +39,8 @@ $(document).ready(function() {
                             const data = JSON.parse(res);
                             var message = data.em;
                             if (data.error == 0) {
+                                var id = data.id;
+                                loadDeductionData(id);
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Success',
@@ -46,7 +48,10 @@ $(document).ready(function() {
                                     timer: 2000,
                                     showConfirmButton: false
                                 }).then(() => {
-                                    window.location.reload();
+                                    // window.location.reload();
+                                    // Refresh the View Employee Modal with new added data
+                                    $('#addDeductionModal').modal('hide');
+                                    $('#viewDeductionModal').modal('show');
                                 })
                             } else {
                                 Swal.fire({
@@ -212,7 +217,10 @@ $(document).ready(function() {
                                     timer: 2000, 
                                     showConfirmButton: false,
                                 }).then(() => {
-                                    window.location.reload();
+                                    // window.location.reload();
+                                    // Refresh the View Employee Modal with new added data
+                                    $('#updateDeductionModal').modal('hide');
+                                    $('#viewDeductionModal').modal('show');
                                 })
                             } else {
                                 var message = data.em
@@ -227,6 +235,29 @@ $(document).ready(function() {
                 }
             })
         }       
+    });
 
+    function loadDeductionData(id_deduction) {
+        $.ajax({
+            type: "GET",
+            url: "../backend/admin/deductionModal.php?deduction_id=" + id_deduction,
+            success: function(response) {
+
+                var res = jQuery.parseJSON(response);
+
+                if (res.status == 404) {
+                    alert(res.message);
+                } 
+                else if (res.status == 200) {
+                    $('#viewDeductionID').val(res.data.deductionID);
+                    $('#viewDeductionName').val(res.data.deductionName);
+                    $('#viewDeductionAmount').val(res.data.deductionAmount);
+                }
+            }
+        });
+    }
+
+    $('#btnClose').on('click', function() {
+        window.location.reload();
     });
 });

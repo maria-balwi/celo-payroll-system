@@ -794,6 +794,15 @@
             return $deleteDeduction;
         }
 
+        public function viewLastDeduction() {
+            $allowance = "
+                SELECT deductionID
+                FROM ".$this->deductions."
+                ORDER BY deductionID DESC
+                LIMIT 1";
+            return $allowance;
+        }
+
         public function viewEmployeeAttendance() {
             $employeeAttendance = "
                 SELECT id, firstName, lastName, mobileNumber, employeeID, 

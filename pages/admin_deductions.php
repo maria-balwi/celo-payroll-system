@@ -73,7 +73,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <div class="row g-2 mb-2">
+                                <div class="row g-2 mb-1">
                                     <div class="col-12">
                                         <label for="deductionName">Deduction:</label>
                                     </div>
@@ -81,7 +81,7 @@
 
                                 <div class="row g-2 mb-2">
                                     <div class="col-12">
-                                        <input type="text" class="form-control" id="deductionName" name="deductionName" placeholder="Deduction Name">
+                                        <input type="text" class="form-control" id="deductionName" name="deductionName">
                                     </div>
                                 </div>
 
@@ -118,7 +118,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <div class="row g-2 mb-2">
+                            <div class="row g-2 mb-1">
                                 <div class="col-12">
                                     <label for="viewDeductionName">Deduction:</label>
                                 </div>
@@ -146,7 +146,7 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary deductionUpdate">Update</button>
                             <button type="button" class="btn btn-danger deductionDelete">Delete</button>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnClose">Close</button>
                         </div>
                     </div>
                 </div>
@@ -164,7 +164,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <div class="row g-2 mb-2">
+                                <div class="row g-2 mb-1">
                                     <div class="col-12">
                                         <label for="updateDeductionName">Deduction:</label>
                                     </div>
@@ -172,7 +172,7 @@
 
                                 <div class="row g-2 mb-2">
                                     <div class="col-12">
-                                        <input type="text" class="form-control" id="updateDeductionName" name="updateDeductionName" placeholder="Deduction Name">
+                                        <input type="text" class="form-control" id="updateDeductionName" name="updateDeductionName">
                                     </div>
                                 </div>
 
