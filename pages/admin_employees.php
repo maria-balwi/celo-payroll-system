@@ -717,7 +717,8 @@
                             </div>
 
                             <hr>
-
+                            
+                            <input type="hidden" id="viewID" name="viewID">
                             <div class="row g-2">
                                 <div class="flex space-x-4">
 
@@ -732,27 +733,7 @@
                                                     </svg>
                                                 </button>
                                             </div>
-
-                                            <div class="space-y-2">
-                                                <?php 
-                                                    $allAllowances = mysqli_query($conn, $payroll->getAllEmpAllowances($_SESSION['id']));
-                                                    while ($allAllowancesResult = mysqli_fetch_array($allAllowances)) {
-                                                        $id = $allAllowancesResult['id'];
-                                                        $allowanceID = $allAllowancesResult['allowanceID'];
-                                                        $allowanceName = $allAllowancesResult['allowanceName'];
-                                                        $allowanceAmount = $allAllowancesResult['amount']; 
-                                                ?> 
-                                                    <div class="flex justify-between items-center bg-white p-2 border border-gray-200">
-                                                        <span><?php echo $allowanceName ?></span><p class="text-sm bg-green-500 text-white py-1 px-2 rounded-full my-auto">₱ <?php echo $allowanceAmount ?></p>
-                                                        <button class="p-2 rounded" data-bs-toggle="modal" data-bs-target="#allowanceModal">
-                                                            <svg class="h-5 w-5 text-gray-800"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                                            </svg>
-                                                        </button>
-                                                    </div>
-                                                <?php
-                                                    }
-                                                ?>
+                                            <div class="space-y-2" id="allowancesSection">
                                             </div>
                                         </div>
                                     </div>
@@ -768,24 +749,7 @@
                                                     </svg>
                                                 </button>
                                             </div>
-                                            <div class="space-y-2">
-                                                <div class="flex justify-between items-center bg-white p-2 border border-gray-200">
-                                                    <span>Deduction 1</span><p class="text-sm bg-red-500 text-white p-1 rounded-full my-auto">₱ 500.00</p>
-                                                    <button class="p-2 rounded">
-                                                        <svg class="h-5 w-5 text-gray-800"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                                        </svg>
-                                                    </button>
-                                                </div>
-                                                <div class="flex justify-between items-center bg-white p-2 border border-gray-200">
-                                                    <span>Deduction 2</span><p class="text-sm bg-red-500 text-white p-1 rounded-full my-auto">₱ 500.00</p>
-                                                    <button class="p-2 rounded">
-                                                        <svg class="h-5 w-5 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                                        </svg>
-                                                    </button>
-                                                </div>
-                                                <!-- Add more deduction items here -->
+                                            <div class="space-y-2" id="deductionsSection">
                                             </div>
                                         </div>
                                     </div>
@@ -1179,7 +1143,7 @@
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="userFormLabel">Allowances</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
+                        </div> 
                         
                         <div class="modal-body">
                             <div class="row g-2 mb-2">
@@ -1361,7 +1325,7 @@
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-success deductionSave">Save</button>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnClose">Close</button>
+                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#viewEmployeeModal">Close</button>
                         </div>
                     </div>
                 </div>

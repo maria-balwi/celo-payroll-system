@@ -345,6 +345,7 @@ $(document).ready(function() {
                     alert(res.message);
                 } 
                 else if (res.status == 200) {
+                    $('#viewID').val(res.data.id);
                     $('#viewLastName').val(res.data.lastName);
                     $('#viewFirstName').val(res.data.firstName);
                     $('#viewGender').val(res.data.gender);
@@ -378,6 +379,38 @@ $(document).ready(function() {
                     $('#view_req_psa').val(res.data.req_psa == 1 ? $('#view_req_psa').prop('checked', true) : $('#view_req_psa').prop('checked', false));
                     $('#view_req_validID').val(res.data.req_validID == 1 ? $('#view_req_validID').prop('checked', true) : $('#view_req_validID').prop('checked', false));
                     $('#view_req_helloMoney').val(res.data.req_helloMoney == 1 ? $('#view_req_helloMoney').prop('checked', true) : $('#view_req_helloMoney').prop('checked', false));
+                    
+                    // UPDATE ALLOWANCES SECTION
+                    var allowancesHTML = '';
+                    res.allowances.forEach(function(allowance) {
+                        allowancesHTML += '<div class="flex justify-between items-center bg-white p-2 border border-gray-200">';
+                        allowancesHTML += '<span>' + allowance.allowanceName + '</span>';
+                        allowancesHTML += '<p class="text-sm bg-green-500 text-white py-1 px-2 rounded-full my-auto">₱ ' + allowance.amount + '</p>';
+                        allowancesHTML += '<button class="p-2 rounded">';
+                        allowancesHTML += '<svg class="h-5 w-5 text-gray-800"  fill="none" viewBox="0 0 24 24" stroke="currentColor">';
+                        allowancesHTML += '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>';
+                        allowancesHTML += '</svg>';
+                        allowancesHTML += '</button>';
+                        allowancesHTML += '</div>';
+                    });
+                    $('#allowancesSection').html(allowancesHTML);
+
+                    // UPDATE DEDUCTIONS SECTION
+                    var deductionsHTML = '';
+                    res.deductions.forEach(function(deduction) {
+                        deductionsHTML += '<div class="flex justify-between items-center bg-white p-2 border border-gray-200">';
+                        deductionsHTML += '<span>' + deduction.deductionName + '</span>';
+                        deductionsHTML += '<p class="text-sm bg-red-500 text-white p-1 rounded-full my-auto">₱ ' + deduction.amount + '</p>';
+                        deductionsHTML += '<button class="p-2 rounded">';
+                        deductionsHTML += '<svg class="h-5 w-5 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">';
+                        deductionsHTML += '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>';
+                        deductionsHTML += '</svg>';
+                        deductionsHTML += '</button>';
+                        deductionsHTML += '</div>';
+                    });
+                    $('#deductionsSection').html(deductionsHTML);
+
+                    // Show the modal
                     $('#viewEmployeeModal').modal('show');
 
                     let employeeID_string = res.data.employeeID;

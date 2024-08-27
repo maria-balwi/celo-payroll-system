@@ -36,7 +36,7 @@
 
         public function getAllEmpAllowances($id) {
             $empAllowances = "
-                SELECT id, empAllowances.allowanceID, 
+                SELECT empAllowances.empID, empAllowances.allowanceID, 
                 empAllowanceID, allowanceName, amount
                 FROM ".$this->empAllowances." AS empAllowances
                 INNER JOIN ".$this->allowances." AS allowances
@@ -44,6 +44,19 @@
                 INNER JOIN ".$this->employees." AS employees
                 ON empAllowances.empID = employees.id
                 WHERE empAllowances.empID = '$id'";
+            return $empAllowances;
+        }
+
+        public function getAllEmpADeductions($id) {
+            $empAllowances = "
+                SELECT empDeductions.empID, empDeductions.deductionID, 
+                empDeductionID, deductionName, amount
+                FROM ".$this->empDeductions." AS empDeductions
+                INNER JOIN ".$this->deductions." AS deductions
+                ON empDeductions.deductionID = deductions.deductionID
+                INNER JOIN ".$this->employees." AS employees
+                ON empDeductions.empID = employees.id
+                WHERE empDeductions.empID = '$id'";
             return $empAllowances;
         }
     }
