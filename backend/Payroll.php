@@ -59,5 +59,35 @@
                 WHERE empDeductions.empID = '$id'";
             return $empAllowances;
         }
+
+        public function addEmpAllowance($id, $allowanceID, $allowanceType, $amount) {
+            $addEmpAllowance = "
+                INSERT INTO ".$this->empAllowances." (empID, allowanceID, type, amount, dateCreated)
+                VALUES ('$id', '$allowanceID', '$allowanceType', '$amount', CURRENT_TIMESTAMP())";
+            return $addEmpAllowance;
+        }
+
+        public function addEmpAllowance_once($id, $allowanceID, $allowanceType, $amount, $effectiveDate) {
+            $addEmpAllowance = "
+                INSERT INTO ".$this->empAllowances." (empID, allowanceID, type, amount, effectiveDate, dateCreated)
+                VALUES ('$id', '$allowanceID', '$allowanceType', '$amount', '$effectiveDate', CURRENT_TIMESTAMP())";
+            return $addEmpAllowance;
+        }
+
+        public function viewLastEmpAllowance() {
+            $viewLastEmpAllowance = "
+                SELECT * FROM ".$this->empAllowances."
+                ORDER BY allowanceID DESC
+                LIMIT 1";
+            return $viewLastEmpAllowance;
+        }
+
+        public function checkEmpAllowance($id, $allowanceID) {
+            $checkEmpAllowance = "
+                SELECT * FROM ".$this->empAllowances."
+                WHERE empID = '$id'
+                AND allowanceID = '$allowanceID'";
+            return $checkEmpAllowance;
+        }
     }
 ?>

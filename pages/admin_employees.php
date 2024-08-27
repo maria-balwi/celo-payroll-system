@@ -1147,7 +1147,7 @@
                         
                         <div class="modal-body">
                             <div class="row g-2 mb-2">
-                                <form id="deductionForm">
+                                <form id="allowanceForm">
                                     <div class="row g-2 mb-1">
                                         <div class="col-6">
                                             <label for="allowanceName">Allowance:</label>
@@ -1183,7 +1183,7 @@
                                             <label for="allowanceType">Type:</label>
                                         </div>
                                         <div class="col-6">
-                                            <label for="effectivityDate_allowance">Effectivity Date:</label>
+                                            <label for="effectivityDate_allowance" id="effectivityDate_allowanceLabel">Effectivity Date:</label>
                                         </div>
                                     </div>
                                     <div class="row g-2 mb-3">
@@ -1200,7 +1200,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="row g-2 mb-2 text-end">
+                                    <div class="row g-2 mb-2">
                                         <div class="col-12">
                                             <button type="submit" class="btn btn-success w-50 justify-center">Add</button>
                                         </div>
@@ -1281,7 +1281,7 @@
                                             <label for="deductionType">Type:</label>
                                         </div>
                                         <div class="col-6">
-                                            <label for="effectivityDate_deduction">Effectivity Date:</label>
+                                            <label for="effectivityDate_deduction" id="effectivityDate_deductionLabel">Effectivity Date:</label>
                                         </div>
                                     </div>
                                     <div class="row g-2 mb-3">
@@ -1298,7 +1298,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="row g-2 mb-2 text-end">
+                                    <div class="row g-2 mb-2">
                                         <div class="col-12">
                                             <button type="submit" class="btn btn-success w-50 justify-center">Add</button>
                                         </div>

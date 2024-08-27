@@ -235,7 +235,34 @@ $(document).ready(function() {
             reader.readAsDataURL(file);
         }
     });
-    
+
+    // ADD ALLOWANCE MODAL
+    $('#effectivityDate_allowanceLabel').hide();
+    $('#effectivityDate_allowance').hide();
+
+    $('#allowanceType').on('change', function() {
+        if ($(this).val() == '3') {
+            $('#effectivityDate_allowanceLabel').show();
+            $('#effectivityDate_allowance').show();
+        } else {
+            $('#effectivityDate_allowanceLabel').hide();
+            $('#effectivityDate_allowance').hide();
+        }
+    })
+
+    // ADD DEDUCTION MODAL
+    $('#effectivityDate_deductionLabel').hide();
+    $('#effectivityDate_deduction').hide();
+
+    $('#deductionType').on('change', function() {
+        if ($(this).val() == '3') {
+            $('#effectivityDate_deductionLabel').show();
+            $('#effectivityDate_deduction').show();
+        } else {    
+            $('#effectivityDate_deductionLabel').hide();
+            $('#effectivityDate_deduction').hide();
+        }
+    })
 
     // ADD EMPLOYEE
     $("#addEmployeeForm").submit(function (e) {
@@ -598,16 +625,19 @@ $(document).ready(function() {
 
     });
 
-    function loadEmployeeData(employee_id) {
+    function loadEmployeeData(id_employee) {
         $.ajax({
             type: "GET",
-            url: "../backend/admin/employeeModal.php?employee_id=" + employee_id,
+            url: "../backend/admin/employeeModal.php?employee_id=" + id_employee,
             success: function(response) {
+
                 var res = jQuery.parseJSON(response);
-    
+
                 if (res.status == 404) {
                     alert(res.message);
-                } else if (res.status == 200) {
+                } 
+                else if (res.status == 200) {
+                    $('#viewID').val(res.data.id);
                     $('#viewLastName').val(res.data.lastName);
                     $('#viewFirstName').val(res.data.firstName);
                     $('#viewGender').val(res.data.gender);
@@ -630,21 +660,56 @@ $(document).ready(function() {
                     $('#viewHourlyRate').val(res.data.hourlyRate);
                     $('#viewVacationLeaves').val(res.data.availableVL);
                     $('#viewSickLeaves').val(res.data.availableSL);
-                    $('#view_req_sss').prop('checked', res.data.req_sss == 1);
-                    $('#view_req_pagIbig').prop('checked', res.data.req_pagIbig == 1);
-                    $('#view_req_philhealth').prop('checked', res.data.req_philhealth == 1);
-                    $('#view_req_tin').prop('checked', res.data.req_tin == 1);
-                    $('#view_req_nbi').prop('checked', res.data.req_nbi == 1);
-                    $('#view_req_medicalExam').prop('checked', res.data.req_medicalExam == 1);
-                    $('#view_req_2x2pic').prop('checked', res.data.req_2x2pic == 1);
-                    $('#view_req_vaccineCard').prop('checked', res.data.req_vaccineCard == 1);
-                    $('#view_req_psa').prop('checked', res.data.req_psa == 1);
-                    $('#view_req_validID').prop('checked', res.data.req_validID == 1);
-                    $('#view_req_helloMoney').prop('checked', res.data.req_helloMoney == 1);
-    
+                    $('#view_req_sss').val(res.data.req_sss == 1 ? $('#view_req_sss').prop('checked', true) : $('#view_req_sss').prop('checked', false));
+                    $('#view_req_pagIbig').val(res.data.req_pagIbig == 1 ? $('#view_req_pagIbig').prop('checked', true) : $('#view_req_pagIbig').prop('checked', false));
+                    $('#view_req_philhealth').val(res.data.req_philhealth == 1 ? $('#view_req_philhealth').prop('checked', true) : $('#view_req_philhealth').prop('checked', false));
+                    $('#view_req_tin').val(res.data.req_tin == 1 ? $('#view_req_tin').prop('checked', true) : $('#view_req_tin').prop('checked', false));
+                    $('#view_req_nbi').val(res.data.req_nbi == 1 ? $('#view_req_nbi').prop('checked', true) : $('#view_req_nbi').prop('checked', false));
+                    $('#view_req_medicalExam').val(res.data.req_medicalExam == 1 ? $('#view_req_medicalExam').prop('checked', true) : $('#view_req_medicalExam').prop('checked', false));
+                    $('#view_req_2x2pic').val(res.data.req_2x2pic == 1 ? $('#view_req_2x2pic').prop('checked', true) : $('#view_req_2x2pic').prop('checked', false));
+                    $('#view_req_vaccineCard').val(res.data.req_vaccineCard == 1 ? $('#view_req_vaccineCard').prop('checked', true) : $('#view_req_vaccineCard').prop('checked', false));
+                    $('#view_req_psa').val(res.data.req_psa == 1 ? $('#view_req_psa').prop('checked', true) : $('#view_req_psa').prop('checked', false));
+                    $('#view_req_validID').val(res.data.req_validID == 1 ? $('#view_req_validID').prop('checked', true) : $('#view_req_validID').prop('checked', false));
+                    $('#view_req_helloMoney').val(res.data.req_helloMoney == 1 ? $('#view_req_helloMoney').prop('checked', true) : $('#view_req_helloMoney').prop('checked', false));
+                    
+                    // UPDATE ALLOWANCES SECTION
+                    var allowancesHTML = '';
+                    res.allowances.forEach(function(allowance) {
+                        allowancesHTML += '<div class="flex justify-between items-center bg-white p-2 border border-gray-200">';
+                        allowancesHTML += '<span>' + allowance.allowanceName + '</span>';
+                        allowancesHTML += '<p class="text-sm bg-green-500 text-white py-1 px-2 rounded-full my-auto">₱ ' + allowance.amount + '</p>';
+                        allowancesHTML += '<button class="p-2 rounded">';
+                        allowancesHTML += '<svg class="h-5 w-5 text-gray-800"  fill="none" viewBox="0 0 24 24" stroke="currentColor">';
+                        allowancesHTML += '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>';
+                        allowancesHTML += '</svg>';
+                        allowancesHTML += '</button>';
+                        allowancesHTML += '</div>';
+                    });
+                    $('#allowancesSection').html(allowancesHTML);
+
+                    // UPDATE DEDUCTIONS SECTION
+                    var deductionsHTML = '';
+                    res.deductions.forEach(function(deduction) {
+                        deductionsHTML += '<div class="flex justify-between items-center bg-white p-2 border border-gray-200">';
+                        deductionsHTML += '<span>' + deduction.deductionName + '</span>';
+                        deductionsHTML += '<p class="text-sm bg-red-500 text-white p-1 rounded-full my-auto">₱ ' + deduction.amount + '</p>';
+                        deductionsHTML += '<button class="p-2 rounded">';
+                        deductionsHTML += '<svg class="h-5 w-5 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">';
+                        deductionsHTML += '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>';
+                        deductionsHTML += '</svg>';
+                        deductionsHTML += '</button>';
+                        deductionsHTML += '</div>';
+                    });
+                    $('#deductionsSection').html(deductionsHTML);
+
+                    // Show the modal
+                    $('#viewEmployeeModal').modal('show');
+
                     let employeeID_string = res.data.employeeID;
-                    $('#viewProfilePicture').off('click').on('click', function() {
-                        const imagePath = '../assets/images/profiles/' + employeeID_string.replace("-", "") + '.png';
+                    $('#viewProfilePicture').click(function() {
+                        const imagePath = '../assets/images/profiles/' + employeeID_string.replace("-", "") + '.png'; // Set your directory path here
+                    
+                        // Use the fetch API to check if the image exists
                         fetch(imagePath)
                             .then(response => {
                                 if (response.ok) {
@@ -677,5 +742,187 @@ $(document).ready(function() {
 
     $('#btnClose').on('click', function() {
         window.location.reload();
+    });
+
+
+    // ALLOWANCE MODAL
+    $("#allowanceForm").on("submit", function (e) {
+        e.preventDefault();
+
+        // GET FORM VALUES
+        var allowanceName = $("#allowanceName option:selected").text();
+        var allowanceID = $("#allowanceName").val();
+        var allowanceAmount = $("#allowanceAmount").val();
+        var allowanceType = $("#allowanceType option:selected").text();
+        var effectivityDate = $("#effectivityDate_allowance").val();
+
+         // Validation checks
+         if (!allowanceID || !allowanceAmount || !$("#allowanceType").val()) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Required Information',
+                text: 'Please fill in all required fields: Allowance, Type, and Amount.',
+            })
+        }
+        else {
+            // ADD ROW TO THE TABLE
+            var markup = "<tr data-allowance-id='" + allowanceID + "' data-amount='" + allowanceAmount + "' data-type='" + $("#allowanceType").val() + "' data-date='" + effectivityDate + "'>" +
+                "<td>" + allowanceName + "</td>" +
+                "<td>" + allowanceType + "</td>" +
+                "<td>" + allowanceAmount + "</td>" +
+                "<td><button type='button' class='btn btn-danger btn-sm removeRow'>Remove</button></td>" +
+                "</tr>";
+
+            $("#allowanceTable tbody").append(markup);
+
+            // Clear the form fields
+            $("#allowanceForm")[0].reset();
+
+            // Optionally, reset the select elements to their default options
+            $("#allowanceName").prop('selectedIndex', 0);
+            $("#allowanceType").prop('selectedIndex', 0);
+        }
+
+    });
+
+    // HANDLE REMOVING OF ROWS ON THE TABLE
+    $(document).on("click", ".removeRow", function () {
+        $(this).closest("tr").remove();
+    });
+
+    // HANDLE SAVING DATA ON THE DATABASE
+    $(".allowanceSave").on("click", function () {
+        var allowances = [];
+        var viewID = $('#viewID').val();
+
+        $("#allowanceTable tbody tr").each(function () {
+            var allowanceID = $(this).data("allowance-id");
+            var amount = $(this).data("amount");
+            var type = $(this).data("type");
+            var date = $(this).data("date");
+
+            allowances.push({
+                id: viewID,
+                allowanceID: allowanceID,
+                amount: amount,
+                type: type,
+                date: date
+            });
+        });
+
+        // SEND THE DATA TO HE SERVER VIA AJAX
+        $.ajax({
+            url: "../backend/admin/saveEmpAllowances.php",
+            method: "POST",
+            data: { allowances: JSON.stringify(allowances) }, // Ensure this is JSON string
+            success: function (response) {
+                const data = JSON.parse(response);
+                var message = data.em;
+                if (data.error == 0) {
+                    var id = data.id;
+                    loadEmployeeData(id);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: message,
+                        timer: 2000,
+                        showConfirmButton: false
+                    }).then(() => {
+                        // window.location.reload();
+                        $('#allowanceModal').modal('hide');
+                        $('#viewEmployeeModal').modal('show');
+                    });
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: message
+                    })
+                }
+            },
+            error: function () {
+                alert("An error occurred while saving the allowances.");
+            }
+        });        
+    });
+
+
+    // DEDUCTION MODAL
+    $("#deductionForm").on("submit", function (e) {
+        e.preventDefault();
+
+        // GET FORM VALUES
+        var deductionName = $("#deductionName option:selected").text();
+        var deductionID = $("#deductionName").val();
+        var deductionAmount = $("#deductionAmount").val();
+        var deductionType = $("#deductionType option:selected").text();
+        var effectivityDate = $("#effectivityDate_deduction").val();
+
+        // VALIDATION IF THERE IS NULL / EMPTY
+        if (!deductionID || !deductionAmount || !$("#deductionType").val()) {
+            alert("Please fill in all required fields: Deduction, Type, and Amount.");
+            return;
+        }
+
+        // ADD ROW TO THE TABLE
+        var markup = "<tr data-deduction-id='" + deductionID + "' data-amount='" + deductionAmount + "' data-type='" + $("#deductionType").val() + "' data-date='" + effectivityDate + "'>" +
+            "<td>" + deductionName + "</td>" +
+            "<td>" + deductionType + "</td>" +
+            "<td>" + deductionAmount + "</td>" +
+            "<td><button type='button' class='btn btn-danger btn-sm removeRow'>Remove</button></td>" +
+            "</tr>";
+
+        $("#deductionTable tbody").append(markup);
+
+        // CLEAR FORM FIELDS
+        $("#deductionForm")[0].reset();
+
+        // RESET THE SELECT ELEMENTS TO DEFAULT OPTIONS
+        $("#deductionName").prop('selectedIndex', 0);
+        $("#deductionType").prop('selectedIndex', 0);
+    });
+
+    // HANDLE REMOVING OF ROWS ON THE TABLE
+    $(document).on("click", ".removeDeductionRow", function () {
+        $(this).closest("tr").remove();
+    });
+
+    // HANDLE SAVING DATA ON THE DATABASE
+    $(".deductionSave").on("click", function () {
+        var deductions = [];
+
+        $("#deductionTable tbody tr").each(function () {
+            var deductionID = $(this).data("deduction-id");
+            var amount = $(this).data("amount");
+            var type = $(this).data("type");
+            var date = $(this).data("date");
+
+            deductions.push({
+                deductionID: deductionID,
+                amount: amount,
+                type: type,
+                date: date
+            });
+        });
+
+        // SEND THE DATA TO HE SERVER VIA AJAX
+        $.ajax({
+            url: "save_deductions.php",
+            method: "POST",
+            data: {deductions: deductions},
+            success: function (response) {
+                if (response.success) {
+                    alert("Deductions saved successfully!");
+                    $("#deductionTable tbody").empty();  // CLEAR THE TABLE AFTER SAVING
+                    $('#deductionModal').modal('hide');  // HIDE THE MODAL
+                } else {
+                    alert("Failed to save deductions. Please try again.");
+                }
+            },
+            error: function () {
+                alert("An error occurred while saving the deductions.");
+            }
+        });
     });
 });
