@@ -23,7 +23,7 @@ $(document).ready(function() {
         // VIEW LEAVE
         $.ajax({
             type: "GET",
-            url: "../backend/admin/leaveModal.php?leave_id=" + id_leave,
+            url: "../backend/team/leaveModal.php?leave_id=" + id_leave,
             success: function(response) {
 
                 var res = jQuery.parseJSON(response);
@@ -175,31 +175,43 @@ $(document).ready(function() {
     function updateLeaveModal(id_leave) {
         $.ajax({
             type: "GET",
-            url: "../backend/admin/leaveModal.php?leave_id=" + id_leave,
+            url: "../backend/team/leaveModal.php?leave_id=" + id_leave,
             success: function(response) {
+
                 var res = jQuery.parseJSON(response);
+
                 if (res.status == 404) {
                     alert(res.message);
-                } else if (res.status == 200) {
+                } 
+                // LEAVE ALREADY APPROVED
+                else if (res.status == 200 && (res.data.status == "Approved" || res.data.status == "Disapproved")) {
                     $('#viewLeaveID').val(res.data.requestID);
                     $('#viewEmpID').val(res.data.employeeID);
                     $('#viewDateFiled').val(res.data.dateFiled);
                     $('#viewName').val(res.data.employeeName);
                     $('#viewLeaveType').val(res.data.leaveType);
+                    // $('#viewInclusiveDates').val(res.data.effectivityStartDate+' - '+res.data.effectivityEndDate);
                     $('#viewStartDate').val(res.data.effectivityStartDate);
                     $('#viewEndDate').val(res.data.effectivityEndDate);
                     $('#viewPurpose').val(res.data.remarks);
                     $('#viewStatus').val(res.data.status);
-                    
-                    // Hide the approve/disapprove buttons if the status is updated
-                    if (res.data.status == "Approved" || res.data.status == "Disapproved") {
-                        $('#approveLeave').hide();
-                        $('#disapproveLeave').hide();
-                    } else {
-                        $('#approveLeave').show();
-                        $('#disapproveLeave').show();
-                    }
-                    
+                    $('#approveLeave').hide();
+                    $('#disapproveLeave').hide();
+                    $('#viewLeaveModal').modal('show');
+                }
+                else if (res.status == 200 && res.data.status == "Pending") {
+                    $('#viewLeaveID').val(res.data.requestID);
+                    $('#viewEmpID').val(res.data.employeeID);
+                    $('#viewDateFiled').val(res.data.dateFiled);
+                    $('#viewName').val(res.data.employeeName);
+                    $('#viewLeaveType').val(res.data.leaveType);
+                    // $('#viewInclusiveDates').val(res.data.effectivityStartDate+' - '+res.data.effectivityEndDate);
+                    $('#viewStartDate').val(res.data.effectivityStartDate);
+                    $('#viewEndDate').val(res.data.effectivityEndDate);
+                    $('#viewPurpose').val(res.data.remarks);
+                    $('#viewStatus').val(res.data.status);
+                    $('#approveLeave').show();
+                    $('#disapproveLeave').show();
                     $('#viewLeaveModal').modal('show');
                 }
             }
