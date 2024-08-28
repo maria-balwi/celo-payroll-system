@@ -188,6 +188,18 @@
                         <div class="modal-body">
                             <div class="row g-3 mb-2">
                                 <div class="col-6">
+                                    <label for="viewStatus">Status:</label>
+                                </div>
+                            </div>
+
+                            <div class="row g-3 mb-2">
+                                <div class="col-6">
+                                    <input type="text" class="form-control" id="viewStatus" name="viewStatus" disabled readonly>
+                                </div>
+                            </div>   
+
+                            <div class="row g-3 mb-2">
+                                <div class="col-6">
                                     <label for="viewDateFiled">Date Filed:</label>
                                 </div>
                                 <div class="col-6">
@@ -255,7 +267,7 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-success approveOT" id="approveOT">Approve</button>
                             <button type="button" class="btn btn-danger disapproveOT" id="disapproveOT">Disapprove</button>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnClose">Close</button>
                         </div>
                     </div>
                 </div>
