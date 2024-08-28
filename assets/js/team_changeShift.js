@@ -23,7 +23,7 @@ $(document).ready(function() {
         // VIEW CHANGE SHIFT REQUEST
         $.ajax({
             type: "GET",
-            url: "../backend/admin/changeShiftModal.php?changeshift_id=" + id_changeshift,
+            url: "../backend/team/changeShiftModal.php?changeshift_id=" + id_changeshift,
             success: function(response) {
 
                 var res = jQuery.parseJSON(response);
@@ -108,7 +108,8 @@ $(document).ready(function() {
                                             timer: 2000,
                                             showConfirmButton: false,
                                         }).then(() => {
-                                            window.location.reload();
+                                            // window.location.reload();
+                                            updateChangeShiftModal(id_changeshift);
                                         })
                                     }
                                 })
@@ -160,7 +161,8 @@ $(document).ready(function() {
                                             timer: 2000,
                                             showConfirmButton: false,
                                         }).then(() => {
-                                            window.location.reload();
+                                            // window.location.reload();
+                                            updateChangeShiftModal(id_changeshift);
                                         })
                                     }
                                 })
@@ -170,7 +172,57 @@ $(document).ready(function() {
                 }
             });
         })
-        
     });
     
+    function updateChangeShiftModal(id_changeshift) {
+        $.ajax({
+            type: "GET",
+            url: "../backend/team/changeShiftModal.php?changeshift_id=" + id_changeshift,
+            success: function(response) {
+
+                var res = jQuery.parseJSON(response);
+
+                if (res.status == 404) {
+                    alert(res.message);
+                } 
+                // EMPLOYEE
+                else if (res.status == 200 && (res.data.status == "Approved" || res.data.status == "Disapproved")) {
+                    $('#viewLeaveID').val(res.data.requestID);
+                    $('#viewEmpID').val(res.data.employeeID);
+                    $('#viewDateFiled').val(res.data.dateFiled);
+                    $('#viewName').val(res.data.employeeName);
+                    $('#viewCurrentShift').val(res.data.currentShift);
+                    $('#viewRequestedShift').val(res.data.requestedShift);
+                    $('#viewLeaveType').val(res.data.leaveType);
+                    $('#viewStartDate').val(res.data.effectivityStartDate);
+                    $('#viewEndDate').val(res.data.effectivityEndDate);
+                    $('#viewPurpose').val(res.data.remarks);
+                    $('#viewStatus').val(res.data.status);
+                    $('#approveChangeShift').hide();
+                    $('#disapproveChangeShift').hide();
+                    $('#viewChangeShiftModal').modal('show');
+                }
+                else if (res.status == 200 && res.data.status == "Pending") {
+                    $('#viewLeaveID').val(res.data.requestID);
+                    $('#viewEmpID').val(res.data.employeeID);
+                    $('#viewDateFiled').val(res.data.dateFiled);
+                    $('#viewName').val(res.data.employeeName);
+                    $('#viewCurrentShift').val(res.data.currentShift);
+                    $('#viewRequestedShift').val(res.data.requestedShift);
+                    $('#viewLeaveType').val(res.data.leaveType);
+                    $('#viewStartDate').val(res.data.effectivityStartDate);
+                    $('#viewEndDate').val(res.data.effectivityEndDate);
+                    $('#viewPurpose').val(res.data.remarks);
+                    $('#viewStatus').val(res.data.status);
+                    $('#approveChangeShift').show();
+                    $('#disapproveChangeShift').show();
+                    $('#viewChangeShiftModal').modal('show');
+                }
+            }
+        });
+    }
+    
+    $('#btnClose').on('click', function() {
+        window.location.reload();
+    });
 });
