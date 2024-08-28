@@ -60,6 +60,14 @@
             return $empAllowances;
         }
 
+        public function checkEmpAllowance($id, $allowanceID) {
+            $checkEmpAllowance = "
+                SELECT * FROM ".$this->empAllowances."
+                WHERE empID = '$id'
+                AND allowanceID = '$allowanceID'";
+            return $checkEmpAllowance;
+        }
+
         public function addEmpAllowance($id, $allowanceID, $allowanceType, $amount) {
             $addEmpAllowance = "
                 INSERT INTO ".$this->empAllowances." (empID, allowanceID, type, amount, dateCreated)
@@ -74,20 +82,26 @@
             return $addEmpAllowance;
         }
 
-        public function viewLastEmpAllowance() {
-            $viewLastEmpAllowance = "
-                SELECT * FROM ".$this->empAllowances."
-                ORDER BY allowanceID DESC
-                LIMIT 1";
-            return $viewLastEmpAllowance;
+        public function checkEmpDeduction($id, $deductionID) {
+            $checkEmpDeduction = "
+                SELECT * FROM ".$this->empDeductions."
+                WHERE empID = '$id'
+                AND deductionID = '$deductionID'";
+            return $checkEmpDeduction;
         }
 
-        public function checkEmpAllowance($id, $allowanceID) {
-            $checkEmpAllowance = "
-                SELECT * FROM ".$this->empAllowances."
-                WHERE empID = '$id'
-                AND allowanceID = '$allowanceID'";
-            return $checkEmpAllowance;
+        public function addEmpDeduction($id, $deductionID, $deductionType, $amount) {
+            $addEmpADeduction = "
+                INSERT INTO ".$this->empDeductions." (empID, deductionID, type, amount, dateCreated)
+                VALUES ('$id', '$deductionID', '$deductionType', '$amount', CURRENT_TIMESTAMP())";
+            return $addEmpADeduction;
+        }
+
+        public function addEmpDeduction_once($id, $deductionID, $deductionType, $amount, $effectiveDate) {
+            $addEmpADeduction = "
+                INSERT INTO ".$this->empAllowances." (empID, deductionID, type, amount, effectiveDate, dateCreated)
+                VALUES ('$id', '$deductionID', '$deductionType', '$amount', '$effectiveDate', CURRENT_TIMESTAMP())";
+            return $addEmpADeduction;
         }
     }
 ?>

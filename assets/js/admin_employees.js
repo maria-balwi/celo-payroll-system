@@ -413,7 +413,7 @@ $(document).ready(function() {
                         allowancesHTML += '<div class="flex justify-between items-center bg-white p-2 border border-gray-200">';
                         allowancesHTML += '<span>' + allowance.allowanceName + '</span>';
                         allowancesHTML += '<p class="text-sm bg-green-500 text-white py-1 px-2 rounded-full my-auto">₱ ' + allowance.amount + '</p>';
-                        allowancesHTML += '<button class="p-2 rounded">';
+                        allowancesHTML += '<button class="p-2 rounded deleteAllowance" data-id="' + allowance.empAllowanceID + '">';
                         allowancesHTML += '<svg class="h-5 w-5 text-gray-800"  fill="none" viewBox="0 0 24 24" stroke="currentColor">';
                         allowancesHTML += '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>';
                         allowancesHTML += '</svg>';
@@ -428,8 +428,8 @@ $(document).ready(function() {
                         deductionsHTML += '<div class="flex justify-between items-center bg-white p-2 border border-gray-200">';
                         deductionsHTML += '<span>' + deduction.deductionName + '</span>';
                         deductionsHTML += '<p class="text-sm bg-red-500 text-white p-1 rounded-full my-auto">₱ ' + deduction.amount + '</p>';
-                        deductionsHTML += '<button class="p-2 rounded">';
-                        deductionsHTML += '<svg class="h-5 w-5 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">';
+                        deductionsHTML += '<button class="p-2 rounded deleteDeduction" data-id="' + deduction.empDeductionID + '">';
+                        deductionsHTML += '<svg class="h-5 w-5 text-gray-800"  fill="none" viewBox="0 0 24 24" stroke="currentColor">';
                         deductionsHTML += '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>';
                         deductionsHTML += '</svg>';
                         deductionsHTML += '</button>';
@@ -694,7 +694,7 @@ $(document).ready(function() {
                         deductionsHTML += '<span>' + deduction.deductionName + '</span>';
                         deductionsHTML += '<p class="text-sm bg-red-500 text-white p-1 rounded-full my-auto">₱ ' + deduction.amount + '</p>';
                         deductionsHTML += '<button class="p-2 rounded">';
-                        deductionsHTML += '<svg class="h-5 w-5 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">';
+                        deductionsHTML += '<svg class="h-5 w-5 text-gray-800"  fill="none" viewBox="0 0 24 24" stroke="currentColor">';
                         deductionsHTML += '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>';
                         deductionsHTML += '</svg>';
                         deductionsHTML += '</button>';
@@ -741,6 +741,51 @@ $(document).ready(function() {
         window.location.reload();
     });
 
+    // REMOVE ALLOWANCE ROW ON VIEW EMPLOYEE MODAL
+    $(document).on('click', '.deleteAllowance', function() {
+        var empAllowanceID = $(this).data('id');
+        
+        if(confirm("Are you sure you want to delete this allowance?")) {
+            $.ajax({
+                type: "POST",
+                url: "../backend/admin/deleteAllowance.php?empAllowanceID=" + empAllowanceID,
+                success: function(response) {
+                    var res = jQuery.parseJSON(response);
+                    
+                    if (res.status == 200) {
+                        alert(res.message);
+                        location.reload(); // Reload the page or re-fetch the data to update the allowances list
+                    } else {
+                        alert(res.message);
+                    }
+                }
+            });
+        }
+    });
+    
+    // REMOVE DEDUCTION ROW ON VIEW EMPLOYEE MODAL
+    $(document).on('click', '.deleteDeduction', function() {
+        var deductionId = $(this).data('id');
+        
+        if(confirm("Are you sure you want to delete this deduction?")) {
+            $.ajax({
+                type: "POST",
+                url: "../backend/admin/deleteDeduction.php",
+                data: { id: deductionId },
+                success: function(response) {
+                    var res = jQuery.parseJSON(response);
+                    
+                    if (res.status == 200) {
+                        alert(res.message);
+                        location.reload(); // Reload the page or re-fetch the data to update the deductions list
+                    } else {
+                        alert(res.message);
+                    }
+                }
+            });
+        }
+    });
+
 
     // ALLOWANCE MODAL
     $("#allowanceForm").on("submit", function (e) {
@@ -753,8 +798,8 @@ $(document).ready(function() {
         var allowanceType = $("#allowanceType option:selected").text();
         var effectivityDate = $("#effectivityDate_allowance").val();
 
-         // Validation checks
-         if (!allowanceID || !allowanceAmount || !$("#allowanceType").val()) {
+        // VALIDATION IF THERE IS NULL / EMPTY
+        if (!allowanceID || !allowanceAmount || !$("#allowanceType").val()) {
             Swal.fire({
                 icon: 'warning',
                 title: 'Required Information',
@@ -772,10 +817,10 @@ $(document).ready(function() {
 
             $("#allowanceTable tbody").append(markup);
 
-            // Clear the form fields
+            // CLEAR FORM FIELDS
             $("#allowanceForm")[0].reset();
 
-            // Optionally, reset the select elements to their default options
+            // RESET THE SELECT ELEMENTS TO DEFAULT OPTIONS
             $("#allowanceName").prop('selectedIndex', 0);
             $("#allowanceType").prop('selectedIndex', 0);
         }
@@ -858,8 +903,11 @@ $(document).ready(function() {
 
         // VALIDATION IF THERE IS NULL / EMPTY
         if (!deductionID || !deductionAmount || !$("#deductionType").val()) {
-            alert("Please fill in all required fields: Deduction, Type, and Amount.");
-            return;
+            Swal.fire({
+                icon: 'warning',
+                title: 'Required Information',
+                text: 'Please fill in all required fields: Deduction, Type, and Amount.',
+            })
         }
 
         // ADD ROW TO THE TABLE
@@ -881,13 +929,14 @@ $(document).ready(function() {
     });
 
     // HANDLE REMOVING OF ROWS ON THE TABLE
-    $(document).on("click", ".removeDeductionRow", function () {
+    $(document).on("click", ".removeRow", function () {
         $(this).closest("tr").remove();
     });
 
     // HANDLE SAVING DATA ON THE DATABASE
     $(".deductionSave").on("click", function () {
         var deductions = [];
+        var viewID = $('#viewID').val();
 
         $("#deductionTable tbody tr").each(function () {
             var deductionID = $(this).data("deduction-id");
@@ -896,6 +945,7 @@ $(document).ready(function() {
             var date = $(this).data("date");
 
             deductions.push({
+                id: viewID,
                 deductionID: deductionID,
                 amount: amount,
                 type: type,
@@ -905,20 +955,37 @@ $(document).ready(function() {
 
         // SEND THE DATA TO HE SERVER VIA AJAX
         $.ajax({
-            url: "save_deductions.php",
+            url: "../backend/admin/saveEmpDeductions.php",
             method: "POST",
-            data: {deductions: deductions},
+            data: { deductions: JSON.stringify(deductions) }, // Ensure this is JSON string
             success: function (response) {
-                if (response.success) {
-                    alert("Deductions saved successfully!");
-                    $("#deductionTable tbody").empty();  // CLEAR THE TABLE AFTER SAVING
-                    $('#deductionModal').modal('hide');  // HIDE THE MODAL
-                } else {
-                    alert("Failed to save deductions. Please try again.");
+                const data = JSON.parse(response);
+                var message = data.em;
+                if (data.error == 0) {
+                    var id = data.id;
+                    loadEmployeeData(id);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: message,
+                        timer: 2000,
+                        showConfirmButton: false
+                    }).then(() => {
+                        // window.location.reload();
+                        $('#deductionModal').modal('hide');
+                        $('#viewEmployeeModal').modal('show');
+                    });
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: message
+                    })
                 }
             },
             error: function () {
-                alert("An error occurred while saving the deductions.");
+                alert("An error occurred while saving the allowances.");
             }
         });
     });
