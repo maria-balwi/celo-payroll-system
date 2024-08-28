@@ -106,7 +106,8 @@ $(document).ready(function() {
                                             timer: 2000,
                                             showConfirmButton: false,
                                         }).then(() => {
-                                            window.location.reload();
+                                            // window.location.reload();
+                                            updateLeaveModal(id_leave);
                                         })
                                     }
                                 })
@@ -168,7 +169,43 @@ $(document).ready(function() {
                 }
             });
         })
-
     });
     
+    function updateLeaveModal(id_leave) {
+        $.ajax({
+            type: "GET",
+            url: "../backend/admin/leaveModal.php?leave_id=" + id_leave,
+            success: function(response) {
+                var res = jQuery.parseJSON(response);
+                if (res.status == 404) {
+                    alert(res.message);
+                } else if (res.status == 200) {
+                    $('#viewLeaveID').val(res.data.requestID);
+                    $('#viewEmpID').val(res.data.employeeID);
+                    $('#viewDateFiled').val(res.data.dateFiled);
+                    $('#viewName').val(res.data.employeeName);
+                    $('#viewLeaveType').val(res.data.leaveType);
+                    $('#viewStartDate').val(res.data.effectivityStartDate);
+                    $('#viewEndDate').val(res.data.effectivityEndDate);
+                    $('#viewPurpose').val(res.data.remarks);
+                    $('#viewStatus').val(res.data.status);
+                    
+                    // Hide the approve/disapprove buttons if the status is updated
+                    if (res.data.status == "Approved" || res.data.status == "Disapproved") {
+                        $('#approveLeave').hide();
+                        $('#disapproveLeave').hide();
+                    } else {
+                        $('#approveLeave').show();
+                        $('#disapproveLeave').show();
+                    }
+                    
+                    $('#viewLeaveModal').modal('show');
+                }
+            }
+        });
+    }
+
+    $('#btnClose').on('click', function() {
+        window.location.reload();
+    });
 });
