@@ -290,8 +290,6 @@ $(document).ready(function() {
         var sickLeaves = $("#sickLeaves").val();
         var req_sss = $("#req_sss").val();
         var req_pagIbig = $("#req_pagIbig").val();
-        console.log({req_sss});
-        console.log({req_pagIbig});
 
         if (lastName == "" || firstName == "" || gender == "" || civilStatus == "" || 
             address == "" || dateOfBirth == "" || placeOfBirth == "" ||
@@ -610,7 +608,7 @@ $(document).ready(function() {
                                     $('#viewEmployeeModal').modal('show');
                                 })
                             } else {
-                                var message = data.em
+                                var message = data.em;
                                 Swal.fire({
                                     icon: 'warning',
                                     title: 'Warning', 
@@ -737,6 +735,7 @@ $(document).ready(function() {
         });
     }
 
+    // CLOSE VIEW EMPLOYEE MODAL
     $('#btnClose').on('click', function() {
         window.location.reload();
     });
@@ -842,7 +841,6 @@ $(document).ready(function() {
         })
     });
 
-
     // ALLOWANCE MODAL
     $("#allowanceForm").on("submit", function (e) {
         e.preventDefault();
@@ -944,7 +942,6 @@ $(document).ready(function() {
             }
         });        
     });
-
 
     // DEDUCTION MODAL
     $("#deductionForm").on("submit", function (e) {

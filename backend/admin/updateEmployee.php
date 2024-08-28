@@ -173,19 +173,19 @@
                 // VALIDATE FILE TYPE
                 $allowedTypes = ['image/jpeg', 'image/png'];
                 if (in_array($_FILES['updateProfilePicture']['type'], $allowedTypes)) {
-                    // DELETE EXISTING FILE
-                    $oldEmployeeID = str_replace("-", "", $updateEmployeeID);
-                    $oldFileName = $oldEmployeeID. '.png';
-                    $filepath = $uploadDir . $oldFileName;
+                    // // DELETE EXISTING FILE
+                    // $oldEmployeeID = str_replace("-", "", $oldEmployeeID);
+                    // $oldFileName = $oldEmployeeID. '.png';
+                    // $filepath = $uploadDir . $oldFileName;
 
-                    if (file_exists($filepath)) {
-                        // Attempt to delete the file
-                        if (unlink($filepath)) {
-                            echo "File '$oldFileName' was successfully deleted.";
-                        } else {
-                            echo "Error: Could not delete the file.";
-                        }
-                    }
+                    // if (file_exists($filepath)) {
+                    //     // Attempt to delete the file
+                    //     if (unlink($filepath)) {
+                    //         echo "File '$oldFileName' was successfully deleted.";
+                    //     } else {
+                    //         echo "Error: Could not delete the file.";
+                    //     }
+                    // }
                     if (move_uploaded_file($_FILES['updateProfilePicture']['tmp_name'], $uploadFile)) {
                         // SUCCESSFULLY UPLOADED FILE
 
@@ -252,7 +252,7 @@
                     $allowedTypes = ['image/jpeg', 'image/png'];
                     if (in_array($_FILES['updateProfilePicture']['type'], $allowedTypes)) {
                         // DELETE EXISTING FILE
-                        $oldEmployeeID = str_replace("-", "", $updateEmployeeID);
+                        $oldEmployeeID = str_replace("-", "", $oldEmployeeID);
                         $oldFileName = $oldEmployeeID. '.png';
                         $filepath = $uploadDir . $oldFileName;
     
@@ -334,7 +334,7 @@
                     $allowedTypes = ['image/jpeg', 'image/png'];
                     if (in_array($_FILES['updateProfilePicture']['type'], $allowedTypes)) {
                         // DELETE EXISTING FILE
-                        $oldEmployeeID = str_replace("-", "", $updateEmployeeID);
+                        $oldEmployeeID = str_replace("-", "", $oldEmployeeID);
                         $oldFileName = $oldEmployeeID. '.png';
                         $filepath = $uploadDir . $oldFileName;
     
@@ -412,7 +412,7 @@
                         $allowedTypes = ['image/jpeg', 'image/png'];
                         if (in_array($_FILES['updateProfilePicture']['type'], $allowedTypes)) {
                             // DELETE EXISTING FILE
-                            $oldEmployeeID = str_replace("-", "", $updateEmployeeID);
+                            $oldEmployeeID = str_replace("-", "", $oldEmployeeID);
                             $oldFileName = $oldEmployeeID. '.png';
                             $filepath = $uploadDir . $oldFileName;
         
