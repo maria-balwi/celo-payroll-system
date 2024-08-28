@@ -702,9 +702,6 @@ $(document).ready(function() {
                     });
                     $('#deductionsSection').html(deductionsHTML);
 
-                    // Show the modal
-                    $('#viewEmployeeModal').modal('show');
-
                     let employeeID_string = res.data.employeeID;
                     $('#viewProfilePicture').click(function() {
                         const imagePath = '../assets/images/profiles/' + employeeID_string.replace("-", "") + '.png'; // Set your directory path here
