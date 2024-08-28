@@ -99,9 +99,23 @@
 
         public function addEmpDeduction_once($id, $deductionID, $deductionType, $amount, $effectiveDate) {
             $addEmpADeduction = "
-                INSERT INTO ".$this->empAllowances." (empID, deductionID, type, amount, effectiveDate, dateCreated)
+                INSERT INTO ".$this->empDeductions." (empID, deductionID, type, amount, effectiveDate, dateCreated)
                 VALUES ('$id', '$deductionID', '$deductionType', '$amount', '$effectiveDate', CURRENT_TIMESTAMP())";
             return $addEmpADeduction;
+        }
+
+        public function deleteEmpAllowance($empAllowanceID) {
+            $deleteEmpAllowance = "
+                DELETE FROM ".$this->empAllowances."
+                WHERE empAllowanceID = '$empAllowanceID'";
+            return $deleteEmpAllowance;
+        }
+
+        public function deleteEmpADeduction($empDeductionID) {
+            $deleteEmpADeduction = "
+                DELETE FROM ".$this->empDeductions."
+                WHERE empDeductionID = '$empDeductionID'";
+            return $deleteEmpADeduction;
         }
     }
 ?>
