@@ -12,11 +12,20 @@
         if(mysqli_num_rows($getTeamResult) == 1)
         {
             $team = mysqli_fetch_array($getTeamResult);
+
+            $yearMonth = date('2024-07');
+
+            $teamQuery = mysqli_query($conn, $employees->viewDTR2($team_id, $yearMonth));
+            $teamDTR = [];
+            while ($teamResult = mysqli_fetch_array($teamQuery)) {
+                $teamDTR[] = $teamResult;
+            }
             
             $res = [
                 'status' => 200,
                 'message' => 'Employee Fetch Successfully by id',
-                'data' => $team
+                'data' => $team, 
+                'teamDTR' => $teamDTR
             ];
 
             echo json_encode($res);

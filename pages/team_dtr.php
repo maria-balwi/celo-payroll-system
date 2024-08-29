@@ -37,7 +37,6 @@
             
             <!-- CONTENT -->
             <div class="p-4 m-1 bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
-
                 <!-- DATATABLE -->
                 <div class="container mx-auto overflow-auto">
                     <table id="teamDTRTable" class="table table-striped table-bordered min-w-full divide-y divide-gray-200 text-center pt-3">
@@ -88,7 +87,7 @@
                                 $availableSL = $operationsTeamDetails['availableSL']; 
                                 $availableVL = $operationsTeamDetails['availableVL']; 
 
-                                echo "<tr data-id='" . $teamOperations_id . "'>";
+                                echo "<tr data-id='" . $teamOperations_id . "' class='teamDTRview cursor-pointer'>";
                                 echo "<td class='whitespace-nowrap'>" . $teamOperations_employeeID . "</td>";
                                 echo "<td class='whitespace-nowrap text-left'>" . $teamOperations_employeeName . "</td>";
                                 echo "<td class='whitespace-nowrap'>" . $teamOperations_shift . "</td>";
@@ -130,7 +129,7 @@
                                 $availableSL = $itTeamDetails['availableSL']; 
                                 $availableVL = $itTeamDetails['availableVL']; 
 
-                                echo "<tr data-id='" . $teamIT_id . "'>";
+                                echo "<tr data-id='" . $teamIT_id . "' class='teamDTRview cursor-pointer'>";
                                 echo "<td class='whitespace-nowrap'>" . $teamIT_employeeID . "</td>";
                                 echo "<td class='whitespace-nowrap text-left'>" . $teamIT_employeeName . "</td>";
                                 echo "<td class='whitespace-nowrap'>" . $teamIT_shift . "</td>";
@@ -157,7 +156,7 @@
             <!--------------------------------------------------------------------------------------------------------------------------------------------->
             <!--------------------------------------------------------------- VIEW TEAM MEMBER DTR -------------------------------------------------------->
             <div class="modal fade" id="viewTeamDTRModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
-                <div class="modal-dialog modal-none modal-xl modal-dialog-centered">
+                <div class="modal-dialog modal-none modal-lg modal-dialog-centered">
                     <div class="modal-content" id="viewTeamDTRModal">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="userFormLabel">View Team Member DTR</h1>
@@ -195,7 +194,7 @@
                                 </div>
                             </div>
 
-                            <!-- <div class="row g-2 mb-2">
+                            <div class="row g-2 mb-2">
                                 <div class="container mx-auto overflow-auto">
                                     <table id="attendanceTable" class="table table-auto table-striped table-bordered text-center">
                                         <thead class="bg-gray-50">
@@ -205,30 +204,12 @@
                                                 <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Log Out</th>
                                             </tr>
                                         </thead>
-                                        <tbody class="bg-white divide-y divide-gray-200">
-                                            < ?php
-                                                $yearMonth = date('2024-07');
-                                                globalVariable();
-
-                                                $itTeamQuery = mysqli_query($conn, $employees->viewDTR($id));
-                                                while ($itTeamDetails = mysqli_fetch_array($itTeamQuery)) {
-
-                                                    // $teamIT_id = $itTeamDetails['id'];
-                                                    $teamIT_attendanceDate = $itTeamDetails['attendanceDate'];
-                                                    $teamIT_timeIn = $itTeamDetails['attendanceTime'];
-                                                    $teamIT_timeOut = $itTeamDetails['attendanceTime'];
-                                                    echo "<tr>"; 
-                                                    ?>
-                                                    
-                                                    <td class="whitespace-nowrap text-left">< ?php echo $teamIT_attendanceDate ?></td>
-                                                    <td class="whitespace-nowrap">< ?php echo $teamIT_timeIn ?></td>
-                                                    <td class="whitespace-nowrap">< ?php echo $teamIT_timeOut ?></td>
-                                                < ?php } ?>
-                                            </tr>
+                                        <tbody class="bg-white divide-y divide-gray-200" id="empDTRsection">
+                                            
                                         </tbody>
                                     </table>
                                 </div>
-                            </div> -->
+                            </div>
                         </div>
 
                         <div class="modal-footer">

@@ -27,23 +27,19 @@ $(document).ready(function() {
                     $('#viewEmailAddress').val(res.data.emailAddress);
                     $('#viewEmployeeID').val(res.data.employeeID);
                     $('#viewShiftID').val(res.data.startTime + ' - ' + res.data.endTime);
+                    
+                    // EMPLOYEE DTR SECTION
+                    var teamdtrHTML = '';
+                    res.teamDTR.forEach(function($teamdtr) {
+                        teamdtrHTML += '<tr>';
+                        teamdtrHTML += '<td class="whitespace-nowrap text-left">' + $teamdtr.attendanceDate + '</td>';
+                        teamdtrHTML += '<td class="whitespace-nowrap">' + $teamdtr.logType + '</td>';
+                        teamdtrHTML += '<td class="whitespace-nowrap">' + $teamdtr.attendanceTime + '</td>';
+                        teamdtrHTML += '</tr>';
+                    })
+                    $('#empDTRsection').html(teamdtrHTML);
+                    
                     $('#viewTeamDTRModal').modal('show');
-
-                    // AUTOMATICALLY SEND VIEWID TO PHP
-                    var viewID = $('#viewID').val();
-
-                    $.ajax({
-                        type: "POST",
-                        url: "../backend/team/processViewID.php", // The PHP file that will process the data
-                        data: { id: viewID },
-                        success: function(response) {
-                            // console.log('Response from PHP: ' + response);
-                            // Additional actions after success (if needed)
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('Error: ' + error);
-                        }
-                    });
                 }
             }
         });
