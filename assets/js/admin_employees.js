@@ -288,8 +288,6 @@ $(document).ready(function() {
         var hourlyRate = $("#hourlyRate").val();
         var vacationLeaves = $("#vacationLeaves").val();
         var sickLeaves = $("#sickLeaves").val();
-        var req_sss = $("#req_sss").val();
-        var req_pagIbig = $("#req_pagIbig").val();
 
         if (lastName == "" || firstName == "" || gender == "" || civilStatus == "" || 
             address == "" || dateOfBirth == "" || placeOfBirth == "" ||
