@@ -76,7 +76,7 @@
             </div>
         </main>
     
-        <script src="../assets/js/shifts.js"></script>
+        <script src="../assets/js/user_shifts.js"></script>
 
         <!-- FOOTER -->
         <?php include('../includes/footer.php'); ?>
