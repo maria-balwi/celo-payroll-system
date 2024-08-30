@@ -90,7 +90,7 @@
         } 
         public function viewDTR2($id, $yearMonth) {
             $dtr = "
-                SELECT attendanceDate, id, logType,   
+                SELECT attendanceDate, id, attendance.logTypeID, logType,   
                 DATE_FORMAT(attendanceTime, '%h:%i %p') AS attendanceTime, 
                 DATE_FORMAT(startTime, '%h:%i %p') AS startTime, 
                 DATE_FORMAT(endTime, '%h:%i %p') AS endTime
@@ -483,7 +483,7 @@
 
         public function viewAllShifts() {
             $allShifts = "
-                SELECT shiftID, CONCAT(startTime, ' - ', endTime) AS shift 
+                SELECT shiftID, CONCAT(DATE_FORMAT(startTime, '%h:%i %p'), ' - ', DATE_FORMAT(endTime, '%h:%i %p')) AS shift 
                 FROM ".$this->shifts;
             return $allShifts;
         }
