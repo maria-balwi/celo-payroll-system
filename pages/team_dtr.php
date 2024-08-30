@@ -15,24 +15,34 @@
                 <div class="mr-4">
                     Daily Time Records
                 </div>   
-                
+                    
                 <!-- DATA RANGE DROPDOWN MENU -->
-                <div class="relative inline-block text-right">
+                <!-- <div class="relative inline-block text-right mr-2">
                     <select class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-2 py-2 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:outline-none">
-                        <option value="2024-01">January</option>
-                        <option value="2024-02">February</option>
-                        <option value="2024-03">March</option>
-                        <option value="2024-04">April</option>
-                        <option value="2024-05">May</option>
-                        <option value="2024-06">June</option>
-                        <option value="2024-07">July</option>
-                        <option value="2024-08">August</option>
-                        <option value="2024-09">September</option>
-                        <option value="2024-10">October</option>
-                        <option value="2024-11">November</option>
-                        <option value="2024-12">December</option>
+                        <option value="01">2024</option>
+                        <option value="02">2025</option>
+                        <option value="03">2026</option>
+                        <option value="04">2027</option>
                     </select>
-                </div>
+                </div> -->
+
+                <!-- DATA RANGE DROPDOWN MENU -->
+                <!-- <div class="relative inline-block text-right">
+                    <select class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-2 py-2 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:outline-none">
+                        <option value="01">January</option>
+                        <option value="02">February</option>
+                        <option value="03">March</option>
+                        <option value="04">April</option>
+                        <option value="05">May</option>
+                        <option value="06">June</option>
+                        <option value="07">July</option>
+                        <option value="08">August</option>
+                        <option value="09">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select>
+                </div> -->
             </div>
             
             <!-- CONTENT -->
@@ -58,6 +68,8 @@
                         $year = date('Y');
                         $month = date('m');
 
+                        $yearMonth = date('Y-m');
+
                         if ($_SESSION['departmentID'] == 1) 
                         {
                             // GET OPERATIONS TEAM
@@ -74,7 +86,7 @@
                                 $monthlyAttendance = mysqli_num_rows($monthlyAttendanceQuery);
 
                                 // GET MONTHLY ABSENCES
-                                $workingDays = $attendance->getWorkingDaysInMonth($year, $month);
+                                $workingDays = $attendance->getWorkingDaysInMonth($yearMonth);
                                 $monthlyAbsences = $workingDays - $monthlyAttendance;
 
                                 // GET MONTHLY LATES
@@ -116,7 +128,7 @@
                                 $monthlyAttendance = mysqli_num_rows($monthlyAttendanceQuery);
 
                                 // GET MONTHLY ABSENCES
-                                $workingDays = $attendance->getWorkingDaysInMonth($year, $month);
+                                $workingDays = $attendance->getWorkingDaysInMonth($yearMonth);
                                 $monthlyAbsences = $workingDays - $monthlyAttendance;
 
                                 // GET MONTHLY LATES
