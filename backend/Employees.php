@@ -104,6 +104,90 @@
             return $dtr;
         }
 
+        public function origViewDTR($id, $yearMonth) {
+            $dtr = "
+                SELECT 
+                    all_dates.attendanceDate,
+                    COALESCE(id, '-') AS id, 
+                    COALESCE(attendance.logTypeID, '-') AS logTypeID, 
+                    COALESCE(logtype.logType, '-') AS logType, 
+                    COALESCE(DATE_FORMAT(attendance.attendanceTime, '%h:%i %p'), '-') AS attendanceTime, 
+                    COALESCE(DATE_FORMAT(shift.startTime, '%h:%i %p'), '-') AS startTime, 
+                    COALESCE(DATE_FORMAT(shift.endTime, '%h:%i %p'), '-') AS endTime
+                FROM 
+                    (
+                        SELECT DATE('$yearMonth-01') + INTERVAL (a.a + (10 * b.a)) DAY AS attendanceDate
+                        FROM (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS a
+                        CROSS JOIN (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3) AS b
+                    ) AS all_dates
+                LEFT JOIN 
+                    ".$this->attendance." AS attendance 
+                    ON all_dates.attendanceDate = attendance.attendanceDate AND attendance.empID = '$id'
+                LEFT JOIN 
+                    ".$this->employees." AS employees ON attendance.empID = employees.id
+                LEFT JOIN 
+                    ".$this->logtype." AS logtype ON attendance.logTypeID = logtype.logTypeID 
+                LEFT JOIN 
+                    ".$this->shift." AS shift ON employees.shiftID = shift.shiftID
+                WHERE 
+                    all_dates.attendanceDate BETWEEN '$yearMonth-01' AND LAST_DAY('$yearMonth-01')
+                ORDER BY 
+                    all_dates.attendanceDate, attendance.attendanceTime;
+                ";
+            return $dtr;
+        }
+
+        public function userViewDTR($id, $yearMonth) {
+            $dtr = "
+                SELECT 
+                    all_dates.attendanceDate,
+                    COALESCE(id, '-') AS id, 
+                    COALESCE(attendance.logTypeID, '-') AS logTypeID, 
+                    COALESCE(logtype.logType, '-') AS logType, 
+                    COALESCE(DATE_FORMAT(attendance.attendanceTime, '%h:%i %p'), '-') AS attendanceTime, 
+                    COALESCE(DATE_FORMAT(shift.startTime, '%h:%i %p'), '-') AS startTime, 
+                    COALESCE(DATE_FORMAT(shift.endTime, '%h:%i %p'), '-') AS endTime
+                FROM 
+                    (
+                        SELECT DATE('$yearMonth-01') + INTERVAL (a.a + (10 * b.a)) DAY AS attendanceDate
+                        FROM (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS a
+                        CROSS JOIN (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3) AS b
+                    ) AS all_dates
+                LEFT JOIN 
+                    ".$this->attendance." AS attendance 
+                    ON all_dates.attendanceDate = attendance.attendanceDate AND attendance.empID = '$id'
+                LEFT JOIN 
+                    ".$this->employees." AS employees ON attendance.empID = employees.id
+                LEFT JOIN 
+                    ".$this->logtype." AS logtype ON attendance.logTypeID = logtype.logTypeID 
+                LEFT JOIN 
+                    ".$this->shift." AS shift ON employees.shiftID = shift.shiftID
+                WHERE 
+                    all_dates.attendanceDate BETWEEN '2024-07-01' AND LAST_DAY('-01')
+                ORDER BY 
+                    all_dates.attendanceDate, attendance.attendanceTime;
+                ";
+            return $dtr;
+        }
+
+        public function oldViewDTR($id) {
+            $dtr = "
+                SELECT attendanceID, attendanceDate, id, attendance.logTypeID, logType,   
+                DATE_FORMAT(attendanceTime, '%h:%i %p') AS attendanceTime, 
+                DATE_FORMAT(startTime, '%h:%i %p') AS startTime, 
+                DATE_FORMAT(endTime, '%h:%i %p') AS endTime
+                FROM ".$this->attendance." AS attendance 
+                INNER JOIN ".$this->employees." AS employees
+                ON attendance.empID = employees.id
+                INNER JOIN ".$this->logtype." AS logtype 
+                ON attendance.logTypeID = logtype.logTypeID 
+                INNER JOIN ".$this->shift." AS shift 
+                ON employees.shiftID = shift.shiftID
+                WHERE empID='$id'
+                ORDER BY attendanceID DESC";
+            return $dtr;
+        }
+
         public function viewOT($id) {
             $request = "
                 SELECT requestID, dateFiled, otDate,

@@ -30,9 +30,11 @@
                                     
                                 </tr>
                             </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
+                            <tbody class="bg-white divide-y divide-gray-200" id="userDTRsection">
                                 <?php
-                                    $dtrQuery = mysqli_query($conn, $employees->viewDTR($_SESSION['id']));
+                                    $yearMonth = date('Y-m');
+
+                                    $dtrQuery = mysqli_query($conn, $employees->oldViewDTR($_SESSION['id']));
                                     while ($dtrDetails = mysqli_fetch_array($dtrQuery)) {
 
                                         $dtr_id = $dtrDetails['id'];
