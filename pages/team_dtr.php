@@ -156,7 +156,7 @@
             <!--------------------------------------------------------------------------------------------------------------------------------------------->
             <!--------------------------------------------------------------- VIEW TEAM MEMBER DTR -------------------------------------------------------->
             <div class="modal fade" id="viewTeamDTRModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
-                <div class="modal-dialog modal-none modal-lg modal-dialog-centered">
+                <div class="modal-dialog modal-none modal-lg modal-dialog-centered modal-dialog-scrollable">
                     <div class="modal-content" id="viewTeamDTRModal">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="userFormLabel">View Team Member DTR</h1>

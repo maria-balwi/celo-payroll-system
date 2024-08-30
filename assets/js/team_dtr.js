@@ -30,15 +30,56 @@ $(document).ready(function() {
                     
                     // EMPLOYEE DTR SECTION
                     var teamdtrHTML = '';
+                    var dtrGroupedByDate = {};
+                    var previousDate = null;
+
+                    // Initialize object to keep track of ongoing shifts
+                    var ongoingShift = null;
+
                     res.teamDTR.forEach(function($teamdtr) {
+                        var date = $teamdtr.attendanceDate;
+                        var time = $teamdtr.attendanceTime;
+                        var logTypeID = $teamdtr.logTypeID;
+
+                        // Initialize the date entry if it doesn't exist
+                        if (!dtrGroupedByDate[date]) {
+                            dtrGroupedByDate[date] = { timeIn: null, timeOut: null };
+                        }
+
+                        // Handle Time In (LogTypeID 1 or 2)
+                        if (logTypeID == 1 || logTypeID == 2) {
+                            if (!dtrGroupedByDate[date].timeIn || time < dtrGroupedByDate[date].timeIn) {
+                                dtrGroupedByDate[date].timeIn = time;
+                            }
+                            ongoingShift = { date: date, timeIn: time }; // Start new shift
+                        }
+
+                        // Handle Time Out (LogTypeID 3 or 4)
+                        if (logTypeID == 3 || logTypeID == 4) {
+                            if (ongoingShift && ongoingShift.date !== date) {
+                                // Time out belongs to the ongoing shift from the previous day
+                                dtrGroupedByDate[ongoingShift.date].timeOut = time;
+                                ongoingShift = null; // Reset ongoing shift
+                            } else {
+                                dtrGroupedByDate[date].timeOut = time;
+                            }
+                        }
+                    });
+
+                    // Display the results
+                    for (var date in dtrGroupedByDate) {
+                        var timeIn = dtrGroupedByDate[date].timeIn !== null ? dtrGroupedByDate[date].timeIn : '-';
+                        var timeOut = dtrGroupedByDate[date].timeOut !== null ? dtrGroupedByDate[date].timeOut : '-';
+
                         teamdtrHTML += '<tr>';
-                        teamdtrHTML += '<td class="whitespace-nowrap text-left">' + $teamdtr.attendanceDate + '</td>';
-                        teamdtrHTML += '<td class="whitespace-nowrap">' + $teamdtr.logType + '</td>';
-                        teamdtrHTML += '<td class="whitespace-nowrap">' + $teamdtr.attendanceTime + '</td>';
+                        teamdtrHTML += '<td class="whitespace-nowrap">' + date + '</td>';
+                        teamdtrHTML += '<td class="whitespace-nowrap">' + timeIn + '</td>';
+                        teamdtrHTML += '<td class="whitespace-nowrap">' + timeOut + '</td>';
                         teamdtrHTML += '</tr>';
-                    })
+                    }
+
                     $('#empDTRsection').html(teamdtrHTML);
-                    
+
                     $('#viewTeamDTRModal').modal('show');
                 }
             }
