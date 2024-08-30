@@ -71,24 +71,7 @@
             return $team;
         }
 
-        public function viewDTR($id) {
-            $dtr = "
-                SELECT attendanceDate, id, logType,   
-                DATE_FORMAT(attendanceTime, '%h:%i %p') AS attendanceTime, 
-                DATE_FORMAT(startTime, '%h:%i %p') AS startTime, 
-                DATE_FORMAT(endTime, '%h:%i %p') AS endTime
-                FROM ".$this->attendance." AS attendance 
-                INNER JOIN ".$this->employees." AS employees
-                ON attendance.empID = employees.id
-                INNER JOIN ".$this->logtype." AS logtype 
-                ON attendance.logTypeID = logtype.logTypeID 
-                INNER JOIN ".$this->shift." AS shift 
-                ON employees.shiftID = shift.shiftID
-                WHERE empID='$id'
-                ORDER BY attendanceDate DESC, attendanceTime DESC";
-            return $dtr;
-        } 
-        public function viewDTR2($id, $yearMonth) {
+        public function viewDTR($id, $yearMonth) {
             $dtr = "
                 SELECT 
                     all_dates.attendanceDate,

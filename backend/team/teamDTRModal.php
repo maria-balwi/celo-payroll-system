@@ -15,7 +15,7 @@
 
             $yearMonth = date('2024-07');
 
-            $teamQuery = mysqli_query($conn, $employees->viewDTR2($team_id, $yearMonth));
+            $teamQuery = mysqli_query($conn, $employees->viewDTR($team_id, $yearMonth));
             $teamDTR = [];
             while ($teamResult = mysqli_fetch_array($teamQuery)) {
                 $teamDTR[] = $teamResult;
