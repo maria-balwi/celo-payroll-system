@@ -58,7 +58,7 @@
                                     $year = date('Y');
                                     $month = date('m');
 
-                                    $workingDays = $attendance->getWorkingDaysInMonth($year, $month);
+                                    $workingDays = $attendance->getWorkingDaysInMonth($yearMonth);
                                     $attendance_absences = $workingDays - $attendance_daysWorked;
 
                                     // GET LATES

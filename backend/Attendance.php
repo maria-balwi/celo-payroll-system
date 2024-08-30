@@ -254,6 +254,25 @@
             return $ITteam;
         }
 
+        public function viewITTeams($yearMonth) {
+            $ITteam = "
+                SELECT id, firstName, lastName, employeeID, availableVL, availableSL,
+                DATE_FORMAT(startTime, '%h:%i %p') AS startTime, 
+                DATE_FORMAT(endTime, '%h:%i %p') AS endTime,
+                departmentName
+                FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->department." AS department
+                ON employees.departmentID = department.departmentID
+                INNER JOIN ".$this->shifts." AS shifts
+                ON employees.shiftID = shifts.shiftID
+                INNER JOIN ".$this->attendance." AS attendance
+                ON employees.id = attendance.empID
+                WHERE employees.departmentID = 4 AND 
+                DATE_FORMAT(attendanceDate, '%Y-%m') = '2024-07'
+                GROUP BY id";
+            return $ITteam;
+        }
+
         public function viewOperationsTeam() {
             $ITteam = "
                 SELECT id, firstName, lastName, employeeID, availableVL, availableSL,
@@ -265,7 +284,10 @@
                 ON employees.departmentID = department.departmentID
                 INNER JOIN ".$this->shifts." AS shifts
                 ON employees.shiftID = shifts.shiftID
-                WHERE employees.departmentID = 1";
+                INNER JOIN ".$this->attendance." AS attendance
+                ON employees.id = attendance.empID
+                WHERE employees.departmentID = 1 AND 
+                DATE_FORMAT(attendanceDate, '%Y-%m') = '2024-08'";
             return $ITteam;
         }
 
@@ -360,8 +382,8 @@
             return $checkDTR;
         }
 
-        public function getWorkingDaysInMonth($year, $month) {
-            $start_date = date("$year-$month-01");
+        public function getWorkingDaysInMonth($yearMonth) {
+            $start_date = date("$yearMonth-01");
             $end_date = date("Y-m-t", strtotime($start_date)); // last day of the month
             
             $work_days = 0;

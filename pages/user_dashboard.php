@@ -84,8 +84,9 @@
                             <?php 
                                 $year = date('Y');
                                 $month = date('m');
+                                $yearMonth = date('Y-m');
 
-                                $workingDays = $attendance->getWorkingDaysInMonth($year, $month);
+                                $workingDays = $attendance->getWorkingDaysInMonth($yearMonth);
                                 $monthlyAttendanceQuery = mysqli_query($conn, $attendance->getMonthlyAttendance($_SESSION['id']));
                                 $monthlyAttendance = mysqli_num_rows($monthlyAttendanceQuery);
                                 $absences = $workingDays - $monthlyAttendance;
