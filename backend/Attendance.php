@@ -341,6 +341,22 @@
             return $monthlyLates;
         }
 
+        public function getEmployeeInfo($id) {
+            $employeeInfo = "
+                SELECT id, lastName, firstName, gender, civilStatus, address, dateOfBirth, 
+                placeOfBirth, sss, pagIbig, philhealth, tin, emailAddress, employeeID, 
+                mobileNumber, departmentName, basicPay, dailyRate, hourlyRate,
+                DATE_FORMAT(shifts.startTime, '%h:%i %p') AS startTime, 
+                DATE_FORMAT(shifts.endTime, '%h:%i %p') AS endTime
+                FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->shifts." AS shifts
+                ON shifts.shiftID = employees.shiftID
+                INNER JOIN ".$this->department." AS department
+                ON department.departmentID = employees.departmentID
+                WHERE id = '$id'";
+            return $employeeInfo;
+        }
+
         public function getTeamMemberInfo($id) {
             $employeeInfo = "
                 SELECT id, lastName, firstName, gender, civilStatus, address, dateOfBirth, 
