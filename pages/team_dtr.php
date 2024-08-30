@@ -206,9 +206,37 @@
                                 </div>
                             </div>
 
+                            <!-- <div class="row g-2 mb-3">
+                                <div class="col-2">
+                                    <select class="form-select inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-2 py-2 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:outline-none">
+                                        <option value="2024">2024</option>
+                                        <option value="2025">2025</option>
+                                        <option value="2026">2026</option>
+                                        <option value="2027">2027</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-3">
+                                    <select class="form-select inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-2 py-2 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:outline-none">
+                                        <option value="01">January</option>
+                                        <option value="02">February</option>
+                                        <option value="03">March</option>
+                                        <option value="04">April</option>
+                                        <option value="05">May</option>
+                                        <option value="06">June</option>
+                                        <option value="07">July</option>
+                                        <option value="08">August</option>
+                                        <option value="09">September</option>
+                                        <option value="10">October</option>
+                                        <option value="11">November</option>
+                                        <option value="12">December</option>
+                                    </select>
+                                </div>
+                            </div> -->
+
                             <div class="row g-2 mb-2">
                                 <div class="container mx-auto overflow-auto">
-                                    <table id="attendanceTable" class="table table-auto table-striped table-bordered text-center">
+                                    <table id="attendanceTable" class="table table-auto table-striped table-bordered text-center pt-3">
                                         <thead class="bg-gray-50">
                                             <tr>
                                                 <th class="text-xs font-medium text-yellow-500 uppercase tracking-wider">Date</th>
