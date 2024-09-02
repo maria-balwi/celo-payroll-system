@@ -423,7 +423,7 @@ $(document).ready(function() {
                     res.deductions.forEach(function(deduction) {
                         deductionsHTML += '<div class="flex justify-between items-center bg-white p-2 border border-gray-200">';
                         deductionsHTML += '<span>' + deduction.deductionName + '</span>';
-                        deductionsHTML += '<p class="text-sm bg-red-500 text-white p-1 rounded-full my-auto">₱ ' + deduction.amount + '</p>';
+                        deductionsHTML += '<p class="text-sm bg-red-500 text-white py-1 px-2 rounded-full my-auto">₱ ' + deduction.amount + '</p>';
                         deductionsHTML += '<button class="p-2 rounded deleteDeduction" data-id="' + deduction.empDeductionID + '">';
                         deductionsHTML += '<svg class="h-5 w-5 text-gray-800"  fill="none" viewBox="0 0 24 24" stroke="currentColor">';
                         deductionsHTML += '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>';
