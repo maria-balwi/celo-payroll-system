@@ -901,7 +901,7 @@
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="confirmPassLabel">
                                     Confirm Password
-                                    <input type="hidden" id="loggedInUserPassword" value="<?php echo $_SESSION["password"]; ?>">
+                                    <input type="hidden" id="loggedInUserPassword" value="<?php echo $_SESSION["hashedPassword"]; ?>">
                                 </h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>

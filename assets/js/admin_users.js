@@ -307,7 +307,7 @@ $(document).ready(function() {
                 } 
                 else if (res.status == 200) {
                     $('#viewInactiveUserID').val(res.data.userID);
-                    $('#viewInactiveEmployeeName').val(res.data.employeeName);
+                    $('#viewInactiveEmployeeName').val(res.data.firstName+' '+res.data.lastName);
                     $('#viewInactiveEmailAdd').val(res.data.emailAddress);
                     $('#viewInactiveEmpID').val(res.data.employeeID);
                     $('#viewInactiveDept').val(res.data.departmentName + ' - ' + res.data.position);
