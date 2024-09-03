@@ -87,7 +87,7 @@
             $changePassword = "
                 UPDATE ".$this->users." SET
                 password = '$newPass'
-                WHERE employeeID = ".$id."";
+                WHERE empID = ".$id."";
             return $changePassword;
         }
 
