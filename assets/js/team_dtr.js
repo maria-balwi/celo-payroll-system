@@ -1,7 +1,6 @@
 $(document).ready(function() {
 
     $('#teamDTRTable').DataTable();
-    $('#attendanceTable').DataTable();
 
     // VIEW TEAM MEMBER DTR 
     var array = [];
@@ -27,11 +26,12 @@ $(document).ready(function() {
                     $('#viewEmailAddress').val(res.data.emailAddress);
                     $('#viewEmployeeID').val(res.data.employeeID);
                     $('#viewShiftID').val(res.data.startTime + ' - ' + res.data.endTime);
+
+                    var employeeID = res.data.employeeID;
                     
                     // EMPLOYEE DTR SECTION
                     var teamdtrHTML = '';
                     var dtrGroupedByDate = {};
-                    var previousDate = null;
 
                     // Initialize object to keep track of ongoing shifts
                     var ongoingShift = null;
@@ -40,16 +40,21 @@ $(document).ready(function() {
                         var date = $teamdtr.attendanceDate;
                         var time = $teamdtr.attendanceTime;
                         var logTypeID = $teamdtr.logTypeID;
+                        var dayOfWeek = $teamdtr.dayOfWeek;
+                        var filterDate = $teamdtr.filterDate;
 
                         // Initialize the date entry if it doesn't exist
                         if (!dtrGroupedByDate[date]) {
-                            dtrGroupedByDate[date] = { timeIn: null, timeOut: null };
+                            dtrGroupedByDate[date] = { timeIn: null, timeOut: null, dayOfWeek: dayOfWeek, timeInDate: null, timeOutDate: null };
                         }
 
                         // Handle Time In (LogTypeID 1 or 2)
                         if (logTypeID == 1 || logTypeID == 2) {
                             if (!dtrGroupedByDate[date].timeIn || time < dtrGroupedByDate[date].timeIn) {
                                 dtrGroupedByDate[date].timeIn = time;
+                                dtrGroupedByDate[date].dayOfWeek = dayOfWeek;
+                                dtrGroupedByDate[date].timeInDate = filterDate;
+                                console.log(dtrGroupedByDate[date].timeInDate);
                             }
                             ongoingShift = { date: date, timeIn: time }; // Start new shift
                         }
@@ -59,24 +64,111 @@ $(document).ready(function() {
                             if (ongoingShift && ongoingShift.date !== date) {
                                 // Time out belongs to the ongoing shift from the previous day
                                 dtrGroupedByDate[ongoingShift.date].timeOut = time;
+                                dtrGroupedByDate[date].timeOutDate = filterDate;
+                                console.log(dtrGroupedByDate[date].timeOutDate);
                                 ongoingShift = null; // Reset ongoing shift
                             } else {
                                 dtrGroupedByDate[date].timeOut = time;
+                                dtrGroupedByDate[date].timeOutDate = filterDate;
+                                console.log(dtrGroupedByDate[date].timeOutDate);
                             }
                         }
                     });
 
-                    // Display the results
+                    var timeInDate = null;
+                    var timeOutDate = null;
+
+                    // DISPLAY EMPLOYEE DTR
                     for (var date in dtrGroupedByDate) {
+                        var dayOfWeek = dtrGroupedByDate[date].dayOfWeek;
                         var timeIn = dtrGroupedByDate[date].timeIn !== null ? dtrGroupedByDate[date].timeIn : '-';
                         var timeOut = dtrGroupedByDate[date].timeOut !== null ? dtrGroupedByDate[date].timeOut : '-';
-
+                        timeInDate = dtrGroupedByDate[date].timeInDate;
+                        timeOutDate = dtrGroupedByDate[date].timeOutDate;
+                        var faceDTRhtml = 
+                            '<button class="whitespace-nowrap viewFaceDTR" data-id="' + timeInDate + '" data-id2="' + timeOutDate + '"><svg class="h-6 w-6 text-gray-500 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg></button>';
+                        var faceDTR = dtrGroupedByDate[date].timeIn !== null ? faceDTRhtml : '';
+                    
                         teamdtrHTML += '<tr>';
+                        teamdtrHTML += '<td class="whitespace-nowrap">' + faceDTR + '</td>';
                         teamdtrHTML += '<td class="whitespace-nowrap">' + date + '</td>';
+                        teamdtrHTML += '<td class="whitespace-nowrap">' + dayOfWeek + '</td>';
                         teamdtrHTML += '<td class="whitespace-nowrap">' + timeIn + '</td>';
                         teamdtrHTML += '<td class="whitespace-nowrap">' + timeOut + '</td>';
                         teamdtrHTML += '</tr>';
                     }
+
+                    // FOR VIEWING FACE DTR
+                    $(document).on('click', '.viewFaceDTR', function() {
+                        var timeInDate = $(this).data('id');
+                        var timeOutDate = $(this).data('id2');
+                        const timeInImagePath = '../assets/images/attendance/' + employeeID.replace("-", "") + '_' + timeInDate + '_time_in.png'; 
+                        const timeOutImagePath = '../assets/images/attendance/' + employeeID.replace("-", "") + '_' + timeOutDate + '_time_out.png'; 
+                        
+                        // Use the fetch API to check if the images exist
+                        Promise.allSettled([fetch(timeInImagePath), fetch(timeOutImagePath)])
+                        .then(results => {
+                            const img1Result = results[0];
+                            const img2Result = results[1];
+                    
+                            const image1Src = img1Result.status === 'fulfilled' && img1Result.value.ok 
+                                ? timeInImagePath 
+                                : null;
+                    
+                            const image2Src = img2Result.status === 'fulfilled' && img2Result.value.ok 
+                                ? timeOutImagePath 
+                                : null;
+                    
+                            let htmlContent = '<div class="flex justify-center space-x-6">';
+                    
+                            // Check if time-in image exists
+                            if (image1Src) {
+                                htmlContent += `
+                                    <div class="text-center">
+                                        <img src="${image1Src}" alt="Log In" style="height:300px; width: 300px">
+                                        <p>Time In</p>
+                                    </div>
+                                `;
+                            } else {
+                                
+                            }
+                    
+                            // Check if time-out image exists
+                            if (image2Src) {
+                                htmlContent += `
+                                    <div class="text-center">
+                                        <img src="${image2Src}" alt="Log Out" style="height:300px; width: 300px">
+                                        <p>Time Out</p>
+                                    </div>
+                                `;
+                            } else {
+                                
+                            }
+                    
+                            htmlContent += '</div>';
+                    
+                            Swal.fire({
+                                title: 'FaceDTR',
+                                html: htmlContent,
+                                showCloseButton: false,
+                                showConfirmButton: true,
+                                width: 600,
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    timeInDate = null;
+                                    timeOutDate = null;
+                                }
+                            });
+                        })
+                        .catch(error => {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'An error occurred while fetching the images.',
+                            });
+                            console.error('Error fetching images:', error);
+                        });
+                    });  
 
                     $('#empDTRsection').html(teamdtrHTML);
 

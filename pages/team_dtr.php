@@ -16,33 +16,33 @@
                     Daily Time Records
                 </div>   
                     
-                <!-- DATA RANGE DROPDOWN MENU -->
-                <!-- <div class="relative inline-block text-right mr-2">
-                    <select class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-2 py-2 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:outline-none">
-                        <option value="01">2024</option>
-                        <option value="02">2025</option>
-                        <option value="03">2026</option>
-                        <option value="04">2027</option>
+                <div class="static inline-block text-right ml-3">
+                    <select class="form-select inline-flex justify-center rounded-md border border-gray-300 shadow-sm pr-4 bg-white text-sm font-medium text-gray-700">
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                        <option value="2026">2026</option>
+                        <option value="2027">2027</option>
                     </select>
-                </div> -->
+                </div>
 
-                <!-- DATA RANGE DROPDOWN MENU -->
-                <!-- <div class="relative inline-block text-right">
-                    <select class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-2 py-2 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:outline-none">
-                        <option value="01">January</option>
-                        <option value="02">February</option>
-                        <option value="03">March</option>
-                        <option value="04">April</option>
-                        <option value="05">May</option>
-                        <option value="06">June</option>
-                        <option value="07">July</option>
-                        <option value="08">August</option>
-                        <option value="09">September</option>
-                        <option value="10">October</option>
-                        <option value="11">November</option>
-                        <option value="12">December</option>
+                <div class="static inline-block text-right ml-1 mr-1">
+                    <select id="filter_cycleFrom" class="form-select inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-6 bg-white text-sm font-medium text-gray-700">
+                        <!-- <option disabled selected>Select Payroll Cycle FROM</option> -->
+                        <option disabled selected>September</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="01">January</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="02">February</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="03">March</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="04">April</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="05">May</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="06">June</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="07">July</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="08">August</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="09">September</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="10">October</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="11">November</option>
+                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="12">December</option>
                     </select>
-                </div> -->
+                </div>
             </div>
             
             <!-- CONTENT -->
@@ -166,12 +166,12 @@
             <!-- ======================================================================================================================================= -->
 
             <!--------------------------------------------------------------------------------------------------------------------------------------------->
-            <!--------------------------------------------------------------- VIEW TEAM MEMBER DTR -------------------------------------------------------->
+            <!----------------------------------------------------------- VIEW TEAM MEMBER MONTHLY DTR ---------------------------------------------------->
             <div class="modal fade" id="viewTeamDTRModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
                 <div class="modal-dialog modal-none modal-lg modal-dialog-centered modal-dialog-scrollable">
                     <div class="modal-content" id="viewTeamDTRModal">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="userFormLabel">View Team Member DTR</h1>
+                            <h1 class="modal-title fs-5" id="userFormLabel">View Employee DTR</h1>
                             <input type="hidden" id="viewID">
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
@@ -206,42 +206,16 @@
                                 </div>
                             </div>
 
-                            <!-- <div class="row g-2 mb-3">
-                                <div class="col-2">
-                                    <select class="form-select inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-2 py-2 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:outline-none">
-                                        <option value="2024">2024</option>
-                                        <option value="2025">2025</option>
-                                        <option value="2026">2026</option>
-                                        <option value="2027">2027</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-3">
-                                    <select class="form-select inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-2 py-2 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:outline-none">
-                                        <option value="01">January</option>
-                                        <option value="02">February</option>
-                                        <option value="03">March</option>
-                                        <option value="04">April</option>
-                                        <option value="05">May</option>
-                                        <option value="06">June</option>
-                                        <option value="07">July</option>
-                                        <option value="08">August</option>
-                                        <option value="09">September</option>
-                                        <option value="10">October</option>
-                                        <option value="11">November</option>
-                                        <option value="12">December</option>
-                                    </select>
-                                </div>
-                            </div> -->
-
                             <div class="row g-2 mb-2">
                                 <div class="container mx-auto overflow-auto">
                                     <table id="attendanceTable" class="table table-auto table-striped table-bordered text-center pt-3">
                                         <thead class="bg-gray-50">
                                             <tr>
-                                                <th class="text-xs font-medium text-yellow-500 uppercase tracking-wider">Date</th>
-                                                <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Log In</th>
-                                                <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Log Out</th>
+                                                <th class="text-xs font-medium text-yellow-500 uppercase tracking-tight">Face DTR</th>
+                                                <th class="text-xs font-medium text-yellow-500 uppercase tracking-tight">Date</th>
+                                                <th class="text-xs font-medium text-yellow-500 uppercase tracking-tight">Day</th>
+                                                <th class="text-xs font-medium text-gray-500 uppercase tracking-tight">Time In</th>
+                                                <th class="text-xs font-medium text-gray-500 uppercase tracking-tight">Time Out</th>
                                             </tr>
                                         </thead>
                                         <tbody class="bg-white divide-y divide-gray-200" id="empDTRsection">
@@ -253,7 +227,74 @@
                         </div>
 
                         <div class="modal-footer">
-                            <!-- <button type="button" class="btn btn-primary employeeUpdate">Update</button> -->
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--------------------------------------------------------------------------------------------------------------------------------------------->
+            <!----------------------------------------------------------- VIEW TEAM MEMBER FACE DTR ------------------------------------------------------->
+            <div class="modal fade" id="viewFaceDTRModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
+                <div class="modal-dialog modal-none modal-lg modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content" id="viewFaceDTRModal">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="userFormLabel">View Employee DTR</h1>
+                            <input type="hidden" id="viewID">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row g-2 mb-2">
+                                <div class="col-2">
+                                    <label for="viewEmployeeID">Employee ID:</label>
+                                </div>
+                                <div class="col-3">
+                                    <label for="viewEmployeeName">Name:</label>
+                                </div>
+                                <div class="col-4">
+                                    <label for="viewEmailAddress">Email Address:</label>
+                                </div>
+                                <div class="col-3">
+                                    <label for="viewShiftID">Shift:</label>
+                                </div>
+                            </div> 
+
+                            <div class="row g-2 mb-4">
+                                <div class="col-2">
+                                    <input type="email" class="form-control" id="viewEmployeeID" disabled readonly>
+                                </div>
+                                <div class="col-3">
+                                    <input type="text" class="form-control" id="viewEmployeeName" disabled readonly>
+                                </div>
+                                <div class="col-4">
+                                    <input type="email" class="form-control" id="viewEmailAddress" disabled readonly>
+                                </div>
+                                <div class="col-3">
+                                    <input type="email" class="form-control" id="viewShiftID" disabled readonly>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-2">
+                                <div class="container mx-auto overflow-auto">
+                                    <table id="attendanceTable" class="table table-auto table-striped table-bordered text-center pt-3">
+                                        <thead class="bg-gray-50">
+                                            <tr>
+                                                <th class="text-xs font-medium text-yellow-500 uppercase tracking-tight">Face DTR</th>
+                                                <th class="text-xs font-medium text-yellow-500 uppercase tracking-tight">Date</th>
+                                                <th class="text-xs font-medium text-yellow-500 uppercase tracking-tight">Day</th>
+                                                <th class="text-xs font-medium text-gray-500 uppercase tracking-tight">Time In</th>
+                                                <th class="text-xs font-medium text-gray-500 uppercase tracking-tight">Time Out</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="bg-white divide-y divide-gray-200" id="empDTRsection">
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         </div>
                     </div>
