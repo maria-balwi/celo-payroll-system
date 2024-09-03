@@ -74,18 +74,18 @@
         public function viewDTR($id, $yearMonth) {
             $dtr = "
                 SELECT 
-                    all_dates.attendanceDate,
+                    DATE_FORMAT(all_dates.attendanceDate, '%m/%d/%Y') AS attendanceDate,
+                    DATE_FORMAT(all_dates.attendanceDate, '%Y.%m.%d') AS filterDate,
+                    DATE_FORMAT(all_dates.attendanceDate, '%a') AS dayOfWeek,
                     COALESCE(id, '-') AS id, 
                     COALESCE(attendance.logTypeID, '-') AS logTypeID, 
                     COALESCE(logtype.logType, '-') AS logType, 
-                    COALESCE(DATE_FORMAT(attendance.attendanceTime, '%h:%i %p'), '-') AS attendanceTime, 
-                    COALESCE(DATE_FORMAT(shift.startTime, '%h:%i %p'), '-') AS startTime, 
-                    COALESCE(DATE_FORMAT(shift.endTime, '%h:%i %p'), '-') AS endTime
+                    COALESCE(DATE_FORMAT(attendance.attendanceTime, '%h:%i %p'), '-') AS attendanceTime
                 FROM 
                     (
                         SELECT DATE('$yearMonth-01') + INTERVAL (a.a + (10 * b.a)) DAY AS attendanceDate
                         FROM (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS a
-                        CROSS JOIN (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3) AS b
+                        CROSS JOIN (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2) AS b
                     ) AS all_dates
                 LEFT JOIN 
                     ".$this->attendance." AS attendance 
@@ -99,7 +99,7 @@
                 WHERE 
                     all_dates.attendanceDate BETWEEN '$yearMonth-01' AND LAST_DAY('$yearMonth-01')
                 ORDER BY 
-                    all_dates.attendanceDate, attendance.attendanceTime;
+                    all_dates.attendanceDate, attendance.attendanceTime
                 ";
             return $dtr;
         }

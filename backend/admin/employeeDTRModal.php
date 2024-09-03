@@ -13,7 +13,7 @@
         {
             $employee = mysqli_fetch_array($getEmployeeResult);
 
-            $yearMonth = date('2024-07');
+            $yearMonth = date('Y-m');
 
             $employeeQuery = mysqli_query($conn, $employees->viewDTR($employee_id, $yearMonth));
             $employeeDTR = [];
