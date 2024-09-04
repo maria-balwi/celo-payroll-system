@@ -25,7 +25,7 @@
                 </div>
 
                 <div class="static inline-block text-right ml-1 mr-1">
-                    <select id="filter_cycleFrom" class="form-select inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-6 bg-white text-sm font-medium text-gray-700">
+                    <select id="filterMonth" class="form-select inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-6 bg-white text-sm font-medium text-gray-700">
                         <!-- <option disabled selected>Select Payroll Cycle FROM</option> -->
                         <option disabled selected>September</option>
                         <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="01">January</option>
@@ -46,7 +46,6 @@
             
             <!-- CONTENT -->
             <div class="px-3 bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
-                
                 <!-- DATATABLE -->
                 <div class="container mx-auto my-3 overflow-auto">
                     <table id="dtr" class="table table-striped table-bordered table-auto text-center">
