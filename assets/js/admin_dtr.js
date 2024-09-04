@@ -1,6 +1,59 @@
 $(document).ready(function() {
 
-    $('#dtr').DataTable();
+    $('#dtr').DataTable({});
+    // var dtr = $('#dtr').DataTable();
+    // dtr.order([[0, "asc"]]).draw();
+
+    // $('#filterMonth').change(function() {
+    //     var filterMonth = $('#filterMonth').val();
+    
+    //     $.ajax({
+    //         url: '../backend/admin/filteredDTRtable.php', 
+    //         // url: 'admin_dtr.php', 
+    //         type: 'GET',
+    //         data: { filterMonth: filterMonth },
+    //         success: function(response) {
+    //             var res = JSON.parse(response);
+    //             // $('#dtr tbody').html(response);
+    //             // $('#dtr').DataTable().clear().destroy();
+    //             // $('#dtr').DataTable({});
+    //             var monthyDTRhtml = '';
+    //             res.monthlyDTR.forEach(function($dtr) {
+    //                 monthyDTRhtml += '<tr data-id="' + $dtr.id + '" class="employeeDTRview cursor-pointer">';
+    //                 monthyDTRhtml += '<td class="whitespace-nowrap">' + $dtr.employeeID + '</td>';
+    //                 monthyDTRhtml += '<td class="whitespace-nowrap text-left">' + $dtr.employeeName + '</td>';
+    //                 monthyDTRhtml += '<td class="whitespace-nowrap">' + $dtr.shift + '</td>';
+    //                 monthyDTRhtml += '<td class="whitespace-nowrap">' + $dtr.daysWorked + '</td>';
+    //                 monthyDTRhtml += '<td class="whitespace-nowrap">' + $dtr.availableVL + '</td>';
+    //                 monthyDTRhtml += '<td class="whitespace-nowrap">' + $dtr.availableSL + '</td>';
+    //                 monthyDTRhtml += '<td class="whitespace-nowrap">' + $dtr.absences + '</td>';
+    //                 monthyDTRhtml += '<td class="whitespace-nowrap">' + $dtr.lates + '</td>';
+    //                 monthyDTRhtml += '<td class="whitespace-nowrap">' + $dtr.undertimes + '</td>';
+    //                 monthyDTRhtml += '</tr>';
+    //             })
+    //             $('#dtr').DataTable().clear().destroy(); 
+    //             $('#dtr').DataTable({});
+    //             $('#monthlyDTRsection').html(monthyDTRhtml);
+    //         }
+    //     });
+    // });
+
+    document.getElementById('filterMonth').addEventListener('change', function() {
+        var filterMonth = $('#filterMonth').val();
+        console.log(filterMonth);
+    
+        $.ajax({
+            url: '../backend/admin/filteredDTRtable.php', 
+            // url: 'admin_dtr.php', 
+            type: 'POST',
+            data: { filterMonth: filterMonth },
+            success: function(response) {
+                $('#dtr').DataTable().clear().destroy(); 
+                $('#dtr tbody').html(response);
+                $('#dtr').DataTable({});
+            }
+        });
+    });
 
     // VIEW TEAM MEMBER DTR 
     var array = [];
@@ -54,7 +107,6 @@ $(document).ready(function() {
                                 dtrGroupedByDate[date].timeIn = time;
                                 dtrGroupedByDate[date].dayOfWeek = dayOfWeek;
                                 dtrGroupedByDate[date].timeInDate = filterDate;
-                                console.log(dtrGroupedByDate[date].timeInDate);
                             }
                             ongoingShift = { date: date, timeIn: time }; // Start new shift
                         }
@@ -65,12 +117,10 @@ $(document).ready(function() {
                                 // Time out belongs to the ongoing shift from the previous day
                                 dtrGroupedByDate[ongoingShift.date].timeOut = time;
                                 dtrGroupedByDate[date].timeOutDate = filterDate;
-                                console.log(dtrGroupedByDate[date].timeOutDate);
                                 ongoingShift = null; // Reset ongoing shift
                             } else {
                                 dtrGroupedByDate[date].timeOut = time;
                                 dtrGroupedByDate[date].timeOutDate = filterDate;
-                                console.log(dtrGroupedByDate[date].timeOutDate);
                             }
                         }
                     });

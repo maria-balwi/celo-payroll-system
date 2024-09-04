@@ -311,33 +311,33 @@
             return $dailyAttendanceIT_timeOut;
         }
 
-        public function getMonthlyAttendance($id) {
+        public function getMonthlyAttendance($id, $month) {
             $monthlyAttendance = "
                 SELECT * FROM ".$this->attendance."
                 WHERE empID = $id AND
                 logTypeID IN (1, 2) AND
                 YEAR(attendanceDate) = YEAR(CURRENT_DATE())
-                AND MONTH(attendanceDate) = MONTH(CURRENT_DATE())";
+                AND MONTH(attendanceDate) = '$month'";
             return $monthlyAttendance;
         }
 
-        public function getMonthlyUndertimes($id) {
+        public function getMonthlyUndertimes($id, $month) {
             $monthlyUndertimes = "
                 SELECT * FROM ".$this->attendance."
                 WHERE empID = $id AND
                 logTypeID = 3 AND
                 YEAR(attendanceDate) = YEAR(CURRENT_DATE())
-                AND MONTH(attendanceDate) = MONTH(CURRENT_DATE())";
+                AND MONTH(attendanceDate) = '$month'";
             return $monthlyUndertimes;
         }
 
-        public function getMonthlyLates($id) {
+        public function getMonthlyLates($id, $month) {
             $monthlyLates = "
                 SELECT * FROM ".$this->attendance."
                 WHERE empID = $id AND
                 logTypeID = 2 AND
                 YEAR(attendanceDate) = YEAR(CURRENT_DATE())
-                AND MONTH(attendanceDate) = MONTH(CURRENT_DATE())";
+                AND MONTH(attendanceDate) = '$month'";
             return $monthlyLates;
         }
 

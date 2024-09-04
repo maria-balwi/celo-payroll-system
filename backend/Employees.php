@@ -912,7 +912,8 @@
                 INNER JOIN ".$this->department." AS department
                 ON employees.departmentID = department.departmentID
                 INNER JOIN ".$this->shifts." AS shifts
-                ON employees.shiftID = shifts.shiftID";
+                ON employees.shiftID = shifts.shiftID
+                ORDER BY employeeID ASC";
             return $employeeAttendance;
         }
         

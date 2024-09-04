@@ -15,19 +15,19 @@
                     Daily Time Records
                 </div>    
 
-                <div class="static inline-block text-right ml-3">
+                <!-- <div class="static inline-block text-right ml-3">
                     <select class="form-select inline-flex justify-center rounded-md border border-gray-300 shadow-sm pr-4 bg-white text-sm font-medium text-gray-700">
                         <option value="2024">2024</option>
                         <option value="2025">2025</option>
                         <option value="2026">2026</option>
                         <option value="2027">2027</option>
                     </select>
-                </div>
+                </div> -->
 
-                <div class="static inline-block text-right ml-1 mr-1">
+                <div class="static inline-block text-right ml-3 mr-1">
                     <select id="filterMonth" class="form-select inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-6 bg-white text-sm font-medium text-gray-700">
                         <!-- <option disabled selected>Select Payroll Cycle FROM</option> -->
-                        <option disabled selected>September</option>
+                        <option disabled selected><?php echo date('F'); ?></option>
                         <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="01">January</option>
                         <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="02">February</option>
                         <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="03">March</option>
@@ -60,54 +60,146 @@
                                 <th class="py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Absents</th>
                                 <th class="py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Lates</th>
                                 <th class="py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Undertime</th>
-                                <th class="py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Overtime</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
+                        <tbody class="bg-white divide-y divide-gray-200" id="monthlyDTRsection">
+                            <!-- OLD CODE -->
                             <?php
-                                $attendanceQuery = mysqli_query($conn, $employees->viewEmployeeAttendance());
-                                while ($attendanceDetails = mysqli_fetch_array($attendanceQuery)) {
+                                // $attendanceQuery = mysqli_query($conn, $employees->viewEmployeeAttendance());
+                                // while ($attendanceDetails = mysqli_fetch_array($attendanceQuery)) {
 
-                                    $attendance_id = $attendanceDetails['id'];
-                                    $attendance_employeeName = $attendanceDetails['lastName'] . ", " . $attendanceDetails['firstName'];
-                                    $attendance_emailAddress = $attendanceDetails['emailAddress'];
-                                    $attendance_mobileNumber = $attendanceDetails['mobileNumber'];
-                                    $attendance_employeeID = $attendanceDetails['employeeID'];
-                                    $attendance_shift = $attendanceDetails['startTime'] . " - " . $attendanceDetails['endTime'];
-                                    $attendance_vl = $attendanceDetails['availableVL'];
-                                    $attendance_sl = $attendanceDetails['availableSL'];
+                                //     $attendance_id = $attendanceDetails['id'];
+                                //     $attendance_employeeName = $attendanceDetails['lastName'] . ", " . $attendanceDetails['firstName'];
+                                //     $attendance_emailAddress = $attendanceDetails['emailAddress'];
+                                //     $attendance_mobileNumber = $attendanceDetails['mobileNumber'];
+                                //     $attendance_employeeID = $attendanceDetails['employeeID'];
+                                //     $attendance_shift = $attendanceDetails['startTime'] . " - " . $attendanceDetails['endTime'];
+                                //     $attendance_vl = $attendanceDetails['availableVL'];
+                                //     $attendance_sl = $attendanceDetails['availableSL'];
 
-                                    // GET DAYS wORKED
-                                    $monthlyAttendanceQuery = mysqli_query($conn, $attendance->getMonthlyAttendance($attendance_id));
-                                    $attendance_daysWorked = mysqli_num_rows($monthlyAttendanceQuery);
+                                //     $month = date('m');
 
-                                    // GET ABSENTS
-                                    $yearMonth = date('Y-m');
+                                //     // GET DAYS wORKED
+                                //     $monthlyAttendanceQuery = mysqli_query($conn, $attendance->getMonthlyAttendance($attendance_id, $month));
+                                //     $attendance_daysWorked = mysqli_num_rows($monthlyAttendanceQuery);
 
-                                    $workingDays = $attendance->getWorkingDaysInMonth($yearMonth);
-                                    $attendance_absences = $workingDays - $attendance_daysWorked;
+                                //     // GET ABSENTS
+                                //     $workingDays = $attendance->getWorkingDaysInMonth($month);
+                                //     $attendance_absences = $workingDays - $attendance_daysWorked;
 
-                                    // GET LATES
-                                    $monthlyLatesQuery = mysqli_query($conn, $attendance->getMonthlyLates($attendance_id));
-                                    $attendance_lates = mysqli_num_rows($monthlyLatesQuery);
+                                //     // GET LATES
+                                //     $monthlyLatesQuery = mysqli_query($conn, $attendance->getMonthlyLates($attendance_id, $month));
+                                //     $attendance_lates = mysqli_num_rows($monthlyLatesQuery);
 
-                                    // GET UNDERTIMES
-                                    $monthlyUndertimesQuery = mysqli_query($conn, $attendance->getMonthlyUndertimes($attendance_id));
-                                    $attendance_undertimes = mysqli_num_rows($monthlyUndertimesQuery);
+                                //     // GET UNDERTIMES
+                                //     $monthlyUndertimesQuery = mysqli_query($conn, $attendance->getMonthlyUndertimes($attendance_id, $month));
+                                //     $attendance_undertimes = mysqli_num_rows($monthlyUndertimesQuery);
 
 
-                                    echo "<tr data-id='" . $attendance_id . "' class='employeeDTRview cursor-pointer'>";
-                                    echo "<td class ='whitespace-nowrap'>" . $attendance_employeeID . "</td>";
-                                    echo "<td class ='text-left whitespace-nowrap'>" . $attendance_employeeName . "</td>";
-                                    echo "<td class ='whitespace-nowrap'>" . $attendance_shift . "</td>";
-                                    echo "<td class ='whitespace-nowrap'>". $attendance_daysWorked ."</td>";
-                                    echo "<td class ='whitespace-nowrap'>".$attendance_vl."</td>";
-                                    echo "<td class ='whitespace-nowrap'>".$attendance_sl."</td>";
-                                    echo "<td class ='whitespace-nowrap'>".$attendance_absences."</td>";
-                                    echo "<td class ='whitespace-nowrap'>".$attendance_lates."</td>";
-                                    echo "<td class ='whitespace-nowrap'>".$attendance_undertimes."</td>";
-                                    echo "<td class ='whitespace-nowrap'>0</td>";
-                                    echo "</td>";
+                                //     echo "<tr data-id='" . $attendance_id . "' class='employeeDTRview cursor-pointer'>";
+                                //     echo "<td class ='whitespace-nowrap'>" . $attendance_employeeID . "</td>";
+                                //     echo "<td class ='text-left whitespace-nowrap'>" . $attendance_employeeName . "</td>";
+                                //     echo "<td class ='whitespace-nowrap'>" . $attendance_shift . "</td>";
+                                //     echo "<td class ='whitespace-nowrap'>". $attendance_daysWorked ."</td>";
+                                //     echo "<td class ='whitespace-nowrap'>".$attendance_vl."</td>";
+                                //     echo "<td class ='whitespace-nowrap'>".$attendance_sl."</td>";
+                                //     echo "<td class ='whitespace-nowrap'>".$attendance_absences."</td>";
+                                //     echo "<td class ='whitespace-nowrap'>".$attendance_lates."</td>";
+                                //     echo "<td class ='whitespace-nowrap'>".$attendance_undertimes."</td>";
+                                //     echo "</td>";
+                                //     echo "</tr>";
+                                // }
+                            ?>
+
+                            <?php 
+                                if (isset($_POST['filterMonth'])) {
+                                    $filterMonth = $_POST['filterMonth'];
+                                    $attendanceQuery = mysqli_query($conn, $employees->viewEmployeeAttendance());
+
+                                    while ($attendanceDetails = mysqli_fetch_array($attendanceQuery)) {
+                                        $attendance_id = $attendanceDetails['id'];
+                                        $attendance_employeeName = $attendanceDetails['lastName'] . ", " . $attendanceDetails['firstName'];
+                                        $attendance_employeeID = $attendanceDetails['employeeID'];
+                                        $attendance_shift = $attendanceDetails['startTime'] . " - " . $attendanceDetails['endTime'];
+                                        $attendance_vl = $attendanceDetails['availableVL'];
+                                        $attendance_sl = $attendanceDetails['availableSL'];
+                                        
+                                        // GET DAYS wORKED
+                                        $monthlyAttendanceQuery = mysqli_query($conn, $attendance->getMonthlyAttendance($attendance_id, $filterMonth));
+                                        $attendance_daysWorked = mysqli_num_rows($monthlyAttendanceQuery);
+
+                                        // GET ABSENTS
+                                        $workingDays = $attendance->getWorkingDaysInMonth($filterMonth);
+                                        $attendance_absences = $workingDays - $attendance_daysWorked;
+
+                                        // GET LATES
+                                        $monthlyLatesQuery = mysqli_query($conn, $attendance->getMonthlyLates($attendance_id, $filterMonth));
+                                        $attendance_lates = mysqli_num_rows($monthlyLatesQuery);
+
+                                        // GET UNDERTIMES
+                                        $monthlyUndertimesQuery = mysqli_query($conn, $attendance->getMonthlyUndertimes($attendance_id, $filterMonth));
+                                        $attendance_undertimes = mysqli_num_rows($monthlyUndertimesQuery);
+
+                                        echo "<tr data-id='" . $attendance_id . "' class='employeeDTRview cursor-pointer'>";
+                                        echo "<td class ='whitespace-nowrap'>" . $attendance_employeeID . "</td>";
+                                        echo "<td class ='text-left whitespace-nowrap'>" . $attendance_employeeName . "</td>";
+                                        echo "<td class ='whitespace-nowrap'>" . $attendance_shift . "</td>";
+                                        echo "<td class ='whitespace-nowrap'>". $attendance_daysWorked ."</td>";
+                                        echo "<td class ='whitespace-nowrap'>".$attendance_vl."</td>";
+                                        echo "<td class ='whitespace-nowrap'>".$attendance_sl."</td>";
+                                        echo "<td class ='whitespace-nowrap'>".$attendance_absences."</td>";
+                                        echo "<td class ='whitespace-nowrap'>".$attendance_lates."</td>";
+                                        echo "<td class ='whitespace-nowrap'>".$attendance_undertimes."</td>";
+                                        echo "</td>";
+                                        echo "</tr>";
+                                    }
+
+                                    exit;
+                                }
+                                else {
+                                    $attendanceQuery = mysqli_query($conn, $employees->viewEmployeeAttendance());   
+                                    while ($attendanceDetails = mysqli_fetch_array($attendanceQuery)) {
+
+                                        $attendance_id = $attendanceDetails['id'];
+                                        $attendance_employeeName = $attendanceDetails['lastName'] . ", " . $attendanceDetails['firstName'];
+                                        $attendance_emailAddress = $attendanceDetails['emailAddress'];
+                                        $attendance_mobileNumber = $attendanceDetails['mobileNumber'];
+                                        $attendance_employeeID = $attendanceDetails['employeeID'];
+                                        $attendance_shift = $attendanceDetails['startTime'] . " - " . $attendanceDetails['endTime'];
+                                        $attendance_vl = $attendanceDetails['availableVL'];
+                                        $attendance_sl = $attendanceDetails['availableSL'];
+
+                                        $month = date('m');
+
+                                        // GET DAYS wORKED
+                                        $monthlyAttendanceQuery = mysqli_query($conn, $attendance->getMonthlyAttendance($attendance_id, $month));
+                                        $attendance_daysWorked = mysqli_num_rows($monthlyAttendanceQuery);
+
+                                        // GET ABSENTS
+                                        $workingDays = $attendance->getWorkingDaysInMonth($month);
+                                        $attendance_absences = $workingDays - $attendance_daysWorked;
+
+                                        // GET LATES
+                                        $monthlyLatesQuery = mysqli_query($conn, $attendance->getMonthlyLates($attendance_id, $month));
+                                        $attendance_lates = mysqli_num_rows($monthlyLatesQuery);
+
+                                        // GET UNDERTIMES
+                                        $monthlyUndertimesQuery = mysqli_query($conn, $attendance->getMonthlyUndertimes($attendance_id, $month));
+                                        $attendance_undertimes = mysqli_num_rows($monthlyUndertimesQuery);
+
+
+                                        echo "<tr data-id='" . $attendance_id . "' class='employeeDTRview cursor-pointer'>";
+                                        echo "<td class ='whitespace-nowrap'>" . $attendance_employeeID . "</td>";
+                                        echo "<td class ='text-left whitespace-nowrap'>" . $attendance_employeeName . "</td>";
+                                        echo "<td class ='whitespace-nowrap'>" . $attendance_shift . "</td>";
+                                        echo "<td class ='whitespace-nowrap'>". $attendance_daysWorked ."</td>";
+                                        echo "<td class ='whitespace-nowrap'>".$attendance_vl."</td>";
+                                        echo "<td class ='whitespace-nowrap'>".$attendance_sl."</td>";
+                                        echo "<td class ='whitespace-nowrap'>".$attendance_absences."</td>";
+                                        echo "<td class ='whitespace-nowrap'>".$attendance_lates."</td>";
+                                        echo "<td class ='whitespace-nowrap'>".$attendance_undertimes."</td>";
+                                        echo "</tr>";
+                                    }
                                 }
                             ?>
                         </tbody>
