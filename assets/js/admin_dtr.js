@@ -11,7 +11,6 @@ $(document).ready(function() {
     
         $.ajax({
             url: '../backend/admin/filteredDTRtable.php', 
-            // url: 'admin_dtr.php', 
             type: 'POST',
             data: { filterMonth: filterMonth },
             success: function(response) {
@@ -22,7 +21,7 @@ $(document).ready(function() {
         });
     });
 
-    // VIEW TEAM MEMBER DTR 
+    // VIEW EMPLOYEE DTR 
     var array = [];
     $(document).on('click', '.employeeDTRview', function() {
         var employee_id = $(this).data('id');
