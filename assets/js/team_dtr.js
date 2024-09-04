@@ -2,6 +2,25 @@ $(document).ready(function() {
 
     $('#teamDTRTable').DataTable();
 
+    const d = new Date();
+    var filterMonth = d.getMonth() + 1;
+
+    document.getElementById('filterMonth').addEventListener('change', function() {
+        filterMonth = null;
+        filterMonth = $('#filterMonth').val();
+    
+        $.ajax({
+            url: '../backend/team/filteredDTRtable.php', 
+            type: 'POST',
+            data: { filterMonth: filterMonth },
+            success: function(response) {
+                $('#teamDTRTable').DataTable().clear().destroy(); 
+                $('#teamDTRTable tbody').html(response);
+                $('#teamDTRTable').DataTable({});
+            }
+        });
+    });
+
     // VIEW TEAM MEMBER DTR 
     var array = [];
     $(document).on('click', '.teamDTRview', function() {
@@ -12,7 +31,11 @@ $(document).ready(function() {
         // VIEW
         $.ajax({
             type: "GET",
-            url: "../backend/team/teamDTRModal.php?team_id=" + id_team,
+            url: "../backend/team/teamDTRModal.php",
+            data: { 
+                team_id: id_team,
+                filterMonth: filterMonth  
+            },
             success: function(response) {
 
                 var res = jQuery.parseJSON(response);
@@ -54,7 +77,6 @@ $(document).ready(function() {
                                 dtrGroupedByDate[date].timeIn = time;
                                 dtrGroupedByDate[date].dayOfWeek = dayOfWeek;
                                 dtrGroupedByDate[date].timeInDate = filterDate;
-                                console.log(dtrGroupedByDate[date].timeInDate);
                             }
                             ongoingShift = { date: date, timeIn: time }; // Start new shift
                         }
@@ -65,12 +87,10 @@ $(document).ready(function() {
                                 // Time out belongs to the ongoing shift from the previous day
                                 dtrGroupedByDate[ongoingShift.date].timeOut = time;
                                 dtrGroupedByDate[date].timeOutDate = filterDate;
-                                console.log(dtrGroupedByDate[date].timeOutDate);
                                 ongoingShift = null; // Reset ongoing shift
                             } else {
                                 dtrGroupedByDate[date].timeOut = time;
                                 dtrGroupedByDate[date].timeOutDate = filterDate;
-                                console.log(dtrGroupedByDate[date].timeOutDate);
                             }
                         }
                     });

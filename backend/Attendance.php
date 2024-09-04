@@ -286,8 +286,8 @@
                 ON employees.shiftID = shifts.shiftID
                 INNER JOIN ".$this->attendance." AS attendance
                 ON employees.id = attendance.empID
-                WHERE employees.departmentID = 1 AND 
-                DATE_FORMAT(attendanceDate, '%Y-%m') = '2024-08'";
+                WHERE employees.departmentID = 1
+                ORDER BY employeeID ASC";
             return $ITteam;
         }
 
@@ -399,7 +399,7 @@
         }
 
         public function getWorkingDaysInMonth($yearMonth) {
-            $start_date = date("$yearMonth-01");
+            $start_date = date("Y-$yearMonth-01");
             $end_date = date("Y-m-t", strtotime($start_date)); // last day of the month
             
             $work_days = 0;

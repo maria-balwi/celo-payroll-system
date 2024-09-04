@@ -6,6 +6,7 @@
 
     if (isset($_GET['team_id'])) {
         $team_id = mysqli_real_escape_string($conn, $_GET['team_id']);
+        $filterMonth = mysqli_real_escape_string($conn, $_GET['filterMonth']);
         $getTeamQuery = $attendance->getTeamMemberInfo($team_id);
         $getTeamResult = mysqli_query($conn, $getTeamQuery);
 
@@ -13,7 +14,7 @@
         {
             $team = mysqli_fetch_array($getTeamResult);
 
-            $yearMonth = date('Y-m');
+            $yearMonth = date('Y-') . $filterMonth;
 
             $teamQuery = mysqli_query($conn, $employees->viewDTR($team_id, $yearMonth));
             $teamDTR = [];
