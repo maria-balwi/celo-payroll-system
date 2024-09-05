@@ -67,7 +67,8 @@
                         </svg>
                         <h2 class="text-xl font-bold mt-1 mb-0">
                             <?php 
-                                $monthlyAttendanceQuery = mysqli_query($conn, $attendance->getMonthlyAttendance($_SESSION['id']));
+                                $month = date('m');
+                                $monthlyAttendanceQuery = mysqli_query($conn, $attendance->getMonthlyAttendance($_SESSION['id'], $month));
                                 $monthlyAttendance = mysqli_num_rows($monthlyAttendanceQuery);
                                 echo $monthlyAttendance;
                             ?>
@@ -87,7 +88,7 @@
                                 $yearMonth = date('Y-m');
 
                                 $workingDays = $attendance->getWorkingDaysInMonth($yearMonth);
-                                $monthlyAttendanceQuery = mysqli_query($conn, $attendance->getMonthlyAttendance($_SESSION['id']));
+                                $monthlyAttendanceQuery = mysqli_query($conn, $attendance->getMonthlyAttendance($_SESSION['id'], $month));
                                 $monthlyAttendance = mysqli_num_rows($monthlyAttendanceQuery);
                                 $absences = $workingDays - $monthlyAttendance;
                                 echo $absences;
@@ -103,7 +104,7 @@
                         </svg>
                         <h2 class="text-xl font-bold mt-1 mb-0">
                             <?php 
-                                $monthlyUndertimesQuery = mysqli_query($conn, $attendance->getMonthlyUndertimes($_SESSION['id']));
+                                $monthlyUndertimesQuery = mysqli_query($conn, $attendance->getMonthlyUndertimes($_SESSION['id'], $month));
                                 $monthlyUndertimes = mysqli_num_rows($monthlyUndertimesQuery);
                                 echo $monthlyUndertimes;
                             ?>
@@ -118,7 +119,7 @@
                         </svg>
                         <h2 class="text-xl font-bold mt-1 mb-0">
                             <?php 
-                                $monthlyLatesQuery = mysqli_query($conn, $attendance->getMonthlyLates($_SESSION['id']));
+                                $monthlyLatesQuery = mysqli_query($conn, $attendance->getMonthlyLates($_SESSION['id'], $month));
                                 $monthlyLates = mysqli_num_rows($monthlyLatesQuery);
                                 echo $monthlyLates;
                             ?>
