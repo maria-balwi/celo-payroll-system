@@ -1,55 +1,99 @@
 $(document).ready(function() {
 
-    // var dtrTable = $('#dtrTable').DataTable();
-    // dtrTable.order([[1, "desc"]]).draw();
-    $('#dtrTable').DataTable();
+    var dtrTable = $('#dtrTable').DataTable();
+    dtrTable.order([[1, "asc"]]).draw();
+    // $('#dtrTable').DataTable();
+
+    const d = new Date();
+    var filterMonth = d.getMonth() + 1;
     
-    var userdtrHTML = '';
-    var dtrGroupedByDate = {};
-
-    // Initialize object to keep track of ongoing shifts
-    var ongoingShift = null;
-
-    res.employeeDTR.forEach(function($employeedtr) {
-        var date = $employeedtr.attendanceDate;
-        var time = $employeedtr.attendanceTime;
-        var logTypeID = $employeedtr.logTypeID;
-
-        // Initialize the date entry if it doesn't exist
-        if (!dtrGroupedByDate[date]) {
-            dtrGroupedByDate[date] = { timeIn: null, timeOut: null };
-        }
-
-        // Handle Time In (LogTypeID 1 or 2)
-        if (logTypeID == 1 || logTypeID == 2) {
-            if (!dtrGroupedByDate[date].timeIn || time < dtrGroupedByDate[date].timeIn) {
-                dtrGroupedByDate[date].timeIn = time;
+    document.getElementById('filterMonth').addEventListener('change', function() {
+        filterMonth = null;
+        filterMonth = $('#filterMonth').val();
+    
+        $.ajax({
+            url: '../backend/user/filteredDTRtable.php', 
+            type: 'POST',
+            data: { filterMonth: filterMonth },
+            success: function(response) {
+                $('#dtrTable').DataTable().clear().destroy(); 
+                $('#dtrTable tbody').html(response);
+                var dtrTable = $('#dtrTable').DataTable();
+                dtrTable.order([[1, "asc"]]).draw();
             }
-            ongoingShift = { date: date, timeIn: time }; // Start new shift
-        }
-
-        // Handle Time Out (LogTypeID 3 or 4)
-        if (logTypeID == 3 || logTypeID == 4) {
-            if (ongoingShift && ongoingShift.date !== date) {
-                // Time out belongs to the ongoing shift from the previous day
-                dtrGroupedByDate[ongoingShift.date].timeOut = time;
-                ongoingShift = null; // Reset ongoing shift
-            } else {
-                dtrGroupedByDate[date].timeOut = time;
-            }
-        }
+        });
     });
 
-    // Display the results
-    for (var date in dtrGroupedByDate) {
-        var timeIn = dtrGroupedByDate[date].timeIn !== null ? dtrGroupedByDate[date].timeIn : '-';
-        var timeOut = dtrGroupedByDate[date].timeOut !== null ? dtrGroupedByDate[date].timeOut : '-';
-
-        userdtrHTML += '<tr>';
-        userdtrHTML += '<td class="whitespace-nowrap">' + date + '</td>';
-        userdtrHTML += '<td class="whitespace-nowrap">' + timeIn + '</td>';
-        userdtrHTML += '<td class="whitespace-nowrap">' + timeOut + '</td>';
-        userdtrHTML += '</tr>';
-    }
-    $('#userDTRsection').html(userdtrHTML);
+    // FOR VIEWING FACE DTR
+    $(document).on('click', '.viewFaceDTR', function() {
+        var timeInDate = $(this).data('id');
+        var timeOutDate = $(this).data('id2');
+        var employeeID = $(this).data('id3');
+        const timeInImagePath = '../assets/images/attendance/' + employeeID.replace("-", "") + '_' + timeInDate + '_time_in.png'; 
+        const timeOutImagePath = '../assets/images/attendance/' + employeeID.replace("-", "") + '_' + timeOutDate + '_time_out.png'; 
+        
+        // Use the fetch API to check if the images exist
+        Promise.allSettled([fetch(timeInImagePath), fetch(timeOutImagePath)])
+        .then(results => {
+            const img1Result = results[0];
+            const img2Result = results[1];
+    
+            const image1Src = img1Result.status === 'fulfilled' && img1Result.value.ok 
+                ? timeInImagePath 
+                : null;
+    
+            const image2Src = img2Result.status === 'fulfilled' && img2Result.value.ok 
+                ? timeOutImagePath 
+                : null;
+    
+            let htmlContent = '<div class="flex justify-center space-x-6">';
+    
+            // Check if time-in image exists
+            if (image1Src) {
+                htmlContent += `
+                    <div class="text-center">
+                        <img src="${image1Src}" alt="Log In" style="height:300px; width: 300px">
+                        <p>Time In</p>
+                    </div>
+                `;
+            } else {
+                
+            }
+    
+            // Check if time-out image exists
+            if (image2Src) {
+                htmlContent += `
+                    <div class="text-center">
+                        <img src="${image2Src}" alt="Log Out" style="height:300px; width: 300px">
+                        <p>Time Out</p>
+                    </div>
+                `;
+            } else {
+                
+            }
+    
+            htmlContent += '</div>';
+    
+            Swal.fire({
+                title: 'FaceDTR',
+                html: htmlContent,
+                showCloseButton: false,
+                showConfirmButton: true,
+                width: 600,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    timeInDate = null;
+                    timeOutDate = null;
+                }
+            });
+        })
+        .catch(error => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'An error occurred while fetching the images.',
+            });
+            console.error('Error fetching images:', error);
+        });
+    }); 
 });

@@ -77,6 +77,7 @@
                     DATE_FORMAT(all_dates.attendanceDate, '%m/%d/%Y') AS attendanceDate,
                     DATE_FORMAT(all_dates.attendanceDate, '%Y.%m.%d') AS filterDate,
                     DATE_FORMAT(all_dates.attendanceDate, '%a') AS dayOfWeek,
+                    CONCAT(DATE_FORMAT(shift.startTime, '%h:%i %p'), ' - ', DATE_FORMAT(shift.endTime, '%h:%i %p')) AS shift,
                     COALESCE(id, '-') AS id, 
                     COALESCE(attendance.logTypeID, '-') AS logTypeID, 
                     COALESCE(logtype.logType, '-') AS logType, 
@@ -88,14 +89,16 @@
                         CROSS JOIN (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2) AS b
                     ) AS all_dates
                 LEFT JOIN 
-                    ".$this->attendance." AS attendance 
-                    ON all_dates.attendanceDate = attendance.attendanceDate AND attendance.empID = '$id'
-                LEFT JOIN 
-                    ".$this->employees." AS employees ON attendance.empID = employees.id
-                LEFT JOIN 
-                    ".$this->logtype." AS logtype ON attendance.logTypeID = logtype.logTypeID 
+                    ".$this->employees." AS employees ON employees.id = '$id'
                 LEFT JOIN 
                     ".$this->shift." AS shift ON employees.shiftID = shift.shiftID
+                LEFT JOIN 
+                    ".$this->attendance." AS attendance 
+                ON all_dates.attendanceDate = attendance.attendanceDate AND attendance.empID = '$id'
+                
+                LEFT JOIN 
+                    ".$this->logtype." AS logtype ON attendance.logTypeID = logtype.logTypeID 
+                
                 WHERE 
                     all_dates.attendanceDate BETWEEN '$yearMonth-01' AND LAST_DAY('$yearMonth-01')
                 ORDER BY 
