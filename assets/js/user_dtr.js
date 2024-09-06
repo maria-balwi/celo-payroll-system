@@ -48,34 +48,43 @@ $(document).ready(function() {
     
             let htmlContent = '<div class="flex justify-center space-x-6">';
     
-            // Check if time-in image exists
-            if (image1Src) {
+            if ((image1Src == null) && (image2Src == null)) {
                 htmlContent += `
-                    <div class="text-center">
-                        <img src="${image1Src}" alt="Log In" style="height:300px; width: 300px">
-                        <p>Time In</p>
+                    <div class="text-center ">
+                        <p>No Face DTR Recorded</p>
                     </div>
                 `;
-            } else {
-                
             }
-    
-            // Check if time-out image exists
-            if (image2Src) {
-                htmlContent += `
-                    <div class="text-center">
-                        <img src="${image2Src}" alt="Log Out" style="height:300px; width: 300px">
-                        <p>Time Out</p>
-                    </div>
-                `;
-            } else {
-                
+            else {
+                // Check if time-in image exists
+                if (image1Src) {
+                    htmlContent += `
+                        <div class="text-center">
+                            <img src="${image1Src}" alt="Log In" style="height:300px; width: 300px">
+                            <p>Time In</p>
+                        </div>
+                    `;
+                } else {
+                    
+                }
+        
+                // Check if time-out image exists
+                if (image2Src) {
+                    htmlContent += `
+                        <div class="text-center">
+                            <img src="${image2Src}" alt="Log Out" style="height:300px; width: 300px">
+                            <p>Time Out</p>
+                        </div>
+                    `;
+                } else {
+                    
+                }
             }
     
             htmlContent += '</div>';
     
             Swal.fire({
-                title: 'FaceDTR',
+                title: 'Face DTR',
                 html: htmlContent,
                 showCloseButton: false,
                 showConfirmButton: true,
