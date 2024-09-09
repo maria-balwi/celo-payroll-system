@@ -2,17 +2,71 @@ $(document).ready(function() {
 
     $('#dtr').DataTable({});
 
+    var filterYear = (new Date). getFullYear();
     const d = new Date();
     var filterMonth = d.getMonth() + 1;
 
-    document.getElementById('filterMonth').addEventListener('change', function() {
-        filterMonth = null;
-        filterMonth = $('#filterMonth').val();
+    document.getElementById('filterYear').addEventListener('change', function() {
+        filterYear = null;
+        filterYear = $('#filterYear').val();
+
+        document.getElementById('filterMonth').addEventListener('change', function() {
+            filterMonth = null;
+            filterMonth = $('#filterMonth').val();
+        
+            $.ajax({
+                url: '../backend/admin/filteredDTRtable.php', 
+                type: 'POST',
+                data: { filterYear: filterYear,
+                    filterMonth: filterMonth },
+                success: function(response) {
+                    $('#dtr').DataTable().clear().destroy(); 
+                    $('#dtr tbody').html(response);
+                    $('#dtr').DataTable({});
+                }
+            });
+        });
     
         $.ajax({
             url: '../backend/admin/filteredDTRtable.php', 
             type: 'POST',
-            data: { filterMonth: filterMonth },
+            data: { filterYear: filterYear,
+                filterMonth: filterMonth },
+            success: function(response) {
+                $('#dtr').DataTable().clear().destroy(); 
+                $('#dtr tbody').html(response);
+                $('#dtr').DataTable({});
+            }
+        });
+    });
+
+    document.getElementById('filterMonth').addEventListener('change', function() {
+        filterMonth = null;
+        filterMonth = $('#filterMonth').val();
+        // $('#filterYear').prop('disabled', true);
+
+        document.getElementById('filterYear').addEventListener('change', function() {
+            filterYear = null;
+            filterYear = $('#filterYear').val();
+        
+            $.ajax({
+                url: '../backend/admin/filteredDTRtable.php', 
+                type: 'POST',
+                data: { filterYear: filterYear,
+                    filterMonth: filterMonth },
+                success: function(response) {
+                    $('#dtr').DataTable().clear().destroy(); 
+                    $('#dtr tbody').html(response);
+                    $('#dtr').DataTable({});
+                }
+            });
+        });
+    
+        $.ajax({
+            url: '../backend/admin/filteredDTRtable.php', 
+            type: 'POST',
+            data: { filterYear: filterYear,
+                filterMonth: filterMonth },
             success: function(response) {
                 $('#dtr').DataTable().clear().destroy(); 
                 $('#dtr tbody').html(response);

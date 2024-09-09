@@ -4,11 +4,11 @@
     $conn = $database->dbConnect();
     session_start();
     
-    if (isset($_POST['filterMonth'])) {
+    if (isset($_POST['filterYear']) || isset($_POST['filterMonth'])) {
+        $filterYear = $_POST['filterYear'];
         $filterMonth = $_POST['filterMonth'];
         $attendanceQuery = mysqli_query($conn, $employees->viewEmployeeAttendance());
 
-        $monthlyDTR = [];
         // Generate the table rows based on the filtered data
         while ($attendanceDetails = mysqli_fetch_array($attendanceQuery)) {
             // Your existing code to generate the table rows
@@ -20,19 +20,19 @@
             $attendance_sl = $attendanceDetails['availableSL'];
             
             // GET DAYS wORKED
-            $monthlyAttendanceQuery = mysqli_query($conn, $attendance->getMonthlyAttendance($attendance_id, $filterMonth));
+            $monthlyAttendanceQuery = mysqli_query($conn, $attendance->getMonthlyAttendance($attendance_id, $filterYear, $filterMonth));
             $attendance_daysWorked = mysqli_num_rows($monthlyAttendanceQuery);
 
             // GET ABSENTS
-            $workingDays = $attendance->getWorkingDaysInMonth($filterMonth);
+            $workingDays = $attendance->getWorkingDaysInMonth($filterYear, $filterMonth);
             $attendance_absences = $workingDays - $attendance_daysWorked;
 
             // GET LATES
-            $monthlyLatesQuery = mysqli_query($conn, $attendance->getMonthlyLates($attendance_id, $filterMonth));
+            $monthlyLatesQuery = mysqli_query($conn, $attendance->getMonthlyLates($attendance_id, $filterYear, $filterMonth));
             $attendance_lates = mysqli_num_rows($monthlyLatesQuery);
 
             // GET UNDERTIMES
-            $monthlyUndertimesQuery = mysqli_query($conn, $attendance->getMonthlyUndertimes($attendance_id, $filterMonth));
+            $monthlyUndertimesQuery = mysqli_query($conn, $attendance->getMonthlyUndertimes($attendance_id, $filterYear, $filterMonth));
             $attendance_undertimes = mysqli_num_rows($monthlyUndertimesQuery);
 
             echo "<tr data-id='" . $attendance_id . "' class='employeeDTRview cursor-pointer'>";
