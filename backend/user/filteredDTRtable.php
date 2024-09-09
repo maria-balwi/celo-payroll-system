@@ -4,8 +4,8 @@
     $conn = $database->dbConnect();
     session_start();
     
-    if (isset($_POST['filterMonth'])) {
-        $yearMonth = date('Y-') . $_POST['filterMonth'];
+    if (isset($_POST['filterYear']) || isset($_POST['filterMonth'])) {
+        $yearMonth = $_POST['filterYear'] . '-' . $_POST['filterMonth'];
         $userDTRQuery = mysqli_query($conn, $employees->viewDTR($_SESSION['id'], $yearMonth));
 
         $dtrGroupedByDate = [];
@@ -17,7 +17,6 @@
             $logTypeID = $userDTRdetails['logTypeID'];
             $dayOfWeek = $userDTRdetails['dayOfWeek'];
             $filterDate = $userDTRdetails['filterDate'];
-            // $shift = $userDTRdetails['startTime'] . ' - ' . $userDTRdetails['endTime'];
             $shift = $userDTRdetails['shift'];
 
             $sortableDate = date('Y/m/d', strtotime($date));
@@ -79,7 +78,7 @@
                     </svg>
                 </button>';
         
-            $faceDTR = $dtr['timeIn'] !== null ? $faceDTRhtml : '';
+            $faceDTR = $dtr['timeIn'] !== null || $dtr['timeOut'] !== null ? $faceDTRhtml : '';
 
             // Directly output the table row
             echo '<tr>';

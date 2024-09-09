@@ -4,17 +4,74 @@ $(document).ready(function() {
     dtrTable.order([[1, "asc"]]).draw();
     // $('#dtrTable').DataTable();
 
+    var filterYear = (new Date). getFullYear();
     const d = new Date();
     var filterMonth = d.getMonth() + 1;
-    
-    document.getElementById('filterMonth').addEventListener('change', function() {
-        filterMonth = null;
-        filterMonth = $('#filterMonth').val();
+
+    document.getElementById('filterYear').addEventListener('change', function() {
+        filterYear = null;
+        filterYear = $('#filterYear').val();
+
+        document.getElementById('filterMonth').addEventListener('change', function() {
+            filterMonth = null;
+            filterMonth = $('#filterMonth').val();
+        
+            $.ajax({
+                url: '../backend/user/filteredDTRtable.php', 
+                type: 'POST',
+                data: { filterYear: filterYear,
+                    filterMonth: filterMonth },
+                success: function(response) {
+                    $('#dtrTable').DataTable().clear().destroy(); 
+                    $('#dtrTable tbody').html(response);
+                    var dtrTable = $('#dtrTable').DataTable();
+                    dtrTable.order([[1, "asc"]]).draw();
+                }
+            });
+        });
     
         $.ajax({
             url: '../backend/user/filteredDTRtable.php', 
             type: 'POST',
-            data: { filterMonth: filterMonth },
+            data: { filterYear: filterYear,
+                filterMonth: filterMonth },
+            success: function(response) {
+                $('#dtrTable').DataTable().clear().destroy(); 
+                $('#dtrTable tbody').html(response);
+                var dtrTable = $('#dtrTable').DataTable();
+                dtrTable.order([[1, "asc"]]).draw();
+            }
+        });
+    });
+
+    document.getElementById('filterMonth').addEventListener('change', function() {
+        filterMonth = null;
+        filterMonth = $('#filterMonth').val();
+        // $('#filterYear').prop('disabled', true);
+
+        document.getElementById('filterYear').addEventListener('change', function() {
+            filterYear = null;
+            filterYear = $('#filterYear').val();
+        
+            $.ajax({
+                url: '../backend/user/filteredDTRtable.php', 
+                type: 'POST',
+                data: { filterYear: filterYear,
+                    filterMonth: filterMonth },
+                success: function(response) {
+                    $('#dtrTable').DataTable().clear().destroy(); 
+                    $('#dtrTable tbody').html(response);
+                    var dtrTable = $('#dtrTable').DataTable();
+                    dtrTable.order([[1, "asc"]]).draw();
+                }
+            });
+        });
+    
+        $.ajax({
+            url: '../backend/user/filteredDTRtable.php', 
+            type: 'POST',
+            data: { filterYear: filterYear,
+                filterMonth: filterMonth },
             success: function(response) {
                 $('#dtrTable').DataTable().clear().destroy(); 
                 $('#dtrTable tbody').html(response);

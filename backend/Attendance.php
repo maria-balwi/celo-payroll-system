@@ -311,32 +311,32 @@
             return $dailyAttendanceIT_timeOut;
         }
 
-        public function getMonthlyAttendance($id, $month) {
+        public function getMonthlyAttendance($id, $year, $month) {
             $monthlyAttendance = "
                 SELECT * FROM ".$this->attendance."
                 WHERE empID = $id AND
                 logTypeID IN (1, 2) AND
-                YEAR(attendanceDate) = YEAR(CURRENT_DATE())
+                YEAR(attendanceDate) = '$year'
                 AND MONTH(attendanceDate) = '$month'";
             return $monthlyAttendance;
         }
 
-        public function getMonthlyUndertimes($id, $month) {
+        public function getMonthlyUndertimes($id, $year, $month) {
             $monthlyUndertimes = "
                 SELECT * FROM ".$this->attendance."
                 WHERE empID = $id AND
                 logTypeID = 3 AND
-                YEAR(attendanceDate) = YEAR(CURRENT_DATE())
+                YEAR(attendanceDate) = '$year'
                 AND MONTH(attendanceDate) = '$month'";
             return $monthlyUndertimes;
         }
 
-        public function getMonthlyLates($id, $month) {
+        public function getMonthlyLates($id, $year, $month) {
             $monthlyLates = "
                 SELECT * FROM ".$this->attendance."
                 WHERE empID = $id AND
                 logTypeID = 2 AND
-                YEAR(attendanceDate) = YEAR(CURRENT_DATE())
+                YEAR(attendanceDate) = '$year'
                 AND MONTH(attendanceDate) = '$month'";
             return $monthlyLates;
         }
@@ -398,8 +398,8 @@
             return $checkDTR;
         }
 
-        public function getWorkingDaysInMonth($yearMonth) {
-            $start_date = date("Y-$yearMonth-01");
+        public function getWorkingDaysInMonth($year, $month) {
+            $start_date = date("$year-$month-01");
             $end_date = date("Y-m-t", strtotime($start_date)); // last day of the month
             
             $work_days = 0;
