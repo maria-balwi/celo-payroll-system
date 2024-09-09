@@ -4,7 +4,8 @@
     $conn = $database->dbConnect();
     session_start();
     
-    if (isset($_POST['filterMonth'])) {
+    if (isset($_POST['filterYear']) || isset($_POST['filterMonth'])) {
+        $filterYear = $_POST['filterYear'];
         $filterMonth = $_POST['filterMonth'];
 
         if ($_SESSION['departmentID'] == 1) // GET OPERATIONS TEAM
@@ -20,19 +21,19 @@
                 $availableVL = $operationsTeamDetails['availableVL']; 
 
                 // GET MONTHLY ATTENDANCE
-                $monthlyAttendanceQuery = mysqli_query($conn, $attendance->getMonthlyAttendance($teamOperations_id, $filterMonth));
+                $monthlyAttendanceQuery = mysqli_query($conn, $attendance->getMonthlyAttendance($teamOperations_id, $filterYear, $filterMonth));
                 $monthlyAttendance = mysqli_num_rows($monthlyAttendanceQuery);
 
                 // GET MONTHLY ABSENCES
-                $workingDays = $attendance->getWorkingDaysInMonth($filterMonth);
+                $workingDays = $attendance->getWorkingDaysInMonth($filterYear, $filterMonth);
                 $monthlyAbsences = $workingDays - $monthlyAttendance;
 
                 // GET MONTHLY LATES
-                $monthlyLatesQuery = mysqli_query($conn, $attendance->getMonthlyLates($teamOperations_id, $filterMonth));
+                $monthlyLatesQuery = mysqli_query($conn, $attendance->getMonthlyLates($teamOperations_id, $filterYear, $filterMonth));
                 $monthlyLates = mysqli_num_rows($monthlyLatesQuery);
 
                 // GET MONTHLY UNDERTIMES
-                $monthlyUndertimesQuery = mysqli_query($conn, $attendance->getMonthlyUndertimes($teamOperations_id, $filterMonth));
+                $monthlyUndertimesQuery = mysqli_query($conn, $attendance->getMonthlyUndertimes($teamOperations_id, $filterYear, $filterMonth));
                 $monthlyUndertimes = mysqli_num_rows($monthlyUndertimesQuery); 
 
                 echo "<tr data-id='" . $teamOperations_id . "' class='teamDTRview cursor-pointer'>";
@@ -47,6 +48,7 @@
                 echo "<td class='whitespace-nowrap'>" . $monthlyUndertimes . "</td>";
                 echo "</tr>";
             }
+            return;
         }
         else // GET IT TEAM
         {
@@ -61,19 +63,19 @@
                 $availableVL = $itTeamDetails['availableVL']; 
 
                 // GET MONTHLY ATTENDANCE
-                $monthlyAttendanceQuery = mysqli_query($conn, $attendance->getMonthlyAttendance($teamIT_id, $filterMonth));
+                $monthlyAttendanceQuery = mysqli_query($conn, $attendance->getMonthlyAttendance($teamIT_id, $filterYear, $filterMonth));
                 $monthlyAttendance = mysqli_num_rows($monthlyAttendanceQuery);
 
                 // GET MONTHLY ABSENCES
-                $workingDays = $attendance->getWorkingDaysInMonth($filterMonth);
+                $workingDays = $attendance->getWorkingDaysInMonth($filterYear, $filterMonth);
                 $monthlyAbsences = $workingDays - $monthlyAttendance;
 
                 // GET MONTHLY LATES
-                $monthlyLatesQuery = mysqli_query($conn, $attendance->getMonthlyLates($teamIT_id, $filterMonth));
+                $monthlyLatesQuery = mysqli_query($conn, $attendance->getMonthlyLates($teamIT_id, $filterYear, $filterMonth));
                 $monthlyLates = mysqli_num_rows($monthlyLatesQuery);
 
                 // GET MONTHLY UNDERTIMES
-                $monthlyUndertimesQuery = mysqli_query($conn, $attendance->getMonthlyUndertimes($teamIT_id, $filterMonth));
+                $monthlyUndertimesQuery = mysqli_query($conn, $attendance->getMonthlyUndertimes($teamIT_id, $filterYear, $filterMonth));
                 $monthlyUndertimes = mysqli_num_rows($monthlyUndertimesQuery); 
 
                 echo "<tr data-id='" . $teamIT_id . "' class='teamDTRview cursor-pointer'>";
@@ -88,9 +90,8 @@
                 echo "<td class='whitespace-nowrap'>" . $monthlyUndertimes . "</td>";
                 echo "</tr>";
             }
+            return;
         }
-
-        return;
     }
 
 ?>
