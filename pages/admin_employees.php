@@ -21,7 +21,7 @@
                 <div class="card shadow-sm bInfo">
                     <div class="card-body">
                         <!-- DATATABLE -->
-                        <div class="container mx-auto overflow-auto">
+                        <div class="mx-auto overflow-auto">
                             <table id="employeeTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-2">
                                 <thead class="bg-gray-50">
                                     <tr>

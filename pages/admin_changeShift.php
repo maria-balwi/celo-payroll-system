@@ -40,7 +40,7 @@
             <!-- CONTENT -->
             <div class="px-3 bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
                 <!-- DATATABLE -->
-                <div class="container mx-auto my-3 overflow-auto">
+                <div class="mx-auto my-3 overflow-auto">
                     <table id="changeShiftTable" class="table table-striped table-bordered table-auto min-w-full divide-y divide-gray-200 text-center pt-3">
                         <thead class="bg-gray-50">
                             <tr>

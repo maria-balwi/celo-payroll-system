@@ -58,7 +58,7 @@
             <div class="px-3 m-1 bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
                 
                 <!-- DATATABLE -->
-                <div class="container mx-auto my-3 py-2 overflow-auto">
+                <div class="mx-auto my-3 py-2 overflow-auto">
                     <table id="payrollTable" class="table table-striped table-bordered table-auto text-center pt-3">
                         <thead class="bg-gray-50">
                             <tr>

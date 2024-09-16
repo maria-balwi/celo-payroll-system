@@ -21,7 +21,7 @@
                 <div class="card shadow-sm">
                     <div class="card-body">
                         <!-- DATATABLE -->
-                        <div class="container mx-auto my-3 overflow-auto">
+                        <div class="mx-auto my-3 overflow-auto">
                             <table id="deductionsTable" class="table table-striped table-bordered table-auto min-w-full divide-y divide-gray-200 text-center pt-3">
                                 <thead class="bg-gray-50">
                                     <tr>

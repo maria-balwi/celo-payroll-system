@@ -48,7 +48,7 @@
             <!-- CONTENT -->
             <div class="px-3 bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
                 <!-- DATATABLE -->
-                <div class="container mx-auto my-3 overflow-auto">
+                <div class="mx-auto my-3 overflow-auto">
                     <table id="dtr" class="table table-striped table-bordered table-auto text-center">
                         <thead class="bg-gray-50">
                             <tr>

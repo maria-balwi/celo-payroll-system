@@ -21,8 +21,8 @@
                 <div class="card shadow-sm">
                     <div class="card-body">
                         <!-- DATATABLE -->
-                        <div class="container mx-auto my-3 overflow-auto">
-                            <table id="allowancesTable" class="table table-striped table-bordered table-auto min-w-full divide-y divide-gray-200 text-center pt-3">
+                        <div class="mx-auto my-3 overflow-auto">
+                            <table id="allowancesTable" class="table table-striped table-bordered min-w-full divide-y divide-gray-200 text-center pt-3">
                                 <thead class="bg-gray-50">
                                     <tr>
                                         <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
