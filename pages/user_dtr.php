@@ -47,7 +47,7 @@
                 <div class="p-4 m-0 bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
 
                     <!-- DATATABLE -->
-                    <div class="container mx-auto overflow-auto">
+                    <div class="mx-auto overflow-auto">
                         <table id="dtrTable" class="table text-center table-striped table-bordered table-auto pt-3" style="width: 100%;">
                             <thead class="bg-gray-50">
                                 <tr>

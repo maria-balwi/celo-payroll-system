@@ -25,18 +25,15 @@
                 <div class="p-4 m-0 bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
 
                     <!-- DATATABLE -->
-                    <div class="container mx-auto overflow-auto">
+                    <div class="mx-auto overflow-auto">
                         <table id="leaveTable" class="table table-striped table-bordered text-center min-w-full divide-y divide-gray-200 pt-3">
                             <thead class="bg-gray-50">
                                 <tr>
                                     <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Date Filed</th>
                                     <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Leave Type</th>
-                                    <!-- <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Sub Leave Type</th> -->
                                     <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Days</th>
                                     <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Inclusive Dates</th>
                                     <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Purpose | Remarks</th>
-                                    <!-- <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Attachments</th>
-                                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Paid</th> -->
                                     <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                                 </tr>
                             </thead>
