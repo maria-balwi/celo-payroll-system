@@ -48,7 +48,7 @@
             <!-- CONTENT -->
             <div class="p-4 m-1 bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
                 <!-- DATATABLE -->
-                <div class="container mx-auto overflow-auto">
+                <div class="mx-auto overflow-auto">
                     <table id="teamDTRTable" class="table table-striped table-bordered min-w-full divide-y divide-gray-200 text-center pt-3">
                         <thead class="bg-gray-50">
                             <tr>
