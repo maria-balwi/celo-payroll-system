@@ -119,10 +119,12 @@ $(document).ready(function() {
                         var logTypeID = $employeedtr.logTypeID;
                         var dayOfWeek = $employeedtr.dayOfWeek;
                         var filterDate = $employeedtr.filterDate;
+                        var lateMins = $employeedtr.lateMins;
+                        var undertimeMins = $employeedtr.undertimeMins;
 
                         // Initialize the date entry if it doesn't exist
                         if (!dtrGroupedByDate[date]) {
-                            dtrGroupedByDate[date] = { timeIn: null, timeOut: null, dayOfWeek: dayOfWeek, timeInDate: null, timeOutDate: null };
+                            dtrGroupedByDate[date] = { timeIn: null, timeOut: null, dayOfWeek: dayOfWeek, timeInDate: null, timeOutDate: null, lateMins: lateMins, undertimeMins: undertimeMins };
                         }
 
                         // Handle Time In (LogTypeID 1 or 2)
@@ -131,6 +133,7 @@ $(document).ready(function() {
                                 dtrGroupedByDate[date].timeIn = time;
                                 dtrGroupedByDate[date].dayOfWeek = dayOfWeek;
                                 dtrGroupedByDate[date].timeInDate = filterDate;
+                                dtrGroupedByDate[date].lateMins = lateMins;
                             }
                             ongoingShift = { date: date, timeIn: time }; // Start new shift
                         }
@@ -141,10 +144,12 @@ $(document).ready(function() {
                                 // Time out belongs to the ongoing shift from the previous day
                                 dtrGroupedByDate[ongoingShift.date].timeOut = time;
                                 dtrGroupedByDate[date].timeOutDate = filterDate;
+                                dtrGroupedByDate[date].undertimeMins = undertimeMins;
                                 ongoingShift = null; // Reset ongoing shift
                             } else {
                                 dtrGroupedByDate[date].timeOut = time;
                                 dtrGroupedByDate[date].timeOutDate = filterDate;
+                                dtrGroupedByDate[date].undertimeMins = undertimeMins;
                             }
                         }
                     });
@@ -155,6 +160,8 @@ $(document).ready(function() {
                     // DISPLAY EMPLOYEE DTR
                     for (var date in dtrGroupedByDate) {
                         var dayOfWeek = dtrGroupedByDate[date].dayOfWeek;
+                        var lateMins = dtrGroupedByDate[date].lateMins;
+                        var undertimeMins = dtrGroupedByDate[date].undertimeMins;
                         var timeIn = dtrGroupedByDate[date].timeIn !== null ? dtrGroupedByDate[date].timeIn : '-';
                         var timeOut = dtrGroupedByDate[date].timeOut !== null ? dtrGroupedByDate[date].timeOut : '-';
                         timeInDate = dtrGroupedByDate[date].timeInDate;
@@ -169,6 +176,8 @@ $(document).ready(function() {
                         employeedtrHTML += '<td class="whitespace-nowrap">' + dayOfWeek + '</td>';
                         employeedtrHTML += '<td class="whitespace-nowrap">' + timeIn + '</td>';
                         employeedtrHTML += '<td class="whitespace-nowrap">' + timeOut + '</td>';
+                        employeedtrHTML += '<td class="whitespace-nowrap">' + lateMins + '</td>';
+                        employeedtrHTML += '<td class="whitespace-nowrap">' + undertimeMins + '</td>';
                         employeedtrHTML += '</tr>';
                     }
 

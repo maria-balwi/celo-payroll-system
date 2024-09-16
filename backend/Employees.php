@@ -81,6 +81,8 @@
                     COALESCE(id, '-') AS id, 
                     COALESCE(attendance.logTypeID, '-') AS logTypeID, 
                     COALESCE(logtype.logType, '-') AS logType, 
+                    COALESCE(attendance.lateMins, '-') AS lateMins, 
+                    COALESCE(attendance.undertimeMins, '-') AS undertimeMins, 
                     COALESCE(DATE_FORMAT(attendance.attendanceTime, '%h:%i %p'), '-') AS attendanceTime
                 FROM 
                     (

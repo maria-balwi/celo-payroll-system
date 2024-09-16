@@ -172,6 +172,8 @@
                                                 <th class="text-xs font-medium text-yellow-500 uppercase tracking-tight">Day</th>
                                                 <th class="text-xs font-medium text-gray-500 uppercase tracking-tight">Time In</th>
                                                 <th class="text-xs font-medium text-gray-500 uppercase tracking-tight">Time Out</th>
+                                                <th class="text-xs font-medium text-gray-500 uppercase tracking-tight">Late</th>
+                                                <th class="text-xs font-medium text-gray-500 uppercase tracking-tight">Undertime</th>
                                             </tr>
                                         </thead>
                                         <tbody class="bg-white divide-y divide-gray-200" id="empDTRsection">
