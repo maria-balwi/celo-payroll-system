@@ -152,10 +152,24 @@
             return $lastUser;
         }
 
-        public function saveDTR($id, $logTypeID) {
+        public function saveDTR($id, $logTypeID, $attendanceTime) {
             $saveDTR = "
                 INSERT INTO ".$this->attendance." (empID, logTypeID, attendanceDate, attendanceTime)
-                VALUES ('$id', '$logTypeID', CURRENT_TIMESTAMP(), CURRENT_TIME())";
+                VALUES ('$id', '$logTypeID', CURRENT_TIMESTAMP(), '$attendanceTime')";
+            return $saveDTR;
+        }
+
+        public function saveDTRLate($id, $logTypeID, $attendanceTime, $lateMins) {
+            $saveDTR = "
+                INSERT INTO ".$this->attendance." (empID, logTypeID, attendanceDate, attendanceTime, lateMins)
+                VALUES ('$id', '$logTypeID', CURRENT_TIMESTAMP(), '$attendanceTime', '$lateMins')";
+            return $saveDTR;
+        }
+
+        public function saveDTRUndertime($id, $logTypeID, $attendanceTime, $undertimeMins) {
+            $saveDTR = "
+                INSERT INTO ".$this->attendance." (empID, logTypeID, attendanceDate, attendanceTime, undertimeMins)
+                VALUES ('$id', '$logTypeID', CURRENT_TIMESTAMP(), '$attendanceTime', '$undertimeMins')";
             return $saveDTR;
         }
 

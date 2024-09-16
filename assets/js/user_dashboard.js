@@ -39,7 +39,7 @@ $(document).ready(function() {
                 url: '../backend/user/saveDTR.php',
                 data: {
                     imgBase64: dataURL,
-                    faceDTR_action: action
+                    faceDTR_action: action  
                 },
                 success: function(response) {
                     Swal.fire({
