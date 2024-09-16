@@ -11,6 +11,7 @@
         private $shift = 'tbl_shiftschedule';
         private $requirements = 'tbl_requirements';
         private $dbConnect = false;
+
         public function __construct() {
             $this->dbConnect = $this->dbConnect();
         }

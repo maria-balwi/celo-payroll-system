@@ -75,6 +75,7 @@
                                         $dayOfWeek = $userDTRdetails['dayOfWeek'];
                                         $filterDate = $userDTRdetails['filterDate'];
                                         $shift = $userDTRdetails['shift'];
+                                        $logType = $userDTRdetails['logType'];
 
                                         $sortableDate = date('Y/m/d', strtotime($date));
 
@@ -84,6 +85,8 @@
                                                 'timeIn' => null, 
                                                 'timeOut' => null, 
                                                 'dayOfWeek' => $dayOfWeek, 
+                                                'logTypeIn' => null,
+                                                'logTypeOut' => null,
                                                 'timeInDate' => null, 
                                                 'timeOutDate' => null,
                                                 'shift' => $shift, 
@@ -97,6 +100,7 @@
                                                 $dtrGroupedByDate[$sortableDate]['timeIn'] = $time;
                                                 $dtrGroupedByDate[$sortableDate]['dayOfWeek'] = $dayOfWeek;
                                                 $dtrGroupedByDate[$sortableDate]['timeInDate'] = $filterDate;
+                                                $dtrGroupedByDate[$sortableDate]['logTypeIn'] = $logType;
                                             }
                                             $ongoingShift = ['date' => $sortableDate, 'timeIn' => $time]; // Start new shift
                                         }
@@ -107,10 +111,12 @@
                                                 // Time out belongs to the ongoing shift from the previous day
                                                 $dtrGroupedByDate[$ongoingShift['date']]['timeOut'] = $time;
                                                 $dtrGroupedByDate[$ongoingShift['date']]['timeOutDate'] = $filterDate;
+                                                $dtrGroupedByDate[$sortableDate]['logTypeOut'] = $logType;
                                                 $ongoingShift = null; // Reset ongoing shift
                                             } else {
                                                 $dtrGroupedByDate[$sortableDate]['timeOut'] = $time;
                                                 $dtrGroupedByDate[$sortableDate]['timeOutDate'] = $filterDate;
+                                                $dtrGroupedByDate[$sortableDate]['logTypeOut'] = $logType;
                                             }
                                         }
                                     }
@@ -125,6 +131,8 @@
                                         $timeOut = $dtr['timeOut'] !== null ? $dtr['timeOut'] : '-';
                                         $timeInDate = $dtr['timeInDate'];
                                         $timeOutDate = $dtr['timeOutDate'];
+                                        $logTypeIn = $dtr['logTypeIn'];
+                                        $logTypeOut = $dtr['logTypeOut'];
                                     
                                         // Create faceDTR button only if timeIn is not null
                                         $faceDTRhtml = '
@@ -143,8 +151,21 @@
                                         echo '<td class="whitespace-nowrap">' . $date . '</td>';
                                         echo '<td class="whitespace-nowrap">' . $dayOfWeek . '</td>';
                                         echo '<td class="whitespace-nowrap">' . $shift . '</td>';
-                                        echo '<td class="whitespace-nowrap">' . $timeIn . '</td>';
-                                        echo '<td class="whitespace-nowrap">' . $timeOut . '</td>';
+                                        if ($logTypeIn == 'Late') {
+                                            echo '<td class="whitespace-nowrap">' . $timeIn . '<p class="inline-block bg-yellow-500 text-white px-2 py-1 mx-2 my-auto rounded-full text-sm">Late</p></td>';
+                                        }
+                                        else {
+                                            echo '<td class="whitespace-nowrap">' . $timeIn . '</td>';
+                                        }
+                                        if ($logTypeOut == 'Undertime') {
+                                            echo '<td class="whitespace-nowrap">' . $timeOut . '<p class="inline-block bg-purple-500 text-white px-2 py-1 mx-2 my-auto rounded-full text-sm">Undertime</p></td>';
+                                        }
+                                        else {
+                                            echo '<td class="whitespace-nowrap">' . $timeOut . '</td>';
+                                        }
+                                        echo '</td>';
+                                        // echo '<td class="whitespace-nowrap">' . $timeIn . '</td>';
+                                        // echo '<td class="whitespace-nowrap">' . $timeOut . '</td>';
                                         echo '</tr>';
                                     }
                                 ?>
