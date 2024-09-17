@@ -75,6 +75,8 @@ $(document).ready(function() {
         });
     });
 
+    var employeeID;
+
     // VIEW EMPLOYEE DTR 
     var array = [];
     $(document).on('click', '.employeeDTRview', function() {
@@ -104,7 +106,7 @@ $(document).ready(function() {
                     $('#viewEmployeeID').val(res.data.employeeID);
                     $('#viewShiftID').val(res.data.startTime + ' - ' + res.data.endTime);
 
-                    var employeeID = res.data.employeeID;
+                    employeeID = res.data.employeeID;
                     
                     // EMPLOYEE DTR SECTION
                     var employeedtrHTML = '';
@@ -183,8 +185,10 @@ $(document).ready(function() {
 
                     // FOR VIEWING FACE DTR
                     $(document).on('click', '.viewFaceDTR', function() {
-                        var timeInDate = $(this).data('id');
-                        var timeOutDate = $(this).data('id2');
+                        var timeInDate = null;
+                        var timeOutDate = null;
+                        timeInDate = $(this).data('id');
+                        timeOutDate = $(this).data('id2');
                         const timeInImagePath = '../assets/images/attendance/' + employeeID.replace("-", "") + '_' + timeInDate + '_time_in.png'; 
                         const timeOutImagePath = '../assets/images/attendance/' + employeeID.replace("-", "") + '_' + timeOutDate + '_time_out.png'; 
                         
@@ -203,30 +207,6 @@ $(document).ready(function() {
                                 : null;
                     
                             let htmlContent = '<div class="flex justify-center space-x-6">';
-                    
-                            // // Check if time-in image exists
-                            // if (image1Src) {
-                            //     htmlContent += `
-                            //         <div class="text-center">
-                            //             <img src="${image1Src}" alt="Log In" style="height:300px; width: 300px">
-                            //             <p>Time In</p>
-                            //         </div>
-                            //     `;
-                            // } else {
-                                
-                            // }
-                    
-                            // // Check if time-out image exists
-                            // if (image2Src) {
-                            //     htmlContent += `
-                            //         <div class="text-center">
-                            //             <img src="${image2Src}" alt="Log Out" style="height:300px; width: 300px">
-                            //             <p>Time Out</p>
-                            //         </div>
-                            //     `;
-                            // } else {
-                                
-                            // }
 
                             if ((image1Src == null) && (image2Src == null)) {
                                 htmlContent += `
@@ -292,6 +272,10 @@ $(document).ready(function() {
                 }
             }
         });
+    });
+
+    $('#btnClose').on('click', function() {
+        employeeID = null;
     });
     
 });
