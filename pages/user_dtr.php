@@ -152,20 +152,18 @@
                                         echo '<td class="whitespace-nowrap">' . $dayOfWeek . '</td>';
                                         echo '<td class="whitespace-nowrap">' . $shift . '</td>';
                                         if ($logTypeIn == 'Late') {
-                                            echo '<td class="whitespace-nowrap">' . $timeIn . '<p class="inline-block bg-yellow-500 text-white px-2 py-1 mx-2 my-auto rounded-full text-sm">Late</p></td>';
+                                            echo '<td class="whitespace-nowrap">' . $timeIn . '<p class="inline-block bg-yellow-500 text-white px-2 mx-2 my-auto rounded-full text-sm">Late</p></td>';
                                         }
                                         else {
                                             echo '<td class="whitespace-nowrap">' . $timeIn . '</td>';
                                         }
                                         if ($logTypeOut == 'Undertime') {
-                                            echo '<td class="whitespace-nowrap">' . $timeOut . '<p class="inline-block bg-purple-500 text-white px-2 py-1 mx-2 my-auto rounded-full text-sm">Undertime</p></td>';
+                                            echo '<td class="whitespace-nowrap">' . $timeOut . '<p class="inline-block bg-purple-500 text-white px-2 mx-2 my-auto rounded-full text-sm">Undertime</p></td>';
                                         }
                                         else {
                                             echo '<td class="whitespace-nowrap">' . $timeOut . '</td>';
                                         }
                                         echo '</td>';
-                                        // echo '<td class="whitespace-nowrap">' . $timeIn . '</td>';
-                                        // echo '<td class="whitespace-nowrap">' . $timeOut . '</td>';
                                         echo '</tr>';
                                     }
                                 ?>
