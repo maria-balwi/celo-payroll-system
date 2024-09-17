@@ -49,7 +49,7 @@
             <div class="px-3 bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
                 <!-- DATATABLE -->
                 <div class="mx-auto my-3 overflow-auto">
-                    <table id="dtr" class="table table-striped table-bordered table-auto text-center pt-2">
+                    <table id="dtr" class="table table-striped table-bordered table-auto text-center pt-3">
                         <thead class="bg-gray-50">
                             <tr>
                                 <th class="py-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Employee ID</th>
