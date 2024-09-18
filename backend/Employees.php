@@ -39,6 +39,7 @@
                 ON employees.departmentID = department.departmentID
                 INNER JOIN ".$this->shifts." AS shifts
                 ON employees.shiftID = shifts.shiftID
+                ORDER BY employees.id DESC
                 LIMIT 5";
             return $team;
         }
