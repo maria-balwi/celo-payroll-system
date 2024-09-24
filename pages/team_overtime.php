@@ -81,13 +81,13 @@
                                             echo "<td class = ' whitespace-nowrap'>" . $OT_actualOTmins . "</td>";
                                         }
 
-                                        if ($OT_status == "Pending") {
+                                        if ($OT_status == null || $OT_status == 1) {
                                             echo "<td class = ' whitespace-nowrap'>-</td>";
                                             echo "<td class = ' whitespace-nowrap'>-</td>";
                                             echo "<td class = ' whitespace-nowrap'>" . $OT_remarks . "</td>";
-                                            echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $OT_status . "</p></td>";
+                                            echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Pending</p></td>";
                                         }
-                                        else if ($OT_status == "Approved") {
+                                        else if ($OT_status == 2) {
                                             echo "<td class = ' whitespace-nowrap'>" . $OT_approvedOThours . "</td>";
                                             if ($OT_approvedOTmins == 0) {
                                                 echo "<td class = ' whitespace-nowrap'>-</td>";
@@ -96,13 +96,13 @@
                                                 echo "<td class = ' whitespace-nowrap'>" . $OT_approvedOTmins . "</td>";
                                             }
                                             echo "<td class = ' whitespace-nowrap'>" . $OT_remarks . "</td>";
-                                            echo "<td><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $OT_status . "</p></td>";
+                                            echo "<td><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Approved</p></td>";
                                         }
-                                        else if ($OT_status == "Disapproved") {
+                                        else if ($OT_status == 0) {
                                             echo "<td class = ' whitespace-nowrap'>-</td>";
                                             echo "<td class = ' whitespace-nowrap'>-</td>";
                                             echo "<td class = ' whitespace-nowrap'>" . $OT_remarks . "</td>";
-                                            echo "<td><p class='inline-block bg-red-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $OT_status . "</p></td>";
+                                            echo "<td><p class='inline-block bg-red-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Disapproved</p></td>";
                                         }
                                         echo "</td>";
                                     }
@@ -139,13 +139,13 @@
                                             echo "<td class = ' whitespace-nowrap'>" . $OT_actualOTmins . "</td>";
                                         }
 
-                                        if ($OT_status == "Pending") {
+                                        if ($OT_status == null || $OT_status == 1) {
                                             echo "<td class = ' whitespace-nowrap'>-</td>";
                                             echo "<td class = ' whitespace-nowrap'>-</td>";
                                             echo "<td class = ' whitespace-nowrap'>" . $OT_remarks . "</td>";
-                                            echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $OT_status . "</p></td>";
+                                            echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Pending</p></td>";
                                         }
-                                        else if ($OT_status == "Approved") {
+                                        else if ($OT_status == 2) {
                                             echo "<td class = ' whitespace-nowrap'>" . $OT_approvedOThours . "</td>";
                                             if ($OT_approvedOTmins == 0) {
                                                 echo "<td class = ' whitespace-nowrap'>-</td>";
@@ -154,13 +154,13 @@
                                                 echo "<td class = ' whitespace-nowrap'>" . $OT_approvedOTmins . "</td>";
                                             }
                                             echo "<td class = ' whitespace-nowrap'>" . $OT_remarks . "</td>";
-                                            echo "<td><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $OT_status . "</p></td>";
+                                            echo "<td><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Approved</p></td>";
                                         }
-                                        else if ($OT_status == "Disapproved") {
+                                        else if ($OT_status == 0) {
                                             echo "<td class = ' whitespace-nowrap'>-</td>";
                                             echo "<td class = ' whitespace-nowrap'>-</td>";
                                             echo "<td class = ' whitespace-nowrap'>" . $OT_remarks . "</td>";
-                                            echo "<td><p class='inline-block bg-red-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $OT_status . "</p></td>";
+                                            echo "<td><p class='inline-block bg-red-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Disapproved</p></td>";
                                         }
                                         echo "</td>";
                                     }
