@@ -16,9 +16,7 @@
 
         $sql = $conn->query("
             UPDATE tbl_filedot SET
-            approvedOThours = '$actualOThours',
-            approvedOTmins = '$actualOTmins',
-            status = 'Approved'
+            status = 1
             WHERE requestID = '$ot_id'");
         // ERROR MESSAGE
         $em = "OT Form Approved Successfully";
@@ -29,7 +27,7 @@
     else if ($action == "disapprove") {
         $sql = $conn->query("
             UPDATE tbl_filedot SET
-            status = 'Disapproved'
+            status = 0
             WHERE requestID = '$ot_id'");
         // ERROR MESSAGE
         $em = "OT Form Disapproved Successfully";

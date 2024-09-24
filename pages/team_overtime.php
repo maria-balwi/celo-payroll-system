@@ -139,11 +139,17 @@
                                             echo "<td class = ' whitespace-nowrap'>" . $OT_actualOTmins . "</td>";
                                         }
 
-                                        if ($OT_status == null || $OT_status == 1) {
+                                        if ($OT_status == null) {
                                             echo "<td class = ' whitespace-nowrap'>-</td>";
                                             echo "<td class = ' whitespace-nowrap'>-</td>";
                                             echo "<td class = ' whitespace-nowrap'>" . $OT_remarks . "</td>";
-                                            echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Pending</p></td>";
+                                            echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Pending for 1st Approval</p></td>";
+                                        }
+                                        else if ($OT_status == 1) {
+                                            echo "<td class = ' whitespace-nowrap'>-</td>";
+                                            echo "<td class = ' whitespace-nowrap'>-</td>";
+                                            echo "<td class = ' whitespace-nowrap'>" . $OT_remarks . "</td>";
+                                            echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Pending for 2nd Approval</p></td>";
                                         }
                                         else if ($OT_status == 2) {
                                             echo "<td class = ' whitespace-nowrap'>" . $OT_approvedOThours . "</td>";
