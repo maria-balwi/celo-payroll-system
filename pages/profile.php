@@ -144,6 +144,10 @@
                                             <h2 class="text-sm text-gray-500">Shift:</h2>
                                             <h2 class="text-sm text-gray-400"><?php echo $userDetails['startTime']." - ".$userDetails['endTime'] ?></h2>
                                         </div>
+                                        <div class="flex gap-2 py-1">
+                                            <h2 class="text-sm text-gray-500">Employment Status:</h2>
+                                            <h2 class="text-sm text-gray-400">Regular</h2>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -202,7 +206,7 @@
                                                 <input class="form-check-input" type="checkbox" id="req_nbi" name="req_nbi" checked disabled readonly>
                                             <?php }; ?>
                                             <label class="form-check-label text-sm text-gray-800" for="req_nbi">
-                                                TIN
+                                                NBI
                                             </label>  
                                         </div>
                                         <div class="flex gap-2 py-1">
@@ -213,7 +217,7 @@
                                                 <input class="form-check-input" type="checkbox" id="req_medicalExam" name="req_medicalExam" checked disabled readonly>
                                             <?php }; ?>
                                             <label class="form-check-label text-sm text-gray-800" for="req_medicalExam">
-                                                TIN
+                                                Medical Exam
                                             </label>  
                                         </div>
                                         <div class="flex gap-2 py-1">
