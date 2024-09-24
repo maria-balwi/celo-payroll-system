@@ -10,9 +10,8 @@
     if ($action == "approve") {
         $filedOTQuery = mysqli_query($conn, $employees->viewOT($ot_id));
         $filedOTResult = mysqli_fetch_array($filedOTQuery);
-        $actualOThours = $filedOTResult['actualOThours'];
-        $actualOTmins = $filedOTResult['actualOTmins'] == NULL ? NULL : $filedOTResult['actualOTmins'];
-        echo $actualOTmins;
+        // $actualOThours = $filedOTResult['actualOThours'];
+        // $actualOTmins = $filedOTResult['actualOTmins'] == NULL ? NULL : $filedOTResult['actualOTmins'];
 
         $sql = $conn->query("
             UPDATE tbl_filedot SET
