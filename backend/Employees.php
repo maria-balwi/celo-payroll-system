@@ -759,17 +759,17 @@
             return $leaveType;
         }
 
-        public function fileOT($employeeID, $otDate, $actualOThours, $actualOTmins, $remarks, $status) {
+        public function fileOT($employeeID, $otDate, $actualOThours, $actualOTmins, $remarks) {
             $fileOT = "
-                INSERT INTO ".$this->filedOT." (empID, dateFiled, otDate, actualOThours, actualOTmins, remarks, status)
-                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$otDate', '$actualOThours', '$actualOTmins', '$remarks', '$status')";
+                INSERT INTO ".$this->filedOT." (empID, dateFiled, otDate, actualOThours, actualOTmins, remarks)
+                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$otDate', '$actualOThours', '$actualOTmins', '$remarks')";
             return $fileOT;
         }
 
-        public function fileOT_null($employeeID, $otDate, $actualOThours, $actualOTmins, $remarks, $status) {
+        public function fileOT_null($employeeID, $otDate, $actualOThours, $actualOTmins, $remarks) {
             $fileOT = "
-                INSERT INTO ".$this->filedOT." (empID, dateFiled, otDate, actualOThours, actualOTmins, remarks, status)
-                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$otDate', '$actualOThours', NULL, '$remarks', '$status')";
+                INSERT INTO ".$this->filedOT." (empID, dateFiled, otDate, actualOThours, actualOTmins, remarks)
+                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$otDate', '$actualOThours', NULL, '$remarks')";
             return $fileOT;
         }
 

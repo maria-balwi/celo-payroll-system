@@ -9,16 +9,11 @@
     $actualOTmins = $_POST['actualOTmins'];
     $purpose = $_POST['purpose'];
 
-    
-
-    // DEFAULT VALUES
-    $status = "Pending";
-
     if ($actualOTmins == 0 || $actualOTmins == null) {
-        mysqli_query($conn, $employees->fileOT_null($employeeID, $otDate, $actualOThours, $actualOTmins, $purpose, $status));
+        mysqli_query($conn, $employees->fileOT_null($employeeID, $otDate, $actualOThours, $actualOTmins, $purpose));
     }
     else {
-        mysqli_query($conn, $employees->fileOT($employeeID, $otDate, $actualOThours, $actualOTmins, $purpose, $status));
+        mysqli_query($conn, $employees->fileOT($employeeID, $otDate, $actualOThours, $actualOTmins, $purpose));
     }
 
     $lastIDQuery = mysqli_query($conn, $employees->viewLastOT());

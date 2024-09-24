@@ -49,7 +49,7 @@ $(document).ready(function() {
                                 }).then(() => {
                                     // window.location.reload();
                                     $('#fileOTmodal').modal('hide');
-                                    $('#viewFiledOTModal').modal('show');
+                                    // $('#viewFiledOTModal').modal('show');
                                 })
                             } else {
                                 Swal.fire({
@@ -85,7 +85,7 @@ $(document).ready(function() {
                 if (res.status == 404) {
                     alert(res.message);
                 } 
-                else if (res.status == 200 && (res.data.status == "Pending" || res.data.status == "Disapproved")) {
+                else if (res.status == 200 && (res.data.status == null || res.data.status == 1 || res.data.status == 0)) {
                     $('#viewFiledOTID').val(res.data.requestID);
                     $('#viewOTDate').val(res.data.otDate);
                     $('#viewDateFiled').val(res.data.dateFiled);
@@ -103,7 +103,7 @@ $(document).ready(function() {
                     $('#approvedInputRow').hide();
                     $('#viewFiledOTModal').modal('show');
                 }
-                else if (res.status == 200 && res.data.status == "Approved") {
+                else if (res.status == 200 && res.data.status == 2) {
                     $('#viewFiledOTID').val(res.data.requestID);
                     $('#viewOTDate').val(res.data.otDate);
                     $('#viewDateFiled').val(res.data.dateFiled);
@@ -141,7 +141,7 @@ $(document).ready(function() {
                 if (res.status == 404) {
                     alert(res.message);
                 } 
-                else if (res.status == 200 && (res.data.status == "Pending" || res.data.status == "Disapproved")) {
+                else if (res.status == 200 && (res.data.status == null || res.data.status == 1 || res.data.status == 0)) {
                     $('#viewFiledOTID').val(res.data.requestID);
                     $('#viewOTDate').val(res.data.otDate);
                     $('#viewDateFiled').val(res.data.dateFiled);
@@ -159,7 +159,7 @@ $(document).ready(function() {
                     $('#approvedInputRow').hide();
                     $('#viewFiledOTModal').modal('show');
                 }
-                else if (res.status == 200 && res.data.status == "Approved") {
+                else if (res.status == 200 && res.data.status == 2) {
                     $('#viewFiledOTID').val(res.data.requestID);
                     $('#viewOTDate').val(res.data.otDate);
                     $('#viewDateFiled').val(res.data.dateFiled);
