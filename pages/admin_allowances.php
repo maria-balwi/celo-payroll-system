@@ -12,7 +12,7 @@
         <main class="flex-1 p-3">
             <div class="flex flex-1 p-2 text-2xl font-bold justify-between items-center">
                 <div>
-                    Allowances
+                    Allowances / Reimbursements
                 </div>    
             </div>
             
@@ -50,7 +50,7 @@
                     </div>
                     <!-- CARD FOOTER DATA ENTRY BUTTON -->
                     <div class="card-footer d-grid gap-2 d-md-flex justify-content-md-end">
-                        <button class="btn btn-primary me-md-2" type="button" data-bs-toggle="modal" data-bs-target="#addAllowanceModal">Add Allowance</button>
+                        <button class="btn btn-primary me-md-2" type="button" data-bs-toggle="modal" data-bs-target="#addAllowanceModal">Add Data</button>
                     </div>
                 </div>
             </div>
@@ -67,13 +67,13 @@
                     <div class="modal-dialog modal-none modal-sm modal-dialog-centered">
                         <div class="modal-content" id="addAllowanceModal">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="userFormLabel">New Allowance</h1>
+                                <h1 class="modal-title fs-5" id="userFormLabel">New Allowance / Reimbursement</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="row g-2 mb-1">
                                     <div class="col-12">
-                                        <label for="allowanceName">Allowance:</label>
+                                        <label for="allowanceName">Allowance / Reimbursement:</label>
                                     </div>
                                 </div>
 
@@ -111,14 +111,14 @@
                 <div class="modal-dialog modal-none modal-sm modal-dialog-centered">
                     <div class="modal-content" id="viewAllowanceModal">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="userFormLabel">View Allowance</h1>
+                            <h1 class="modal-title fs-5" id="userFormLabel">View Allowance / Reimbursement</h1>
                             <input type="hidden" id="viewAllowanceID">
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="row g-2 mb-1">
                                 <div class="col-12">
-                                    <label for="viewAllowanceName">Allowance:</label>
+                                    <label for="viewAllowanceName">Allowance / Reimbursement:</label>
                                 </div>
                             </div>
 
@@ -157,14 +157,14 @@
                     <div class="modal-dialog modal-none modal-sm modal-dialog-centered">
                         <div class="modal-content" id="updateAllowanceModal">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="userFormLabel">Update Allowance</h1>
+                                <h1 class="modal-title fs-5" id="userFormLabel">Update Allowance / Reimbursement</h1>
                                 <input type="hidden" id="updateAllowanceID" name="updateAllowanceID">
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="row g-2 mb-1">
                                     <div class="col-12">
-                                        <label for="updateAllowanceName">Allowance:</label>
+                                        <label for="updateAllowanceName">Allowance / Reimbursement:</label>
                                     </div>
                                 </div>
 
