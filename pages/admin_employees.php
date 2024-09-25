@@ -726,7 +726,7 @@
                                     <div class="flex-1 bg-lightblue p-2 border border-gray-300">
                                         <div class="mb-4">
                                             <div class="flex justify-between items-center mb-2 px-1">
-                                                <h2 class="text-lg font-semibold">Allowances</h2>
+                                                <h2 class="text-lg font-semibold">Allowances / Reimbursements</h2>
                                                 <button class="bg-blue-500 p-2 rounded" data-bs-toggle="modal" data-bs-target="#allowanceModal">
                                                     <svg class="h-5 w-5 text-gray-100"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -772,7 +772,7 @@
                     <div class="modal-dialog modal-none modal-lg modal-dialog-centered modal-scrollable">
                         <div class="modal-content" id="updateEmployeeModal">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="employeeFormLabel">New Employee</h1>
+                                <h1 class="modal-title fs-5" id="employeeFormLabel">Update Employee</h1>
                                 <input type="hidden" id="updateID" name="updateID">
                                 <input type="hidden" id="oldEmailAddress" name="oldEmailAddress">
                                 <input type="hidden" id="oldEmployeeID" name="oldEmployeeID">
