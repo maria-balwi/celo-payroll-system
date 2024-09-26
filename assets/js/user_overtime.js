@@ -157,7 +157,6 @@ $(document).ready(function() {
                     $('#viewStatus').val(res.data.status);
                     $('#approvedLabelRow').hide();
                     $('#approvedInputRow').hide();
-                    $('#viewFiledOTModal').modal('show');
                 }
                 else if (res.status == 200 && res.data.status == 2) {
                     $('#viewFiledOTID').val(res.data.requestID);
@@ -180,7 +179,6 @@ $(document).ready(function() {
                     }
                     $('#viewPurpose').val(res.data.remarks);
                     $('#viewStatus').val(res.data.status);
-                    $('#viewFiledOTModal').modal('show');
                 }
             }
         });

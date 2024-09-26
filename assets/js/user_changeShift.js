@@ -126,7 +126,6 @@ $(document).ready(function() {
                     $('#viewEndDate').val(res.data.effectivityEndDate);
                     $('#viewPurpose').val(res.data.remarks);
                     $('#viewStatus').val(res.data.status);
-                    $('#viewRequestModal').modal('show');
                 }
             }
         });

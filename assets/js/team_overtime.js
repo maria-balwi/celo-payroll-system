@@ -240,7 +240,6 @@ $(document).ready(function() {
                     $('#viewStatus').val('Pending for 1st Approval');
                     $('#approvedLabelRow').hide();
                     $('#approvedInputRow').hide();
-                    $('#viewFiledOTModal').modal('show');
                 }
                 else if (res.status == 200 && res.data.status == 1) {
                     $('#viewFiledOTID').val(res.data.requestID);
@@ -260,7 +259,6 @@ $(document).ready(function() {
                     $('#approvedInputRow').hide();
                     $('#approveOT').hide();
                     $('#disapproveOT').hide();
-                    $('#viewFiledOTModal').modal('show');
                 }
                 else if (res.status == 200 && res.data.status == 0) {
                     $('#viewFiledOTID').val(res.data.requestID);
@@ -280,7 +278,6 @@ $(document).ready(function() {
                     $('#approvedInputRow').hide();
                     $('#approveOT').hide();
                     $('#disapproveOT').hide();
-                    $('#viewFiledOTModal').modal('show');
                 }
                 else if (res.status == 200 && res.data.status == 2) {
                     $('#viewFiledOTID').val(res.data.requestID);
@@ -305,7 +302,6 @@ $(document).ready(function() {
                     $('#viewStatus').val('Approved');
                     $('#approveOT').hide();
                     $('#disapproveOT').hide();
-                    $('#viewFiledOTModal').modal('show');
                 }
             }
         });

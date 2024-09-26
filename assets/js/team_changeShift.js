@@ -200,7 +200,6 @@ $(document).ready(function() {
                     $('#viewStatus').val(res.data.status);
                     $('#approveChangeShift').hide();
                     $('#disapproveChangeShift').hide();
-                    $('#viewChangeShiftModal').modal('show');
                 }
                 else if (res.status == 200 && res.data.status == "Pending") {
                     $('#viewLeaveID').val(res.data.requestID);
@@ -216,7 +215,6 @@ $(document).ready(function() {
                     $('#viewStatus').val(res.data.status);
                     $('#approveChangeShift').show();
                     $('#disapproveChangeShift').show();
-                    $('#viewChangeShiftModal').modal('show');
                 }
             }
         });
