@@ -2,14 +2,52 @@ $(document).ready(function() {
 
     $('#leaveTable').DataTable();
 
-    $('#dropdownButton').on('click', function() {
-        $('#dropdownMenu').toggleClass('hidden');
+    $('.medCertDiv').hide();
+    $('#leaveType').on('change', function() {
+        var leaveType = $('#leaveType').val();
+        if (leaveType == 1) {
+            $('.medCertDiv').show();
+            $('#medCert').attr('required', true);
+        }
+        else {
+            $('.medCertDiv').hide();
+            $('#medCert').attr('required', false);
+        }
     });
 
-    // Close the dropdown if the user clicks outside of it
-    $(document).on('click', function(event) {
-        if (!$(event.target).closest('#dropdownButton').length && !$(event.target).closest('#dropdownMenu').length) {
-        $('#dropdownMenu').addClass('hidden');
+    // FILE LEAVE - UPLOAD MEDICAL CERTIFICATE
+    $('#medCert').change(function() {
+        const [file] = medCert.files;
+        const acceptedImageTypes = ['image/jpeg', 'image/png'];
+        if (file) {
+            const fileType = file['type'];
+            if ($.inArray(fileType, acceptedImageTypes) < 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Invalid Picture',
+                    text: 'Invalid File only accept (JPG/PNG) file',
+                })
+                $('#viewMedCert').attr('disabled', true);
+            } else {
+                $('#viewMedCert').attr('disabled', false);  // Enable the view button
+            }
+        } else {
+            $('#viewMedCert').attr('disabled', true);  // Disable the view button if no file is selected
+        }
+    });
+
+    $('#viewMedCert').click(function() {
+        const [file] = medCert.files;
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                Swal.fire({
+                    title: 'Medical Certificate',
+                    imageUrl: e.target.result,
+                    imageHeight: 500,
+                });
+            }
+            reader.readAsDataURL(file);
         }
     });
 
@@ -134,7 +172,6 @@ $(document).ready(function() {
                     $('#viewEndDate').val(res.data.effectivityEndDate);
                     $('#viewPurpose').val(res.data.remarks);
                     $('#viewStatus').val(res.data.status);
-                    $('#viewLeaveModal').modal('show');
                 }
             }
         });
