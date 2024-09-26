@@ -8,11 +8,19 @@
     $startDate = $_POST['effectivityStartDate'];
     $endDate = $_POST['effectivityEndDate'];
     $purpose = $_POST['purpose'];
+
+    $f_modified_employeeID = str_replace("-", "", $_SESSION['employeeID']);
+    $medCertFileName = $f_modified_employeeID.'-'.date("m.d.Y"). '.png'; 
     
     // DEFAULT VALUES
     $status = "Pending";
 
-    mysqli_query($conn, $employees->fileLeave($employeeID, $leaveType, $startDate, $endDate, $purpose, $status));
+    if ($leaveType == 1) {
+        mysqli_query($conn, $employees->fileSickLeave($employeeID, $leaveType, $startDate, $endDate, $purpose, $status, $medCertFileName));
+    }
+    else {
+        mysqli_query($conn, $employees->fileLeave($employeeID, $leaveType, $startDate, $endDate, $purpose, $status));
+    }
 
     $lastIDQuery = mysqli_query($conn, $employees->viewLastLeave());
     $lastIDResult = mysqli_fetch_array($lastIDQuery);
