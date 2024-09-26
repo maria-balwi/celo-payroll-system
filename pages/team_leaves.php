@@ -14,21 +14,6 @@
                 <div class="mr-4">
                     Leave Applications
                 </div>  
-
-                <!-- DATA RANGE DROPDOWN MENU -->
-                <div class="relative inline-block text-right">
-                    <div id="dropdownMenu" class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden">
-                        <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Today</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Yesterday</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Last 7 days</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Last 30 days</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">This Month</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Last Month</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Custom Range</a>
-                        </div>
-                    </div>
-                </div>
             </div>
             
             <!-- CONTENT -->
@@ -266,6 +251,12 @@
                                     <div class="col-12">
                                         <textarea type="text" class="form-control" id="viewPurpose" rows="3" disabled readonly>
                                         </textarea>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2" id="viewMedCertRow">
+                                    <div class="col-12">
+                                        <button id="viewMedicalCert" class="text-blue-500">View Medical Certificate</button>
                                     </div>
                                 </div>
                             </form>
