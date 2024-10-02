@@ -936,6 +936,26 @@
                 WHERE id = '$id'";
             return $employee;
         }
+
+        public function viewApprovedSickLeaves($id) {
+            $approvedSickLeaves = "
+                SELECT * FROM ".$this->leaves." AS leaves
+                INNER JOIN ".$this->employees." AS employees
+                ON leaves.empID = employees.id
+                INNER JOIN ".$this->leaveType." AS leaveType
+                ON leaveType.leaveTypeID = leaves.leaveTypeID
+                WHERE empID = '$id' AND 
+                (leaves.leaveTypeID = 1 AND leaves.status = 'Approved')";
+            return $approvedSickLeaves;
+        }
+
+        public function viewLeavePoints($id) {
+            $approvedSickLeaves = "
+                SELECT leavePoints 
+                FROM ".$this->employees."
+                WHERE id = '$id'";
+            return $approvedSickLeaves;
+        }
     }
 
 ?>

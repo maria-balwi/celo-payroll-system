@@ -17,7 +17,22 @@
 
                     <!-- REQUEST PRE-RENDER BUTTON -->
                     <div class="static inline-block text-right">
-                        <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none no-underline" data-bs-toggle="modal" data-bs-target="#fileLeaveModal">File a Leave</button>
+                        <?php
+                            $leaveQuery = mysqli_query($conn, $employees->viewApprovedSickLeaves($_SESSION['id']));
+                            $leaves = mysqli_num_rows($leaveQuery);
+
+                            $leavePointsQuery = mysqli_query($conn, $employees->viewLeavePoints($_SESSION['id']));
+                            $details = mysqli_fetch_array($leaveQuery);
+                            $leavePoints = $details['leavePoints'];
+                            
+                            if ($leaves >= 5 && $leavePoints <= 1.00) { ?>
+                            <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white opacity-50 cursor-not-allowed no-underline">File a Leave</button>
+                        <?php
+                            }
+                            else { ?>
+                            <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none no-underline" data-bs-toggle="modal" data-bs-target="#fileLeaveModal">File a Leave</button>
+                        <?php } ?>
+                        <!-- <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none no-underline" data-bs-toggle="modal" data-bs-target="#fileLeaveModal">File a Leave</button> -->
                     </div>
                 </div>
 
@@ -130,15 +145,38 @@
                                             <select class="form-select border border-1" id="leaveType" name="leaveType" required>
                                                 <option selected disabled>Choose Leave Type</option>
                                                 <?php
-                                                $allLeaveType = mysqli_query($conn, $employees->viewAllLeaveType());
-                                                while ($allLeaveTypeResult = mysqli_fetch_array($allLeaveType)) {
+                                                    $leaveQuery = mysqli_query($conn, $employees->viewApprovedSickLeaves($_SESSION['id']));
+                                                    $leaves = mysqli_num_rows($leaveQuery);
+                        
+                                                    $leavePointsQuery = mysqli_query($conn, $employees->viewLeavePoints($_SESSION['id']));
+                                                    $details = mysqli_fetch_array($leaveQuery);
+                                                    $leavePoints = $details['leavePoints'];
+                                                    
+                                                    if ($leaves >= 5 && $leavePoints <= 1.00) {
+                                                    // $allLeaveType = mysqli_query($conn, $employees->viewAllLeaveType());
+                                                    // while ($allLeaveTypeResult = mysqli_fetch_array($allLeaveType)) {
                                                 ?>
-                                                    <option value="<?php echo $allLeaveTypeResult['leaveTypeID']; ?>">
-                                                        <?php echo $allLeaveTypeResult['leaveType']; ?>
-                                                    </option>
+                                                    <!-- <option value="< ?php echo $allLeaveTypeResult['leaveTypeID']; ?>">
+                                                        < ?php echo $allLeaveTypeResult['leaveType']; ?>
+                                                    </option> -->
+                                                    <option value="1" disabled>Sick Leave</option>
+                                                    <option value="2" disabled>Vacation Leave</option>
                                                 <?php
-                                                }
-                                                ?>
+                                                    }
+                                                    else if ($leaves < 5 && $leavePoints <= 1.00){ ?>
+                                                    <option value="1">Sick Leave</option>
+                                                    <option value="2" disabled>Vacation Leave</option>
+                                                <?php
+                                                    }
+                                                    else if ($leaves >= 5 && $leavePoints >= 1.00){ ?>
+                                                    <option value="1" disabled>Sick Leave</option>
+                                                    <option value="2">Vacation Leave</option>
+                                                <?php
+                                                    }
+                                                    else { ?>
+                                                    <option value="1">Sick Leave</option>
+                                                    <option value="2">Vacation Leave</option>
+                                                <?php } ?>
                                             </select>
                                         </div>
                                     </div>   
