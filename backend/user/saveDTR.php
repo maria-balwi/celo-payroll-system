@@ -57,9 +57,9 @@
             }
         }
 
-        // ENSURE THE 'UPLOADS' DIRECTORY EXISTS
-        $baseDir = '../../assets/';
-        $uploadDir = $baseDir . 'uploads/';
+        // ENSURE THE 'ATTENDANCE' DIRECTORY EXISTS
+        $baseDir = '../../assets/images/';
+        $uploadDir = $baseDir . 'attendance/';
         if (!file_exists($uploadDir)) {
             mkdir($uploadDir, 0755, true);
         }
