@@ -16,6 +16,9 @@
         private $deductions = 'tbl_deductions';
         private $empAllowances = 'tbl_empallowances';
         private $empDeductions = 'tbl_empdeductions';
+        private $payroll = 'tbl_payroll';
+        private $payrollCycle = 'tbl_payrollcycle';
+        private $payslip = 'tbl_payslip';
 
         private $dbConnect = false;
         public function __construct() {
@@ -116,6 +119,14 @@
                 DELETE FROM ".$this->empDeductions."
                 WHERE empDeductionID = '$empDeductionID'";
             return $deleteEmpADeduction;
+        }
+
+        public function viewAllPayroll() {
+            $payroll = "
+                SELECT * FROM ".$this->payroll." AS payroll
+                INNER JOIN ".$this->payrollCycle." AS payrollCycle
+                ON payroll.payrollCycleID = payrollCycle.payrollCycleID";
+            return $payroll;
         }
     }
 ?>
