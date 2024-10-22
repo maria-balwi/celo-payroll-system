@@ -14,6 +14,8 @@
         private $employees = 'tbl_employee';
         private $allowances = 'tbl_allowances';
         private $deductions = 'tbl_deductions';
+        private $reimbursements = 'tbl_reimbursements';
+        private $adjustments = 'tbl_adjustments';
         private $empAllowances = 'tbl_empallowances';
         private $empDeductions = 'tbl_empdeductions';
         private $payroll = 'tbl_payroll';
@@ -35,6 +37,140 @@
             $deductions = "
                 SELECT * FROM ".$this->deductions;
             return $deductions;
+        }
+
+        public function viewAllReimbursements() {
+            $reimbursements = "
+                SELECT * FROM ".$this->reimbursements;
+            return $reimbursements;
+        }
+
+        public function viewAllAdjustments() {
+            $adjustments = "
+                SELECT * FROM ".$this->adjustments;
+            return $adjustments;
+        }
+
+        public function getAllowanceInfo($allowanceID) {
+            $allowance = "
+                SELECT * FROM ".$this->allowances."
+                WHERE allowanceID = '$allowanceID'";
+            return $allowance;
+        }
+
+        public function getReimbursementInfo($reimbursementID) {
+            $reimbursement = "
+                SELECT * FROM ".$this->reimbursements."
+                WHERE reimbursementID = '$reimbursementID'";
+            return $reimbursement;
+        }
+
+        public function getDeductionInfo($deductionID) {
+            $deduction = "
+                SELECT * FROM ".$this->deductions."
+                WHERE deductionID = '$deductionID'";
+            return $deduction;
+        }
+
+        public function getAdjustmentInfo($adjustmentID) {
+            $adjustment = "
+                SELECT * FROM ".$this->adjustments."
+                WHERE adjustmentID = '$adjustmentID'";
+            return $adjustment;
+        }
+
+        public function addAllowance($allowanceName) {
+            $addAllowance = "
+                INSERT INTO ".$this->allowances." (allowanceName)
+                VALUES ('$allowanceName')";
+            return $addAllowance;
+        }
+
+        public function addReimbursement($reimbursementName) {
+            $addReimbursement = "
+                INSERT INTO ".$this->reimbursements." (reimbursementName)
+                VALUES ('$reimbursementName')";
+            return $addReimbursement;
+        }
+
+        public function addDeduction($deductionName) {
+            $addDeduction = "
+                INSERT INTO ".$this->deductions." (deductionName)
+                VALUES ('$deductionName')";
+            return $addDeduction;
+        }
+
+        public function addAdjustment($adjustmentName, $adjustmentType) {
+            $addAdjustment = "
+                INSERT INTO ".$this->adjustments." (adjustmentName, adjustmentType)
+                VALUES ('$adjustmentName', '$adjustmentType')";
+            return $addAdjustment;
+        }
+
+        public function updateAllowance($allowanceID, $allowanceName) {
+            $updateAllowance = "
+                UPDATE ".$this->allowances."
+                SET allowanceName = '$allowanceName'
+                WHERE allowanceID = '$allowanceID'";
+            return $updateAllowance;
+        }
+
+        public function updateDeduction($deductionID, $deductionName) {
+            $updateDeduction = "
+                UPDATE ".$this->deductions."
+                SET deductionName = '$deductionName'
+                WHERE deductionID = '$deductionID'";
+            return $updateDeduction;
+        }
+
+        public function deleteAllowance($allowanceID) {
+            $deleteAllowance = "
+                DELETE FROM ".$this->allowances."
+                WHERE allowanceID = '$allowanceID'";
+            return $deleteAllowance;
+        }
+
+        public function deleteDeduction($deductionID) {
+            $deleteDeduction = "
+                DELETE FROM ".$this->deductions."
+                WHERE deductionID = '$deductionID'";
+            return $deleteDeduction;
+        }
+
+        public function viewLastAllowance() {
+            $allowance = "
+                SELECT allowanceID
+                FROM ".$this->allowances."
+                ORDER BY allowanceID DESC
+                LIMIT 1";
+            return $allowance;
+        }
+
+        public function viewLastReimbursement() {
+            $reimbursement = "
+                SELECT reimbursementID
+                FROM ".$this->reimbursements."
+                ORDER BY reimbursementID DESC
+                LIMIT 1";
+            return $reimbursement;
+        }
+
+        public function viewLastDeduction() {
+            $allowance = "
+                SELECT deductionID
+                FROM ".$this->deductions."
+                ORDER BY deductionID DESC
+                LIMIT 1";
+            return $allowance;
+        }
+
+        public function viewLastAdjustment() {
+            $adjustment = "
+                SELECT adjustmentID
+                FROM ".$this->adjustments."
+                ORDER BY adjustmentID DESC
+                LIMIT 1";
+            return $adjustment;
         }
 
         public function getAllEmpAllowances($id) {
@@ -127,6 +263,12 @@
                 INNER JOIN ".$this->payrollCycle." AS payrollCycle
                 ON payroll.payrollCycleID = payrollCycle.payrollCycleID";
             return $payroll;
+        }
+
+        public function viewAllPayrollCycle() {
+            $payrollCycle = "
+                SELECT * FROM ".$this->payrollCycle;
+            return $payrollCycle;
         }
     }
 ?>
