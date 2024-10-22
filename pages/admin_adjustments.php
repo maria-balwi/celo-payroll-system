@@ -405,6 +405,158 @@
                     </div>
                 </div>
             </div>
+
+            <!--------------------------------------------------------------------------------------------------------------------------------------------->
+            <!------------------------------------------------------------ UPDATE ALLOWANCE MODAL --------------------------------------------------------->
+            <form id="updateAllowanceForm">
+                <div class="modal fade" id="updateAllowanceModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-none modal-sm modal-dialog-centered">
+                        <div class="modal-content" id="updateAllowanceModal">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="userFormLabel">Update Allowance</h1>
+                                <input type="hidden" id="updateAllowanceID" name="updateAllowanceID">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row g-2 mb-1">
+                                    <div class="col-12">
+                                        <label for="updateAllowanceName">Allowance Name:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <div class="col-12">
+                                        <input type="text" class="form-control" id="updateAllowanceName" name="updateAllowanceName">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">Save</button>
+                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#viewAllowanceModal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <!--------------------------------------------------------------------------------------------------------------------------------------------->
+            <!-------------------------------------------------------- UPDATE REIMBURSEMENT MODAL --------------------------------------------------------->
+            <form id="updateReimbursementForm">
+                <div class="modal fade" id="updateReimbursementModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-none modal-sm modal-dialog-centered">
+                        <div class="modal-content" id="updateReimbursementModal">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="userFormLabel">Update Reimbursement</h1>
+                                <input type="hidden" id="updateReimbursementID" name="updateReimbursementID">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row g-2 mb-1">
+                                    <div class="col-12">
+                                        <label for="updateReimbursementName">Reimbursement Name:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <div class="col-12">
+                                        <input type="text" class="form-control" id="updateReimbursementName" name="updateReimbursementName">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">Save</button>
+                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#viewReimbursementModal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <!--------------------------------------------------------------------------------------------------------------------------------------------->
+            <!------------------------------------------------------------ UPDATE DEDUCTION MODAL --------------------------------------------------------->
+            <form id="updateDeductionForm">
+                <div class="modal fade" id="updateDeductionModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-none modal-sm modal-dialog-centered">
+                        <div class="modal-content" id="updateDeductionModal">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="userFormLabel">Update Deduction</h1>
+                                <input type="hidden" id="updateDeductionID" name="updateDeductionID">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row g-2 mb-1">
+                                    <div class="col-12">
+                                        <label for="updateDeductionName">Deduction Name:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <div class="col-12">
+                                        <input type="text" class="form-control" id="updateDeductionName" name="updateDeductionName">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">Save</button>
+                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#viewDeductionModal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <!--------------------------------------------------------------------------------------------------------------------------------------------->
+            <!------------------------------------------------------------ UPDATE ADJUSTMENT MODAL --------------------------------------------------------->
+            <form id="updateAdjustmentForm">
+                <div class="modal fade" id="updateAdjustmentModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-none modal-sm modal-dialog-centered">
+                        <div class="modal-content" id="updateAdjustmentModal">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="userFormLabel">Update Adjustment</h1>
+                                <input type="hidden" id="updateAdjustmentID" name="updateAdjustmentID">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row g-2 mb-1">
+                                    <div class="col-12">
+                                        <label for="updateAdjustmentName">Adjustment Name:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <div class="col-12">
+                                        <input type="text" class="form-control" id="updateAdjustmentName" name="updateAdjustmentName">
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-1">
+                                    <div class="col-12">
+                                        <label for="updateAdjustmentType">Adjustment Name:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <div class="col-12">
+                                        <select name="updateAdjustmentType" id="updateAdjustmentType" class="form-select">
+                                            <option selected disabled>Choose</option>
+                                            <option value="Add">Add</option>
+                                            <option value="Deduct">Deduct</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">Save</button>
+                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#viewAdjustmentModal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </main>
     
         <script src="../assets/js/admin_adjustments.js"></script>
