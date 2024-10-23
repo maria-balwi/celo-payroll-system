@@ -20,7 +20,7 @@
 
         mysqli_query($conn, $payroll->updateReimbursement($updateReimbursementID, $updateReimbursementName));
 
-        $em = "Allowance Updated Successfully";
+        $em = "Reimbursement Updated Successfully";
         $error = array('error' => 0, 'em' => $em);
         echo json_encode($error);
         exit();
