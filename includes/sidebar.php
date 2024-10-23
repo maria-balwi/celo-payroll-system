@@ -31,9 +31,6 @@
                 <a href="../pages/admin_employees.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Employee List
                 </a>
-                <a href="../pages/admin_payroll.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
-                    Payroll
-                </a>
                 <a href="../pages/admin_leaves.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Leave Applications
                 </a>
@@ -41,7 +38,10 @@
                     Change Shift Requests
                 </a>
                 <a href="../pages/admin_overtime.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
-                    Overtime
+                    Overtimes
+                </a>
+                <a href="../pages/admin_payroll.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
+                    Payroll
                 </a>
                 <a href="../pages/admin_adjustments.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Adjustments
@@ -93,10 +93,10 @@
                     Leaves
                 </a>
                 <a href="../pages/user_changeShift.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
-                    Change Shift
+                    Change Shifts
                 </a>
                 <a href="../pages/user_overtime.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
-                    Overtime
+                    Overtimes
                 </a>
                 <a href="../pages/user_shifts.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     My Shifts
