@@ -719,14 +719,13 @@
                             <hr>
                             
                             <input type="hidden" id="viewID" name="viewID">
-                            <div class="row g-2">
+                            <div class="row g-2 mb-2">
                                 <div class="flex space-x-4">
-
                                     <!-- ALLOWANCES -->
                                     <div class="flex-1 bg-lightblue p-2 border border-gray-300">
                                         <div class="mb-4">
                                             <div class="flex justify-between items-center mb-2 px-1">
-                                                <h2 class="text-lg font-semibold">Allowances / Reimbursements</h2>
+                                                <h2 class="text-lg font-semibold">Allowances</h2>
                                                 <button class="bg-blue-500 p-2 rounded" data-bs-toggle="modal" data-bs-target="#allowanceModal">
                                                     <svg class="h-5 w-5 text-gray-100"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -750,6 +749,42 @@
                                                 </button>
                                             </div>
                                             <div class="space-y-2" id="deductionsSection">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row g-2">
+                                <div class="flex space-x-4">
+                                    <!-- REIMBURSEMENTS -->
+                                    <div class="flex-1 bg-lightblue p-2 border border-gray-300">
+                                        <div class="mb-4">
+                                            <div class="flex justify-between items-center mb-2 px-1">
+                                                <h2 class="text-lg font-semibold">Reimbursements</h2>
+                                                <button class="bg-blue-500 p-2 rounded" data-bs-toggle="modal" data-bs-target="#reimbursementModal">
+                                                    <svg class="h-5 w-5 text-gray-100"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                            <div class="space-y-2" id="reimbursementsSection">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- ADJUSTMENT/S +,- -->
+                                    <div class="flex-1 bg-lightblue p-2 border border-gray-300">
+                                        <div class="mb-4">
+                                            <div class="flex justify-between items-center mb-2 px-1">
+                                                <h2 class="text-lg font-semibold">Adjustment/s +,- </h2>
+                                                <button class="bg-blue-500 p-2 rounded" data-bs-toggle="modal" data-bs-target="#adjustmentModal">
+                                                    <svg class="h-5 w-5 text-gray-100"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                            <div class="space-y-2" id="adjustmentsSection">
                                             </div>
                                         </div>
                                     </div>
@@ -1150,7 +1185,7 @@
                                 <form id="allowanceForm">
                                     <div class="row g-2 mb-1">
                                         <div class="col-6">
-                                            <label for="allowanceName">Allowance:</label>
+                                            <label for="allowanceName">Name:</label>
                                         </div>
                                         <div class="col-6">
                                             <label for="allowanceAmount">Amount:</label>
@@ -1202,7 +1237,7 @@
 
                                     <div class="row g-2 mb-2">
                                         <div class="col-12">
-                                            <button type="submit" class="btn btn-success w-50 justify-center">Add</button>
+                                            <button type="submit" class="btn btn-success w-50 justify-center" id="allowanceAdd" disabled>Add</button>
                                         </div>
                                     </div>
                                 </form>
@@ -1212,7 +1247,7 @@
                                 <table id="allowanceTable" class="table table-bordered table-striped text-center">
                                     <thead>
                                         <tr>
-                                            <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Allowance</th>
+                                            <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                                             <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
                                             <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
                                             <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
@@ -1227,7 +1262,105 @@
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-success allowanceSave">Save</button>
-                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#viewEmployeeModal">Close</button>
+                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#viewEmployeeModal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--------------------------------------------------------------------------------------------------------------------------------------------->
+            <!---------------------------------------------------------------- ADD REIMBURSEMENT MODAL ---------------------------------------------------->
+            <div class="modal fade" id="reimbursementModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
+                <div class="modal-dialog modal-none modal-dialog-centered">
+                    <div class="modal-content" id="reimbursementModal">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="userFormLabel">Reimbursements</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div> 
+                        
+                        <div class="modal-body">
+                            <div class="row g-2 mb-2">
+                                <form id="reimbursementForm">
+                                    <div class="row g-2 mb-1">
+                                        <div class="col-6">
+                                            <label for="reimbursementName">Name:</label>
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="reimbursementAmount">Amount:</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-2 mb-2">
+                                        <div class="col-6">
+                                            <select name="reimbursementName" id="reimbursementName" class="form-select">
+                                                <option selected disabled>Choose</option>
+                                                <?php
+                                                    $allReimbursements = mysqli_query($conn, $payroll->viewAllReimbursements());
+                                                    while ($allReimbursementsResult = mysqli_fetch_array($allReimbursements)) {
+                                                ?>
+                                                    <option value="<?php echo $allReimbursementsResult['reimbursementID']; ?>">
+                                                        <?php echo $allReimbursementsResult['reimbursementName']; ?>
+                                                    </option>
+                                                <?php
+                                                    }
+                                                ?>
+                                            </select>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="number" class="form-control" id="reimbursementAmount" name="reimbursementAmount">
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-2 mb-1">
+                                        <div class="col-6">
+                                            <label for="reimbursementType">Type:</label>
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="effectivityDate_reimbursement" id="effectivityDate_reimbursementLabel">Effectivity Date:</label>
+                                        </div>
+                                    </div>
+                                    <div class="row g-2 mb-3">
+                                        <div class="col-6">
+                                            <select name="reimbursementType" id="reimbursementType" class="form-select">
+                                                <option selected disabled>Choose</option>
+                                                <option value="1">Monthly</option>
+                                                <option value="2">Semi-Monthly</option>
+                                                <option value="3">Once</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="date" class="form-control" id="effectivityDate_reimbursement" name="effectivityDate_reimbursement">
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-2 mb-2">
+                                        <div class="col-12">
+                                            <button type="submit" class="btn btn-success w-50 justify-center" id="reimbursementAdd" disabled>Add</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="row g-2 mb-2">
+                                <table id="reimbursementTable" class="table table-bordered table-striped text-center">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                            <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                                            <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                            <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success reimbursementSave">Save</button>
+                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#viewEmployeeModal">Cancel</button>
                         </div>
                     </div>
                 </div>
@@ -1248,7 +1381,7 @@
                                 <form id="deductionForm">
                                     <div class="row g-2 mb-1">
                                         <div class="col-6">
-                                            <label for="deductionName">Deduction:</label>
+                                            <label for="deductionName">Name:</label>
                                         </div>
                                         <div class="col-6">
                                             <label for="deductionAmount">Amount:</label>
@@ -1300,7 +1433,7 @@
 
                                     <div class="row g-2 mb-2">
                                         <div class="col-12">
-                                            <button type="submit" class="btn btn-success w-50 justify-center">Add</button>
+                                            <button type="submit" class="btn btn-success w-50 justify-center" id="deductionAdd" disabled>Add</button>
                                         </div>
                                     </div>
                                 </form>
@@ -1310,7 +1443,7 @@
                                 <table id="deductionTable" class="table table-bordered table-striped text-center">
                                     <thead>
                                         <tr>
-                                            <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Deduction</th>
+                                            <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                                             <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
                                             <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
                                             <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
@@ -1325,7 +1458,106 @@
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-success deductionSave">Save</button>
-                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#viewEmployeeModal">Close</button>
+                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#viewEmployeeModal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--------------------------------------------------------------------------------------------------------------------------------------------->
+            <!---------------------------------------------------------------- ADD ADJUSTMENT MODAL ------------------------------------------------------->
+            <div class="modal fade" id="adjustmentModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
+                <div class="modal-dialog modal-none modal-dialog-centered">
+                    <div class="modal-content" id="adjustmentModal">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="userFormLabel">Adjustment/s</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="row g-2 mb-2">
+                                <form id="adjustmentForm">
+                                    <div class="row g-2 mb-1">
+                                        <div class="col-6">
+                                            <label for="adjustmentName">Name:</label>
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="adjustmentAmount">Amount:</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-2 mb-2">
+                                        <div class="col-6">
+                                            <select name="adjustmentName" id="adjustmentName" class="form-select">
+                                                <option selected disabled>Choose</option>
+                                                <?php
+                                                    $allAdjustments = mysqli_query($conn, $payroll->viewAllAdjustments());
+                                                    while ($allAdjustmentsResult = mysqli_fetch_array($allAdjustments)) {
+                                                ?>
+                                                    <option value="<?php echo $allAdjustmentsResult['adjustmentID']; ?>">
+                                                        <?php echo $allAdjustmentsResult['adjustmentName']; ?>
+                                                    </option>
+                                                <?php
+                                                    }
+                                                ?>
+                                            </select>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="number" class="form-control" id="adjustmentAmount" name="adjustmentAmount">
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-2 mb-1">
+                                        <div class="col-6">
+                                            <label for="adjustmentType">Type:</label>
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="effectivityDate_adjustment" id="effectivityDate_adjustmentLabel">Effectivity Date:</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row g-2 mb-3">
+                                        <div class="col-6">
+                                            <select name="adjustmentType" id="adjustmentType" class="form-select">
+                                                <option selected disabled>Choose</option>
+                                                <option value="1">Monthly</option>
+                                                <option value="2">Semi-Monthly</option>
+                                                <option value="3">Once</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="date" class="form-control" id="effectivityDate_adjustment" name="effectivityDate_adjustment">
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-2 mb-2">
+                                        <div class="col-12">
+                                            <button type="submit" class="btn btn-success w-50 justify-center" id="adjustmentAdd" disabled>Add</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="row g-2 mb-2">
+                                <table id="adjustmentTable" class="table table-bordered table-striped text-center">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                            <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                                            <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                            <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success adjustmentSave">Save</button>
+                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#viewEmployeeModal">Cancel</button>
                         </div>
                     </div>
                 </div>

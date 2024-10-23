@@ -21,6 +21,14 @@
                 $allowances[] = $allowance;
             }
 
+            // REIMBURSEMENTS QUERY
+            $getEmpReimbursementsQuery = $payroll->getAllEmpReimbursements($employee_id);
+            $getEmpReimbursementsResult = mysqli_query($conn, $getEmpReimbursementsQuery);
+            $reimbursements = [];
+            while ($reimbursement = mysqli_fetch_array($getEmpReimbursementsResult)) {
+                $reimbursements[] = $reimbursement;
+            }
+
             // DEDUCTIONS QUERY
             $getEmpDeductionsQuery = $payroll->getAllEmpADeductions($employee_id);
             $getEmpDeductionsResult = mysqli_query($conn, $getEmpDeductionsQuery);
@@ -28,13 +36,23 @@
             while ($deduction = mysqli_fetch_array($getEmpDeductionsResult)) {
                 $deductions[] = $deduction;
             }
+
+            // ADJUSTMENTS QUERY
+            $getEmpAdjustmentsQuery = $payroll->getAllEmpAdjustments($employee_id);
+            $getEmpAdjustmentsResult = mysqli_query($conn, $getEmpAdjustmentsQuery);
+            $adjustments = [];
+            while ($adjustment = mysqli_fetch_array($getEmpAdjustmentsResult)) {
+                $adjustments[] = $adjustment;
+            }
             
             $res = [
                 'status' => 200,
                 'message' => 'Employee Fetch Successfully by id',
                 'data' => $employee, 
                 'allowances' => $allowances, 
-                'deductions' => $deductions
+                'reimbursements' => $reimbursements,
+                'deductions' => $deductions, 
+                'adjustments' => $adjustments
             ];
 
             echo json_encode($res);

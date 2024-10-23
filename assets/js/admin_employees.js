@@ -242,6 +242,15 @@ $(document).ready(function() {
     $('#effectivityDate_allowanceLabel').hide();
     $('#effectivityDate_allowance').hide();
 
+    $("select[id='allowanceName'], select[id='allowanceType'], input[id='allowanceAmount']").on("input change", function() {
+        if ($('#allowanceName').val() !== null && $('#allowanceType').val() !== null && $('#allowanceAmount').val() !== '') {
+            $('#allowanceAdd').attr('disabled', false);
+        } else {
+            $('#allowanceAdd').attr('disabled', true);
+        }
+    });
+    
+
     $('#allowanceType').on('change', function() {
         if ($(this).val() == '3') {
             $('#effectivityDate_allowanceLabel').show();
@@ -252,9 +261,39 @@ $(document).ready(function() {
         }
     })
 
+    // ADD REIMBURSEMENT MODAL
+    $('#effectivityDate_reimbursementLabel').hide();
+    $('#effectivityDate_reimbursement').hide();
+
+    $("input[id='reimbursementName'], select[id='reimbursementType'], input[id='reimbursementAmount']").on("input change", function() {
+        if ($('#reimbursementName').val() !== null && $('#reimbursementType').val() !== null && $('#reimbursementAmount').val() !== '') {
+            $('#reimbursementAdd').attr('disabled', false);
+        } else {
+            $('#reimbursementAdd').attr('disabled', true);
+        }
+    });
+
+    $('#reimbursementType').on('change', function() {
+        if ($(this).val() == '3') {
+            $('#effectivityDate_reimbursementLabel').show();
+            $('#effectivityDate_reimbursement').show();
+        } else {    
+            $('#effectivityDate_reimbursementLabel').hide();
+            $('#effectivityDate_reimbursement').hide();
+        }
+    })
+
     // ADD DEDUCTION MODAL
     $('#effectivityDate_deductionLabel').hide();
     $('#effectivityDate_deduction').hide();
+
+    $("input[id='deductionName'], select[id='deductionType'], input[id='deductionAmount']").on("input change", function() {
+        if ($('#deductionName').val() !== null && $('#deductionType').val() !== null && $('#deductionAmount').val() !== '') {
+            $('#deductionAdd').attr('disabled', false);
+        } else {
+            $('#deductionAdd').attr('disabled', true);
+        }
+    });
 
     $('#deductionType').on('change', function() {
         if ($(this).val() == '3') {
@@ -263,6 +302,28 @@ $(document).ready(function() {
         } else {    
             $('#effectivityDate_deductionLabel').hide();
             $('#effectivityDate_deduction').hide();
+        }
+    })
+
+    // ADD ADJUSTMENT MODAL
+    $('#effectivityDate_adjustmentLabel').hide();
+    $('#effectivityDate_adjustment').hide();
+
+    $("input[id='adjustmentName'], select[id='adjustmentType'], input[id='adjustmentAmount']").on("input change", function() {
+        if ($('#adjustmentName').val() !== null && $('#adjustmentType').val() !== null && $('#adjustmentAmount').val() !== '') {
+            $('#adjustmentAdd').attr('disabled', false);
+        } else {
+            $('#adjustmentAdd').attr('disabled', true);
+        }
+    });
+
+    $('#adjustmentType').on('change', function() {
+        if ($(this).val() == '3') {
+            $('#effectivityDate_adjustmentLabel').show();
+            $('#effectivityDate_adjustment').show();
+        } else {    
+            $('#effectivityDate_adjustmentLabel').hide();
+            $('#effectivityDate_adjustment').hide();
         }
     })
 
@@ -332,7 +393,6 @@ $(document).ready(function() {
                                     timer: 2000,
                                     showConfirmButton: false
                                 }).then(() => {
-                                    // window.location.reload();
                                     // Refresh the View Employee Modal with new added data
                                     $('#addEmployeeModal').modal('hide');
                                     $('#viewEmployeeModal').modal('show');
@@ -420,6 +480,21 @@ $(document).ready(function() {
                     });
                     $('#allowancesSection').html(allowancesHTML);
 
+                    // UPDATE REIMBURSEMENTS SECTION
+                    var reimbursementsHTML = '';
+                    res.reimbursements.forEach(function(reimbursement) {
+                        reimbursementsHTML += '<div class="flex justify-between items-center bg-white p-2 border border-gray-200">';
+                        reimbursementsHTML += '<span>' + reimbursement.reimbursementName + '</span>';
+                        reimbursementsHTML += '<p class="text-sm bg-green-500 text-white py-1 px-2 rounded-full my-auto">₱ ' + reimbursement.amount + '</p>';
+                        reimbursementsHTML += '<button class="p-2 rounded deleteReimbursement" data-id="' + reimbursement.empReimbursementID + '">';
+                        reimbursementsHTML += '<svg class="h-5 w-5 text-gray-800"  fill="none" viewBox="0 0 24 24" stroke="currentColor">';
+                        reimbursementsHTML += '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>';
+                        reimbursementsHTML += '</svg>';
+                        reimbursementsHTML += '</button>';
+                        reimbursementsHTML += '</div>';
+                    });
+                    $('#reimbursementsSection').html(reimbursementsHTML);
+
                     // UPDATE DEDUCTIONS SECTION
                     var deductionsHTML = '';
                     res.deductions.forEach(function(deduction) {
@@ -434,6 +509,26 @@ $(document).ready(function() {
                         deductionsHTML += '</div>';
                     });
                     $('#deductionsSection').html(deductionsHTML);
+
+                    // UPDATE ADJUSTMENTS SECTION
+                    var adjustmentsHTML = '';
+                    res.adjustments.forEach(function(adjustment) {
+                        adjustmentsHTML += '<div class="flex justify-between items-center bg-white p-2 border border-gray-200">';
+                        adjustmentsHTML += '<span>' + adjustment.adjustmentName + '</span>';
+                        if (adjustment.adjustmentType == 'Add') {
+                            adjustmentsHTML += '<p class="text-sm bg-green-500 text-white py-1 px-2 rounded-full my-auto">₱ ' + adjustment.amount + '</p>';
+                        }
+                        else {
+                            adjustmentsHTML += '<p class="text-sm bg-red-500 text-white py-1 px-2 rounded-full my-auto">₱ ' + adjustment.amount + '</p>';
+                        }
+                        adjustmentsHTML += '<button class="p-2 rounded deleteAdjustment" data-id="' + adjustment.empAdjustmentID + '">';
+                        adjustmentsHTML += '<svg class="h-5 w-5 text-gray-800"  fill="none" viewBox="0 0 24 24" stroke="currentColor">';
+                        adjustmentsHTML += '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>';
+                        adjustmentsHTML += '</svg>';
+                        adjustmentsHTML += '</button>';
+                        adjustmentsHTML += '</div>';
+                    });
+                    $('#adjustmentsSection').html(adjustmentsHTML);
 
                     // Show the modal
                     $('#viewEmployeeModal').modal('show');
@@ -685,12 +780,27 @@ $(document).ready(function() {
                     });
                     $('#allowancesSection').html(allowancesHTML);
 
+                    // UPDATE REIMBURSEMENTS SECTION
+                    var reimbursementsHTML = '';
+                    res.reimbursements.forEach(function(reimbursement) {
+                        reimbursementsHTML += '<div class="flex justify-between items-center bg-white p-2 border border-gray-200">';
+                        reimbursementsHTML += '<span>' + reimbursement.reimbursementName + '</span>';
+                        reimbursementsHTML += '<p class="text-sm bg-green-500 text-white py-1 px-2 rounded-full my-auto">₱ ' + reimbursement.amount + '</p>';
+                        reimbursementsHTML += '<button class="p-2 rounded deleteReimbursement" data-id="' + reimbursement.empReimbursementID + '">';
+                        reimbursementsHTML += '<svg class="h-5 w-5 text-gray-800"  fill="none" viewBox="0 0 24 24" stroke="currentColor">';
+                        reimbursementsHTML += '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>';
+                        reimbursementsHTML += '</svg>';
+                        reimbursementsHTML += '</button>';
+                        reimbursementsHTML += '</div>';
+                    });
+                    $('#reimbursementsSection').html(reimbursementsHTML);
+
                     // UPDATE DEDUCTIONS SECTION
                     var deductionsHTML = '';
                     res.deductions.forEach(function(deduction) {
                         deductionsHTML += '<div class="flex justify-between items-center bg-white p-2 border border-gray-200">';
                         deductionsHTML += '<span>' + deduction.deductionName + '</span>';
-                        deductionsHTML += '<p class="text-sm bg-red-500 text-white p-1 rounded-full my-auto">₱ ' + deduction.amount + '</p>';
+                        deductionsHTML += '<p class="text-sm bg-red-500 text-white py-1 px-2 rounded-full my-auto">₱ ' + deduction.amount + '</p>';
                         deductionsHTML += '<button class="p-2 rounded deleteDeduction" data-id="' + deduction.empDeductionID + '">';
                         deductionsHTML += '<svg class="h-5 w-5 text-gray-800"  fill="none" viewBox="0 0 24 24" stroke="currentColor">';
                         deductionsHTML += '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>';
@@ -699,6 +809,26 @@ $(document).ready(function() {
                         deductionsHTML += '</div>';
                     });
                     $('#deductionsSection').html(deductionsHTML);
+
+                    // UPDATE ADJUSTMENTS SECTION
+                    var adjustmentsHTML = '';
+                    res.adjustments.forEach(function(adjustment) {
+                        adjustmentsHTML += '<div class="flex justify-between items-center bg-white p-2 border border-gray-200">';
+                        adjustmentsHTML += '<span>' + adjustment.adjustmentName + '</span>';
+                        if (adjustment.adjustmentType == 'Add') {
+                            adjustmentsHTML += '<p class="text-sm bg-green-500 text-white py-1 px-2 rounded-full my-auto">₱ ' + adjustment.amount + '</p>';
+                        }
+                        else {
+                            adjustmentsHTML += '<p class="text-sm bg-red-500 text-white py-1 px-2 rounded-full my-auto">₱ ' + adjustment.amount + '</p>';
+                        }
+                        adjustmentsHTML += '<button class="p-2 rounded deleteAdjustment" data-id="' + adjustment.empAdjustmentID + '">';
+                        adjustmentsHTML += '<svg class="h-5 w-5 text-gray-800"  fill="none" viewBox="0 0 24 24" stroke="currentColor">';
+                        adjustmentsHTML += '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>';
+                        adjustmentsHTML += '</svg>';
+                        adjustmentsHTML += '</button>';
+                        adjustmentsHTML += '</div>';
+                    });
+                    $('#adjustmentsSection').html(adjustmentsHTML);
 
                     let employeeID_string = res.data.employeeID;
                     $('#viewProfilePicture').click(function() {
@@ -740,6 +870,7 @@ $(document).ready(function() {
         window.location.reload();
     });
 
+
     // REMOVE ALLOWANCE ROW ON VIEW EMPLOYEE MODAL
     $(document).on('click', '.deleteAllowance', function() {
         var empAllowanceID = $(this).data('id');
@@ -758,7 +889,7 @@ $(document).ready(function() {
             if (result.isConfirmed) {
 
                 $.ajax({
-                    url: "../backend/admin/deleteEmpAllowance.php",
+                    url: "../backend/admin/deleteEmpAdjustments.php",
                     type: 'POST',
                     data: { empAllowanceID: empAllowanceID },
                     success: function(response) {
@@ -773,7 +904,56 @@ $(document).ready(function() {
                                 timer: 2000,
                                 showConfirmButton: false
                             }).then(() => {
-                                // window.location.reload();
+                                $('#viewEmployeeModal').modal('show');
+                            });
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: message
+                            })
+                        }
+                    }
+                })
+            }
+        })
+        
+    });
+
+    // REMOVE REIMBURSEMENT ROW ON VIEW EMPLOYEE MODAL
+    $(document).on('click', '.deleteReimbursement', function() {
+        var empReimbursementID = $(this).data('id');
+        var viewID = $('#viewID').val();
+        
+        Swal.fire({
+            icon: 'question',
+            title: 'Delete Reimbursement',
+            text: 'Are you sure you want to delete this reimbursement?',
+            showCancelButton: true,
+            cancelButtonColor: '#6c757d',
+            confirmButtonColor: '#28a745',
+            confirmButtonText: 'Yes',
+
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                $.ajax({
+                    url: "../backend/admin/deleteEmpAdjustments.php",
+                    type: 'POST',
+                    data: { empReimbursementID: empReimbursementID },
+                    success: function(response) {
+                        const res = JSON.parse(response);
+                        var message = res.em;
+                        if (res.error == 0) {
+                            loadEmployeeData(viewID);
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: message,
+                                timer: 2000,
+                                showConfirmButton: false
+                            }).then(() => {
                                 $('#viewEmployeeModal').modal('show');
                             });
                         }
@@ -809,7 +989,7 @@ $(document).ready(function() {
             if (result.isConfirmed) {
 
                 $.ajax({
-                    url: "../backend/admin/deleteEmpDeduction.php",
+                    url: "../backend/admin/deleteEmpAdjustments.php",
                     type: 'POST',
                     data: { empDeductionID: empDeductionID },
                     success: function(response) {
@@ -824,7 +1004,6 @@ $(document).ready(function() {
                                 timer: 2000,
                                 showConfirmButton: false
                             }).then(() => {
-                                // window.location.reload();
                                 $('#viewEmployeeModal').modal('show');
                             });
                         }
@@ -841,7 +1020,57 @@ $(document).ready(function() {
         })
     });
 
-    // ALLOWANCE MODAL
+    // REMOVE ADJUSTMENT ROW ON VIEW EMPLOYEE MODAL
+    $(document).on('click', '.deleteAdjustment', function() {
+        var empAdjustmentID = $(this).data('id');
+        var viewID = $('#viewID').val();
+        
+        Swal.fire({
+            icon: 'question',
+            title: 'Delete Adjustment',
+            text: 'Are you sure you want to delete this adjustment?',
+            showCancelButton: true,
+            cancelButtonColor: '#6c757d',
+            confirmButtonColor: '#28a745',
+            confirmButtonText: 'Yes',
+
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                $.ajax({
+                    url: "../backend/admin/deleteEmpAdjustments.php",
+                    type: 'POST',
+                    data: { empAdjustmentID: empAdjustmentID },
+                    success: function(response) {
+                        const res = JSON.parse(response);
+                        var message = res.em;
+                        if (res.error == 0) {
+                            loadEmployeeData(viewID);
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: message,
+                                timer: 2000,
+                                showConfirmButton: false
+                            }).then(() => {
+                                $('#viewEmployeeModal').modal('show');
+                            });
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: message
+                            })
+                        }
+                    }
+                })
+            }
+        })
+    });
+
+
+    // ADD DATA - ALLOWANCE MODAL
     $("#allowanceForm").on("submit", function (e) {
         e.preventDefault();
 
@@ -857,7 +1086,7 @@ $(document).ready(function() {
             Swal.fire({
                 icon: 'warning',
                 title: 'Required Information',
-                text: 'Please fill in all required fields: Allowance, Type, and Amount.',
+                text: 'Please fill in all required fields: Name, Type, and Amount.',
             })
         }
         else {
@@ -881,69 +1110,47 @@ $(document).ready(function() {
 
     });
 
-    // HANDLE REMOVING OF ROWS ON THE TABLE
-    $(document).on("click", ".removeRow", function () {
-        $(this).closest("tr").remove();
+    // ADD DATA - REIMBURSEMENT MODAL
+    $("#reimbursementForm").on("submit", function (e) {
+        e.preventDefault();
+
+        // GET FORM VALUES
+        var reimbursementName = $("#reimbursementName option:selected").text();
+        var reimbursementID = $("#reimbursementName").val();
+        var reimbursementAmount = $("#reimbursementAmount").val();
+        var reimbursementType = $("#reimbursementType option:selected").text();
+        var effectivityDate = $("#effectivityDate_reimbursement").val();
+
+        // VALIDATION IF THERE IS NULL / EMPTY
+        if (!reimbursementID || !reimbursementAmount || !$("#reimbursementType").val()) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Required Information',
+                text: 'Please fill in all required fields: Name, Type, and Amount.',
+            })
+        }
+        else {
+            // ADD ROW TO THE TABLE
+            var markup = "<tr data-reimbursement-id='" + reimbursementID + "' data-amount='" + reimbursementAmount + "' data-type='" + $("#reimbursementAmount").val() + "' data-date='" + effectivityDate + "'>" +
+                "<td>" + reimbursementName + "</td>" +
+                "<td>" + reimbursementType + "</td>" +
+                "<td>" + reimbursementAmount + "</td>" +
+                "<td><button type='button' class='btn btn-danger btn-sm removeRow'>Remove</button></td>" +
+                "</tr>";
+
+            $("#reimbursementTable tbody").append(markup);
+
+            // CLEAR FORM FIELDS
+            $("#reimbursementForm")[0].reset();
+
+            // RESET THE SELECT ELEMENTS TO DEFAULT OPTIONS
+            $("#reimbursementName").prop('selectedIndex', 0);
+            $("#reimbursementType").prop('selectedIndex', 0);
+        }
+
     });
 
-    // HANDLE SAVING DATA ON THE DATABASE
-    $(".allowanceSave").on("click", function () {
-        var allowances = [];
-        var viewID = $('#viewID').val();
-
-        $("#allowanceTable tbody tr").each(function () {
-            var allowanceID = $(this).data("allowance-id");
-            var amount = $(this).data("amount");
-            var type = $(this).data("type");
-            var date = $(this).data("date");
-
-            allowances.push({
-                id: viewID,
-                allowanceID: allowanceID,
-                amount: amount,
-                type: type,
-                date: date
-            });
-        });
-
-        // SEND THE DATA TO HE SERVER VIA AJAX
-        $.ajax({
-            url: "../backend/admin/saveEmpAllowances.php",
-            method: "POST",
-            data: { allowances: JSON.stringify(allowances) }, // Ensure this is JSON string
-            success: function (response) {
-                const data = JSON.parse(response);
-                var message = data.em;
-                if (data.error == 0) {
-                    var id = data.id;
-                    loadEmployeeData(id);
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success',
-                        text: message,
-                        timer: 2000,
-                        showConfirmButton: false
-                    }).then(() => {
-                        // window.location.reload();
-                        $('#allowanceModal').modal('hide');
-                        $('#viewEmployeeModal').modal('show');
-                    });
-                }
-                else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: message
-                    })
-                }
-            },
-            error: function () {
-                alert("An error occurred while saving the allowances.");
-            }
-        });        
-    });
-
-    // DEDUCTION MODAL
+    // ADD DATA - DEDUCTION MODAL
     $("#deductionForm").on("submit", function (e) {
         e.preventDefault();
 
@@ -959,7 +1166,7 @@ $(document).ready(function() {
             Swal.fire({
                 icon: 'warning',
                 title: 'Required Information',
-                text: 'Please fill in all required fields: Deduction, Type, and Amount.',
+                text: 'Please fill in all required fields: Name, Type, and Amount.',
             })
         }
 
@@ -981,12 +1188,162 @@ $(document).ready(function() {
         $("#deductionType").prop('selectedIndex', 0);
     });
 
-    // HANDLE REMOVING OF ROWS ON THE TABLE
+    // ADD DATA - ADJUSTMENT MODAL
+    $("#adjustmentForm").on("submit", function (e) {
+        e.preventDefault();
+
+        // GET FORM VALUES
+        var adjustmentName = $("#adjustmentName option:selected").text();
+        var adjustmentID = $("#adjustmentName").val();
+        var adjustmentAmount = $("#adjustmentAmount").val();
+        var adjustmentType = $("#adjustmentType option:selected").text();
+        var effectivityDate = $("#effectivityDate_adjustment").val();
+
+        // VALIDATION IF THERE IS NULL / EMPTY
+        if (!adjustmentID || !adjustmentAmount || !$("#adjustmentType").val()) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Required Information',
+                text: 'Please fill in all required fields: Name, Type, and Amount.',
+            })
+        }
+
+        // ADD ROW TO THE TABLE
+        var markup = "<tr data-adjustment-id='" + adjustmentID + "' data-amount='" + adjustmentAmount + "' data-type='" + $("#adjustmentType").val() + "' data-date='" + effectivityDate + "'>" +
+            "<td>" + adjustmentName + "</td>" +
+            "<td>" + adjustmentType + "</td>" +
+            "<td>" + adjustmentAmount + "</td>" +
+            "<td><button type='button' class='btn btn-danger btn-sm removeRow'>Remove</button></td>" +
+            "</tr>";
+
+        $("#adjustmentTable tbody").append(markup);
+
+        // CLEAR FORM FIELDS
+        $("#adjustmentForm")[0].reset();
+
+        // RESET THE SELECT ELEMENTS TO DEFAULT OPTIONS
+        $("#adjustmentName").prop('selectedIndex', 0);
+        $("#adjustmentType").prop('selectedIndex', 0);
+    });
+
+    // HANDLE REMOVING OF ROWS ON THE TABLE - ALLOWANCES
     $(document).on("click", ".removeRow", function () {
         $(this).closest("tr").remove();
     });
 
-    // HANDLE SAVING DATA ON THE DATABASE
+    // HANDLE SAVING DATA ON THE DATABASE - ALLOWANCES
+    $(".allowanceSave").on("click", function () {
+        var allowances = [];
+        var viewID = $('#viewID').val();
+
+        $("#allowanceTable tbody tr").each(function () {
+            var allowanceID = $(this).data("allowance-id");
+            var amount = $(this).data("amount");
+            var type = $(this).data("type");
+            var date = $(this).data("date");
+
+            allowances.push({
+                id: viewID,
+                allowanceID: allowanceID,
+                amount: amount,
+                type: type,
+                date: date
+            });
+        });
+
+        // SEND THE DATA TO HE SERVER VIA AJAX
+        $.ajax({
+            url: "../backend/admin/saveEmpAdjustments.php",
+            method: "POST",
+            data: { allowances: JSON.stringify(allowances) }, // Ensure this is JSON string
+            success: function (response) {
+                const data = JSON.parse(response);
+                var message = data.em;
+                if (data.error == 0) {
+                    var id = data.id;
+                    loadEmployeeData(id);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: message,
+                        timer: 2000,
+                        showConfirmButton: false
+                    }).then(() => {
+                        $('#allowanceModal').modal('hide');
+                        $('#viewEmployeeModal').modal('show');
+                    });
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: message
+                    })
+                }
+            },
+            error: function () {
+                alert("An error occurred while saving the allowances.");
+            }
+        });        
+    });
+
+    // HANDLE SAVING DATA ON THE DATABASE - REIMBURSEMENTS
+    $(".reimbursementSave").on("click", function () {
+        var reimbursements = [];
+        var viewID = $('#viewID').val();
+
+        $("#reimbursementTable tbody tr").each(function () {
+            var reimbursementID = $(this).data("reimbursement-id");
+            var amount = $(this).data("amount");
+            var type = $(this).data("type");
+            var date = $(this).data("date");
+
+            reimbursements.push({
+                id: viewID,
+                reimbursementID: reimbursementID,
+                amount: amount,
+                type: type,
+                date: date
+            });
+        });
+
+        // SEND THE DATA TO HE SERVER VIA AJAX
+        $.ajax({
+            url: "../backend/admin/saveEmpAdjustments.php",
+            method: "POST",
+            data: { reimbursements: JSON.stringify(reimbursements) }, // Ensure this is JSON string
+            success: function (response) {
+                const data = JSON.parse(response);
+                var message = data.em;
+                if (data.error == 0) {
+                    var id = data.id;
+                    loadEmployeeData(id);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: message,
+                        timer: 2000,
+                        showConfirmButton: false
+                    }).then(() => {
+                        $('#reimbursementModal').modal('hide');
+                        $('#viewEmployeeModal').modal('show');
+                    });
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: message
+                    })
+                }
+            },
+            error: function () {
+                alert("An error occurred while saving the reimbursements.");
+            }
+        });        
+    });
+
+    // HANDLE SAVING DATA ON THE DATABASE - DEDUCTIONS
     $(".deductionSave").on("click", function () {
         var deductions = [];
         var viewID = $('#viewID').val();
@@ -1008,7 +1365,7 @@ $(document).ready(function() {
 
         // SEND THE DATA TO HE SERVER VIA AJAX
         $.ajax({
-            url: "../backend/admin/saveEmpDeductions.php",
+            url: "../backend/admin/saveEmpAdjustments.php",
             method: "POST",
             data: { deductions: JSON.stringify(deductions) }, // Ensure this is JSON string
             success: function (response) {
@@ -1024,7 +1381,6 @@ $(document).ready(function() {
                         timer: 2000,
                         showConfirmButton: false
                     }).then(() => {
-                        // window.location.reload();
                         $('#deductionModal').modal('hide');
                         $('#viewEmployeeModal').modal('show');
                     });
@@ -1039,6 +1395,62 @@ $(document).ready(function() {
             },
             error: function () {
                 alert("An error occurred while saving the allowances.");
+            }
+        });
+    });
+
+    // HANDLE SAVING DATA ON THE DATABASE - ADJUSTMENTS
+    $(".adjustmentSave").on("click", function () {
+        var adjustments = [];
+        var viewID = $('#viewID').val();
+
+        $("#adjustmentTable tbody tr").each(function () {
+            var adjustmentID = $(this).data("adjustment-id");
+            var amount = $(this).data("amount");
+            var type = $(this).data("type");
+            var date = $(this).data("date");
+
+            adjustments.push({
+                id: viewID,
+                adjustmentID: adjustmentID,
+                amount: amount,
+                type: type,
+                date: date
+            });
+        });
+
+        // SEND THE DATA TO HE SERVER VIA AJAX
+        $.ajax({
+            url: "../backend/admin/saveEmpAdjustments.php",
+            method: "POST",
+            data: { adjustments: JSON.stringify(adjustments) }, // Ensure this is JSON string
+            success: function (response) {
+                const data = JSON.parse(response);
+                var message = data.em;
+                if (data.error == 0) {
+                    var id = data.id;
+                    loadEmployeeData(id);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: message,
+                        timer: 2000,
+                        showConfirmButton: false
+                    }).then(() => {
+                        $('#adjustmentModal').modal('hide');
+                        $('#viewEmployeeModal').modal('show');
+                    });
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: message
+                    })
+                }
+            },
+            error: function () {
+                alert("An error occurred while saving the adjustments.");
             }
         });
     });
