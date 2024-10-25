@@ -32,7 +32,7 @@
             
             $userQuery = "SELECT * FROM ".$this->users." AS users INNER JOIN ".$this->employees." AS employees ON users.empID = employees.id WHERE emailAddress = '$email'";
 
-            $userResult = mysqli_query($this->dbConnect, $userQuery);
+            $userResult = mysqli_query($this->dbConnect(), $userQuery);
             $isUserValid = mysqli_num_rows($userResult);
             $userDetails = mysqli_fetch_array($userResult);
 
