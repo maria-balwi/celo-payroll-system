@@ -378,16 +378,215 @@
 
         public function viewAllPayroll() {
             $payroll = "
-                SELECT * FROM ".$this->payroll." AS payroll
+                SELECT *FROM ".$this->payroll." AS payroll
                 INNER JOIN ".$this->payrollCycle." AS payrollCycle
                 ON payroll.payrollCycleID = payrollCycle.payrollCycleID";
             return $payroll;
+        }
+
+        public function createPayroll($payrollCycleID, $status) {
+            $createPayroll = "
+                INSERT INTO ".$this->payroll." (payrollCycleID, dateCreated, status)
+                VALUES ('$payrollCycleID', CURRENT_TIMESTAMP(), '$status')";
+            return $createPayroll;
         }
 
         public function viewAllPayrollCycle() {
             $payrollCycle = "
                 SELECT * FROM ".$this->payrollCycle;
             return $payrollCycle;
+        }
+
+        public function viewAllPayrollCycle2() {
+            $payrollCycle = "
+                SELECT * FROM ".$this->payrollCycle . " AS payrollCycle
+                WHERE payrollCycleID NOT IN (SELECT payrollCycleID FROM ".$this->payroll." AS payroll)
+                ORDER BY payrollCycle.payrollCycleID ASC";
+            return $payrollCycle;
+        }
+
+        public function viewPayrollCycle($payrollCycleID) {
+            $viewPayrollCycle = "
+                SELECT * FROM ".$this->payrollCycle."
+                WHERE payrollCycleID = '$payrollCycleID'";
+            return $viewPayrollCycle;
+        }
+        
+        // public function calculateNightDifferential($attendanceDate, $logTypeID, $attendanceTime) {
+        //     // Define the start and end times for the night differential period
+        //     $nightStart = new DateTime("22:00");
+        //     $nightEnd = new DateTime("06:00");
+            
+        //     // Initialize variables to store Time In and Time Out
+        //     static $timeIn = null;
+        //     static $timeOut = null;
+        //     $totalNightHours = 0;
+        
+        //     // Assign Time In or Time Out based on logTypeID
+        //     if ($logTypeID == 1 || $logTypeID == 2) { // Time In or Late
+        //         $timeIn = new DateTime("{$attendanceDate} {$attendanceTime}");
+        //     } elseif ($logTypeID == 3 || $logTypeID == 4) { // Time Out or Undertime
+        //         $timeOut = new DateTime("{$attendanceDate} {$attendanceTime}");
+        //     }
+        
+        //     // Only calculate if both Time In and Time Out are set
+        //     if ($timeIn && $timeOut) {
+        //         // Adjust if timeOut goes into the next day (past midnight)
+        //         if ($timeOut < $timeIn) {
+        //             $timeOut->modify('+1 day');
+        //         }
+        
+        //         // Adjust nightEnd to handle overnight span
+        //         $nightEndAdjusted = (clone $nightEnd)->modify('+1 day');
+        
+        //         // Check if the shift period overlaps with the night differential period
+        //         if ($timeOut > $nightStart || $timeIn < $nightEndAdjusted) {
+        //             // Calculate the overlap start and end times
+        //             $effectiveStart = max($timeIn, $nightStart);
+        //             $effectiveEnd = min($timeOut, $nightEndAdjusted);
+        
+        //             // Calculate night differential hours if there is an overlap
+        //             if ($effectiveStart < $effectiveEnd) {
+        //                 $interval = $effectiveStart->diff($effectiveEnd);
+        //                 $hours = $interval->h + ($interval->i / 60); // Convert minutes to hours
+        //                 $totalNightHours += $hours;
+        //             }
+        //         }
+        
+        //         // Reset Time In and Time Out for the next calculation
+        //         $timeIn = null;
+        //         $timeOut = null;
+        //     }
+        
+        //     return $totalNightHours; // Return the calculated night differential hours
+        // }      
+
+        public function calculateNightDifferential($attendanceDate, $logTypeID, $attendanceTime) {
+            // Define the start and end times for the night differential period
+            $nightStart = new DateTime("22:00");
+            $nightEnd = new DateTime("06:00");
+            $midnight = new DateTime("00:00");
+            
+            // Initialize variables to store Time In and Time Out
+            static $timeIn = null;
+            static $timeOut = new DateTime("23:00");
+            // static $timeIn = null;
+            // static $timeOut = null;
+            $totalNightHours = 0;
+        
+            // Assign Time In or Time Out based on logTypeID
+            // if ($logTypeID == 1 || $logTypeID == 2) { // Time In or Late
+            //     $timeIn = new DateTime("{$attendanceTime}");
+            // } 
+             if ($logTypeID == 3 || $logTypeID == 4) { // Time Out or Undertime
+                $timeOut = new DateTime("{$attendanceTime}");
+            }
+
+            // Only calculate if both Time In and Time Out are set
+            if ($timeIn) {
+                if ($timeIn <= $nightStart) {
+                    $totalNightHours += 2;
+                }
+                else {
+                    $interval = $nightStart->diff($timeIn);
+                    $hoursDifference = $interval->h + ($interval->i / 60);
+                    $totalNightHours += $hoursDifference;
+                }
+            }
+            else if ($timeOut) {
+                // Reset Time In and Time Out for the next calculation
+                $timeIn = null;
+                $timeOut = null;
+            }
+            $timeIn = null;
+            $timeOut = null;
+        
+            return $totalNightHours; // Return the calculated night differential hours
+        }     
+        
+        // public function calculateNightDifferential($attendanceDate, $logTypeID, $attendanceTime) {
+        //     // Define the start and end times for the night differential period
+        //     $nightStart = new DateTime("22:00");
+        //     $nightEnd = new DateTime("06:00");
+        //     $midnight = new DateTime("00:00");
+            
+        //     // Initialize variables to store Time In and Time Out
+        //     static $timeIn = null;
+        //     static $timeOut = null;
+        //     $totalNightHours = 0;
+        
+        //     // Assign Time In or Time Out based on logTypeID
+        //     if ($logTypeID == 1 || $logTypeID == 2) { // Time In or Late
+        //         $timeIn = new DateTime("{$attendanceTime}");
+        //     } elseif ($logTypeID == 3 || $logTypeID == 4) { // Time Out or Undertime
+        //         $timeOut = new DateTime("{$attendanceTime}");
+        //     }
+        
+        //     if ($timeIn >= $midnight) {
+
+        //     }
+        //     else {
+        //         $totalNightHours += 2;
+        //         if ($timeIn < $nightStart) {
+        //             if ($timeOut < $nightEnd) {
+        //                 $interval = $nightEnd->diff($timeOut);
+        //                 // Convert the difference to hours as a decimal value
+        //                 $hoursDifference = $interval->h + ($interval->i / 60);
+
+        //                 // Display the numerical result in hours
+        //                 $hoursDifference = number_format($hoursDifference);
+        //                 $totalNightHours += $hoursDifference - 1;
+        //             }
+        //             else { 
+
+        //             }
+        //         }
+        //     }
+        
+        //     return $totalNightHours; // Return the calculated night differential hours
+        // }  
+        
+        public function calculatePayroll($payrollID, $payrollCycleID) {
+            function formatDate($date) {
+                // Get the current year
+                $currentYear = date('Y');
+                
+                // Append the current year to the input date
+                $dateWithYear = $date . '-' . $currentYear;
+                
+                // Create a DateTime object from the string (expects format MM-DD-YYYY)
+                $dateTime = DateTime::createFromFormat('m-d-Y', $dateWithYear);
+                
+                // Format the date as 'M d, Y'
+                return $dateTime->format('Y-m-d');
+            }
+
+            $payrollCycleFrom_date = $this->dbConnect()->query("SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleFrom']; 
+            $payrollCycleTo_date = $this->dbConnect()->query("SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleTo'];
+            $payrollCycleFrom = formatDate($payrollCycleFrom_date);
+                                        $payrollCycleTo = formatDate($payrollCycleTo_date);
+            $employees = $this->dbConnect()->query("SELECT * FROM tbl_employees");
+            while ($employeeDetails = mysqli_fetch_array($employees)) {
+                $daysWorkedQuery = $this->dbConnect()->query("SELECT * FROM tbl_attendance WHERE empID = $employeeDetails[id] AND (logTypeID IN (1, 2) OR logTypeID IN (3, 4)) AND attendanceDate BETWEEN DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom'))) AND DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleTo')))");
+                $daysWorked = round(mysqli_num_rows($daysWorkedQuery) / 2);
+
+                while ($attendanceLogs = mysqli_fetch_array($daysWorkedQuery)) {
+                    $date = $attendanceLogs['attendanceDate'];
+                    $attendanceLogs = json_decode($attendanceLogs['log'], true);
+                    // $nightHours = $this->calculateNightDifferential($attendanceLogs, $employeeDetails['id'], $date);
+                    // $employeeDetails['nightHours'] += $nightHours;
+                }
+
+                $grossPay = $employeeDetails['dailyRate'] * $daysWorked;
+            }
+            
+            
+        }
+
+        public function reCalculatePayroll($payrollID, $payrollCycleID) {
+            // DELETE CURRENT PAYSLIP - RE-CALCULATE FUNCTION
+            $this->dbConnect()->query("DELETE FROM tbl_payslip WHERE payroll_id = $payrollID");
+
         }
     }
 ?>
