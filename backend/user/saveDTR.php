@@ -28,7 +28,7 @@
 
         $lateMins = 0; // Default value for late minutes
 
-        $lastAttendanceQuery = mysqli_query($conn, $users->getLastAttendance($id));
+        $lastAttendanceQuery = mysqli_query($conn, $users->checkLastDTR($id));
         $lastAttendance = mysqli_fetch_array($lastAttendanceQuery);
         $lastLogType = $lastAttendance['logTypeID'];
         // SETTING LOG TYPE ID BASED ON ACTION
@@ -69,7 +69,8 @@
                 }
 
                 // Check if the time is past midnight and adjust the date
-                if ($lastAttendanceTimeModified->format('H:i:s') >= $midnight->format('H:i:s')) {
+                if ($lastAttendanceTimeModified->format('H') < 9) {
+                    // date adjusted to next day
                     $lastAttendanceDateModified->modify('+1 day');
                 }
 
@@ -98,8 +99,7 @@
             }
             
         }
-        else if ($faceDTR_action == 'time_out')
-        {
+        else if ($faceDTR_action == 'time_out') {
             $logTypeID = ($currentTime >= $endTime) ? 4 : 3;
             if ($logTypeID == 3) {
                 // Calculate the undertime minutes

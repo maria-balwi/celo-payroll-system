@@ -162,7 +162,7 @@
                             <div class="modal-footer">
                             <?php if($_SESSION['dtr'] == 'forTimeIn') { ?>
                                 <button type="button" class="btn btn-primary faceDTR" data-bs-toggle="modal" data-bs-target="#timeInModal">Time In</button>
-                                <button type="button" class="btn btn-primary faceDTR" data-bs-toggle="modal" data-bs-target="#timeOutModal">Time Out</button>
+                                <button type="button" class="btn btn-primary faceDTR" data-bs-toggle="modal" data-bs-target="#timeOutModal" disabled>Time Out</button>
                             <?php } else if ($_SESSION['dtr'] == 'forTimeOut') { ?>
                                 <button type="button" class="btn btn-primary faceDTR" data-bs-toggle="modal" data-bs-target="#timeInModal" disabled>Time In</button>
                                 <button type="button" class="btn btn-primary faceDTR" data-bs-toggle="modal" data-bs-target="#timeOutModal">Time Out</button>
