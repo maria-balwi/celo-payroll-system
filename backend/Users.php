@@ -153,6 +153,17 @@
             return $lastUser;
         }
 
+        public function getLastAttendance($id) {
+            $lastAttendance = "
+                SELECT * FROM ".$this->attendance." AS attendance
+                INNER JOIN ".$this->logtype." AS logtype
+                ON attendance.logTypeID = logtype.logTypeID
+                WHERE attendance.empID = '$id'
+                ORDER BY attendanceID DESC
+                LIMIT 1";
+            return $lastAttendance;
+        }
+
         public function saveDTR($id, $logTypeID, $attendanceTime) {
             $saveDTR = "
                 INSERT INTO ".$this->attendance." (empID, logTypeID, attendanceDate, attendanceTime)
@@ -171,6 +182,13 @@
             $saveDTR = "
                 INSERT INTO ".$this->attendance." (empID, logTypeID, attendanceDate, attendanceTime, undertimeMins)
                 VALUES ('$id', '$logTypeID', CURRENT_TIMESTAMP(), '$attendanceTime', '$undertimeMins')";
+            return $saveDTR;
+        }
+
+        public function saveMissingDTR($id, $logTypeID, $attendanceDate, $attendanceTime) {
+            $saveDTR = "
+                INSERT INTO ".$this->attendance." (empID, logTypeID, attendanceDate, attendanceTime)
+                VALUES ('$id', '$logTypeID', '$attendanceDate', '$attendanceTime')";
             return $saveDTR;
         }
 

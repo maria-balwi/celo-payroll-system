@@ -14,7 +14,7 @@
 
         $shiftQuery = mysqli_query($conn, $users->getShiftInfo($id));
         $shiftResult = mysqli_fetch_array($shiftQuery); 
-        $startTime = $shiftResult['startTime']; // Assuming this is a time string like '10:00:00'
+        $startTime = $shiftResult['startTime'];
         $endTime = $shiftResult['endTime'];
 
         // SETTING TIMEZONE
@@ -28,19 +28,75 @@
 
         $lateMins = 0; // Default value for late minutes
 
+        $lastAttendanceQuery = mysqli_query($conn, $users->getLastAttendance($id));
+        $lastAttendance = mysqli_fetch_array($lastAttendanceQuery);
+        $lastLogType = $lastAttendance['logTypeID'];
         // SETTING LOG TYPE ID BASED ON ACTION
         if ($faceDTR_action == 'time_in') {
-            $logTypeID = ($currentTimeModified <= $startTimeModified) ? 1 : 2;
-            if ($logTypeID == 2) {
-                // Calculate the late minutes
-                $lates = $currentTimeModified - $startTimeModified;
-                $lateMins = floor($lates / 60); // Get late minutes
+            if ($lastLogType == 3 || $lastLogType == 4) {
+                $logTypeID = ($currentTimeModified <= $startTimeModified) ? 1 : 2;
+                if ($logTypeID == 2) {
+                    // Calculate the late minutes
+                    $lates = $currentTimeModified - $startTimeModified;
+                    $lateMins = floor($lates / 60); // Get late minutes
 
-                // Handle case if late minutes are negative
-                if ($lateMins < 0) {
-                    $lateMins = 0; // Reset to 0 if negative
+                    // Handle case if late minutes are negative
+                    if ($lateMins < 0) {
+                        $lateMins = 0; // Reset to 0 if negative
+                    }
                 }
             }
+            else if ($lastLogType == 1 || $lastLogType == 2) {
+                $lastAttendanceDate = $lastAttendance['attendanceDate'];
+                echo $lastAttendanceDate;
+                $lastAttendanceTime = $lastAttendance['attendanceTime'];
+
+                // Create DateTime objects from the original date and time
+                $lastAttendanceDateModified = new DateTime($lastAttendanceDate);
+                $lastAttendanceTimeModified = new DateTime($lastAttendanceTime);
+
+                // Drop the minutes from the time
+                $lastAttendanceTimeModified->setTime($lastAttendanceTimeModified->format('H'), 0, 0);
+
+                // Define midnight for comparison
+                $midnight = new DateTime("00:00:00");
+
+                // Modify time and adjust date if needed based on log type
+                if ($lastLogType == 1) {
+                    $lastAttendanceTimeModified->modify('+10 hours');
+                } else {
+                    $lastAttendanceTimeModified->modify('+9 hours');
+                }
+
+                // Check if the time is past midnight and adjust the date
+                if ($lastAttendanceTimeModified->format('H:i:s') >= $midnight->format('H:i:s')) {
+                    $lastAttendanceDateModified->modify('+1 day');
+                }
+
+                // Format date and time for the database
+                $lastAttendanceTimeModified = $lastAttendanceTimeModified->format('H:i:s');
+                $lastAttendanceDateModified = $lastAttendanceDateModified->format('Y-m-d');
+
+                // Execute the query
+                mysqli_query($conn, $users->saveMissingDTR($_SESSION['id'], 4, $lastAttendanceDateModified, $lastAttendanceTimeModified));
+
+                echo "<br>";
+                echo "Modified Date: " . $lastAttendanceDateModified . "<br>";
+                echo "Modified Time: " . $lastAttendanceTimeModified . "<br>";
+
+                $logTypeID = ($currentTimeModified <= $startTimeModified) ? 1 : 2;
+                if ($logTypeID == 2) {
+                    // Calculate the late minutes
+                    $lates = $currentTimeModified - $startTimeModified;
+                    $lateMins = floor($lates / 60); // Get late minutes
+
+                    // Handle case if late minutes are negative
+                    if ($lateMins < 0) {
+                        $lateMins = 0; // Reset to 0 if negative
+                    }
+                }
+            }
+            
         }
         else if ($faceDTR_action == 'time_out')
         {
