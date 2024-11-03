@@ -52,8 +52,8 @@
                 $dtrDateTime = $attendanceDate . " " . $attendanceTime;
                 $dtrDateTime = new DateTime($dtrDateTime);
 
-                // ADD 20 HOURS
-                $interval = new DateInterval('PT20H');
+                // ADD 15 HOURS
+                $interval = new DateInterval('PT14H');
                 $updatedDateTime = $dtrDateTime->add($interval);
 
                 // SETTING TIME BEFORE GETTING CURRENT DATE AND TIME
