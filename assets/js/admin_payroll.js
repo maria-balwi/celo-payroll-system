@@ -1,9 +1,9 @@
 $(document).ready(function() {
 
-    // var payrollTable = $('#payrollTable').DataTable();
-    // payrollTable.order([[1, "asc"]]).draw();
+    // $('#payrollTable').DataTable({
+    //     scrollX: true,
+    // });
     $('#payrollTable').DataTable();
-    $('#payrollListTable').DataTable();
     var payrollListTable = $('#payrollListTable').DataTable();
     payrollListTable.order([[0, "asc"]]).draw();
 
