@@ -379,8 +379,50 @@
 
         public function viewHolidays() {
             $holidays = "
-                SELECT * FROM ".$this->holidays;
+                SELECT * FROM ".$this->holidays
+                ." WHERE YEAR(dateFrom) = YEAR(CURDATE())
+                ORDER BY dateFrom ASC";
             return $holidays;
+        }
+
+        public function getHolidayInfo($holidayID) {
+            $holiday = "
+                SELECT * FROM ".$this->holidays."
+                WHERE holidayID = '$holidayID'";
+            return $holiday;
+        }
+
+        public function viewLastHoliday() {
+            $lastHoliday = "
+                SELECT * FROM ".$this->holidays."
+                ORDER BY holidayID DESC
+                LIMIT 1";
+            return $lastHoliday;
+        }
+        
+        public function addHoliday($name, $dateFrom, $dateTo, $type) {
+            $addHoliday = "
+                INSERT INTO ".$this->holidays." (holidayName, dateFrom, dateTo, type)
+                VALUES ('$name', '$dateFrom', '$dateTo', '$type')";
+            return $addHoliday;
+        }
+
+        public function updateHoliday($holidayID, $name, $dateFrom, $dateTo, $type) {
+            $updateHoliday = "
+                UPDATE ".$this->holidays." SET 
+                holidayName = '$name', 
+                dateFrom = '$dateFrom', 
+                dateTo = '$dateTo', 
+                type = '$type'
+                WHERE holidayID = '$holidayID'";
+            return $updateHoliday;
+        }
+
+        public function deleteHoliday($holidayID) {
+            $deleteHoliday = "
+                DELETE FROM ".$this->holidays."
+                WHERE holidayID = '$holidayID'";
+            return $deleteHoliday;
         }
 
         public function viewAllPayroll() {
