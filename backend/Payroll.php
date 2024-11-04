@@ -20,6 +20,7 @@
         private $empReimbursements = 'tbl_empreimbursements';
         private $empDeductions = 'tbl_empdeductions';
         private $empAdjustments = 'tbl_empadjustments';
+        private $holidays = 'tbl_holidays';
         private $payroll = 'tbl_payroll';
         private $payrollCycle = 'tbl_payrollcycle';
         private $payslip = 'tbl_payslip';
@@ -376,6 +377,12 @@
             return $deleteEmpAdjustment;
         }
 
+        public function viewHolidays() {
+            $holidays = "
+                SELECT * FROM ".$this->holidays;
+            return $holidays;
+        }
+
         public function viewAllPayroll() {
             $payroll = "
                 SELECT *FROM ".$this->payroll." AS payroll
@@ -391,11 +398,11 @@
             return $createPayroll;
         }
 
-        public function viewAllPayrollCycle() {
-            $payrollCycle = "
-                SELECT * FROM ".$this->payrollCycle;
-            return $payrollCycle;
-        }
+        // public function viewAllPayrollCycle() {
+        //     $payrollCycle = "
+        //         SELECT * FROM ".$this->payrollCycle;
+        //     return $payrollCycle;
+        // }
 
         public function viewAllPayrollCycle2() {
             $payrollCycle = "
