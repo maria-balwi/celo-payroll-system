@@ -178,57 +178,126 @@ $(document).ready(function() {
             });
         })
 
-        // // DELETE HOLIDAY
-        // $(document).on('click', '.allowanceDelete', function() {
-        //     var id_allowance = array[array.length - 1];
+        // DELETE HOLIDAY
+        $(document).on('click', '.holidayDelete', function() {
+            var id_holiday = array[array.length - 1];
 
-        //     $.ajax({
-        //         type: "GET",
-        //         url: "../backend/admin/allowanceModal.php?allowance_id=" + id_allowance,
-        //         success: function(response) {
+            $.ajax({
+                type: "GET",
+                url: "../backend/admin/holidayModal.php?holiday_id=" + id_holiday,
+                success: function(response) {
 
-        //             var res = jQuery.parseJSON(response);
-        //             if (res.status == 404) {
-        //                 alert(res.message);
-        //             } else if (res.status == 200) {
+                    var res = jQuery.parseJSON(response);
+                    if (res.status == 404) {
+                        alert(res.message);
+                    } else if (res.status == 200) {
 
-        //                 Swal.fire({
-        //                     icon: 'question',
-        //                     title: 'Delete Allowance',
-        //                     text: 'Are you sure you want to delete this allowance?',
-        //                     showCancelButton: true,
-        //                     cancelButtonColor: '#6c757d',
-        //                     confirmButtonColor: '#28a745',
-        //                     confirmButtonText: 'Yes',
+                        Swal.fire({
+                            icon: 'question',
+                            title: 'Delete Holiday',
+                            text: 'Are you sure you want to delete this holiday?',
+                            showCancelButton: true,
+                            cancelButtonColor: '#6c757d',
+                            confirmButtonColor: '#28a745',
+                            confirmButtonText: 'Yes',
 
-        //                 }).then((result) => {
-        //                     if (result.isConfirmed) {
+                        }).then((result) => {
+                            if (result.isConfirmed) {
 
-        //                         $.ajax({
-        //                             url: "../backend/admin/deleteAllowance.php",
-        //                             type: 'POST',
-        //                             data: {
-        //                                 id_allowance: id_allowance
-        //                             },
-        //                             cache: false,
-        //                             success: function(data) {
-        //                                 Swal.fire({
-        //                                     icon: 'success',
-        //                                     title: 'Success',
-        //                                     text: 'Allowance Deleted Successfully',
-        //                                     timer: 2000,
-        //                                     showConfirmButton: false,
-        //                                 }).then(() => {
-        //                                     window.location.reload();
-        //                                 })
-        //                             }
-        //                         })
-        //                     }
-        //                 })
-        //             }
-        //         }
-        //     });
-        // })
+                                $.ajax({
+                                    url: "../backend/admin/deleteHoliday.php",
+                                    type: 'POST',
+                                    data: {
+                                        id_holiday: id_holiday
+                                    },
+                                    cache: false,
+                                    success: function(data) {
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Success',
+                                            text: 'Holiday Deleted Successfully',
+                                            timer: 2000,
+                                            showConfirmButton: false,
+                                        }).then(() => {
+                                            window.location.reload();
+                                        })
+                                    }
+                                })
+                            }
+                        })
+                    }
+                }
+            });
+        })
+    });
+
+    // UPDATE HOLIDAY
+    $("#updateHolidayForm").submit(function (e) {
+        
+        e.preventDefault();
+
+        var updateHolidayID = $("#updateHolidayID").val();
+        var updateHolidayName = $("#updateHolidayName").val();
+        var updateHolidayType = $("#updateHolidayType").val();
+        var updateDateFrom = $("#updateDateFrom").val();
+        var updateDateTo = $("#updateDateTo").val();
+
+        if (updateHolidayName == "" || updateHolidayType == "" || updateDateFrom == "" || updateDateTo == "") {
+
+            Swal.fire({
+                icon: 'warning',
+                title: 'Required Information',
+                text: 'Please fill up all the required Information',
+
+            })
+
+        } else {
+            Swal.fire({
+                icon: 'question',
+                title: 'Update Holiday Information',
+                text: 'Are you sure you want to save the changes you made?',
+                showCancelButton: true,
+                cancelButtonColor: '#6c757d',
+                confirmButtonColor: '#28a745',
+                confirmButtonText: 'Yes',
+
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    $.ajax({
+                        url: '../backend/admin/updateHoliday.php',
+                        type: 'POST',
+                        data: $(this).serialize(),
+                        cache: false,
+                        success: function(res) {
+                            const data = JSON.parse(res);
+                            if (data.error == 0) {
+                                var message = data.em
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: message,
+                                    timer: 2000, 
+                                    showConfirmButton: false,
+                                }).then(() => {
+                                    loadHolidayData(updateHolidayID);
+                                    $('#updateHolidayModal').modal('hide');
+                                    $('#viewHolidayModal').modal('show');
+                                })
+                            } else {
+                                var message = data.em
+                                Swal.fire({
+                                    icon: 'warning',
+                                    title: 'Warning', 
+                                    text: message,
+                                })
+                            }
+                        }
+                    })
+                }
+            })
+        }       
+
     });
 
     function loadHolidayData(id_holiday) {
@@ -248,7 +317,6 @@ $(document).ready(function() {
                     $('#view_dateFrom').val(res.data.dateFrom);
                     $('#view_dateTo').val(res.data.dateTo);
                     $('#view_holidayType').val(res.data.type);
-                    // $('#view_holidayCategory').val(res.data.category == 1 ? "Fixed Date" : "No Fixed Date");
                 }
             }
         });
