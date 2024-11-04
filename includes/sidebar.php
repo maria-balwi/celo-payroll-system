@@ -40,6 +40,9 @@
                 <a href="../pages/admin_overtime.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Overtimes
                 </a>
+                <a href="../pages/admin_holidays.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
+                    Holidays
+                </a>
                 <a href="../pages/admin_payroll.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Payroll
                 </a>
@@ -103,9 +106,6 @@
                 </a>
                 <a href="../pages/user_overtime.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Overtimes
-                </a>
-                <a href="../pages/user_shifts.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
-                    My Shifts
                 </a>
                 <?php } ?>
             </nav>
