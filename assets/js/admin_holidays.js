@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-    $('#example').DataTable();
+    $('#holidayTable').DataTable();
 
     // GENERATE CALENDAR
     const monthNames = ["January", "February", "March", 
