@@ -27,14 +27,33 @@
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Employee Name</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Basic Pay</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Daily Rate</th>
-                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Hourly Rate</th>
-                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Days Worked</th>
-                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Gross Pay</th>
-                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Total Night Hours</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Hourly Rate</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">No. Of Days</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Gross Pay</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Reg Night Diff (15%)</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Pay</th>
+                                        <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Regular OT (25%)</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Pay</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Regular OT Night Diff</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Pay</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">RDOT</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Pay</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">RDOT Night Diff</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Pay</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Special Holiday</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Pay</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">S.H. Day Night Diff</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Pay</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Holiday</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Pay</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Holiday Night Diff</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Pay</th> -->
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     <?php
+                                        // CONTENT OF THIS TABLE WILL BE GENERATED FROM THE DATABASE - PAYSLIP TABLE
+                                        
                                         function formatDate($date) {
                                             // Get the current year
                                             $currentYear = date('Y');
@@ -49,12 +68,12 @@
                                             return $dateTime->format('Y-m-d');
                                         }
 
-                                        $payrollCycleID = 17;
+                                        $payrollCycleID = 21; // 19 for sample with late
                                         $payrollCycleFrom_date = mysqli_query($conn, "SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleFrom']; 
                                         $payrollCycleTo_date = mysqli_query($conn, "SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleTo'];
                                         $payrollCycleFrom = formatDate($payrollCycleFrom_date);
                                         $payrollCycleTo = formatDate($payrollCycleTo_date);
-                                        $employees = mysqli_query($conn, "SELECT * FROM tbl_employee WHERE id=2");
+                                        $employees = mysqli_query($conn, "SELECT * FROM tbl_employee");
                                         while ($employeeDetails = mysqli_fetch_array($employees)) {
                                             $employee_id = $employeeDetails['id'];
                                             $employee_employeeID = $employeeDetails['employeeID'];
@@ -64,17 +83,31 @@
                                             $employee_hourlyRate = $employeeDetails['hourlyRate'];
 
                                             $daysWorkedQuery = mysqli_query($conn, "SELECT * FROM tbl_attendance WHERE empID = $employee_id AND (logTypeID IN (1, 2) OR logTypeID IN (3, 4)) AND (attendanceDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo')");
-                                            $employee_daysWorked = round(mysqli_num_rows($daysWorkedQuery) / 2);
-                                            $employee_grossPay = $employee_dailyRate * $employee_daysWorked;
+                                            $employee_daysWorked = floor(mysqli_num_rows($daysWorkedQuery) / 2);
 
                                             $totalNightHours = 0;
                                             while ($attendanceLogs = mysqli_fetch_array($daysWorkedQuery)) {
                                                 $date = $attendanceLogs['attendanceDate'];
                                                 $attendanceTime = $attendanceLogs['attendanceTime'];
                                                 $logTypeID = $attendanceLogs['logTypeID'];
-                                                $nightHours = $payroll->calculateNightDifferential($attendanceDate, $attendanceTime, $logTypeID);
+                                                $lateMins = $attendanceLogs['lateMins'];
+                                                $undertimeMins = $attendanceLogs['undertimeMins'];
+                                                $nightHours = $payroll->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $undertimeMins);
                                                 $totalNightHours += $nightHours;
-                                                
+                                            }
+                                            if ($totalNightHours == 0) {
+                                                $totalNightHours = "-";
+                                                $employee_nightDiffPay = "-";
+                                            }
+                                            else {
+                                                $totalNightHours = number_format($totalNightHours, 0);
+                                                $employee_nightDiffPay = number_format(($employee_hourlyRate * .15) * $totalNightHours, 2);
+                                            }
+                                            if ($employee_daysWorked == 0) {
+                                                $employee_grossPay = "-";
+                                            }
+                                            else {
+                                                $employee_grossPay = number_format($employee_dailyRate * $employee_daysWorked, 2);
                                             }
                                             echo "<tr>";
                                             echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
@@ -85,6 +118,7 @@
                                             echo "<td class ='whitespace-nowrap'>" . $employee_daysWorked . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $employee_grossPay . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $totalNightHours . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $employee_nightDiffPay . "</td>";
                                             echo "</tr>";
                                         }
                                     ?>
@@ -94,7 +128,7 @@
                     </div>
                     <!-- CARD FOOTER DATA ENTRY BUTTON -->
                     <div class="card-footer d-grid gap-2 d-md-flex justify-content-md-end">
-                        <button class="btn btn-primary me-md-2" type="button" data-bs-toggle="modal" data-bs-target="#addPayrollModal">Create Payroll</button>
+                        <button class="btn btn-primary me-md-2" type="button" data-bs-toggle="modal" data-bs-target="#addPayrollModal">Re-Calculate Payroll</button>
                     </div>
                 </div>
             </div>
