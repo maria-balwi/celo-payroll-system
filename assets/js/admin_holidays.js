@@ -145,7 +145,7 @@ $(document).ready(function() {
                     $('#viewHolidayID').val(res.data.holidayID);
                     $('#view_holidayName').val(res.data.holidayName);
                     $('#view_dateFrom').val(displayDate(res.data.dateFrom));
-                    $('#view_dateTo').val(displayDate(res.data.dateFrom));
+                    $('#view_dateTo').val(displayDate(res.data.dateTo));
                     $('#view_holidayType').val(res.data.type);
                     $('#viewHolidayModal').modal('show');
                 }
@@ -314,8 +314,8 @@ $(document).ready(function() {
                 else if (res.status == 200) {
                     $('#viewHolidayID').val(res.data.holidayID);
                     $('#view_holidayName').val(res.data.holidayName);
-                    $('#view_dateFrom').val(res.data.dateFrom);
-                    $('#view_dateTo').val(res.data.dateTo);
+                    $('#view_dateFrom').val(displayDate(res.data.dateFrom));
+                    $('#view_dateTo').val(displayDate(res.data.dateTo));
                     $('#view_holidayType').val(res.data.type);
                 }
             }
