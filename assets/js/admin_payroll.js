@@ -127,4 +127,60 @@ $(document).ready(function() {
             });
         }
     });
+
+    $('.viewPayroll').click(function(e) {
+        e.preventDefault();
+
+        let viewPayrollForm = new FormData();
+        var payrollID = $(this).data('id');
+
+        if (payrollID == "") {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Required Information',
+                text: 'Please select one payroll cycle',
+            })
+        }
+        else {
+            viewPayrollForm.append('payrollID', payrollID);
+            viewPayrollForm.append('action', 'view');
+            $.ajax({
+                type: "POST",
+                url: "../backend/admin/calculatePayroll.php",
+                data: viewPayrollForm,
+                contentType: false,
+                processData: false,
+                // success: function (res) {
+                //     window.location.href = "../pages/samplePayroll.php";
+                // },
+                // error: function () {
+                //     // Handle error if needed
+                //     Swal.fire({
+                //         icon: 'error',
+                //         title: 'Error',
+                //         text: 'Failed to send data .php'
+                //     });
+                // }
+                success: function (res) {
+                    const data = JSON.parse(res);
+                    var message = data.em;
+                    if (data.error == 0) {
+                        id = data.id;
+                        window.location.href = "../pages/samplePayroll.php?id=" + id;
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: message
+                        });
+                    }
+                }
+            });
+        }
+    });
+
+    $('#btnBack').click(function(e) {
+        e.preventDefault();
+        window.location.href = "../pages/new_payroll.php";
+    });
 });
