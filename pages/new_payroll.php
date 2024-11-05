@@ -48,6 +48,7 @@
                                         $payrollQuery = mysqli_query($conn, $payroll->viewAllPayroll());
                                         while ($payrollDetails = mysqli_fetch_array($payrollQuery)) {
                                             $payrollID = $payrollDetails['payrollID'];
+                                            $payrollCycleID = $payrollDetails['payrollCycleID'];
                                             $payrollDateFrom = $payrollDetails['payrollCycleFrom'];
                                             $payrollDateTo = $payrollDetails['payrollCycleTo'];
                                             $payrollStatus = $payrollDetails['status'];
@@ -64,7 +65,7 @@
                                             echo "<td class ='whitespace-nowrap'>";
                                             if ($payrollStatus == "New") {
                                                 echo "
-                                                    <button class='btn btn-sm btn-outline-primary calculatePayroll' data-id='" . $payrollID . "'>Calculate</button>";
+                                                    <button class='btn btn-sm btn-outline-primary calculatePayroll' data-id='" . $payrollID . "' data-cycleID='" . $payrollCycleID . "'>Calculate</button>";
                                             }
                                             else {
                                                 echo "
