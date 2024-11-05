@@ -532,7 +532,6 @@
                 return $dateTime->format('Y-m-d');
             }
 
-            $payrollCycleID = 21; // 19 for sample with late
             $payrollCycleFrom_date = $this->dbConnect()->query("SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleFrom']; 
             $payrollCycleTo_date = $this->dbConnect()->query("SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleTo'];
             $payrollCycleFrom = formatDate($payrollCycleFrom_date);
@@ -540,18 +539,16 @@
             $employees = $this->dbConnect()->query("SELECT * FROM tbl_employee");
             while ($employeeDetails = mysqli_fetch_array($employees)) {
                 $employee_id = $employeeDetails['id'];
-                // $employee_employeeID = $employeeDetails['employeeID'];
-                $employee_employeeName = $employeeDetails['lastName'] . ", " . $employeeDetails['firstName'];
-                $employee_basicPay = number_format($employeeDetails['basicPay'], 2);
                 $employee_dailyRate = $employeeDetails['dailyRate'];
                 $employee_hourlyRate = $employeeDetails['hourlyRate'];
 
                 $daysWorkedQuery = $this->dbConnect()->query("SELECT * FROM tbl_attendance WHERE empID = $employeeDetails[id] AND (logTypeID IN (1, 2) OR logTypeID IN (3, 4)) AND attendanceDate BETWEEN DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom'))) AND DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleTo')))");
                 $employee_daysWorked = round(mysqli_num_rows($daysWorkedQuery) / 2);
+                $employee_grossPay = round($employee_dailyRate * $employee_daysWorked, 2);
 
                 $totalNightHours = 0;
                 while ($attendanceLogs = mysqli_fetch_array($daysWorkedQuery)) {
-                    $date = $attendanceLogs['attendanceDate'];
+                    // $date = $attendanceLogs['attendanceDate'];
                     $attendanceTime = $attendanceLogs['attendanceTime'];
                     $logTypeID = $attendanceLogs['logTypeID'];
                     $lateMins = $attendanceLogs['lateMins'];
@@ -559,21 +556,9 @@
                     $nightHours = $this->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $undertimeMins);
                     $totalNightHours += $nightHours;
                 }
-                if ($totalNightHours == 0) {
-                    // $totalNightHours = "-";
-                    // $employee_nightDiffPay = "-";
-                }
-                else {
-                    $totalNightHours = number_format($totalNightHours, 0);
-                    $employee_nightDiffPay = number_format(($employee_hourlyRate * .15) * $totalNightHours, 2);
-                }
-                if ($employee_daysWorked == 0) {
-                    // $employee_grossPay = "-";
-                }
-                else {
-                    $employee_grossPay = number_format($employee_dailyRate * $employee_daysWorked, 2);
-                }
-
+                $totalNightHours = round($totalNightHours, 0);
+                $employee_nightDiffPay = round(($employee_hourlyRate * .15) * $totalNightHours, 2);
+                
                 // ADD ALL PAYROLL DATA TO PAYSLIP TABLE
                 $this->dbConnect()->query("INSERT INTO $this->payslip (payrollID, empID, daysWorked, regNightDiff, pay_regNightDiff, grossPay) VALUES ('$payrollID', '$employee_id', '$employee_daysWorked', '$totalNightHours', '$employee_nightDiffPay', '$employee_grossPay')");
             }
