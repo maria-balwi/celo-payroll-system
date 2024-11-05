@@ -49,9 +49,6 @@
                 <a href="../pages/new_payroll.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     New Payroll
                 </a>
-                <a href="../pages/samplePayroll.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
-                    Sample Payroll
-                </a>
                 <a href="../pages/admin_adjustments.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Adjustments
                 </a>
