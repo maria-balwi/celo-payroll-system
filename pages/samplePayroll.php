@@ -11,7 +11,36 @@
         <!-- MAIN CONTENT -->
         <main class="flex-1 p-3">
             <div class="flex flex-1 p-2 text-2xl font-bold items-center">
-                Payroll 
+                <button id="btnBack">
+                    <svg class="h-8 w-8 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                
+                <?php 
+                    function formatDate($date) {
+                        // Get the current year
+                        $currentYear = date('Y');
+                        
+                        // Append the current year to the input date
+                        $dateWithYear = $date . '-' . $currentYear;
+                        
+                        // Create a DateTime object from the string (expects format MM-DD-YYYY)
+                        $dateTime = DateTime::createFromFormat('m-d-Y', $dateWithYear);
+                        
+                        // Format the date as 'M d, Y'
+                        return $dateTime->format('F d, Y');
+                    }
+
+                    $payrollID = $_GET['id']; 
+                    $payrollCycleID = mysqli_query($conn, "SELECT payrollCycleID FROM tbl_payroll WHERE payrollID = $payrollID")->fetch_assoc()['payrollCycleID']; 
+                    $payrollCycleFrom_date = mysqli_query($conn, "SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleFrom'];
+                    $payrollCycleTo_date = mysqli_query($conn, "SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleTo'];
+                    $payrollCycleFrom = formatDate($payrollCycleFrom_date);
+                    $payrollCycleTo = formatDate($payrollCycleTo_date);
+                    echo "Payroll from " . $payrollCycleFrom . " to " . $payrollCycleTo;
+                ?>
+                
             </div>
             
             <!-- CONTENT -->
@@ -29,9 +58,9 @@
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Daily Rate</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Hourly Rate</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">No. Of Days</th>
-                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Gross Pay</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Reg Night Diff (15%)</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Pay</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Gross Pay</th>
                                         <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Regular OT (25%)</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Pay</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Regular OT Night Diff</th>
@@ -121,7 +150,6 @@
                                         //     echo "<td class ='whitespace-nowrap'>" . $employee_nightDiffPay . "</td>";
                                         //     echo "</tr>";
                                         // }
-                                        $payrollID = 5;
                                         $payslipQuery = mysqli_query($conn, $payroll->viewAllPayslips($payrollID));
                                         while ($payslipDetails = mysqli_fetch_array($payslipQuery)) {
                                             $payslip_id = $payslipDetails['payslipID'];
@@ -130,12 +158,20 @@
                                             $payslip_employeeID = $payslipDetails['employeeID'];
                                             $payslip_employeeName = $payslipDetails['lastName'] . ", " . $payslipDetails['firstName'];
                                             $payslip_basicPay = number_format($payslipDetails['basicPay'], 2);
-                                            $payslip_dailyRate = $payslipDetails['dailyRate'];
-                                            $payslip_hourlyRate = $payslipDetails['hourlyRate'];
+                                            $payslip_dailyRate = number_format($payslipDetails['dailyRate'], 2);
+                                            $payslip_hourlyRate = number_format($payslipDetails['hourlyRate'], 2);
                                             $payslip_daysWorked = $payslipDetails['daysWorked'];
                                             $payslip_regNightDiff = $payslipDetails['regNightDiff'];
-                                            $payslip_regNightDiffPay = $payslipDetails['pay_regNightDiff'];
+                                            $payslip_regNightDiffPay = number_format($payslipDetails['pay_regNightDiff'], 2);
                                             $payslip_grossPay = $payslipDetails['grossPay'];
+
+                                            if ($payslip_regNightDiff == 0) {
+                                                $payslip_regNightDiff = "-";
+                                                $payslip_regNightDiffPay = "-";
+                                            }
+                                            if ($payslip_grossPay != 0) {
+                                                $payslip_grossPay = number_format($payslip_grossPay, 2);
+                                            }
 
                                             echo "<tr>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_employeeID . "</td>";
@@ -144,9 +180,9 @@
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_dailyRate . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_hourlyRate . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_daysWorked . "</td>";
-                                            echo "<td class ='whitespace-nowrap'>" . $payslip_grossPay . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_regNightDiff . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_regNightDiffPay . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_grossPay . "</td>";
                                             echo "</tr>";
                                         }
                                     ?>
