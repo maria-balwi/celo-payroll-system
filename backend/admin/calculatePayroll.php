@@ -12,6 +12,12 @@
         $error = array('error' => 0, 'em' => $em);
         echo json_encode($error);
     }
+    else if (isset($_POST['action']) && $_POST['action'] == "view") {
+        $payrollID = $_POST['payrollID'];
+        $em = "Payroll ID Fetched Successfully";
+        $error = array('error' => 0, 'id' => $payrollID, 'em' => $em);
+        echo json_encode($error);
+    }
 
     exit();
 ?>
