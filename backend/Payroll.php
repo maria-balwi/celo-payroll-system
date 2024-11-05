@@ -427,7 +427,9 @@
 
         public function viewAllPayroll() {
             $payroll = "
-                SELECT *FROM ".$this->payroll." AS payroll
+                SELECT payrollID, payroll.payrollCycleID, 
+                payrollCycleFrom, payrollCycleTo, status 
+                FROM ".$this->payroll." AS payroll
                 INNER JOIN ".$this->payrollCycle." AS payrollCycle
                 ON payroll.payrollCycleID = payrollCycle.payrollCycleID";
             return $payroll;
@@ -514,72 +516,7 @@
             }
             return $totalNightHours; // Return the calculated night differential hours
         } 
-        
-        // public function calculateNightDifferential($attendanceTime, $logTypeID) {
-        //     // Define the start and end times for the night differential period
-        //     $nightStart = new DateTime("22:00");
-        //     $nightEnd = new DateTime("06:00");
-        
-        //     // Initialize static variables to store Time In and Time Out
-        //     static $timeIn = null;
-        //     static $timeOut = null;
-        //     $totalNightHours = 0;
-        //     $totalNightMinutes = 0;
-        
-        //     // Assign Time In or Time Out based on logTypeID
-        //     if ($logTypeID == 1 || $logTypeID == 2) { // Time In or Late
-        //         $timeIn = new DateTime($attendanceTime);
-        //     } elseif ($logTypeID == 3 || $logTypeID == 4) { // Time Out or Undertime
-        //         $timeOut = new DateTime($attendanceTime);
-        //     }
-        
-        //     // If both Time In and Time Out are set, calculate night differential
-        //     if ($timeIn && $timeOut) {
-        //         // Adjust if timeOut goes into the next day (past midnight)
-        //         if ($timeOut < $timeIn) {
-        //             $timeOut->modify('+1 day');
-        //         }
-        
-        //         // Deduct 1 hour for the lunch break from the total time span
-        //         $timeOut->modify('-1 hour');
-        
-        //         // Adjust nightEnd to handle overnight span
-        //         $nightEndAdjusted = (clone $nightEnd)->modify('+1 day');
-        
-        //         // Calculate the night differential hours and minutes
-        //         $shiftStart = $timeIn;
-        //         $shiftEnd = $timeOut;
-        
-        //         // Calculate night hours if the shift overlaps the night period
-        //         if ($shiftStart < $nightEndAdjusted && $shiftEnd > $nightStart) {
-        //             $effectiveStart = max($shiftStart, $nightStart);
-        //             $effectiveEnd = min($shiftEnd, $nightEndAdjusted);
-        
-        //             if ($effectiveStart < $effectiveEnd) {
-        //                 $interval = $effectiveStart->diff($effectiveEnd);
-        //                 $hours = $interval->h;
-        //                 $minutes = $interval->i;
-        
-        //                 // Accumulate the minutes and check if they add up to at least 60
-        //                 $totalNightMinutes += $minutes;
-        //                 if ($totalNightMinutes >= 60) {
-        //                     $hours += intdiv($totalNightMinutes, 60); // Convert minutes to hours
-        //                     $totalNightMinutes %= 60; // Keep the remainder minutes
-        //                 }
-        
-        //                 $totalNightHours += $hours;
-        //             }
-        //         }
-        
-        //         // Reset Time In and Time Out for the next calculation
-        //         $timeIn = null;
-        //         $timeOut = null;
-        //     }
-        
-        //     return $totalNightHours; // Return the calculated night differential hours
-        // }
-        
-        
+    
         public function calculatePayroll($payrollID, $payrollCycleID) {
             function formatDate($date) {
                 // Get the current year
@@ -595,14 +532,15 @@
                 return $dateTime->format('Y-m-d');
             }
 
+            $payrollCycleID = 21; // 19 for sample with late
             $payrollCycleFrom_date = $this->dbConnect()->query("SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleFrom']; 
             $payrollCycleTo_date = $this->dbConnect()->query("SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleTo'];
             $payrollCycleFrom = formatDate($payrollCycleFrom_date);
             $payrollCycleTo = formatDate($payrollCycleTo_date);
-            $employees = $this->dbConnect()->query("SELECT * FROM tbl_employees");
+            $employees = $this->dbConnect()->query("SELECT * FROM tbl_employee");
             while ($employeeDetails = mysqli_fetch_array($employees)) {
                 $employee_id = $employeeDetails['id'];
-                $employee_employeeID = $employeeDetails['employeeID'];
+                // $employee_employeeID = $employeeDetails['employeeID'];
                 $employee_employeeName = $employeeDetails['lastName'] . ", " . $employeeDetails['firstName'];
                 $employee_basicPay = number_format($employeeDetails['basicPay'], 2);
                 $employee_dailyRate = $employeeDetails['dailyRate'];
@@ -610,19 +548,50 @@
 
                 $daysWorkedQuery = $this->dbConnect()->query("SELECT * FROM tbl_attendance WHERE empID = $employeeDetails[id] AND (logTypeID IN (1, 2) OR logTypeID IN (3, 4)) AND attendanceDate BETWEEN DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom'))) AND DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleTo')))");
                 $employee_daysWorked = round(mysqli_num_rows($daysWorkedQuery) / 2);
-                $employee_grossPay = $employee_dailyRate * $employee_daysWorked;
 
                 $totalNightHours = 0;
                 while ($attendanceLogs = mysqli_fetch_array($daysWorkedQuery)) {
                     $date = $attendanceLogs['attendanceDate'];
                     $attendanceTime = $attendanceLogs['attendanceTime'];
                     $logTypeID = $attendanceLogs['logTypeID'];
-                    // $nightHours = $this->calculateNightDifferential($attendanceTime, $logTypeID);
-                    // $totalNightHours += $nightHours;
+                    $lateMins = $attendanceLogs['lateMins'];
+                    $undertimeMins = $attendanceLogs['undertimeMins'];
+                    $nightHours = $this->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $undertimeMins);
+                    $totalNightHours += $nightHours;
                 }
-                $totalNightHours = number_format($totalNightHours, 0);
+                if ($totalNightHours == 0) {
+                    // $totalNightHours = "-";
+                    // $employee_nightDiffPay = "-";
+                }
+                else {
+                    $totalNightHours = number_format($totalNightHours, 0);
+                    $employee_nightDiffPay = number_format(($employee_hourlyRate * .15) * $totalNightHours, 2);
+                }
+                if ($employee_daysWorked == 0) {
+                    // $employee_grossPay = "-";
+                }
+                else {
+                    $employee_grossPay = number_format($employee_dailyRate * $employee_daysWorked, 2);
+                }
+
+                // ADD ALL PAYROLL DATA TO PAYSLIP TABLE
+                $this->dbConnect()->query("INSERT INTO $this->payslip (payrollID, empID, daysWorked, regNightDiff, pay_regNightDiff, grossPay) VALUES ('$payrollID', '$employee_id', '$employee_daysWorked', '$totalNightHours', '$employee_nightDiffPay', '$employee_grossPay')");
             }
-            // ADD ALL PAYROLL DATA TO PAYSLIP TABLE
+            return;
+        }
+
+        public function updateCalculatedPayroll($payrollID) {
+            $updatePayroll = "
+                UPDATE ".$this->payroll." SET status = 'Calculated' WHERE payrollID = $payrollID";
+            return $updatePayroll;
+        }
+
+        public function viewAllPayslips($payrollID) {
+            $viewAllPayslips = "
+                SELECT * FROM ".$this->payslip . " AS payslip
+                INNER JOIN ".$this->employees." AS employee ON payslip.empID = employee.id
+                WHERE payrollID = $payrollID";
+            return $viewAllPayslips;
         }
 
         public function reCalculatePayroll($payrollID, $payrollCycleID) {
