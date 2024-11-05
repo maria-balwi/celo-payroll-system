@@ -12,223 +12,161 @@
         <main class="flex-1 p-3">
             <div class="flex flex-1 p-2 text-2xl font-bold items-center">
                 Payroll 
-
-                <!-- YEAR DROPDOWN MENU -->
-                <!-- PAYSLIP CYCLYE RANGE FROM DROPDOWN MENU -->
-                <div class="static inline-block text-right ml-3 mr-1">
-                    <select id="filterCycle" class="form-select inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-3 bg-white text-sm font-medium text-gray-700">
-                        <!-- <option disabled selected>Select Payroll Cycle FROM</option> -->
-                        <option disabled selected>Select Payroll Cycle</option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="1">1 - Dec 26, <?php echo date('Y') - 1; ?> to Jan 10, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="2">2 - Jan 11, <?php echo date('Y'); ?> to Jan 25, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="3">3 - Jan 26, <?php echo date('Y'); ?> to Feb 10, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="4">4 - Feb 11, <?php echo date('Y'); ?> to Feb 25, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="5">5 - Feb 26, <?php echo date('Y'); ?> to Mar 10, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="6">6 - Mar 11, <?php echo date('Y'); ?> to Mar 25, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="7">7 - Mar 26, <?php echo date('Y'); ?> to Apr 10, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="8">8 - Apr 11, <?php echo date('Y'); ?> to Apr 25, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="9">9 - Apr 26, <?php echo date('Y'); ?> to May 10, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="10">10 - May 11, <?php echo date('Y'); ?> to May 25, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="11">11 - May 26, <?php echo date('Y'); ?> to Jun 10, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="12">12 - Jun 11, <?php echo date('Y'); ?> to Jun 25, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="13">13 - Jun 26, <?php echo date('Y'); ?> to Jul 10, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="14">14 - Jul 11, <?php echo date('Y'); ?> to Jul 25, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="15">15 - Jul 26, <?php echo date('Y'); ?> to Aug 10, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="16">16 - Aug 11, <?php echo date('Y'); ?> to Aug 25, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="17">17 - Aug 26, <?php echo date('Y'); ?> to Sep 10, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="18">18 - Sep 11, <?php echo date('Y'); ?> to Sep 25, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="19">19 - Sep 26, <?php echo date('Y'); ?> to Oct 10, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="20">20 - Oct 11, <?php echo date('Y'); ?> to Oct 25, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="21">21 - Oct 26, <?php echo date('Y'); ?> to Nov 10, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="22">22 - Nov 11, <?php echo date('Y'); ?> to Nov 25, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="23">23 - Nov 26, <?php echo date('Y'); ?> to Dec 10, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="24">24 - Dec 11, <?php echo date('Y'); ?> to Dec 25, <?php echo date('Y'); ?></option>
-                    </select>
-                </div>
-                
-                <!-- GENERATE PAYROLL BUTTON -->
-                <div class="static inline-block text-right ">
-                    <button id="generatePayroll" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-3 py-2 bg-white text-sm font-medium text-blue-500 hover:bg-blue-500 hover:text-white-500 focus:outline-none">
-                    Generate Payroll
-                    </button>
-                </div>
-
-                <!-- RE-CALCULATE PAYROLL BUTTON -->
-                <div class="static inline-block text-right ml-1">
-                    <button id="generatePayroll" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-3 py-2 bg-white text-sm font-medium text-blue-500 hover:bg-blue-500 hover:text-white-500 focus:outline-none">
-                    Re-Calculate Payroll
-                    </button>
-                </div>
             </div>
             
             <!-- CONTENT -->
-            <div class="px-3 m-1 bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
-                
-                <!-- DATATABLE -->
-                <div class="mx-auto my-3 py-2 overflow-auto">
-                    <table id="payrollTable" class="table table-striped table-bordered table-auto text-center pt-3">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap" rowspan="2">Employee ID</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Name</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap" rowspan="2">Basic Pay</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap" rowspan="2">Daily Rate</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Hourly Rate</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">No. Of Days</th>  
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Total Hours</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">Regular Hours/Days</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">Reg Night Diff (15%)</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">Regular OT (25%)</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">Regular OT Night Diff</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">RDOT</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">RDOT Night Diff</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">Special Holiday</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">S.H. Day Night Diff</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Holiday</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">HOLIDAY Night Diff</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap" rowspan="2">Gross Pay</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">Allowance</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">Communication Allowance</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle whitespace-nowrap" rowspan="2">Total Gross Pay</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" colspan="8">Deductions</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2"></th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Holiday OT</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">HOLIDAY OT w/ Night Diff</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">Special Holiday OT</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">Special Holiday OT w/ Night Diff</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">RDOT SH</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">RDOT SH w/ Night Diff</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">RDOT LH</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">RDOT LH w/ Night Diff</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">RDOT OT</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">Double Holiday (300%)</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">Double Holiday w/ Night Diff (300%)</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">Double Holiday (200%)</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">Adjustment +,-</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Net Pay</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">C/A Balance</th> 
-                            </tr>
-                            <tr>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">WTAX</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">SSS</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">PHIC</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">HDMF</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Advances</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">SSS Salary Loan</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Pagibig MPL</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Smart</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            <?php
-                                $employeeQuery = mysqli_query($conn, $employees->viewEmployees());
-                                while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+            <div class="bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
+                <div class="card shadow-sm bInfo">
+                    <div class="card-body">
+                        <!-- DATATABLE -->
+                        <div class="mx-auto overflow-auto">
+                            <table id="payrollListTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Date From</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Date To</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Status</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <?php
+                                        function modifyDate($date) {
+                                            // Get the current year
+                                            $currentYear = date('Y');
+                                            
+                                            // Append the current year to the input date
+                                            $dateWithYear = $date . '-' . $currentYear;
+                                            
+                                            // Create a DateTime object from the string (expects format MM-DD-YYYY)
+                                            $dateTime = DateTime::createFromFormat('m-d-Y', $dateWithYear);
+                                            
+                                            // Format the date as 'M d, Y'
+                                            return $dateTime->format('F d, Y');
+                                        }
 
-                                    $employee_id = $employeeDetails['id'];
-                                    $employee_employeeID = $employeeDetails['employeeID'];
-                                    $employee_employeeName = $employeeDetails['lastName'] . ", " . $employeeDetails['firstName'];
-                                    $employee_basicPay = number_format($employeeDetails['basicPay'], 2);
-                                    $employee_dailyRate = number_format($employeeDetails['dailyRate'], 2);
-                                    $employee_hourlyRate = number_format($employeeDetails['hourlyRate'], 2);
+                                        $payrollQuery = mysqli_query($conn, $payroll->viewAllPayroll());
+                                        while ($payrollDetails = mysqli_fetch_array($payrollQuery)) {
+                                            $payrollID = $payrollDetails['payrollID'];
+                                            $payrollCycleID = $payrollDetails['payrollCycleID'];
+                                            $payrollDateFrom = $payrollDetails['payrollCycleFrom'];
+                                            $payrollDateTo = $payrollDetails['payrollCycleTo'];
+                                            $payrollStatus = $payrollDetails['status'];
 
-
-                                    echo "<tr data-id='" . $employee_id . "' class='employeeView'>";
-                                    echo "<td class = ' whitespace-nowrap'>" . $employee_employeeID . "</td>"; ?>
-                                    <td  class="px-6 text-left whitespace-nowrap"><?php echo $employee_employeeName; ?></td>
-                                    <td class="px-6 text-right whitespace-nowrap"><?php echo $employee_basicPay; ?></td>
-                                    <td class="px-6 text-right whitespace-nowrap"><?php echo $employee_dailyRate; ?></td>
-                                    <td class="px-6 text-right whitespace-nowrap"><?php echo $employee_hourlyRate; ?></td>
-                                    
-                            <?php 
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "<td class ='whitespace-nowrap'>-</td>";
-                                    echo "</td>";
-                                }
-                            ?>
-                        </tbody>
-                    </table>
+                                            echo "<tr>";
+                                            echo "<td class ='whitespace-nowrap'>" . modifyDate($payrollDateFrom) . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . modifyDate($payrollDateTo) . "</td>";
+                                            if ($payrollStatus == "New") {
+                                                echo "<td><p class='inline-block bg-blue-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $payrollStatus . "</p></td>";
+                                            }
+                                            else {
+                                                echo "<td><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $payrollStatus . "</p></td>";
+                                            }
+                                            echo "<td class ='whitespace-nowrap'>";
+                                            if ($payrollStatus == "New") {
+                                                echo "
+                                                    <button class='btn btn-sm btn-outline-primary calculatePayroll' data-id='" . $payrollID . "' data-cycleID='" . $payrollCycleID . "'>Calculate</button>";
+                                            }
+                                            else {
+                                                echo "
+                                                    <button class='btn btn-sm btn-outline-primary hover:text-white-500 viewPayroll' data-id='" . $payrollID . "'>
+                                                        <svg class='h-5 w-5 text-blue-500'  fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+                                                            <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M15 12a3 3 0 11-6 0 3 3 0 016 0z'/>
+                                                            <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z'/>
+                                                        </svg>
+                                                    </button>
+                                                ";
+                                            }
+                                            echo "
+                                                    <button class='btn btn-sm btn-outline-danger hover:text-white-500 deletePayroll' data-id='" . $payrollID . "'>
+                                                        <svg class='h-5 w-5 text-red-500'  fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+                                                            <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16'/>
+                                                        </svg>
+                                                    </button>
+                                                ";
+                                            echo "</td>";
+                                            echo "</tr>";
+                                        }
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- CARD FOOTER DATA ENTRY BUTTON -->
+                    <div class="card-footer d-grid gap-2 d-md-flex justify-content-md-end">
+                        <button class="btn btn-primary me-md-2" type="button" data-bs-toggle="modal" data-bs-target="#addPayrollModal">Create Payroll</button>
+                    </div>
                 </div>
             </div>
+
+            <!-- ======================================================================================================================================= -->
+            <!-- ================================================================= MODAL =============================================================== -->
+            <!-- ======================================================================================================================================= -->
+
+            <!--------------------------------------------------------------------------------------------------------------------------------------------->
+            <!------------------------------------------------------------------- ADD EMPLOYEE FORM ------------------------------------------------------->
+            <form id="addPayrollForm" enctype="multipart/form-data">
+                <div class="modal fade" id="addPayrollModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-none modal-sm modal-dialog-centered">
+                        <div class="modal-content" id="addPayrollModal">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="userFormLabel">Create Payroll</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row g-2 mb-1">
+                                    <div class="col-12">
+                                        <label for="payrollCycle">Payroll Cycle:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <div class="col-12">
+                                        <select class="form-select" id="payrollCycleID" name="payrollCycleID">
+                                            <option value="" selected disabled>Choose</option>
+                                            <?php
+                                                function formatDate($date) {
+                                                    // Get the current year
+                                                    $currentYear = date('Y');
+                                                    
+                                                    // Append the current year to the input date
+                                                    $dateWithYear = $date . '-' . $currentYear;
+                                                    
+                                                    // Create a DateTime object from the string (expects format MM-DD-YYYY)
+                                                    $dateTime = DateTime::createFromFormat('m-d-Y', $dateWithYear);
+                                                    
+                                                    // Format the date as 'M d, Y'
+                                                    return $dateTime->format('M d, Y');
+                                                }
+                                                
+                                                $payrollCycleQuery = mysqli_query($conn, $payroll->viewAllPayrollCycle2());
+                                                while ($payrollCycleDetails = mysqli_fetch_array($payrollCycleQuery)) {
+                                                    $payrollCycleID = $payrollCycleDetails['payrollCycleID'];
+                                                    $payrollCycleFrom_date = $payrollCycleDetails['payrollCycleFrom'];
+                                                    $payrollCycleTo_date = $payrollCycleDetails['payrollCycleTo'];
+
+                                                    $payrollCycleFrom = formatDate($payrollCycleFrom_date);
+                                                    $payrollCycleTo = formatDate($payrollCycleTo_date);
+                                                ?>
+                                                <option value="<?php echo $payrollCycleID; ?>">
+                                                    <?php echo $payrollCycleFrom . ' to ' . $payrollCycleTo; ?>
+                                                </option>
+                                            <?php        
+                                                }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>     
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">Create</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
             
         </main>
     
