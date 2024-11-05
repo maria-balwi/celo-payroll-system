@@ -150,23 +150,12 @@ $(document).ready(function() {
                 data: viewPayrollForm,
                 contentType: false,
                 processData: false,
-                // success: function (res) {
-                //     window.location.href = "../pages/samplePayroll.php";
-                // },
-                // error: function () {
-                //     // Handle error if needed
-                //     Swal.fire({
-                //         icon: 'error',
-                //         title: 'Error',
-                //         text: 'Failed to send data .php'
-                //     });
-                // }
                 success: function (res) {
                     const data = JSON.parse(res);
                     var message = data.em;
                     if (data.error == 0) {
                         id = data.id;
-                        window.location.href = "../pages/samplePayroll.php?id=" + id;
+                        window.location.href = "../pages/admin_calculatedPayroll.php?id=" + id;
                     } else {
                         Swal.fire({
                             icon: 'error',
@@ -181,6 +170,6 @@ $(document).ready(function() {
 
     $('#btnBack').click(function(e) {
         e.preventDefault();
-        window.location.href = "../pages/new_payroll.php";
+        window.location.href = "../pages/admin_payroll.php";
     });
 });
