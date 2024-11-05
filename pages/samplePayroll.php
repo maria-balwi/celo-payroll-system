@@ -52,73 +52,101 @@
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     <?php
-                                        // CONTENT OF THIS TABLE WILL BE GENERATED FROM THE DATABASE - PAYSLIP TABLE
+                                        // // CONTENT OF THIS TABLE WILL BE GENERATED FROM THE DATABASE - PAYSLIP TABLE
                                         
-                                        function formatDate($date) {
-                                            // Get the current year
-                                            $currentYear = date('Y');
+                                        // function formatDate($date) {
+                                        //     // Get the current year
+                                        //     $currentYear = date('Y');
                                             
-                                            // Append the current year to the input date
-                                            $dateWithYear = $date . '-' . $currentYear;
+                                        //     // Append the current year to the input date
+                                        //     $dateWithYear = $date . '-' . $currentYear;
                                             
-                                            // Create a DateTime object from the string (expects format MM-DD-YYYY)
-                                            $dateTime = DateTime::createFromFormat('m-d-Y', $dateWithYear);
+                                        //     // Create a DateTime object from the string (expects format MM-DD-YYYY)
+                                        //     $dateTime = DateTime::createFromFormat('m-d-Y', $dateWithYear);
                                             
-                                            // Format the date as 'M d, Y'
-                                            return $dateTime->format('Y-m-d');
-                                        }
+                                        //     // Format the date as 'M d, Y'
+                                        //     return $dateTime->format('Y-m-d');
+                                        // }
 
-                                        $payrollCycleID = 21; // 19 for sample with late
-                                        $payrollCycleFrom_date = mysqli_query($conn, "SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleFrom']; 
-                                        $payrollCycleTo_date = mysqli_query($conn, "SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleTo'];
-                                        $payrollCycleFrom = formatDate($payrollCycleFrom_date);
-                                        $payrollCycleTo = formatDate($payrollCycleTo_date);
-                                        $employees = mysqli_query($conn, "SELECT * FROM tbl_employee");
-                                        while ($employeeDetails = mysqli_fetch_array($employees)) {
-                                            $employee_id = $employeeDetails['id'];
-                                            $employee_employeeID = $employeeDetails['employeeID'];
-                                            $employee_employeeName = $employeeDetails['lastName'] . ", " . $employeeDetails['firstName'];
-                                            $employee_basicPay = number_format($employeeDetails['basicPay'], 2);
-                                            $employee_dailyRate = $employeeDetails['dailyRate'];
-                                            $employee_hourlyRate = $employeeDetails['hourlyRate'];
+                                        // $payrollCycleID = 21; // 19 for sample with late
+                                        // $payrollCycleFrom_date = mysqli_query($conn, "SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleFrom']; 
+                                        // $payrollCycleTo_date = mysqli_query($conn, "SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleTo'];
+                                        // $payrollCycleFrom = formatDate($payrollCycleFrom_date);
+                                        // $payrollCycleTo = formatDate($payrollCycleTo_date);
+                                        // $employees = mysqli_query($conn, "SELECT * FROM tbl_employee");
+                                        // while ($employeeDetails = mysqli_fetch_array($employees)) {
+                                        //     $employee_id = $employeeDetails['id'];
+                                        //     $employee_employeeID = $employeeDetails['employeeID'];
+                                        //     $employee_employeeName = $employeeDetails['lastName'] . ", " . $employeeDetails['firstName'];
+                                        //     $employee_basicPay = number_format($employeeDetails['basicPay'], 2);
+                                        //     $employee_dailyRate = $employeeDetails['dailyRate'];
+                                        //     $employee_hourlyRate = $employeeDetails['hourlyRate'];
 
-                                            $daysWorkedQuery = mysqli_query($conn, "SELECT * FROM tbl_attendance WHERE empID = $employee_id AND (logTypeID IN (1, 2) OR logTypeID IN (3, 4)) AND (attendanceDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo')");
-                                            $employee_daysWorked = floor(mysqli_num_rows($daysWorkedQuery) / 2);
+                                        //     $daysWorkedQuery = mysqli_query($conn, "SELECT * FROM tbl_attendance WHERE empID = $employee_id AND (logTypeID IN (1, 2) OR logTypeID IN (3, 4)) AND (attendanceDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo')");
+                                        //     $employee_daysWorked = floor(mysqli_num_rows($daysWorkedQuery) / 2);
 
-                                            $totalNightHours = 0;
-                                            while ($attendanceLogs = mysqli_fetch_array($daysWorkedQuery)) {
-                                                $date = $attendanceLogs['attendanceDate'];
-                                                $attendanceTime = $attendanceLogs['attendanceTime'];
-                                                $logTypeID = $attendanceLogs['logTypeID'];
-                                                $lateMins = $attendanceLogs['lateMins'];
-                                                $undertimeMins = $attendanceLogs['undertimeMins'];
-                                                $nightHours = $payroll->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $undertimeMins);
-                                                $totalNightHours += $nightHours;
-                                            }
-                                            if ($totalNightHours == 0) {
-                                                $totalNightHours = "-";
-                                                $employee_nightDiffPay = "-";
-                                            }
-                                            else {
-                                                $totalNightHours = number_format($totalNightHours, 0);
-                                                $employee_nightDiffPay = number_format(($employee_hourlyRate * .15) * $totalNightHours, 2);
-                                            }
-                                            if ($employee_daysWorked == 0) {
-                                                $employee_grossPay = "-";
-                                            }
-                                            else {
-                                                $employee_grossPay = number_format($employee_dailyRate * $employee_daysWorked, 2);
-                                            }
+                                        //     $totalNightHours = 0;
+                                        //     while ($attendanceLogs = mysqli_fetch_array($daysWorkedQuery)) {
+                                        //         $date = $attendanceLogs['attendanceDate'];
+                                        //         $attendanceTime = $attendanceLogs['attendanceTime'];
+                                        //         $logTypeID = $attendanceLogs['logTypeID'];
+                                        //         $lateMins = $attendanceLogs['lateMins'];
+                                        //         $undertimeMins = $attendanceLogs['undertimeMins'];
+                                        //         $nightHours = $payroll->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $undertimeMins);
+                                        //         $totalNightHours += $nightHours;
+                                        //     }
+                                        //     if ($totalNightHours == 0) {
+                                        //         $totalNightHours = "-";
+                                        //         $employee_nightDiffPay = "-";
+                                        //     }
+                                        //     else {
+                                        //         $totalNightHours = number_format($totalNightHours, 0);
+                                        //         $employee_nightDiffPay = number_format(($employee_hourlyRate * .15) * $totalNightHours, 2);
+                                        //     }
+                                        //     if ($employee_daysWorked == 0) {
+                                        //         $employee_grossPay = "-";
+                                        //     }
+                                        //     else {
+                                        //         $employee_grossPay = number_format($employee_dailyRate * $employee_daysWorked, 2);
+                                        //     }
+                                        //     echo "<tr>";
+                                        //     echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                        //     echo "<td class ='whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                        //     echo "<td class ='whitespace-nowrap'>" . $employee_basicPay . "</td>";
+                                        //     echo "<td class ='whitespace-nowrap'>" . $employee_dailyRate . "</td>";
+                                        //     echo "<td class ='whitespace-nowrap'>" . $employee_hourlyRate . "</td>";
+                                        //     echo "<td class ='whitespace-nowrap'>" . $employee_daysWorked . "</td>";
+                                        //     echo "<td class ='whitespace-nowrap'>" . $employee_grossPay . "</td>";
+                                        //     echo "<td class ='whitespace-nowrap'>" . $totalNightHours . "</td>";
+                                        //     echo "<td class ='whitespace-nowrap'>" . $employee_nightDiffPay . "</td>";
+                                        //     echo "</tr>";
+                                        // }
+                                        $payrollID = 5;
+                                        $payslipQuery = mysqli_query($conn, $payroll->viewAllPayslips($payrollID));
+                                        while ($payslipDetails = mysqli_fetch_array($payslipQuery)) {
+                                            $payslip_id = $payslipDetails['payslipID'];
+                                            $payslip_payrollID = $payslipDetails['payrollID'];
+                                            $payslip_empID = $payslipDetails['empID'];
+                                            $payslip_employeeID = $payslipDetails['employeeID'];
+                                            $payslip_employeeName = $payslipDetails['lastName'] . ", " . $payslipDetails['firstName'];
+                                            $payslip_basicPay = number_format($payslipDetails['basicPay'], 2);
+                                            $payslip_dailyRate = $payslipDetails['dailyRate'];
+                                            $payslip_hourlyRate = $payslipDetails['hourlyRate'];
+                                            $payslip_daysWorked = $payslipDetails['daysWorked'];
+                                            $payslip_regNightDiff = $payslipDetails['regNightDiff'];
+                                            $payslip_regNightDiffPay = $payslipDetails['pay_regNightDiff'];
+                                            $payslip_grossPay = $payslipDetails['grossPay'];
+
                                             echo "<tr>";
-                                            echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
-                                            echo "<td class ='whitespace-nowrap'>" . $employee_employeeName . "</td>";
-                                            echo "<td class ='whitespace-nowrap'>" . $employee_basicPay . "</td>";
-                                            echo "<td class ='whitespace-nowrap'>" . $employee_dailyRate . "</td>";
-                                            echo "<td class ='whitespace-nowrap'>" . $employee_hourlyRate . "</td>";
-                                            echo "<td class ='whitespace-nowrap'>" . $employee_daysWorked . "</td>";
-                                            echo "<td class ='whitespace-nowrap'>" . $employee_grossPay . "</td>";
-                                            echo "<td class ='whitespace-nowrap'>" . $totalNightHours . "</td>";
-                                            echo "<td class ='whitespace-nowrap'>" . $employee_nightDiffPay . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_employeeID . "</td>";
+                                            echo "<td class ='whitespace-nowrap text-left'>" . $payslip_employeeName . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_basicPay . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_dailyRate . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_hourlyRate . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_daysWorked . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_grossPay . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_regNightDiff . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_regNightDiffPay . "</td>";
                                             echo "</tr>";
                                         }
                                     ?>
