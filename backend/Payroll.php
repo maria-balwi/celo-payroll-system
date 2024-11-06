@@ -442,12 +442,6 @@
             return $createPayroll;
         }
 
-        // public function viewAllPayrollCycle() {
-        //     $payrollCycle = "
-        //         SELECT * FROM ".$this->payrollCycle;
-        //     return $payrollCycle;
-        // }
-
         public function viewAllPayrollCycle2() {
             $payrollCycle = "
                 SELECT * FROM ".$this->payrollCycle . " AS payrollCycle
@@ -532,20 +526,24 @@
                 return $dateTime->format('Y-m-d');
             }
 
+            // GET PAYROLL CYCLE DETAILS
             $payrollCycleFrom_date = $this->dbConnect()->query("SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleFrom']; 
             $payrollCycleTo_date = $this->dbConnect()->query("SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleTo'];
             $payrollCycleFrom = formatDate($payrollCycleFrom_date);
             $payrollCycleTo = formatDate($payrollCycleTo_date);
+
+            // GET EMPLOYEE DETAILS
             $employees = $this->dbConnect()->query("SELECT * FROM tbl_employee");
             while ($employeeDetails = mysqli_fetch_array($employees)) {
                 $employee_id = $employeeDetails['id'];
                 $employee_dailyRate = $employeeDetails['dailyRate'];
                 $employee_hourlyRate = $employeeDetails['hourlyRate'];
 
+                // COMPUTE DAYS WORKED
                 $daysWorkedQuery = $this->dbConnect()->query("SELECT * FROM tbl_attendance WHERE empID = $employeeDetails[id] AND (logTypeID IN (1, 2) OR logTypeID IN (3, 4)) AND attendanceDate BETWEEN DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom'))) AND DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleTo')))");
                 $employee_daysWorked = round(mysqli_num_rows($daysWorkedQuery) / 2);
-                $employee_grossPay = round($employee_dailyRate * $employee_daysWorked, 2);
-
+                
+                // COMPUTE NIGHT DIFFERENTIAL HOURS AND NIGHT DIFFERENTIAL PAY
                 $totalNightHours = 0;
                 while ($attendanceLogs = mysqli_fetch_array($daysWorkedQuery)) {
                     // $date = $attendanceLogs['attendanceDate'];
@@ -558,9 +556,22 @@
                 }
                 $totalNightHours = round($totalNightHours, 0);
                 $employee_nightDiffPay = round(($employee_hourlyRate * .15) * $totalNightHours, 2);
+
+                // GET OVERTIMES AND OVERTIME PAY
+                $overtimesQuery = $this->dbConnect()->query("SELECT * FROM tbl_filedot WHERE empID = $employee_id AND (otDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo') AND status = '2'");
+                $totalOvertimeHours = 0;
+                while ($overtime = mysqli_fetch_array($overtimesQuery)) {
+                    $totalOvertimeHours += $overtime['approvedOThours'];
+                    if ($overtime['approvedOTmins'] >= 30) {
+                        $totalOvertimeHours += 1;
+                    }
+                }
+                $employee_overtimePay = round(($employee_hourlyRate * .25) * $totalOvertimeHours, 2);
+                // COMPUTE GROSS PAY
+                $employee_grossPay = round($employee_dailyRate * $employee_daysWorked, 2);
                 
                 // ADD ALL PAYROLL DATA TO PAYSLIP TABLE
-                $this->dbConnect()->query("INSERT INTO $this->payslip (payrollID, empID, daysWorked, regNightDiff, pay_regNightDiff, grossPay) VALUES ('$payrollID', '$employee_id', '$employee_daysWorked', '$totalNightHours', '$employee_nightDiffPay', '$employee_grossPay')");
+                $this->dbConnect()->query("INSERT INTO $this->payslip (payrollID, empID, daysWorked, regNightDiff, pay_regNightDiff, regularOT, pay_regularOT, grossPay) VALUES ($payrollID, $employee_id, $employee_daysWorked, $totalNightHours, $employee_nightDiffPay, $totalOvertimeHours, $employee_overtimePay, $employee_grossPay)");
             }
             return;
         }

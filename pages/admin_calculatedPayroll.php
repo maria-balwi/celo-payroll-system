@@ -60,10 +60,10 @@
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">No. Of Days</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Reg Night Diff (15%)</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Pay</th>
-                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Gross Pay</th>
-                                        <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Regular OT (25%)</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Regular OT (25%)</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Pay</th>
-                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Regular OT Night Diff</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Gross Pay</th>
+                                        <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Regular OT Night Diff</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Pay</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">RDOT</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Pay</th>
@@ -163,11 +163,17 @@
                                             $payslip_daysWorked = $payslipDetails['daysWorked'];
                                             $payslip_regNightDiff = $payslipDetails['regNightDiff'];
                                             $payslip_regNightDiffPay = number_format($payslipDetails['pay_regNightDiff'], 2);
+                                            $payslip_regularOT = $payslipDetails['regularOT'];
+                                            $payslip_regularOTPay = number_format($payslipDetails['pay_regularOT'], 2);
                                             $payslip_grossPay = $payslipDetails['grossPay'];
 
                                             if ($payslip_regNightDiff == 0) {
                                                 $payslip_regNightDiff = "-";
                                                 $payslip_regNightDiffPay = "-";
+                                            }
+                                            if ($payslip_regularOT == 0) {
+                                                $payslip_regularOT = "-";
+                                                $payslip_regularOTPay = "-";
                                             }
                                             if ($payslip_grossPay != 0) {
                                                 $payslip_grossPay = number_format($payslip_grossPay, 2);
@@ -182,6 +188,8 @@
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_daysWorked . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_regNightDiff . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_regNightDiffPay . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_regularOT . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_regularOTPay . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_grossPay . "</td>";
                                             echo "</tr>";
                                         }
