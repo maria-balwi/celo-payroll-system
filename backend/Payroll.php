@@ -571,18 +571,24 @@
             return $updatePayroll;
         }
 
-        public function viewAllPayslips($payrollID) {
-            $viewAllPayslips = "
-                SELECT * FROM ".$this->payslip . " AS payslip
-                INNER JOIN ".$this->employees." AS employee ON payslip.empID = employee.id
-                WHERE payrollID = $payrollID";
-            return $viewAllPayslips;
+        public function deletePayroll($payrollID) {
+            $deletePayroll = "
+                DELETE FROM ".$this->payroll." WHERE payrollID = $payrollID";
+            return $deletePayroll;
         }
 
         public function reCalculatePayroll($payrollID, $payrollCycleID) {
             // DELETE CURRENT PAYSLIP - RE-CALCULATE FUNCTION
             $this->dbConnect()->query("DELETE FROM tbl_payslip WHERE payroll_id = $payrollID");
 
+        }
+
+        public function viewAllPayslips($payrollID) {
+            $viewAllPayslips = "
+                SELECT * FROM ".$this->payslip . " AS payslip
+                INNER JOIN ".$this->employees." AS employee ON payslip.empID = employee.id
+                WHERE payrollID = $payrollID";
+            return $viewAllPayslips;
         }
     }
 ?>

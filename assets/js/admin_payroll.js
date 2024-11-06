@@ -168,6 +168,59 @@ $(document).ready(function() {
         }
     });
 
+    // DELETE PAYROLL
+    $('.deletePayroll').click(function(e) {
+        e.preventDefault();
+
+        let deletePayrollForm =  new FormData();
+        var payrollID = $(this).data('id');
+        
+        
+        Swal.fire({
+            icon: 'question',
+            title: 'Delete Payroll',
+            text: 'Are you sure you want to delete this payroll?',
+            showCancelButton: true,
+            cancelButtonColor: '#6c757d',
+            confirmButtonColor: '#28a745',
+            confirmButtonText: 'Yes',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "../backend/admin/calculatePayroll.php",
+                    type: 'POST',
+                    data: {
+                        payrollID: payrollID,
+                        action: 'delete'
+                    },
+                    success: function(response) {
+                        const res = JSON.parse(response);
+                        var message = res.em;
+                        if (res.error == 0) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: message,
+                                timer: 2000,
+                                showConfirmButton: false
+                            }).then(() => {
+                                window.location.reload();
+                            });
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: message
+                            })
+                        }
+                    }
+                })
+            }
+        })
+        
+    });
+
     $('#btnBack').click(function(e) {
         e.preventDefault();
         window.location.href = "../pages/admin_payroll.php";

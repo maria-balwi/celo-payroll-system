@@ -18,6 +18,21 @@
         $error = array('error' => 0, 'id' => $payrollID, 'em' => $em);
         echo json_encode($error);
     }
+    else if (isset($_POST['action']) && $_POST['action'] == "delete") {
+        $payrollID = $_POST['payrollID'];
+        mysqli_query($conn, $payroll->deletePayroll($payrollID));
+        $em = "Payroll Deleted Successfully";
+        $error = array('error' => 0, 'em' => $em);
+        echo json_encode($error);
+    }
+    else if (isset($_POST['action']) && $_POST['action'] == "recalculate") {
+        $payrollID = $_POST['payrollID'];
+        $payrollCycleID = $_POST['payrollCycleID'];
+        $payroll->reCalculatePayroll($payrollID, $payrollCycleID);
+        $em = "Payroll Recalculated Successfully";
+        $error = array('error' => 0, 'em' => $em);
+        echo json_encode($error);
+    }
 
     exit();
 ?>
