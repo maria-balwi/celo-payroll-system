@@ -203,7 +203,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <div class="row g-3 mb-2">
+                            <div class="row g-3 mb-1">
                                 <div class="col-6">
                                     <label for="viewDateFiled">Date Filed:</label>
                                 </div>
@@ -221,7 +221,7 @@
                                 </div>
                             </div>   
 
-                            <div class="row g-3 mb-2">
+                            <div class="row g-3 mb-1">
                                 <div class="col-6">
                                     <label for="viewOTDate">OT Date:</label>
                                 </div>
@@ -239,12 +239,12 @@
                                 </div>
                             </div>   
                                 
-                            <div class="row g-3 mb-2">
+                            <div class="row g-3 mb-1">
                                 <div class="col-6">
-                                    <label for="viewActualOTHours">Actual OT - Hours</label>
+                                    <label for="viewActualOTHours">Actual OT - Hours:</label>
                                 </div>
                                 <div class="col-6">
-                                    <label for="viewActualOTMins">Actual OT - Minutes</label>
+                                    <label for="viewActualOTMins">Actual OT - Minutes:</label>
                                 </div>
                                 </div>
                 
@@ -257,12 +257,12 @@
                                 </div>  
                             </div>
 
-                            <div class="row g-3 mb-2" id="approvedLabelRow">
+                            <div class="row g-3 mb-1" id="approvedLabelRow">
                                 <div class="col-6">
-                                    <label for="viewApprovedOTHours">Approved OT - Hours</label>
+                                    <label for="viewApprovedOTHours">Approved OT - Hours:</label>
                                 </div>
                                 <div class="col-6">
-                                    <label for="viewApprovedOTMins">Approved OT - Minutes</label>
+                                    <label for="viewApprovedOTMins">Approved OT - Minutes:</label>
                                 </div>
                             </div>
                 
@@ -275,7 +275,7 @@
                                 </div>  
                             </div>
 
-                            <div class="row g-3 mb-2" id="approvedLabelRow">
+                            <div class="row g-3 mb-1" id="approvedLabelRow">
                                 <div class="col-6">
                                     <label for="viewOTType">Type:</label>
                                 </div>
@@ -287,7 +287,7 @@
                                 </div>
                             </div>
                             
-                            <div class="row g-3 mb-2">
+                            <div class="row g-3 mb-1">
                                 <div class="col-12">
                                     <label for="viewPurpose">Purpose:</label>
                                 </div>
