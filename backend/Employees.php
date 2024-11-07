@@ -236,7 +236,7 @@
 
         public function viewTeamITFiledOT() {
             $request = "
-                SELECT requestID, dateFiled, otDate, employeeID,
+                SELECT requestID, dateFiled, otDate, employeeID, otType,
                 CONCAT(firstName , ' ', lastName) AS employeeName,
                 actualOThours, actualOTmins,
                 approvedOThours, approvedOTmins,
@@ -252,7 +252,7 @@
 
         public function viewTeamOperationsFiledOT() {
             $request = "
-                SELECT requestID, dateFiled, otDate, employeeID,
+                SELECT requestID, dateFiled, otDate, employeeID, otType,
                 CONCAT(firstName , ' ', lastName) AS employeeName,
                 actualOThours, actualOTmins,
                 approvedOThours, approvedOTmins,
