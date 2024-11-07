@@ -137,7 +137,7 @@
             <!-------------------------------------------------------------- ADD HOLIDAY MODAL ------------------------------------------------------------>
             <form id="addHolidayForm" enctype="multipart/form-data">
                 <div class="modal fade" id="addHolidayModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-none modal-dialog-centered">
+                    <div class="modal-dialog modal-none modal-sm modal-dialog-centered">
                         <div class="modal-content" id="addHolidayModal">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="userFormLabel">Add Holiday</h1>
@@ -146,45 +146,51 @@
 
                             <div class="modal-body">
                                 <div class="row g-2 mb-1">
-                                    <div class="col-6">
+                                    <div class="col-12">
                                         <label for="holidayType">Type:</label>
                                     </div>
-                                    <div class="col-6">
-                                        <label for="holidayName">Name:</label>
-                                    </div>
                                 </div>
-
                                 <div class="row g-2 mb-2">
-                                    <div class="col-6">
+                                    <div class="col-12">
                                         <select name="holidayType" id="holidayType" class="form-select">
                                             <option disabled selected>Choose</option>
                                             <option value="Regular">Regular</option>
                                             <option value="Special">Special</option>
-                                            <option value="Legal">Legal</option>
                                         </select>
                                     </div>
-                                    <div class="col-6">
+                                </div>
+
+                                <div class="row g-2 mb-1">
+                                    <div class="col-12">
+                                        <label for="holidayName">Name:</label>
+                                    </div>
+                                </div>  
+                                <div class="row g-2 mb-2">
+                                    <div class="col-12">
                                         <input type="text" class="form-control" id="holidayName" name="holidayName">
                                     </div>
                                 </div>  
 
                                 <div class="row g-2 mb-1">
-                                    <div class="col-6">
-                                        <label for="dateFrom">From:</label>
-                                    </div>
-                                    <div class="col-6">
-                                        <label for="dateTo">To:</label>
+                                    <div class="col-12">
+                                        <label for="dateFrom">Date:</label>
                                     </div>
                                 </div>
-
                                 <div class="row g-2 mb-2">
-                                    <div class="col-6">
+                                    <div class="col-12">
                                         <input type="date" class="form-control" id="dateFrom" name="dateFrom">
+                                    </div>
+                                   
+                                </div>
+
+                                <!-- <div class="row g-2 mb-2">
+                                     <div class="col-6">
+                                        <label for="dateTo">To:</label>
                                     </div>
                                     <div class="col-6">
                                         <input type="date" class="form-control" id="dateTo" name="dateTo">
                                     </div>
-                                </div>
+                                </div> -->
 
                             </div>
 
@@ -200,7 +206,7 @@
             <!--------------------------------------------------------------------------------------------------------------------------------------------->
             <!------------------------------------------------------------ VIEW HOLIDAY MODAL ----------------------------------------------------------->
             <div class="modal fade" id="viewHolidayModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
-                <div class="modal-dialog modal-none modal-dialog-centered">
+                <div class="modal-dialog modal-none modal-sm modal-dialog-centered">
                     <div class="modal-content" id="viewHolidayModal">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="userFormLabel">View Holiday</h1>
@@ -210,40 +216,46 @@
                         
                         <div class="modal-body">
                             <div class="row g-2 mb-1">
-                                <div class="col-6">
+                                <div class="col-12">
                                     <label for="view_holidayType">Type:</label>
                                 </div>
-                                <div class="col-6">
-                                    <label for="view_holidayName">Name:</label>
+                            </div>
+                            <div class="row g-2 mb-2">
+                                <div class="col-12">
+                                    <input type="text" class="form-control" id="view_holidayType" name="view_holidayType" disabled readonly>
                                 </div>
                             </div>
 
-                            <div class="row g-2 mb-2">
-                                <div class="col-6">
-                                    <input type="text" class="form-control" id="view_holidayType" name="view_holidayType" disabled readonly>
+                            <div class="row g-2 mb-1">
+                                <div class="col-12">
+                                    <label for="view_holidayName">Name:</label>
                                 </div>
-                                <div class="col-6">
+                            </div>  
+                            <div class="row g-2 mb-2">
+                                <div class="col-12">
                                     <input type="text" class="form-control" id="view_holidayName" name="view_holidayName" disabled readonly>
                                 </div>
                             </div>  
 
                             <div class="row g-2 mb-1">
-                                <div class="col-6">
-                                    <label for="view_dateFrom">From:</label>
+                                <div class="col-12">
+                                    <label for="view_dateFrom">Date:</label>
                                 </div>
-                                <div class="col-6">
-                                    <label for="view_dateTo">To:</label>
+                            </div>
+                            <div class="row g-2 mb-2">
+                                <div class="col-12">
+                                    <input type="text" class="form-control" id="view_dateFrom" name="view_dateFrom" disabled readonly>
                                 </div>
                             </div>
 
-                            <div class="row g-2 mb-2">
-                                <div class="col-6">
-                                    <input type="text" class="form-control" id="view_dateFrom" name="view_dateFrom" disabled readonly>
+                            <!-- <div class="row g-2 mb-2">
+                                <div class="col-12">
+                                    <label for="view_dateTo">To:</label>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-12">
                                     <input type="text" class="form-control" id="view_dateTo" name="view_dateTo" disabled readonly>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
 
                         <div class="modal-footer">
@@ -259,7 +271,7 @@
             <!----------------------------------------------------------- UPDATE HOLIDAY MODAL ------------------------------------------------------------>
             <form id="updateHolidayForm">
                 <div class="modal fade" id="updateHolidayModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-none modal-dialog-centered">
+                    <div class="modal-dialog modal-none modal-sm modal-dialog-centered">
                         <div class="modal-content" id="updateHolidayModal">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="userFormLabel">Update Holiday</h1>
@@ -268,16 +280,12 @@
                             </div>
                             <div class="modal-body">
                                 <div class="row g-2 mb-1">
-                                    <div class="col-6">
+                                    <div class="col-12">
                                         <label for="updateHolidayType">Type:</label>
                                     </div>
-                                    <div class="col-6">
-                                        <label for="updateHolidayName">Name:</label>
-                                    </div>
                                 </div>
-
                                 <div class="row g-2 mb-2">
-                                    <div class="col-6">
+                                    <div class="col-12">
                                         <select name="updateHolidayType" id="updateHolidayType" class="form-select">
                                             <option disabled selected>Choose</option>
                                             <option value="Regular">Regular</option>
@@ -285,33 +293,43 @@
                                             <option value="Legal">Legal</option>
                                         </select>
                                     </div>
-                                    <div class="col-6">
+                                </div>
+
+                                <div class="row g-2 mb-1">
+                                    <div class="col-12">
+                                        <label for="updateHolidayName">Name:</label>
+                                    </div>
+                                </div>
+                                <div class="row g-2 mb-2">
+                                    <div class="col-12">
                                         <input type="text" class="form-control" id="updateHolidayName" name="updateHolidayName">
                                     </div>
                                 </div>
 
                                 <div class="row g-2 mb-1">
-                                    <div class="col-6">
-                                        <label for="updateDateFrom">From:</label>
+                                    <div class="col-12">
+                                        <label for="updateDateFrom">Date:</label>
                                     </div>
-                                    <div class="col-6">
-                                        <label for="updateDateTo">To:</label>
+                                </div>
+                                <div class="row g-2 mb-2">
+                                    <div class="col-12">
+                                        <input type="date" class="form-control" id="updateDateFrom" name="updateDateFrom">
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-2">
+                                <!-- <div class="row g-2 mb-2">
                                     <div class="col-6">
-                                        <input type="date" class="form-control" id="updateDateFrom" name="updateDateFrom">
+                                        <label for="updateDateTo">To:</label>
                                     </div>
                                     <div class="col-6">
                                         <input type="date" class="form-control" id="updateDateTo" name="updateDateTo">
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
 
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-success">Save</button>
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#viewHolidayModal">Cancel</button>
                             </div>
                         </div>
                     </div>

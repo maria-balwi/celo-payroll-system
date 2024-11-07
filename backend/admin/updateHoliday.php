@@ -7,10 +7,10 @@
     $updateHolidayID = $_POST['updateHolidayID'];
     $updateHolidayName = $_POST['updateHolidayName'];
     $updateDateFrom = $_POST['updateDateFrom'];
-    $updateDateTo = $_POST['updateDateTo'];
+    // $updateDateTo = $_POST['updateDateTo'];
     $updateHolidayType = $_POST['updateHolidayType'];
 
-    mysqli_query($conn, $payroll->updateHoliday($updateHolidayID, $updateHolidayName, $updateDateFrom, $updateDateTo, $updateHolidayType));
+    mysqli_query($conn, $payroll->updateHoliday($updateHolidayID, $updateHolidayName, $updateDateFrom, $updateHolidayType));
     
     // ERROR MESSAGE
     $em = "Holiday Information Updated Successfully";

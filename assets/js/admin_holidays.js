@@ -66,10 +66,10 @@ $(document).ready(function() {
 
         var holidayName = $("#holidayName").val();
         var dateFrom = $("#dateFrom").val();
-        var dateTo = $("#dateTo").val();
+        // var dateTo = $("#dateTo").val();
         var holidayType = $("#holidayType").val();
 
-        if (holidayName == '' || dateFrom == '' || dateTo == '' || holidayType == '') {
+        if (holidayName == '' || dateFrom == '' || holidayType == '') {
             Swal.fire({
                 icon: 'warning',
                 title: 'Required Information',
@@ -96,7 +96,7 @@ $(document).ready(function() {
                             const data = JSON.parse(res);
                             var message = data.em;
                             if (data.error == 0) {
-                                var id = data.holidayID;
+                                var id = data.id;
                                 loadHolidayData(id);
                                 Swal.fire({
                                     icon: 'success',
@@ -145,7 +145,7 @@ $(document).ready(function() {
                     $('#viewHolidayID').val(res.data.holidayID);
                     $('#view_holidayName').val(res.data.holidayName);
                     $('#view_dateFrom').val(displayDate(res.data.dateFrom));
-                    $('#view_dateTo').val(displayDate(res.data.dateTo));
+                    // $('#view_dateTo').val(displayDate(res.data.dateTo));
                     $('#view_holidayType').val(res.data.type);
                     $('#viewHolidayModal').modal('show');
                 }
@@ -315,7 +315,7 @@ $(document).ready(function() {
                     $('#viewHolidayID').val(res.data.holidayID);
                     $('#view_holidayName').val(res.data.holidayName);
                     $('#view_dateFrom').val(displayDate(res.data.dateFrom));
-                    $('#view_dateTo').val(displayDate(res.data.dateTo));
+                    // $('#view_dateTo').val(displayDate(res.data.dateTo));
                     $('#view_holidayType').val(res.data.type);
                 }
             }

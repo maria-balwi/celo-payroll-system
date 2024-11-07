@@ -5,10 +5,10 @@
 
     $holidayName = $_POST['holidayName'];
     $holidayDateFrom = $_POST['dateFrom'];
-    $holidayDateTo= $_POST['dateTo'];
+    // $holidayDateTo= $_POST['dateTo'];
     $holidayType= $_POST['holidayType'];
 
-    mysqli_query($conn, $payroll->addHoliday($holidayName, $holidayDateFrom, $holidayDateTo, $holidayType));
+    mysqli_query($conn, $payroll->addHoliday($holidayName, $holidayDateFrom, $holidayType));
 
     $lastIDQuery = mysqli_query($conn, $payroll->viewLastHoliday());
     $lastIDResult = mysqli_fetch_array($lastIDQuery);

@@ -400,19 +400,18 @@
             return $lastHoliday;
         }
         
-        public function addHoliday($name, $dateFrom, $dateTo, $type) {
+        public function addHoliday($name, $dateFrom, $type) {
             $addHoliday = "
-                INSERT INTO ".$this->holidays." (holidayName, dateFrom, dateTo, type)
-                VALUES ('$name', '$dateFrom', '$dateTo', '$type')";
+                INSERT INTO ".$this->holidays." (holidayName, dateFrom, type)
+                VALUES ('$name', '$dateFrom', '$type')";
             return $addHoliday;
         }
 
-        public function updateHoliday($holidayID, $name, $dateFrom, $dateTo, $type) {
+        public function updateHoliday($holidayID, $name, $dateFrom, $type) {
             $updateHoliday = "
                 UPDATE ".$this->holidays." SET 
                 holidayName = '$name', 
                 dateFrom = '$dateFrom', 
-                dateTo = '$dateTo', 
                 type = '$type'
                 WHERE holidayID = '$holidayID'";
             return $updateHoliday;
@@ -457,7 +456,7 @@
             return $viewPayrollCycle;
         }
 
-        public function calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $undertimeMins) {
+        public function calculateNightDifferential($attendanceTime, $logTypeID, $lateMins) {
             // Define the start and end times for the night differential period
             $nightStart = new DateTime("22:00");
             $nightEnd = new DateTime("06:00");
@@ -510,7 +509,42 @@
             }
             return $totalNightHours; // Return the calculated night differential hours
         } 
-    
+
+        public function calculateHoliday($attendanceTime, $logTypeID) {
+            // Initialize variables to store Time In and Time Out
+            static $timeIn = null;
+            static $timeOut = null;
+            $totalHolidayHours = 0;
+        
+            // Assign Time In or Time Out based on logTypeID
+            if ($logTypeID == 1 || $logTypeID == 2) { // Time In or Late
+                $timeIn = new DateTime($attendanceTime);
+            } elseif ($logTypeID == 3 || $logTypeID == 4) { // Time Out or Undertime
+                $timeOut = new DateTime($attendanceTime);
+            }
+        
+            if ($timeIn && $timeOut) {
+                // Adjust if timeOut goes into the next day (past midnight)
+                if ($timeOut < $timeIn) {
+                    $timeOut->modify('+1 day');
+                }
+        
+                // Deduct 1 hour for the lunch break
+                $timeOut->modify('-1 hour');
+        
+                // Calculate the total hours worked on a regular holiday
+                $interval = $timeIn->diff($timeOut);
+                $hours = $interval->h + floor($interval->i / 60); // Convert minutes to hours
+                $totalHolidayHours += $hours;
+        
+                // Reset Time In and Time Out for the next calculation
+                $timeIn = null;
+                $timeOut = null;
+            }
+        
+            return $totalHolidayHours; // Return the total holiday hours worked
+        }
+        
         public function calculatePayroll($payrollID, $payrollCycleID) {
             function formatDate($date) {
                 // Get the current year
@@ -542,7 +576,7 @@
                 // COMPUTE DAYS WORKED
                 $daysWorkedQuery = $this->dbConnect()->query("SELECT * FROM tbl_attendance WHERE empID = $employeeDetails[id] AND (logTypeID IN (1, 2) OR logTypeID IN (3, 4)) AND attendanceDate BETWEEN DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom'))) AND DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleTo')))");
                 $employee_daysWorked = round(mysqli_num_rows($daysWorkedQuery) / 2);
-                
+
                 // COMPUTE NIGHT DIFFERENTIAL HOURS AND NIGHT DIFFERENTIAL PAY
                 $totalNightHours = 0;
                 while ($attendanceLogs = mysqli_fetch_array($daysWorkedQuery)) {
@@ -551,9 +585,9 @@
                     $logTypeID = $attendanceLogs['logTypeID'];
                     $lateMins = $attendanceLogs['lateMins'];
                     $undertimeMins = $attendanceLogs['undertimeMins'];
-                    $nightHours = $this->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $undertimeMins);
-                    $totalNightHours += $nightHours;
-                }
+                            $nightHours = $this->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $undertimeMins);
+                            $totalNightHours += $nightHours;
+                        }
                 $totalNightHours = round($totalNightHours, 0);
                 $employee_nightDiffPay = round(($employee_hourlyRate * .15) * $totalNightHours, 2);
 
