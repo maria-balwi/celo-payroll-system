@@ -32,6 +32,7 @@
                             <tr>
                                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider" rowspan="2">Date Filed</th>
                                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider" rowspan="2">OT Date</th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider" rowspan="2">Type</th>
                                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider" colspan="2">Actual OT</th>
                                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider" colspan="2">Approved OT</th>
                                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider" rowspan="2">Purpose</th>
@@ -60,6 +61,7 @@
                                     $OT_id = $otDetails['requestID'];
                                     $OT_dateFiled = $otDetails['dateFiled'];
                                     $OT_otDate = $otDetails['otDate'];
+                                    $OT_otType = $otDetails['otType'];
                                     $OT_actualOThours = $otDetails['actualOThours'];
                                     $OT_actualOTmins = $otDetails['actualOTmins'];
                                     $OT_approvedOThours = $otDetails['approvedOThours'];
@@ -73,6 +75,7 @@
                                     echo "<tr data-id='" . $OT_id . "' class='filedOTview cursor-pointer'>";
                                     echo "<td class = ' whitespace-nowrap'>" . $OT_dateFiled . "</td>";
                                     echo "<td class = ' whitespace-nowrap'>" . $OT_otDate . "</td>";
+                                    echo "<td class = ' whitespace-nowrap'>" . $OT_otType . "</td>";
                                     echo "<td class = ' whitespace-nowrap'>" . $OT_actualOThours . "</td>";
                                     
                                     if ($OT_actualOTmins == 0) {
@@ -138,17 +141,33 @@
                                     <div class="col-6">
                                         <label for="dateFiled">Date Filed:</label>
                                     </div>
-                                    <div class="col-6">
-                                        <label for="otDate">OT Date:</label>
-                                    </div>
                                 </div>
 
                                 <div class="row g-3 mb-2">
                                     <div class="col-6">
                                         <input type="text" class="form-control" id="dateFiled" value="<?php echo date("M d, Y") ?>" disabled readonly>
                                     </div>
+                                </div>   
+
+                                <div class="row g-3 mb-2">
+                                    <div class="col-6">
+                                        <label for="otDate">OT Date:</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="otType">Type:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mb-2">
                                     <div class="col-6">
                                         <input type="date" class="form-control" id="otDate" name="otDate">
+                                    </div>
+                                    <div class="col-6">
+                                        <select name="otType" id="otType" class="form-select">
+                                            <option disabled selected>Choose</option>
+                                            <option value="Regular">Regular</option>
+                                            <option value="Rest Day">Rest Day</option>
+                                        </select>
                                     </div>
                                 </div>   
                                 
@@ -206,17 +225,29 @@
                                 <div class="col-6">
                                     <label for="viewDateFiled">Date Filed:</label>
                                 </div>
-                                <div class="col-6">
-                                    <label for="viewOTDate">OT Date:</label>
-                                </div>
                             </div>
 
                             <div class="row g-3 mb-2">
                                 <div class="col-6">
                                     <input type="text" class="form-control" id="viewDateFiled" disabled readonly>
                                 </div>
+                            </div>  
+
+                            <div class="row g-3 mb-2">
+                                <div class="col-6">
+                                    <label for="viewOTDate">OT Date:</label>
+                                </div>
+                                <div class="col-6">
+                                    <label for="viewOTType">Type:</label>
+                                </div>
+                            </div>
+
+                            <div class="row g-3 mb-2">
                                 <div class="col-6">
                                     <input type="text" class="form-control" id="viewOTDate" name="viewOTDate" disabled readonly>
+                                </div>
+                                <div class="col-6">
+                                    <input type="text" class="form-control" id="viewOTType" name="viewOTType" disabled readonly>
                                 </div>
                             </div>   
                                 

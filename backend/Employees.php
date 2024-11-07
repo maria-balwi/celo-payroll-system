@@ -209,7 +209,7 @@
 
         public function viewFiledOT($id) {
             $request = "
-                SELECT requestID, dateFiled, otDate,
+                SELECT requestID, dateFiled, otDate, otType,
                 actualOThours, actualOTmins,
                 approvedOThours, approvedOTmins,
                 remarks, status
@@ -742,7 +742,7 @@
 
         public function getOTInfo($otID) {
             $request = "
-                SELECT requestID, employeeID, remarks, status,
+                SELECT requestID, employeeID, remarks, status, otType,
                 actualOThours, actualOTmins, approvedOThours, approvedOTmins,
                 CONCAT(firstName, ' ', lastName) AS employeeName,
                 DATE_FORMAT(dateFiled, '%M %d, %Y') AS dateFiled, 
@@ -759,17 +759,17 @@
             return $leaveType;
         }
 
-        public function fileOT($employeeID, $otDate, $actualOThours, $actualOTmins, $remarks) {
+        public function fileOT($employeeID, $otDate, $otType, $actualOThours, $actualOTmins, $remarks) {
             $fileOT = "
-                INSERT INTO ".$this->filedOT." (empID, dateFiled, otDate, actualOThours, actualOTmins, remarks)
-                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$otDate', '$actualOThours', '$actualOTmins', '$remarks')";
+                INSERT INTO ".$this->filedOT." (empID, dateFiled, otDate, otType, actualOThours, actualOTmins, remarks)
+                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$otDate', '$otType', '$actualOThours', '$actualOTmins', '$remarks')";
             return $fileOT;
         }
 
-        public function fileOT_null($employeeID, $otDate, $actualOThours, $actualOTmins, $remarks) {
+        public function fileOT_null($employeeID, $otDate, $otType, $actualOThours, $actualOTmins, $remarks) {
             $fileOT = "
-                INSERT INTO ".$this->filedOT." (empID, dateFiled, otDate, actualOThours, actualOTmins, remarks)
-                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$otDate', '$actualOThours', NULL, '$remarks')";
+                INSERT INTO ".$this->filedOT." (empID, dateFiled, otDate, otType, actualOThours, actualOTmins, remarks)
+                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$otDate', '$otType', '$actualOThours', NULL, '$remarks')";
             return $fileOT;
         }
 

@@ -8,11 +8,12 @@ $(document).ready(function() {
         e.preventDefault();
 
         var otDate = $('#otDate').val();
+        var otType = $('#otType').val();
         var actualOThours = $('#actualOThours').val();
         var actualOTmins = $('#actualOTmins').val();
         var purpose = $('#purpose').val();
 
-        if (otDate == "" || actualOThours == "" || purpose == "") {
+        if (otDate == "" || otType == "" || actualOThours == "" || purpose == "") {
             Swal.fire({
                 icon: 'warning',
                 title: 'Required Information',
@@ -39,7 +40,7 @@ $(document).ready(function() {
                             var message = data.em
                             if (data.error == 0) {
                                 var id = data.id;
-                                loadEmployeeData(id);
+                                loadOTData(id);
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Success',
@@ -49,7 +50,7 @@ $(document).ready(function() {
                                 }).then(() => {
                                     // window.location.reload();
                                     $('#fileOTmodal').modal('hide');
-                                    // $('#viewFiledOTModal').modal('show');
+                                    $('#viewFiledOTModal').modal('show');
                                 })
                             } else {
                                 Swal.fire({
@@ -88,6 +89,7 @@ $(document).ready(function() {
                 else if (res.status == 200 && (res.data.status == null || res.data.status == 1 || res.data.status == 0)) {
                     $('#viewFiledOTID').val(res.data.requestID);
                     $('#viewOTDate').val(res.data.otDate);
+                    $('#viewOTType').val(res.data.otType);
                     $('#viewDateFiled').val(res.data.dateFiled);
                     $('#viewName').val(res.data.employeeName);
                     $('#viewActualOTHours').val(res.data.actualOThours + " hour/s");
@@ -106,6 +108,7 @@ $(document).ready(function() {
                 else if (res.status == 200 && res.data.status == 2) {
                     $('#viewFiledOTID').val(res.data.requestID);
                     $('#viewOTDate').val(res.data.otDate);
+                    $('#viewOTType').val(res.data.otType);
                     $('#viewDateFiled').val(res.data.dateFiled);
                     $('#viewName').val(res.data.employeeName);
                     $('#viewActualOTHours').val(res.data.actualOThours + " hour/s");
@@ -130,7 +133,7 @@ $(document).ready(function() {
         });
     });
 
-    function loadEmployeeData(id_ot) {
+    function loadOTData(id_ot) {
         $.ajax({
             type: "GET",
             url: "../backend/user/filedOTModal.php?ot_id=" + id_ot,
@@ -144,6 +147,7 @@ $(document).ready(function() {
                 else if (res.status == 200 && (res.data.status == null || res.data.status == 1 || res.data.status == 0)) {
                     $('#viewFiledOTID').val(res.data.requestID);
                     $('#viewOTDate').val(res.data.otDate);
+                    $('#viewOTType').val(res.data.otType);
                     $('#viewDateFiled').val(res.data.dateFiled);
                     $('#viewName').val(res.data.employeeName);
                     $('#viewActualOTHours').val(res.data.actualOThours + " hour/s");
@@ -161,6 +165,7 @@ $(document).ready(function() {
                 else if (res.status == 200 && res.data.status == 2) {
                     $('#viewFiledOTID').val(res.data.requestID);
                     $('#viewOTDate').val(res.data.otDate);
+                    $('#viewOTType').val(res.data.otType);
                     $('#viewDateFiled').val(res.data.dateFiled);
                     $('#viewName').val(res.data.employeeName);
                     $('#viewActualOTHours').val(res.data.actualOThours + " hour/s");
