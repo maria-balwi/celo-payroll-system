@@ -220,9 +220,10 @@
             return $request;
         }
 
+
         public function viewAdminFiledOT() {
             $request = "
-                SELECT requestID, dateFiled, otDate, employeeID,
+                SELECT requestID, dateFiled, otDate, employeeID, otType,
                 CONCAT(firstName , ' ', lastName) AS employeeName,
                 actualOThours, actualOTmins,
                 approvedOThours, approvedOTmins,

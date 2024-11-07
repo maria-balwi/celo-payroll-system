@@ -25,6 +25,7 @@ $(document).ready(function() {
                 else if (res.status == 200 && res.data.status == null) {
                     $('#viewFiledOTID').val(res.data.requestID);
                     $('#viewOTDate').val(res.data.otDate);
+                    $('#viewOTType').val(res.data.otType);
                     $('#viewDateFiled').val(res.data.dateFiled);
                     $('#viewName').val(res.data.employeeName);
                     $('#viewActualOTHours').val(res.data.actualOThours + " hour/s");
@@ -43,6 +44,7 @@ $(document).ready(function() {
                 else if (res.status == 200 && res.data.status == 1) {
                     $('#viewFiledOTID').val(res.data.requestID);
                     $('#viewOTDate').val(res.data.otDate);
+                    $('#viewOTType').val(res.data.otType);
                     $('#viewDateFiled').val(res.data.dateFiled);
                     $('#viewName').val(res.data.employeeName);
                     $('#viewActualOTHours').val(res.data.actualOThours + " hour/s");
@@ -63,6 +65,7 @@ $(document).ready(function() {
                 else if (res.status == 200 && res.data.status == 0) {
                     $('#viewFiledOTID').val(res.data.requestID);
                     $('#viewOTDate').val(res.data.otDate);
+                    $('#viewOTType').val(res.data.otType);
                     $('#viewDateFiled').val(res.data.dateFiled);
                     $('#viewName').val(res.data.employeeName);
                     $('#viewActualOTHours').val(res.data.actualOThours + " hour/s");
@@ -83,6 +86,7 @@ $(document).ready(function() {
                 else if (res.status == 200 && res.data.status == 2) {
                     $('#viewFiledOTID').val(res.data.requestID);
                     $('#viewOTDate').val(res.data.otDate);
+                    $('#viewOTType').val(res.data.otType);
                     $('#viewDateFiled').val(res.data.dateFiled);
                     $('#viewName').val(res.data.employeeName);
                     $('#viewActualOTHours').val(res.data.actualOThours + " hour/s");
@@ -229,6 +233,7 @@ $(document).ready(function() {
                 else if (res.status == 200 && res.data.status == null) {
                     $('#viewFiledOTID').val(res.data.requestID);
                     $('#viewOTDate').val(res.data.otDate);
+                    $('#viewOTType').val(res.data.otType);
                     $('#viewDateFiled').val(res.data.dateFiled);
                     $('#viewName').val(res.data.employeeName);
                     $('#viewActualOTHours').val(res.data.actualOThours + " hour/s");
@@ -247,6 +252,7 @@ $(document).ready(function() {
                 else if (res.status == 200 && res.data.status == 1) {
                     $('#viewFiledOTID').val(res.data.requestID);
                     $('#viewOTDate').val(res.data.otDate);
+                    $('#viewOTType').val(res.data.otType);
                     $('#viewDateFiled').val(res.data.dateFiled);
                     $('#viewName').val(res.data.employeeName);
                     $('#viewActualOTHours').val(res.data.actualOThours + " hour/s");
@@ -266,6 +272,7 @@ $(document).ready(function() {
                 else if (res.status == 200 && res.data.status == 0) {
                     $('#viewFiledOTID').val(res.data.requestID);
                     $('#viewOTDate').val(res.data.otDate);
+                    $('#viewOTType').val(res.data.otType);
                     $('#viewDateFiled').val(res.data.dateFiled);
                     $('#viewName').val(res.data.employeeName);
                     $('#viewActualOTHours').val(res.data.actualOThours + " hour/s");
@@ -285,6 +292,7 @@ $(document).ready(function() {
                 else if (res.status == 200 && res.data.status == 2) {
                     $('#viewFiledOTID').val(res.data.requestID);
                     $('#viewOTDate').val(res.data.otDate);
+                    $('#viewOTType').val(res.data.otType);
                     $('#viewDateFiled').val(res.data.dateFiled);
                     $('#viewName').val(res.data.employeeName);
                     $('#viewActualOTHours').val(res.data.actualOThours + " hour/s");
