@@ -1227,7 +1227,7 @@
                                                 <option selected disabled>Choose</option>
                                                 <option value="1">Monthly</option>
                                                 <option value="2">Semi-Monthly</option>
-                                                <option value="3">Once</option>
+                                                <!-- <option value="3">Once</option> -->
                                             </select>
                                         </div>
                                         <div class="col-6">
@@ -1316,7 +1316,7 @@
                                             <label for="reimbursementType">Type:</label>
                                         </div>
                                         <div class="col-6">
-                                            <label for="effectivityDate_reimbursement" id="effectivityDate_reimbursementLabel">Effectivity Date:</label>
+                                            <label for="reimbursement_oncePayrollCycleID" id="reimbursement_oncePayrollCycleIDLabel">Payroll Cycle:</label>
                                         </div>
                                     </div>
                                     <div class="row g-2 mb-3">
@@ -1329,7 +1329,33 @@
                                             </select>
                                         </div>
                                         <div class="col-6">
-                                            <input type="date" class="form-control" id="effectivityDate_reimbursement" name="effectivityDate_reimbursement">
+                                            <select name="reimbursement_oncePayrollCycleID" id="reimbursement_oncePayrollCycleID" class="form-select">
+                                                <option disabled selected>Select Payroll Cycle</option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="1">1 - Dec 26, <?php echo date('Y') - 1; ?> to Jan 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="2">2 - Jan 11, <?php echo date('Y'); ?> to Jan 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="3">3 - Jan 26, <?php echo date('Y'); ?> to Feb 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="4">4 - Feb 11, <?php echo date('Y'); ?> to Feb 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="5">5 - Feb 26, <?php echo date('Y'); ?> to Mar 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="6">6 - Mar 11, <?php echo date('Y'); ?> to Mar 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="7">7 - Mar 26, <?php echo date('Y'); ?> to Apr 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="8">8 - Apr 11, <?php echo date('Y'); ?> to Apr 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="9">9 - Apr 26, <?php echo date('Y'); ?> to May 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="10">10 - May 11, <?php echo date('Y'); ?> to May 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="11">11 - May 26, <?php echo date('Y'); ?> to Jun 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="12">12 - Jun 11, <?php echo date('Y'); ?> to Jun 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="13">13 - Jun 26, <?php echo date('Y'); ?> to Jul 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="14">14 - Jul 11, <?php echo date('Y'); ?> to Jul 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="15">15 - Jul 26, <?php echo date('Y'); ?> to Aug 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="16">16 - Aug 11, <?php echo date('Y'); ?> to Aug 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="17">17 - Aug 26, <?php echo date('Y'); ?> to Sep 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="18">18 - Sep 11, <?php echo date('Y'); ?> to Sep 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="19">19 - Sep 26, <?php echo date('Y'); ?> to Oct 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="20">20 - Oct 11, <?php echo date('Y'); ?> to Oct 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="21">21 - Oct 26, <?php echo date('Y'); ?> to Nov 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="22">22 - Nov 11, <?php echo date('Y'); ?> to Nov 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="23">23 - Nov 26, <?php echo date('Y'); ?> to Dec 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="24">24 - Dec 11, <?php echo date('Y'); ?> to Dec 25, <?php echo date('Y'); ?></option>
+                                            </select>
                                         </div>
                                     </div>
 
@@ -1423,7 +1449,7 @@
                                                 <option selected disabled>Choose</option>
                                                 <option value="1">Monthly</option>
                                                 <option value="2">Semi-Monthly</option>
-                                                <option value="3">Once</option>
+                                                <!-- <option value="3">Once</option> -->
                                             </select>
                                         </div>
                                         <div class="col-6">
@@ -1512,7 +1538,7 @@
                                             <label for="adjustmentType">Type:</label>
                                         </div>
                                         <div class="col-6">
-                                            <label for="effectivityDate_adjustment" id="effectivityDate_adjustmentLabel">Effectivity Date:</label>
+                                            <label for="adjustment_oncePayrollCycleID" id="adjustment_oncePayrollCycleIDLabel">Payroll:</label>
                                         </div>
                                     </div>
                                     
@@ -1526,7 +1552,33 @@
                                             </select>
                                         </div>
                                         <div class="col-6">
-                                            <input type="date" class="form-control" id="effectivityDate_adjustment" name="effectivityDate_adjustment">
+                                            <select name="adjustment_oncePayrollCycleID" id="adjustment_oncePayrollCycleID" class="form-select">
+                                                <option disabled selected>Select Payroll Cycle</option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="1">1 - Dec 26, <?php echo date('Y') - 1; ?> to Jan 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="2">2 - Jan 11, <?php echo date('Y'); ?> to Jan 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="3">3 - Jan 26, <?php echo date('Y'); ?> to Feb 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="4">4 - Feb 11, <?php echo date('Y'); ?> to Feb 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="5">5 - Feb 26, <?php echo date('Y'); ?> to Mar 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="6">6 - Mar 11, <?php echo date('Y'); ?> to Mar 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="7">7 - Mar 26, <?php echo date('Y'); ?> to Apr 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="8">8 - Apr 11, <?php echo date('Y'); ?> to Apr 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="9">9 - Apr 26, <?php echo date('Y'); ?> to May 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="10">10 - May 11, <?php echo date('Y'); ?> to May 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="11">11 - May 26, <?php echo date('Y'); ?> to Jun 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="12">12 - Jun 11, <?php echo date('Y'); ?> to Jun 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="13">13 - Jun 26, <?php echo date('Y'); ?> to Jul 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="14">14 - Jul 11, <?php echo date('Y'); ?> to Jul 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="15">15 - Jul 26, <?php echo date('Y'); ?> to Aug 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="16">16 - Aug 11, <?php echo date('Y'); ?> to Aug 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="17">17 - Aug 26, <?php echo date('Y'); ?> to Sep 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="18">18 - Sep 11, <?php echo date('Y'); ?> to Sep 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="19">19 - Sep 26, <?php echo date('Y'); ?> to Oct 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="20">20 - Oct 11, <?php echo date('Y'); ?> to Oct 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="21">21 - Oct 26, <?php echo date('Y'); ?> to Nov 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="22">22 - Nov 11, <?php echo date('Y'); ?> to Nov 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="23">23 - Nov 26, <?php echo date('Y'); ?> to Dec 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="24">24 - Dec 11, <?php echo date('Y'); ?> to Dec 25, <?php echo date('Y'); ?></option>
+                                            </select>
                                         </div>
                                     </div>
 

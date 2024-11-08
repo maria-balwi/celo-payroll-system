@@ -67,8 +67,8 @@
                 }
                 else {
                     if ($reimbursementType == "3") {
-                        $reimbursementEffectiveDate = $reimbursement['date'];
-                        mysqli_query($conn, $payroll->addEmpReimbursement_once($id, $reimbursementID, $reimbursementType, $reimbursementAmount, $reimbursementEffectiveDate));
+                        $payrollCycleID = $reimbursement['payrollCycleID'];
+                        mysqli_query($conn, $payroll->addEmpReimbursement_once($id, $reimbursementID, $reimbursementType, $reimbursementAmount, $payrollCycleID));
     
                         $em = "Reimbursement Added Successfully";
                         $error = array('error' => 0, 'id' => $id, 'em' => $em);
@@ -149,8 +149,8 @@
                 }
                 else {
                     if ($adjustmentType == "3") {
-                        $adjustmentEffectiveDate = $adjustment['date'];
-                        mysqli_query($conn, $payroll->addEmpAdjustment_once($id, $adjustmentID, $adjustmentType, $adjustmentAmount, $adjustmentEffectiveDate));
+                        $payrollCycleID = $adjustment['payrollCycleID'];
+                        mysqli_query($conn, $payroll->addEmpAdjustment_once($id, $adjustmentID, $adjustmentType, $adjustmentAmount, $payrollCycleID));
     
                         $em = "Adjustment Added Successfully";
                         $error = array('error' => 0, 'id' => $id, 'em' => $em);

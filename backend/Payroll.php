@@ -328,10 +328,10 @@
             return $addEmpAllowance;
         }
 
-        public function addEmpReimbursement_once($id, $reimbursementID, $reimbursementType, $amount, $effectiveDate) {
+        public function addEmpReimbursement_once($id, $reimbursementID, $reimbursementType, $amount, $reimbursement_payrollCycleID) {
             $addEmpReimbursement = "
-                INSERT INTO ".$this->empReimbursements." (empID, reimbursementID, type, amount, effectiveDate, dateCreated)
-                VALUES ('$id', '$reimbursementID', '$reimbursementType', '$amount', '$effectiveDate', CURRENT_TIMESTAMP())";
+                INSERT INTO ".$this->empReimbursements." (empID, reimbursementID, type, amount, payrollCycleID, dateCreated)
+                VALUES ('$id', '$reimbursementID', '$reimbursementType', '$amount', '$reimbursement_payrollCycleID', CURRENT_TIMESTAMP())";
             return $addEmpReimbursement;
         }
 
@@ -342,10 +342,10 @@
             return $addEmpADeduction;
         }
 
-        public function addEmpAdjustment_once($id, $adjustmentID, $adjustmentType, $amount, $effectiveDate) {
+        public function addEmpAdjustment_once($id, $adjustmentID, $adjustmentType, $amount, $adjustment_payrollCycleID) {
             $addEmpAdjustment = "
-                INSERT INTO ".$this->empAdjustments." (empID, adjustmentID, type, amount, effectiveDate, dateCreated)
-                VALUES ('$id', '$adjustmentID', '$adjustmentType', '$amount', '$effectiveDate', CURRENT_TIMESTAMP())";
+                INSERT INTO ".$this->empAdjustments." (empID, adjustmentID, type, amount, payrollCycleID, dateCreated)
+                VALUES ('$id', '$adjustmentID', '$adjustmentType', '$amount', '$adjustment_payrollCycleID', CURRENT_TIMESTAMP())";
             return $addEmpAdjustment;
         }
 

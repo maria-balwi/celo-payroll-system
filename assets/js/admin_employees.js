@@ -262,8 +262,8 @@ $(document).ready(function() {
     })
 
     // ADD REIMBURSEMENT MODAL
-    $('#effectivityDate_reimbursementLabel').hide();
-    $('#effectivityDate_reimbursement').hide();
+    $('#reimbursement_oncePayrollCycleIDLabel').hide();
+    $('#reimbursement_oncePayrollCycleID').hide();
 
     $("input[id='reimbursementName'], select[id='reimbursementType'], input[id='reimbursementAmount']").on("input change", function() {
         if ($('#reimbursementName').val() !== null && $('#reimbursementType').val() !== null && $('#reimbursementAmount').val() !== '') {
@@ -275,11 +275,11 @@ $(document).ready(function() {
 
     $('#reimbursementType').on('change', function() {
         if ($(this).val() == '3') {
-            $('#effectivityDate_reimbursementLabel').show();
-            $('#effectivityDate_reimbursement').show();
+            $('#reimbursement_oncePayrollCycleIDLabel').show();
+            $('#reimbursement_oncePayrollCycleID').show();
         } else {    
-            $('#effectivityDate_reimbursementLabel').hide();
-            $('#effectivityDate_reimbursement').hide();
+            $('#reimbursement_oncePayrollCycleIDLabel').hide();
+            $('#reimbursement_oncePayrollCycleID').hide();
         }
     })
 
@@ -306,8 +306,8 @@ $(document).ready(function() {
     })
 
     // ADD ADJUSTMENT MODAL
-    $('#effectivityDate_adjustmentLabel').hide();
-    $('#effectivityDate_adjustment').hide();
+    $('#adjustment_oncePayrollCycleIDLabel').hide();
+    $('#adjustment_oncePayrollCycleID').hide();
 
     $("input[id='adjustmentName'], select[id='adjustmentType'], input[id='adjustmentAmount']").on("input change", function() {
         if ($('#adjustmentName').val() !== null && $('#adjustmentType').val() !== null && $('#adjustmentAmount').val() !== '') {
@@ -319,11 +319,11 @@ $(document).ready(function() {
 
     $('#adjustmentType').on('change', function() {
         if ($(this).val() == '3') {
-            $('#effectivityDate_adjustmentLabel').show();
-            $('#effectivityDate_adjustment').show();
+            $('#adjustment_oncePayrollCycleIDLabel').show();
+            $('#adjustment_oncePayrollCycleID').show();
         } else {    
-            $('#effectivityDate_adjustmentLabel').hide();
-            $('#effectivityDate_adjustment').hide();
+            $('#adjustment_oncePayrollCycleIDLabel').hide();
+            $('#adjustment_oncePayrollCycleID').hide();
         }
     })
 
@@ -1119,7 +1119,7 @@ $(document).ready(function() {
         var reimbursementID = $("#reimbursementName").val();
         var reimbursementAmount = $("#reimbursementAmount").val();
         var reimbursementType = $("#reimbursementType option:selected").text();
-        var effectivityDate = $("#effectivityDate_reimbursement").val();
+        var reimbursement_oncePayrollCycleID = $("#reimbursement_oncePayrollCycleID option:selected").val();
 
         // VALIDATION IF THERE IS NULL / EMPTY
         if (!reimbursementID || !reimbursementAmount || !$("#reimbursementType").val()) {
@@ -1131,7 +1131,7 @@ $(document).ready(function() {
         }
         else {
             // ADD ROW TO THE TABLE
-            var markup = "<tr data-reimbursement-id='" + reimbursementID + "' data-amount='" + reimbursementAmount + "' data-type='" + $("#reimbursementAmount").val() + "' data-date='" + effectivityDate + "'>" +
+            var markup = "<tr data-reimbursement-id='" + reimbursementID + "' data-amount='" + reimbursementAmount + "' data-type='" + $("#reimbursementType").val() + "' data-cycle='" + $("#reimbursement_oncePayrollCycleID").val() + "'>" +
                 "<td>" + reimbursementName + "</td>" +
                 "<td>" + reimbursementType + "</td>" +
                 "<td>" + reimbursementAmount + "</td>" +
@@ -1197,7 +1197,7 @@ $(document).ready(function() {
         var adjustmentID = $("#adjustmentName").val();
         var adjustmentAmount = $("#adjustmentAmount").val();
         var adjustmentType = $("#adjustmentType option:selected").text();
-        var effectivityDate = $("#effectivityDate_adjustment").val();
+        var adjustment_oncePayrollCycleID = $("#adjustment_oncePayrollCycleID option:selected").val();
 
         // VALIDATION IF THERE IS NULL / EMPTY
         if (!adjustmentID || !adjustmentAmount || !$("#adjustmentType").val()) {
@@ -1209,7 +1209,7 @@ $(document).ready(function() {
         }
 
         // ADD ROW TO THE TABLE
-        var markup = "<tr data-adjustment-id='" + adjustmentID + "' data-amount='" + adjustmentAmount + "' data-type='" + $("#adjustmentType").val() + "' data-date='" + effectivityDate + "'>" +
+        var markup = "<tr data-adjustment-id='" + adjustmentID + "' data-amount='" + adjustmentAmount + "' data-type='" + $("#adjustmentType").val() + "' data-cycle='" + $("#adjustment_oncePayrollCycleID").val() + "'>" +
             "<td>" + adjustmentName + "</td>" +
             "<td>" + adjustmentType + "</td>" +
             "<td>" + adjustmentAmount + "</td>" +
@@ -1296,14 +1296,14 @@ $(document).ready(function() {
             var reimbursementID = $(this).data("reimbursement-id");
             var amount = $(this).data("amount");
             var type = $(this).data("type");
-            var date = $(this).data("date");
+            var payrollCycleID = $(this).data("cycle");
 
             reimbursements.push({
                 id: viewID,
                 reimbursementID: reimbursementID,
                 amount: amount,
                 type: type,
-                date: date
+                payrollCycleID: payrollCycleID
             });
         });
 
@@ -1408,14 +1408,14 @@ $(document).ready(function() {
             var adjustmentID = $(this).data("adjustment-id");
             var amount = $(this).data("amount");
             var type = $(this).data("type");
-            var date = $(this).data("date");
+            var payrollCycleID = $(this).data("cycle");
 
             adjustments.push({
                 id: viewID,
                 adjustmentID: adjustmentID,
                 amount: amount,
                 type: type,
-                date: date
+                payrollCycleID: payrollCycleID
             });
         });
 
