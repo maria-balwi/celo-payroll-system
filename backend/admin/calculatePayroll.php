@@ -14,8 +14,9 @@
     }
     else if (isset($_POST['action']) && $_POST['action'] == "view") {
         $payrollID = $_POST['payrollID'];
+        $payrollCycleID = $_POST['payrollCycleID'];
         $em = "Payroll ID Fetched Successfully";
-        $error = array('error' => 0, 'id' => $payrollID, 'em' => $em);
+        $error = array('error' => 0, 'id' => $payrollID, 'cycleID' => $payrollCycleID, 'em' => $em);
         echo json_encode($error);
     }
     else if (isset($_POST['action']) && $_POST['action'] == "delete") {

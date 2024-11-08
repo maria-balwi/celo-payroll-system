@@ -577,35 +577,117 @@
                 $daysWorkedQuery = $this->dbConnect()->query("SELECT * FROM tbl_attendance WHERE empID = $employeeDetails[id] AND (logTypeID IN (1, 2) OR logTypeID IN (3, 4)) AND attendanceDate BETWEEN DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom'))) AND DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleTo')))");
                 $employee_daysWorked = round(mysqli_num_rows($daysWorkedQuery) / 2);
 
-                // COMPUTE NIGHT DIFFERENTIAL HOURS AND NIGHT DIFFERENTIAL PAY
+                // CHECK FOR HOLIDAYS
+                $holidaysQuery = $this->dbConnect()->query("SELECT * FROM tbl_holidays WHERE dateFrom BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'");
+                $holidays = [];
+                while ($holidayDetails = mysqli_fetch_array($holidaysQuery)) {
+                    $holidays[$holidayDetails['dateFrom']] = $holidayDetails['type'];
+                }
+
+                // INITIALIZE VARIABLES FOR HOURS WORKED COMPUTATION
                 $totalNightHours = 0;
+                $totalOvertimeHours = 0;
+                $totalRDOTHours = 0;
+                $totalSpecialHolidayHours = 0;
+                $totalSpecialHolidayNDHours = 0;
+                $totalRegularHolidayHours = 0;
+                $totalRegularHolidayNDHours = 0;
+
+                // INITIALIZE VARIABLES FOR DAYS WORKED (HOLIDAYS) COMPUTATION
+                $specialHolidaysWorked = 0;
+                $regularHolidaysWorked = 0;
+
+                // INITIALIZE VARIABLES FOR PAYS COMPUTATION
+                $employee_nightDiffPay = 0;
+                $employee_overtimePay = 0;
+                $employee_RDOTPay = 0;
+                $employee_specialHolidayPay = 0;
+                $employee_regularHolidayPay = 0;
+                $employee_specialHolidayNDPay = 0;
+                $employee_regularHolidayNDPay = 0;
+
+                // COMPUTE HOURS WORKED
                 while ($attendanceLogs = mysqli_fetch_array($daysWorkedQuery)) {
-                    // $date = $attendanceLogs['attendanceDate'];
+                    $date = $attendanceLogs['attendanceDate'];
                     $attendanceTime = $attendanceLogs['attendanceTime'];
                     $logTypeID = $attendanceLogs['logTypeID'];
                     $lateMins = $attendanceLogs['lateMins'];
                     $undertimeMins = $attendanceLogs['undertimeMins'];
-                            $nightHours = $this->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $undertimeMins);
-                            $totalNightHours += $nightHours;
+
+                    if (isset($holidays[$date]) && $holidays[$date] == "Regular") {
+                        // CALCULATE REGULAR HOLIDAY NIGHT DIFFERENTIAL HOURS
+                        $regularHolidayNDHours = $this->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $undertimeMins);
+                        $totalRegularHolidayNDHours += $regularHolidayNDHours;
+                        $regularHolidaysWorked++;
+                    }
+                    else if (isset($holidays[$date]) && $holidays[$date] == "Special") {
+                        // CALCULATE SPECIAL HOLIDAY NIGHT DIFFERENTIAL HOURS
+                        $specialHolidayNDHours = $this->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $undertimeMins);
+                        $totalSpecialHolidayNDHours += $specialHolidayNDHours;
+                        $specialHolidaysWorked++;
+                    }
+                    else {
+                        // CALCULATE REGULAR NIGHT DIFFERENTIAL HOURS
+                        $nightHours = $this->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $undertimeMins);
+                        $totalNightHours += $nightHours;
+                    }
+                    
+                }
+
+                // COMPUTE OVERTIME HOURS
+                $overtimesQuery = $this->dbConnect()->query("SELECT * FROM tbl_filedot WHERE empID = $employee_id AND (otDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo') AND status = '2'");
+                while ($overtime = mysqli_fetch_array($overtimesQuery)) {
+                    if ($overtime['otType'] == "Regular") {
+                        $totalOvertimeHours += $overtime['approvedOThours'];
+                        if ($overtime['approvedOTmins'] >= 30) {
+                            $totalOvertimeHours += 1;
                         }
+                    }
+                    else { // RDOT
+                        $totalRDOTHours += $overtime['approvedOThours'];
+                        if ($overtime['approvedOTmins'] >= 30) {
+                            $totalRDOTHours += 1;
+                        }
+                    }
+                }
+
+                // COMPUTATION FOR NIGHT DIFFERENTIAL PAY
                 $totalNightHours = round($totalNightHours, 0);
                 $employee_nightDiffPay = round(($employee_hourlyRate * .15) * $totalNightHours, 2);
 
-                // GET OVERTIMES AND OVERTIME PAY
-                $overtimesQuery = $this->dbConnect()->query("SELECT * FROM tbl_filedot WHERE empID = $employee_id AND (otDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo') AND status = '2'");
-                $totalOvertimeHours = 0;
-                while ($overtime = mysqli_fetch_array($overtimesQuery)) {
-                    $totalOvertimeHours += $overtime['approvedOThours'];
-                    if ($overtime['approvedOTmins'] >= 30) {
-                        $totalOvertimeHours += 1;
-                    }
-                }
+                // COMPUTATION FOR OVERTIME PAY
                 $employee_overtimePay = round(($employee_hourlyRate * .25) * $totalOvertimeHours, 2);
+                $employee_RDOTPay = round(($employee_hourlyRate * .3) * $totalRDOTHours, 2);
+
+                // COMPUTATION FOR SPECIAL HOLIDAY PAY
+                if ($totalSpecialHolidayNDHours == 0) { // DAY SHIFT
+                    $totalSpecialHolidayHours = $specialHolidaysWorked / 2 * 8;
+                    $employee_specialHolidayPay = round(($employee_hourlyRate * 0.3) * $totalSpecialHolidayHours, 2);
+                }
+                else {  // NIGHT SHIFT
+                    $totalSpecialHolidayHours = ($specialHolidaysWorked * 8) - $totalSpecialHolidayNDHours;
+                    $employee_specialHolidayPay = round(($employee_hourlyRate * 1.3) * $totalSpecialHolidayHours, 2);
+                    $employee_specialHolidayNDPay = round(($employee_hourlyRate * 1.3) * $totalSpecialHolidayNDHours, 2);
+                }
+
+                // COMPUTATION FOR REGULAR HOLIDAY PAY
+                if ($totalRegularHolidayNDHours == 0) { // DAY SHIFT
+                    $totalRegularHolidayHours = $regularHolidaysWorked / 2 * 8;
+                    $employee_regularHolidayPay = round($employee_hourlyRate  * $totalRegularHolidayHours, 2);
+                }
+                else { // NIGHT SHIFT
+                    $totalRegularHolidayHours = ($regularHolidaysWorked * 8) - $totalRegularHolidayNDHours;
+                    $employee_regularHolidayPay = round($employee_hourlyRate  * $totalRegularHolidayHours, 2);
+                    $employee_regularHolidayNDPay = round((($employee_hourlyRate * 2) * .15) * $totalRegularHolidayNDHours, 2);
+                }
+
                 // COMPUTE GROSS PAY
+                // $employee_grossPay = round($employee_dailyRate * $employee_daysWorked + $employee_nightDiffPay + $employee_overtimePay + $employee_RDOTPay + $employee_specialHolidayPay + $employee_specialHolidayNDPay + $employee_regularHolidayPay + $employee_regularHolidayNDPay, 2);
                 $employee_grossPay = round($employee_dailyRate * $employee_daysWorked, 2);
+                $employee_totalGrossPay = round($employee_dailyRate * $employee_daysWorked + $employee_nightDiffPay + $employee_overtimePay + $employee_RDOTPay + $employee_specialHolidayPay + $employee_regularHolidayPay, 2);
                 
                 // ADD ALL PAYROLL DATA TO PAYSLIP TABLE
-                $this->dbConnect()->query("INSERT INTO $this->payslip (payrollID, empID, daysWorked, regNightDiff, pay_regNightDiff, regularOT, pay_regularOT, grossPay) VALUES ($payrollID, $employee_id, $employee_daysWorked, $totalNightHours, $employee_nightDiffPay, $totalOvertimeHours, $employee_overtimePay, $employee_grossPay)");
+                $this->dbConnect()->query("INSERT INTO $this->payslip (payrollID, empID, daysWorked, grossPay, regNightDiff, pay_regNightDiff, regularOT, pay_regularOT, rdot, pay_rdot, specialHoliday, pay_specialHoliday, regularHoliday, pay_regularHoliday, totalGrossPay) VALUES ($payrollID, $employee_id, $employee_daysWorked, $employee_grossPay, $totalNightHours, $employee_nightDiffPay, $totalOvertimeHours, $employee_overtimePay, $totalRDOTHours, $employee_RDOTPay, $totalSpecialHolidayHours, $employee_specialHolidayPay, $totalRegularHolidayHours, $employee_regularHolidayPay, $employee_totalGrossPay)");
             }
             return;
         }
@@ -624,8 +706,151 @@
 
         public function reCalculatePayroll($payrollID, $payrollCycleID) {
             // DELETE CURRENT PAYSLIP - RE-CALCULATE FUNCTION
-            $this->dbConnect()->query("DELETE FROM tbl_payslip WHERE payroll_id = $payrollID");
+            $this->dbConnect()->query("DELETE FROM tbl_payslip WHERE payrollID = $payrollID");
 
+            function modifyDate($date) {
+                // Get the current year
+                $currentYear = date('Y');
+                
+                // Append the current year to the input date
+                $dateWithYear = $date . '-' . $currentYear;
+                
+                // Create a DateTime object from the string (expects format MM-DD-YYYY)
+                $dateTime = DateTime::createFromFormat('m-d-Y', $dateWithYear);
+                
+                // Format the date as 'M d, Y'
+                return $dateTime->format('Y-m-d');
+            }
+
+            // GET PAYROLL CYCLE DETAILS
+            $payrollCycleFrom_date = $this->dbConnect()->query("SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleFrom']; 
+            $payrollCycleTo_date = $this->dbConnect()->query("SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleTo'];
+            $payrollCycleFrom = modifyDate($payrollCycleFrom_date);
+            $payrollCycleTo = modifyDate($payrollCycleTo_date);
+
+            // GET EMPLOYEE DETAILS
+            $employees = $this->dbConnect()->query("SELECT * FROM tbl_employee");
+            while ($employeeDetails = mysqli_fetch_array($employees)) {
+                $employee_id = $employeeDetails['id'];
+                $employee_dailyRate = $employeeDetails['dailyRate'];
+                $employee_hourlyRate = $employeeDetails['hourlyRate'];
+
+                // COMPUTE DAYS WORKED
+                $daysWorkedQuery = $this->dbConnect()->query("SELECT * FROM tbl_attendance WHERE empID = $employeeDetails[id] AND (logTypeID IN (1, 2) OR logTypeID IN (3, 4)) AND attendanceDate BETWEEN DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom'))) AND DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleTo')))");
+                $employee_daysWorked = round(mysqli_num_rows($daysWorkedQuery) / 2);
+
+                // CHECK FOR HOLIDAYS
+                $holidaysQuery = $this->dbConnect()->query("SELECT * FROM tbl_holidays WHERE dateFrom BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'");
+                $holidays = [];
+                while ($holidayDetails = mysqli_fetch_array($holidaysQuery)) {
+                    $holidays[$holidayDetails['dateFrom']] = $holidayDetails['type'];
+                }
+
+                // INITIALIZE VARIABLES FOR HOURS WORKED COMPUTATION
+                $totalNightHours = 0;
+                $totalOvertimeHours = 0;
+                $totalRDOTHours = 0;
+                $totalSpecialHolidayHours = 0;
+                $totalSpecialHolidayNDHours = 0;
+                $totalRegularHolidayHours = 0;
+                $totalRegularHolidayNDHours = 0;
+
+                // INITIALIZE VARIABLES FOR DAYS WORKED (HOLIDAYS) COMPUTATION
+                $specialHolidaysWorked = 0;
+                $regularHolidaysWorked = 0;
+
+                // INITIALIZE VARIABLES FOR PAYS COMPUTATION
+                $employee_nightDiffPay = 0;
+                $employee_overtimePay = 0;
+                $employee_RDOTPay = 0;
+                $employee_specialHolidayPay = 0;
+                $employee_regularHolidayPay = 0;
+                $employee_specialHolidayNDPay = 0;
+                $employee_regularHolidayNDPay = 0;
+
+                // COMPUTE HOURS WORKED
+                while ($attendanceLogs = mysqli_fetch_array($daysWorkedQuery)) {
+                    $date = $attendanceLogs['attendanceDate'];
+                    $attendanceTime = $attendanceLogs['attendanceTime'];
+                    $logTypeID = $attendanceLogs['logTypeID'];
+                    $lateMins = $attendanceLogs['lateMins'];
+                    $undertimeMins = $attendanceLogs['undertimeMins'];
+
+                    if (isset($holidays[$date]) && $holidays[$date] == "Regular") {
+                        // CALCULATE REGULAR HOLIDAY NIGHT DIFFERENTIAL HOURS
+                        $regularHolidayNDHours = $this->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $undertimeMins);
+                        $totalRegularHolidayNDHours += $regularHolidayNDHours;
+                        $regularHolidaysWorked++;
+                    }
+                    else if (isset($holidays[$date]) && $holidays[$date] == "Special") {
+                        // CALCULATE SPECIAL HOLIDAY NIGHT DIFFERENTIAL HOURS
+                        $specialHolidayNDHours = $this->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $undertimeMins);
+                        $totalSpecialHolidayNDHours += $specialHolidayNDHours;
+                        $specialHolidaysWorked++;
+                    }
+                    else {
+                        // CALCULATE REGULAR NIGHT DIFFERENTIAL HOURS
+                        $nightHours = $this->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $undertimeMins);
+                        $totalNightHours += $nightHours;
+                    }
+                    
+                }
+
+                // COMPUTE OVERTIME HOURS
+                $overtimesQuery = $this->dbConnect()->query("SELECT * FROM tbl_filedot WHERE empID = $employee_id AND (otDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo') AND status = '2'");
+                while ($overtime = mysqli_fetch_array($overtimesQuery)) {
+                    if ($overtime['otType'] == "Regular") {
+                        $totalOvertimeHours += $overtime['approvedOThours'];
+                        if ($overtime['approvedOTmins'] >= 30) {
+                            $totalOvertimeHours += 1;
+                        }
+                    }
+                    else { // RDOT
+                        $totalRDOTHours += $overtime['approvedOThours'];
+                        if ($overtime['approvedOTmins'] >= 30) {
+                            $totalRDOTHours += 1;
+                        }
+                    }
+                }
+
+                // COMPUTATION FOR NIGHT DIFFERENTIAL PAY
+                $totalNightHours = round($totalNightHours, 0);
+                $employee_nightDiffPay = round(($employee_hourlyRate * .15) * $totalNightHours, 2);
+
+                // COMPUTATION FOR OVERTIME PAY
+                $employee_overtimePay = round(($employee_hourlyRate * .25) * $totalOvertimeHours, 2);
+                $employee_RDOTPay = round(($employee_hourlyRate * .3) * $totalRDOTHours, 2);
+
+                // COMPUTATION FOR SPECIAL HOLIDAY PAY
+                if ($totalSpecialHolidayNDHours == 0) { // DAY SHIFT
+                    $totalSpecialHolidayHours = $specialHolidaysWorked / 2 * 8;
+                    $employee_specialHolidayPay = round(($employee_hourlyRate * 0.3) * $totalSpecialHolidayHours, 2);
+                }
+                else {  // NIGHT SHIFT
+                    $totalSpecialHolidayHours = ($specialHolidaysWorked * 8) - $totalSpecialHolidayNDHours;
+                    $employee_specialHolidayPay = round(($employee_hourlyRate * 1.3) * $totalSpecialHolidayHours, 2);
+                    $employee_specialHolidayNDPay = round(($employee_hourlyRate * 1.3) * $totalSpecialHolidayNDHours, 2);
+                }
+
+                // COMPUTATION FOR REGULAR HOLIDAY PAY
+                if ($totalRegularHolidayNDHours == 0) { // DAY SHIFT
+                    $totalRegularHolidayHours = $regularHolidaysWorked / 2 * 8;
+                    $employee_regularHolidayPay = round($employee_hourlyRate  * $totalRegularHolidayHours, 2);
+                }
+                else { // NIGHT SHIFT
+                    $totalRegularHolidayHours = ($regularHolidaysWorked * 8) - $totalRegularHolidayNDHours;
+                    $employee_regularHolidayPay = round($employee_hourlyRate  * $totalRegularHolidayHours, 2);
+                    $employee_regularHolidayNDPay = round((($employee_hourlyRate * 2) * .15) * $totalRegularHolidayNDHours, 2);
+                }
+
+                // COMPUTE GROSS PAY
+                $employee_grossPay = round($employee_dailyRate * $employee_daysWorked, 2);
+                $employee_totalGrossPay = round($employee_dailyRate * $employee_daysWorked + $employee_nightDiffPay + $employee_overtimePay + $employee_RDOTPay + $employee_specialHolidayPay + $employee_regularHolidayPay, 2);
+                
+                // ADD ALL PAYROLL DATA TO PAYSLIP TABLE
+                $this->dbConnect()->query("INSERT INTO $this->payslip (payrollID, empID, daysWorked, grossPay, regNightDiff, pay_regNightDiff, regularOT, pay_regularOT, rdot, pay_rdot, specialHoliday, pay_specialHoliday, regularHoliday, pay_regularHoliday, totalGrossPay) VALUES ($payrollID, $employee_id, $employee_daysWorked, $employee_grossPay, $totalNightHours, $employee_nightDiffPay, $totalOvertimeHours, $employee_overtimePay, $totalRDOTHours, $employee_RDOTPay, $totalSpecialHolidayHours, $employee_specialHolidayPay, $totalRegularHolidayHours, $employee_regularHolidayPay, $employee_totalGrossPay)");
+            }
+            return;
         }
 
         public function viewAllPayslips($payrollID) {

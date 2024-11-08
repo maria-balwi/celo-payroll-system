@@ -67,6 +67,7 @@ $(document).ready(function() {
         }
     });
     
+    // CALCULATE PAYROLL
     $('.calculatePayroll').click(function(e) {
         e.preventDefault();
         
@@ -128,11 +129,13 @@ $(document).ready(function() {
         }
     });
 
+    // VIEW PAYROLL
     $('.viewPayroll').click(function(e) {
         e.preventDefault();
 
         let viewPayrollForm = new FormData();
         var payrollID = $(this).data('id');
+        var payrollCycleID = $(this).data('cycle');
 
         if (payrollID == "") {
             Swal.fire({
@@ -143,6 +146,7 @@ $(document).ready(function() {
         }
         else {
             viewPayrollForm.append('payrollID', payrollID);
+            viewPayrollForm.append('payrollCycleID', payrollCycleID);
             viewPayrollForm.append('action', 'view');
             $.ajax({
                 type: "POST",
@@ -155,7 +159,8 @@ $(document).ready(function() {
                     var message = data.em;
                     if (data.error == 0) {
                         id = data.id;
-                        window.location.href = "../pages/admin_calculatedPayroll.php?id=" + id;
+                        cycleID = data.cycleID;
+                        window.location.href = "../pages/admin_calculatedPayroll.php?id=" + id + "&cycleID=" + payrollCycleID;
                     } else {
                         Swal.fire({
                             icon: 'error',
@@ -174,7 +179,6 @@ $(document).ready(function() {
 
         let deletePayrollForm =  new FormData();
         var payrollID = $(this).data('id');
-        
         
         Swal.fire({
             icon: 'question',
@@ -220,6 +224,62 @@ $(document).ready(function() {
         })
         
     });
+
+    // RECALCULATE PAYROLL
+    $('.recalculatePayroll').click(function(e) {
+        e.preventDefault();
+
+        let recalculatePayrollForm = new FormData();
+        var recal_payrollID = $(this).data('id');
+        var recal_cycleID = $(this).data('cycle');
+        
+        console.log({recal_payrollID, recal_cycleID});
+        
+        Swal.fire({
+            icon: 'question',
+            title: 'Re-Calculate Payroll',
+            text: 'Are you sure you want to re-calculate this payroll?',
+            showCancelButton: true,
+            cancelButtonColor: '#6c757d',
+            confirmButtonColor: '#28a745',
+            confirmButtonText: 'Yes',
+        }).then((result) => {
+            recalculatePayrollForm.append('payrollID', recal_payrollID);
+            recalculatePayrollForm.append('payrollCycleID', recal_cycleID);
+            recalculatePayrollForm.append('action', 'recalculate');
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: "../backend/admin/calculatePayroll.php",
+                    data: recalculatePayrollForm,
+                    contentType: false,
+                    processData: false,
+                    success: function (res) {
+                        const data = JSON.parse(res);
+                        var message = data.em;
+                        if (data.error == 0) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: message,
+                                timer: 2000,
+                                showConfirmButton: false
+                            }).then(() => {
+                                window.location.reload();
+                            })
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: message
+                            }) 
+                        }
+                    }
+                });
+            }
+        })
+    });
+        
 
     $('#btnBack').click(function(e) {
         e.preventDefault();
