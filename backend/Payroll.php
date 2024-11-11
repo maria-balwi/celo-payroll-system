@@ -613,6 +613,7 @@
                 $phic = 0;
                 $hdmf = 0;
                 $wtax = 0;
+                $cashAdvance = 0;
                 $totalReimbursements = 0;
                 $totalAdjustments = 0;
 
@@ -695,6 +696,9 @@
                     else if ($deductionDetails['deductionName'] == "WTAX") {
                         $wtax = $deductionDetails['amount'];
                     }
+                    else if ($deductionDetails['deductionName'] == "Cash Advance") {
+                        $cashAdvance = $deductionDetails['amount'];
+                    }
                 }
 
                 // COMPUTATION FOR REIMBURSEMENTS
@@ -769,27 +773,28 @@
                 // COMPUTE GROSS PAY
                 $employee_grossPay = round($employee_dailyRate * $employee_daysWorked, 2);
                 $employee_totalGrossPay = round($employee_dailyRate * $employee_daysWorked + $employee_nightDiffPay + $employee_overtimePay + $employee_RDOTPay + $employee_specialHolidayPay + $employee_regularHolidayPay + $totalAllowances + $communication, 2);
-                $employee_netPay = round($employee_totalGrossPay - $sss - $phic - $hdmf - $wtax + $totalReimbursements + $totalAdjustments, 2);
+                $employee_netPay = round($employee_totalGrossPay - $sss - $phic - $hdmf - $wtax + $totalReimbursements + $totalAdjustments - $cashAdvance, 2);
 
                 // ADD ALL PAYROLL DATA TO PAYSLIP TABLE
-                $this->dbConnect()->query("INSERT INTO $this->payslip (payrollID, empID, daysWorked, grossPay, regNightDiff, pay_regNightDiff, regularOT, pay_regularOT, rdot, pay_rdot, specialHoliday, pay_specialHoliday, regularHoliday, pay_regularHoliday, payslip_allowances, payslip_communication, totalGrossPay, payslip_sss, payslip_phic, payslip_hdmf, payslip_wtax, payslip_reimbursements, payslip_adjustments, netPay) VALUES ($payrollID, $employee_id, $employee_daysWorked, $employee_grossPay, $totalNightHours, $employee_nightDiffPay, $totalOvertimeHours, $employee_overtimePay, $totalRDOTHours, $employee_RDOTPay, $totalSpecialHolidayHours, $employee_specialHolidayPay, $totalRegularHolidayHours, $employee_regularHolidayPay, $totalAllowances, $communication, $employee_totalGrossPay, $sss, $phic, $hdmf, $wtax, $totalReimbursements, $totalAdjustments, $employee_netPay)");
+                $this->dbConnect()->query("INSERT INTO $this->payslip (payrollID, empID, daysWorked, grossPay, regNightDiff, pay_regNightDiff, regularOT, pay_regularOT, rdot, pay_rdot, specialHoliday, pay_specialHoliday, regularHoliday, pay_regularHoliday, payslip_allowances, payslip_communication, totalGrossPay, payslip_sss, payslip_phic, payslip_hdmf, payslip_wtax, payslip_reimbursements, payslip_adjustments, payslip_cashAdvance, netPay) VALUES ($payrollID, $employee_id, $employee_daysWorked, $employee_grossPay, $totalNightHours, $employee_nightDiffPay, $totalOvertimeHours, $employee_overtimePay, $totalRDOTHours, $employee_RDOTPay, $totalSpecialHolidayHours, $employee_specialHolidayPay, $totalRegularHolidayHours, $employee_regularHolidayPay, $totalAllowances, $communication, $employee_totalGrossPay, $sss, $phic, $hdmf, $wtax, $totalReimbursements, $totalAdjustments, $cashAdvance, $employee_netPay)");
+                
+                if ($cashAdvance > 0) {
+                    $this->dbConnect()->query("UPDATE tbl_employee SET cashAdvance = cashAdvance - $cashAdvance WHERE id = $employee_id");
+                }
             }
             return;
         }
 
-        public function updateCalculatedPayroll($payrollID) {
-            $updatePayroll = "
-                UPDATE ".$this->payroll." SET status = 'Calculated' WHERE payrollID = $payrollID";
-            return $updatePayroll;
-        }
-
-        public function deletePayroll($payrollID) {
-            $deletePayroll = "
-                DELETE FROM ".$this->payroll." WHERE payrollID = $payrollID";
-            return $deletePayroll;
-        }
-
         public function reCalculatePayroll($payrollID, $payrollCycleID) {
+
+            // UPDATE CASH ADVANCE DETAILS
+            $cashAdvanceQuery = $this->dbConnect()->query("SELECT * FROM tbl_payslip WHERE payrollID = $payrollID AND payslip_cashAdvance > 0");
+            while ($cashAdvanceDetails = mysqli_fetch_array($cashAdvanceQuery)) {
+                $empID = $cashAdvanceDetails['empID'];
+                $cashAdvance = $cashAdvanceDetails['payslip_cashAdvance'];
+                $this->dbConnect()->query("UPDATE tbl_employee SET cashAdvance = cashAdvance + $cashAdvance WHERE id = $empID");
+            }
+
             // DELETE CURRENT PAYSLIP - RE-CALCULATE FUNCTION
             $this->dbConnect()->query("DELETE FROM tbl_payslip WHERE payrollID = $payrollID");
 
@@ -860,6 +865,7 @@
                 $phic = 0;
                 $hdmf = 0;
                 $wtax = 0;
+                $cashAdvance = 0;
                 $totalReimbursements = 0;
                 $totalAdjustments = 0;
 
@@ -942,6 +948,9 @@
                     else if ($deductionDetails['deductionName'] == "WTAX") {
                         $wtax = $deductionDetails['amount'];
                     }
+                    else if ($deductionDetails['deductionName'] == "Cash Advance") {
+                        $cashAdvance = $deductionDetails['amount'];
+                    }
                 }
 
                 // COMPUTATION FOR REIMBURSEMENTS
@@ -1016,12 +1025,27 @@
                 // COMPUTE GROSS PAY
                 $employee_grossPay = round($employee_dailyRate * $employee_daysWorked, 2);
                 $employee_totalGrossPay = round($employee_dailyRate * $employee_daysWorked + $employee_nightDiffPay + $employee_overtimePay + $employee_RDOTPay + $employee_specialHolidayPay + $employee_regularHolidayPay + $totalAllowances + $communication, 2);
-                $employee_netPay = round($employee_totalGrossPay - $sss - $phic - $hdmf - $wtax + $totalReimbursements + $totalAdjustments, 2);
+                $employee_netPay = round($employee_totalGrossPay - $sss - $phic - $hdmf - $wtax + $totalReimbursements + $totalAdjustments - $cashAdvance, 2);
 
                 // ADD ALL PAYROLL DATA TO PAYSLIP TABLE
-                $this->dbConnect()->query("INSERT INTO $this->payslip (payrollID, empID, daysWorked, grossPay, regNightDiff, pay_regNightDiff, regularOT, pay_regularOT, rdot, pay_rdot, specialHoliday, pay_specialHoliday, regularHoliday, pay_regularHoliday, payslip_allowances, payslip_communication, totalGrossPay, payslip_sss, payslip_phic, payslip_hdmf, payslip_wtax, payslip_reimbursements, payslip_adjustments, netPay) VALUES ($payrollID, $employee_id, $employee_daysWorked, $employee_grossPay, $totalNightHours, $employee_nightDiffPay, $totalOvertimeHours, $employee_overtimePay, $totalRDOTHours, $employee_RDOTPay, $totalSpecialHolidayHours, $employee_specialHolidayPay, $totalRegularHolidayHours, $employee_regularHolidayPay, $totalAllowances, $communication, $employee_totalGrossPay, $sss, $phic, $hdmf, $wtax, $totalReimbursements, $totalAdjustments, $employee_netPay)");
+                $this->dbConnect()->query("INSERT INTO $this->payslip (payrollID, empID, daysWorked, grossPay, regNightDiff, pay_regNightDiff, regularOT, pay_regularOT, rdot, pay_rdot, specialHoliday, pay_specialHoliday, regularHoliday, pay_regularHoliday, payslip_allowances, payslip_communication, totalGrossPay, payslip_sss, payslip_phic, payslip_hdmf, payslip_wtax, payslip_reimbursements, payslip_adjustments, payslip_cashAdvance, netPay) VALUES ($payrollID, $employee_id, $employee_daysWorked, $employee_grossPay, $totalNightHours, $employee_nightDiffPay, $totalOvertimeHours, $employee_overtimePay, $totalRDOTHours, $employee_RDOTPay, $totalSpecialHolidayHours, $employee_specialHolidayPay, $totalRegularHolidayHours, $employee_regularHolidayPay, $totalAllowances, $communication, $employee_totalGrossPay, $sss, $phic, $hdmf, $wtax, $totalReimbursements, $totalAdjustments, $cashAdvance, $employee_netPay)");
+                
+                if ($cashAdvance > 0) {
+                    $this->dbConnect()->query("UPDATE tbl_employee SET cashAdvance = cashAdvance - $cashAdvance WHERE id = $employee_id");
+                }
             }
-            return;
+        }
+
+        public function updateCalculatedPayroll($payrollID) {
+            $updatePayroll = "
+                UPDATE ".$this->payroll." SET status = 'Calculated' WHERE payrollID = $payrollID";
+            return $updatePayroll;
+        }
+
+        public function deletePayroll($payrollID) {
+            $deletePayroll = "
+                DELETE FROM ".$this->payroll." WHERE payrollID = $payrollID";
+            return $deletePayroll;
         }
 
         public function viewAllPayslips($payrollID) {
@@ -1030,6 +1054,14 @@
                 INNER JOIN ".$this->employees." AS employee ON payslip.empID = employee.id
                 WHERE payrollID = $payrollID";
             return $viewAllPayslips;
+        }
+
+        public function viewPayslip($payrollID, $empID) {
+            $viewPayslip = "
+                SELECT * FROM ".$this->payslip . " AS payslip
+                INNER JOIN ".$this->employees." AS employee ON payslip.empID = employee.id
+                WHERE payrollID = $payrollID AND empID = $empID";
+            return $viewPayslip;
         }
     }
 ?>

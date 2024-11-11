@@ -87,6 +87,7 @@
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">WTAX</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Reimbursements</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Adjustments</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">C/A Balance</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Net Pay</th>
                                     </tr>
                                 </thead>
@@ -124,6 +125,7 @@
                                             $payslip_wtax = $payslipDetails['payslip_wtax'];
                                             $payslip_reimbursements = $payslipDetails['payslip_reimbursements'];
                                             $payslip_adjustments = $payslipDetails['payslip_adjustments'];
+                                            $payslip_cashAdvance = $payslipDetails['payslip_cashAdvance'];
                                             $payslip_netPay = $payslipDetails['netPay'];
 
                                             if ($payslip_regNightDiff == 0) {
@@ -176,6 +178,9 @@
                                             if ($payslip_adjustments != 0) {
                                                 $payslip_adjustments = number_format($payslip_adjustments, 2);
                                             }
+                                            if ($payslip_cashAdvance != 0) {
+                                                $payslip_cashAdvance = number_format($payslip_cashAdvance, 2);
+                                            }
                                             if ($payslip_netPay != 0) {
                                                 $payslip_netPay = number_format($payslip_netPay, 2);
                                             }
@@ -207,6 +212,7 @@
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_wtax . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_reimbursements . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_adjustments . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_cashAdvance . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_netPay . "</td>";
                                             echo "</tr>";
                                         }
