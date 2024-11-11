@@ -682,7 +682,7 @@
                 }
 
                 // COMPUTATION FOR DEDUCTIONS
-                $deductionsQuery = $this->dbConnect()->query("SELECT amount, deductionName FROM tbl_empdeductions INNER JOIN tbl_deductions ON tbl_empdeductions.deductionID = tbl_deductions.deductionID WHERE empID = $employee_id");
+                $deductionsQuery = $this->dbConnect()->query("SELECT amount, deductionName, type FROM tbl_empdeductions INNER JOIN tbl_deductions ON tbl_empdeductions.deductionID = tbl_deductions.deductionID WHERE empID = $employee_id");
                 while ($deductionDetails = mysqli_fetch_array($deductionsQuery)) {
                     if ($deductionDetails['deductionName'] == "SSS") {
                         $sss = $deductionDetails['amount'];
@@ -696,8 +696,16 @@
                     else if ($deductionDetails['deductionName'] == "WTAX") {
                         $wtax = $deductionDetails['amount'];
                     }
-                    else if ($deductionDetails['deductionName'] == "Cash Advance") {
-                        $cashAdvance = $deductionDetails['amount'];
+                    else if ($deductionDetails['deductionName'] == "CashAdvance") {
+                        if ($deductionDetails['type'] == 1 && $payrollCycleID % 2 == 1) { // MONTHLY
+                            $cashAdvance = $deductionDetails['amount'];
+                        }
+                        elseif ($deductionDetails['type'] == 2) { // SEMI-MONTHLY
+                            $cashAdvance = $deductionDetails['amount'];
+                        }
+                        elseif ($deductionDetails['type'] == 3 && $deductionDetails['payrollCycleID'] == $payrollCycleID) { // ONCE
+                            $cashAdvance = $deductionDetails['amount'];
+                        }
                     }
                 }
 
@@ -786,7 +794,6 @@
         }
 
         public function reCalculatePayroll($payrollID, $payrollCycleID) {
-
             // UPDATE CASH ADVANCE DETAILS
             $cashAdvanceQuery = $this->dbConnect()->query("SELECT * FROM tbl_payslip WHERE payrollID = $payrollID AND payslip_cashAdvance > 0");
             while ($cashAdvanceDetails = mysqli_fetch_array($cashAdvanceQuery)) {
@@ -934,7 +941,7 @@
                 }
 
                 // COMPUTATION FOR DEDUCTIONS
-                $deductionsQuery = $this->dbConnect()->query("SELECT amount, deductionName FROM tbl_empdeductions INNER JOIN tbl_deductions ON tbl_empdeductions.deductionID = tbl_deductions.deductionID WHERE empID = $employee_id");
+                $deductionsQuery = $this->dbConnect()->query("SELECT amount, deductionName, type FROM tbl_empdeductions INNER JOIN tbl_deductions ON tbl_empdeductions.deductionID = tbl_deductions.deductionID WHERE empID = $employee_id");
                 while ($deductionDetails = mysqli_fetch_array($deductionsQuery)) {
                     if ($deductionDetails['deductionName'] == "SSS") {
                         $sss = $deductionDetails['amount'];
@@ -948,8 +955,16 @@
                     else if ($deductionDetails['deductionName'] == "WTAX") {
                         $wtax = $deductionDetails['amount'];
                     }
-                    else if ($deductionDetails['deductionName'] == "Cash Advance") {
-                        $cashAdvance = $deductionDetails['amount'];
+                    else if ($deductionDetails['deductionName'] == "CashAdvance") {
+                        if ($deductionDetails['type'] == 1 && $payrollCycleID % 2 == 1) { // MONTHLY
+                            $cashAdvance = $deductionDetails['amount'];
+                        }
+                        elseif ($deductionDetails['type'] == 2) { // SEMI-MONTHLY
+                            $cashAdvance = $deductionDetails['amount'];
+                        }
+                        elseif ($deductionDetails['type'] == 3 && $deductionDetails['payrollCycleID'] == $payrollCycleID) { // ONCE
+                            $cashAdvance = $deductionDetails['amount'];
+                        }
                     }
                 }
 
