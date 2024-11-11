@@ -102,6 +102,8 @@ $(document).ready(function() {
         }
     });
 
+    $('#btnAllowanceUpdate').hide();
+    $('#btnAllowanceDelete').hide();
 
     // VIEW AND UPDATE ALLOWANCE
     var array = [];
@@ -121,7 +123,14 @@ $(document).ready(function() {
                 if (res.status == 404) {
                     alert(res.message);
                 } 
-                else if (res.status == 200) {
+                else if (res.status == 200 && (res.data.allowanceName != "Transportation" || res.data.allowanceName != "Communication")) {
+                    $('#btnAllowanceUpdate').show();
+                    $('#btnAllowanceDelete').show();
+                    $('#viewAllowanceID').val(res.data.allowanceID);
+                    $('#viewAllowanceName').val(res.data.allowanceName);
+                    $('#viewAllowanceModal').modal('show');
+                }
+                else {
                     $('#viewAllowanceID').val(res.data.allowanceID);
                     $('#viewAllowanceName').val(res.data.allowanceName);
                     $('#viewAllowanceModal').modal('show');
@@ -790,7 +799,13 @@ $(document).ready(function() {
                 if (res.status == 404) {
                     alert(res.message);
                 } 
-                else if (res.status == 200) {
+                else if (res.status == 200 && (res.data.allowanceName != "Transportation" || res.data.allowanceName != "Communication")) {
+                    $('#btnAllowanceUpdate').show();
+                    $('#btnAllowanceDelete').show();
+                    $('#viewAllowanceID').val(res.data.allowanceID);
+                    $('#viewAllowanceName').val(res.data.allowanceName);
+                }
+                else {
                     $('#viewAllowanceID').val(res.data.allowanceID);
                     $('#viewAllowanceName').val(res.data.allowanceName);
                 }
