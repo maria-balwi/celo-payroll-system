@@ -284,8 +284,8 @@ $(document).ready(function() {
     })
 
     // ADD DEDUCTION MODAL
-    $('#effectivityDate_deductionLabel').hide();
-    $('#effectivityDate_deduction').hide();
+    $('#deduction_oncePayrollCycleIDLabel').hide();
+    $('#deduction_oncePayrollCycleID').hide();
 
     $("input[id='deductionName'], select[id='deductionType'], input[id='deductionAmount']").on("input change", function() {
         if ($('#deductionName').val() !== null && $('#deductionType').val() !== null && $('#deductionAmount').val() !== '') {
@@ -297,11 +297,11 @@ $(document).ready(function() {
 
     $('#deductionType').on('change', function() {
         if ($(this).val() == '3') {
-            $('#effectivityDate_deductionLabel').show();
-            $('#effectivityDate_deduction').show();
+            $('#deduction_oncePayrollCycleIDLabel').show();
+            $('#deduction_oncePayrollCycleID').show();
         } else {    
-            $('#effectivityDate_deductionLabel').hide();
-            $('#effectivityDate_deduction').hide();
+            $('#deduction_oncePayrollCycleIDLabel').hide();
+            $('#deduction_oncePayrollCycleID').hide();
         }
     })
 
@@ -1159,7 +1159,7 @@ $(document).ready(function() {
         var deductionID = $("#deductionName").val();
         var deductionAmount = $("#deductionAmount").val();
         var deductionType = $("#deductionType option:selected").text();
-        var effectivityDate = $("#effectivityDate_deduction").val();
+        var deduction_oncePayrollCycleID = $("#deduction_oncePayrollCycleID option:selected").val();
 
         // VALIDATION IF THERE IS NULL / EMPTY
         if (!deductionID || !deductionAmount || !$("#deductionType").val()) {
@@ -1171,7 +1171,7 @@ $(document).ready(function() {
         }
 
         // ADD ROW TO THE TABLE
-        var markup = "<tr data-deduction-id='" + deductionID + "' data-amount='" + deductionAmount + "' data-type='" + $("#deductionType").val() + "' data-date='" + effectivityDate + "'>" +
+        var markup = "<tr data-deduction-id='" + deductionID + "' data-amount='" + deductionAmount + "' data-type='" + $("#deductionType").val() + "' data-cycle='" + $("#deduction_oncePayrollCycleID").val() + "'>" +
             "<td>" + deductionName + "</td>" +
             "<td>" + deductionType + "</td>" +
             "<td>" + deductionAmount + "</td>" +
@@ -1352,14 +1352,14 @@ $(document).ready(function() {
             var deductionID = $(this).data("deduction-id");
             var amount = $(this).data("amount");
             var type = $(this).data("type");
-            var date = $(this).data("date");
+            var payrollCycleID = $(this).data("cycle");
 
             deductions.push({
                 id: viewID,
                 deductionID: deductionID,
                 amount: amount,
                 type: type,
-                date: date
+                payrollCycleID: payrollCycleID
             });
         });
 

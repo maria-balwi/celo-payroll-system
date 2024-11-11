@@ -108,8 +108,8 @@
                 }
                 else {
                     if ($deductionType == "3") {
-                        $deductionEffectiveDate = $deduction['date'];
-                        mysqli_query($conn, $payroll->addEmpDeduction_once($id, $deductionID, $deductionType, $deductionAmount, $deductionEffectiveDate));
+                        $payrollCycleID = $deduction['payrollCycleID'];
+                        mysqli_query($conn, $payroll->addEmpDeduction_once($id, $deductionID, $deductionType, $deductionAmount, $payrollCycleID));
     
                         $em = "Deduction Added Successfully";
                         $error = array('error' => 0, 'id' => $id, 'em' => $em);
