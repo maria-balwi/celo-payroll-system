@@ -53,7 +53,7 @@
                             <table id="payrollListTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3">
                                 <thead class="bg-gray-50">
                                     <tr>
-                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Employee ID</th>
+                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Employee ID</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Employee Name</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Basic Pay</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Daily Rate</th>
@@ -78,7 +78,16 @@
                                         <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Pay</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Holiday Night Diff</th> -->
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Pay</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Allowance</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Communication</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Total Gross Pay</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">SSS</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">PHIC</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">HDMF</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">WTAX</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Reimbursements</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Adjustments</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Net Pay</th>
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
@@ -106,7 +115,16 @@
                                             $payslip_specialHolidayPay = number_format($payslipDetails['pay_specialHoliday'], 2);
                                             $payslip_regularHoliday = $payslipDetails['regularHoliday'];
                                             $payslip_regularHolidayPay = number_format($payslipDetails['pay_regularHoliday'], 2);
+                                            $payslip_allowances = $payslipDetails['payslip_allowances'];
+                                            $payslip_communication = $payslipDetails['payslip_communication'];
                                             $payslip_totalGrossPay = $payslipDetails['totalGrossPay'];
+                                            $payslip_sss = $payslipDetails['payslip_sss'];
+                                            $payslip_phic = $payslipDetails['payslip_phic'];
+                                            $payslip_hdmf = $payslipDetails['payslip_hdmf'];
+                                            $payslip_wtax = $payslipDetails['payslip_wtax'];
+                                            $payslip_reimbursements = $payslipDetails['payslip_reimbursements'];
+                                            $payslip_adjustments = $payslipDetails['payslip_adjustments'];
+                                            $payslip_netPay = $payslipDetails['netPay'];
 
                                             if ($payslip_regNightDiff == 0) {
                                                 $payslip_regNightDiff = "-";
@@ -134,6 +152,33 @@
                                             if ($payslip_totalGrossPay != 0) {
                                                 $payslip_totalGrossPay = number_format($payslip_totalGrossPay, 2);
                                             }
+                                            if ($payslip_allowances != 0) {
+                                                $payslip_allowances = number_format($payslip_allowances, 2);
+                                            }
+                                            if ($payslip_communication != 0) {
+                                                $payslip_communication = number_format($payslip_communication, 2);
+                                            }
+                                            if ($payslip_sss != 0) {
+                                                $payslip_sss = number_format($payslip_sss, 2);
+                                            }
+                                            if ($payslip_phic != 0) {
+                                                $payslip_phic = number_format($payslip_phic, 2);
+                                            }
+                                            if ($payslip_hdmf != 0) {
+                                                $payslip_hdmf = number_format($payslip_hdmf, 2);
+                                            }
+                                            if ($payslip_wtax != 0) {
+                                                $payslip_wtax = number_format($payslip_wtax, 2);
+                                            }
+                                            if ($payslip_reimbursements != 0) {
+                                                $payslip_reimbursements = number_format($payslip_reimbursements, 2);
+                                            }
+                                            if ($payslip_adjustments != 0) {
+                                                $payslip_adjustments = number_format($payslip_adjustments, 2);
+                                            }
+                                            if ($payslip_netPay != 0) {
+                                                $payslip_netPay = number_format($payslip_netPay, 2);
+                                            }
                                             
                                             echo "<tr>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_employeeID . "</td>";
@@ -153,7 +198,16 @@
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_specialHolidayPay . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_regularHoliday . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_regularHolidayPay . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_allowances . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_communication . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_totalGrossPay . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_sss . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_phic . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_hdmf . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_wtax . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_reimbursements . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_adjustments . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_netPay . "</td>";
                                             echo "</tr>";
                                         }
                                     ?>
