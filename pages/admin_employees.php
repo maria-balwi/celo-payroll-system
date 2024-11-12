@@ -1221,7 +1221,7 @@
                                             </select>
                                         </div>
                                         <div class="col-6">
-                                            <input type="number" class="form-control" id="allowanceAmount" name="allowanceAmount">
+                                            <input type="number" step="0.001" class="form-control" id="allowanceAmount" name="allowanceAmount">
                                         </div>
                                     </div>
 
@@ -1319,7 +1319,7 @@
                                             </select>
                                         </div>
                                         <div class="col-6">
-                                            <input type="number" class="form-control" id="reimbursementAmount" name="reimbursementAmount">
+                                            <input type="number" step="0.001" class="form-control" id="reimbursementAmount" name="reimbursementAmount">
                                         </div>
                                     </div>
 
@@ -1443,7 +1443,7 @@
                                             </select>
                                         </div>
                                         <div class="col-6">
-                                            <input type="number" class="form-control" id="deductionAmount" name="deductionAmount">
+                                            <input type="number" step="0.001" class="form-control" id="deductionAmount" name="deductionAmount">
                                         </div>
                                     </div>
 
@@ -1567,7 +1567,7 @@
                                             </select>
                                         </div>
                                         <div class="col-6">
-                                            <input type="number" class="form-control" id="adjustmentAmount" name="adjustmentAmount">
+                                            <input type="number" step="0.001" class="form-control" id="adjustmentAmount" name="adjustmentAmount">
                                         </div>
                                     </div>
 
