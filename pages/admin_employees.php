@@ -1047,6 +1047,9 @@
                                     <div class="col-4">
                                         <label for="updateSickLeaves">Sick Leaves:</label>
                                     </div>
+                                    <div class="col-4">
+                                        <label for="updateCashAdvance">Cash Advance:</label>
+                                    </div>
                                 </div>
                                 
                                 <div class="row g-2 mb-2">
@@ -1055,6 +1058,9 @@
                                     </div>
                                     <div class="col-4">
                                         <input type="number" class="form-control" id="updateSickLeaves" name="updateSickLeaves">
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="number" step="0.001" class="form-control" id="updateCashAdvance" name="updateCashAdvance">
                                     </div>
                                 </div>
 

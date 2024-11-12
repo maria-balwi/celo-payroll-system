@@ -26,6 +26,7 @@
     $updateHourlyRate = $_POST['updateHourlyRate'];
     $updateVacationLeaves = $_POST['updateVacationLeaves'];
     $updateSickLeaves = $_POST['updateSickLeaves'];
+    $updateCashAdvance = $_POST['updateCashAdvance'];
 
     if (str_replace(" ", "",$_POST['updateSSS'])) {
 		$req_sss = 1;
@@ -148,7 +149,7 @@
         {
             mysqli_query($conn, $employees->updateEmployeeInfo($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
             $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
-            $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves));
+            $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateCashAdvance));
 
             mysqli_query($conn, $employees->updateEmployeeRequirements($updateID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi, $req_medicalExam, $req_2x2pic, $req_vaccineCard, $req_psa, $req_validID, $req_helloMoney));
 
@@ -226,7 +227,7 @@
             {
                 mysqli_query($conn, $employees->updateEmployeeInfo($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
                 $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
-                $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves));
+                $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves , $updateCashAdvance));
 
                 mysqli_query($conn, $employees->updateEmployeeRequirements($updateID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi, $req_medicalExam, $req_2x2pic, $req_vaccineCard, $req_psa, $req_validID, $req_helloMoney));
 
@@ -308,7 +309,7 @@
             {
                 mysqli_query($conn, $employees->updateEmployeeInfo($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
                 $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
-                $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves));
+                $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateCashAdvance));
 
                 mysqli_query($conn, $employees->updateEmployeeRequirements($updateID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi, $req_medicalExam, $req_2x2pic, $req_vaccineCard, $req_psa, $req_validID, $req_helloMoney));
                 
@@ -386,7 +387,7 @@
                 {
                     mysqli_query($conn, $employees->updateEmployeeInfo($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
                     $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
-                    $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves));
+                    $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateCashAdvance));
 
                     mysqli_query($conn, $employees->updateEmployeeRequirements($updateID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi, $req_medicalExam, $req_2x2pic, $req_vaccineCard, $req_psa, $req_validID, $req_helloMoney));
 
