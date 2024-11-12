@@ -90,6 +90,7 @@
                         SELECT DATE('$yearMonth-01') + INTERVAL (a.a + (10 * b.a)) DAY AS attendanceDate
                         FROM (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS a
                         CROSS JOIN (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2) AS b
+                        LIMIT 31
                     ) AS all_dates
                 LEFT JOIN 
                     ".$this->employees." AS employees ON employees.id = '$id'
@@ -102,13 +103,13 @@
                 LEFT JOIN 
                     ".$this->logtype." AS logtype ON attendance.logTypeID = logtype.logTypeID 
                 
-                WHERE 
-                    all_dates.attendanceDate BETWEEN '$yearMonth-01' AND LAST_DAY('$yearMonth-01')
                 ORDER BY 
                     all_dates.attendanceDate, attendance.attendanceTime
                 ";
             return $dtr;
         }
+        
+        
 
         public function origViewDTR($id, $yearMonth) {
             $dtr = "
@@ -619,7 +620,7 @@
         public function updateEmployeeInfo($updateUserID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
             $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
             $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, 
-            $updateVacationLeaves, $updateSickLeaves) {
+            $updateVacationLeaves, $updateSickLeaves, $updateCashAdvance) {
             $updateEmployee = "
                 UPDATE ".$this->employees." AS employees 
                 SET lastName = '$updateLastName',
@@ -643,7 +644,8 @@
                 dailyRate = '$updateDailyRate',
                 hourlyRate = '$updateHourlyRate',
                 availableVL = '$updateVacationLeaves',
-                availableSL = '$updateSickLeaves'
+                availableSL = '$updateSickLeaves', 
+                cashAdvance = '$updateCashAdvance'
                 WHERE id = '$updateUserID'";
             return $updateEmployee;
         }
@@ -668,7 +670,7 @@
 
         public function getEmployeeInfo($id) {
             $employeeInfo = "
-                SELECT id, lastName, firstName, gender, civilStatus, address, dateOfBirth, 
+                SELECT id, lastName, firstName, gender, civilStatus, address, dateOfBirth, cashAdvance,
                 placeOfBirth, sss, pagIbig, philhealth, tin, emailAddress, employeeID, 
                 mobileNumber, departmentName, position, basicPay, dailyRate, hourlyRate,
                 availableVL, availableSL, req_sss, req_pagIbig, req_philhealth, req_tin, req_nbi,
