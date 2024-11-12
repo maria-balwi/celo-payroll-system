@@ -612,14 +612,20 @@
                                 <div class="col-4">
                                     <label for="viewSickLeaves">Sick Leaves:</label>
                                 </div>
+                                <div class="col-4">
+                                    <label for="viewCashAdvance" class="cashAdvancePart">Cash Advance:</label>
+                                </div>
                             </div>
                             
                             <div class="row g-2 mb-2">
                                 <div class="col-4">
-                                    <input type="number" class="form-control" id="viewVacationLeaves" name="viewVacationLeaves" disabled readonly>
+                                    <input type="number" class="form-control " id="viewVacationLeaves" name="viewVacationLeaves" disabled readonly>
                                 </div>
                                 <div class="col-4">
                                     <input type="number" class="form-control" id="viewSickLeaves" name="viewSickLeaves" disabled readonly>
+                                </div>
+                                <div class="col-4">
+                                    <input type="number" class="form-control cashAdvancePart" id="viewCashAdvance" name="viewCashAdvance" disabled readonly>
                                 </div>
                             </div>
 
