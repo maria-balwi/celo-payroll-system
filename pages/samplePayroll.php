@@ -72,11 +72,11 @@
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Pay</th> -->
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Special Holiday</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Pay</th>
-                                        <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">S.H. Day Night Diff</th>
-                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Pay</th> -->
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">S.H. Day Night Diff</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Pay</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Holiday</th>
-                                        <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Pay</th>
-                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Holiday Night Diff</th> -->
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Pay</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Holiday Night Diff</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Pay</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Allowance</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle">Communication</th>
@@ -108,7 +108,7 @@
                                             return $dateTime->format('Y-m-d');
                                         }
 
-                                        $payrollCycleID = 7; // 7 for sample with late
+                                        $payrollCycleID = 7; 
                                         $payrollCycleFrom_date = mysqli_query($conn, "SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleFrom']; 
                                         $payrollCycleTo_date = mysqli_query($conn, "SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleTo'];
                                         $payrollCycleFrom = modifyDate($payrollCycleFrom_date);
@@ -133,6 +133,8 @@
                                             while ($holidayDetails = mysqli_fetch_array($holidaysQuery)) {
                                                 $holidays[$holidayDetails['dateFrom']] = $holidayDetails['type'];
                                             }
+
+                                            // $holidays = $payroll->loadHolidays($payrollCycleFrom, $payrollCycleTo);
 
                                             $totalNightHours = 0;
                                             $specialHolidaysWorked = 0;
@@ -160,24 +162,30 @@
                                                 $lateMins = $attendanceLogs['lateMins'];
                                                 $undertimeMins = $attendanceLogs['undertimeMins'];
 
-                                                // Check if the attendance date is a holiday
-                                                if (isset($holidays[$date]) && $holidays[$date] == "Regular") {
-                                                    // Calculate special holiday night differential hours
-                                                    $regularHolidayNDHours = $payroll->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $undertimeMins);
-                                                    $totalRegularHolidayNDHours += $regularHolidayNDHours;
-                                                    $regularHolidaysWorked++;
-                                                }
-                                                else if (isset($holidays[$date]) && $holidays[$date] == "Special") {
-                                                    // Calculate special holiday night differential hours
-                                                    $specialHolidayNDHours = $payroll->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $undertimeMins);
-                                                    $totalSpecialHolidayNDHours += $specialHolidayNDHours;
-                                                    $specialHolidaysWorked++;
-                                                }
-                                                else {
-                                                    // Calculate regular night differential hours
-                                                    $nightHours = $payroll->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $undertimeMins);
-                                                    $totalNightHours += $nightHours;
-                                                }
+                                                // // Check if the attendance date is a holiday
+                                                // if (isset($holidays[$date]) && $holidays[$date] == "Regular") {
+                                                //     // Calculate special holiday night differential hours
+                                                //     $regularHolidayNDHours = $payroll->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $undertimeMins);
+                                                //     $totalRegularHolidayNDHours += $regularHolidayNDHours;
+                                                //     $regularHolidaysWorked++;
+                                                // }
+                                                // else if (isset($holidays[$date]) && $holidays[$date] == "Special") {
+                                                //     // Calculate special holiday night differential hours
+                                                //     $specialHolidayNDHours = $payroll->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $undertimeMins);
+                                                //     $totalSpecialHolidayNDHours += $specialHolidayNDHours;
+                                                //     $specialHolidaysWorked++;
+                                                // }
+                                                // else {
+                                                //     // Calculate regular night differential hours
+                                                //     $nightHours = $payroll->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $undertimeMins);
+                                                //     $totalNightHours += $nightHours;
+                                                // }
+                                                $result = $payroll->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $payrollCycleFrom, $payrollCycleTo, $date);             
+                                                $totalNightHours += $result['totalRegularNightHours'];
+                                                $totalRegularHolidayHours += $result['totalRegularHolidayHours'];
+                                                $totalRegularHolidayNDHours += $result['totalRegularHolidayNightHours'];
+                                                $totalSpecialHolidayHours += $result['totalSpecialHolidayHours'];
+                                                $totalSpecialHolidayNDHours += $result['totalSpecialHolidayNightHours'];
                                             }
 
                                             // COMPUTATION FOR NIGHT DIFFERENTIAL PAY
@@ -311,8 +319,8 @@
                                             $totalNightHours = round($totalNightHours, 0);
                                             $employee_nightDiffPay = round(($employee_hourlyRate * .15) * $totalNightHours, 2);
                                             $employee_grossPay = number_format($employee_dailyRate * $employee_daysWorked, 2);
-                                            $employee_totalGrossPay = round($employee_dailyRate * $employee_daysWorked + $employee_nightDiffPay + $employee_overtimePay + $employee_RDOTPay + $employee_specialHolidayPay + $employee_specialHolidayNDPay + $employee_regularHolidayPay + $employee_regularHolidayNDPay, 2);
-                                            $employee_netPay = round($employee_totalGrossPay - $sss - $phic - $hdmf - $wtax, 2);
+                                            $employee_totalGrossPay = round($employee_dailyRate * $employee_daysWorked + $employee_nightDiffPay + $employee_overtimePay + $employee_RDOTPay + $employee_specialHolidayPay + $employee_specialHolidayNDPay + $employee_regularHolidayPay + $employee_regularHolidayNDPay + $totalAllowances + $communication, 2);
+                                            $employee_netPay = round($employee_totalGrossPay - $sss - $phic - $hdmf - $wtax + $totalReimbursements + $totalAdjustments, 2);
                                             
                                             echo "<tr>";
                                             echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
@@ -330,8 +338,12 @@
                                             echo "<td class ='whitespace-nowrap'>" . $employee_RDOTPay . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $totalSpecialHolidayHours . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $employee_specialHolidayPay . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $totalSpecialHolidayNDHours . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $employee_specialHolidayNDPay . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $totalRegularHolidayHours . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $employee_regularHolidayPay . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $totalRegularHolidayNDHours . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $employee_regularHolidayNDPay . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $totalAllowances . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $communication . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . number_format($employee_totalGrossPay, 2) . "</td>";
