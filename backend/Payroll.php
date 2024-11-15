@@ -869,8 +869,12 @@
                 $employee_nightDiffPay = round(($employee_hourlyRate * .15) * $totalNightHours, 2);
 
                 // COMPUTATION FOR OVERTIME PAY
-                $employee_overtimePay = round(($employee_hourlyRate * .25) * $totalOvertimeHours, 2);
+                $employee_overtimePay = round(($employee_hourlyRate * .25) * $totalOvertimeHours, 2)
+                $employee_overtimeNDPay = round(($employee_hourlyRate * 1.25 * .15) * $totalOvertimeNDHours, 2);
+
+                // COMPUTATION FOR RDOT PAY
                 $employee_RDOTPay = round(($employee_hourlyRate * .3) * $totalRDOTHours, 2);
+                $employee_RDOTNDPay = round(($employee_hourlyRate * 1.3 * .15) * $totalRDOTNDHours, 2);
 
                 // COMPUTATION FOR SPECIAL HOLIDAY PAY
                 if ($totalSpecialHolidayNDHours == 0) { // DAY SHIFT
@@ -1158,8 +1162,12 @@
                 $employee_nightDiffPay = round(($employee_hourlyRate * .15) * $totalNightHours, 2);
 
                 // COMPUTATION FOR OVERTIME PAY
-                $employee_overtimePay = round(($employee_hourlyRate * .25) * $totalOvertimeHours, 2);
+                $employee_overtimePay = round(($employee_hourlyRate * .25) * $totalOvertimeHours, 2)
+                $employee_overtimeNDPay = round(($employee_hourlyRate * 1.25 * .15) * $totalOvertimeNDHours, 2);
+
+                // COMPUTATION FOR RDOT PAY
                 $employee_RDOTPay = round(($employee_hourlyRate * .3) * $totalRDOTHours, 2);
+                $employee_RDOTNDPay = round(($employee_hourlyRate * 1.3 * .15) * $totalRDOTNDHours, 2);
 
                 // COMPUTATION FOR SPECIAL HOLIDAY PAY
                 if ($totalSpecialHolidayNDHours == 0) { // DAY SHIFT
@@ -1169,7 +1177,7 @@
                 else {  // NIGHT SHIFT
                     $totalSpecialHolidayHours = ($specialHolidaysWorked * 8) - $totalSpecialHolidayNDHours;
                     $employee_specialHolidayPay = round(($employee_hourlyRate * 1.3) * $totalSpecialHolidayHours, 2);
-                    $employee_specialHolidayNDPay = round(($employee_hourlyRate * 1.3) * $totalSpecialHolidayNDHours, 2);
+                    $employee_specialHolidayNDPay = round(($employee_hourlyRate * 1.3 * .15) * $totalSpecialHolidayNDHours, 2);
                 }
 
                 // COMPUTATION FOR REGULAR HOLIDAY PAY
@@ -1180,7 +1188,7 @@
                 else { // NIGHT SHIFT
                     $totalRegularHolidayHours = ($regularHolidaysWorked * 8) - $totalRegularHolidayNDHours;
                     $employee_regularHolidayPay = round($employee_hourlyRate  * $totalRegularHolidayHours, 2);
-                    $employee_regularHolidayNDPay = round((($employee_hourlyRate * 2) * .15) * $totalRegularHolidayNDHours, 2);
+                    $employee_regularHolidayNDPay = round(($employee_hourlyRate * 2 * .15) * $totalRegularHolidayNDHours, 2);
                 }
 
                 // COMPUTE GROSS PAY
