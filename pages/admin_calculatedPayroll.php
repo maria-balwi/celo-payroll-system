@@ -63,16 +63,16 @@
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">Regular OT (25%)</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
-                                        <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">Regular OT Night Diff</th>
-                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th> -->
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">Regular OT Night Diff</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">RDOT</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
-                                        <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">RDOT Night Diff</th>
-                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th> -->
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">RDOT Night Diff</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">Special Holiday</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
-                                        <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">S.H. Day Night Diff</th>
-                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th> -->
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">S.H. Day Night Diff</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Holiday</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">HOLIDAY Night Diff</th>
@@ -117,10 +117,16 @@
                                             $payslip_regNightDiffPay = number_format($payslipDetails['pay_regNightDiff'], 2);
                                             $payslip_regularOT = $payslipDetails['regularOT'];
                                             $payslip_regularOTPay = number_format($payslipDetails['pay_regularOT'], 2);
+                                            $payslip_regularOTND = $payslipDetails['regularOTND'];
+                                            $payslip_regularOTNDPay = number_format($payslipDetails['pay_regularOTND'], 2);
                                             $payslip_RDOT = $payslipDetails['rdot'];
                                             $payslip_RDOTPay = number_format($payslipDetails['pay_rdot'], 2);
+                                            $payslip_RDOTND = $payslipDetails['rdotND'];
+                                            $payslip_RDOTNDPay = number_format($payslipDetails['pay_rdotND'], 2);
                                             $payslip_specialHoliday = $payslipDetails['specialHoliday'];
                                             $payslip_specialHolidayPay = number_format($payslipDetails['pay_specialHoliday'], 2);
+                                            $payslip_specialHolidayND = $payslipDetails['specialHolidayND'];
+                                            $payslip_specialHolidayNDPay = number_format($payslipDetails['pay_specialHolidayND'], 2);
                                             $payslip_regularHoliday = $payslipDetails['regularHoliday'];
                                             $payslip_regularHolidayPay = number_format($payslipDetails['pay_regularHoliday'], 2);
                                             $payslip_regularHolidayND = $payslipDetails['regularHolidayND'];
@@ -149,50 +155,127 @@
                                                 $payslip_regularOT = "-";
                                                 $payslip_regularOTPay = "-";
                                             }
+                                            if ($payslip_regularOTND == 0) {
+                                                $payslip_regularOTND = "-";
+                                                $payslip_regularOTNDPay = "-";
+                                            }
                                             if ($payslip_RDOT == 0) {
                                                 $payslip_RDOT = "-";
                                                 $payslip_RDOTPay = "-";
+                                            }
+                                            if ($payslip_RDOTND == 0) {
+                                                $payslip_RDOTND = "-";
+                                                $payslip_RDOTNDPay = "-";
                                             }
                                             if ($payslip_specialHoliday == 0) {
                                                 $payslip_specialHoliday = "-";
                                                 $payslip_specialHolidayPay = "-";
                                             }
+                                            if ($payslip_specialHolidayND == 0) {
+                                                $payslip_specialHolidayND = "-";
+                                                $payslip_specialHolidayNDPay = "-";
+                                            }
                                             if ($payslip_regularHoliday == 0) {
                                                 $payslip_regularHoliday = "-";
                                                 $payslip_regularHolidayPay = "-";
                                             }
+                                            if ($payslip_regularHolidayND == 0) {
+                                                $payslip_regularHolidayND = "-";
+                                                $payslip_regularHolidayNDPay = "-";
+                                            }
+
+                                            // ALLOWANCES 
+                                            if ($payslip_allowances != 0) {
+                                                $payslip_allowances = number_format($payslip_allowances, 2);
+                                            }
+                                            else {
+                                                $payslip_allowances = "-";
+                                            }
+                                            if ($payslip_communication != 0) {
+                                                $payslip_communication = number_format($payslip_communication, 2);
+                                            }
+                                            else {
+                                                $payslip_communication = "-";
+                                            }
+
+                                            // DEDUCTIONS
+                                            if ($payslip_sss != 0) {
+                                                $payslip_sss = number_format($payslip_sss, 2);
+                                            }
+                                            else {
+                                                $payslip_sss = "-";
+                                            }
+                                            if ($payslip_phic != 0) {
+                                                $payslip_phic = number_format($payslip_phic, 2);
+                                            }
+                                            else {
+                                                $payslip_phic = "-";
+                                            }
+                                            if ($payslip_hdmf != 0) {
+                                                $payslip_hdmf = number_format($payslip_hdmf, 2);
+                                            }
+                                            else {
+                                                $payslip_hdmf = "-";
+                                            }
+                                            if ($payslip_wtax != 0) {
+                                                $payslip_wtax = number_format($payslip_wtax, 2);
+                                            }
+                                            else {
+                                                $payslip_wtax = "-";
+                                            }
+                                            if ($payslip_salaryLoan != 0) {
+                                                $payslip_salaryLoan = number_format($payslip_salaryLoan, 2);
+                                            }
+                                            else {
+                                                $payslip_salaryLoan = "-";
+                                            }
+                                            if ($payslip_mpl != 0) {
+                                                $payslip_mpl = number_format($payslip_mpl, 2);
+                                            }
+                                            else {
+                                                $payslip_mpl = "-";
+                                            }
+                                            if ($payslip_smart != 0) {
+                                                $payslip_smart = number_format($payslip_smart, 2);
+                                            }
+                                            else {
+                                                $payslip_smart = "-";
+                                            }
+
+                                            // REIMBURSEMENTS & ADJUSTMENTS +,-
+                                            if ($payslip_reimbursements != 0) {
+                                                $payslip_reimbursements = number_format($payslip_reimbursements, 2);
+                                            }
+                                            else {
+                                                $payslip_reimbursements = "-";
+                                            }
+                                            if ($payslip_adjustments != 0) {
+                                                $payslip_adjustments = number_format($payslip_adjustments, 2);
+                                            }
+                                            else {
+                                                $payslip_adjustments = "-";
+                                            }
+
+                                            // CASH ADVANCE DEDUCTIONS & BALANCE
+                                            if ($payslip_cashAdvanceDeduction != 0) {
+                                                $payslip_cashAdvanceDeduction = number_format($payslip_cashAdvanceDeduction, 2);
+                                            }
+                                            else {
+                                                $payslip_cashAdvanceDeduction = "-";
+                                            }
+                                            if ($payslip_cashAdvanceBalance != 0) {
+                                                $payslip_cashAdvanceBalance = number_format($payslip_cashAdvanceBalance, 2);
+                                            }
+                                            else {
+                                                $payslip_cashAdvanceBalance = "-";
+                                            }
+
+                                            // GROSS, TOTAL GROSS, AND NET PAYS
                                             if ($payslip_grossPay != 0) {
                                                 $payslip_grossPay = number_format($payslip_grossPay, 2);
                                             }
                                             if ($payslip_totalGrossPay != 0) {
                                                 $payslip_totalGrossPay = number_format($payslip_totalGrossPay, 2);
-                                            }
-                                            if ($payslip_allowances != 0) {
-                                                $payslip_allowances = number_format($payslip_allowances, 2);
-                                            }
-                                            if ($payslip_communication != 0) {
-                                                $payslip_communication = number_format($payslip_communication, 2);
-                                            }
-                                            if ($payslip_sss != 0) {
-                                                $payslip_sss = number_format($payslip_sss, 2);
-                                            }
-                                            if ($payslip_phic != 0) {
-                                                $payslip_phic = number_format($payslip_phic, 2);
-                                            }
-                                            if ($payslip_hdmf != 0) {
-                                                $payslip_hdmf = number_format($payslip_hdmf, 2);
-                                            }
-                                            if ($payslip_wtax != 0) {
-                                                $payslip_wtax = number_format($payslip_wtax, 2);
-                                            }
-                                            if ($payslip_reimbursements != 0) {
-                                                $payslip_reimbursements = number_format($payslip_reimbursements, 2);
-                                            }
-                                            if ($payslip_adjustments != 0) {
-                                                $payslip_adjustments = number_format($payslip_adjustments, 2);
-                                            }
-                                            if ($payslip_cashAdvanceDeduction != 0) {
-                                                $payslip_cashAdvanceDeduction = number_format($payslip_cashAdvanceDeduction, 2);
                                             }
                                             if ($payslip_netPay != 0) {
                                                 $payslip_netPay = number_format($payslip_netPay, 2);
@@ -209,10 +292,16 @@
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_regNightDiffPay . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_regularOT . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_regularOTPay . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_regularOTND . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_regularOTNDPay . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_RDOT . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_RDOTPay . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_RDOTND . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_RDOTNDPay . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_specialHoliday . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_specialHolidayPay . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_specialHolidayND . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_specialHolidayNDPay . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_regularHoliday . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_regularHolidayPay . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_regularHolidayND . "</td>";
