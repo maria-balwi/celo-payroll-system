@@ -194,19 +194,33 @@
                                             // GET OVERTIMES AND OVERTIME PAY
                                             $overtimesQuery = mysqli_query($conn, "SELECT * FROM tbl_filedot WHERE empID = $employee_id AND (otDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo') AND status = '2'");
                                             $totalOvertimeHours = 0;
+                                            $totalOvertimeNDHours = 0;
                                             $totalRDOTHours = 0;
+                                            $totalRDOTNDHours = 0;
                                             while ($overtime = mysqli_fetch_array($overtimesQuery)) {
                                                 if ($overtime['otType'] == "Regular") {
-                                                    $totalOvertimeHours += $overtime['approvedOThours'];
-                                                    if ($overtime['approvedOTmins'] >= 30) {
-                                                        $totalOvertimeHours += 1;
-                                                    }
+                                                    $from = new DateTime($overtime['fromTime']);
+                                                    $to = new DateTime($overtime['toTime']);
+
+                                                    // COUNT ND HOURS
+                                                    $NDHours = $payroll->calculateOvertimeND($from, $to);
+                                                    $totalOvertimeNDHours += $NDHours;
+
+                                                    $interval = $from->diff($to);
+                                                    $hours = $interval->h + ($interval->i >= 30 ? 1 : 0);
+                                                    $totalOvertimeHours = $hours - $totalOvertimeNDHours;
                                                 }
-                                                else { // RDOT
-                                                    $totalRDOTHours += $overtime['approvedOThours'];
-                                                    if ($overtime['approvedOTmins'] >= 30) {
-                                                        $totalRDOTHours += 1;
-                                                    }
+                                                else {
+                                                    $from = new DateTime($overtime['fromTime']);
+                                                    $to = new DateTime($overtime['toTime']);
+                                                    
+                                                    // COUNT ND HOURS
+                                                    $NDHours = $payroll->calculateOvertimeND($from, $to);
+                                                    $totalRDOTNDHours += $NDHours;
+
+                                                    $interval = $from->diff($to);
+                                                    $hours = $interval->h + ($interval->i >= 30 ? 1 : 0);
+                                                    $totalRDOTHours = $hours - $totalOvertimeNDHours;
                                                 }
                                             }
                                             $employee_overtimePay = round(($employee_hourlyRate * .25) * $totalOvertimeHours, 2);
