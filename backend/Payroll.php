@@ -869,7 +869,7 @@
                 $employee_nightDiffPay = round(($employee_hourlyRate * .15) * $totalNightHours, 2);
 
                 // COMPUTATION FOR OVERTIME PAY
-                $employee_overtimePay = round(($employee_hourlyRate * .25) * $totalOvertimeHours, 2)
+                $employee_overtimePay = round(($employee_hourlyRate * .25) * $totalOvertimeHours, 2);
                 $employee_overtimeNDPay = round(($employee_hourlyRate * 1.25 * .15) * $totalOvertimeNDHours, 2);
 
                 // COMPUTATION FOR RDOT PAY
@@ -1162,7 +1162,7 @@
                 $employee_nightDiffPay = round(($employee_hourlyRate * .15) * $totalNightHours, 2);
 
                 // COMPUTATION FOR OVERTIME PAY
-                $employee_overtimePay = round(($employee_hourlyRate * .25) * $totalOvertimeHours, 2)
+                $employee_overtimePay = round(($employee_hourlyRate * .25) * $totalOvertimeHours, 2);
                 $employee_overtimeNDPay = round(($employee_hourlyRate * 1.25 * .15) * $totalOvertimeNDHours, 2);
 
                 // COMPUTATION FOR RDOT PAY
