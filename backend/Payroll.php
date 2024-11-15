@@ -511,24 +511,6 @@
         //     return $totalNightHours; // Return the calculated night differential hours
         // } 
 
-        public function loadHolidays($payrollCycleFrom, $payrollCycleTo){
-            // Fetch holiday data from the database and store in an array
-            $holidaysQuery = $this->dbConnect()->query("SELECT * FROM tbl_holidays WHERE dateFrom BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'");
-            $holidays = [];
-            while ($holidayDetails = mysqli_fetch_array($holidaysQuery)) {
-                $holidays[$holidayDetails['dateFrom']] = $holidayDetails['type'];
-            }
-            return $holidays;
-        }
-
-        public function isHoliday(DateTime $date, $holidays) {
-            // Format the date to match the keys in the holidays array (YYYY-MM-DD)
-            $dateString = $date->format('Y-m-d');
-            
-            // Check if the date exists in the holidays array
-            return isset($holidays[$dateString]) ? $holidays[$dateString] : false;
-        }
-
         public function calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $payrollCycleFrom, $payrollCycleTo, $attendanceDate) {
             // Define the start and end times for the night differential period
             $nightStart = new DateTime("22:00");
@@ -537,21 +519,25 @@
             // Initialize variables to store Time In and Time Out
             static $timeIn = null;
             static $timeOut = null;
+            static $date_in = null;
+            static $date_out = null;
             static $static_lateMins = null;
         
             // Initialize totals
-            $totalRegularNightHours = 0.0;
-            $totalRegularHolidayHours = 0.0;
-            $totalRegularHolidayNightHours = 0.0;
-            $totalSpecialHolidayHours = 0.0;
-            $totalSpecialHolidayNightHours = 0.0;
+            $totalRegularNightHours = 0;
+            $totalRegularHolidayHours = 0;
+            $totalRegularHolidayNightHours = 0;
+            $totalSpecialHolidayHours = 0;
+            $totalSpecialHolidayNightHours = 0;
         
             // Assign Time In or Time Out based on logTypeID
             if ($logTypeID == 1 || $logTypeID == 2) { // Time In or Late
                 $timeIn = new DateTime("{$attendanceTime}");
                 $static_lateMins = $lateMins;
+                $date_in = $attendanceDate;
             } elseif ($logTypeID == 3 || $logTypeID == 4) { // Time Out or Undertime
                 $timeOut = new DateTime("{$attendanceTime}");
+                $date_out = $attendanceDate;
             }
         
             if ($timeIn && $timeOut) {
@@ -575,19 +561,21 @@
                 if ($timeOut > $midnight) {
                     // Calculate hours for the first segment (timeIn to midnight)
                     $firstSegmentEnd = clone $midnight;
-                    $this->calculateSegmentHours($timeIn, $firstSegmentEnd, $payrollCycleFrom, $payrollCycleTo, $attendanceDate, $nightStart, $nightEndAdjusted, $totalRegularNightHours, $totalRegularHolidayHours, $totalRegularHolidayNightHours, $totalSpecialHolidayHours, $totalSpecialHolidayNightHours);
+                    $this->calculateSegmentHours($timeIn, $firstSegmentEnd, $payrollCycleFrom, $payrollCycleTo, $date_in, $nightStart, $nightEndAdjusted, $totalRegularNightHours, $totalRegularHolidayHours, $totalRegularHolidayNightHours, $totalSpecialHolidayHours, $totalSpecialHolidayNightHours);
         
                     // Calculate hours for the second segment (midnight to timeOut)
                     $secondSegmentStart = (clone $midnight)->modify('+1 second');
-                    $this->calculateSegmentHours($secondSegmentStart, $timeOut, $payrollCycleFrom, $payrollCycleTo, $attendanceDate, $nightStart, $nightEndAdjusted, $totalRegularNightHours, $totalRegularHolidayHours, $totalRegularHolidayNightHours, $totalSpecialHolidayHours, $totalSpecialHolidayNightHours);
+                    $this->calculateSegmentHours($secondSegmentStart, $timeOut, $payrollCycleFrom, $payrollCycleTo, $date_out, $nightStart, $nightEndAdjusted, $totalRegularNightHours, $totalRegularHolidayHours, $totalRegularHolidayNightHours, $totalSpecialHolidayHours, $totalSpecialHolidayNightHours);
                 } else {
                     // Single segment if timeOut does not cross midnight
-                    $this->calculateSegmentHours($timeIn, $timeOut, $payrollCycleFrom, $payrollCycleTo, $attendanceDate, $nightStart, $nightEndAdjusted, $totalRegularNightHours, $totalRegularHolidayHours, $totalRegularHolidayNightHours, $totalSpecialHolidayHours, $totalSpecialHolidayNightHours);
+                    $this->calculateSegmentHours($timeIn, $timeOut, $payrollCycleFrom, $payrollCycleTo, $date_in, $nightStart, $nightEndAdjusted, $totalRegularNightHours, $totalRegularHolidayHours, $totalRegularHolidayNightHours, $totalSpecialHolidayHours, $totalSpecialHolidayNightHours);
                 }
         
                 // Reset Time In and Time Out for the next calculation
                 $timeIn = null;
                 $timeOut = null;
+                $date_in = null;
+                $date_out = null;
             }
         
             // Return calculated totals
@@ -615,9 +603,9 @@
         
             // Add to holiday or regular hours based on holiday type
             if (isset($holidays[$attendanceDate]) && $holidays[$attendanceDate] == 'Regular') {
-                $totalRegularHolidayHours += abs($hoursWorked);
+                $totalRegularHolidayHours += $hoursWorked;
             } elseif (isset($holidays[$attendanceDate]) && $holidays[$attendanceDate] == 'Special') {
-                $totalSpecialHolidayHours += abs($hoursWorked);
+                $totalSpecialHolidayHours += $hoursWorked;
             }
         
             // Calculate night differential hours if there is an overlap with the night period

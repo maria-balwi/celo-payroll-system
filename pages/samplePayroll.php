@@ -134,8 +134,6 @@
                                                 $holidays[$holidayDetails['dateFrom']] = $holidayDetails['type'];
                                             }
 
-                                            // $holidays = $payroll->loadHolidays($payrollCycleFrom, $payrollCycleTo);
-
                                             $totalNightHours = 0;
                                             $specialHolidaysWorked = 0;
                                             $regularHolidaysWorked = 0;
