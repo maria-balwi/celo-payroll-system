@@ -24,20 +24,13 @@
                     <table id="overtimeTable" class="table table-bordered table-striped min-w-full divide-y divide-gray-200 text-center pt-3">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider" rowspan="2">Date Filed</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider" rowspan="2">Employee</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider" rowspan="2">Date</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider" rowspan="2">Type</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider" colspan="2">Actual OT</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider" colspan="2">Approved OT</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider" rowspan="2">Purpose</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider" rowspan="2">Status</th>
-                            </tr>
-                            <tr>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Time Range</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Minutes</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Time Range</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Minutes</th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Date Filed</th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">OT Date</th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">From</th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">To</th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Purpose</th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -56,64 +49,34 @@
                                     while ($otDetails = mysqli_fetch_array($filedOTquery)) {
 
                                         $OT_id = $otDetails['requestID'];
-                                        $OT_employeeName = $otDetails['employeeName'];
                                         $OT_dateFiled = $otDetails['dateFiled'];
                                         $OT_otDate = $otDetails['otDate'];
                                         $OT_otType = $otDetails['otType'];
-                                        $OT_actualOThours = $otDetails['actualOThours'];
-                                        $OT_actualOTmins = $otDetails['actualOTmins'];
-                                        $OT_approvedOThours = $otDetails['approvedOThours'];
-                                        $OT_approvedOTmins = $otDetails['approvedOTmins'];
+                                        $OT_fromTime = $otDetails['fromTime'];
+                                        $OT_toTime = $otDetails['toTime'];
                                         $OT_remarks = $otDetails['remarks'];
                                         $OT_status = $otDetails['status'];
 
-                                        $OT_dateFiled = formatDate($OT_dateFiled);
-                                        $OT_otDate = formatDate($OT_otDate);
-
                                         echo "<tr data-id='" . $OT_id . "' class='filedOTview cursor-pointer'>";
                                         echo "<td class = ' whitespace-nowrap'>" . $OT_dateFiled . "</td>";
-                                        echo "<td class = ' whitespace-nowrap'>" . $OT_employeeName . "</td>";
                                         echo "<td class = ' whitespace-nowrap'>" . $OT_otDate . "</td>";
                                         echo "<td class = ' whitespace-nowrap'>" . $OT_otType . "</td>";
-                                        echo "<td class = ' whitespace-nowrap'>" . $OT_actualOThours . "</td>";
-                                        
-                                        if ($OT_actualOTmins == 0) {
-                                            echo "<td class = ' whitespace-nowrap'>-</td>";
-                                        }
-                                        else {
-                                            echo "<td class = ' whitespace-nowrap'>" . $OT_actualOTmins . "</td>";
-                                        }
-
+                                        echo "<td class = ' whitespace-nowrap'>" . $OT_fromTime . "</td>";
+                                        echo "<td class = ' whitespace-nowrap'>" . $OT_toTime . "</td>";
+                                        echo "<td class = ' whitespace-nowrap'>" . $OT_remarks . "</td>";
                                         if ($OT_status == null) {
-                                            echo "<td class = ' whitespace-nowrap'>-</td>";
-                                            echo "<td class = ' whitespace-nowrap'>-</td>";
-                                            echo "<td class = ' whitespace-nowrap'>" . $OT_remarks . "</td>";
                                             echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Pending for 1st Approval</p></td>";
                                         }
                                         else if ($OT_status == 1) {
-                                            echo "<td class = ' whitespace-nowrap'>-</td>";
-                                            echo "<td class = ' whitespace-nowrap'>-</td>";
-                                            echo "<td class = ' whitespace-nowrap'>" . $OT_remarks . "</td>";
                                             echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Pending for 2nd Approval</p></td>";
                                         }
                                         else if ($OT_status == 2) {
-                                            echo "<td class = ' whitespace-nowrap'>" . $OT_approvedOThours . "</td>";
-                                            if ($OT_approvedOTmins == 0) {
-                                                echo "<td class = ' whitespace-nowrap'>-</td>";
-                                            }
-                                            else {
-                                                echo "<td class = ' whitespace-nowrap'>" . $OT_approvedOTmins . "</td>";
-                                            }
-                                            echo "<td class = ' whitespace-nowrap'>" . $OT_remarks . "</td>";
                                             echo "<td><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Approved</p></td>";
                                         }
                                         else if ($OT_status == 0) {
-                                            echo "<td class = ' whitespace-nowrap'>-</td>";
-                                            echo "<td class = ' whitespace-nowrap'>-</td>";
-                                            echo "<td class = ' whitespace-nowrap'>" . $OT_remarks . "</td>";
                                             echo "<td><p class='inline-block bg-red-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Disapproved</p></td>";
                                         }
-                                        echo "</td>";
+                                        echo "</tr>";
                                     }
                                 }
                                 else 
@@ -122,64 +85,34 @@
                                     while ($otDetails = mysqli_fetch_array($filedOTquery)) {
 
                                         $OT_id = $otDetails['requestID'];
-                                        $OT_employeeName = $otDetails['employeeName'];
                                         $OT_dateFiled = $otDetails['dateFiled'];
                                         $OT_otDate = $otDetails['otDate'];
                                         $OT_otType = $otDetails['otType'];
-                                        $OT_actualOThours = $otDetails['actualOThours'];
-                                        $OT_actualOTmins = $otDetails['actualOTmins'];
-                                        $OT_approvedOThours = $otDetails['approvedOThours'];
-                                        $OT_approvedOTmins = $otDetails['approvedOTmins'];
+                                        $OT_fromTime = $otDetails['fromTime'];
+                                        $OT_toTime = $otDetails['toTime'];
                                         $OT_remarks = $otDetails['remarks'];
                                         $OT_status = $otDetails['status'];
 
-                                        $OT_dateFiled = formatDate($OT_dateFiled);
-                                        $OT_otDate = formatDate($OT_otDate);
-
                                         echo "<tr data-id='" . $OT_id . "' class='filedOTview cursor-pointer'>";
                                         echo "<td class = ' whitespace-nowrap'>" . $OT_dateFiled . "</td>";
-                                        echo "<td class = ' whitespace-nowrap'>" . $OT_employeeName . "</td>";
                                         echo "<td class = ' whitespace-nowrap'>" . $OT_otDate . "</td>";
                                         echo "<td class = ' whitespace-nowrap'>" . $OT_otType . "</td>";
-                                        echo "<td class = ' whitespace-nowrap'>" . $OT_actualOThours . "</td>";
-                                        
-                                        if ($OT_actualOTmins == 0) {
-                                            echo "<td class = ' whitespace-nowrap'>-</td>";
-                                        }
-                                        else {
-                                            echo "<td class = ' whitespace-nowrap'>" . $OT_actualOTmins . "</td>";
-                                        }
-
+                                        echo "<td class = ' whitespace-nowrap'>" . $OT_fromTime . "</td>";
+                                        echo "<td class = ' whitespace-nowrap'>" . $OT_toTime . "</td>";
+                                        echo "<td class = ' whitespace-nowrap'>" . $OT_remarks . "</td>";
                                         if ($OT_status == null) {
-                                            echo "<td class = ' whitespace-nowrap'>-</td>";
-                                            echo "<td class = ' whitespace-nowrap'>-</td>";
-                                            echo "<td class = ' whitespace-nowrap'>" . $OT_remarks . "</td>";
                                             echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Pending for 1st Approval</p></td>";
                                         }
                                         else if ($OT_status == 1) {
-                                            echo "<td class = ' whitespace-nowrap'>-</td>";
-                                            echo "<td class = ' whitespace-nowrap'>-</td>";
-                                            echo "<td class = ' whitespace-nowrap'>" . $OT_remarks . "</td>";
                                             echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Pending for 2nd Approval</p></td>";
                                         }
                                         else if ($OT_status == 2) {
-                                            echo "<td class = ' whitespace-nowrap'>" . $OT_approvedOThours . "</td>";
-                                            if ($OT_approvedOTmins == 0) {
-                                                echo "<td class = ' whitespace-nowrap'>-</td>";
-                                            }
-                                            else {
-                                                echo "<td class = ' whitespace-nowrap'>" . $OT_approvedOTmins . "</td>";
-                                            }
-                                            echo "<td class = ' whitespace-nowrap'>" . $OT_remarks . "</td>";
                                             echo "<td><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Approved</p></td>";
                                         }
                                         else if ($OT_status == 0) {
-                                            echo "<td class = ' whitespace-nowrap'>-</td>";
-                                            echo "<td class = ' whitespace-nowrap'>-</td>";
-                                            echo "<td class = ' whitespace-nowrap'>" . $OT_remarks . "</td>";
                                             echo "<td><p class='inline-block bg-red-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Disapproved</p></td>";
                                         }
-                                        echo "</td>";
+                                        echo "</tr>";
                                     }
                                 }
                             ?>
@@ -241,47 +174,29 @@
                                 
                             <div class="row g-3 mb-1">
                                 <div class="col-6">
-                                    <label for="viewActualOTHours">Actual OT - Hours:</label>
+                                    <label for="viewFromTime">From:</label>
                                 </div>
                                 <div class="col-6">
-                                    <label for="viewActualOTMins">Actual OT - Minutes:</label>
+                                    <label for="viewToTime">To:</label>
                                 </div>
-                                </div>
+                            </div>
                 
                             <div class="row g-3 mb-2">
                                 <div class="col-6">
-                                    <input type="text" class="form-control" id="viewActualOTHours" name="viewActualOTHours" disabled readonly>
+                                    <input type="text" class="form-control" id="viewFromTime" name="viewFromTime" disabled readonly>
                                 </div>
                                 <div class="col-6">
-                                    <input type="text" class="form-control" id="viewActualOTMins" name="viewActualOTMins" disabled readonly>
+                                    <input type="text" class="form-control" id="viewToTime" name="viewToTime" disabled readonly>
                                 </div>  
                             </div>
 
-                            <div class="row g-3 mb-1" id="approvedLabelRow">
-                                <div class="col-6">
-                                    <label for="viewApprovedOTHours">Approved OT - Hours:</label>
-                                </div>
-                                <div class="col-6">
-                                    <label for="viewApprovedOTMins">Approved OT - Minutes:</label>
-                                </div>
-                            </div>
-                
-                            <div class="row g-3 mb-2" id="approvedInputRow">
-                                <div class="col-6">
-                                    <input type="text" class="form-control" id="viewApprovedOTHours" name="viewApprovedOTHours" disabled readonly>
-                                </div>
-                                <div class="col-6">
-                                    <input type="text" class="form-control" id="viewApprovedOTMins" name="viewApprovedOTMins" disabled readonly>
-                                </div>  
-                            </div>
-
-                            <div class="row g-3 mb-1" id="approvedLabelRow">
+                            <div class="row g-3 mb-1">
                                 <div class="col-6">
                                     <label for="viewOTType">Type:</label>
                                 </div>
                             </div>
                 
-                            <div class="row g-3 mb-2" id="approvedInputRow">
+                            <div class="row g-3 mb-2">
                                 <div class="col-6">
                                     <input type="text" class="form-control" id="viewOTType" name="viewOTType" disabled readonly>
                                 </div>

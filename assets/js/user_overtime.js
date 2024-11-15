@@ -86,7 +86,7 @@ $(document).ready(function() {
                 if (res.status == 404) {
                     alert(res.message);
                 } 
-                else if (res.status == 200) {
+                else if (res.status == 200 && res.data.status == null) {
                     $('#viewFiledOTID').val(res.data.requestID);
                     $('#viewOTDate').val(res.data.otDate);
                     $('#viewOTType').val(res.data.otType);
@@ -95,9 +95,43 @@ $(document).ready(function() {
                     $('#viewFromTime').val(res.data.fromTime);
                     $('#viewToTime').val(res.data.toTime);
                     $('#viewPurpose').val(res.data.remarks);
-                    $('#viewStatus').val(res.data.status);
-                    $('#approvedLabelRow').hide();
-                    $('#approvedInputRow').hide();
+                    $('#viewStatus').val('Pending for 1st Approval');
+                    $('#viewFiledOTModal').modal('show');
+                }
+                else if (res.status == 200 && res.data.status == 1) {
+                    $('#viewFiledOTID').val(res.data.requestID);
+                    $('#viewOTDate').val(res.data.otDate);
+                    $('#viewOTType').val(res.data.otType);
+                    $('#viewDateFiled').val(res.data.dateFiled);
+                    $('#viewName').val(res.data.employeeName);
+                    $('#viewFromTime').val(res.data.fromTime);
+                    $('#viewToTime').val(res.data.toTime);
+                    $('#viewPurpose').val(res.data.remarks);
+                    $('#viewStatus').val('Pending for 2nd Approval');
+                    $('#viewFiledOTModal').modal('show');
+                }
+                else if (res.status == 200 && res.data.status == 0) {
+                    $('#viewFiledOTID').val(res.data.requestID);
+                    $('#viewOTDate').val(res.data.otDate);
+                    $('#viewOTType').val(res.data.otType);
+                    $('#viewDateFiled').val(res.data.dateFiled);
+                    $('#viewName').val(res.data.employeeName);
+                    $('#viewFromTime').val(res.data.fromTime);
+                    $('#viewToTime').val(res.data.toTime);
+                    $('#viewPurpose').val(res.data.remarks);
+                    $('#viewStatus').val('Disapproved');
+                    $('#viewFiledOTModal').modal('show');
+                }
+                else if (res.status == 200 && res.data.status == 2) {
+                    $('#viewFiledOTID').val(res.data.requestID);
+                    $('#viewOTDate').val(res.data.otDate);
+                    $('#viewOTType').val(res.data.otType);
+                    $('#viewDateFiled').val(res.data.dateFiled);
+                    $('#viewName').val(res.data.employeeName);
+                    $('#viewFromTime').val(res.data.fromTime);
+                    $('#viewToTime').val(res.data.toTime);
+                    $('#viewPurpose').val(res.data.remarks);
+                    $('#viewStatus').val('Approved');
                     $('#viewFiledOTModal').modal('show');
                 }
             }
@@ -115,23 +149,38 @@ $(document).ready(function() {
                 if (res.status == 404) {
                     alert(res.message);
                 } 
-                else if (res.status == 200 && (res.data.status == null || res.data.status == 1 || res.data.status == 0)) {
+                else if (res.status == 200 && res.data.status == null) {
                     $('#viewFiledOTID').val(res.data.requestID);
                     $('#viewOTDate').val(res.data.otDate);
                     $('#viewOTType').val(res.data.otType);
                     $('#viewDateFiled').val(res.data.dateFiled);
                     $('#viewName').val(res.data.employeeName);
-                    $('#viewActualOTHours').val(res.data.actualOThours + " hour/s");
-                    if (res.data.actualOTmins == null) {
-                        $('#viewActualOTMins').val("-");
-                    }
-                    else {
-                        $('#viewActualOTMins').val(res.data.actualOTmins + " minute/s");
-                    }
+                    $('#viewFromTime').val(res.data.fromTime);
+                    $('#viewToTime').val(res.data.toTime);
                     $('#viewPurpose').val(res.data.remarks);
-                    $('#viewStatus').val(res.data.status);
-                    $('#approvedLabelRow').hide();
-                    $('#approvedInputRow').hide();
+                    $('#viewStatus').val('Pending for 1st Approval');
+                }
+                else if (res.status == 200 && res.data.status == 1) {
+                    $('#viewFiledOTID').val(res.data.requestID);
+                    $('#viewOTDate').val(res.data.otDate);
+                    $('#viewOTType').val(res.data.otType);
+                    $('#viewDateFiled').val(res.data.dateFiled);
+                    $('#viewName').val(res.data.employeeName);
+                    $('#viewFromTime').val(res.data.fromTime);
+                    $('#viewToTime').val(res.data.toTime);
+                    $('#viewPurpose').val(res.data.remarks);
+                    $('#viewStatus').val('Pending for 2nd Approval');
+                }
+                else if (res.status == 200 && res.data.status == 0) {
+                    $('#viewFiledOTID').val(res.data.requestID);
+                    $('#viewOTDate').val(res.data.otDate);
+                    $('#viewOTType').val(res.data.otType);
+                    $('#viewDateFiled').val(res.data.dateFiled);
+                    $('#viewName').val(res.data.employeeName);
+                    $('#viewFromTime').val(res.data.fromTime);
+                    $('#viewToTime').val(res.data.toTime);
+                    $('#viewPurpose').val(res.data.remarks);
+                    $('#viewStatus').val('Disapproved');
                 }
                 else if (res.status == 200 && res.data.status == 2) {
                     $('#viewFiledOTID').val(res.data.requestID);
@@ -139,22 +188,10 @@ $(document).ready(function() {
                     $('#viewOTType').val(res.data.otType);
                     $('#viewDateFiled').val(res.data.dateFiled);
                     $('#viewName').val(res.data.employeeName);
-                    $('#viewActualOTHours').val(res.data.actualOThours + " hour/s");
-                    if (res.data.actualOTmins == null) {
-                        $('#viewActualOTMins').val("-");
-                    }
-                    else {
-                        $('#viewActualOTMins').val(res.data.actualOTmins + " minute/s");
-                    }
-                    $('#viewApprovedOTHours').val(res.data.approvedOThours + " hour/s");
-                    if (res.data.approvedOTmins == null) {
-                        $('#viewApprovedOTMins').val("-");
-                    }
-                    else {
-                        $('#viewApprovedOTMins').val(res.data.approvedOTmins + " minute/s");
-                    }
+                    $('#viewFromTime').val(res.data.fromTime);
+                    $('#viewToTime').val(res.data.toTime);
                     $('#viewPurpose').val(res.data.remarks);
-                    $('#viewStatus').val(res.data.status);
+                    $('#viewStatus').val('Approved');
                 }
             }
         });
