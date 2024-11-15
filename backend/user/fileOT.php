@@ -6,17 +6,14 @@
     $employeeID = $_SESSION['id'];
     $otDate = $_POST['otDate'];
     $otType = $_POST['otType'];
-    $actualOThours = $_POST['actualOThours'];
-    $actualOTmins = $_POST['actualOTmins'];
+    $fromTime = $_POST['fromTime'];
+    $toTime = $_POST['toTime'];
     $purpose = $_POST['purpose'];
 
-    if ($actualOTmins == 0 || $actualOTmins == null) {
-        mysqli_query($conn, $employees->fileOT_null($employeeID, $otDate, $otType, $actualOThours, $actualOTmins, $purpose));
-    }
-    else {
-        mysqli_query($conn, $employees->fileOT($employeeID, $otDate, $otType, $actualOThours, $actualOTmins, $purpose));
-    }
+    // INSERT TO tbl_filedot
+    mysqli_query($conn, $employees->fileOT($employeeID, $otDate, $otType, $fromTime, $toTime, $purpose));
 
+    // GET LAST ID
     $lastIDQuery = mysqli_query($conn, $employees->viewLastOT());
     $lastIDResult = mysqli_fetch_array($lastIDQuery);
     $lastID = $lastIDResult['requestID'];

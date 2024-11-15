@@ -9,11 +9,11 @@ $(document).ready(function() {
 
         var otDate = $('#otDate').val();
         var otType = $('#otType').val();
-        var actualOThours = $('#actualOThours').val();
-        var actualOTmins = $('#actualOTmins').val();
+        var fromTime = $('#fromTime').val();
+        var toTime = $('#toTime').val();
         var purpose = $('#purpose').val();
 
-        if (otDate == "" || otType == "" || actualOThours == "" || purpose == "") {
+        if (otDate == "" || otType == "" || fromTime == "" || toTime == "") {
             Swal.fire({
                 icon: 'warning',
                 title: 'Required Information',
@@ -86,47 +86,18 @@ $(document).ready(function() {
                 if (res.status == 404) {
                     alert(res.message);
                 } 
-                else if (res.status == 200 && (res.data.status == null || res.data.status == 1 || res.data.status == 0)) {
+                else if (res.status == 200) {
                     $('#viewFiledOTID').val(res.data.requestID);
                     $('#viewOTDate').val(res.data.otDate);
                     $('#viewOTType').val(res.data.otType);
                     $('#viewDateFiled').val(res.data.dateFiled);
                     $('#viewName').val(res.data.employeeName);
-                    $('#viewActualOTHours').val(res.data.actualOThours + " hour/s");
-                    if (res.data.actualOTmins == null) {
-                        $('#viewActualOTMins').val("-");
-                    }
-                    else {
-                        $('#viewActualOTMins').val(res.data.actualOTmins + " minute/s");
-                    }
+                    $('#viewFromTime').val(res.data.fromTime);
+                    $('#viewToTime').val(res.data.toTime);
                     $('#viewPurpose').val(res.data.remarks);
                     $('#viewStatus').val(res.data.status);
                     $('#approvedLabelRow').hide();
                     $('#approvedInputRow').hide();
-                    $('#viewFiledOTModal').modal('show');
-                }
-                else if (res.status == 200 && res.data.status == 2) {
-                    $('#viewFiledOTID').val(res.data.requestID);
-                    $('#viewOTDate').val(res.data.otDate);
-                    $('#viewOTType').val(res.data.otType);
-                    $('#viewDateFiled').val(res.data.dateFiled);
-                    $('#viewName').val(res.data.employeeName);
-                    $('#viewActualOTHours').val(res.data.actualOThours + " hour/s");
-                    if (res.data.actualOTmins == null) {
-                        $('#viewActualOTMins').val("-");
-                    }
-                    else {
-                        $('#viewActualOTMins').val(res.data.actualOTmins + " minute/s");
-                    }
-                    $('#viewApprovedOTHours').val(res.data.approvedOThours + " hour/s");
-                    if (res.data.approvedOTmins == null) {
-                        $('#viewApprovedOTMins').val("-");
-                    }
-                    else {
-                        $('#viewApprovedOTMins').val(res.data.approvedOTmins + " minute/s");
-                    }
-                    $('#viewPurpose').val(res.data.remarks);
-                    $('#viewStatus').val(res.data.status);
                     $('#viewFiledOTModal').modal('show');
                 }
             }

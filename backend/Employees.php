@@ -211,8 +211,8 @@
         public function viewFiledOT($id) {
             $request = "
                 SELECT requestID, dateFiled, otDate, otType,
-                actualOThours, actualOTmins,
-                approvedOThours, approvedOTmins,
+                DATE_FORMAT(fromTime, '%h:%i %p') AS fromTime,
+                DATE_FORMAT(toTime, '%h:%i %p') AS toTime,
                 remarks, status
                 FROM ".$this->filedOT." AS filedOT
                 INNER JOIN ".$this->employees." AS employees
@@ -226,8 +226,8 @@
             $request = "
                 SELECT requestID, dateFiled, otDate, employeeID, otType,
                 CONCAT(firstName , ' ', lastName) AS employeeName,
-                actualOThours, actualOTmins,
-                approvedOThours, approvedOTmins,
+                DATE_FORMAT(fromTime, '%h:%i %p') AS fromTime,
+                DATE_FORMAT(toTime, '%h:%i %p') AS toTime,
                 remarks, status
                 FROM ".$this->filedOT." AS filedOT
                 INNER JOIN ".$this->employees." AS employees
@@ -239,8 +239,8 @@
             $request = "
                 SELECT requestID, dateFiled, otDate, employeeID, otType,
                 CONCAT(firstName , ' ', lastName) AS employeeName,
-                actualOThours, actualOTmins,
-                approvedOThours, approvedOTmins,
+                DATE_FORMAT(fromTime, '%h:%i %p') AS fromTime,
+                DATE_FORMAT(toTime, '%h:%i %p') AS toTime,
                 remarks, status
                 FROM ".$this->filedOT." AS filedOT
                 INNER JOIN ".$this->employees." AS employees
@@ -255,8 +255,8 @@
             $request = "
                 SELECT requestID, dateFiled, otDate, employeeID, otType,
                 CONCAT(firstName , ' ', lastName) AS employeeName,
-                actualOThours, actualOTmins,
-                approvedOThours, approvedOTmins,
+                DATE_FORMAT(fromTime, '%h:%i %p') AS fromTime,
+                DATE_FORMAT(toTime, '%h:%i %p') AS toTime,
                 remarks, status
                 FROM ".$this->filedOT." AS filedOT
                 INNER JOIN ".$this->employees." AS employees
@@ -746,7 +746,8 @@
         public function getOTInfo($otID) {
             $request = "
                 SELECT requestID, employeeID, remarks, status, otType,
-                actualOThours, actualOTmins, approvedOThours, approvedOTmins,
+                DATE_FORMAT(fromTime, '%h:%i %p') AS fromTime,
+                DATE_FORMAT(toTime, '%h:%i %p') AS toTime,
                 CONCAT(firstName, ' ', lastName) AS employeeName,
                 DATE_FORMAT(dateFiled, '%M %d, %Y') AS dateFiled, 
                 DATE_FORMAT(otDate, '%M %d, %Y') AS otDate
@@ -762,17 +763,10 @@
             return $leaveType;
         }
 
-        public function fileOT($employeeID, $otDate, $otType, $actualOThours, $actualOTmins, $remarks) {
+        public function fileOT($employeeID, $otDate, $otType, $fromTime, $toTime, $remarks) {
             $fileOT = "
-                INSERT INTO ".$this->filedOT." (empID, dateFiled, otDate, otType, actualOThours, actualOTmins, remarks)
-                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$otDate', '$otType', '$actualOThours', '$actualOTmins', '$remarks')";
-            return $fileOT;
-        }
-
-        public function fileOT_null($employeeID, $otDate, $otType, $actualOThours, $actualOTmins, $remarks) {
-            $fileOT = "
-                INSERT INTO ".$this->filedOT." (empID, dateFiled, otDate, otType, actualOThours, actualOTmins, remarks)
-                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$otDate', '$otType', '$actualOThours', NULL, '$remarks')";
+                INSERT INTO ".$this->filedOT." (empID, dateFiled, otDate, otType, fromTime, toTime, remarks)
+                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$otDate', '$otType', '$fromTime', '$toTime', '$remarks')";
             return $fileOT;
         }
 
