@@ -12,6 +12,7 @@
         // private $leaves = 'tbl_leaveapplications';
         // private $filedOT = 'tbl_filedot';
         private $employees = 'tbl_employee';
+        private $designation = 'tbl_designation';
         private $allowances = 'tbl_allowances';
         private $deductions = 'tbl_deductions';
         private $reimbursements = 'tbl_reimbursements';
@@ -722,15 +723,15 @@
 
                     if (isset($holidays[$date]) && $holidays[$date] == "Regular") {
                         // CALCULATE REGULAR HOLIDAY NIGHT DIFFERENTIAL HOURS
-                        $regularHolidayNDHours = $this->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $undertimeMins);
-                        $totalRegularHolidayNDHours += $regularHolidayNDHours;
-                        $regularHolidaysWorked++;
+                        // $regularHolidayNDHours = $this->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $undertimeMins);
+                        // $totalRegularHolidayNDHours += $regularHolidayNDHours;
+                        // $regularHolidaysWorked++;
                     }
                     else if (isset($holidays[$date]) && $holidays[$date] == "Special") {
                         // CALCULATE SPECIAL HOLIDAY NIGHT DIFFERENTIAL HOURS
-                        $specialHolidayNDHours = $this->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $undertimeMins);
-                        $totalSpecialHolidayNDHours += $specialHolidayNDHours;
-                        $specialHolidaysWorked++;
+                        // $specialHolidayNDHours = $this->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $undertimeMins);
+                        // $totalSpecialHolidayNDHours += $specialHolidayNDHours;
+                        // $specialHolidaysWorked++;
                     }
                     else {
                         // CALCULATE REGULAR NIGHT DIFFERENTIAL HOURS
@@ -1015,15 +1016,15 @@
 
                     if (isset($holidays[$date]) && $holidays[$date] == "Regular") {
                         // CALCULATE REGULAR HOLIDAY NIGHT DIFFERENTIAL HOURS
-                        $regularHolidayNDHours = $this->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $undertimeMins);
-                        $totalRegularHolidayNDHours += $regularHolidayNDHours;
-                        $regularHolidaysWorked++;
+                        // $regularHolidayNDHours = $this->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $undertimeMins);
+                        // $totalRegularHolidayNDHours += $regularHolidayNDHours;
+                        // $regularHolidaysWorked++;
                     }
                     else if (isset($holidays[$date]) && $holidays[$date] == "Special") {
                         // CALCULATE SPECIAL HOLIDAY NIGHT DIFFERENTIAL HOURS
-                        $specialHolidayNDHours = $this->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $undertimeMins);
-                        $totalSpecialHolidayNDHours += $specialHolidayNDHours;
-                        $specialHolidaysWorked++;
+                        // $specialHolidayNDHours = $this->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $undertimeMins);
+                        // $totalSpecialHolidayNDHours += $specialHolidayNDHours;
+                        // $specialHolidaysWorked++;
                     }
                     else {
                         // CALCULATE REGULAR NIGHT DIFFERENTIAL HOURS
@@ -1226,10 +1227,19 @@
             return $viewAllPayslips;
         }
 
+        public function getPayrollID($payrollCycleID) {
+            $getPayrollID = "
+                SELECT * FROM ".$this->payroll." WHERE payrollCycleID = $payrollCycleID";
+            return $getPayrollID;
+        }
+
         public function viewPayslip($payrollID, $empID) {
             $viewPayslip = "
                 SELECT * FROM ".$this->payslip . " AS payslip
-                INNER JOIN ".$this->employees." AS employee ON payslip.empID = employee.id
+                INNER JOIN ".$this->employees." AS employee 
+                ON payslip.empID = employee.id
+                INNER JOIN ".$this->designation." AS designation 
+                ON employee.designationID = designation.designationID
                 WHERE payrollID = $payrollID AND empID = $empID";
             return $viewPayslip;
         }

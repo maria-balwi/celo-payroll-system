@@ -50,13 +50,12 @@ $(document).ready(function() {
                 success: function(response) {
                     $('#loader').hide();
                     $('#payslipContainer').html(response).show();
+                    $('#bntPrintPayslip').show();
                 },
                 error: function(xhr, status, error) {
                     $('#loader').hide();
-                    console.error(error);
                 }
             });
-            $('#bntPrintPayslip').show();
         }
         
     });
