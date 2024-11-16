@@ -9,11 +9,12 @@
         <?php include('../includes/sidebar.php'); ?>	
 
         <style>
-            .center {
-                display: block;
-                margin-left: auto;
-                margin-right: auto;
-                width: 50%;
+            .scale-for-pdf {
+                transform: scale(0.55); /* Scale down to 80% */
+                transform-origin: top left; /* Anchor scaling to the top-left corner */
+                width: 100%; /* Ensure content remains responsive */
+                height: auto; /* Let height adjust naturally */
+                overflow: hidden; /* Hide any content that overflows */
             }
         </style>
  
@@ -61,10 +62,10 @@
                     </button>
                 </div>
 
-                <!-- PRINT PAYSLIP CHANGE BUTTON -->
+                <!-- DOWNLOAD PAYSLIP CHANGE BUTTON -->
                 <div class="static inline-block text-right">
-                    <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none printPayslip" id="bntPrintPayslip">
-                    Print Payslip
+                    <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none downloadPayslip" id="btnDownloadPayslip">
+                    Download Payslip
                     </button>
                 </div>
             </div>
@@ -73,9 +74,9 @@
             <div class="p-4 m-1 bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
                 
                 <div class="container mx-auto overflow-auto">
-                    <!-- <div class="loader" id="loader"></div> -->
+                    <div class="loader" id="loader"></div>
                     <div id="payslipContainer" class="col-span-12 md:col-span-4 table text-center table-auto">
-                       
+
                     </div>
                 </div>
 
@@ -83,6 +84,7 @@
         </main>
     
         <script src="../assets/js/user_payslip.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
 
         <!-- FOOTER -->
         <?php include('../includes/footer.php'); ?>

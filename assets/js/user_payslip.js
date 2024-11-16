@@ -1,29 +1,7 @@
 $(document).ready(function() {
 
     $('#payslipTable').DataTable();
-    $('#bntPrintPayslip').hide();
-
-    // $('.generatePayslip').click(function(e) {
-    //     $('#loader').show();
-    //     $('#payslipContainer').hide();
-
-    //     $.ajax({
-    //         url: '../backend/user/generate_payslip.php',
-    //         type: 'POST',
-    //         data: {
-    //             employeeId: 12345 // You can make this dynamic as needed
-    //         },
-    //         success: function(response) {
-    //             $('#loader').hide();
-    //             $('#payslipContainer').html(response).show();
-    //         },
-    //         error: function(xhr, status, error) {
-    //             $('#loader').hide();
-    //             console.error(error);
-    //         }
-    //     });
-    //     $('#bntPrintPayslip').show();
-    // });
+    $('#btnDownloadPayslip').hide();
 
     $('.generatePayslip').click(function(e) {
         e.preventDefault();
@@ -48,33 +26,50 @@ $(document).ready(function() {
                     payrollCycleID: payrollCycleID,
                 },
                 success: function(response) {
-                    $('#loader').hide();
-                    $('#payslipContainer').html(response).show();
-                    $('#bntPrintPayslip').show();
+                    // Check if the response contains the specific message for "not generated"
+                    if (response.includes('<i>Payslip for this payroll cycle not yet generated.</i>')) {
+                        // Show the error message from PHP
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Payslip Not Available',
+                            text: 'Payroll for this payroll cycle has not been generated yet.',
+                        }).then(() => {
+                            $('#payrollCycleID').prop('selectedIndex', 0);
+                        });
+                        $('#loader').hide();
+                        $('#btnDownloadPayslip').hide();  // Hide button if payslip is not generated
+                    } else {
+                        // If response contains payslip HTML, display it
+                        $('#loader').hide();
+                        $('#payslipContainer').html(response).show();
+                        $('#btnDownloadPayslip').show();  // Show the download button if payslip is valid
+                    }
                 },
                 error: function(xhr, status, error) {
                     $('#loader').hide();
                 }
             });
         }
-        
     });
 
-    $(".printPayslip").click(function (e) {
+    $(".downloadPayslip").click(function (e) {
         e.preventDefault();
 
-        var payslip = document.getElementById("payslipContainer");
-        var style = "<style>";
-        style += "table {width: 100%; border-collapse: collapse;}";
-        style += "th, td {border: 1px solid #000; padding: 8px;}";
-        style += "</style>";
-        var newPrint = window.open("");
-        newPrint.document.write('<html><head><title>Payslip</title>');
-        newPrint.document.write(style); // Apply the CSS styles
-        newPrint.document.write('</head><body>');
-        newPrint.document.write(payslip.outerHTML); // Copy table HTML
-        newPrint.document.write('</body></html>');
-        newPrint.document.close();
-        newPrint.print();      
+        // Reference the payslip container
+        var element = document.getElementById('payslipContainer');
+
+        // Apply a temporary scaling class
+        $(element).addClass('scale-for-pdf');
+
+        html2pdf().from(element).set({
+            margin: .5,
+            filename: 'payslip.pdf',
+            html2canvas: { scale: 3 }, // Keeps quality high
+            jsPDF: { unit: 'in', format: 'A4', orientation: 'portrait' }, // Adjust format and orientation
+        }).save()
+        .then(() => {
+            // Remove the scaling class after the PDF is saved
+            $(element).removeClass('scale-for-pdf');
+        }); 
     });
 });
