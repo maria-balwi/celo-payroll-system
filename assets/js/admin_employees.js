@@ -121,13 +121,32 @@ $(document).ready(function() {
             });
         }
     });   
-    
+
+    $('.dateRegularizedLabel').hide();
+    $("select[id='employmentStatus']").on("change", function() {
+        if ($(this).val() == "Probationary") {
+            $('.dateRegularizedLabel').hide();
+        }
+        else {
+            $('.dateRegularizedLabel').show();
+        }
+    });
+
+    $("input[id='dateHired']").on("input", function() {
+        var dateHired = $(this).val();
+        var date = new Date(dateHired);
+        date.setMonth(date.getMonth() + 6);
+        // Format the result as 'YYYY-MM-DD'
+        var regularizedDate = date.toISOString().split('T')[0];
+
+        // Set the regularized date in the #dateRegularized input
+        $('#dateRegularized').val(regularizedDate);
+    });
 
     // // HOURLY RATE COMPUTATION - ADD EMPLOYEE
     // $("input[id='basicPay']").on("input", function() {
     //     var basicPay = $(this).val();
     //     var dailyRate = (basicPay * 12 / 261).toFixed(2);
-    //     $('#dailyRate').val(dailyRate).trigger('input');
     // });
 
     // $("input[id='dailyRate']").on("input", function() {
@@ -415,6 +434,9 @@ $(document).ready(function() {
         var department = $("#department").val();
         var designation = $("#designation").val();
         var shiftID = $("#shiftID").val();
+        var employmentStatus = $("#employmentStatus").val();
+        var dateHired = $("#dateHired").val();
+        var dateRegularized = $("#dateRegularized").val();
         var basicPay = $("#basicPay").val();
         var dailyRate = $("#dailyRate").val();
         var hourlyRate = $("#hourlyRate").val();
@@ -424,7 +446,8 @@ $(document).ready(function() {
         if (lastName == "" || firstName == "" || gender == "" || civilStatus == "" || 
             address == "" || dateOfBirth == "" || placeOfBirth == "" ||
             emailAddress == "" || employeeID == "" || mobileNumber == "" ||
-            department == "" || designation == "" || shiftID == "" || 
+            department == "" || designation == "" || shiftID == "" ||  
+            employmentStatus == "" || dateHired == "" ||
             basicPay == "" || dailyRate == "" || hourlyRate == "" || 
             vacationLeaves == "" || sickLeaves == "") {
             Swal.fire({

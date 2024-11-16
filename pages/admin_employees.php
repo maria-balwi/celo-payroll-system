@@ -291,6 +291,34 @@
 
                                 <div class="row g-2 mb-1">
                                     <div class="col-4">
+                                        <label for="employmentStatus">Employment Status:</label>
+                                    </div>
+                                    <div class="col-4">
+                                        <label for="dateHired">Date Hired:</label>
+                                    </div>
+                                    <div class="col-4 dateRegularizedLabel">
+                                        <label for="dateRegularized">Date Regularized:</label>
+                                    </div>
+                                </div>
+                            
+                                <div class="row g-2 mb-2">
+                                    <div class="col-4">
+                                        <select id="employmentStatus" name="employmentStatus" class="form-select">
+                                            <option value="" selected disabled>Choose</option>
+                                            <option value="Probationary">Probationary</option>
+                                            <option value="Regular">Regular</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="date" class="form-control" id="dateHired" name="dateHired">
+                                    </div>
+                                    <div class="col-4 dateRegularizedLabel">
+                                        <input type="date" class="form-control" id="dateRegularized" name="dateRegularized" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-1">
+                                    <div class="col-4">
                                         <label for="vacationLeaves">Vacation Leaves:</label>
                                     </div>
                                     <div class="col-4">
@@ -602,6 +630,30 @@
                                 </div>
                                 <div class="col-4">
                                     <input type="number" class="form-control" id="viewHourlyRate" name="viewHourlyRate" disabled readonly>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-1">
+                                <div class="col-4">
+                                    <label for="viewEmploymentStatus">Employment Status:</label>
+                                </div>
+                                <div class="col-4">
+                                    <label for="viewDateHired">Date Hired:</label>
+                                </div>
+                                <div class="col-4 viewDateRegularizedLabel">
+                                    <label for="viewDateRegularized">Date Regularized:</label>
+                                </div>
+                            </div>
+                            
+                            <div class="row g-2 mb-2">
+                                <div class="col-4">
+                                    <input type="number" class="form-control" id="viewEmploymentStatus" name="viewEmploymentStatus" disabled readonly>
+                                </div>
+                                <div class="col-4">
+                                    <input type="number" class="form-control" id="viewDateHired" name="viewDateHired" disabled readonly>
+                                </div>
+                                <div class="col-4 viewDateRegularizedLabel">
+                                    <input type="number" class="form-control" id="viewDateRegularized" name="viewDateRegularized" disabled readonly>
                                 </div>
                             </div>
 

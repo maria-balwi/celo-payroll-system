@@ -20,6 +20,8 @@
     $departmentID = $_POST['department'];
     $designationID = $_POST['designation'];
     $shiftID = $_POST['shiftID'];
+    $employmentStatus = $_POST['employmentStatus'];
+    $dateHired = $_POST['dateHired'];
     $basicPay = $_POST['basicPay'];
     $dailyRate = $_POST['dailyRate'];
     $hourlyRate = $_POST['hourlyRate'];
@@ -155,8 +157,19 @@
         exit();
     }
     else {
-        mysqli_query($conn, $employees->addNewEmployee($lastName, $firstName, $gender, $civilStatus, $address, $dateOfBirth, $placeOfBirth, 
-        $sss, $pagIbig, $philhealth, $tin, $emailAddress, $employeeID, $mobileNumber, $departmentID, $designationID, $shiftID, $basicPay, $dailyRate, $hourlyRate, $vacationLeaves, $sickLeaves));
+        if ($employmentStatus == "Regular")
+        {
+            // ADD REGULAR EMPLOYEE
+            $dateRegularized = new DateTime($dateHired);
+            $dateRegularized->modify('+6 months');
+            $dateRegularized = $dateRegularized->format('Y-m-d');
+            mysqli_query($conn, $employees->addNewEmployee_reg($lastName, $firstName, $gender, $civilStatus, $address, $dateOfBirth, $placeOfBirth, $sss, $pagIbig, $philhealth, $tin, $emailAddress, $employeeID, $mobileNumber, $departmentID, $designationID, $shiftID, $basicPay, $dailyRate, $hourlyRate, $vacationLeaves, $sickLeaves, $employmentStatus, $dateHired, $dateRegularized));
+        }
+        else 
+        {
+            // ADD PROBATIONARY EMPLOYEE
+            mysqli_query($conn, $employees->addNewEmployee_prob($lastName, $firstName, $gender, $civilStatus, $address, $dateOfBirth, $placeOfBirth, $sss, $pagIbig, $philhealth, $tin, $emailAddress, $employeeID, $mobileNumber, $departmentID, $designationID, $shiftID, $basicPay, $dailyRate, $hourlyRate, $vacationLeaves, $sickLeaves, $employmentStatus, $dateHired));
+        }
 
         $lastIDQuery = mysqli_query($conn, $employees->viewLastEmployee());
         $lastIDResult = mysqli_fetch_array($lastIDQuery);

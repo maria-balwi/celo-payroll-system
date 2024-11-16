@@ -591,15 +591,27 @@
             return $checkEmployeeID;
         }
 
-        public function addNewEmployee($lastName, $firstName, $gender, $civilStatus, $address, $dateOfBirth, $placeOfBirth, 
+        public function addNewEmployee_prob($lastName, $firstName, $gender, $civilStatus, $address, $dateOfBirth, $placeOfBirth, 
             $sss, $pagIbig, $philhealth, $tin, $emailAddress, $employeeID, $mobileNumber, $departmentID, $designationID, $shiftID, 
-            $basicPay, $dailyRate, $hourlyRate, $vacationLeaves, $sickLeaves) {
+            $basicPay, $dailyRate, $hourlyRate, $vacationLeaves, $sickLeaves, $employmentStatus, $dateHired) {
             $addEmployee = "
                 INSERT INTO ".$this->employees." (lastName, firstName, gender, civilStatus, address, dateOfBirth, placeOfBirth, 
-                sss, pagIbig, philhealth, tin, emailAddress, employeeID, mobileNumber, departmentID, designationID, shiftID, basicPay, dailyRate, hourlyRate, availableVL, availableSL)
+                sss, pagIbig, philhealth, tin, emailAddress, employeeID, mobileNumber, departmentID, designationID, shiftID, basicPay, dailyRate, hourlyRate, availableVL, availableSL, employmentStatus, dateHired)
                 VALUES ('".$lastName."', '".$firstName."', '".$gender."', '".$civilStatus."', '".$address."', '".$dateOfBirth."', '".$placeOfBirth."',
                 '".$sss."', '".$pagIbig."', '".$philhealth."', '".$tin."', '".$emailAddress."', '".$employeeID."', '".$mobileNumber."', 
-                '".$departmentID."', '".$designationID."', '".$shiftID."', '".$basicPay."', '".$dailyRate."', '".$hourlyRate."', '".$vacationLeaves."', '".$sickLeaves."')";
+                '".$departmentID."', '".$designationID."', '".$shiftID."', '".$basicPay."', '".$dailyRate."', '".$hourlyRate."', '".$vacationLeaves."', '".$sickLeaves."', '".$employmentStatus."', '".$dateHired."')";
+            return $addEmployee;
+        }
+
+        public function addNewEmployee_reg($lastName, $firstName, $gender, $civilStatus, $address, $dateOfBirth, $placeOfBirth, 
+            $sss, $pagIbig, $philhealth, $tin, $emailAddress, $employeeID, $mobileNumber, $departmentID, $designationID, $shiftID, 
+            $basicPay, $dailyRate, $hourlyRate, $vacationLeaves, $sickLeaves, $employmentStatus, $dateHired, $dateRegularized) {
+            $addEmployee = "
+                INSERT INTO ".$this->employees." (lastName, firstName, gender, civilStatus, address, dateOfBirth, placeOfBirth, 
+                sss, pagIbig, philhealth, tin, emailAddress, employeeID, mobileNumber, departmentID, designationID, shiftID, basicPay, dailyRate, hourlyRate, availableVL, availableSL, employmentStatus, dateHired, dateRegularized)
+                VALUES ('".$lastName."', '".$firstName."', '".$gender."', '".$civilStatus."', '".$address."', '".$dateOfBirth."', '".$placeOfBirth."',
+                '".$sss."', '".$pagIbig."', '".$philhealth."', '".$tin."', '".$emailAddress."', '".$employeeID."', '".$mobileNumber."', 
+                '".$departmentID."', '".$designationID."', '".$shiftID."', '".$basicPay."', '".$dailyRate."', '".$hourlyRate."', '".$vacationLeaves."', '".$sickLeaves."', '".$employmentStatus."', '".$dateHired."', '".$dateRegularized."')";
             return $addEmployee;
         }
 
@@ -675,6 +687,7 @@
                 mobileNumber, departmentName, position, basicPay, dailyRate, hourlyRate,
                 availableVL, availableSL, req_sss, req_pagIbig, req_philhealth, req_tin, req_nbi,
                 req_medicalExam, req_2x2pic, req_vaccineCard, req_psa, req_validID, req_helloMoney,
+                employmentStatus, dateHired, dateRegularized,
                 DATE_FORMAT(shifts.startTime, '%h:%i %p') AS startTime, 
                 DATE_FORMAT(shifts.endTime, '%h:%i %p') AS endTime
                 FROM ".$this->employees." AS employees
