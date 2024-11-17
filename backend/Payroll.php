@@ -616,28 +616,6 @@
             }
         }
 
-        // private function calculateHolidaysHours($start, $end, $payrollCycleFrom, $payrollCycleTo, $attendanceDate, &$totalRegularHolidayHours, &$totalSpecialHolidayHours) {
-        //     static $holidays = null;
-        
-        //     if ($holidays === null) {
-        //         $holidays = [];
-        //         $holidaysQuery = $this->dbConnect()->query("SELECT * FROM tbl_holidays WHERE dateFrom BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'");
-        //         while ($holidayDetails = mysqli_fetch_array($holidaysQuery)) {
-        //             $holidays[$holidayDetails['dateFrom']] = $holidayDetails['type'];
-        //         }
-        //     }
-
-        //     $interval = $start->diff($end);
-        //     $hoursWorked = $interval->h + round($interval->i / 60);
-    
-        //     if (isset($holidays[$attendanceDate]) && $holidays[$attendanceDate] == 'Regular') {
-        //         $totalRegularHolidayHours += $hoursWorked;
-        //     }
-        //     else if (isset($holidays[$attendanceDate]) && $holidays[$attendanceDate] == 'Special') {
-        //         $totalSpecialHolidayHours += $hoursWorked;
-        //     }
-        // }
-
         public function calculateOvertimeND($fromTime, $toTime){
             $nightStart = new DateTime("22:00");
             $nightEnd = new DateTime("06:00");
@@ -656,579 +634,549 @@
             return $nightDiffHours;
         }
         
-        // public function calculatePayroll($payrollID, $payrollCycleID) {
-        //     function formatDate($date) {
-        //         // Get the current year
-        //         $currentYear = date('Y');
+        public function calculatePayroll($payrollID, $payrollCycleID) {
+            function formatDate($date) {
+                // Get the current year
+                $currentYear = date('Y');
                 
-        //         // Append the current year to the input date
-        //         $dateWithYear = $date . '-' . $currentYear;
+                // Append the current year to the input date
+                $dateWithYear = $date . '-' . $currentYear;
                 
-        //         // Create a DateTime object from the string (expects format MM-DD-YYYY)
-        //         $dateTime = DateTime::createFromFormat('m-d-Y', $dateWithYear);
+                // Create a DateTime object from the string (expects format MM-DD-YYYY)
+                $dateTime = DateTime::createFromFormat('m-d-Y', $dateWithYear);
                 
-        //         // Format the date as 'M d, Y'
-        //         return $dateTime->format('Y-m-d');
-        //     }
+                // Format the date as 'M d, Y'
+                return $dateTime->format('Y-m-d');
+            }
 
-        //     // GET PAYROLL CYCLE DETAILS
-        //     $payrollCycleFrom_date = $this->dbConnect()->query("SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleFrom']; 
-        //     $payrollCycleTo_date = $this->dbConnect()->query("SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleTo'];
-        //     $payrollCycleFrom = formatDate($payrollCycleFrom_date);
-        //     $payrollCycleTo = formatDate($payrollCycleTo_date);
+            // GET PAYROLL CYCLE DETAILS
+            $payrollCycleFrom_date = $this->dbConnect()->query("SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleFrom']; 
+            $payrollCycleTo_date = $this->dbConnect()->query("SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleTo'];
+            $payrollCycleFrom = formatDate($payrollCycleFrom_date);
+            $payrollCycleTo = formatDate($payrollCycleTo_date);
 
-        //     // GET EMPLOYEE DETAILS
-        //     $employees = $this->dbConnect()->query("SELECT * FROM tbl_employee");
-        //     while ($employeeDetails = mysqli_fetch_array($employees)) {
-        //         $employee_id = $employeeDetails['id'];
-        //         $employee_dailyRate = $employeeDetails['dailyRate'];
-        //         $employee_hourlyRate = $employeeDetails['hourlyRate'];
-        //         $employee_cashAdvance = ($employeeDetails['cashAdvance'] != null) ? $employeeDetails['cashAdvance'] : null;
+            // GET EMPLOYEE DETAILS
+            $employees = $this->dbConnect()->query("SELECT * FROM tbl_employee WHERE designationID != 12");
+            while ($employeeDetails = mysqli_fetch_array($employees)) {
+                $employee_id = $employeeDetails['id'];
+                $employee_dailyRate = $employeeDetails['dailyRate'];
+                $employee_hourlyRate = $employeeDetails['hourlyRate'];
+                $employee_cashAdvance = ($employeeDetails['cashAdvance'] != null) ? $employeeDetails['cashAdvance'] : null;
 
-        //         // COMPUTE DAYS WORKED
-        //         $daysWorkedQuery = $this->dbConnect()->query("SELECT * FROM tbl_attendance WHERE empID = $employeeDetails[id] AND (logTypeID IN (1, 2) OR logTypeID IN (3, 4)) AND attendanceDate BETWEEN DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom'))) AND DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleTo')))");
-        //         $employee_daysWorked = round(mysqli_num_rows($daysWorkedQuery) / 2);
+                // COMPUTE DAYS WORKED
+                $daysWorkedQuery = $this->dbConnect()->query("SELECT * FROM tbl_attendance WHERE empID = $employeeDetails[id] AND (logTypeID IN (1, 2) OR logTypeID IN (3, 4)) AND attendanceDate BETWEEN DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom'))) AND DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleTo')))");
+                $employee_daysWorked = round(mysqli_num_rows($daysWorkedQuery) / 2);
 
-        //         // CHECK FOR HOLIDAYS
-        //         $holidaysQuery = $this->dbConnect()->query("SELECT * FROM tbl_holidays WHERE dateFrom BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'");
-        //         $holidays = [];
-        //         while ($holidayDetails = mysqli_fetch_array($holidaysQuery)) {
-        //             $holidays[$holidayDetails['dateFrom']] = $holidayDetails['type'];
-        //         }
+                // CHECK FOR HOLIDAYS
+                $holidaysQuery = $this->dbConnect()->query("SELECT * FROM tbl_holidays WHERE dateFrom BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'");
+                $holidays = [];
+                while ($holidayDetails = mysqli_fetch_array($holidaysQuery)) {
+                    $holidays[$holidayDetails['dateFrom']] = $holidayDetails['type'];
+                }
 
-        //         // INITIALIZE VARIABLES FOR HOURS WORKED COMPUTATION
-        //         $totalNightHours = 0;
-        //         $totalOvertimeHours = 0;
-        //         $totalOvertimeNDHours = 0;
-        //         $totalRDOTHours = 0;
-        //         $totalRDOTNDHours = 0;
-        //         $totalSpecialHolidayHours = 0;
-        //         $totalSpecialHolidayNDHours = 0;
-        //         $totalRegularHolidayHours = 0;
-        //         $totalRegularHolidayNDHours = 0;
+                // INITIALIZE VARIABLES FOR HOURS WORKED COMPUTATION
+                $totalNightHours = 0;
+                $totalOvertimeHours = 0;
+                $totalOvertimeNDHours = 0;
+                $totalRDOTHours = 0;
+                $totalRDOTNDHours = 0;
+                $totalSpecialHolidayHours = 0;
+                $totalSpecialHolidayNDHours = 0;
+                $totalRegularHolidayHours = 0;
+                $totalRegularHolidayNDHours = 0;
 
-        //         // INITIALIZE VARIABLES FOR DAYS WORKED (HOLIDAYS) COMPUTATION
-        //         $specialHolidaysWorked = 0;
-        //         $regularHolidaysWorked = 0;
+                // INITIALIZE VARIABLES FOR DAYS WORKED (HOLIDAYS) COMPUTATION
+                $specialHolidaysWorked = 0;
+                $regularHolidaysWorked = 0;
 
-        //         // INITIALIZE VARIABLES FOR PAYS COMPUTATION
-        //         $employee_nightDiffPay = 0;
-        //         $employee_overtimePay = 0;
-        //         $employee_overtimeNDPay = 0;
-        //         $employee_RDOTPay = 0;
-        //         $employee_RDOTNDPay = 0;
-        //         $employee_specialHolidayPay = 0;
-        //         $employee_regularHolidayPay = 0;
-        //         $employee_specialHolidayNDPay = 0;
-        //         $employee_regularHolidayNDPay = 0;
+                // INITIALIZE VARIABLES FOR PAYS COMPUTATION
+                $employee_nightDiffPay = 0;
+                $employee_overtimePay = 0;
+                $employee_overtimeNDPay = 0;
+                $employee_RDOTPay = 0;
+                $employee_RDOTNDPay = 0;
+                $employee_specialHolidayPay = 0;
+                $employee_regularHolidayPay = 0;
+                $employee_specialHolidayNDPay = 0;
+                $employee_regularHolidayNDPay = 0;
 
-        //         // ALLOWANCES, DEDUCTIONS, REIMBURSEMENTS, AND ADJUSTMENTS (=,-) COMPUTATION
-        //         $totalAllowances = 0;
-        //         $communication = 0;
-        //         $sss = 0;
-        //         $phic = 0;
-        //         $hdmf = 0;
-        //         $wtax = 0;
-        //         $salaryLoan = 0;
-        //         $mpl = 0;
-        //         $smart = 0;
-        //         $cashAdvance = 0;
-        //         $totalReimbursements = 0;
-        //         $totalAdjustments = 0;
+                // ALLOWANCES, DEDUCTIONS, REIMBURSEMENTS, AND ADJUSTMENTS (=,-) COMPUTATION
+                $totalAllowances = 0;
+                $communication = 0;
+                $sss = 0;
+                $phic = 0;
+                $hdmf = 0;
+                $wtax = 0;
+                $salaryLoan = 0;
+                $mpl = 0;
+                $smart = 0;
+                $cashAdvance = 0;
+                $totalReimbursements = 0;
+                $totalAdjustments = 0;
 
-        //         // COMPUTE HOURS WORKED
-        //         while ($attendanceLogs = mysqli_fetch_array($daysWorkedQuery)) {
-        //             $date = $attendanceLogs['attendanceDate'];
-        //             $attendanceTime = $attendanceLogs['attendanceTime'];
-        //             $logTypeID = $attendanceLogs['logTypeID'];
-        //             $lateMins = $attendanceLogs['lateMins'];
-        //             $undertimeMins = $attendanceLogs['undertimeMins'];
+                // COMPUTE HOURS WORKED
+                while ($attendanceLogs = mysqli_fetch_array($daysWorkedQuery)) {
+                    $date = $attendanceLogs['attendanceDate'];
+                    $attendanceTime = $attendanceLogs['attendanceTime'];
+                    $logTypeID = $attendanceLogs['logTypeID'];
+                    $lateMins = $attendanceLogs['lateMins'];
+                    $undertimeMins = $attendanceLogs['undertimeMins'];
 
-        //             if (isset($holidays[$date]) && $holidays[$date] == "Regular") {
-        //                 // CALCULATE REGULAR HOLIDAY NIGHT DIFFERENTIAL HOURS
-        //                 // $regularHolidayNDHours = $this->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $undertimeMins);
-        //                 // $totalRegularHolidayNDHours += $regularHolidayNDHours;
-        //                 // $regularHolidaysWorked++;
-        //             }
-        //             else if (isset($holidays[$date]) && $holidays[$date] == "Special") {
-        //                 // CALCULATE SPECIAL HOLIDAY NIGHT DIFFERENTIAL HOURS
-        //                 // $specialHolidayNDHours = $this->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $undertimeMins);
-        //                 // $totalSpecialHolidayNDHours += $specialHolidayNDHours;
-        //                 // $specialHolidaysWorked++;
-        //             }
-        //             else {
-        //                 // CALCULATE REGULAR NIGHT DIFFERENTIAL HOURS
-        //                 $nightHours = $this->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $undertimeMins);
-        //                 $totalNightHours += $nightHours;
-        //             }
-        //         }
+                    $result = $this->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $payrollCycleFrom, $payrollCycleTo, $date);             
+                    $totalNightHours += $result['totalRegularNightHours'];
+                    $totalRegularHolidayHours += $result['totalRegularHolidayHours'];
+                    $totalRegularHolidayNDHours += $result['totalRegularHolidayNightHours'];
+                    $totalSpecialHolidayHours += $result['totalSpecialHolidayHours'];
+                    $totalSpecialHolidayNDHours += $result['totalSpecialHolidayNightHours'];
+                }
 
-        //         // COMPUTE OVERTIME HOURS
-        //         $overtimesQuery = $this->dbConnect()->query("SELECT * FROM tbl_filedot WHERE empID = $employee_id AND (otDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo') AND status = '2'");
-        //         while ($overtime = mysqli_fetch_array($overtimesQuery)) {
-        //             if ($overtime['otType'] == "Regular") {
-        //                 $from = new DateTime($overtime['fromTime']);
-        //                 $to = new DateTime($overtime['toTime']);$totalOvertimeHours += 1;
+                // COMPUTE OVERTIME HOURS
+                $overtimesQuery = $this->dbConnect()->query("SELECT * FROM tbl_filedot WHERE empID = $employee_id AND (otDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo') AND status = '2'");
+                while ($overtime = mysqli_fetch_array($overtimesQuery)) {
+                    if ($overtime['otType'] == "Regular") {
+                        $from = new DateTime($overtime['fromTime']);
+                        $to = new DateTime($overtime['toTime']);$totalOvertimeHours += 1;
                         
-        //                 // COUNT ND HOURS
-        //                 $NDHours = $this->calculateOvertimeND($from, $to);
-        //                 $totalOvertimeNDHours += $NDHours;
+                        // COUNT ND HOURS
+                        $NDHours = $this->calculateOvertimeND($from, $to);
+                        $totalOvertimeNDHours += $NDHours;
 
-        //                 $interval = $from->diff($to);
-        //                 $hours = $interval->h + ($interval->i >= 30 ? 1 : 0);
-        //                 $totalOvertimeHours = $hours - $totalOvertimeNDHours;
-        //             }
-        //             else { // RDOT
-        //                 $from = new DateTime($overtime['fromTime']);
-        //                 $to = new DateTime($overtime['toTime']);
+                        $interval = $from->diff($to);
+                        $hours = $interval->h + ($interval->i >= 30 ? 1 : 0);
+                        $totalOvertimeHours = $hours - $totalOvertimeNDHours;
+                    }
+                    else { // RDOT
+                        $from = new DateTime($overtime['fromTime']);
+                        $to = new DateTime($overtime['toTime']);
                         
-        //                 // COUNT ND HOURS
-        //                 $NDHours = $this->calculateOvertimeND($from, $to);
-        //                 $totalRDOTNDHours += $NDHours;
+                        // COUNT ND HOURS
+                        $NDHours = $this->calculateOvertimeND($from, $to);
+                        $totalRDOTNDHours += $NDHours;
 
-        //                 $interval = $from->diff($to);
-        //                 $hours = $interval->h + ($interval->i >= 30 ? 1 : 0);
-        //                 $totalRDOTHours = $hours - $totalRDOTNDHours;
-        //             }
-        //         }
+                        $interval = $from->diff($to);
+                        $hours = $interval->h + ($interval->i >= 30 ? 1 : 0);
+                        $totalRDOTHours = $hours - $totalRDOTNDHours;
+                    }
+                }
 
-        //         // COMPUTATION FOR ALLOWANCES
-        //         $allowancesQuery = $this->dbConnect()->query("SELECT amount, type FROM tbl_empallowances INNER JOIN tbl_allowances ON tbl_empallowances.allowanceID = tbl_allowances.allowanceID WHERE empID = $employee_id AND allowanceName NOT IN ('Communication', 'Communication Allowance')");
-        //         while ($allowanceDetails = mysqli_fetch_array($allowancesQuery)) {
-        //             if ($allowanceDetails['type'] == 1 && $payrollCycleID % 2 == 1) { // MONTHLY
-        //                 $totalAllowances += $allowanceDetails['amount'];
-        //             } elseif ($allowanceDetails['type'] == 2) { // SEMI-MONTHLY
-        //                 $totalAllowances += $allowanceDetails['amount'];
-        //             }
-        //         }
+                // COMPUTATION FOR ALLOWANCES
+                $allowancesQuery = $this->dbConnect()->query("SELECT amount, type FROM tbl_empallowances INNER JOIN tbl_allowances ON tbl_empallowances.allowanceID = tbl_allowances.allowanceID WHERE empID = $employee_id AND allowanceName NOT IN ('Communication', 'Communication Allowance')");
+                while ($allowanceDetails = mysqli_fetch_array($allowancesQuery)) {
+                    if ($allowanceDetails['type'] == 1 && $payrollCycleID % 2 == 1) { // MONTHLY
+                        $totalAllowances += $allowanceDetails['amount'];
+                    } elseif ($allowanceDetails['type'] == 2) { // SEMI-MONTHLY
+                        $totalAllowances += $allowanceDetails['amount'];
+                    }
+                }
 
-        //         // COMPUTATION FOR COMMUNICATION ALLOWANCE
-        //         $allowancesQuery = $this->dbConnect()->query("SELECT amount, type FROM tbl_empallowances INNER JOIN tbl_allowances ON tbl_empallowances.allowanceID = tbl_allowances.allowanceID WHERE empID = $employee_id AND allowanceName IN ('Communication', 'Communication Allowance')");
-        //         while ($allowanceDetails = mysqli_fetch_array($allowancesQuery)) {
-        //             if ($allowanceDetails['type'] == 1 && $payrollCycleID % 2 == 1) { // MONTHLY
-        //                 $communication += $allowanceDetails['amount'];
-        //             } elseif ($allowanceDetails['type'] == 2) { // SEMI-MONTHLY
-        //                 $communication += $allowanceDetails['amount'];
-        //             }
-        //         }
+                // COMPUTATION FOR COMMUNICATION ALLOWANCE
+                $allowancesQuery = $this->dbConnect()->query("SELECT amount, type FROM tbl_empallowances INNER JOIN tbl_allowances ON tbl_empallowances.allowanceID = tbl_allowances.allowanceID WHERE empID = $employee_id AND allowanceName IN ('Communication', 'Communication Allowance')");
+                while ($allowanceDetails = mysqli_fetch_array($allowancesQuery)) {
+                    if ($allowanceDetails['type'] == 1 && $payrollCycleID % 2 == 1) { // MONTHLY
+                        $communication += $allowanceDetails['amount'];
+                    } elseif ($allowanceDetails['type'] == 2) { // SEMI-MONTHLY
+                        $communication += $allowanceDetails['amount'];
+                    }
+                }
 
-        //         // COMPUTATION FOR DEDUCTIONS
-        //         $deductionsQuery = $this->dbConnect()->query("SELECT amount, deductionName, type, payrollCycleID FROM tbl_empdeductions INNER JOIN tbl_deductions ON tbl_empdeductions.deductionID = tbl_deductions.deductionID WHERE empID = $employee_id");
-        //         while ($deductionDetails = mysqli_fetch_array($deductionsQuery)) {
-        //             if ($deductionDetails['deductionName'] == "SSS") {
-        //                 $sss = $deductionDetails['amount'];
-        //             }
-        //             else if ($deductionDetails['deductionName'] == "PHIC") {
-        //                 $phic = $deductionDetails['amount'];
-        //             }
-        //             else if ($deductionDetails['deductionName'] == "HDMF") {
-        //                 $hdmf = $deductionDetails['amount'];
-        //             }
-        //             else if ($deductionDetails['deductionName'] == "WTAX") {
-        //                 $wtax = $deductionDetails['amount'];
-        //             }
-        //             else if ($deductionDetails['deductionName'] == "SSS Salary Loan") {
-        //                 $salaryLoan = $deductionDetails['amount'];
-        //             }
-        //             else if ($deductionDetails['deductionName'] == "Pag_Ibig MPL") {
-        //                 $mpl = $deductionDetails['amount'];
-        //             }
-        //             else if ($deductionDetails['deductionName'] == "Smart") {
-        //                 $smart = $deductionDetails['amount'];
-        //             }
-        //             else if ($deductionDetails['deductionName'] == "Cash Advance") {
-        //                 if ($deductionDetails['type'] == 1 && $payrollCycleID % 2 == 1) { // MONTHLY
-        //                     $cashAdvance = $deductionDetails['amount'];
-        //                 }
-        //                 elseif ($deductionDetails['type'] == 2) { // SEMI-MONTHLY
-        //                     $cashAdvance = $deductionDetails['amount'];
-        //                 }
-        //                 elseif ($deductionDetails['type'] == 3 && $deductionDetails['payrollCycleID'] == $payrollCycleID) { // ONCE
-        //                     $cashAdvance = $deductionDetails['amount'];
-        //                 }
-        //             }
-        //         }
+                // COMPUTATION FOR DEDUCTIONS
+                $deductionsQuery = $this->dbConnect()->query("SELECT amount, deductionName, type, payrollCycleID FROM tbl_empdeductions INNER JOIN tbl_deductions ON tbl_empdeductions.deductionID = tbl_deductions.deductionID WHERE empID = $employee_id");
+                while ($deductionDetails = mysqli_fetch_array($deductionsQuery)) {
+                    if ($deductionDetails['deductionName'] == "SSS") {
+                        $sss = $deductionDetails['amount'];
+                    }
+                    else if ($deductionDetails['deductionName'] == "PHIC") {
+                        $phic = $deductionDetails['amount'];
+                    }
+                    else if ($deductionDetails['deductionName'] == "HDMF") {
+                        $hdmf = $deductionDetails['amount'];
+                    }
+                    else if ($deductionDetails['deductionName'] == "WTAX") {
+                        $wtax = $deductionDetails['amount'];
+                    }
+                    else if ($deductionDetails['deductionName'] == "SSS Salary Loan") {
+                        $salaryLoan = $deductionDetails['amount'];
+                    }
+                    else if ($deductionDetails['deductionName'] == "Pag_Ibig MPL") {
+                        $mpl = $deductionDetails['amount'];
+                    }
+                    else if ($deductionDetails['deductionName'] == "Smart") {
+                        $smart = $deductionDetails['amount'];
+                    }
+                    else if ($deductionDetails['deductionName'] == "Cash Advance") {
+                        if ($deductionDetails['type'] == 1 && $payrollCycleID % 2 == 1) { // MONTHLY
+                            $cashAdvance = $deductionDetails['amount'];
+                        }
+                        elseif ($deductionDetails['type'] == 2) { // SEMI-MONTHLY
+                            $cashAdvance = $deductionDetails['amount'];
+                        }
+                        elseif ($deductionDetails['type'] == 3 && $deductionDetails['payrollCycleID'] == $payrollCycleID) { // ONCE
+                            $cashAdvance = $deductionDetails['amount'];
+                        }
+                    }
+                }
 
-        //         // COMPUTATION FOR REIMBURSEMENTS
-        //         $reimbursementsQuery = $this->dbConnect()->query("SELECT amount, type, payrollCycleID FROM tbl_empreimbursements INNER JOIN tbl_reimbursements ON tbl_empreimbursements.reimbursementID = tbl_reimbursements.reimbursementID WHERE empID = $employee_id");
-        //         while ($reimbursementDetails = mysqli_fetch_array($reimbursementsQuery)) {
-        //             if ($reimbursementDetails['type'] == 1 && $payrollCycleID % 2 == 1) { // MONTHLY
-        //                 $totalReimbursements += $reimbursementDetails['amount'];
-        //             } elseif ($reimbursementDetails['type'] == 2) { // SEMI-MONTHLY
-        //                 $totalReimbursements += $reimbursementDetails['amount'];
-        //             } elseif ($reimbursementDetails['type'] == 3 && $reimbursementDetails['payrollCycleID'] == $payrollCycleID) { // ONCE
-        //                 $totalReimbursements += $reimbursementDetails['amount'];
-        //             }
-        //         }
+                // COMPUTATION FOR REIMBURSEMENTS
+                $reimbursementsQuery = $this->dbConnect()->query("SELECT amount, type, payrollCycleID FROM tbl_empreimbursements INNER JOIN tbl_reimbursements ON tbl_empreimbursements.reimbursementID = tbl_reimbursements.reimbursementID WHERE empID = $employee_id");
+                while ($reimbursementDetails = mysqli_fetch_array($reimbursementsQuery)) {
+                    if ($reimbursementDetails['type'] == 1 && $payrollCycleID % 2 == 1) { // MONTHLY
+                        $totalReimbursements += $reimbursementDetails['amount'];
+                    } elseif ($reimbursementDetails['type'] == 2) { // SEMI-MONTHLY
+                        $totalReimbursements += $reimbursementDetails['amount'];
+                    } elseif ($reimbursementDetails['type'] == 3 && $reimbursementDetails['payrollCycleID'] == $payrollCycleID) { // ONCE
+                        $totalReimbursements += $reimbursementDetails['amount'];
+                    }
+                }
 
-        //         // COMPUTATION FOR ADJUSTMENTS
-        //         $adjustmentsQuery = $this->dbConnect()->query("SELECT amount, type, payrollCycleID, adjustmentType FROM tbL_empadjustments INNER JOIN tbl_adjustments ON tbL_empadjustments.adjustmentID = tbl_adjustments.adjustmentID WHERE empID = $employee_id");
-        //         while ($adjustmentDetails = mysqli_fetch_array($adjustmentsQuery)) {
-        //             if ($adjustmentDetails['type'] == 1 && $payrollCycleID % 2 == 1) { // MONTHLY
-        //                 if ($adjustmentDetails['adjustmentType'] == "Add") {
-        //                     $totalAdjustments += $adjustmentDetails['amount'];
-        //                 }
-        //                 else {
-        //                     $totalAdjustments -= $adjustmentDetails['amount'];
-        //                 }
-        //             } elseif ($adjustmentDetails['type'] == 2) { // SEMI-MONTHLY
-        //                 if ($adjustmentDetails['adjustmentType'] == "Add") {
-        //                     $totalAdjustments += $adjustmentDetails['amount'];
-        //                 }
-        //                 else {
-        //                     $totalAdjustments -= $adjustmentDetails['amount'];
-        //                 }
-        //             } elseif ($adjustmentDetails['type'] == 3 && $adjustmentDetails['payrollCycleID'] == $payrollCycleID) { // ONCE
-        //                 if ($adjustmentDetails['adjustmentType'] == "Add") {
-        //                     $totalAdjustments += $adjustmentDetails['amount'];
-        //                 }
-        //                 else {
-        //                     $totalAdjustments -= $adjustmentDetails['amount'];
-        //                 }
-        //             }
-        //         }
+                // COMPUTATION FOR ADJUSTMENTS
+                $adjustmentsQuery = $this->dbConnect()->query("SELECT amount, type, payrollCycleID, adjustmentType FROM tbL_empadjustments INNER JOIN tbl_adjustments ON tbL_empadjustments.adjustmentID = tbl_adjustments.adjustmentID WHERE empID = $employee_id");
+                while ($adjustmentDetails = mysqli_fetch_array($adjustmentsQuery)) {
+                    if ($adjustmentDetails['type'] == 1 && $payrollCycleID % 2 == 1) { // MONTHLY
+                        if ($adjustmentDetails['adjustmentType'] == "Add") {
+                            $totalAdjustments += $adjustmentDetails['amount'];
+                        }
+                        else {
+                            $totalAdjustments -= $adjustmentDetails['amount'];
+                        }
+                    } elseif ($adjustmentDetails['type'] == 2) { // SEMI-MONTHLY
+                        if ($adjustmentDetails['adjustmentType'] == "Add") {
+                            $totalAdjustments += $adjustmentDetails['amount'];
+                        }
+                        else {
+                            $totalAdjustments -= $adjustmentDetails['amount'];
+                        }
+                    } elseif ($adjustmentDetails['type'] == 3 && $adjustmentDetails['payrollCycleID'] == $payrollCycleID) { // ONCE
+                        if ($adjustmentDetails['adjustmentType'] == "Add") {
+                            $totalAdjustments += $adjustmentDetails['amount'];
+                        }
+                        else {
+                            $totalAdjustments -= $adjustmentDetails['amount'];
+                        }
+                    }
+                }
 
-        //         // COMPUTATION FOR NIGHT DIFFERENTIAL PAY
-        //         $totalNightHours = round($totalNightHours, 0);
-        //         $employee_nightDiffPay = round(($employee_hourlyRate * .15) * $totalNightHours, 2);
+                // COMPUTATION FOR NIGHT DIFFERENTIAL PAY
+                $totalNightHours = round($totalNightHours, 0);
+                $employee_nightDiffPay = round(($employee_hourlyRate * .15) * $totalNightHours, 2);
 
-        //         // COMPUTATION FOR OVERTIME PAY
-        //         $employee_overtimePay = round(($employee_hourlyRate * .25) * $totalOvertimeHours, 2);
-        //         $employee_overtimeNDPay = round(($employee_hourlyRate * 1.25 * .15) * $totalOvertimeNDHours, 2);
+                // COMPUTATION FOR OVERTIME PAY
+                $employee_overtimePay = round(($employee_hourlyRate * .25) * $totalOvertimeHours, 2);
+                $employee_overtimeNDPay = round(($employee_hourlyRate * 1.25 * .15) * $totalOvertimeNDHours, 2);
 
-        //         // COMPUTATION FOR RDOT PAY
-        //         $employee_RDOTPay = round(($employee_hourlyRate * .3) * $totalRDOTHours, 2);
-        //         $employee_RDOTNDPay = round(($employee_hourlyRate * 1.3 * .15) * $totalRDOTNDHours, 2);
+                // COMPUTATION FOR RDOT PAY
+                $employee_RDOTPay = round(($employee_hourlyRate * .3) * $totalRDOTHours, 2);
+                $employee_RDOTNDPay = round(($employee_hourlyRate * 1.3 * .15) * $totalRDOTNDHours, 2);
 
-        //         // COMPUTATION FOR SPECIAL HOLIDAY PAY
-        //         if ($totalSpecialHolidayNDHours == 0) { // DAY SHIFT
-        //             $totalSpecialHolidayHours = $specialHolidaysWorked / 2 * 8;
-        //             $employee_specialHolidayPay = round(($employee_hourlyRate * 0.3) * $totalSpecialHolidayHours, 2);
-        //         }
-        //         else {  // NIGHT SHIFT
-        //             $totalSpecialHolidayHours = ($specialHolidaysWorked * 8) - $totalSpecialHolidayNDHours;
-        //             $employee_specialHolidayPay = round(($employee_hourlyRate * 1.3) * $totalSpecialHolidayHours, 2);
-        //             $employee_specialHolidayNDPay = round(($employee_hourlyRate * 1.3) * $totalSpecialHolidayNDHours, 2);
-        //         }
+                // COMPUTATION FOR SPECIAL HOLIDAY PAY
+                if ($totalSpecialHolidayNDHours == 0) { // DAY SHIFT
+                    $employee_specialHolidayPay = round(($employee_hourlyRate * 0.3) * $totalSpecialHolidayHours, 2);
+                }
+                else {  // NIGHT SHIFT
+                    $employee_specialHolidayPay = round(($employee_hourlyRate * 1.3) * $totalSpecialHolidayHours, 2);
+                    $employee_specialHolidayNDPay = round(($employee_hourlyRate * 1.3) * $totalSpecialHolidayNDHours, 2);
+                }
 
-        //         // COMPUTATION FOR REGULAR HOLIDAY PAY
-        //         if ($totalRegularHolidayNDHours == 0) { // DAY SHIFT
-        //             $totalRegularHolidayHours = $regularHolidaysWorked / 2 * 8;
-        //             $employee_regularHolidayPay = round($employee_hourlyRate  * $totalRegularHolidayHours, 2);
-        //         }
-        //         else { // NIGHT SHIFT
-        //             $totalRegularHolidayHours = ($regularHolidaysWorked * 8) - $totalRegularHolidayNDHours;
-        //             $employee_regularHolidayPay = round($employee_hourlyRate  * $totalRegularHolidayHours, 2);
-        //             $employee_regularHolidayNDPay = round((($employee_hourlyRate * 2) * .15) * $totalRegularHolidayNDHours, 2);
-        //         }
+                // COMPUTATION FOR REGULAR HOLIDAY PAY
+                if ($totalRegularHolidayNDHours == 0) { // DAY SHIFT
+                    $employee_regularHolidayPay = round($employee_hourlyRate  * $totalRegularHolidayHours, 2);
+                }
+                else { // NIGHT SHIFT
+                    $employee_regularHolidayPay = round($employee_hourlyRate  * $totalRegularHolidayHours, 2);
+                    $employee_regularHolidayNDPay = round((($employee_hourlyRate * 2) * .15) * $totalRegularHolidayNDHours, 2);
+                }
 
-        //         // COMPUTE GROSS PAY
-        //         $employee_grossPay = round($employee_dailyRate * $employee_daysWorked + $employee_nightDiffPay + $employee_overtimePay + $employee_overtimeNDPay + $employee_RDOTPay + $employee_RDOTNDPay + $employee_specialHolidayPay + $employee_specialHolidayNDPay+ $employee_regularHolidayPay + $employee_regularHolidayNDPay, 2);
-        //         $employee_totalGrossPay = round($employee_grossPay + $totalAllowances + $communication, 2);
-        //         $employee_netPay = round($employee_totalGrossPay - $sss - $phic - $hdmf - $wtax + $totalReimbursements + $totalAdjustments - $cashAdvance, 2);
-        //         $employee_cashAdvance -= $cashAdvance;
+                // COMPUTE GROSS PAY
+                $employee_grossPay = round($employee_dailyRate * $employee_daysWorked + $employee_nightDiffPay + $employee_overtimePay + $employee_overtimeNDPay + $employee_RDOTPay + $employee_RDOTNDPay + $employee_specialHolidayPay + $employee_specialHolidayNDPay+ $employee_regularHolidayPay + $employee_regularHolidayNDPay, 2);
+                $employee_totalGrossPay = round($employee_grossPay + $totalAllowances + $communication, 2);
+                $employee_netPay = round($employee_totalGrossPay - $sss - $phic - $hdmf - $wtax + $totalReimbursements + $totalAdjustments - $cashAdvance, 2);
+                $employee_cashAdvance -= $cashAdvance;
 
-        //         // ADD ALL PAYROLL DATA TO PAYSLIP TABLE
-        //         $this->dbConnect()->query("INSERT INTO $this->payslip (payrollID, empID, daysWorked, grossPay, regNightDiff, pay_regNightDiff, regularOT, pay_regularOT, regularOTND, pay_regularOTND, rdot, pay_rdot, rdotND, pay_rdotND, specialHoliday, pay_specialHoliday, specialHolidayND, pay_specialHolidayND, regularHoliday, pay_regularHoliday, regularHolidayND, pay_regularHolidayND, payslip_allowances, payslip_communication, totalGrossPay, payslip_sss, payslip_phic, payslip_hdmf, payslip_wtax, payslip_salaryLoan, payslip_mpl, payslip_smart, payslip_reimbursements, payslip_adjustments, payslip_cashAdvanceDeduction, payslip_cashAdvanceBalance, netPay) VALUES ($payrollID, $employee_id, $employee_daysWorked, $employee_grossPay, $totalNightHours, $employee_nightDiffPay, $totalOvertimeHours, $employee_overtimePay, $totalOvertimeNDHours, $employee_overtimeNDPay, $totalRDOTHours, $employee_RDOTPay, $totalRDOTNDHours, $employee_RDOTNDPay, $totalSpecialHolidayHours, $employee_specialHolidayPay, $totalSpecialHolidayNDHours, $employee_specialHolidayNDPay, $totalRegularHolidayHours, $employee_regularHolidayPay, $totalRegularHolidayNDHours, $employee_regularHolidayNDPay, $totalAllowances, $communication, $employee_totalGrossPay, $sss, $phic, $hdmf, $wtax, $salaryLoan, $mpl, $smart, $totalReimbursements, $totalAdjustments, $cashAdvance, $employee_cashAdvance, $employee_netPay)");
+                // ADD ALL PAYROLL DATA TO PAYSLIP TABLE
+                $this->dbConnect()->query("INSERT INTO $this->payslip (payrollID, empID, daysWorked, grossPay, regNightDiff, pay_regNightDiff, regularOT, pay_regularOT, regularOTND, pay_regularOTND, rdot, pay_rdot, rdotND, pay_rdotND, specialHoliday, pay_specialHoliday, specialHolidayND, pay_specialHolidayND, regularHoliday, pay_regularHoliday, regularHolidayND, pay_regularHolidayND, payslip_allowances, payslip_communication, totalGrossPay, payslip_sss, payslip_phic, payslip_hdmf, payslip_wtax, payslip_salaryLoan, payslip_mpl, payslip_smart, payslip_reimbursements, payslip_adjustments, payslip_cashAdvanceDeduction, payslip_cashAdvanceBalance, netPay) VALUES ($payrollID, $employee_id, $employee_daysWorked, $employee_grossPay, $totalNightHours, $employee_nightDiffPay, $totalOvertimeHours, $employee_overtimePay, $totalOvertimeNDHours, $employee_overtimeNDPay, $totalRDOTHours, $employee_RDOTPay, $totalRDOTNDHours, $employee_RDOTNDPay, $totalSpecialHolidayHours, $employee_specialHolidayPay, $totalSpecialHolidayNDHours, $employee_specialHolidayNDPay, $totalRegularHolidayHours, $employee_regularHolidayPay, $totalRegularHolidayNDHours, $employee_regularHolidayNDPay, $totalAllowances, $communication, $employee_totalGrossPay, $sss, $phic, $hdmf, $wtax, $salaryLoan, $mpl, $smart, $totalReimbursements, $totalAdjustments, $cashAdvance, $employee_cashAdvance, $employee_netPay)");
 
-        //         if ($cashAdvance > 0) {
-        //             $this->dbConnect()->query("UPDATE tbl_employee SET cashAdvance = cashAdvance - $cashAdvance WHERE id = $employee_id");
-        //         }
-        //     }
-        //     return;
-        // }
+                if ($cashAdvance > 0) {
+                    $this->dbConnect()->query("UPDATE tbl_employee SET cashAdvance = cashAdvance - $cashAdvance WHERE id = $employee_id");
+                }
+            }
+            return;
+        }
 
-        // public function reCalculatePayroll($payrollID, $payrollCycleID) {
-        //     // UPDATE CASH ADVANCE DETAILS
-        //     $cashAdvanceQuery = $this->dbConnect()->query("SELECT * FROM tbl_payslip WHERE payrollID = $payrollID AND payslip_cashAdvanceDeduction > 0");
-        //     while ($cashAdvanceDetails = mysqli_fetch_array($cashAdvanceQuery)) {
-        //         $empID = $cashAdvanceDetails['empID'];
-        //         $cashAdvance = $cashAdvanceDetails['payslip_cashAdvanceDeduction'];
-        //         $this->dbConnect()->query("UPDATE tbl_employee SET cashAdvance = cashAdvance + $cashAdvance WHERE id = $empID");
-        //     }
+        public function reCalculatePayroll($payrollID, $payrollCycleID) {
+            // UPDATE CASH ADVANCE DETAILS
+            $cashAdvanceQuery = $this->dbConnect()->query("SELECT * FROM tbl_payslip WHERE payrollID = $payrollID AND payslip_cashAdvanceDeduction > 0");
+            while ($cashAdvanceDetails = mysqli_fetch_array($cashAdvanceQuery)) {
+                $empID = $cashAdvanceDetails['empID'];
+                $cashAdvance = $cashAdvanceDetails['payslip_cashAdvanceDeduction'];
+                $this->dbConnect()->query("UPDATE tbl_employee SET cashAdvance = cashAdvance + $cashAdvance WHERE id = $empID");
+            }
 
-        //     // DELETE CURRENT PAYSLIP - RE-CALCULATE FUNCTION
-        //     $this->dbConnect()->query("DELETE FROM tbl_payslip WHERE payrollID = $payrollID");
+            // DELETE CURRENT PAYSLIP - RE-CALCULATE FUNCTION
+            $this->dbConnect()->query("DELETE FROM tbl_payslip WHERE payrollID = $payrollID");
 
-        //     function modifyDate($date) {
-        //         // Get the current year
-        //         $currentYear = date('Y');
+            function modifyDate($date) {
+                // Get the current year
+                $currentYear = date('Y');
                 
-        //         // Append the current year to the input date
-        //         $dateWithYear = $date . '-' . $currentYear;
+                // Append the current year to the input date
+                $dateWithYear = $date . '-' . $currentYear;
                 
-        //         // Create a DateTime object from the string (expects format MM-DD-YYYY)
-        //         $dateTime = DateTime::createFromFormat('m-d-Y', $dateWithYear);
+                // Create a DateTime object from the string (expects format MM-DD-YYYY)
+                $dateTime = DateTime::createFromFormat('m-d-Y', $dateWithYear);
                 
-        //         // Format the date as 'M d, Y'
-        //         return $dateTime->format('Y-m-d');
-        //     }
+                // Format the date as 'M d, Y'
+                return $dateTime->format('Y-m-d');
+            }
 
-        //     // GET PAYROLL CYCLE DETAILS
-        //     $payrollCycleFrom_date = $this->dbConnect()->query("SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleFrom']; 
-        //     $payrollCycleTo_date = $this->dbConnect()->query("SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleTo'];
-        //     $payrollCycleFrom = modifyDate($payrollCycleFrom_date);
-        //     $payrollCycleTo = modifyDate($payrollCycleTo_date);
+            // GET PAYROLL CYCLE DETAILS
+            $payrollCycleFrom_date = $this->dbConnect()->query("SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleFrom']; 
+            $payrollCycleTo_date = $this->dbConnect()->query("SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleTo'];
+            $payrollCycleFrom = modifyDate($payrollCycleFrom_date);
+            $payrollCycleTo = modifyDate($payrollCycleTo_date);
 
-        //     // GET EMPLOYEE DETAILS
-        //     $employees = $this->dbConnect()->query("SELECT * FROM tbl_employee");
-        //     while ($employeeDetails = mysqli_fetch_array($employees)) {
-        //         $employee_id = $employeeDetails['id'];
-        //         $employee_dailyRate = $employeeDetails['dailyRate'];
-        //         $employee_hourlyRate = $employeeDetails['hourlyRate'];
-        //         $employee_cashAdvance = ($employeeDetails['cashAdvance'] != null) ? $employeeDetails['cashAdvance'] : null;
+            // GET EMPLOYEE DETAILS
+            $employees = $this->dbConnect()->query("SELECT * FROM tbl_employee WHERE designationID != 12");
+            while ($employeeDetails = mysqli_fetch_array($employees)) {
+                $employee_id = $employeeDetails['id'];
+                $employee_dailyRate = $employeeDetails['dailyRate'];
+                $employee_hourlyRate = $employeeDetails['hourlyRate'];
+                $employee_cashAdvance = ($employeeDetails['cashAdvance'] != null) ? $employeeDetails['cashAdvance'] : null;
 
-        //         // COMPUTE DAYS WORKED
-        //         $daysWorkedQuery = $this->dbConnect()->query("SELECT * FROM tbl_attendance WHERE empID = $employeeDetails[id] AND (logTypeID IN (1, 2) OR logTypeID IN (3, 4)) AND attendanceDate BETWEEN DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom'))) AND DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleTo')))");
-        //         $employee_daysWorked = round(mysqli_num_rows($daysWorkedQuery) / 2);
+                // COMPUTE DAYS WORKED
+                $daysWorkedQuery = $this->dbConnect()->query("SELECT * FROM tbl_attendance WHERE empID = $employeeDetails[id] AND (logTypeID IN (1, 2) OR logTypeID IN (3, 4)) AND attendanceDate BETWEEN DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom'))) AND DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleTo')))");
+                $employee_daysWorked = round(mysqli_num_rows($daysWorkedQuery) / 2);
 
-        //         // CHECK FOR HOLIDAYS
-        //         $holidaysQuery = $this->dbConnect()->query("SELECT * FROM tbl_holidays WHERE dateFrom BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'");
-        //         $holidays = [];
-        //         while ($holidayDetails = mysqli_fetch_array($holidaysQuery)) {
-        //             $holidays[$holidayDetails['dateFrom']] = $holidayDetails['type'];
-        //         }
+                // CHECK FOR HOLIDAYS
+                $holidaysQuery = $this->dbConnect()->query("SELECT * FROM tbl_holidays WHERE dateFrom BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'");
+                $holidays = [];
+                while ($holidayDetails = mysqli_fetch_array($holidaysQuery)) {
+                    $holidays[$holidayDetails['dateFrom']] = $holidayDetails['type'];
+                }
 
-        //         // INITIALIZE VARIABLES FOR HOURS WORKED COMPUTATION
-        //         $totalNightHours = 0;
-        //         $totalOvertimeHours = 0;
-        //         $totalOvertimeNDHours = 0;
-        //         $totalRDOTHours = 0;
-        //         $totalRDOTNDHours = 0;
-        //         $totalSpecialHolidayHours = 0;
-        //         $totalSpecialHolidayNDHours = 0;
-        //         $totalRegularHolidayHours = 0;
-        //         $totalRegularHolidayNDHours = 0;
+                // INITIALIZE VARIABLES FOR HOURS WORKED COMPUTATION
+                $totalNightHours = 0;
+                $totalOvertimeHours = 0;
+                $totalOvertimeNDHours = 0;
+                $totalRDOTHours = 0;
+                $totalRDOTNDHours = 0;
+                $totalSpecialHolidayHours = 0;
+                $totalSpecialHolidayNDHours = 0;
+                $totalRegularHolidayHours = 0;
+                $totalRegularHolidayNDHours = 0;
 
-        //         // INITIALIZE VARIABLES FOR DAYS WORKED (HOLIDAYS) COMPUTATION
-        //         $specialHolidaysWorked = 0;
-        //         $regularHolidaysWorked = 0;
+                // INITIALIZE VARIABLES FOR DAYS WORKED (HOLIDAYS) COMPUTATION
+                $specialHolidaysWorked = 0;
+                $regularHolidaysWorked = 0;
 
-        //         // INITIALIZE VARIABLES FOR PAYS COMPUTATION
-        //         $employee_nightDiffPay = 0;
-        //         $employee_overtimePay = 0;
-        //         $employee_overtimeNDPay = 0;
-        //         $employee_RDOTPay = 0;
-        //         $employee_RDOTNDPay = 0;
-        //         $employee_specialHolidayPay = 0;
-        //         $employee_regularHolidayPay = 0;
-        //         $employee_specialHolidayNDPay = 0;
-        //         $employee_regularHolidayNDPay = 0;
+                // INITIALIZE VARIABLES FOR PAYS COMPUTATION
+                $employee_nightDiffPay = 0;
+                $employee_overtimePay = 0;
+                $employee_overtimeNDPay = 0;
+                $employee_RDOTPay = 0;
+                $employee_RDOTNDPay = 0;
+                $employee_specialHolidayPay = 0;
+                $employee_regularHolidayPay = 0;
+                $employee_specialHolidayNDPay = 0;
+                $employee_regularHolidayNDPay = 0;
 
-        //         // ALLOWANCES, DEDUCTIONS, REIMBURSEMENTS, AND ADJUSTMENTS (=,-) COMPUTATION
-        //         $totalAllowances = 0;
-        //         $communication = 0;
-        //         $sss = 0;
-        //         $phic = 0;
-        //         $hdmf = 0;
-        //         $wtax = 0;
-        //         $salaryLoan = 0;
-        //         $mpl = 0;
-        //         $smart = 0;
-        //         $cashAdvance = 0;
-        //         $totalReimbursements = 0;
-        //         $totalAdjustments = 0;
+                // ALLOWANCES, DEDUCTIONS, REIMBURSEMENTS, AND ADJUSTMENTS (=,-) COMPUTATION
+                $totalAllowances = 0;
+                $communication = 0;
+                $sss = 0;
+                $phic = 0;
+                $hdmf = 0;
+                $wtax = 0;
+                $salaryLoan = 0;
+                $mpl = 0;
+                $smart = 0;
+                $cashAdvance = 0;
+                $totalReimbursements = 0;
+                $totalAdjustments = 0;
 
-        //         // COMPUTE HOURS WORKED
-        //         while ($attendanceLogs = mysqli_fetch_array($daysWorkedQuery)) {
-        //             $date = $attendanceLogs['attendanceDate'];
-        //             $attendanceTime = $attendanceLogs['attendanceTime'];
-        //             $logTypeID = $attendanceLogs['logTypeID'];
-        //             $lateMins = $attendanceLogs['lateMins'];
-        //             $undertimeMins = $attendanceLogs['undertimeMins'];
+                // COMPUTE HOURS WORKED
+                while ($attendanceLogs = mysqli_fetch_array($daysWorkedQuery)) {
+                    $date = $attendanceLogs['attendanceDate'];
+                    $attendanceTime = $attendanceLogs['attendanceTime'];
+                    $logTypeID = $attendanceLogs['logTypeID'];
+                    $lateMins = $attendanceLogs['lateMins'];
+                    $undertimeMins = $attendanceLogs['undertimeMins'];
 
-        //             if (isset($holidays[$date]) && $holidays[$date] == "Regular") {
-        //                 // CALCULATE REGULAR HOLIDAY NIGHT DIFFERENTIAL HOURS
-        //                 // $regularHolidayNDHours = $this->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $undertimeMins);
-        //                 // $totalRegularHolidayNDHours += $regularHolidayNDHours;
-        //                 // $regularHolidaysWorked++;
-        //             }
-        //             else if (isset($holidays[$date]) && $holidays[$date] == "Special") {
-        //                 // CALCULATE SPECIAL HOLIDAY NIGHT DIFFERENTIAL HOURS
-        //                 // $specialHolidayNDHours = $this->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $undertimeMins);
-        //                 // $totalSpecialHolidayNDHours += $specialHolidayNDHours;
-        //                 // $specialHolidaysWorked++;
-        //             }
-        //             else {
-        //                 // CALCULATE REGULAR NIGHT DIFFERENTIAL HOURS
-        //                 $nightHours = $this->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $undertimeMins);
-        //                 $totalNightHours += $nightHours;
-        //             }
-        //         }
+                    $result = $this->calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $payrollCycleFrom, $payrollCycleTo, $date);             
+                    $totalNightHours += $result['totalRegularNightHours'];
+                    $totalRegularHolidayHours += $result['totalRegularHolidayHours'];
+                    $totalRegularHolidayNDHours += $result['totalRegularHolidayNightHours'];
+                    $totalSpecialHolidayHours += $result['totalSpecialHolidayHours'];
+                    $totalSpecialHolidayNDHours += $result['totalSpecialHolidayNightHours'];
+                }
 
-        //         // COMPUTE OVERTIME HOURS
-        //         $overtimesQuery = $this->dbConnect()->query("SELECT * FROM tbl_filedot WHERE empID = $employee_id AND (otDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo') AND status = '2'");
-        //         while ($overtime = mysqli_fetch_array($overtimesQuery)) {
-        //             if ($overtime['otType'] == "Regular") {
-        //                 $from = new DateTime($overtime['fromTime']);
-        //                 $to = new DateTime($overtime['toTime']);$totalOvertimeHours += 1;
+                // COMPUTE OVERTIME HOURS
+                $overtimesQuery = $this->dbConnect()->query("SELECT * FROM tbl_filedot WHERE empID = $employee_id AND (otDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo') AND status = '2'");
+                while ($overtime = mysqli_fetch_array($overtimesQuery)) {
+                    if ($overtime['otType'] == "Regular") {
+                        $from = new DateTime($overtime['fromTime']);
+                        $to = new DateTime($overtime['toTime']);$totalOvertimeHours += 1;
                         
-        //                 // COUNT ND HOURS
-        //                 $NDHours = $this->calculateOvertimeND($from, $to);
-        //                 $totalOvertimeNDHours += $NDHours;
+                        // COUNT ND HOURS
+                        $NDHours = $this->calculateOvertimeND($from, $to);
+                        $totalOvertimeNDHours += $NDHours;
 
-        //                 $interval = $from->diff($to);
-        //                 $hours = $interval->h + ($interval->i >= 30 ? 1 : 0);
-        //                 $totalOvertimeHours = $hours - $totalOvertimeNDHours;
-        //             }
-        //             else { // RDOT
-        //                 $from = new DateTime($overtime['fromTime']);
-        //                 $to = new DateTime($overtime['toTime']);
+                        $interval = $from->diff($to);
+                        $hours = $interval->h + ($interval->i >= 30 ? 1 : 0);
+                        $totalOvertimeHours = $hours - $totalOvertimeNDHours;
+                    }
+                    else { // RDOT
+                        $from = new DateTime($overtime['fromTime']);
+                        $to = new DateTime($overtime['toTime']);
                         
-        //                 // COUNT ND HOURS
-        //                 $NDHours = $this->calculateOvertimeND($from, $to);
-        //                 $totalRDOTNDHours += $NDHours;
+                        // COUNT ND HOURS
+                        $NDHours = $this->calculateOvertimeND($from, $to);
+                        $totalRDOTNDHours += $NDHours;
 
-        //                 $interval = $from->diff($to);
-        //                 $hours = $interval->h + ($interval->i >= 30 ? 1 : 0);
-        //                 $totalRDOTHours = $hours - $totalRDOTNDHours;
-        //             }
-        //         }
+                        $interval = $from->diff($to);
+                        $hours = $interval->h + ($interval->i >= 30 ? 1 : 0);
+                        $totalRDOTHours = $hours - $totalRDOTNDHours;
+                    }
+                }
 
-        //         // COMPUTATION FOR ALLOWANCES
-        //         $allowancesQuery = $this->dbConnect()->query("SELECT amount, type FROM tbl_empallowances INNER JOIN tbl_allowances ON tbl_empallowances.allowanceID = tbl_allowances.allowanceID WHERE empID = $employee_id AND allowanceName NOT IN ('Communication', 'Communication Allowance')");
-        //         while ($allowanceDetails = mysqli_fetch_array($allowancesQuery)) {
-        //             if ($allowanceDetails['type'] == 1 && $payrollCycleID % 2 == 1) { // MONTHLY
-        //                 $totalAllowances += $allowanceDetails['amount'];
-        //             } elseif ($allowanceDetails['type'] == 2) { // SEMI-MONTHLY
-        //                 $totalAllowances += $allowanceDetails['amount'];
-        //             }
-        //         }
+                // COMPUTATION FOR ALLOWANCES
+                $allowancesQuery = $this->dbConnect()->query("SELECT amount, type FROM tbl_empallowances INNER JOIN tbl_allowances ON tbl_empallowances.allowanceID = tbl_allowances.allowanceID WHERE empID = $employee_id AND allowanceName NOT IN ('Communication', 'Communication Allowance')");
+                while ($allowanceDetails = mysqli_fetch_array($allowancesQuery)) {
+                    if ($allowanceDetails['type'] == 1 && $payrollCycleID % 2 == 1) { // MONTHLY
+                        $totalAllowances += $allowanceDetails['amount'];
+                    } elseif ($allowanceDetails['type'] == 2) { // SEMI-MONTHLY
+                        $totalAllowances += $allowanceDetails['amount'];
+                    }
+                }
 
-        //         // COMPUTATION FOR COMMUNICATION ALLOWANCE
-        //         $allowancesQuery = $this->dbConnect()->query("SELECT amount, type FROM tbl_empallowances INNER JOIN tbl_allowances ON tbl_empallowances.allowanceID = tbl_allowances.allowanceID WHERE empID = $employee_id AND allowanceName IN ('Communication', 'Communication Allowance')");
-        //         while ($allowanceDetails = mysqli_fetch_array($allowancesQuery)) {
-        //             if ($allowanceDetails['type'] == 1 && $payrollCycleID % 2 == 1) { // MONTHLY
-        //                 $communication += $allowanceDetails['amount'];
-        //             } elseif ($allowanceDetails['type'] == 2) { // SEMI-MONTHLY
-        //                 $communication += $allowanceDetails['amount'];
-        //             }
-        //         }
+                // COMPUTATION FOR COMMUNICATION ALLOWANCE
+                $allowancesQuery = $this->dbConnect()->query("SELECT amount, type FROM tbl_empallowances INNER JOIN tbl_allowances ON tbl_empallowances.allowanceID = tbl_allowances.allowanceID WHERE empID = $employee_id AND allowanceName IN ('Communication', 'Communication Allowance')");
+                while ($allowanceDetails = mysqli_fetch_array($allowancesQuery)) {
+                    if ($allowanceDetails['type'] == 1 && $payrollCycleID % 2 == 1) { // MONTHLY
+                        $communication += $allowanceDetails['amount'];
+                    } elseif ($allowanceDetails['type'] == 2) { // SEMI-MONTHLY
+                        $communication += $allowanceDetails['amount'];
+                    }
+                }
 
-        //         // COMPUTATION FOR DEDUCTIONS
-        //         $deductionsQuery = $this->dbConnect()->query("SELECT amount, deductionName, type, payrollCycleID FROM tbl_empdeductions INNER JOIN tbl_deductions ON tbl_empdeductions.deductionID = tbl_deductions.deductionID WHERE empID = $employee_id");
-        //         while ($deductionDetails = mysqli_fetch_array($deductionsQuery)) {
-        //             if ($deductionDetails['deductionName'] == "SSS") {
-        //                 $sss = $deductionDetails['amount'];
-        //             }
-        //             else if ($deductionDetails['deductionName'] == "PHIC") {
-        //                 $phic = $deductionDetails['amount'];
-        //             }
-        //             else if ($deductionDetails['deductionName'] == "HDMF") {
-        //                 $hdmf = $deductionDetails['amount'];
-        //             }
-        //             else if ($deductionDetails['deductionName'] == "WTAX") {
-        //                 $wtax = $deductionDetails['amount'];
-        //             }
-        //             else if ($deductionDetails['deductionName'] == "SSS Salary Loan") {
-        //                 $salaryLoan = $deductionDetails['amount'];
-        //             }
-        //             else if ($deductionDetails['deductionName'] == "Pag_Ibig MPL") {
-        //                 $mpl = $deductionDetails['amount'];
-        //             }
-        //             else if ($deductionDetails['deductionName'] == "Smart") {
-        //                 $smart = $deductionDetails['amount'];
-        //             }
-        //             else if ($deductionDetails['deductionName'] == "Cash Advance") {
-        //                 if ($deductionDetails['type'] == 1 && $payrollCycleID % 2 == 1) { // MONTHLY
-        //                     $cashAdvance = $deductionDetails['amount'];
-        //                 }
-        //                 elseif ($deductionDetails['type'] == 2) { // SEMI-MONTHLY
-        //                     $cashAdvance = $deductionDetails['amount'];
-        //                 }
-        //                 elseif ($deductionDetails['type'] == 3 && $deductionDetails['payrollCycleID'] == $payrollCycleID) { // ONCE
-        //                     $cashAdvance = $deductionDetails['amount'];
-        //                 }
-        //             }
-        //         }
+                // COMPUTATION FOR DEDUCTIONS
+                $deductionsQuery = $this->dbConnect()->query("SELECT amount, deductionName, type, payrollCycleID FROM tbl_empdeductions INNER JOIN tbl_deductions ON tbl_empdeductions.deductionID = tbl_deductions.deductionID WHERE empID = $employee_id");
+                while ($deductionDetails = mysqli_fetch_array($deductionsQuery)) {
+                    if ($deductionDetails['deductionName'] == "SSS") {
+                        $sss = $deductionDetails['amount'];
+                    }
+                    else if ($deductionDetails['deductionName'] == "PHIC") {
+                        $phic = $deductionDetails['amount'];
+                    }
+                    else if ($deductionDetails['deductionName'] == "HDMF") {
+                        $hdmf = $deductionDetails['amount'];
+                    }
+                    else if ($deductionDetails['deductionName'] == "WTAX") {
+                        $wtax = $deductionDetails['amount'];
+                    }
+                    else if ($deductionDetails['deductionName'] == "SSS Salary Loan") {
+                        $salaryLoan = $deductionDetails['amount'];
+                    }
+                    else if ($deductionDetails['deductionName'] == "Pag_Ibig MPL") {
+                        $mpl = $deductionDetails['amount'];
+                    }
+                    else if ($deductionDetails['deductionName'] == "Smart") {
+                        $smart = $deductionDetails['amount'];
+                    }
+                    else if ($deductionDetails['deductionName'] == "Cash Advance") {
+                        if ($deductionDetails['type'] == 1 && $payrollCycleID % 2 == 1) { // MONTHLY
+                            $cashAdvance = $deductionDetails['amount'];
+                        }
+                        elseif ($deductionDetails['type'] == 2) { // SEMI-MONTHLY
+                            $cashAdvance = $deductionDetails['amount'];
+                        }
+                        elseif ($deductionDetails['type'] == 3 && $deductionDetails['payrollCycleID'] == $payrollCycleID) { // ONCE
+                            $cashAdvance = $deductionDetails['amount'];
+                        }
+                    }
+                }
 
-        //         // COMPUTATION FOR REIMBURSEMENTS
-        //         $reimbursementsQuery = $this->dbConnect()->query("SELECT amount, type, payrollCycleID FROM tbl_empreimbursements INNER JOIN tbl_reimbursements ON tbl_empreimbursements.reimbursementID = tbl_reimbursements.reimbursementID WHERE empID = $employee_id");
-        //         while ($reimbursementDetails = mysqli_fetch_array($reimbursementsQuery)) {
-        //             if ($reimbursementDetails['type'] == 1 && $payrollCycleID % 2 == 1) { // MONTHLY
-        //                 $totalReimbursements += $reimbursementDetails['amount'];
-        //             } elseif ($reimbursementDetails['type'] == 2) { // SEMI-MONTHLY
-        //                 $totalReimbursements += $reimbursementDetails['amount'];
-        //             } elseif ($reimbursementDetails['type'] == 3 && $reimbursementDetails['payrollCycleID'] == $payrollCycleID) { // ONCE
-        //                 $totalReimbursements += $reimbursementDetails['amount'];
-        //             }
-        //         }
+                // COMPUTATION FOR REIMBURSEMENTS
+                $reimbursementsQuery = $this->dbConnect()->query("SELECT amount, type, payrollCycleID FROM tbl_empreimbursements INNER JOIN tbl_reimbursements ON tbl_empreimbursements.reimbursementID = tbl_reimbursements.reimbursementID WHERE empID = $employee_id");
+                while ($reimbursementDetails = mysqli_fetch_array($reimbursementsQuery)) {
+                    if ($reimbursementDetails['type'] == 1 && $payrollCycleID % 2 == 1) { // MONTHLY
+                        $totalReimbursements += $reimbursementDetails['amount'];
+                    } elseif ($reimbursementDetails['type'] == 2) { // SEMI-MONTHLY
+                        $totalReimbursements += $reimbursementDetails['amount'];
+                    } elseif ($reimbursementDetails['type'] == 3 && $reimbursementDetails['payrollCycleID'] == $payrollCycleID) { // ONCE
+                        $totalReimbursements += $reimbursementDetails['amount'];
+                    }
+                }
 
-        //         // COMPUTATION FOR ADJUSTMENTS
-        //         $adjustmentsQuery = $this->dbConnect()->query("SELECT amount, type, payrollCycleID, adjustmentType FROM tbL_empadjustments INNER JOIN tbl_adjustments ON tbL_empadjustments.adjustmentID = tbl_adjustments.adjustmentID WHERE empID = $employee_id");
-        //         while ($adjustmentDetails = mysqli_fetch_array($adjustmentsQuery)) {
-        //             if ($adjustmentDetails['type'] == 1 && $payrollCycleID % 2 == 1) { // MONTHLY
-        //                 if ($adjustmentDetails['adjustmentType'] == "Add") {
-        //                     $totalAdjustments += $adjustmentDetails['amount'];
-        //                 }
-        //                 else {
-        //                     $totalAdjustments -= $adjustmentDetails['amount'];
-        //                 }
-        //             } elseif ($adjustmentDetails['type'] == 2) { // SEMI-MONTHLY
-        //                 if ($adjustmentDetails['adjustmentType'] == "Add") {
-        //                     $totalAdjustments += $adjustmentDetails['amount'];
-        //                 }
-        //                 else {
-        //                     $totalAdjustments -= $adjustmentDetails['amount'];
-        //                 }
-        //             } elseif ($adjustmentDetails['type'] == 3 && $adjustmentDetails['payrollCycleID'] == $payrollCycleID) { // ONCE
-        //                 if ($adjustmentDetails['adjustmentType'] == "Add") {
-        //                     $totalAdjustments += $adjustmentDetails['amount'];
-        //                 }
-        //                 else {
-        //                     $totalAdjustments -= $adjustmentDetails['amount'];
-        //                 }
-        //             }
-        //         }
+                // COMPUTATION FOR ADJUSTMENTS
+                $adjustmentsQuery = $this->dbConnect()->query("SELECT amount, type, payrollCycleID, adjustmentType FROM tbL_empadjustments INNER JOIN tbl_adjustments ON tbL_empadjustments.adjustmentID = tbl_adjustments.adjustmentID WHERE empID = $employee_id");
+                while ($adjustmentDetails = mysqli_fetch_array($adjustmentsQuery)) {
+                    if ($adjustmentDetails['type'] == 1 && $payrollCycleID % 2 == 1) { // MONTHLY
+                        if ($adjustmentDetails['adjustmentType'] == "Add") {
+                            $totalAdjustments += $adjustmentDetails['amount'];
+                        }
+                        else {
+                            $totalAdjustments -= $adjustmentDetails['amount'];
+                        }
+                    } elseif ($adjustmentDetails['type'] == 2) { // SEMI-MONTHLY
+                        if ($adjustmentDetails['adjustmentType'] == "Add") {
+                            $totalAdjustments += $adjustmentDetails['amount'];
+                        }
+                        else {
+                            $totalAdjustments -= $adjustmentDetails['amount'];
+                        }
+                    } elseif ($adjustmentDetails['type'] == 3 && $adjustmentDetails['payrollCycleID'] == $payrollCycleID) { // ONCE
+                        if ($adjustmentDetails['adjustmentType'] == "Add") {
+                            $totalAdjustments += $adjustmentDetails['amount'];
+                        }
+                        else {
+                            $totalAdjustments -= $adjustmentDetails['amount'];
+                        }
+                    }
+                }
 
-        //         // COMPUTATION FOR NIGHT DIFFERENTIAL PAY
-        //         $totalNightHours = round($totalNightHours, 0);
-        //         $employee_nightDiffPay = round(($employee_hourlyRate * .15) * $totalNightHours, 2);
+                // COMPUTATION FOR NIGHT DIFFERENTIAL PAY
+                $totalNightHours = round($totalNightHours, 0);
+                $employee_nightDiffPay = round(($employee_hourlyRate * .15) * $totalNightHours, 2);
 
-        //         // COMPUTATION FOR OVERTIME PAY
-        //         $employee_overtimePay = round(($employee_hourlyRate * .25) * $totalOvertimeHours, 2);
-        //         $employee_overtimeNDPay = round(($employee_hourlyRate * 1.25 * .15) * $totalOvertimeNDHours, 2);
+                // COMPUTATION FOR OVERTIME PAY
+                $employee_overtimePay = round(($employee_hourlyRate * .25) * $totalOvertimeHours, 2);
+                $employee_overtimeNDPay = round(($employee_hourlyRate * 1.25 * .15) * $totalOvertimeNDHours, 2);
 
-        //         // COMPUTATION FOR RDOT PAY
-        //         $employee_RDOTPay = round(($employee_hourlyRate * .3) * $totalRDOTHours, 2);
-        //         $employee_RDOTNDPay = round(($employee_hourlyRate * 1.3 * .15) * $totalRDOTNDHours, 2);
+                // COMPUTATION FOR RDOT PAY
+                $employee_RDOTPay = round(($employee_hourlyRate * .3) * $totalRDOTHours, 2);
+                $employee_RDOTNDPay = round(($employee_hourlyRate * 1.3 * .15) * $totalRDOTNDHours, 2);
 
-        //         // COMPUTATION FOR SPECIAL HOLIDAY PAY
-        //         if ($totalSpecialHolidayNDHours == 0) { // DAY SHIFT
-        //             $totalSpecialHolidayHours = $specialHolidaysWorked / 2 * 8;
-        //             $employee_specialHolidayPay = round(($employee_hourlyRate * 0.3) * $totalSpecialHolidayHours, 2);
-        //         }
-        //         else {  // NIGHT SHIFT
-        //             $totalSpecialHolidayHours = ($specialHolidaysWorked * 8) - $totalSpecialHolidayNDHours;
-        //             $employee_specialHolidayPay = round(($employee_hourlyRate * 1.3) * $totalSpecialHolidayHours, 2);
-        //             $employee_specialHolidayNDPay = round(($employee_hourlyRate * 1.3 * .15) * $totalSpecialHolidayNDHours, 2);
-        //         }
+                // COMPUTATION FOR SPECIAL HOLIDAY PAY
+                if ($totalSpecialHolidayNDHours == 0) { // DAY SHIFT
+                    $employee_specialHolidayPay = round(($employee_hourlyRate * 0.3) * $totalSpecialHolidayHours, 2);
+                }
+                else {  // NIGHT SHIFT
+                    $employee_specialHolidayPay = round(($employee_hourlyRate * 1.3) * $totalSpecialHolidayHours, 2);
+                    $employee_specialHolidayNDPay = round(($employee_hourlyRate * 1.3) * $totalSpecialHolidayNDHours, 2);
+                }
 
-        //         // COMPUTATION FOR REGULAR HOLIDAY PAY
-        //         if ($totalRegularHolidayNDHours == 0) { // DAY SHIFT
-        //             $totalRegularHolidayHours = $regularHolidaysWorked / 2 * 8;
-        //             $employee_regularHolidayPay = round($employee_hourlyRate  * $totalRegularHolidayHours, 2);
-        //         }
-        //         else { // NIGHT SHIFT
-        //             $totalRegularHolidayHours = ($regularHolidaysWorked * 8) - $totalRegularHolidayNDHours;
-        //             $employee_regularHolidayPay = round($employee_hourlyRate  * $totalRegularHolidayHours, 2);
-        //             $employee_regularHolidayNDPay = round(($employee_hourlyRate * 2 * .15) * $totalRegularHolidayNDHours, 2);
-        //         }
+                // COMPUTATION FOR REGULAR HOLIDAY PAY
+                if ($totalRegularHolidayNDHours == 0) { // DAY SHIFT
+                    $employee_regularHolidayPay = round($employee_hourlyRate  * $totalRegularHolidayHours, 2);
+                }
+                else { // NIGHT SHIFT
+                    $employee_regularHolidayPay = round($employee_hourlyRate  * $totalRegularHolidayHours, 2);
+                    $employee_regularHolidayNDPay = round((($employee_hourlyRate * 2) * .15) * $totalRegularHolidayNDHours, 2);
+                }
 
-        //         // COMPUTE GROSS PAY
-        //         $employee_grossPay = round($employee_dailyRate * $employee_daysWorked + $employee_nightDiffPay + $employee_overtimePay + $employee_overtimeNDPay + $employee_RDOTPay + $employee_RDOTNDPay + $employee_specialHolidayPay + $employee_specialHolidayNDPay+ $employee_regularHolidayPay + $employee_regularHolidayNDPay, 2);
-        //         $employee_totalGrossPay = round($employee_grossPay + $totalAllowances + $communication, 2);
-        //         $employee_netPay = round($employee_totalGrossPay - $sss - $phic - $hdmf - $wtax + $totalReimbursements + $totalAdjustments - $cashAdvance, 2);
-        //         $employee_cashAdvance -= $cashAdvance;
+                // COMPUTE GROSS PAY
+                $employee_grossPay = round($employee_dailyRate * $employee_daysWorked + $employee_nightDiffPay + $employee_overtimePay + $employee_overtimeNDPay + $employee_RDOTPay + $employee_RDOTNDPay + $employee_specialHolidayPay + $employee_specialHolidayNDPay+ $employee_regularHolidayPay + $employee_regularHolidayNDPay, 2);
+                $employee_totalGrossPay = round($employee_grossPay + $totalAllowances + $communication, 2);
+                $employee_netPay = round($employee_totalGrossPay - $sss - $phic - $hdmf - $wtax + $totalReimbursements + $totalAdjustments - $cashAdvance, 2);
+                $employee_cashAdvance -= $cashAdvance;
 
-        //         // ADD ALL PAYROLL DATA TO PAYSLIP TABLE
-        //         $this->dbConnect()->query("INSERT INTO $this->payslip (payrollID, empID, daysWorked, grossPay, regNightDiff, pay_regNightDiff, regularOT, pay_regularOT, regularOTND, pay_regularOTND, rdot, pay_rdot, rdotND, pay_rdotND, specialHoliday, pay_specialHoliday, specialHolidayND, pay_specialHolidayND, regularHoliday, pay_regularHoliday, regularHolidayND, pay_regularHolidayND, payslip_allowances, payslip_communication, totalGrossPay, payslip_sss, payslip_phic, payslip_hdmf, payslip_wtax, payslip_salaryLoan, payslip_mpl, payslip_smart, payslip_reimbursements, payslip_adjustments, payslip_cashAdvanceDeduction, payslip_cashAdvanceBalance, netPay) VALUES ($payrollID, $employee_id, $employee_daysWorked, $employee_grossPay, $totalNightHours, $employee_nightDiffPay, $totalOvertimeHours, $employee_overtimePay, $totalOvertimeNDHours, $employee_overtimeNDPay, $totalRDOTHours, $employee_RDOTPay, $totalRDOTNDHours, $employee_RDOTNDPay, $totalSpecialHolidayHours, $employee_specialHolidayPay, $totalSpecialHolidayNDHours, $employee_specialHolidayNDPay, $totalRegularHolidayHours, $employee_regularHolidayPay, $totalRegularHolidayNDHours, $employee_regularHolidayNDPay, $totalAllowances, $communication, $employee_totalGrossPay, $sss, $phic, $hdmf, $wtax, $salaryLoan, $mpl, $smart, $totalReimbursements, $totalAdjustments, $cashAdvance, $employee_cashAdvance, $employee_netPay)");
+                // ADD ALL PAYROLL DATA TO PAYSLIP TABLE
+                $this->dbConnect()->query("INSERT INTO $this->payslip (payrollID, empID, daysWorked, grossPay, regNightDiff, pay_regNightDiff, regularOT, pay_regularOT, regularOTND, pay_regularOTND, rdot, pay_rdot, rdotND, pay_rdotND, specialHoliday, pay_specialHoliday, specialHolidayND, pay_specialHolidayND, regularHoliday, pay_regularHoliday, regularHolidayND, pay_regularHolidayND, payslip_allowances, payslip_communication, totalGrossPay, payslip_sss, payslip_phic, payslip_hdmf, payslip_wtax, payslip_salaryLoan, payslip_mpl, payslip_smart, payslip_reimbursements, payslip_adjustments, payslip_cashAdvanceDeduction, payslip_cashAdvanceBalance, netPay) VALUES ($payrollID, $employee_id, $employee_daysWorked, $employee_grossPay, $totalNightHours, $employee_nightDiffPay, $totalOvertimeHours, $employee_overtimePay, $totalOvertimeNDHours, $employee_overtimeNDPay, $totalRDOTHours, $employee_RDOTPay, $totalRDOTNDHours, $employee_RDOTNDPay, $totalSpecialHolidayHours, $employee_specialHolidayPay, $totalSpecialHolidayNDHours, $employee_specialHolidayNDPay, $totalRegularHolidayHours, $employee_regularHolidayPay, $totalRegularHolidayNDHours, $employee_regularHolidayNDPay, $totalAllowances, $communication, $employee_totalGrossPay, $sss, $phic, $hdmf, $wtax, $salaryLoan, $mpl, $smart, $totalReimbursements, $totalAdjustments, $cashAdvance, $employee_cashAdvance, $employee_netPay)");
 
-        //         if ($cashAdvance > 0) {
-        //             $this->dbConnect()->query("UPDATE tbl_employee SET cashAdvance = cashAdvance - $cashAdvance WHERE id = $employee_id");
-        //         }
-        //     }
-        // }
+                if ($cashAdvance > 0) {
+                    $this->dbConnect()->query("UPDATE tbl_employee SET cashAdvance = cashAdvance - $cashAdvance WHERE id = $employee_id");
+                }
+            }
+        }
 
         public function updateCalculatedPayroll($payrollID) {
             $updatePayroll = "
@@ -1240,6 +1188,12 @@
             $deletePayroll = "
                 DELETE FROM ".$this->payroll." WHERE payrollID = $payrollID";
             return $deletePayroll;
+        }
+
+        public function deletePayslip($payrollID) {
+            $deletePayslip = "
+                DELETE FROM ".$this->payslip." WHERE payrollID = $payrollID";
+            return $deletePayslip;
         }
 
         public function viewAllPayslips($payrollID) {

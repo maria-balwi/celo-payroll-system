@@ -17,6 +17,49 @@
             $payrollID = $payrollDetails['payrollID'];
             $empID = $_SESSION['id'];
 
+            function formatDate($date) {
+                // Get the current year
+                $currentYear = date('Y');
+                
+                // Append the current year to the input date
+                $dateWithYear = $date . '-' . $currentYear;
+                
+                // Create a DateTime object from the string (expects format MM-DD-YYYY)
+                $dateTime = DateTime::createFromFormat('m-d-Y', $dateWithYear);
+                
+                // Format the date as 'M d, Y'
+                return $dateTime->format('Y-m-d');
+            }
+
+            function formatDates($date1, $date2) {
+                // Get the current year
+                $currentYear = date('Y');
+                $nextYear = date('Y') + 1;
+
+                $date1 = new DateTime($date1);
+                $date2 = new DateTime($date2);
+                
+                $date1_formatted = $date1->format(  'F d');
+                $date2_formatted = $date2->format('F d');
+                
+                if ($date1->format('m') === '12' && $date2->format('m') === '01') {
+                    $date = $date1_formatted . ', ' . $currentYear . ' - ' . $date2_formatted . ', ' . $nextYear;
+                }
+                else {
+                    $date = $date1_formatted . ' - ' . $date2_formatted . ', ' . $currentYear;
+                }
+                
+                return $date;
+            }
+
+            // GET PAYROLL CYCLE DETAILS
+            $payrollCycleFrom_date = mysqli_query($conn, "SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleFrom']; 
+            $payrollCycleTo_date = mysqli_query($conn, "SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleTo'];
+            $payrollCycleFrom = formatDate($payrollCycleFrom_date);
+            $payrollCycleTo = formatDate($payrollCycleTo_date);
+
+            $date = formatDates($payrollCycleFrom, $payrollCycleTo);
+
             $payslipQuery = mysqli_query($conn, $payroll->viewPayslip($payrollID, $empID));
             $payslipDetails = mysqli_fetch_array($payslipQuery);
             $payslip_id = $payslipDetails['payslipID'];
@@ -68,7 +111,7 @@
             
             $payslip = '
                 <div>
-                    <div class="text-center font-bold text-xl bg-green-300 py-2">For the Period of October 11-25 2024</div>
+                    <div class="text-center font-bold text-xl bg-green-300 py-2">For the Period of '.$date.'</div>
                     <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS, INC.</div>
                     <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP</div>
 
@@ -106,61 +149,62 @@
                         <tr>
                             <td class="border-l-2 text-left px-2 py-1">No. of Days Worked</td>
                             <td class="border-r-2 px-2 py-1 text-right">'.$payslip_daysWorked.'</td>
-                            <td class="border-l-2 text-left px-2 py-1">SSS</td>
-                            <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sss.'</td>
+                            <td class="border-l-2 text-left px-2 py-1">WTAX</td>
+                            <td class="border-r-2 px-2 py-1 text-right">'.$payslip_wtax.'</td>
                         </tr>
                         <tr>
                             <td class="border-l-2 text-left px-2 py-1">Reg Night</td>
                             <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiff.'</td>
-                            <td class="border-l-2 text-left px-2 py-1">PHIC</td>
-                            <td class="border-r-2 px-2 py-1 text-right">'.$payslip_phic.'</td>
+                            <td class="border-l-2 text-left px-2 py-1">SSS</td>
+                            <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sss.'</td>
                         </tr>
                         <tr>
                             <td class="border-l-2 text-left px-2 py-1">PAY</td>
                             <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiffPay.'</td>
-                            <td class="border-l-2 text-left px-2 py-1">HDMF</td>
-                            <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmf.'</td>
+                            <td class="border-l-2 text-left px-2 py-1">PHIC</td>
+                            <td class="border-r-2 px-2 py-1 text-right">'.$payslip_phic.'</td>
                         </tr>
                         <tr>
                             <td class="border-l-2 text-left px-2 py-1">Regular OT</td>
                             <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOT.'</td>
-                            <td class="border-l-2 text-left px-2 py-1">Advances</td>
-                            <td class="border-r-2 px-2 py-1 text-right">'.$payslip_cashAdvanceDeduction.'</td>
+                            <td class="border-l-2 text-left px-2 py-1">HDMF</td>
+                            <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmf.'</td>
                         </tr>
                         <tr>
                             <td class="border-l-2 text-left px-2 py-1">PAY</td>
                             <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOTPay.'</td>
-                            <td class="border-l-2 text-left px-2 py-1">Salary Loan</td>
-                            <td class="border-r-2 px-2 py-1 text-right">'.$payslip_salaryLoan.'</td>
+                            <td class="border-l-2 text-left px-2 py-1">Advances</td>
+                            <td class="border-r-2 px-2 py-1 text-right">'.$payslip_cashAdvanceDeduction.'</td>
                         </tr>
                         <tr>
                             <td class="border-l-2 text-left px-2 py-1">Reg OT Night</td>
                             <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOTND.'</td>
-                            <td class="border-l-2 text-left px-2 py-1">PAGIBIG MPL</td>
-                            <td class="border-r-2 px-2 py-1 text-right">'.$payslip_mpl.'</td>
+                            <td class="border-l-2 text-left px-2 py-1">Salary Loan</td>
+                            <td class="border-r-2 px-2 py-1 text-right">'.$payslip_salaryLoan.'</td>
                         </tr>
                         <tr>
                             <td class="border-l-2 text-left px-2 py-1">PAY</td>
                             <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOTNDPay.'</td>
-                            <td class="border-l-2 text-left px-2 py-1">Smart</td>
-                            <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
+                            <td class="border-l-2 text-left px-2 py-1">PAGIBIG MPL</td>
+                            <td class="border-r-2 px-2 py-1 text-right">'.$payslip_mpl.'</td>
                         </tr>
                         <tr>
                             <td class="border-l-2 text-left px-2 py-1">Rest Day OT</td>
                             <td class="border-r-2 px-2 py-1 text-right">'.$payslip_RDOT.'</td>
-                            <td class="border-l-2 text-left px-2 py-1">Reimbursements</td>
-                            <td class="border-r-2 px-2 py-1 text-right">'.$payslip_reimbursements.'</td>
+                            <td class="border-l-2 text-left px-2 py-1">Smart</td>
+                            <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
                         </tr>
                         <tr>
                             <td class="border-l-2 text-left px-2 py-1">PAY</td>
                             <td class="border-r-2 px-2 py-1 text-right">'.$payslip_RDOTPay.'</td>
-                            <td class="border-l-2 text-left px-2 py-1">Adjustment +,-</td>
-                            <td class="border-r-2 px-2 py-1 text-right">'.$payslip_adjustments.'</td>
+                            <td class="border-l-2 text-left px-2 py-1">Reimbursements</td>
+                            <td class="border-r-2 px-2 py-1 text-right">'.$payslip_reimbursements.'</td>
                         </tr>
                         <tr>
                             <td class="border-l-2 text-left px-2 py-1">RDOT Night</td>
                             <td class="border-r-2 px-2 py-1 text-right">'.$payslip_RDOTND.'</td>
-                            <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                            <td class="border-l-2 text-left px-2 py-1">Adjustment +,-</td>
+                            <td class="border-r-2 px-2 py-1 text-right">'.$payslip_adjustments.'</td>
                         </tr>
                         <tr>
                             <td class="border-l-2 text-left px-2 py-1">PAY</td>
@@ -230,224 +274,9 @@
                             <td class="border-r-2 border-t-2 px-2 py-1 text-right">'.$payslip_netPay.'</td>
                         </tr>
                     </table>
-
-                    <div class="border-t-2 border-b-2 border-gray-500 text-center py-2">
-                        <span class="font-bold">Signature Over Printed Name</span>
-                    </div>
                 </div>
             ';
             echo $payslip;
         }
-        // $payrollDetails = mysqli_fetch_array($payrollIDQuery);
-        // $payrollID = $payrollDetails['payrollID'];
-        
-        // $payslip = '
-        //     <div>
-        //         <div class="text-center font-bold text-xl bg-green-300 py-2">For the Period of October 11-25 2024</div>
-        //         <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS, INC.</div>
-        //         <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP</div>
-
-        //         <table class="w-full text-sm mb-4">
-        //             <tr class="bg-green-300">
-        //                 <td class="border px-2 py-1">Employee ID</td>
-        //                 <td class="border px-2 py-1">Name</td>
-        //                 <td class="border px-2 py-1 text-right">Position</td>
-        //                 <td class="border px-2 py-1 text-right">Employment Status</td>
-        //             </tr>
-        //             <tr>
-        //                 <td class="border px-2 py-1">000-396</td>
-        //                 <td class="border px-2 py-1">Reyes, Maria Patrice</td>
-        //                 <td class="border px-2 py-1 text-right">IT Staff</td>
-        //                 <td class="border px-2 py-1 text-right">Regular</td>
-        //             </tr>
-        //             <tr class="bg-green-300">
-        //                 <td class="border px-2 py-1">Pay Frequency</td>
-        //                 <td class="border px-2 py-1">Monthly Rate</td>
-        //                 <td class="border px-2 py-1 text-right">Daily Rate</td>
-        //                 <td class="border px-2 py-1 text-right">Hourly Rate</td>
-        //             </tr>
-        //             <tr>
-        //                 <td class="border px-2 py-1">Semi-Monthly</td>
-        //                 <td class="border px-2 py-1">18,000.00</td>
-        //                 <td class="border px-2 py-1 text-right">827.59</td>
-        //                 <td class="border px-2 py-1 text-right">103.45</td>
-        //             </tr>
-        //             <tr>
-        //                 <td class="px-2 py-1" colspan="4"></td>
-        //             <tr>
-        //                 <td class="border px-2 py-1 bg-green-300" colspan="2">EARNINGS</td>
-        //                 <td class="border px-2 py-1 bg-green-300" colspan="2">DEDUCTIONS</td>
-        //             </tr>
-        //             <tr>
-        //                 <td class="border-l-2 text-left px-2 py-1">No. of Days Worked</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right">10</td>
-        //                 <td class="border-l-2 text-left px-2 py-1">SSS</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right">'.$payslip_employeeName.'</td>
-        //             </tr>
-        //             <tr>
-        //                 <td class="border-l-2 text-left px-2 py-1">Basic Pay</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right">8275.90</td>
-        //                 <td class="border-l-2 text-left px-2 py-1">PHIC</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right">'.$payslip_employeeName.'</td>
-        //             </tr>
-        //             <tr>
-                        
-        //                 <td class="border-l-2 text-left px-2 py-1">Reg Night</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right">'.$payslip_employeeName.'</td>
-        //                 <td class="border-l-2 text-left px-2 py-1">HDMF</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right">'.$payslip_employeeName.'</td>
-        //             </tr>
-        //             <tr>
-        //                 <td class="border-l-2 text-left px-2 py-1">PAY</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right">'.$payslip_employeeName.'</td>
-        //                 <td class="border-l-2 text-left px-2 py-1">Advances</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right">'.$payslip_employeeName.'</td>
-        //             </tr>
-        //             <tr>
-        //                 <td class="border-l-2 text-left px-2 py-1">Regular OT</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right">'.$payslip_employeeName.'</td>
-        //                 <td class="border-l-2 text-left px-2 py-1">Salary Loan</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right">'.$payslip_employeeName.'</td>
-        //             </tr>
-        //             <tr>
-        //                 <td class="border-l-2 text-left px-2 py-1">PAY</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right">'.$payslip_employeeName.'</td>
-        //                 <td class="border-l-2 text-left px-2 py-1">PAGIBIG MPL</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right">'.$payslip_employeeName.'</td>
-        //             </tr>
-        //             <tr>
-        //                 <td class="border-l-2 text-left px-2 py-1">Reg OT Night</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right">'.$payslip_employeeName.'</td>
-        //                 <td class="border-l-2 text-left px-2 py-1">Smart</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right">'.$payslip_employeeName.'</td>
-        //             </tr>
-        //             <tr>
-        //                 <td class="border-l-2 text-left px-2 py-1">PAY</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right">'.$payslip_employeeName.'</td>
-        //                 <td class="border-l-2 text-left px-2 py-1">Reimbursements</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right">'.$payslip_employeeName.'</td>
-        //             </tr>
-        //             <tr>
-        //                 <td class="border-l-2 text-left px-2 py-1">Rest Day OT</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right">'.$payslip_employeeName.'</td>
-        //                 <td class="border-l-2 text-left px-2 py-1">Adjustment +,-</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right">'.$payslip_employeeName.'</td>
-        //             </tr>
-        //             <tr>
-        //                 <td class="border-l-2 text-left px-2 py-1">PAY</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right">'.$payslip_employeeName.'</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
-        //             </tr>
-        //             <tr>
-        //                 <td class="border-l-2 text-left px-2 py-1">RDOT Night</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right">'.$payslip_employeeName.'</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
-        //             </tr>
-        //             <tr>
-        //                 <td class="border-l-2 text-left px-2 py-1">PAY</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right">'.$payslip_employeeName.'</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
-        //             </tr>
-        //             <tr>
-        //                 <td class="border-l-2 text-left px-2 py-1">Special Holiday</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right">'.$payslip_employeeName.'</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
-        //             </tr>
-        //             <tr>
-        //                 <td class="border-l-2 text-left px-2 py-1">PAY</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right">'.$payslip_employeeName.'</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
-        //             </tr>
-        //             <tr>
-        //                 <td class="border-l-2 text-left px-2 py-1 text-left">SH Night</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right">'.$payslip_employeeName.'</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
-        //             </tr>
-        //             <tr>
-        //                 <td class="border-l-2 text-left px-2 py-1">PAY</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right">'.$payslip_employeeName.'</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
-        //             </tr>
-        //             <tr>
-        //                 <td class="border-l-2 text-left px-2 py-1">Holiday</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right">'.$payslip_employeeName.'</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
-        //             </tr>
-        //             <tr>
-        //                 <td class="border-l-2 text-left px-2 py-1">PAY</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right">'.$payslip_employeeName.'</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
-        //             </tr>
-        //             <tr>
-        //                 <td class="border-l-2 text-left px-2 py-1">Holiday Night</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right">'.$payslip_employeeName.'</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
-        //             </tr>
-        //             <tr>
-        //                 <td class="border-l-2 text-left px-2 py-1">PAY</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right">'.$payslip_employeeName.'</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
-        //             </tr>
-        //             <tr>
-        //                 <td class="border-l-2 text-left px-2 py-1">GROSS PAY</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right">'.$payslip_employeeName.'</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
-        //             </tr>
-        //             <tr>
-        //                 <td class="border-l-2 text-left px-2 py-1">Allowance</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right">'.$payslip_employeeName.'</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
-        //             </tr>
-        //             <tr>
-        //                 <td class="border-l-2 text-left px-2 py-1">Communication</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right">'.$payslip_employeeName.'</td>
-        //                 <td class="border-l-2 text-left px-2 py-1">Balance C.A.</td>
-        //                 <td class="border-r-2 px-2 py-1 text-right">'.$payslip_employeeName.'</td>
-        //             </tr>
-        //             <tr>
-        //                 <td class="border-l-2 border-t-2 text-left px-2 py-1">Total Gross Pay</td>
-        //                 <td class="border-r-2 border-t-2 px-2 py-1 text-right">'.$payslip_employeeName.'</td>
-        //                 <td class="border-l-2 border-t-2  text-left px-2 py-1">Net Pay</td>
-        //                 <td class="border-r-2 border-t-2 px-2 py-1 text-right">'.$payslip_employeeName.'</td>
-        //             </tr>
-        //         </table>
-
-        //         <!-- <table class="w-full text-sm mb-4">
-        //             <tr>
-        //                 <td class="border px-2 py-1" colspan="2">DAILY RATE</td>
-        //                 <td class="border px-2 py-1" colspan="2">Deductions</td>
-        //             </tr>
-        //             <tr>
-        //                 <td class="border px-2 py-1">DAILY RATE</td>
-        //                 <td class="border px-2 py-1 text-right">827.59</td>
-        //                 <td class="border px-2 py-1">SSS</td>
-        //                 <td class="border px-2 py-1 text-right">405.00</td>
-        //             </tr>
-        //             <tr>
-        //                 <td class="border px-2 py-1">HOURLY</td>
-        //                 <td class="border px-2 py-1 text-right">103.45</td>
-        //                 <td class="border px-2 py-1">PHIC</td>
-        //                 <td class="border px-2 py-1 text-right">225.00</td>
-        //             </tr>
-        //             <tr>
-        //                 <td class="border px-2 py-1">NO. OF TOTAL</td>
-        //                 <td class="border px-2 py-1 text-right">40.00</td>
-        //                 <td class="border px-2 py-1">HDMF</td>
-        //                 <td class="border px-2 py-1 text-right">100.00</td>
-        //             </tr>
-        //             <tr>
-        //                 <td class="border px-2 py-1 font-bold">GROSS PAY</td>
-        //                 <td class="border px-2 py-1 text-right font-bold">4,137.93</td>
-        //                 <td class="border px-2 py-1 font-bold">NET PAY</td>
-        //                 <td class="border px-2 py-1 text-right font-bold">3,907.93</td>
-        //             </tr>
-        //         </table> -->
-
-        //         <div class="border-t-2 border-b-2 border-gray-500 text-center py-2">
-        //             <span class="font-bold">Signature Over Printed Name</span>
-        //         </div>
-        //     </div>
-        // ';
-        // echo $payslip;
     }
 ?>
