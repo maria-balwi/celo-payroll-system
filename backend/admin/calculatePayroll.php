@@ -22,6 +22,7 @@
     else if (isset($_POST['action']) && $_POST['action'] == "delete") {
         $payrollID = $_POST['payrollID'];
         mysqli_query($conn, $payroll->deletePayroll($payrollID));
+        mysqli_query($conn, $payroll->deletePayslip($payrollID));
         $em = "Payroll Deleted Successfully";
         $error = array('error' => 0, 'em' => $em);
         echo json_encode($error);

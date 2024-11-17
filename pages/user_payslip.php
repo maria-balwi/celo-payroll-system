@@ -57,14 +57,14 @@
 
                  <!-- GENERATE PAYSLIP CHANGE BUTTON -->
                  <div class="static inline-block text-right">
-                    <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none generatePayslip">
+                    <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-3 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none generatePayslip">
                     Generate Payslip
                     </button>
                 </div>
 
                 <!-- DOWNLOAD PAYSLIP CHANGE BUTTON -->
                 <div class="static inline-block text-right">
-                    <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none downloadPayslip" id="btnDownloadPayslip">
+                    <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-3 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none downloadPayslip" id="btnDownloadPayslip">
                     Download Payslip
                     </button>
                 </div>
