@@ -28,7 +28,8 @@
                 INNER JOIN ".$this->department." AS department
                 ON employees.departmentID = department.departmentID
                 INNER JOIN ".$this->shifts." AS shifts
-                ON employees.shiftID = shifts.shiftID";
+                ON employees.shiftID = shifts.shiftID
+                WHERE designationID != 12";
             return $team;
         }
 
