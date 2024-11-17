@@ -163,7 +163,7 @@
                                     </div>
                                 </a>
                         <?php }
-                            else { ?>
+                            if ($getPendingLeaves == 0 && $getPendingChangeShift == 0 && $getPendingOvertime == 0) { ?>
                                 <!-- ======== NO PENDING REQUESTS ======== -->
                                 <div class="mt-3">
                                     <p class="text-gray-700">There are no pending requests at the moment.</p>
