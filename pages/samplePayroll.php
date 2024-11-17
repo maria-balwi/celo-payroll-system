@@ -185,6 +185,7 @@
                                                 $totalSpecialHolidayHours += $result['totalSpecialHolidayHours'];
                                                 $totalSpecialHolidayNDHours += $result['totalSpecialHolidayNightHours'];
                                             }
+                                            
 
                                             // COMPUTATION FOR NIGHT DIFFERENTIAL PAY
                                             $employee_nightDiffPay = 0;
@@ -319,11 +320,11 @@
                                             $employee_regularHolidayPay = 0;
                                             $employee_regularHolidayNDPay = 0;
                                             if ($totalRegularHolidayNDHours == 0) {
-                                                $totalRegularHolidayHours = $regularHolidaysWorked / 2 * 8;
+                                                // $totalRegularHolidayHours = $regularHolidaysWorked / 2 * 8;
                                                 $employee_regularHolidayPay = round($employee_hourlyRate  * $totalRegularHolidayHours, 2);
                                             }
                                             else {
-                                                $totalRegularHolidayHours = ($regularHolidaysWorked * 8) - $totalRegularHolidayNDHours;
+                                                // $totalRegularHolidayHours = ($regularHolidaysWorked * 8) - $totalRegularHolidayNDHours;
                                                 $employee_regularHolidayPay = round($employee_hourlyRate  * $totalRegularHolidayHours, 2);
                                                 $employee_regularHolidayNDPay = round((($employee_hourlyRate * 2) * .15) * $totalRegularHolidayNDHours, 2);
                                             }
