@@ -629,10 +629,10 @@
             return $addRequirement;
         }
 
-        public function updateEmployeeInfo($updateUserID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
+        public function updateEmployeeInfo_reg($updateUserID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
             $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
             $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, 
-            $updateVacationLeaves, $updateSickLeaves, $updateCashAdvance) {
+            $updateVacationLeaves, $updateSickLeaves, $updateCashAdvance, $updateEmploymentStatus, $updateDateHired, $updateDateRegularized) {
             $updateEmployee = "
                 UPDATE ".$this->employees." AS employees 
                 SET lastName = '$updateLastName',
@@ -657,7 +657,45 @@
                 hourlyRate = '$updateHourlyRate',
                 availableVL = '$updateVacationLeaves',
                 availableSL = '$updateSickLeaves', 
-                cashAdvance = '$updateCashAdvance'
+                cashAdvance = '$updateCashAdvance', 
+                employmentStatus = '$updateEmploymentStatus',
+                dateHired = '$updateDateHired',
+                dateRegularized = '$updateDateRegularized'
+                WHERE id = '$updateUserID'";
+            return $updateEmployee;
+        }
+
+        public function updateEmployeeInfo_prob($updateUserID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
+            $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
+            $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, 
+            $updateVacationLeaves, $updateSickLeaves, $updateCashAdvance, $updateEmploymentStatus, $updateDateHired) {
+            $updateEmployee = "
+                UPDATE ".$this->employees." AS employees 
+                SET lastName = '$updateLastName',
+                firstName = '$updateFirstName',
+                gender = '$updateGender',
+                civilStatus = '$updateCivilStatus',
+                address = '$updateAddress',
+                dateOfBirth = '$updateDateOfBirth',
+                placeOfBirth = '$updatePlaceOfBirth',
+                sss = '$updateSSS',
+                pagIbig = '$updatePagIbig',
+                philhealth = '$updatePhilhealth',
+                tin = '$updateTIN',
+                emailAddress = '$updateEmailAddress',
+                employeeID = '$updateEmployeeID',
+                mobileNumber = '$updateMobileNumber',
+                departmentID = '$updateDepartmentID',
+                designationID = '$updateDesignationID',
+                shiftID = '$updateShiftID', 
+                basicPay = '$updateBasicPay',
+                dailyRate = '$updateDailyRate',
+                hourlyRate = '$updateHourlyRate',
+                availableVL = '$updateVacationLeaves',
+                availableSL = '$updateSickLeaves', 
+                cashAdvance = '$updateCashAdvance', 
+                employmentStatus = '$updateEmploymentStatus',
+                dateHired = '$updateDateHired'
                 WHERE id = '$updateUserID'";
             return $updateEmployee;
         }

@@ -647,13 +647,13 @@
                             
                             <div class="row g-2 mb-2">
                                 <div class="col-4">
-                                    <input type="number" class="form-control" id="viewEmploymentStatus" name="viewEmploymentStatus" disabled readonly>
+                                    <input type="text" class="form-control" id="viewEmploymentStatus" name="viewEmploymentStatus" disabled readonly>
                                 </div>
                                 <div class="col-4">
-                                    <input type="number" class="form-control" id="viewDateHired" name="viewDateHired" disabled readonly>
+                                    <input type="text" class="form-control" id="viewDateHired" name="viewDateHired" disabled readonly>
                                 </div>
                                 <div class="col-4 viewDateRegularizedLabel">
-                                    <input type="number" class="form-control" id="viewDateRegularized" name="viewDateRegularized" disabled readonly>
+                                    <input type="text" class="form-control" id="viewDateRegularized" name="viewDateRegularized" disabled readonly>
                                 </div>
                             </div>
 
@@ -1089,6 +1089,34 @@
                                     </div>
                                     <div class="col-4">
                                         <input type="number" class="form-control" id="updateHourlyRate" name="updateHourlyRate" placeholder="1.0" step="0.01" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-1">
+                                    <div class="col-4">
+                                        <label for="updateEmploymentStatus">Employment Status:</label>
+                                    </div>
+                                    <div class="col-4">
+                                        <label for="updateDateHired">Date Hired:</label>
+                                    </div>
+                                    <div class="col-4">
+                                        <label for="updateDateRegularized">Date Regularized:</label>
+                                    </div>
+                                </div>
+                            
+                                <div class="row g-2 mb-2">
+                                    <div class="col-4">
+                                        <select id="updateEmploymentStatus" name="updateEmploymentStatus" class="form-select">
+                                            <option value="" selected disabled>Choose</option>
+                                            <option value="Probationary">Probationary</option>
+                                            <option value="Regular">Regular</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="date" class="form-control" id="updateDateHired" name="updateDateHired">
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="date" class="form-control" id="updateDateRegularized" name="updateDateRegularized">
                                     </div>
                                 </div>
 

@@ -143,6 +143,17 @@ $(document).ready(function() {
         $('#dateRegularized').val(regularizedDate);
     });
 
+    $("input[id='updateDateHired']").on("input", function() {
+        var dateHired = $(this).val();
+        var date = new Date(dateHired);
+        date.setMonth(date.getMonth() + 6);
+        // Format the result as 'YYYY-MM-DD'
+        var regularizedDate = date.toISOString().split('T')[0];
+
+        // Set the regularized date in the #dateRegularized input
+        $('#updateDateRegularized').val(regularizedDate);
+    });
+
     // // HOURLY RATE COMPUTATION - ADD EMPLOYEE
     // $("input[id='basicPay']").on("input", function() {
     //     var basicPay = $(this).val();
@@ -540,6 +551,9 @@ $(document).ready(function() {
                     $('#viewDepartment').val(res.data.departmentName);
                     $('#viewDesignation').val(res.data.position);
                     $('#viewShiftID').val(res.data.startTime + ' - ' + res.data.endTime);
+                    $('#viewEmploymentStatus').val(res.data.employmentStatus);
+                    $('#viewDateHired').val(res.data.dateHired);
+                    $('#viewDateRegularized').val(res.data.dateRegularized);
                     $('#viewBasicPay').val(res.data.basicPay);
                     $('#viewDailyRate').val(res.data.dailyRate);
                     $('#viewHourlyRate').val(res.data.hourlyRate);
@@ -677,6 +691,9 @@ $(document).ready(function() {
                     $('#viewDepartment').val(res.data.departmentName);
                     $('#viewDesignation').val(res.data.position);
                     $('#viewShiftID').val(res.data.startTime + ' - ' + res.data.endTime);
+                    $('#viewEmploymentStatus').val(res.data.employmentStatus);
+                    $('#viewDateHired').val(res.data.dateHired);
+                    $('#viewDateRegularized').val(res.data.dateRegularized);
                     $('#viewBasicPay').val(res.data.basicPay);
                     $('#viewDailyRate').val(res.data.dailyRate);
                     $('#viewHourlyRate').val(res.data.hourlyRate);
@@ -829,6 +846,9 @@ $(document).ready(function() {
                         $('#updateDepartment').val(res.data.departmentName);
                         $('#updateDesignation').val(res.data.position);
                         $('#updateShiftID').val(res.data.startTime + ' - ' + res.data.endTime);
+                        $('#updateEmploymentStatus').val(res.data.employmentStatus);
+                        $('#updateDateHired').val(res.data.dateHired);
+                        $('#updateDateRegularized').val(res.data.dateRegularized);
                         $('#updateBasicPay').val(res.data.basicPay);
                         $('#updateDailyRate').val(res.data.dailyRate);
                         $('#updateHourlyRate').val(res.data.hourlyRate);
@@ -881,6 +901,9 @@ $(document).ready(function() {
         var updateVacationLeaves = $("#updateVacationLeaves").val();
         var updateSickLeaves = $("#updateSickLeaves").val();
         var updateCashAdvance = $("#updateCashAdvance").val();
+        var updateEmploymentStatus = $("#updateEmploymentStatus").val();
+        var updateDateHired = $("#updateDateHired").val();
+        var updateDateRegularized = $("#updateDateRegularized").val();
 
         if (updateLastName == "" || updateFirstName == "" || updateGender == "" || updateCivilStatus == "" || 
             updateAddress == "" || updateDateOfBirth == "" || updatePlaceOfBirth == "" ||
@@ -888,7 +911,8 @@ $(document).ready(function() {
             updateEmailAddress == "" || updateEmployeeID == "" || updateMobileNumber == "" ||
             updateDepartment == "" || updateDesignation == "" || updateShiftID == "" || 
             updateBasicPay == "" || updateDailyRate == "" || updateHourlyRate == "" || 
-            updateVacationLeaves == "" || updateSickLeaves == "") {
+            updateVacationLeaves == "" || updateSickLeaves == "" || updateEmploymentStatus == "" ||
+            updateDateHired == "") {
 
             Swal.fire({
                 icon: 'warning',
@@ -978,6 +1002,9 @@ $(document).ready(function() {
                     $('#viewDepartment').val(res.data.departmentName);
                     $('#viewDesignation').val(res.data.position);
                     $('#viewShiftID').val(res.data.startTime + ' - ' + res.data.endTime);
+                    $('#viewEmploymentStatus').val(res.data.employmentStatus);
+                    $('#viewDateHired').val(res.data.dateHired);
+                    $('#viewDateRegularized').val(res.data.dateRegularized);
                     $('#viewBasicPay').val(res.data.basicPay);
                     $('#viewDailyRate').val(res.data.dailyRate);
                     $('#viewHourlyRate').val(res.data.hourlyRate);
@@ -1112,6 +1139,9 @@ $(document).ready(function() {
                     $('#viewDepartment').val(res.data.departmentName);
                     $('#viewDesignation').val(res.data.position);
                     $('#viewShiftID').val(res.data.startTime + ' - ' + res.data.endTime);
+                    $('#viewEmploymentStatus').val(res.data.employmentStatus);
+                    $('#viewDateHired').val(res.data.dateHired);
+                    $('#viewDateRegularized').val(res.data.dateRegularized);
                     $('#viewBasicPay').val(res.data.basicPay);
                     $('#viewDailyRate').val(res.data.dailyRate);
                     $('#viewHourlyRate').val(res.data.hourlyRate);

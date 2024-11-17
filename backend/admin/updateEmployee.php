@@ -27,6 +27,8 @@
     $updateVacationLeaves = $_POST['updateVacationLeaves'];
     $updateSickLeaves = $_POST['updateSickLeaves'];
     $updateCashAdvance = $_POST['updateCashAdvance'];
+    $updateEmploymentStatus = $_POST['updateEmploymentStatus'];
+    $updateDateHired = $_POST['updateDateHired'];
 
     if (str_replace(" ", "",$_POST['updateSSS'])) {
 		$req_sss = 1;
@@ -147,10 +149,23 @@
         // IF SAME EMPLOYEE ID (OLD AND NEW)
         if ($updateEmployeeID == $oldEmployeeID)
         {
-            mysqli_query($conn, $employees->updateEmployeeInfo($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
-            $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
-            $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateCashAdvance));
-
+            if ($updateEmploymentStatus == "Regular")
+            {
+                // ADD REGULAR EMPLOYEE
+                $updateDateRegularized = new DateTime($updateDateHired);
+                $updateDateRegularized->modify('+6 months');
+                $updateDateRegularized = $updateDateRegularized->format('Y-m-d');
+                mysqli_query($conn, $employees->updateEmployeeInfo_reg($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
+                $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
+                $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateCashAdvance, $updateEmploymentStatus, $updateDateHired, $updateDateRegularized));
+            }
+            else 
+            {
+                mysqli_query($conn, $employees->updateEmployeeInfo($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
+                $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
+                $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateCashAdvance, $updateEmploymentStatus, $updateDateHired));
+            }
+            
             mysqli_query($conn, $employees->updateEmployeeRequirements($updateID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi, $req_medicalExam, $req_2x2pic, $req_vaccineCard, $req_psa, $req_validID, $req_helloMoney));
 
             if (isset($_FILES['updateProfilePicture']) && $_FILES['updateProfilePicture']['error'] == 0) {
