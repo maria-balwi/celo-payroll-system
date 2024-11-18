@@ -16,7 +16,7 @@
     {
         $levelID = 2;
     }
-    else if ($departmentID == 3 && ($designationID == 8 || $designationID == 9))
+    else if ($departmentID == 3 || $departmentID == 5 && ($designationID == 8 || $designationID == 9 || $designationID == 12))
     {
         $levelID = 3;
     }
