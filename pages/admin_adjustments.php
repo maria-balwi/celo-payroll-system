@@ -287,8 +287,8 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary allowanceUpdate" id="btnAllowanceUpdate">Update</button>
-                            <button type="button" class="btn btn-danger allowanceDelete" id="btnAllowanceDelete">Delete</button>
+                            <!-- <button type="button" class="btn btn-primary allowanceUpdate" id="btnAllowanceUpdate">Update</button>
+                            <button type="button" class="btn btn-danger allowanceDelete" id="btnAllowanceDelete">Delete</button> -->
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnClose_allowance">Close</button>
                         </div>
                     </div>
@@ -353,8 +353,8 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary deductionUpdate">Update</button>
-                            <button type="button" class="btn btn-danger deductionDelete">Delete</button>
+                            <!-- <button type="button" class="btn btn-primary deductionUpdate">Update</button>
+                            <button type="button" class="btn btn-danger deductionDelete">Delete</button> -->
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnClose_deduction">Close</button>
                         </div>
                     </div>
