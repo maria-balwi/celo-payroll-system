@@ -40,6 +40,7 @@
                 ON employees.departmentID = department.departmentID
                 INNER JOIN ".$this->shifts." AS shifts
                 ON employees.shiftID = shifts.shiftID
+                WHERE designationID != 12
                 ORDER BY employees.id DESC
                 LIMIT 5";
             return $team;
@@ -109,47 +110,12 @@
                 ";
             return $dtr;
         }
-        
-        
-
-        public function origViewDTR($id, $yearMonth) {
-            $dtr = "
-                SELECT 
-                    all_dates.attendanceDate,
-                    COALESCE(id, '-') AS id, 
-                    COALESCE(attendance.logTypeID, '-') AS logTypeID, 
-                    COALESCE(logtype.logType, '-') AS logType, 
-                    COALESCE(DATE_FORMAT(attendance.attendanceTime, '%h:%i %p'), '-') AS attendanceTime, 
-                    COALESCE(DATE_FORMAT(shift.startTime, '%h:%i %p'), '-') AS startTime, 
-                    COALESCE(DATE_FORMAT(shift.endTime, '%h:%i %p'), '-') AS endTime
-                FROM 
-                    (
-                        SELECT DATE('$yearMonth-01') + INTERVAL (a.a + (10 * b.a)) DAY AS attendanceDate
-                        FROM (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS a
-                        CROSS JOIN (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3) AS b
-                    ) AS all_dates
-                LEFT JOIN 
-                    ".$this->attendance." AS attendance 
-                    ON all_dates.attendanceDate = attendance.attendanceDate AND attendance.empID = '$id'
-                LEFT JOIN 
-                    ".$this->employees." AS employees ON attendance.empID = employees.id
-                LEFT JOIN 
-                    ".$this->logtype." AS logtype ON attendance.logTypeID = logtype.logTypeID 
-                LEFT JOIN 
-                    ".$this->shift." AS shift ON employees.shiftID = shift.shiftID
-                WHERE 
-                    all_dates.attendanceDate BETWEEN '$yearMonth-01' AND LAST_DAY('$yearMonth-01')
-                ORDER BY 
-                    all_dates.attendanceDate, attendance.attendanceTime;
-                ";
-            return $dtr;
-        }
 
         public function userViewDTR($id, $yearMonth) {
             $dtr = "
                 SELECT 
                     all_dates.attendanceDate,
-                    COALESCE(id, '-') AS id, 
+                    COALESCE(attendance.id, '-') AS id, 
                     COALESCE(attendance.logTypeID, '-') AS logTypeID, 
                     COALESCE(logtype.logType, '-') AS logType, 
                     COALESCE(DATE_FORMAT(attendance.attendanceTime, '%h:%i %p'), '-') AS attendanceTime, 
@@ -157,42 +123,31 @@
                     COALESCE(DATE_FORMAT(shift.endTime, '%h:%i %p'), '-') AS endTime
                 FROM 
                     (
-                        SELECT DATE('$yearMonth-01') + INTERVAL (a.a + (10 * b.a)) DAY AS attendanceDate
-                        FROM (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS a
-                        CROSS JOIN (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3) AS b
+                        SELECT 
+                            DATE('$yearMonth-01') + INTERVAL n DAY AS attendanceDate
+                        FROM (
+                            SELECT a.a + (10 * b.a) + (100 * c.a) AS n
+                            FROM 
+                                (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS a
+                            CROSS JOIN 
+                                (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2) AS b
+                            CROSS JOIN 
+                                (SELECT 0 AS a) AS c
+                        ) AS days
+                        WHERE DATE('$yearMonth-01') + INTERVAL n DAY <= LAST_DAY('$yearMonth-01')
                     ) AS all_dates
                 LEFT JOIN 
                     ".$this->attendance." AS attendance 
-                    ON all_dates.attendanceDate = attendance.attendanceDate AND attendance.empID = '$id'
+                    ON all_dates.attendanceDate = attendance.attendanceDate AND attendance.empID = ?
                 LEFT JOIN 
                     ".$this->employees." AS employees ON attendance.empID = employees.id
                 LEFT JOIN 
                     ".$this->logtype." AS logtype ON attendance.logTypeID = logtype.logTypeID 
                 LEFT JOIN 
                     ".$this->shift." AS shift ON employees.shiftID = shift.shiftID
-                WHERE 
-                    all_dates.attendanceDate BETWEEN '2024-07-01' AND LAST_DAY('-01')
                 ORDER BY 
                     all_dates.attendanceDate, attendance.attendanceTime;
-                ";
-            return $dtr;
-        }
-
-        public function oldViewDTR($id) {
-            $dtr = "
-                SELECT attendanceID, attendanceDate, id, attendance.logTypeID, logType,   
-                DATE_FORMAT(attendanceTime, '%h:%i %p') AS attendanceTime, 
-                DATE_FORMAT(startTime, '%h:%i %p') AS startTime, 
-                DATE_FORMAT(endTime, '%h:%i %p') AS endTime
-                FROM ".$this->attendance." AS attendance 
-                INNER JOIN ".$this->employees." AS employees
-                ON attendance.empID = employees.id
-                INNER JOIN ".$this->logtype." AS logtype 
-                ON attendance.logTypeID = logtype.logTypeID 
-                INNER JOIN ".$this->shift." AS shift 
-                ON employees.shiftID = shift.shiftID
-                WHERE empID='$id'
-                ORDER BY attendanceID DESC";
+            ";
             return $dtr;
         }
 
@@ -222,6 +177,19 @@
             return $request;
         }
 
+        public function viewDirectorFiledOT() {
+            $request = "
+                SELECT requestID, dateFiled, otDate, employeeID, otType,
+                CONCAT(firstName , ' ', lastName) AS employeeName,
+                DATE_FORMAT(fromTime, '%h:%i %p') AS fromTime,
+                DATE_FORMAT(toTime, '%h:%i %p') AS toTime,
+                remarks, status
+                FROM ".$this->filedOT." AS filedOT
+                INNER JOIN ".$this->employees." AS employees
+                ON filedOT.empID = employees.id
+                WHERE status IS NOT NULL";
+            return $request;
+        }
 
         public function viewAdminFiledOT() {
             $request = "
@@ -362,6 +330,16 @@
         }
 
         public function viewAdminLeaveRequests() {
+            $request = "
+                SELECT * FROM ".$this->leaves." AS leaves
+                INNER JOIN ".$this->employees." AS employees
+                ON leaves.empID = employees.id
+                INNER JOIN ".$this->leaveType." AS leaveType
+                ON leaveType.leaveTypeID = leaves.leaveTypeID";
+            return $request;
+        }
+
+        public function viewDirectorLeaveRequests() {
             $request = "
                 SELECT * FROM ".$this->leaves." AS leaves
                 INNER JOIN ".$this->employees." AS employees
@@ -520,7 +498,7 @@
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
                 ON employees.id = users.empID
-                WHERE users.status = 'Active' AND departmentID = 12";
+                WHERE users.status = 'Active' AND designationID = 12";
             return $allAdmin;
         }
 
@@ -529,7 +507,7 @@
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
                 ON employees.id = users.empID
-                WHERE users.status = 'Inactive' AND departmentID = 12";
+                WHERE users.status = 'Inactive' AND designationID = 12";
             return $inactiveAdmin;
         }
 
@@ -881,6 +859,7 @@
                 ON employees.departmentID = department.departmentID
                 INNER JOIN ".$this->shifts." AS shifts
                 ON employees.shiftID = shifts.shiftID
+                WHERE designationID != 12
                 ORDER BY employeeID ASC";
             return $employeeAttendance;
         }

@@ -50,7 +50,7 @@ $(document).ready(function() {
                         showConfirmButton: false
                     }).then(() => {
                         stopStream();
-                        // window.location.reload();
+                        window.location.reload();
                     })
                 },
                 error: function(xhr, status, error) {
