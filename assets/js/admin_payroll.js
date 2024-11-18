@@ -280,6 +280,44 @@ $(document).ready(function() {
         })
     });
         
+    $('.exportPayroll').click(function () {
+        let csvContent = '';
+        const table = $('#payrollListTable'); // Replace with your table ID or class
+        const rows = table.find('tr');
+
+        rows.each(function () {
+            const cells = $(this).find('th, td');
+            let row = [];
+            let isExcluded = false;
+
+            cells.each(function () {
+                const cellText = $(this).text().trim();
+
+                // Check if the cell contains "DEDUCTIONS"
+                if (cellText === 'DEDUCTIONS') {
+                    isExcluded = true;
+                }
+
+                // Only process cells if not excluded
+                row.push(`"${cellText}"`);
+            });
+
+            if (!isExcluded) {
+                csvContent += row.join(',') + '\n'; // Add row to CSV if not excluded
+            }
+        });
+
+        // Create and download the CSV file
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'payroll.csv';
+        link.click();
+
+        // Clean up
+        URL.revokeObjectURL(url);
+    });
 
     $('#btnBack').click(function(e) {
         e.preventDefault();

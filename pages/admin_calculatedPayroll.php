@@ -330,8 +330,9 @@
                         </div>
                     </div>
                     <!-- CARD FOOTER DATA ENTRY BUTTON -->
-                    <div class="card-footer d-grid gap-2 d-md-flex justify-content-md-end">
+                    <div class="card-footer d-grid d-md-flex justify-content-md-end">
                         <button class="btn btn-primary me-md-2 recalculatePayroll" type="button" data-id="<?php echo $payrollID; ?>" data-cycle="<?php echo $payrollCycleID; ?>">Re-Calculate Payroll</button>
+                        <!-- <button class="btn btn-warning me-md-2 exportPayroll" type="button" data-id="<?php echo $payrollID; ?>" data-cycle="<?php echo $payrollCycleID; ?>">Export CSV File</button> -->
                     </div>
                 </div>
             </div>
