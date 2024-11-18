@@ -18,6 +18,8 @@ $(document).ready(function() {
             success: function(response) {
 
                 var res = jQuery.parseJSON(response);
+                var userDept = $('#userDept').val();
+                console.log(userDept);
 
                 if (res.status == 404) {
                     alert(res.message);
@@ -32,11 +34,9 @@ $(document).ready(function() {
                     $('#viewToTime').val(res.data.toTime);
                     $('#viewPurpose').val(res.data.remarks);
                     $('#viewStatus').val('Pending for 1st Approval');
-                    $('#approvedLabelRow').hide();
-                    $('#approvedInputRow').hide();
                     $('#viewFiledOTModal').modal('show');
                 }
-                else if (res.status == 200 && res.data.status == 1) {
+                else if (res.status == 200 && res.data.status == 1 && userDept == 3) {
                     $('#viewFiledOTID').val(res.data.requestID);
                     $('#viewOTDate').val(res.data.otDate);
                     $('#viewOTType').val(res.data.otType);
@@ -46,10 +46,22 @@ $(document).ready(function() {
                     $('#viewToTime').val(res.data.toTime);
                     $('#viewPurpose').val(res.data.remarks);
                     $('#viewStatus').val('Pending for 2nd Approval');
-                    $('#approvedLabelRow').hide();
-                    $('#approvedInputRow').hide();
                     $('#approveOT').hide();
                     $('#disapproveOT').hide();
+                    $('#viewFiledOTModal').modal('show');
+                }
+                else if (res.status == 200 && res.data.status == 1 && userDept == 5) {
+                    $('#viewFiledOTID').val(res.data.requestID);
+                    $('#viewOTDate').val(res.data.otDate);
+                    $('#viewOTType').val(res.data.otType);
+                    $('#viewDateFiled').val(res.data.dateFiled);
+                    $('#viewName').val(res.data.employeeName);
+                    $('#viewFromTime').val(res.data.fromTime);
+                    $('#viewToTime').val(res.data.toTime);
+                    $('#viewPurpose').val(res.data.remarks);
+                    $('#viewStatus').val('Pending for 2nd Approval');
+                    $('#approveOT').show();
+                    $('#disapproveOT').show();
                     $('#viewFiledOTModal').modal('show');
                 }
                 else if (res.status == 200 && res.data.status == 0) {
@@ -62,8 +74,6 @@ $(document).ready(function() {
                     $('#viewToTime').val(res.data.toTime);
                     $('#viewPurpose').val(res.data.remarks);
                     $('#viewStatus').val('Disapproved');
-                    $('#approvedLabelRow').hide();
-                    $('#approvedInputRow').hide();
                     $('#approveOT').hide();
                     $('#disapproveOT').hide();
                     $('#viewFiledOTModal').modal('show');

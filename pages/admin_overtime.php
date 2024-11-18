@@ -64,36 +64,72 @@
                                     return $dateTime->format('M d, Y');
                                 }
 
-                                $filedOTquery = mysqli_query($conn, $employees->viewAdminFiledOT());
-                                while ($otDetails = mysqli_fetch_array($filedOTquery)) {
+                                if ($_SESSION['departmentID'] == 3) {
+                                    $filedOTquery = mysqli_query($conn, $employees->viewAdminFiledOT());
+                                    while ($otDetails = mysqli_fetch_array($filedOTquery)) {
 
-                                    $OT_id = $otDetails['requestID'];
-                                    $OT_dateFiled = $otDetails['dateFiled'];
-                                    $OT_otDate = $otDetails['otDate'];
-                                    $OT_otType = $otDetails['otType'];
-                                    $OT_fromTime = $otDetails['fromTime'];
-                                    $OT_toTime = $otDetails['toTime'];
-                                    $OT_remarks = $otDetails['remarks'];
-                                    $OT_status = $otDetails['status'];
+                                        $OT_id = $otDetails['requestID'];
+                                        $OT_dateFiled = $otDetails['dateFiled'];
+                                        $OT_otDate = $otDetails['otDate'];
+                                        $OT_otType = $otDetails['otType'];
+                                        $OT_fromTime = $otDetails['fromTime'];
+                                        $OT_toTime = $otDetails['toTime'];
+                                        $OT_remarks = $otDetails['remarks'];
+                                        $OT_status = $otDetails['status'];
 
-                                    echo "<tr data-id='" . $OT_id . "' class='filedOTview cursor-pointer'>";
-                                    echo "<td class = ' whitespace-nowrap'>" . $OT_dateFiled . "</td>";
-                                    echo "<td class = ' whitespace-nowrap'>" . $OT_otDate . "</td>";
-                                    echo "<td class = ' whitespace-nowrap'>" . $OT_otType . "</td>";
-                                    echo "<td class = ' whitespace-nowrap'>" . $OT_fromTime . "</td>";
-                                    echo "<td class = ' whitespace-nowrap'>" . $OT_toTime . "</td>";
-                                    echo "<td class = ' whitespace-nowrap'>" . $OT_remarks . "</td>";
-                                    if ($OT_status == null) {
-                                        echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Pending for 1st Approval</p></td>";
+                                        echo "<tr data-id='" . $OT_id . "' class='filedOTview cursor-pointer'>";
+                                        echo "<td class = ' whitespace-nowrap'>" . $OT_dateFiled . "</td>";
+                                        echo "<td class = ' whitespace-nowrap'>" . $OT_otDate . "</td>";
+                                        echo "<td class = ' whitespace-nowrap'>" . $OT_otType . "</td>";
+                                        echo "<td class = ' whitespace-nowrap'>" . $OT_fromTime . "</td>";
+                                        echo "<td class = ' whitespace-nowrap'>" . $OT_toTime . "</td>";
+                                        echo "<td class = ' whitespace-nowrap'>" . $OT_remarks . "</td>";
+                                        if ($OT_status == null) {
+                                            echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Pending for 1st Approval</p></td>";
+                                        }
+                                        else if ($OT_status == 1) {
+                                            echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Pending for 2nd Approval</p></td>";
+                                        }
+                                        else if ($OT_status == 2) {
+                                            echo "<td><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Approved</p></td>";
+                                        }
+                                        else if ($OT_status == 0) {
+                                            echo "<td><p class='inline-block bg-red-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Disapproved</p></td>";
+                                        }
                                     }
-                                    else if ($OT_status == 1) {
-                                        echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Pending for 2nd Approval</p></td>";
-                                    }
-                                    else if ($OT_status == 2) {
-                                        echo "<td><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Approved</p></td>";
-                                    }
-                                    else if ($OT_status == 0) {
-                                        echo "<td><p class='inline-block bg-red-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Disapproved</p></td>";
+                                }
+                                else {
+                                    $filedOTquery = mysqli_query($conn, $employees->viewDirectorFiledOT());
+                                    while ($otDetails = mysqli_fetch_array($filedOTquery)) {
+
+                                        $OT_id = $otDetails['requestID'];
+                                        $OT_dateFiled = $otDetails['dateFiled'];
+                                        $OT_otDate = $otDetails['otDate'];
+                                        $OT_otType = $otDetails['otType'];
+                                        $OT_fromTime = $otDetails['fromTime'];
+                                        $OT_toTime = $otDetails['toTime'];
+                                        $OT_remarks = $otDetails['remarks'];
+                                        $OT_status = $otDetails['status'];
+
+                                        echo "<tr data-id='" . $OT_id . "' class='filedOTview cursor-pointer'>";
+                                        echo "<td class = ' whitespace-nowrap'>" . $OT_dateFiled . "</td>";
+                                        echo "<td class = ' whitespace-nowrap'>" . $OT_otDate . "</td>";
+                                        echo "<td class = ' whitespace-nowrap'>" . $OT_otType . "</td>";
+                                        echo "<td class = ' whitespace-nowrap'>" . $OT_fromTime . "</td>";
+                                        echo "<td class = ' whitespace-nowrap'>" . $OT_toTime . "</td>";
+                                        echo "<td class = ' whitespace-nowrap'>" . $OT_remarks . "</td>";
+                                        if ($OT_status == null) {
+                                            echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Pending for 1st Approval</p></td>";
+                                        }
+                                        else if ($OT_status == 1) {
+                                            echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Pending for 2nd Approval</p></td>";
+                                        }
+                                        else if ($OT_status == 2) {
+                                            echo "<td><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Approved</p></td>";
+                                        }
+                                        else if ($OT_status == 0) {
+                                            echo "<td><p class='inline-block bg-red-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Disapproved</p></td>";
+                                        }
                                     }
                                 }
                             ?>
@@ -114,6 +150,7 @@
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="userFormLabel">View Filed OT</h1>
                             <input type="hidden" id="viewFiledOTID">
+                            <input type="hidden" id="userDept" value="<?php echo $_SESSION['departmentID']; ?>">
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
