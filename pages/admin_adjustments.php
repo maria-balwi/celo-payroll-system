@@ -216,9 +216,9 @@
                                     <div class="col-12">
                                         <select class="form-select" id="dataType" name="dataType">
                                             <option disabled selected>Choose</option>
-                                            <option value="1">Allowance</option>
+                                            <!-- <option value="1">Allowance</option> -->
                                             <option value="2">Reimbursement</option>
-                                            <option value="3">Deduction</option>
+                                            <!-- <option value="3">Deduction</option> -->
                                             <option value="4">Adjustment</option>
                                         </select>
                                     </div>
