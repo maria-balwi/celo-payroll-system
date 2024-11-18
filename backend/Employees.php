@@ -884,11 +884,11 @@
         }
 
         public function viewLeavePoints($id) {
-            $approvedSickLeaves = "
+            $leavePoints = "
                 SELECT leavePoints 
                 FROM ".$this->employees."
                 WHERE id = '$id'";
-            return $approvedSickLeaves;
+            return $leavePoints;
         }
     }
 

@@ -23,7 +23,7 @@
 
                             $leavePointsQuery = mysqli_query($conn, $employees->viewLeavePoints($_SESSION['id']));
                             $details = mysqli_fetch_array($leaveQuery);
-                            $leavePoints = $details['leavePoints'];
+                            $leavePoints = isset($details['leavePoints']) ? $details['leavePoints'] : 0;
                             
                             if ($leaves >= 5 && $leavePoints <= 1.00) { ?>
                             <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white opacity-50 cursor-not-allowed no-underline">File a Leave</button>
