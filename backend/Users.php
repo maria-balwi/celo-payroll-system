@@ -112,7 +112,9 @@
                 basicPay, dailyRate, hourlyRate,
                 req_sss, req_pagIbig, req_philhealth, req_tin, req_nbi, 
                 req_medicalExam, req_2x2pic, req_vaccineCard, req_psa,
-                req_validID, req_helloMoney
+                req_validID, req_helloMoney, employmentStatus, 
+                DATE_FORMAT(dateHired, '%M %d, %Y') AS dateHired,
+                DATE_FORMAT(dateRegularized, '%M %d, %Y') AS dateRegularized
                 FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->department." AS department
                 ON employees.departmentID = department.departmentID

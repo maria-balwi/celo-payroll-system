@@ -121,9 +121,20 @@
                                             </h2>
                                         </div>
                                         <div class="flex gap-2 py-1">
-                                            <h2 class="text-sm text-gray-500">Date Hired:</h2>
-                                            <h2 class="text-sm text-gray-400">January 8, 2024</h2>
+                                            <h2 class="text-sm text-gray-500">Employment Status:</h2>
+                                            <h2 class="text-sm text-gray-400"><?php echo $userDetails['employmentStatus'] ?></h2>
                                         </div>
+                                        <div class="flex gap-2 py-1">
+                                            <h2 class="text-sm text-gray-500">Date Hired:</h2>
+                                            <h2 class="text-sm text-gray-400"><?php echo $userDetails['dateHired'] ?></h2>
+                                        </div>
+                                        <?php 
+                                            if ($userDetails['employmentStatus'] == "Regular") { ?>
+                                            <div class="flex gap-2 py-1">
+                                                <h2 class="text-sm text-gray-500">Date Regularized:</h2>
+                                                <h2 class="text-sm text-gray-400"><?php echo $userDetails['dateRegularized'] ?></h2>
+                                            </div>
+                                        <?php } ?>
                                         <div class="flex gap-2 py-1">
                                             <h2 class="text-sm text-gray-500">SSS No.:</h2>
                                             <h2 class="text-sm text-gray-400"><?php echo $userDetails['sss'] ?></h2>
@@ -143,10 +154,6 @@
                                         <div class="flex gap-2 py-1">
                                             <h2 class="text-sm text-gray-500">Shift:</h2>
                                             <h2 class="text-sm text-gray-400"><?php echo $userDetails['startTime']." - ".$userDetails['endTime'] ?></h2>
-                                        </div>
-                                        <div class="flex gap-2 py-1">
-                                            <h2 class="text-sm text-gray-500">Employment Status:</h2>
-                                            <h2 class="text-sm text-gray-400">Regular</h2>
                                         </div>
                                     </div>
                                 </div>
