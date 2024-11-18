@@ -63,9 +63,7 @@
                                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">No.</th>
                                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Name</th>
                                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Type</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Date From</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Date To</th>
-                                <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Category</th> -->
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Date</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -84,49 +82,18 @@
                                     $holidayName = $holidayDetails['holidayName'];
                                     $holidayType = $holidayDetails['type'];
                                     $holidayDateFrom = $holidayDetails['dateFrom'];
-                                    $holidayDateTo = $holidayDetails['dateTo'];
-                                    $holidayCategory = $holidayDetails['category'] == 1 ? "Fixed - Yearly" : "Not Fixed";
 
                                     echo "<tr data-id='" . $holidayID . "' class='holidayView cursor-pointer'>";
                                     echo "<td class ='whitespace-nowrap'>" . $holidayID . "</td>";
                                     echo "<td class ='whitespace-nowrap'>" . $holidayName . "</td>";
                                     echo "<td class ='whitespace-nowrap'>" . $holidayType . "</td>";
                                     echo "<td class ='whitespace-nowrap'>" . formatDate($holidayDateFrom) . "</td>";
-                                    echo "<td class ='whitespace-nowrap'>" . formatDate($holidayDateTo) . "</td>";
                                     echo "</tr>";
                                 }
                             ?>
                         </tbody>
                     </table>
                 </div>
-
-                <!-- <div class="flex sm:grid-cols-1 gap-4 p-3 overflow-auto">
-                    <div>Legend:</div>
-                    <div class="flex gap-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-gray-400">
-                            <path fill-rule="evenodd" d="M4.5 7.5a3 3 0 0 1 3-3h9a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3h-9a3 3 0 0 1-3-3v-9Z" clip-rule="evenodd" />
-                        </svg>
-                        Rest Day
-                    </div>
-                    <div class="flex gap-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-green-500">
-                            <path fill-rule="evenodd" d="M4.5 7.5a3 3 0 0 1 3-3h9a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3h-9a3 3 0 0 1-3-3v-9Z" clip-rule="evenodd" />
-                        </svg>
-                        Default Shift
-                    </div>
-                    <div class="flex gap-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-blue-500">
-                            <path fill-rule="evenodd" d="M4.5 7.5a3 3 0 0 1 3-3h9a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3h-9a3 3 0 0 1-3-3v-9Z" clip-rule="evenodd" />
-                        </svg>
-                        Requested Shift
-                    </div>
-                    <div class="flex gap-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-yellow-500">
-                            <path fill-rule="evenodd" d="M4.5 7.5a3 3 0 0 1 3-3h9a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3h-9a3 3 0 0 1-3-3v-9Z" clip-rule="evenodd" />
-                        </svg>
-                        Plotted Shift
-                    </div>
-                </div> -->
             </div>
 
             <!-- ======================================================================================================================================= -->
