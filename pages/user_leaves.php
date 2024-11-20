@@ -161,21 +161,29 @@
                                                     </option> -->
                                                     <option value="1" disabled>Sick Leave</option>
                                                     <option value="2" disabled>Vacation Leave</option>
+                                                    <option value="3">Bereavement Leave</option>
+                                                    <option value="4">Emergency Leave</option>
                                                 <?php
                                                     }
                                                     else if ($leaves < 5 && $leavePoints <= 1.00){ ?>
                                                     <option value="1">Sick Leave</option>
                                                     <option value="2" disabled>Vacation Leave</option>
+                                                    <option value="3">Bereavement Leave</option>
+                                                    <option value="4">Emergency Leave</option>
                                                 <?php
                                                     }
                                                     else if ($leaves >= 5 && $leavePoints >= 1.00){ ?>
                                                     <option value="1" disabled>Sick Leave</option>
                                                     <option value="2">Vacation Leave</option>
+                                                    <option value="3">Bereavement Leave</option>
+                                                    <option value="4">Emergency Leave</option>
                                                 <?php
                                                     }
                                                     else { ?>
                                                     <option value="1">Sick Leave</option>
                                                     <option value="2">Vacation Leave</option>
+                                                    <option value="3">Bereavement Leave</option>
+                                                    <option value="4">Emergency Leave</option>
                                                 <?php } ?>
                                             </select>
                                         </div>
