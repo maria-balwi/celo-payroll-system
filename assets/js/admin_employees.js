@@ -11,16 +11,16 @@ $(document).ready(function() {
         placeholder: '00-0000000-0'
     });
 
-    $('#pagIbig').inputmask('99-9999999-9', {
-        placeholder: '00-0000000-0'
+    $('#pagIbig').inputmask('999999999999', {
+        placeholder: '000000000000'
     });
 
     $('#philhealth').inputmask('99-999999999-9', {
         placeholder: '00-000000000-0'
     });
 
-    $('#tin').inputmask('99-9999999-9', {
-        placeholder: '00-0000000-0'
+    $('#tin').inputmask('999-999-999-999', {
+        placeholder: '000-000-000-000'
     });
 
     $('#mobileNumber').inputmask('0999-999-9999', {
@@ -36,16 +36,16 @@ $(document).ready(function() {
         placeholder: '00-0000000-0'
     });
 
-    $('#updatePagIbig').inputmask('99-9999999-9', {
-        placeholder: '00-0000000-0'
+    $('#updatePagIbig').inputmask('999999999999', {
+        placeholder: '000000000000'
     });
 
     $('#updatePhilhealth').inputmask('99-999999999-9', {
         placeholder: '00-000000000-0'
     });
 
-    $('#updateTIN').inputmask('99-9999999-9', {
-        placeholder: '00-0000000-0'
+    $('#updateTIN').inputmask('999-999-999-999', {
+        placeholder: '000-000-000-000'
     });
 
     $('#updateMobileNumber').inputmask('0999-999-9999', {
