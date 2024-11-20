@@ -32,16 +32,16 @@
                     Employee List
                 </a>
                 <a href="../pages/admin_users.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
-                    Users
+                    User List
                 </a>
                 <a href="../pages/admin_leaves.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
-                    Leave Applications
+                    Leave Application
                 </a>
                 <a href="../pages/admin_changeShift.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
-                    Change Shift Requests
+                    Change Shift Request
                 </a>
                 <a href="../pages/admin_overtime.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
-                    Overtimes
+                    Overtime
                 </a>
                 <a href="../pages/admin_holidays.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Holidays
@@ -68,10 +68,10 @@
                     Daily Time Records
                 </a>
                 <a href="../pages/team_leaves.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
-                    Leave Applications
+                    Leave Application
                 </a>
                 <a href="../pages/team_changeShift.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
-                    Change Shift Requests
+                    Change Shift Request
                 </a>
                 <a href="../pages/team_overtime.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Overtime
@@ -99,7 +99,7 @@
                     Change Shifts
                 </a>
                 <a href="../pages/user_overtime.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
-                    Overtimes
+                    Overtime
                 </a>
                 <?php } ?>
             </nav>
