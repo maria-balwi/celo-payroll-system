@@ -14,15 +14,15 @@
 
     if (($departmentID == 4 && $designationID == 11) || ($departmentID == 1 && $designationID == 4))
     {
-        $levelID = 2;
+        $levelID = 2; // TEAM LEAD & IT SUPERVISOR
     }
     else if ($departmentID == 3 || $departmentID == 5 && ($designationID == 8 || $designationID == 9 || $designationID == 12))
     {
-        $levelID = 3;
+        $levelID = 3; // ADMIN LEVEL
     }
     else  
     {
-        $levelID = 1;
+        $levelID = 1; // USER LEVEL
     }
     
     // DEFAULT VALUES
