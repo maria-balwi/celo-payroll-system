@@ -169,7 +169,7 @@
         public function getPendingOvertimes() {
             $pendingChangeShifts = "
                 SELECT * FROM ".$this->filedOT."
-                WHERE status = 'Pending'";
+                WHERE status IS NULL";
             return $pendingChangeShifts;
         }
 
@@ -224,7 +224,7 @@
                 ON filedOT.empID = employees.id
                 INNER JOIN ".$this->department." AS department
                 ON employees.departmentID = department.departmentID
-                WHERE employees.departmentID = 4 AND status = 'Pending'";
+                WHERE employees.departmentID = 4 AND status IS NULL";
             return $pendingOvertimes;
         }
 
@@ -235,7 +235,7 @@
                 ON filedOT.empID = employees.id
                 INNER JOIN ".$this->department." AS department
                 ON employees.departmentID = department.departmentID
-                WHERE employees.departmentID = 1 AND status = 'Pending'";
+                WHERE employees.departmentID = 1 AND status IS NULL";
             return $pendingOvertimes;
         }
 
