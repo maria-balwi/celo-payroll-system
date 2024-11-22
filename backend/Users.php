@@ -58,7 +58,15 @@
 
                     // 1 HR SESSION 
                     $_SESSION['start'] = time();
-                    $_SESSION['expire'] = $_SESSION['start'] + (60 * 60);
+                    if ($userDetails['levelID'] == 1) {
+                        $_SESSION['expire'] = $_SESSION['start'] + (60 * 3);
+                    }
+                    else if ($userDetails['levelID'] == 2) {
+                        $_SESSION['expire'] = $_SESSION['start'] + (60 * 10);
+                    }
+                    else if ($userDetails['levelID'] == 3) {
+                        $_SESSION['expire'] = $_SESSION['start'] + (60 * 60);
+                    }
 
                     // RETURN VALUES
                     $result[0] = '1';
