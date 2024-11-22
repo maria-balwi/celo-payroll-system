@@ -19,45 +19,113 @@
             <!-- CONTENT -->
             <div class="bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
                 <div class="card shadow-sm bInfo">
+                    <div class="card-header">
+                        <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <!--ACTIVE BUTTON-->
+                                <button class="nav-link active uncheck" id="pills-current-tab" data-bs-toggle="pill" data-bs-target="#pills-current" type="button" role="tab" aria-controls="pills-current" aria-selected="true">Active</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <!--RESIGNED BUTTON-->
+                                <button class="nav-link uncheck" id="pills-resigned-tab" data-bs-toggle="pill" data-bs-target="#pills-resigned" type="button" role="tab" aria-controls="pills-resigned" aria-selected="false">Resigned</button>
+                            </li>
+                        </ul>
+                    </div>
+
                     <div class="card-body">
-                        <!-- DATATABLE -->
-                        <div class="mx-auto overflow-auto">
-                            <table id="employeeTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
-                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
-                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
-                                    <?php
-                                        $employeeQuery = mysqli_query($conn, $employees->viewEmployees());
-                                        while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+                        <div class="tab-content" id="pills-tabContent">
 
-                                            $employee_id = $employeeDetails['id'];
-                                            $employee_employeeID = $employeeDetails['employeeID'];
-                                            $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
-                                            $employee_emailAddress = $employeeDetails['emailAddress'];
-                                            $employee_mobileNumber = $employeeDetails['mobileNumber'];
-                                            $employee_department = $employeeDetails['departmentName'];
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <!-- ------------------------------------- ACTIVE EMPLOYEES TAB -------------------------------------- -->
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <div class="tab-pane fade show active" id="pills-current" role="tabpanel" aria-labelledby="pills-current-tab">
+                                <div class="card border-0">
+                                    <div class="tab-content" id="pills-tabContent">
+                                        <table id="activeEmployeeTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3">
+                                            <thead class="bg-gray-50">
+                                                <tr>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="bg-white divide-y divide-gray-200">
+                                                <?php
+                                                    $employeeQuery = mysqli_query($conn, $employees->viewActiveEmployees());
+                                                    while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+
+                                                        $employee_id = $employeeDetails['id'];
+                                                        $employee_employeeID = $employeeDetails['employeeID'];
+                                                        $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                        $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                        $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                        $employee_department = $employeeDetails['departmentName'];
 
 
-                                            echo "<tr data-id='" . $employee_id . "' class='employeeView cursor-pointer'>";
-                                            echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
-                                            echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
-                                            echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
-                                            echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
-                                            echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
-                                            echo "</td>";
-                                        }
-                                    ?>
-                                </tbody>
-                            </table>
+                                                        echo "<tr data-id='" . $employee_id . "' class='employeeView cursor-pointer'>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                        echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
+                                                        echo "</td>";
+                                                    }
+                                                ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <!-- ------------------------------------- RESIGNED EMPLOYEES TAB ------------------------------------ -->
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <div class="tab-pane fade" id="pills-resigned" role="tabpanel" aria-labelledby="pills-resigned-tab">
+                                <div class="card border-0">
+                                    <div class="tab-content" id="pills-tabContent">
+                                        <table id="resignedEmployeeTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3">
+                                            <thead class="bg-gray-50">
+                                                <tr>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="bg-white divide-y divide-gray-200">
+                                                <?php
+                                                    $employeeQuery = mysqli_query($conn, $employees->viewResignedEmployees());
+                                                    while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+
+                                                        $employee_id = $employeeDetails['id'];
+                                                        $employee_employeeID = $employeeDetails['employeeID'];
+                                                        $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                        $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                        $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                        $employee_department = $employeeDetails['departmentName'];
+
+
+                                                        echo "<tr data-id='" . $employee_id . "' class='resignedView cursor-pointer'>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                        echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
+                                                        echo "</td>";
+                                                    }
+                                                ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div> 
+                            </div>
+
                         </div>
                     </div>
+
                     <!-- CARD FOOTER DATA ENTRY BUTTON -->
                     <div class="card-footer d-grid gap-2 d-md-flex justify-content-md-end">
                         <button class="btn btn-primary me-md-2" type="button" data-bs-toggle="modal" data-bs-target="#addEmployeeModal">Add Employee</button>
@@ -454,7 +522,7 @@
             </form>
 
             <!--------------------------------------------------------------------------------------------------------------------------------------------->
-            <!------------------------------------------------------------------ VIEW EMPLOYEE FORM ------------------------------------------------------->
+            <!----------------------------------------------------------- VIEW ACTIVE EMPLOYEE FORM ------------------------------------------------------->
             <div class="modal fade" id="viewEmployeeModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
                 <div class="modal-dialog modal-none modal-lg modal-dialog-centered modal-scrollable">
                     <div class="modal-content" id="viewEmployeModal">
@@ -852,6 +920,173 @@
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary employeeUpdate">Update</button>
+                            <button type="button" class="btn btn-danger employeeResign">Resign</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnClose">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--------------------------------------------------------------------------------------------------------------------------------------------->
+            <!----------------------------------------------------------- VIEW RESIGNED EMPLOYEE FORM ----------------------------------------------------->
+            <div class="modal fade" id="viewResignedModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
+                <div class="modal-dialog modal-none modal-lg modal-dialog-centered modal-scrollable">
+                    <div class="modal-content" id="viewResignedModal">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="userFormLabel">View Resigned Employee</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <h2 class="text-xl font-bold">Personal Information</h2>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-1">
+                                <div class="col-4">
+                                    <label for="res_viewLastName">Last Name:</label>
+                                </div>
+                                <div class="col-4">
+                                    <label for="res_viewFirstName">First Name:</label>
+                                </div>
+                                <div class="col-2">
+                                    <label for="res_viewGender">Gender:</label>
+                                </div>
+                                <div class="col-2">
+                                    <label for="res_viewCivilStatus">Civil Status:</label>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-2">
+                                <div class="col-4">
+                                    <input type="text" class="form-control" id="res_viewLastName" disabled readonly>
+                                </div>
+                                <div class="col-4">
+                                    <input type="text" class="form-control" id="res_viewFirstName" disabled readonly>
+                                </div>
+                                <div class="col-2">
+                                    <input type="text" class="form-control" id="res_viewGender" disabled readonly>
+                                </div>
+                                <div class="col-2">
+                                    <input type="text" class="form-control" id="res_viewCivilStatus" disabled readonly>
+                                </div>
+                            </div>     
+                            
+                            <div class="row g-2 mb-1">
+                                <div class="col-6">
+                                    <label for="res_viewAddress">Address:</label>
+                                </div>
+                                <div class="col-3">
+                                    <label for="res_viewDateOfBirth">Date of Birth:</label>
+                                </div>
+                                <div class="col-3">
+                                    <label for="res_viewPlaceOfBirth">Place of Birth:</label>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-2">
+                                <div class="col-6">
+                                    <input type="text" class="form-control" id="res_viewAddress" disabled readonly>
+                                </div>
+                                <div class="col-3">
+                                    <input type="date" class="form-control" id="res_viewDateOfBirth" disabled readonly>
+                                </div>
+                                <div class="col-3">
+                                    <input type="text" class="form-control" id="res_viewPlaceOfBirth" disabled readonly>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-1">
+                                <div class="col-3">
+                                    <label for="res_viewsss">SSS:</label>
+                                </div>
+                                <div class="col-3">
+                                    <label for="res_viewpagIbig">Pag-Ibig:</label>
+                                </div>
+                                <div class="col-3">
+                                    <label for="res_viewphilhealth">PhilHealth:</label>
+                                </div>
+                                <div class="col-3">
+                                    <label for="res_viewtin">TIN:</label>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-2">
+                                <div class="col-3">
+                                    <input type="text" class="form-control" id="res_viewsss" disabled readonly>
+                                </div>
+                                <div class="col-3">
+                                    <input type="text" class="form-control" id="res_viewpagIbig" disabled readonly>
+                                </div>
+                                <div class="col-3">
+                                    <input type="text" class="form-control" id="res_viewphilhealth" disabled readonly>
+                                </div>
+                                <div class="col-3">
+                                    <input type="text" class="form-control" id="res_viewtin" disabled readonly>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <h2 class="text-xl font-bold">Work Information</h2>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-1">
+                                <div class="col-6">
+                                    <label for="res_viewEmailAddress">Email Address:</label>
+                                </div>
+                                <div class="col-3">
+                                    <label for="res_viewEmployeeID">Employee ID:</label>
+                                </div>
+                                <div class="col-3">
+                                    <label for="res_viewMobileNumber">Mobile Number:</label>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-2">
+                                <div class="col-6">
+                                    <input type="email" class="form-control" id="res_viewEmailAddress" disabled readonly>
+                                </div>
+                                <div class="col-3">
+                                    <input type="text" class="form-control" id="res_viewEmployeeID" disabled readonly>
+                                </div>
+                                <div class="col-3">
+                                    <input type="text" class="form-control" id="res_viewMobileNumber" disabled readonly>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-1">
+                                <div class="col-4">
+                                    <label for="res_viewDepartment">Department:</label>
+                                </div>
+                                <div class="col-4">
+                                    <label for="res_viewDesignation">Designation:</label>
+                                </div>
+                                <div class="col-4">
+                                    <label for="res_viewEmploymentStatus">Employment Status:</label>
+                                </div>
+                            </div>
+                        
+                            <div class="row g-2 mb-2">
+                                <div class="col-4">
+                                    <input type="text" class="form-control" id="res_viewDepartment" disabled readonly>
+                                </div>
+                                <div class="col-4">
+                                    <input type="text" class="form-control" id="res_viewDesignation" disabled readonly>
+                                </div>
+                                <div class="col-4">
+                                    <input type="text" class="form-control" id="res_viewEmploymentStatus" name="res_viewEmploymentStatus" disabled readonly>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary employeeReHire">Re-Hire</button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnClose">Close</button>
                         </div>
                     </div>

@@ -4,7 +4,8 @@ function formatNumberWithCommas(number) {
 
 $(document).ready(function() {
 
-    $('#employeeTable').DataTable();
+    $('#activeEmployeeTable').DataTable();
+    $('#resignedEmployeeTable').DataTable();
 
     // INPUT MASK - ADD EMPLOYEE
     $('#sss').inputmask('99-9999999-9', {
@@ -457,7 +458,7 @@ $(document).ready(function() {
         if (lastName == "" || firstName == "" || gender == "" || civilStatus == "" || 
             address == "" || dateOfBirth == "" || placeOfBirth == "" ||
             emailAddress == "" || employeeID == "" || mobileNumber == "" ||
-            department == "" || designation == "" || shiftID == "" ||  
+            department == "" || designation == "" || $('#shiftID').val() !== null || 
             employmentStatus == "" || dateHired == "" ||
             basicPay == "" || dailyRate == "" || hourlyRate == "" || 
             vacationLeaves == "" || sickLeaves == "") {
@@ -514,7 +515,7 @@ $(document).ready(function() {
         }
     });
 
-    // VIEW AND UPDATE EMPLOYEE
+    // VIEW, UPDATE, DELETE ACTIVE EMPLOYEE
     var array = [];
     $(document).on('click', '.employeeView', function() {
         var employee_id = $(this).data('id');
@@ -671,6 +672,37 @@ $(document).ready(function() {
                                 console.error('Error fetching image:', error);
                             });
                     });
+                }
+                else if (res.status == 200 & res.data.employmentStatus == "Resigned") {
+                    $('#res_viewID').val(res.data.id);
+                    $('#res_viewLastName').val(res.data.lastName);
+                    $('#res_viewFirstName').val(res.data.firstName);
+                    $('#res_viewGender').val(res.data.gender);
+                    $('#res_viewCivilStatus').val(res.data.civilStatus);
+                    $('#res_viewAddress').val(res.data.address);
+                    $('#res_viewDateOfBirth').val(res.data.dateOfBirth);
+                    $('#res_viewPlaceOfBirth').val(res.data.placeOfBirth);
+                    $('#res_viewsss').val(res.data.sss);
+                    $('#res_viewpagIbig').val(res.data.pagIbig);
+                    $('#res_viewphilhealth').val(res.data.philhealth);
+                    $('#res_viewtin').val(res.data.tin);
+                    $('#res_viewEmailAddress').val(res.data.emailAddress);
+                    $('#res_viewEmployeeID').val(res.data.employeeID);
+                    $('#res_viewMobileNumber').val(res.data.mobileNumber);
+                    $('#res_viewDepartment').val(res.data.departmentName);
+                    $('#res_viewDesignation').val(res.data.position);
+                    $('#res_viewShiftID').val(res.data.startTime + ' - ' + res.data.endTime);
+                    $('#res_viewEmploymentStatus').val(res.data.employmentStatus);
+                    $('#res_viewDateHired').val(res.data.dateHired);
+                    $('#res_viewDateRegularized').val(res.data.dateRegularized);
+                    $('#res_viewBasicPay').val(res.data.basicPay);
+                    $('#res_viewDailyRate').val(res.data.dailyRate);
+                    $('#res_viewHourlyRate').val(res.data.hourlyRate);
+                    $('#res_viewVacationLeaves').val(res.data.availableVL);
+
+                    // Show the modal
+                    $('#viewResignedModal').modal('show');
+
                 }
                 else  {
                     $('#viewID').val(res.data.id);
@@ -873,6 +905,60 @@ $(document).ready(function() {
                 }
             });
         })
+    });
+
+    // VIEW AND REHIRE RESIGNED EMPLOYEE
+    var array = [];
+    $(document).on('click', '.resignedView', function() {
+        var employee_id = $(this).data('id');
+        array.push(employee_id);
+        var id_employee = array[array.length - 1];
+
+        // VIEW EMPLOYEE
+        $.ajax({
+            type: "GET",
+            url: "../backend/admin/employeeModal.php?employee_id=" + id_employee,
+            success: function(response) {
+
+                var res = jQuery.parseJSON(response);
+
+                if (res.status == 404) {
+                    alert(res.message);
+                } 
+                else if (res.status == 200 & res.data.employmentStatus == "Resigned") {
+                    $('#res_viewID').val(res.data.id);
+                    $('#res_viewLastName').val(res.data.lastName);
+                    $('#res_viewFirstName').val(res.data.firstName);
+                    $('#res_viewGender').val(res.data.gender);
+                    $('#res_viewCivilStatus').val(res.data.civilStatus);
+                    $('#res_viewAddress').val(res.data.address);
+                    $('#res_viewDateOfBirth').val(res.data.dateOfBirth);
+                    $('#res_viewPlaceOfBirth').val(res.data.placeOfBirth);
+                    $('#res_viewsss').val(res.data.sss);
+                    $('#res_viewpagIbig').val(res.data.pagIbig);
+                    $('#res_viewphilhealth').val(res.data.philhealth);
+                    $('#res_viewtin').val(res.data.tin);
+                    $('#res_viewEmailAddress').val(res.data.emailAddress);
+                    $('#res_viewEmployeeID').val(res.data.employeeID);
+                    $('#res_viewMobileNumber').val(res.data.mobileNumber);
+                    $('#res_viewDepartment').val(res.data.departmentName);
+                    $('#res_viewDesignation').val(res.data.position);
+                    $('#res_viewShiftID').val(res.data.startTime + ' - ' + res.data.endTime);
+                    $('#res_viewEmploymentStatus').val(res.data.employmentStatus);
+                    $('#res_viewDateHired').val(res.data.dateHired);
+                    $('#res_viewDateRegularized').val(res.data.dateRegularized);
+                    $('#res_viewBasicPay').val(res.data.basicPay);
+                    $('#res_viewDailyRate').val(res.data.dailyRate);
+                    $('#res_viewHourlyRate').val(res.data.hourlyRate);
+                    $('#res_viewVacationLeaves').val(res.data.availableVL);
+
+                    // Show the modal
+                    $('#viewResignedModal').modal('show');
+
+                }
+            }
+        });
+
     });
 
     // UPDATE EMPLOYEE

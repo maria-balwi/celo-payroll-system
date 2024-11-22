@@ -33,6 +33,30 @@
             return $team;
         }
 
+        public function viewActiveEmployees() {
+            $team = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->department." AS department
+                ON employees.departmentID = department.departmentID
+                INNER JOIN ".$this->shifts." AS shifts
+                ON employees.shiftID = shifts.shiftID
+                WHERE designationID != 12 AND 
+                employees.e_status = 'Active'";
+            return $team;
+        }
+        
+        public function viewResignedEmployees() {
+            $team = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->department." AS department
+                ON employees.departmentID = department.departmentID
+                INNER JOIN ".$this->shifts." AS shifts
+                ON employees.shiftID = shifts.shiftID
+                WHERE designationID != 12 AND
+                employees.e_status = 'Inactive'";
+            return $team;
+        }
+
         public function recentlyAddedEmployees() {
             $team = "
                 SELECT * FROM ".$this->employees." AS employees
@@ -889,6 +913,32 @@
                 FROM ".$this->employees."
                 WHERE id = '$id'";
             return $leavePoints;
+        }
+
+        public function updateEmploymentStatus($id, $dateRegularized) {
+            $employee = "
+                UPDATE ".$this->employees." SET 
+                employmentStatus = 'Regular',
+                dateRegularized = '$dateRegularized'
+                WHERE id = '$id' AND e_status = 'Active'";
+            return $employee;
+        }
+
+        public function addLeavePoints($id, $addLeavePoints) {
+            $employee = "
+                UPDATE ".$this->employees." SET 
+                leavePoints = leavePoints + '$addLeavePoints'
+                WHERE id = '$id' AND designationID != 12 AND e_status = 'Active'";
+            return $employee;
+        }
+
+        public function resetLeavePoints($id, $leavePoints) {
+            $employee = "
+                UPDATE ".$this->employees." SET 
+                leavePoints = 0.00, 
+                carryOverVLPoints = '$leavePoints'
+                WHERE id = '$id' AND employmentStatus = 'Regular'";
+            return $employee;
         }
     }
 
