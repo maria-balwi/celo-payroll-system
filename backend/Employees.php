@@ -940,6 +940,24 @@
                 WHERE id = '$id' AND employmentStatus = 'Regular'";
             return $employee;
         }
+
+        public function resignEmployee($id) {
+            $employee = "
+                UPDATE ".$this->employees." SET 
+                employmentStatus = 'Resigned',
+                e_status = 'Inactive'
+                WHERE id = '$id'";    
+            return $employee;
+        }
+
+        public function rehireEmployee($id) {
+            $employee = "
+                UPDATE ".$this->employees." SET 
+                employmentStatus = 'Probationary',
+                e_status = 'Active'
+                WHERE id = '$id'";    
+            return $employee;
+        }
     }
 
 ?>
