@@ -33,7 +33,7 @@
         $lastLogType = $lastAttendance['logTypeID'];
         // SETTING LOG TYPE ID BASED ON ACTION
         if ($faceDTR_action == 'time_in') {
-            if ($lastLogType == 3 || $lastLogType == 4) {
+            if ($lastLogType == 3 || $lastLogType == 4 || $lastLogType == 0) {
                 $logTypeID = ($currentTimeModified <= $startTimeModified) ? 1 : 2;
                 if ($logTypeID == 2) {
                     // Calculate the late minutes
@@ -46,7 +46,7 @@
                     }
                 }
             }
-            else if ($lastLogType == 1 || $lastLogType == 2) {
+            else if ($lastLogType == 1 || $lastLogType == 2 || $lastLogType == 0) {
                 $lastAttendanceDate = $lastAttendance['attendanceDate'];
                 echo $lastAttendanceDate;
                 $lastAttendanceTime = $lastAttendance['attendanceTime'];
