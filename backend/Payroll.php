@@ -1220,5 +1220,83 @@
                 WHERE payrollID = $payrollID AND empID = $empID";
             return $viewPayslip;
         }
+
+        public function updateEmploymentStatus($id, $dateRegularized) {
+            $employee = "
+                UPDATE ".$this->employees." SET 
+                employmentStatus = 'Regular',
+                dateRegularized = '$dateRegularized'
+                WHERE id = '$id' AND e_status = 'Active'";
+            return $employee;
+        }
+
+        public function addLeavePoints($id, $addLeavePoints) {
+            $employee = "
+                UPDATE ".$this->employees." SET 
+                leavePoints = leavePoints + '$addLeavePoints'
+                WHERE id = '$id' AND designationID != 12 AND e_status = 'Active'";
+            return $employee;
+        }
+
+        public function resetLeavePoints($id, $leavePoints) {
+            $employee = "
+                UPDATE ".$this->employees." SET 
+                leavePoints = 0.00, 
+                carryOverVLPoints = '$leavePoints'
+                WHERE id = '$id' AND employmentStatus = 'Regular'";
+            return $employee;
+        }
+
+        public function runLeaveManagement() {
+            $currentDate = date('Y-m-d');
+
+            // CHECK IF THE SCRIPT HAS BEEN RUN TODAY
+            $checkLogQuery = "SELECT * FROM script_logs WHERE run_date = '$currentDate'";
+            $logResult = $this->dbConnect()->query($checkLogQuery);
+
+            if (mysqli_num_rows($logResult) === 0) {
+                // BEGINNING OF THE YEAR
+                $newYear = date('Y-01-01');
+
+                // END OF THE MONTH DATES
+                $febMonth = date('Y-02-28');
+                $febMonthLY = date('Y-02-29');
+                $thirtyDays = date('Y-m-30');
+                $thirtyOneDays = date('Y-m-26');
+
+                $employeesQuery = $this->dbConnect()->query("SELECT * FROM ".$this->employees." WHERE designationID != 12 AND e_status = 'Active'");
+                while ($employeeDetails = mysqli_fetch_array($employeesQuery)) {
+                    $id = $employeeDetails['id'];
+                    $employmentStatus = $employeeDetails['employmentStatus'];
+
+                    // NEW YEAR LEAVE POINTS RESET
+                    if ($currentDate == $newYear) {
+                        $leavePoints = $employeeDetails['leavePoints'];
+                        $resetQuery =$this->resetLeavePoints($id, $leavePoints);
+                        $this->dbConnect()->query($resetQuery);
+                    }
+                    // LEAVE POINTS ACCUMULATION
+                    elseif (($currentDate == $febMonth || $currentDate == $febMonthLY || $currentDate == $thirtyDays || $currentDate == $thirtyOneDays) && $employmentStatus == "Regular") {
+                        $vl = $employeeDetails['availableVL'];
+                        $addLeavePoints = ($vl == 10) ? 0.83 : 1.25;
+                        $addLeavePointsQuery = $this->addLeavePoints($id, $addLeavePoints);
+                        $this->dbConnect()->query($addLeavePointsQuery);
+                    }
+
+                    // REGULARIZATION
+                    $dateHired = $employeeDetails['dateHired'];
+                    $dateRegularized = (new DateTime($dateHired))->modify('+6 months')->format('Y-m-d');
+
+                    if ($currentDate == $dateRegularized && $employmentStatus == "Probationary") {
+                        $updateEmploymentStatusQuery = $this->updateEmploymentStatus($id, $dateRegularized);
+                        $this->dbConnect()->query($updateEmploymentStatusQuery);
+                    }
+                }
+
+                // LOG THAT THE SCRIPT HAS BEEN RUN
+                $logScriptQuery = "INSERT INTO script_logs (run_date) VALUES ('$currentDate')";
+                $this->dbConnect()->query($logScriptQuery);
+            } 
+        }
     }
 ?>

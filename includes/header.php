@@ -40,7 +40,7 @@
             // FETCH DATA FROM DATABASE
             $lastDTRQuery = mysqli_query($conn, $users->checkLastDTR($_SESSION['id']));
             if (mysqli_num_rows($lastDTRQuery) == 0) {
-
+                $_SESSION['dtr'] = 'forTimeIn';
             }
             else {
                 $lastDTR = mysqli_fetch_array($lastDTRQuery);
@@ -80,67 +80,6 @@
             }
 
             // ====== CHECK DATE FOR LEAVE POINTS AND REGULARIZATION ========
-            $currentDate = date('Y-m-d');
-            static $dateChecker = null;
-            static $tomorrow = null;
-            static $counter = 0;
-
-            // BEGINNING OF THE YEAR
-            $newYear = date('Y-11-22');
-
-            // END OF THE MONTH DATES
-            $febMonth = date('Y-02-28');
-            $febMonthLY = date('Y-02-29');
-            $thirtyDays = date('Y-m-30');
-            $thirtyOneDays = date('Y-m-31');
-
-            // Initialize static variables on the first run or if reset
-            if ($dateChecker === null || $tomorrow === null) {
-                $dateChecker = new DateTime($currentDate);
-                $tomorrow = (clone $dateChecker)->modify('+1 day');
-            }
-
-            // Check if the current date equals `$dateChecker`'s date
-            if ($currentDate == $dateChecker->format('Y-m-d')) {
-                $counter++;
-
-                if ($counter == 1) {
-                    $employeesQuery = mysqli_query($conn, $employees->viewActiveEmployees());
-                    while ($employeeDetails = mysqli_fetch_array($employeesQuery)) {
-                        $id = $employeeDetails['id'];
-                        $employmentStatus = $employeeDetails['employmentStatus'];
-
-                        // Handle New Year Leave Reset
-                        if ($currentDate == $newYear) {
-                            $leavePoints = $employeeDetails['leavePoints'];
-                            mysqli_query($conn, $employees->resetLeavePoints($id, $leavePoints));
-                        }
-                        // Handle 31-Day Month Leave Points Addition
-                        elseif ($currentDate == $thirtyOneDays) {
-                            $vl = $employeeDetails['availableVL'];
-                            if ($employmentStatus == "Regular") {
-                                $addLeavePoints = ($vl == 10) ? 0.83 : 1.25;
-                                mysqli_query($conn, $employees->addLeavePoints($id, $leavePoints));
-                            }
-                        }
-
-                        // Handle Regularization After 6 Months
-                        $dateHired = $employeeDetails['dateHired'];
-                        $dateRegularized = new DateTime($dateHired);
-                        $dateRegularized->modify('+6 months');
-                        $dateRegularized = $dateRegularized->format('Y-m-d');
-
-                        if ($currentDate == $dateRegularized && $employmentStatus == "Probationary") {
-                            mysqli_query($conn, $employees->updateEmploymentStatus($id, $dateRegularized));
-                        }
-                    }
-                }
-            } elseif ($currentDate == $tomorrow->format('Y-m-d')) {
-                // Reset static variables if the date is tomorrow
-                $dateChecker = null;
-                $tomorrow = null;
-                $counter = 0;
-            }
-            
+            $payroll->runLeaveManagement();
         ?>
     </head>
