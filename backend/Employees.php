@@ -915,32 +915,6 @@
             return $leavePoints;
         }
 
-        public function updateEmploymentStatus($id, $dateRegularized) {
-            $employee = "
-                UPDATE ".$this->employees." SET 
-                employmentStatus = 'Regular',
-                dateRegularized = '$dateRegularized'
-                WHERE id = '$id' AND e_status = 'Active'";
-            return $employee;
-        }
-
-        public function addLeavePoints($id, $addLeavePoints) {
-            $employee = "
-                UPDATE ".$this->employees." SET 
-                leavePoints = leavePoints + '$addLeavePoints'
-                WHERE id = '$id' AND designationID != 12 AND e_status = 'Active'";
-            return $employee;
-        }
-
-        public function resetLeavePoints($id, $leavePoints) {
-            $employee = "
-                UPDATE ".$this->employees." SET 
-                leavePoints = 0.00, 
-                carryOverVLPoints = '$leavePoints'
-                WHERE id = '$id' AND employmentStatus = 'Regular'";
-            return $employee;
-        }
-
         public function resignEmployee($id) {
             $employee = "
                 UPDATE ".$this->employees." SET 
