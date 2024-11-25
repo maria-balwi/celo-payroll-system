@@ -40,7 +40,7 @@
             // FETCH DATA FROM DATABASE
             $lastDTRQuery = mysqli_query($conn, $users->checkLastDTR($_SESSION['id']));
             if (mysqli_num_rows($lastDTRQuery) == 0) {
-
+                $_SESSION['dtr'] = 'forTimeIn';
             }
             else {
                 $lastDTR = mysqli_fetch_array($lastDTRQuery);
