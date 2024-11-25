@@ -732,8 +732,8 @@
                                 <div class="col-4">
                                     <label for="viewSickLeaves">Sick Leaves:</label>
                                 </div>
-                                <div class="col-4">
-                                    <label for="viewCashAdvance" class="cashAdvancePart">Cash Advance:</label>
+                                <div class="col-4 cashAdvancePart">
+                                    <label for="viewCashAdvance">Cash Advance:</label>
                                 </div>
                             </div>
                             
@@ -744,8 +744,8 @@
                                 <div class="col-4">
                                     <input type="number" class="form-control" id="viewSickLeaves" name="viewSickLeaves" disabled readonly>
                                 </div>
-                                <div class="col-4">
-                                    <input type="number" class="form-control cashAdvancePart" id="viewCashAdvance" name="viewCashAdvance" disabled readonly>
+                                <div class="col-4 cashAdvancePart">
+                                    <input type="number" class="form-control" id="viewCashAdvance" name="viewCashAdvance" disabled readonly>
                                 </div>
                             </div>
 
@@ -1086,8 +1086,8 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary employeeReHire">Re-Hire</button>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnClose">Close</button>
+                            <button type="button" class="btn btn-primary employeeRehire">Rehire</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnResClose">Close</button>
                         </div>
                     </div>
                 </div>
