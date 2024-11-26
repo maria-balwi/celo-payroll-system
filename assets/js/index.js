@@ -1,4 +1,31 @@
 $(document).ready(function() {
+
+    // CHECK FOR MOBILE DEVICE
+    function isMobileDevice() {
+        const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+        return /Android|iPhone|iPad|iPod|BlackBerry|Windows Phone|webOS|Opera Mini|IEMobile|Mobile|Tablet|Kindle/i.test(userAgent);
+    }
+
+    function disableLoginOnMobile() {
+        const loginButton = document.getElementById('btnLogin');
+        if (isMobileDevice()) {
+            loginButton.disabled = true;
+            loginButton.classList.add('bg-gray-400', 'cursor-not-allowed');
+            loginButton.classList.remove('bg-blue-500', 'hover:bg-blue-600');
+            Swal.fire({
+                icon: 'info',
+                title: 'Mobile Device Detected',
+                text: 'Login is disabled on mobile devices.',
+            });
+        } else {
+            loginButton.disabled = false;
+            loginButton.classList.remove('bg-gray-400', 'cursor-not-allowed');
+            loginButton.classList.add('bg-blue-500', 'hover:bg-blue-600');
+        }
+    }
+
+    // Run on page load
+    disableLoginOnMobile();
     
     // LOGIN FUNCTION
     $("#loginForm").submit(function (e) {
