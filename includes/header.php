@@ -52,19 +52,13 @@
                 $dtrDateTime = $attendanceDate . " " . $attendanceTime;
                 $dtrDateTime = new DateTime($dtrDateTime);
 
-                // ADD 15 HOURS
-                $interval = new DateInterval('PT14H');
+                // ADD 1 HOUR - TIME INTERVAL
+                $interval = new DateInterval('PT1H');
                 $updatedDateTime = $dtrDateTime->add($interval);
 
                 // SETTING TIME BEFORE GETTING CURRENT DATE AND TIME
                 date_default_timezone_set('Asia/Manila');
                 $currentDateTime = new DateTime(); 
-
-                // $currentDateTime_str = $currentDateTime->format('Y-m-d H:i:s');
-                // $updatedDateTime_str = $updatedDateTime->format('Y-m-d H:i:s');
-
-                // echo 'updatedDateTime: ' . $updatedDateTime_str . '<br>';
-                // echo 'currentDateTime: ' . $currentDateTime_str . '<br>';
                 
                 // SESSION VARIABLE FOR DTR
                 $_SESSION['dtr'] = 'forTimeIn';
