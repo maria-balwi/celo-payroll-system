@@ -53,7 +53,7 @@
                 $dtrDateTime = new DateTime($dtrDateTime);
 
                 // ADD 15 HOURS
-                $interval = new DateInterval('PT14H');
+                $interval = new DateInterval('PT1H');
                 $updatedDateTime = $dtrDateTime->add($interval);
 
                 // SETTING TIME BEFORE GETTING CURRENT DATE AND TIME
