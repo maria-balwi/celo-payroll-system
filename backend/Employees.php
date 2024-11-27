@@ -599,10 +599,10 @@
             $basicPay, $dailyRate, $hourlyRate, $vacationLeaves, $sickLeaves, $employmentStatus, $dateHired) {
             $addEmployee = "
                 INSERT INTO ".$this->employees." (lastName, firstName, gender, civilStatus, address, dateOfBirth, placeOfBirth, 
-                sss, pagIbig, philhealth, tin, emailAddress, employeeID, mobileNumber, departmentID, designationID, shiftID, basicPay, dailyRate, hourlyRate, availableVL, availableSL, employmentStatus, dateHired)
+                sss, pagIbig, philhealth, tin, emailAddress, employeeID, mobileNumber, departmentID, designationID, shiftID, basicPay, dailyRate, hourlyRate, availableVL, availableSL, employmentStatus, dateHired, e_status)
                 VALUES ('".$lastName."', '".$firstName."', '".$gender."', '".$civilStatus."', '".$address."', '".$dateOfBirth."', '".$placeOfBirth."',
                 '".$sss."', '".$pagIbig."', '".$philhealth."', '".$tin."', '".$emailAddress."', '".$employeeID."', '".$mobileNumber."', 
-                '".$departmentID."', '".$designationID."', '".$shiftID."', '".$basicPay."', '".$dailyRate."', '".$hourlyRate."', '".$vacationLeaves."', '".$sickLeaves."', '".$employmentStatus."', '".$dateHired."')";
+                '".$departmentID."', '".$designationID."', '".$shiftID."', '".$basicPay."', '".$dailyRate."', '".$hourlyRate."', '".$vacationLeaves."', '".$sickLeaves."', '".$employmentStatus."', '".$dateHired."', 'Active')";
             return $addEmployee;
         }
 
@@ -611,10 +611,10 @@
             $basicPay, $dailyRate, $hourlyRate, $vacationLeaves, $sickLeaves, $employmentStatus, $dateHired, $dateRegularized) {
             $addEmployee = "
                 INSERT INTO ".$this->employees." (lastName, firstName, gender, civilStatus, address, dateOfBirth, placeOfBirth, 
-                sss, pagIbig, philhealth, tin, emailAddress, employeeID, mobileNumber, departmentID, designationID, shiftID, basicPay, dailyRate, hourlyRate, availableVL, availableSL, employmentStatus, dateHired, dateRegularized)
+                sss, pagIbig, philhealth, tin, emailAddress, employeeID, mobileNumber, departmentID, designationID, shiftID, basicPay, dailyRate, hourlyRate, availableVL, availableSL, employmentStatus, dateHired, dateRegularized, e_status)
                 VALUES ('".$lastName."', '".$firstName."', '".$gender."', '".$civilStatus."', '".$address."', '".$dateOfBirth."', '".$placeOfBirth."',
                 '".$sss."', '".$pagIbig."', '".$philhealth."', '".$tin."', '".$emailAddress."', '".$employeeID."', '".$mobileNumber."', 
-                '".$departmentID."', '".$designationID."', '".$shiftID."', '".$basicPay."', '".$dailyRate."', '".$hourlyRate."', '".$vacationLeaves."', '".$sickLeaves."', '".$employmentStatus."', '".$dateHired."', '".$dateRegularized."')";
+                '".$departmentID."', '".$designationID."', '".$shiftID."', '".$basicPay."', '".$dailyRate."', '".$hourlyRate."', '".$vacationLeaves."', '".$sickLeaves."', '".$employmentStatus."', '".$dateHired."', '".$dateRegularized."', 'Active')";
             return $addEmployee;
         }
 
