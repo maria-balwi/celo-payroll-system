@@ -155,24 +155,24 @@
             return $lastUser;
         }
 
-        public function saveDTR($id, $logTypeID, $attendanceTime) {
+        public function saveDTR($id, $logTypeID, $attendanceDate, $attendanceTime) {
             $saveDTR = "
                 INSERT INTO ".$this->attendance." (empID, logTypeID, attendanceDate, attendanceTime)
-                VALUES ('$id', '$logTypeID', CURRENT_TIMESTAMP(), '$attendanceTime')";
+                VALUES ('$id', '$logTypeID', '$attendanceDate', '$attendanceTime')";
             return $saveDTR;
         }
 
-        public function saveDTRLate($id, $logTypeID, $attendanceTime, $lateMins) {
+        public function saveDTRLate($id, $logTypeID, $attendanceDate, $attendanceTime, $lateMins) {
             $saveDTR = "
                 INSERT INTO ".$this->attendance." (empID, logTypeID, attendanceDate, attendanceTime, lateMins)
-                VALUES ('$id', '$logTypeID', CURRENT_TIMESTAMP(), '$attendanceTime', '$lateMins')";
+                VALUES ('$id', '$logTypeID', '$attendanceDate', '$attendanceTime', '$lateMins')";
             return $saveDTR;
         }
 
-        public function saveDTRUndertime($id, $logTypeID, $attendanceTime, $undertimeMins) {
+        public function saveDTRUndertime($id, $logTypeID, $attendanceDate, $attendanceTime, $undertimeMins) {
             $saveDTR = "
                 INSERT INTO ".$this->attendance." (empID, logTypeID, attendanceDate, attendanceTime, undertimeMins)
-                VALUES ('$id', '$logTypeID', CURRENT_TIMESTAMP(), '$attendanceTime', '$undertimeMins')";
+                VALUES ('$id', '$logTypeID', '$attendanceDate', '$attendanceTime', '$undertimeMins')";
             return $saveDTR;
         }
 

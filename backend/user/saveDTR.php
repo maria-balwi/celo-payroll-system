@@ -19,6 +19,7 @@
 
         // SETTING TIMEZONE
         date_default_timezone_set('Asia/Manila');
+        $currentDate = date('Y-m-d'); // Actual current date
         $currentTime = date('H:i:s'); // Actual current time
 
         // Convert the startTime and currentTime to timestamps
@@ -124,13 +125,13 @@
         $fileName = isset($_POST['faceDTR_action']) ? preg_replace('/-/', '', $_SESSION['employeeID']) . '_' . date("Y.m.d") . '_' . $_POST['faceDTR_action'] . '.png' : 'image_' . uniqid() . '.png';
 
         if ($logTypeID == 2) { // LATE
-            mysqli_query($conn, $users->saveDTRLate($_SESSION['id'], $logTypeID, $currentTime, $lateMins));
+            mysqli_query($conn, $users->saveDTRLate($_SESSION['id'], $logTypeID, $currentDate, $currentTime, $lateMins));
         }
         else if ($logTypeID == 3) { // UNDERTIME
-            mysqli_query($conn, $users->saveDTRUndertime($_SESSION['id'], $logTypeID, $currentTime, $undertimeMins));
+            mysqli_query($conn, $users->saveDTRUndertime($_SESSION['id'], $logTypeID, $currentDate, $currentTime, $undertimeMins));
         }
         else { // ONTIME
-            mysqli_query($conn, $users->saveDTR($_SESSION['id'], $logTypeID, $currentTime));
+            mysqli_query($conn, $users->saveDTR($_SESSION['id'], $logTypeID, $currentDate, $currentTime));
         }
         
 
