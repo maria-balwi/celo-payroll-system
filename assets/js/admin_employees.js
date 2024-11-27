@@ -459,7 +459,7 @@ $(document).ready(function() {
         if (lastName == "" || firstName == "" || gender == "" || civilStatus == "" || 
             address == "" || dateOfBirth == "" || placeOfBirth == "" ||
             emailAddress == "" || employeeID == "" || mobileNumber == "" ||
-            department == "" || designation == "" || $('#shiftID').val() !== null || 
+            department == "" || designation == "" ||
             employmentStatus == "" || dateHired == "" ||
             basicPay == "" || dailyRate == "" || hourlyRate == "" || 
             vacationLeaves == "" || sickLeaves == "") {
