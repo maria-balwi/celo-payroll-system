@@ -1241,9 +1241,17 @@
         public function resetLeavePoints($id, $leavePoints) {
             $employee = "
                 UPDATE ".$this->employees." SET 
+                leavePoints = 0.00
+                WHERE (id = '$id' AND employmentStatus = 'Regular') AND (designationID != 4 AND e_status = 'Active')";
+            return $employee;
+        }
+
+        public function resetLeavePointsTL($id, $leavePoints) {
+            $employee = "
+                UPDATE ".$this->employees." SET 
                 leavePoints = 0.00, 
                 carryOverVLPoints = '$leavePoints'
-                WHERE id = '$id' AND employmentStatus = 'Regular'";
+                WHERE (id = '$id' AND employmentStatus = 'Regular') AND (designationID = 4 AND e_status = 'Active')";
             return $employee;
         }
 
@@ -1272,6 +1280,12 @@
                     // NEW YEAR LEAVE POINTS RESET
                     if ($currentDate == $newYear) {
                         $leavePoints = $employeeDetails['leavePoints'];
+
+                        // RESET LEAVE POINTS FOR TL
+                        $resetTLQuery =$this->resetLeavePointsTL($id, $leavePoints);
+                        $this->dbConnect()->query($resetTLQuery);
+                        
+                        // RESET LEAVE POINTS FOR REGULAR EMPLOYEES
                         $resetQuery =$this->resetLeavePoints($id, $leavePoints);
                         $this->dbConnect()->query($resetQuery);
                     }
