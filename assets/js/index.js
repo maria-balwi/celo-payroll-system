@@ -84,6 +84,9 @@ $(document).ready(function() {
                             else if (data.level == 3) {
                                 window.location.href = "pages/admin_dashboard.php";
                             }
+                            else if (data.level == 4) {
+                                window.location.href = "pages/user_dashboard.php";
+                            }
                             else if (data.error == 1) {
                                 var message = data.em
                                 Swal.fire ({

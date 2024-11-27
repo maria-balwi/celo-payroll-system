@@ -16,9 +16,13 @@
     {
         $levelID = 2; // TEAM LEAD & IT SUPERVISOR
     }
-    else if ($departmentID == 3 || $departmentID == 5 && ($designationID == 8 || $designationID == 9 || $designationID == 12))
+    else if (($departmentID == 3 || $departmentID == 5) && ($designationID == 8 || $designationID == 9 || $designationID == 12))
     {
         $levelID = 3; // ADMIN LEVEL
+    }
+    else if ($departmentID == 3 && $designationID == 7)
+    {
+        $levelID = 4; // HR LEVEL
     }
     else  
     {
