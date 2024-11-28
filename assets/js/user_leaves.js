@@ -51,6 +51,63 @@ $(document).ready(function() {
         }
     });
 
+    // 2 WEEKS NOTICE FOR VACATION LEAVES
+    // $("select[id='leaveType']").on("change", function() {
+    //     if ($(this).val() == 2) {
+    //         // Get today's date
+    //         const today = new Date();
+            
+    //         // Calculate the minimum date (14 days from today)
+    //         const minDate = new Date(today);
+    //         minDate.setDate(today.getDate() + 14);
+
+    //         // Format the date as YYYY-MM-DD
+    //         const year = minDate.getFullYear();
+    //         const month = String(minDate.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
+    //         const day = String(minDate.getDate()).padStart(2, '0');
+    //         const formattedMinDate = `${year}-${month}-${day}`;
+
+    //         // Set the minimum date attribute on the date input
+    //         const leaveDateInput = document.getElementById("effectivityStartDate");
+    //         leaveDateInput.setAttribute("min", formattedMinDate);
+    //     }
+    // });
+
+    $("select[id='leaveType']").on("change", function () {
+        const leaveDateInput = document.getElementById("effectivityStartDate");
+    
+        if ($(this).val() == 2) {
+            // Get today's date
+            const today = new Date();
+    
+            // Calculate the minimum date (14 days from today)
+            const minDate = new Date(today);
+            minDate.setDate(today.getDate() + 14);
+    
+            // Format the date as YYYY-MM-DD
+            const year = minDate.getFullYear();
+            const month = String(minDate.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
+            const day = String(minDate.getDate()).padStart(2, '0');
+            const formattedMinDate = `${year}-${month}-${day}`;
+
+            console.log({formattedMinDate});
+    
+            // Set the minimum date attribute on the date input
+            const effectivityStartDate = document.getElementById("effectivityStartDate");
+            const effectivityEndDate = document.getElementById("effectivityEndDate");
+            effectivityStartDate.setAttribute("min", formattedMinDate);
+            effectivityEndDate.setAttribute("min", formattedMinDate);
+        } else {
+            // Remove the min attribute if the leaveType is not 2
+            if (effectivityStartDate) {
+                effectivityStartDate.removeAttribute("min");
+                effectivityEndDate.removeAttribute("min");
+                console.log("Minimum date restriction removed.");
+            }
+        }
+    });
+    
+
     // FILE A LEAVE BUTTON
     $("#fileLeaveForm").submit(function (e) {
 
