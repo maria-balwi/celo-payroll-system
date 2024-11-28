@@ -9,6 +9,29 @@
                 display: block;
                 margin: 0 auto;
             }
+
+            .spinnerLoader {
+                display: block;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 50px;
+                height: 50px;
+                margin: -25px 0 0 -25px; /* To center the spinner */
+                border: 4px solid rgba(0, 0, 0, 0.1); /* Light gray border */
+                border-top: 4px solid #000; /* Black top border for animation */
+                border-radius: 50%;
+                animation: spin 1s linear infinite; /* Infinite spinning */
+            }
+
+            @keyframes spin {
+                0% {
+                    transform: rotate(0deg);
+                }
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
         </style>
     </head>
     <body>
@@ -37,10 +60,6 @@
                     <!-- NEW Card 3 -->
                     <button data-bs-toggle="modal" data-bs-target="#faceDTRModal">
                         <div class="bg-white px-4 py-6 rounded-lg shadow-md text-center">
-                            <!-- <svg class="h-20 w-20 text-gray-600 mx-auto"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
-                            </svg> -->
                             <svg class="h-32 w-32 text-gray-500 mx-auto"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -48,17 +67,6 @@
                             <h2 class="text-xl font-bold px-2">Face DTR</h2>
                         </div>
                     </button>
-
-                    <!-- OLD Card 3 -->
-                    <!-- <div class="bg-white p-4 rounded-lg shadow-md text-center">
-                        <button data-bs-toggle="modal" data-bs-target="#faceDTRModal">
-                            <svg class="h-20 w-20 text-gray-600 mx-auto"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
-                            </svg>
-                            <h2 class="text-xl font-bold px-2">Face DTR</h2>
-                        </button>
-                    </div> -->
 
                     <!-- Card 4 -->
                     <div class="bg-white px-4 py-8 rounded-lg shadow-md text-center">
@@ -195,6 +203,8 @@
                                 </div>
                             </div>
 
+                            <div class="spinnerLoader" style="display: none;"></div>
+
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-primary" id="captureTimeIn">Capture</button>
                                 <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#faceDTRModal" id="cancelTimeIn">Cancel</button>
@@ -220,6 +230,8 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="spinnerLoader" style="display: none;"></div>
 
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-primary " id="captureTimeOut">Capture</button>
