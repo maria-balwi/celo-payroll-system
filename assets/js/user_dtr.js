@@ -117,7 +117,7 @@ $(document).ready(function() {
                 if (image1Src) {
                     htmlContent += `
                         <div class="text-center">
-                            <img src="${image1Src}" alt="Log In" style="height:300px; width: 300px">
+                            <img src="${image1Src}" alt="Log In" style="height:240px; width: 320px">
                             <p>Time In</p>
                         </div>
                     `;
@@ -129,7 +129,7 @@ $(document).ready(function() {
                 if (image2Src) {
                     htmlContent += `
                         <div class="text-center">
-                            <img src="${image2Src}" alt="Log Out" style="height:300px; width: 300px">
+                            <img src="${image2Src}" alt="Log Out" style="height:240px; width: 320px">
                             <p>Time Out</p>
                         </div>
                     `;
