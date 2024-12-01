@@ -32,9 +32,10 @@
         $lastAttendanceQuery = mysqli_query($conn, $users->checkLastDTR($id));
         $lastAttendance = mysqli_fetch_array($lastAttendanceQuery);
         $lastLogType = $lastAttendance['logTypeID'];
+        $attenadanceLogs = mysqli_num_rows($lastAttendanceQuery);
         // SETTING LOG TYPE ID BASED ON ACTION
-        if ($faceDTR_action == 'time_in') {
-            if ($lastLogType == 3 || $lastLogType == 4 || $lastLogType == 0) {
+        if ($faceDTR_action == 'time_in') { 
+            if ($lastLogType == 3 || $lastLogType == 4) {
                 $logTypeID = ($currentTimeModified <= $startTimeModified) ? 1 : 2;
                 if ($logTypeID == 2) {
                     // Calculate the late minutes
@@ -47,7 +48,7 @@
                     }
                 }
             }
-            else if ($lastLogType == 1 || $lastLogType == 2 || $lastLogType == 0) {
+            else if ($lastLogType == 1 || $lastLogType == 2) {
                 $lastAttendanceDate = $lastAttendance['attendanceDate'];
                 echo $lastAttendanceDate;
                 $lastAttendanceTime = $lastAttendance['attendanceTime'];
@@ -98,7 +99,19 @@
                     }
                 }
             }
-            
+            else if ($attenadanceLogs == 0) {
+                $logTypeID = ($currentTimeModified <= $startTimeModified) ? 1 : 2;
+                if ($logTypeID == 2) {
+                    // Calculate the late minutes
+                    $lates = $currentTimeModified - $startTimeModified;
+                    $lateMins = floor($lates / 60); // Get late minutes
+
+                    // Handle case if late minutes are negative
+                    if ($lateMins < 0) {
+                        $lateMins = 0; // Reset to 0 if negative
+                    }
+                }
+            }
         }
         else if ($faceDTR_action == 'time_out') {
             $logTypeID = ($currentTime >= $endTime) ? 4 : 3;
