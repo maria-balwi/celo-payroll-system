@@ -53,17 +53,17 @@
                     $attendanceDate = $lastDTR['attendanceDate'];
                     $attendanceTime = $lastDTR['attendanceTime'];
 
-                    // COMBINE DATE AND TIME
-                    $dtrDateTime = $attendanceDate . " " . $attendanceTime;
-                    $dtrDateTime = new DateTime($dtrDateTime);
+                    // // COMBINE DATE AND TIME
+                    // $dtrDateTime = $attendanceDate . " " . $attendanceTime;
+                    // $dtrDateTime = new DateTime($dtrDateTime);
 
-                    // ADD 15 HOURS
-                    $interval = new DateInterval('PT1H');
-                    $updatedDateTime = $dtrDateTime->add($interval);
+                    // // ADD 15 HOURS
+                    // $interval = new DateInterval('PT1H');
+                    // $updatedDateTime = $dtrDateTime->add($interval);
 
-                    // SETTING TIME BEFORE GETTING CURRENT DATE AND TIME
-                    date_default_timezone_set('Asia/Manila');
-                    $currentDateTime = new DateTime(); 
+                    // // SETTING TIME BEFORE GETTING CURRENT DATE AND TIME
+                    // date_default_timezone_set('Asia/Manila');
+                    // $currentDateTime = new DateTime(); 
                     
                     // SESSION VARIABLE FOR DTR
                     $_SESSION['dtr'] = 'forTimeIn';
@@ -78,7 +78,7 @@
                     }
                     else if ($logType == "Time Out" || $logType == "Undertime")
                     {
-                        $_SESSION['dtr'] = 'forWaiting';
+                        $_SESSION['dtr'] = 'forTimeIn';
                         // if ($currentDateTime < $updatedDateTime)
                         // {
                         //     $_SESSION['dtr'] = 'forWaiting';
