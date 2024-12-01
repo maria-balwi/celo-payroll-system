@@ -115,7 +115,7 @@
         </div>
 
         <!-- Main Content Area -->
-        <div class="flex-1 flex-col overflow-visible">
+        <div class="flex-1 flex-col overflow-auto">
             
             <!-- Navbar inside Main Content -->
             <div class="bg-white p-4 flex justify-between items-center shadow md:flex">
