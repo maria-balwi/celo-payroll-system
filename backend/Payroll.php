@@ -1230,10 +1230,11 @@
             return $employee;
         }
 
+
         public function addLeavePoints($id, $addLeavePoints) {
             $employee = "
                 UPDATE ".$this->employees." SET 
-                leavePoints = leavePoints + '$addLeavePoints'
+                leavePoints = ROUND(leavePoints + $addLeavePoints, 2)
                 WHERE id = '$id' AND designationID != 12 AND e_status = 'Active'";
             return $employee;
         }
@@ -1270,7 +1271,7 @@
                 $febMonth = date('Y-02-28');
                 $febMonthLY = date('Y-02-29');
                 $thirtyDays = date('Y-m-30');
-                $thirtyOneDays = date('Y-m-26');
+                $thirtyOneDays = date('Y-m-02');
 
                 $employeesQuery = $this->dbConnect()->query("SELECT * FROM ".$this->employees." WHERE designationID != 12 AND e_status = 'Active'");
                 while ($employeeDetails = mysqli_fetch_array($employeesQuery)) {
