@@ -146,45 +146,30 @@
                                                 <option selected disabled>Choose Leave Type</option>
                                                 <?php
                                                     $leaveQuery = mysqli_query($conn, $employees->viewApprovedSickLeaves($_SESSION['id']));
-                                                    $leaves = mysqli_num_rows($leaveQuery);
+                                                    $sickLeaves = mysqli_num_rows($leaveQuery);
                         
                                                     $leavePointsQuery = mysqli_query($conn, $employees->viewLeavePoints($_SESSION['id']));
                                                     $details = mysqli_fetch_array($leaveQuery);
                                                     $leavePoints = $details['leavePoints'];
                                                     
-                                                    if ($leaves >= 5 && $leavePoints <= 1.00) {
-                                                    // $allLeaveType = mysqli_query($conn, $employees->viewAllLeaveType());
-                                                    // while ($allLeaveTypeResult = mysqli_fetch_array($allLeaveType)) {
+                                                    if ($sickLeaves >= 5) {
                                                 ?>
-                                                    <!-- <option value="< ?php echo $allLeaveTypeResult['leaveTypeID']; ?>">
-                                                        < ?php echo $allLeaveTypeResult['leaveType']; ?>
-                                                    </option> -->
                                                     <option value="1" disabled>Sick Leave</option>
-                                                    <option value="2" disabled>Vacation Leave</option>
-                                                    <option value="3">Bereavement Leave</option>
-                                                    <option value="4">Emergency Leave</option>
-                                                <?php
-                                                    }
-                                                    else if ($leaves < 5 && $leavePoints <= 1.00){ ?>
-                                                    <option value="1">Sick Leave</option>
-                                                    <option value="2" disabled>Vacation Leave</option>
-                                                    <option value="3">Bereavement Leave</option>
-                                                    <option value="4">Emergency Leave</option>
-                                                <?php
-                                                    }
-                                                    else if ($leaves >= 5 && $leavePoints >= 1.00){ ?>
-                                                    <option value="1" disabled>Sick Leave</option>
-                                                    <option value="2">Vacation Leave</option>
-                                                    <option value="3">Bereavement Leave</option>
-                                                    <option value="4">Emergency Leave</option>
-                                                <?php
+                                                <?php 
                                                     }
                                                     else { ?>
                                                     <option value="1">Sick Leave</option>
+                                                <?php
+                                                    }
+                                                    if ($leavePoints > 1.00)  { ?>
+                                                    <option value="2" disabled>Vacation Leave</option>
+                                                <?php
+                                                    }
+                                                    else { ?>
                                                     <option value="2">Vacation Leave</option>
+                                                <?php } ?>
                                                     <option value="3">Bereavement Leave</option>
                                                     <option value="4">Emergency Leave</option>
-                                                <?php } ?>
                                             </select>
                                         </div>
                                     </div>   
