@@ -67,7 +67,7 @@
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">RDOT</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
-                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">RDOT Night Diff</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">RDOT w/ Night Diff</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">Special Holiday</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
@@ -76,6 +76,30 @@
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Holiday</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">HOLIDAY Night Diff</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">HOLIDAY OT</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">HOLIDAY OT w/ Night Diff</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">Special Holiday OT</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">Special Holiday OT w/ Night Diff</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">RDOT SH</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">RDOT SH w/ Night Diff</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">RDOT LH</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">RDOT LH w/ Night Diff</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">RDOT OT</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">RDOT OT w/ Night Diff</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">Double Holiday</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">Double Holiday w/ Night Diff</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Pay</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap" rowspan="2">Gross Pay</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">Allowance</th>
@@ -131,6 +155,30 @@
                                             $payslip_regularHolidayPay = number_format($payslipDetails['pay_regularHoliday'], 2);
                                             $payslip_regularHolidayND = $payslipDetails['regularHolidayND'];
                                             $payslip_regularHolidayNDPay = number_format($payslipDetails['pay_regularHolidayND'], 2);
+                                            $payslip_regularHolidayOT = $payslipDetails['regularHolidayOT'];
+                                            $payslip_regularHolidayOTPay = number_format($payslipDetails['pay_regularHolidayOT'], 2);
+                                            $payslip_regularHolidayOTND = $payslipDetails['regularHolidayOTND'];
+                                            $payslip_regularHolidayOTNDPay = number_format($payslipDetails['pay_regularHolidayOTND'], 2);
+                                            $payslip_specialHolidayOT = $payslipDetails['specialHolidayOT'];
+                                            $payslip_specialHolidayOTPay = number_format($payslipDetails['pay_specialHolidayOT'], 2);
+                                            $payslip_specialHolidayOTND = $payslipDetails['specialHolidayOTND'];
+                                            $payslip_specialHolidayOTNDPay = number_format($payslipDetails['pay_specialHolidayOTND'], 2);
+                                            $payslip_RDOTSH = $payslipDetails['rdotSH'];
+                                            $payslip_RDOTSHPay = number_format($payslipDetails['pay_rdotSH'], 2);
+                                            $payslip_RDOTSHND = $payslipDetails['rdotSHND'];
+                                            $payslip_RDOTSHNDPay = number_format($payslipDetails['pay_rdotSHND'], 2);
+                                            $payslip_RDOTRH = $payslipDetails['rdotRH'];
+                                            $payslip_RDOTRHPay = number_format($payslipDetails['pay_rdotRH'], 2);
+                                            $payslip_RDOTRHND = $payslipDetails['rdotRHND'];
+                                            $payslip_RDOTRHNDPay = number_format($payslipDetails['pay_rdotRHND'], 2);
+                                            $payslip_RDOTOT = $payslipDetails['rdotOT'];
+                                            $payslip_RDOTOTPay = number_format($payslipDetails['pay_rdotOT'], 2);
+                                            $payslip_RDOTOTND = $payslipDetails['rdotOTND'];
+                                            $payslip_RDOTOTNDPay = number_format($payslipDetails['pay_rdotOTND'], 2);
+                                            $payslip_doubleHoliday = $payslipDetails['doubleHoliday'];
+                                            $payslip_doubleHolidayPay = number_format($payslipDetails['pay_doubleHoliday'], 2);
+                                            $payslip_doubleHolidayND = $payslipDetails['doubleHolidayND'];
+                                            $payslip_doubleHolidayNDPay = number_format($payslipDetails['pay_doubleHolidayND'], 2);
                                             $payslip_allowances = $payslipDetails['payslip_allowances'];
                                             $payslip_communication = $payslipDetails['payslip_communication'];
                                             $payslip_totalGrossPay = $payslipDetails['totalGrossPay'];
@@ -182,6 +230,54 @@
                                             if ($payslip_regularHolidayND == 0) {
                                                 $payslip_regularHolidayND = "-";
                                                 $payslip_regularHolidayNDPay = "-";
+                                            }
+                                            if ($payslip_regularHolidayOT == 0) {
+                                                $payslip_regularHolidayOT = "-";
+                                                $payslip_regularHolidayOTPay = "-";
+                                            }
+                                            if ($payslip_regularHolidayOTND == 0) {
+                                                $payslip_regularHolidayOTND = "-";
+                                                $payslip_regularHolidayOTNDPay = "-";
+                                            }
+                                            if ($payslip_specialHolidayOT == 0) {
+                                                $payslip_specialHolidayOT = "-";
+                                                $payslip_specialHolidayOTPay = "-";
+                                            }
+                                            if ($payslip_specialHolidayOTND == 0) {
+                                                $payslip_specialHolidayOTND = "-";
+                                                $payslip_specialHolidayOTNDPay = "-";
+                                            }
+                                            if ($payslip_RDOTSH == 0) {
+                                                $payslip_RDOTSH = "-"; 
+                                                $payslip_RDOTSHPay = "-";
+                                            }
+                                            if ($payslip_RDOTSHND == 0) {
+                                                $payslip_RDOTSHND = "-";
+                                                $payslip_RDOTSHNDPay = "-";
+                                            }
+                                            if ($payslip_RDOTRH == 0) {
+                                                $payslip_RDOTRH = "-";
+                                                $payslip_RDOTRHPay = "-";
+                                            }
+                                            if ($payslip_RDOTRHND == 0) {
+                                                $payslip_RDOTRHND = "-";    
+                                                $payslip_RDOTRHNDPay = "-";
+                                            }
+                                            if ($payslip_RDOTOT == 0) {
+                                                $payslip_RDOTOT = "-";
+                                                $payslip_RDOTOTPay = "-";
+                                            }
+                                            if ($payslip_RDOTOTND == 0) {
+                                                $payslip_RDOTOTND = "-";    
+                                                $payslip_RDOTOTNDPay = "-";
+                                            }
+                                            if ($payslip_doubleHoliday == 0) {
+                                                $payslip_doubleHoliday = "-";
+                                                $payslip_doubleHolidayPay = "-";
+                                            }
+                                            if ($payslip_doubleHolidayND == 0) {
+                                                $payslip_doubleHolidayND = "-";
+                                                $payslip_doubleHolidayNDPay = "-";
                                             }
 
                                             // ALLOWANCES 
@@ -306,6 +402,30 @@
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_regularHolidayPay . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_regularHolidayND . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_regularHolidayNDPay . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_regularHolidayOT . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_regularHolidayOTPay . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_regularHolidayOTND . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_regularHolidayOTNDPay . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_specialHolidayOT . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_specialHolidayOTPay . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_specialHolidayOTND . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_specialHolidayOTNDPay . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_RDOTSH . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_RDOTSHPay . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_RDOTSHND . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_RDOTSHNDPay . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_RDOTRH . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_RDOTRHPay . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_RDOTRHND . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_RDOTRHNDPay . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_RDOTOT . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_RDOTOTPay . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_RDOTOTND . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_RDOTOTNDPay . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_doubleHoliday . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_doubleHolidayPay . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_doubleHolidayND . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_doubleHolidayNDPay . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_grossPay . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_allowances . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_communication . "</td>";
