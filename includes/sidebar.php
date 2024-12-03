@@ -61,6 +61,18 @@
                 <a href="../pages/admin_dtr.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Daily Time Records
                 </a>
+                <a href="../pages/admin_employees.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
+                    Employee List
+                </a>
+                <?php }
+                    if (($_SESSION['departmentID'] == '4') && $_SESSION['activated'] == 1) {
+                ?>
+                <div class="menu-section">
+                    <h4 class="text-sm font-bold text-gray-500 uppercase pt-2 pb-2">Admin's Portal</h4>
+                </div>
+                <a href="../pages/admin_users.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
+                    User List
+                </a>
                 <?php }
                     if ($_SESSION['levelID'] == '2' && $_SESSION['activated'] == 1) {
                 ?>
