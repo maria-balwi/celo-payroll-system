@@ -564,22 +564,79 @@
             }
         }
 
-        public function calculateOvertimeND($fromTime, $toTime){
+        // public function calculateOvertimeND($fromTime, $toTime){
+        //     $nightStart = new DateTime("22:00");
+        //     $nightEnd = new DateTime("06:00");
+
+        //     $nightDiffHours =0;
+
+        //     if ($toTime > $nightStart || $fromTime < $nightEnd) {
+        //         $ndStart = max($fromTime, $nightStart); // Start time within night diff period
+        //         $ndEnd = min($toTime, $nightEnd);       // End time within night diff period
+        //         if ($ndStart < $ndEnd) {
+        //             $ndInterval = $ndStart->diff($ndEnd);
+        //             $nightDiffHours = $ndInterval->h + ($ndInterval->i >= 30 ? 1 : 0);
+        //         }
+        //     }
+        //     return $nightDiffHours;
+        // }
+
+        // public function calculateOvertimeND($fromTime, $toTime) {
+        //     $nightStart = new DateTime("22:00");
+        //     $nightEnd = new DateTime("06:00");
+        
+        //     $totalOvertimeHours = 0;
+        //     $totalOvertimeNDHours = 0;
+        
+        //     // Calculate total overtime hours
+        //     $interval = $fromTime->diff($toTime);
+        //     $totalOvertimeHours = $interval->h + ($interval->i >= 30 ? 1 : 0);
+        
+        //     // Calculate overtime hours within the night differential period
+        //     if ($toTime > $nightStart || $fromTime < $nightEnd) {
+        //         $ndStart = max($fromTime, $nightStart); // Start time within night diff period
+        //         $ndEnd = min($toTime, $nightEnd);       // End time within night diff period
+        //         if ($ndStart < $ndEnd) {
+        //             $ndInterval = $ndStart->diff($ndEnd);
+        //             $totalOvertimeNDHours = $ndInterval->h + ($ndInterval->i >= 30 ? 1 : 0);
+        //         }
+        //     }
+        
+        //     return [
+        //         'totalOvertimeHours' => $totalOvertimeHours,
+        //         'totalOvertimeNDHours' => $totalOvertimeNDHours
+        //     ];
+        // }
+
+        public function calculateOvertimeND($fromTime, $toTime) {
             $nightStart = new DateTime("22:00");
-            $nightEnd = new DateTime("06:00");
-
-            $nightDiffHours =0;
-
+            $nightEnd = (new DateTime("06:00"))->modify('+1 day'); // Extend to the next day
+        
+            $totalOvertimeHours = 0;
+            $totalOvertimeNDHours = 0;
+        
+            // Calculate total overtime hours
+            $interval = $fromTime->diff($toTime);
+            $totalOvertimeHours = $interval->h + ($interval->i >= 30 ? 1 : 0);
+        
+            // Check for overlap with the night differential period
             if ($toTime > $nightStart || $fromTime < $nightEnd) {
-                $ndStart = max($fromTime, $nightStart); // Start time within night diff period
-                $ndEnd = min($toTime, $nightEnd);       // End time within night diff period
-                if ($ndStart < $ndEnd) {
+                $ndStart = ($fromTime > $nightStart) ? $fromTime : $nightStart; // Start within night diff
+                $ndEnd = ($toTime < $nightEnd) ? $toTime : $nightEnd;           // End within night diff
+        
+                if ($ndStart < $ndEnd) { // Ensure there is an overlap
                     $ndInterval = $ndStart->diff($ndEnd);
-                    $nightDiffHours = $ndInterval->h + ($ndInterval->i >= 30 ? 1 : 0);
+                    $totalOvertimeNDHours = $ndInterval->h + ($ndInterval->i >= 30 ? 1 : 0);
                 }
             }
-            return $nightDiffHours;
+        
+            return [
+                'totalOvertimeHours' => $totalOvertimeHours,
+                'totalOvertimeNDHours' => $totalOvertimeNDHours
+            ];
         }
+        
+        
         
         public function calculatePayroll($payrollID, $payrollCycleID) {
             function formatDate($date) {
@@ -707,28 +764,35 @@
                             if ($overtime['otType'] == "Regular") {
                                 $from = new DateTime($overtime['fromTime']);
                                 $to = new DateTime($overtime['toTime']);
-                                // $totalRegularHolidayOTHours += 1;
                                 
-                                // COUNT ND HOURS
-                                $NDHours = $this->calculateOvertimeND($from, $to);
-                                $totalRegularHolidayOTNDHours += $NDHours;
+                                $result = $this->calculateOvertimeND($from, $to);
+                                $totalRegularHolidayOTHours += $result['totalOvertimeHours'];
+                                $totalRegularHolidayOTNDHours += $result['totalOvertimeNDHours'];
+                                
+                                // // COUNT ND HOURS
+                                // $NDHours = $this->calculateOvertimeND($from, $to);
+                                // $totalRegularHolidayOTNDHours += $NDHours;
         
-                                $interval = $from->diff($to);
-                                $hours = $interval->h + ($interval->i >= 30 ? 1 : 0);
-                                $totalRegularHolidayOTHours = $hours - $totalRegularHolidayOTNDHours - 1;
+                                // $interval = $from->diff($to);
+                                // $hours = $interval->h + ($interval->i >= 30 ? 1 : 0);
+                                // $totalRegularHolidayOTHours = $hours - $totalRegularHolidayOTNDHours - 1;
                             }
                             // RDOT
                             else {
                                 $from = new DateTime($overtime['fromTime']);
                                 $to = new DateTime($overtime['toTime']);
                                 
-                                // COUNT ND HOURS
-                                $NDHours = $this->calculateOvertimeND($from, $to);
-                                $totalRegularHolidayRDOTNDHours += $NDHours;
+                                $result = $this->calculateOvertimeND($from, $to);
+                                $totalRegularHolidayRDOTHours += $result['totalOvertimeHours'];
+                                $totalRegularHolidayRDOTNDHours += $result['totalOvertimeNDHours'];
+
+                                // // COUNT ND HOURS
+                                // $NDHours = $this->calculateOvertimeND($from, $to);
+                                // $totalRegularHolidayRDOTNDHours += $NDHours;
         
-                                $interval = $from->diff($to);
-                                $hours = $interval->h + ($interval->i >= 30 ? 1 : 0);
-                                $totalRegularHolidayRDOTHours = $hours - $totalRegularHolidayRDOTNDHours - 1;
+                                // $interval = $from->diff($to);
+                                // $hours = $interval->h + ($interval->i >= 30 ? 1 : 0);
+                                // $totalRegularHolidayRDOTHours = $hours - $totalRegularHolidayRDOTNDHours - 1;
                             }
                         } 
                         // SPECIAL HOLIDAY
@@ -737,28 +801,35 @@
                             if ($overtime['otType'] == "Regular") {
                                 $from = new DateTime($overtime['fromTime']);
                                 $to = new DateTime($overtime['toTime']);
-                                // $totalSpecialHolidayOTHours += 1;
                                 
-                                // COUNT ND HOURS
-                                $NDHours = $this->calculateOvertimeND($from, $to);
-                                $totalSpecialHolidayOTNDHours += $NDHours;
+                                $result = $this->calculateOvertimeND($from, $to);
+                                $totalSpecialHolidayOTHours += $result['totalOvertimeHours'];
+                                $totalSpecialHolidayOTNDHours += $result['totalOvertimeNDHours'];
+                                
+                                // // COUNT ND HOURS
+                                // $NDHours = $this->calculateOvertimeND($from, $to);
+                                // $totalSpecialHolidayOTNDHours += $NDHours;
         
-                                $interval = $from->diff($to);
-                                $hours = $interval->h + ($interval->i >= 30 ? 1 : 0);
-                                $totalSpecialHolidayOTHours = $hours - $totalSpecialHolidayOTNDHours - 1;
+                                // $interval = $from->diff($to);
+                                // $hours = $interval->h + ($interval->i >= 30 ? 1 : 0);
+                                // $totalSpecialHolidayOTHours = $hours - $totalSpecialHolidayOTNDHours - 1;
                             }
                             // RDOT
                             else {
                                 $from = new DateTime($overtime['fromTime']);
                                 $to = new DateTime($overtime['toTime']);
+
+                                $result = $this->calculateOvertimeND($from, $to);
+                                $totalSpecialHolidayRDOTHours += $result['totalOvertimeHours'];
+                                $totalSpecialHolidayRDOTNDHours += $result['totalOvertimeNDHours'];
                                 
-                                // COUNT ND HOURS
-                                $NDHours = $this->calculateOvertimeND($from, $to);
-                                $totalSpecialHolidayRDOTNDHours += $NDHours;
+                                // // COUNT ND HOURS
+                                // $NDHours = $this->calculateOvertimeND($from, $to);
+                                // $totalSpecialHolidayRDOTNDHours += $NDHours;
         
-                                $interval = $from->diff($to);
-                                $hours = $interval->h + ($interval->i >= 30 ? 1 : 0);
-                                $totalSpecialHolidayRDOTHours = $hours - $totalSpecialHolidayRDOTNDHours - 1;
+                                // $interval = $from->diff($to);
+                                // $hours = $interval->h + ($interval->i >= 30 ? 1 : 0);
+                                // $totalSpecialHolidayRDOTHours = $hours - $totalSpecialHolidayRDOTNDHours - 1;
                             }
                         }
                     }
@@ -766,27 +837,34 @@
                         if ($overtime['otType'] == "Regular") {
                             $from = new DateTime($overtime['fromTime']);
                             $to = new DateTime($overtime['toTime']);
-                            // $totalOvertimeHours += 1;
                             
-                            // COUNT ND HOURS
-                            $NDHours = $this->calculateOvertimeND($from, $to);
-                            $totalOvertimeNDHours += $NDHours;
+                            $result = $this->calculateOvertimeND($from, $to);
+                            $totalOvertimeHours += $result['totalOvertimeHours'];
+                            $totalOvertimeNDHours += $result['totalOvertimeNDHours'];
+                            
+                            // // COUNT ND HOURS
+                            // $NDHours = $this->calculateOvertimeND($from, $to);
+                            // $totalOvertimeNDHours += $NDHours;
     
-                            $interval = $from->diff($to);
-                            $hours = $interval->h + ($interval->i >= 30 ? 1 : 0);
-                            $totalOvertimeHours = $hours - $totalOvertimeNDHours;
+                            // $interval = $from->diff($to);
+                            // $hours = $interval->h + ($interval->i >= 30 ? 1 : 0);
+                            // $totalOvertimeHours = $hours - $totalOvertimeNDHours;
                         }
                         else { // RDOT
                             $from = new DateTime($overtime['fromTime']);
                             $to = new DateTime($overtime['toTime']);
+
+                            $result = $this->calculateOvertimeND($from, $to);
+                            $totalRDOTHours += $result['totalOvertimeHours'];
+                            $totalRDOTNDHours += $result['totalOvertimeNDHours'];
                             
-                            // COUNT ND HOURS
-                            $NDHours = $this->calculateOvertimeND($from, $to);
-                            $totalRDOTNDHours += $NDHours;
+                            // // COUNT ND HOURS
+                            // $NDHours = $this->calculateOvertimeND($from, $to);
+                            // $totalRDOTNDHours += $NDHours;
     
-                            $interval = $from->diff($to);
-                            $hours = $interval->h + ($interval->i >= 30 ? 1 : 0);
-                            $totalRDOTHours = $hours - $totalRDOTNDHours;
+                            // $interval = $from->diff($to);
+                            // $hours = $interval->h + ($interval->i >= 30 ? 1 : 0);
+                            // $totalRDOTHours = $hours - $totalRDOTNDHours;
                         }
                     }
                 }
@@ -941,7 +1019,7 @@
                     $totalRegularHolidayNDHours = 0;
 
                     if ($totalRegularHolidayRDOTNDHours == 0) { // DAY SHIFT
-                        $employee_regularHolidayRDOTPay = round(($employee_hourlyRate * 1.6)   * $totalRegularHolidayRDOTHours, 2);
+                        $employee_regularHolidayRDOTPay = round((($employee_hourlyRate * 2) * 0.3) * $totalRegularHolidayRDOTHours + $employee_dailyRate, 2);
                     }
                     else { // NIGHT SHIFT
                         $employee_regularHolidayRDOTPay = round((($employee_hourlyRate * 2) * 0.3) * $totalRegularHolidayRDOTHours + $employee_dailyRate, 2);
@@ -951,11 +1029,11 @@
 
                 // COMPUTATION FOR REGULAR HOLIDAY OT PAY
                 if ($totalRegularHolidayOTNDHours == 0) { // DAY SHIFT
-                    $employee_regularHolidayOTPay = round((($employee_hourlyRate * 1.3) * 0.3)  * $totalRegularHolidayOTHours, 2);
+                    $employee_regularHolidayOTPay = round((($employee_hourlyRate * 2) * 0.3) * $totalRegularHolidayOTHours + $employee_dailyRate, 2);
                 }
                 else { // NIGHT SHIFT
                     $employee_regularHolidayOTPay = round((($employee_hourlyRate * 2) * 0.3)  * $totalRegularHolidayOTHours, 2);
-                    $employee_regularHolidayOTNDPay = round((($employee_hourlyRate * 2) * 0.45) * $totalRegularHolidayOTNDHours, 2);
+                    $employee_regularHolidayOTNDPay = round(((($employee_hourlyRate * 2) * 1.3) * 0.15) * $totalRegularHolidayOTNDHours, 2);
                 }
 
                 // COMPUTATION FOR SPECIAL HOLIDAY OT PAY
@@ -964,7 +1042,7 @@
                 }
                 else { // NIGHT SHIFT
                     $employee_specialHolidayOTPay = round((($employee_hourlyRate * 1.3) * 0.3)  * $totalSpecialHolidayOTHours, 2);
-                    $employee_specialHolidayOTNDPay = round((($employee_hourlyRate * 1.3) * 0.45) * $totalSpecialHolidayOTNDHours, 2);
+                    $employee_specialHolidayOTNDPay = round(((($employee_hourlyRate * 1.3) * 1.3) * 0.15) * $totalSpecialHolidayOTNDHours, 2);
                 }
 
                 // COMPUTE GROSS PAY
@@ -1052,6 +1130,10 @@
                 $totalRegularHolidayRDOTNDHours = 0;
                 $totalSpecialHolidayRDOTHours = 0;
                 $totalSpecialHolidayRDOTNDHours = 0;
+                $totalRDOTOTHours = 0;
+                $totalRDOTOTNDHours = 0;
+                $totalDoubleHolidayHours = 0;
+                $totalDoubleHolidayNDHours = 0;
 
                 // INITIALIZE VARIABLES FOR DAYS WORKED (HOLIDAYS) COMPUTATION
                 $specialHolidaysWorked = 0;
@@ -1116,28 +1198,35 @@
                             if ($overtime['otType'] == "Regular") {
                                 $from = new DateTime($overtime['fromTime']);
                                 $to = new DateTime($overtime['toTime']);
-                                // $totalRegularHolidayOTHours += 1;
                                 
-                                // COUNT ND HOURS
-                                $NDHours = $this->calculateOvertimeND($from, $to);
-                                $totalRegularHolidayOTNDHours += $NDHours;
+                                $result = $this->calculateOvertimeND($from, $to);
+                                $totalRegularHolidayOTHours += $result['totalOvertimeHours'];
+                                $totalRegularHolidayOTNDHours += $result['totalOvertimeNDHours'];
+                                
+                                // // COUNT ND HOURS
+                                // $NDHours = $this->calculateOvertimeND($from, $to);
+                                // $totalRegularHolidayOTNDHours += $NDHours;
         
-                                $interval = $from->diff($to);
-                                $hours = $interval->h + ($interval->i >= 30 ? 1 : 0);
-                                $totalRegularHolidayOTHours = $hours - $totalRegularHolidayOTNDHours - 1;
+                                // $interval = $from->diff($to);
+                                // $hours = $interval->h + ($interval->i >= 30 ? 1 : 0);
+                                // $totalRegularHolidayOTHours = $hours - $totalRegularHolidayOTNDHours - 1;
                             }
                             // RDOT
                             else {
                                 $from = new DateTime($overtime['fromTime']);
                                 $to = new DateTime($overtime['toTime']);
                                 
-                                // COUNT ND HOURS
-                                $NDHours = $this->calculateOvertimeND($from, $to);
-                                $totalRegularHolidayRDOTNDHours += $NDHours;
+                                $result = $this->calculateOvertimeND($from, $to);
+                                $totalRegularHolidayRDOTHours += $result['totalOvertimeHours'];
+                                $totalRegularHolidayRDOTNDHours += $result['totalOvertimeNDHours'];
+
+                                // // COUNT ND HOURS
+                                // $NDHours = $this->calculateOvertimeND($from, $to);
+                                // $totalRegularHolidayRDOTNDHours += $NDHours;
         
-                                $interval = $from->diff($to);
-                                $hours = $interval->h + ($interval->i >= 30 ? 1 : 0);
-                                $totalRegularHolidayRDOTHours = $hours - $totalRegularHolidayRDOTNDHours - 1;
+                                // $interval = $from->diff($to);
+                                // $hours = $interval->h + ($interval->i >= 30 ? 1 : 0);
+                                // $totalRegularHolidayRDOTHours = $hours - $totalRegularHolidayRDOTNDHours - 1;
                             }
                         } 
                         // SPECIAL HOLIDAY
@@ -1146,28 +1235,35 @@
                             if ($overtime['otType'] == "Regular") {
                                 $from = new DateTime($overtime['fromTime']);
                                 $to = new DateTime($overtime['toTime']);
-                                // $totalSpecialHolidayOTHours += 1;
                                 
-                                // COUNT ND HOURS
-                                $NDHours = $this->calculateOvertimeND($from, $to);
-                                $totalSpecialHolidayOTNDHours += $NDHours;
+                                $result = $this->calculateOvertimeND($from, $to);
+                                $totalSpecialHolidayOTHours += $result['totalOvertimeHours'];
+                                $totalSpecialHolidayOTNDHours += $result['totalOvertimeNDHours'];
+                                
+                                // // COUNT ND HOURS
+                                // $NDHours = $this->calculateOvertimeND($from, $to);
+                                // $totalSpecialHolidayOTNDHours += $NDHours;
         
-                                $interval = $from->diff($to);
-                                $hours = $interval->h + ($interval->i >= 30 ? 1 : 0);
-                                $totalSpecialHolidayOTHours = $hours - $totalSpecialHolidayOTNDHours - 1;
+                                // $interval = $from->diff($to);
+                                // $hours = $interval->h + ($interval->i >= 30 ? 1 : 0);
+                                // $totalSpecialHolidayOTHours = $hours - $totalSpecialHolidayOTNDHours - 1;
                             }
                             // RDOT
                             else {
                                 $from = new DateTime($overtime['fromTime']);
                                 $to = new DateTime($overtime['toTime']);
+
+                                $result = $this->calculateOvertimeND($from, $to);
+                                $totalSpecialHolidayRDOTHours += $result['totalOvertimeHours'];
+                                $totalSpecialHolidayRDOTNDHours += $result['totalOvertimeNDHours'];
                                 
-                                // COUNT ND HOURS
-                                $NDHours = $this->calculateOvertimeND($from, $to);
-                                $totalSpecialHolidayRDOTNDHours += $NDHours;
+                                // // COUNT ND HOURS
+                                // $NDHours = $this->calculateOvertimeND($from, $to);
+                                // $totalSpecialHolidayRDOTNDHours += $NDHours;
         
-                                $interval = $from->diff($to);
-                                $hours = $interval->h + ($interval->i >= 30 ? 1 : 0);
-                                $totalSpecialHolidayRDOTHours = $hours - $totalSpecialHolidayRDOTNDHours - 1;
+                                // $interval = $from->diff($to);
+                                // $hours = $interval->h + ($interval->i >= 30 ? 1 : 0);
+                                // $totalSpecialHolidayRDOTHours = $hours - $totalSpecialHolidayRDOTNDHours - 1;
                             }
                         }
                     }
@@ -1175,27 +1271,34 @@
                         if ($overtime['otType'] == "Regular") {
                             $from = new DateTime($overtime['fromTime']);
                             $to = new DateTime($overtime['toTime']);
-                            // $totalOvertimeHours += 1;
                             
-                            // COUNT ND HOURS
-                            $NDHours = $this->calculateOvertimeND($from, $to);
-                            $totalOvertimeNDHours += $NDHours;
+                            $result = $this->calculateOvertimeND($from, $to);
+                            $totalOvertimeHours += $result['totalOvertimeHours'];
+                            $totalOvertimeNDHours += $result['totalOvertimeNDHours'];
+                            
+                            // // COUNT ND HOURS
+                            // $NDHours = $this->calculateOvertimeND($from, $to);
+                            // $totalOvertimeNDHours += $NDHours;
     
-                            $interval = $from->diff($to);
-                            $hours = $interval->h + ($interval->i >= 30 ? 1 : 0);
-                            $totalOvertimeHours = $hours - $totalOvertimeNDHours;
+                            // $interval = $from->diff($to);
+                            // $hours = $interval->h + ($interval->i >= 30 ? 1 : 0);
+                            // $totalOvertimeHours = $hours - $totalOvertimeNDHours;
                         }
                         else { // RDOT
                             $from = new DateTime($overtime['fromTime']);
                             $to = new DateTime($overtime['toTime']);
+
+                            $result = $this->calculateOvertimeND($from, $to);
+                            $totalRDOTHours += $result['totalOvertimeHours'];
+                            $totalRDOTNDHours += $result['totalOvertimeNDHours'];
                             
-                            // COUNT ND HOURS
-                            $NDHours = $this->calculateOvertimeND($from, $to);
-                            $totalRDOTNDHours += $NDHours;
+                            // // COUNT ND HOURS
+                            // $NDHours = $this->calculateOvertimeND($from, $to);
+                            // $totalRDOTNDHours += $NDHours;
     
-                            $interval = $from->diff($to);
-                            $hours = $interval->h + ($interval->i >= 30 ? 1 : 0);
-                            $totalRDOTHours = $hours - $totalRDOTNDHours;
+                            // $interval = $from->diff($to);
+                            // $hours = $interval->h + ($interval->i >= 30 ? 1 : 0);
+                            // $totalRDOTHours = $hours - $totalRDOTNDHours;
                         }
                     }
                 }
@@ -1350,7 +1453,7 @@
                     $totalRegularHolidayNDHours = 0;
 
                     if ($totalRegularHolidayRDOTNDHours == 0) { // DAY SHIFT
-                        $employee_regularHolidayRDOTPay = round(($employee_hourlyRate * 1.6)   * $totalRegularHolidayRDOTHours, 2);
+                        $employee_regularHolidayRDOTPay = round((($employee_hourlyRate * 2) * 0.3) * $totalRegularHolidayRDOTHours + $employee_dailyRate, 2);
                     }
                     else { // NIGHT SHIFT
                         $employee_regularHolidayRDOTPay = round((($employee_hourlyRate * 2) * 0.3) * $totalRegularHolidayRDOTHours + $employee_dailyRate, 2);
@@ -1360,11 +1463,11 @@
 
                 // COMPUTATION FOR REGULAR HOLIDAY OT PAY
                 if ($totalRegularHolidayOTNDHours == 0) { // DAY SHIFT
-                    $employee_regularHolidayOTPay = round((($employee_hourlyRate * 1.3) * 0.3)  * $totalRegularHolidayOTHours, 2);
+                    $employee_regularHolidayOTPay = round((($employee_hourlyRate * 2) * 0.3) * $totalRegularHolidayOTHours + $employee_dailyRate, 2);
                 }
                 else { // NIGHT SHIFT
                     $employee_regularHolidayOTPay = round((($employee_hourlyRate * 2) * 0.3)  * $totalRegularHolidayOTHours, 2);
-                    $employee_regularHolidayOTNDPay = round((($employee_hourlyRate * 2) * 0.45) * $totalRegularHolidayOTNDHours, 2);
+                    $employee_regularHolidayOTNDPay = round(((($employee_hourlyRate * 2) * 1.3) * 0.15) * $totalRegularHolidayOTNDHours, 2);
                 }
 
                 // COMPUTATION FOR SPECIAL HOLIDAY OT PAY
@@ -1373,26 +1476,8 @@
                 }
                 else { // NIGHT SHIFT
                     $employee_specialHolidayOTPay = round((($employee_hourlyRate * 1.3) * 0.3)  * $totalSpecialHolidayOTHours, 2);
-                    $employee_specialHolidayOTNDPay = round((($employee_hourlyRate * 1.3) * 0.45) * $totalSpecialHolidayOTNDHours, 2);
+                    $employee_specialHolidayOTNDPay = round(((($employee_hourlyRate * 1.3) * 1.3) * 0.15) * $totalSpecialHolidayOTNDHours, 2);
                 }
-
-                // // COMPUTATION FOR REGULAR HOLIDAY RDOT PAY
-                // if ($totalRegularHolidayRDOTNDHours == 0) { // DAY SHIFT
-                //     $employee_regularHolidayRDOTPay = round((($employee_hourlyRate * 2) * 0.3)  * $totalRegularHolidayRDOTHours, 2);
-                // }
-                // else { // NIGHT SHIFT
-                //     $employee_regularHolidayRDOTPay = round((($employee_hourlyRate * 2) * 0.3)  * $totalRegularHolidayRDOTHours, 2);
-                //     $employee_regularHolidayRDOTNDPay = round((($employee_hourlyRate * 2) * 0.45) * $totalRegularHolidayRDOTNDHours, 2);
-                // }
-
-                // // COMPUTATION FOR SPECIAL HOLIDAY RDOT PAY
-                // if ($totalSpecialHolidayRDOTNDHours == 0) { // DAY SHIFT
-                //     $employee_specialHolidayRDOTPay = round((($employee_hourlyRate * 1.3) * 0.3)  * $totalSpecialHolidayRDOTHours, 2);
-                // }
-                // else { // NIGHT SHIFT
-                //     $employee_specialHolidayRDOTPay = round((($employee_hourlyRate * 1.3) * 0.3)  * $totalSpecialHolidayRDOTHours, 2);
-                //     $employee_specialHolidayRDOTNDPay = round((($employee_hourlyRate * 1.3) * 0.45) * $totalSpecialHolidayRDOTNDHours, 2);
-                // }
 
                 // COMPUTE GROSS PAY
                 $employee_grossPay = round($employee_dailyRate * $employee_daysWorked + $employee_nightDiffPay + $employee_overtimePay + $employee_overtimeNDPay + $employee_RDOTPay + $employee_RDOTNDPay + $employee_specialHolidayPay + $employee_specialHolidayNDPay+ $employee_regularHolidayPay + $employee_regularHolidayNDPay + $employee_regularHolidayOTPay + $employee_regularHolidayOTNDPay + $employee_specialHolidayOTPay + $employee_specialHolidayOTNDPay + $employee_specialHolidayRDOTPay + $employee_specialHolidayRDOTNDPay, 2);
