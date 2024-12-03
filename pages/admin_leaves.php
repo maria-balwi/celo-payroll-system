@@ -80,7 +80,7 @@
                                         $leave_days = $leave_days . " days";
                                     }
 
-                                    echo "<tr data-id='" . $leave_id . "' class='leaveView cursor-pointer'>";
+                                    echo "<tr data-id='" . $leave_id . "' data-designation='" . $_SESSION['designationID'] . "' class='leaveView cursor-pointer'>";
                                     echo "<td class ='whitespace-nowrap'>" . $leave_dateFiled . "</td>";
                                     echo "<td class ='whitespace-nowrap'>" . $leave_employeeName . "</td>";
                                     echo "<td class ='whitespace-nowrap'>" . $leave_leaveType . "</td>";
