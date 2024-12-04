@@ -271,7 +271,7 @@ $(document).ready(function() {
                     $('#viewFromTime').val(res.data.fromTime);
                     $('#viewToTime').val(res.data.toTime);
                     $('#viewPurpose').val(res.data.remarks);
-                    $('#viewStatus').val(rest.data.status == 1 ? 'Approved' : 'Disapproved');
+                    $('#viewStatus').val(res.data.status == 1 ? 'Approved' : 'Disapproved');
                     $('#approveOT').hide();
                     $('#disapproveOT').hide();
                 }
