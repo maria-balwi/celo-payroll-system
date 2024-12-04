@@ -180,18 +180,29 @@
                 ON leaves.empID = employees.id
                 INNER JOIN ".$this->department." AS department
                 ON employees.departmentID = department.departmentID
-                WHERE employees.departmentID = 4 AND status = 'Pending'";
+                WHERE employees.designationID = 10 AND status = 'Pending'";
             return $pendingLeaves;
         }
 
-        public function getPendingOperationsLeaves() {
+        public function getPendingOperationsLeavesTL() {
             $pendingLeaves = "
                 SELECT * FROM ".$this->leaves." AS leaves
                 INNER JOIN ".$this->employees." AS employees
                 ON leaves.empID = employees.id
                 INNER JOIN ".$this->department." AS department
                 ON employees.departmentID = department.departmentID
-                WHERE employees.departmentID = 1 AND status = 'Pending'";
+                WHERE employees.designationID IN (1,2,3) AND status = 'Pending'";
+            return $pendingLeaves;
+        }
+
+        public function getPendingOperationsLeavesManager() {
+            $pendingLeaves = "
+                SELECT * FROM ".$this->leaves." AS leaves
+                INNER JOIN ".$this->employees." AS employees
+                ON leaves.empID = employees.id
+                INNER JOIN ".$this->department." AS department
+                ON employees.departmentID = department.departmentID
+                WHERE employees.designationID IN (4,11) AND status = 'Pending'";
             return $pendingLeaves;
         }
 
@@ -202,18 +213,29 @@
                 ON changeShift.empID = employees.id
                 INNER JOIN ".$this->department." AS department
                 ON employees.departmentID = department.departmentID
-                WHERE employees.departmentID = 4 AND status = 'Pending'";
+                WHERE employees.designationID = 10 AND status = 'Pending'";
             return $pendingChangeShifts;
         }
 
-        public function getPendingOperationsChangeShift() {
+        public function getPendingOperationsChangeShiftTL() {
             $pendingChangeShifts = "
                 SELECT * FROM ".$this->changeShift." AS changeShift
                 INNER JOIN ".$this->employees." AS employees
                 ON changeShift.empID = employees.id
                 INNER JOIN ".$this->department." AS department
                 ON employees.departmentID = department.departmentID
-                WHERE employees.departmentID = 1 AND status = 'Pending'";
+                WHERE employees.designationID IN (1,2,3) AND status = 'Pending'";
+            return $pendingChangeShifts;
+        }
+
+        public function getPendingOperationsChangeShiftManager() {
+            $pendingChangeShifts = "
+                SELECT * FROM ".$this->changeShift." AS changeShift
+                INNER JOIN ".$this->employees." AS employees
+                ON changeShift.empID = employees.id
+                INNER JOIN ".$this->department." AS department
+                ON employees.departmentID = department.departmentID
+                WHERE employees.designationID IN (4,11) AND status = 'Pending'";
             return $pendingChangeShifts;
         }
 
