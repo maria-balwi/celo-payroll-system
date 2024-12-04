@@ -8,15 +8,8 @@
     $action = $_POST['action'];
 
     if ($action == "approve") {
-        $filedOTQuery = mysqli_query($conn, $employees->viewOT($ot_id));
-        $filedOTResult = mysqli_fetch_array($filedOTQuery);
-        // $actualOThours = $filedOTResult['actualOThours'];
-        // $actualOTmins = $filedOTResult['actualOTmins'] == NULL ? NULL : $filedOTResult['actualOTmins'];
+        mysqli_query($conn, $employees->approveFiledOT($ot_id));
 
-        $sql = $conn->query("
-            UPDATE tbl_filedot SET
-            status = 1
-            WHERE requestID = '$ot_id'");
         // ERROR MESSAGE
         $em = "OT Form Approved Successfully";
         // RESPONSE ARRAY
@@ -24,10 +17,8 @@
     }
 
     else if ($action == "disapprove") {
-        $sql = $conn->query("
-            UPDATE tbl_filedot SET
-            status = 0
-            WHERE requestID = '$ot_id'");
+        mysqli_query($conn, $employees->disapproveFiledOT($ot_id));
+
         // ERROR MESSAGE
         $em = "OT Form Disapproved Successfully";
         // RESPONSE ARRAY
