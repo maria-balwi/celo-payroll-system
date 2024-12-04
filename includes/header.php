@@ -39,7 +39,7 @@
             // ====== CHECK LAST DTR INFO ========
             // FETCH DATA FROM DATABASE
             if ($_SESSION['levelID'] == 0) {
-
+                $_SESSION['dtr'] = 'forTimeIn';
             }
             else {
                 $_SESSION['dtr'] = 'forTimeIn';
@@ -53,36 +53,36 @@
                     $attendanceDate = $lastDTR['attendanceDate'];
                     $attendanceTime = $lastDTR['attendanceTime'];
 
-                    // // COMBINE DATE AND TIME
-                    // $dtrDateTime = $attendanceDate . " " . $attendanceTime;
-                    // $dtrDateTime = new DateTime($dtrDateTime);
+                    // COMBINE DATE AND TIME
+                    $dtrDateTime = $attendanceDate . " " . $attendanceTime;
+                    $dtrDateTime = new DateTime($dtrDateTime);
 
-                    // // ADD 15 HOURS
-                    // $interval = new DateInterval('PT1H');
-                    // $updatedDateTime = $dtrDateTime->add($interval);
+                    // ADD 15 HOURS
+                    $interval = new DateInterval('PT2H');
+                    $updatedDateTime = $dtrDateTime->add($interval);
 
-                    // // SETTING TIME BEFORE GETTING CURRENT DATE AND TIME
-                    // date_default_timezone_set('Asia/Manila');
-                    // $currentDateTime = new DateTime(); 
+                    // SETTING TIME BEFORE GETTING CURRENT DATE AND TIME
+                    date_default_timezone_set('Asia/Manila');
+                    $currentDateTime = new DateTime(); 
                     
                     // SESSION VARIABLE FOR DTR
                     $_SESSION['dtr'] = 'forTimeIn';
 
                     if ($logType == "Time In" || $logType == "Late") 
                     {
-                        $_SESSION['dtr'] = 'forTimeOut';
-                        // if ($currentDateTime < $updatedDateTime) 
-                        // {
-                        //     $_SESSION['dtr'] = 'forTimeOut';
-                        // }
+                        if ($currentDateTime < $updatedDateTime) 
+                        {
+                            $_SESSION['dtr'] = 'forTimeOut';
+                        }
                     }
                     else if ($logType == "Time Out" || $logType == "Undertime")
                     {
-                        $_SESSION['dtr'] = 'forTimeIn';
-                        // if ($currentDateTime < $updatedDateTime)
-                        // {
-                        //     $_SESSION['dtr'] = 'forWaiting';
-                        // }
+                        // $_SESSION['dtr'] = 'forTimeIn';
+                        if ($currentDateTime < $updatedDateTime)
+                        {
+                            // $_SESSION['dtr'] = 'forWaiting';
+                            $_SESSION['dtr'] = 'forTimeIn';
+                        }
                     }
                 }
             }
