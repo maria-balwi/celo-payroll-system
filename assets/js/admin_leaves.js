@@ -2,6 +2,9 @@ $(document).ready(function() {
 
     $('#leavesTable').DataTable();
 
+    $('#approveLeave').hide();
+    $('#disapproveLeave').hide();
+
     // VIEW LEAVE APPLICATION
     var array = [];
     $(document).on('click', '.leaveView', function() {
@@ -14,7 +17,7 @@ $(document).ready(function() {
         // VIEW LEAVE
         $.ajax({
             type: "GET",
-            url: "../backend/admin/leaveModal.php?leave_id=" + id_leave+ "&designationID=" + designationID,
+            url: "../backend/admin/leaveModal.php?leave_id=" + id_leave + "&designationID=" + designationID,
             success: function(response) {
 
                 var res = jQuery.parseJSON(response);
@@ -87,6 +90,12 @@ $(document).ready(function() {
                     $('#viewPurpose').val(res.data.remarks);
                     $('#viewStatus').val(res.data.status);
                     $('#viewLeaveModal').modal('show');
+                    console.log(res.isCheck);
+
+                    if (res.isCheck) {
+                        $('#approveLeave').show();
+                        $('#disapproveLeave').show();
+                    }
 
                     if (res.data.leaveType == "Sick Leave") {
                         $('#viewMedCertRow').show();
