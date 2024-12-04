@@ -13,17 +13,22 @@ $(document).ready(function() {
         }
     });
 
+    // $('#approveLeave').hide();
+    // $('#disapproveLeave').hide();
+
     // VIEW LEAVE APPLICATION
     var array = [];
     $(document).on('click', '.leaveView', function() {
         var leave_id = $(this).data('id');
+        var designationID = $(this).data('designation');
+        console.log({designationID});
         array.push(leave_id);
         var id_leave = array[array.length - 1];
 
         // VIEW LEAVE
         $.ajax({
             type: "GET",
-            url: "../backend/team/leaveModal.php?leave_id=" + id_leave,
+            url: "../backend/team/leaveModal.php?leave_id=" + id_leave + "&designationID=" + designationID,
             success: function(response) {
 
                 var res = jQuery.parseJSON(response);
@@ -96,6 +101,12 @@ $(document).ready(function() {
                     $('#approveLeave').show();
                     $('#disapproveLeave').show();
                     $('#viewLeaveModal').modal('show');
+                    // console.log(res.isCheck);
+
+                    // if (res.isCheck) {
+                    //     $('#approveLeave').show();
+                    //     $('#disapproveLeave').show();
+                    // }
 
                     if (res.data.leaveType == "Sick Leave") {
                         $('#viewMedCertRow').show();
