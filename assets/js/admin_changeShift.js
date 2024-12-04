@@ -30,6 +30,7 @@ $(document).ready(function() {
             success: function(response) {
 
                 var res = jQuery.parseJSON(response);
+                var userDept = $('#userDept').val();
 
                 if (res.status == 404) {
                     alert(res.message);
@@ -51,7 +52,7 @@ $(document).ready(function() {
                     $('#disapproveChangeShift').hide();
                     $('#viewChangeShiftModal').modal('show');
                 }
-                else if (res.status == 200 && res.data.status == "Pending") {
+                else if (res.status == 200 && (userDept == 3 && res.data.status == "Pending")) {
                     $('#viewLeaveID').val(res.data.requestID);
                     $('#viewEmpID').val(res.data.employeeID);
                     $('#viewDateFiled').val(res.data.dateFiled);
@@ -69,6 +70,22 @@ $(document).ready(function() {
                         $('#approveChangeShift').show();
                         $('#disapproveChangeShift').show();
                     }
+                }
+                else if (res.status == 200 && (userDept == 5 && res.data.status == "Pending")) {
+                    $('#viewLeaveID').val(res.data.requestID);
+                    $('#viewEmpID').val(res.data.employeeID);
+                    $('#viewDateFiled').val(res.data.dateFiled);
+                    $('#viewName').val(res.data.employeeName);
+                    $('#viewCurrentShift').val(res.data.currentShift);
+                    $('#viewRequestedShift').val(res.data.requestedShift);
+                    $('#viewLeaveType').val(res.data.leaveType);
+                    // $('#viewStartDate').val(res.data.effectivityStartDate);
+                    // $('#viewEndDate').val(res.data.effectivityEndDate);
+                    $('#viewPurpose').val(res.data.remarks);
+                    $('#viewStatus').val(res.data.status);
+                    $('#approveChangeShift').show();
+                    $('#disapproveChangeShift').show();
+                    $('#viewChangeShiftModal').modal('show');
                 }
             }
         });
@@ -189,7 +206,6 @@ $(document).ready(function() {
                 if (res.status == 404) {
                     alert(res.message);
                 } 
-                // EMPLOYEE
                 else if (res.status == 200 && (res.data.status == "Approved" || res.data.status == "Disapproved")) {
                     $('#viewLeaveID').val(res.data.requestID);
                     $('#viewEmpID').val(res.data.employeeID);
@@ -205,7 +221,7 @@ $(document).ready(function() {
                     $('#approveChangeShift').hide();
                     $('#disapproveChangeShift').hide();
                 }
-                else if (res.status == 200 && res.data.status == "Pending") {
+                else if (res.status == 200 && (userDept == 3 && res.data.status == "Pending")) {
                     $('#viewLeaveID').val(res.data.requestID);
                     $('#viewEmpID').val(res.data.employeeID);
                     $('#viewDateFiled').val(res.data.dateFiled);
@@ -217,6 +233,26 @@ $(document).ready(function() {
                     // $('#viewEndDate').val(res.data.effectivityEndDate);
                     $('#viewPurpose').val(res.data.remarks);
                     $('#viewStatus').val(res.data.status);
+
+                    if (res.isCheck) {
+                        $('#approveChangeShift').show();
+                        $('#disapproveChangeShift').show();
+                    }
+                }
+                else if (res.status == 200 && (userDept == 5 && res.data.status == "Pending")) {
+                    $('#viewLeaveID').val(res.data.requestID);
+                    $('#viewEmpID').val(res.data.employeeID);
+                    $('#viewDateFiled').val(res.data.dateFiled);
+                    $('#viewName').val(res.data.employeeName);
+                    $('#viewCurrentShift').val(res.data.currentShift);
+                    $('#viewRequestedShift').val(res.data.requestedShift);
+                    $('#viewLeaveType').val(res.data.leaveType);
+                    // $('#viewStartDate').val(res.data.effectivityStartDate);
+                    // $('#viewEndDate').val(res.data.effectivityEndDate);
+                    $('#viewPurpose').val(res.data.remarks);
+                    $('#viewStatus').val(res.data.status);
+                    $('#approveChangeShift').show();
+                    $('#disapproveChangeShift').show();
                 }
             }
         });
