@@ -46,58 +46,169 @@
                                     return $dateTime->format('M d, Y');
                                 }
 
-                                $leaveQuery = mysqli_query($conn, $employees->viewAdminLeaveRequests());
-                                while ($leaveDetails = mysqli_fetch_array($leaveQuery)) {
-
-                                    $leave_id = $leaveDetails['requestID'];
-                                    $leave_dateFiled = $leaveDetails['dateFiled'];
-                                    $leave_employeeName = $leaveDetails['firstName'] . " " . $leaveDetails['lastName'];
-                                    $leave_leaveType = $leaveDetails['leaveType'];
-                                    $leave_effectivityStartDate = $leaveDetails['effectivityStartDate'];
-                                    $leave_effectivityEndDate = $leaveDetails['effectivityEndDate'];
-                                    $leave_remarks = $leaveDetails['remarks'];
-                                    $leave_status = $leaveDetails['status'];
-
-                                    $leave_dateFiled = formatDate($leave_dateFiled);
-                                    $leave_effectivityStartDate = formatDate($leave_effectivityStartDate);
-                                    $leave_effectivityEndDate = formatDate($leave_effectivityEndDate);
-                                    $leave_effectivityDate = $leave_effectivityStartDate . " - " . $leave_effectivityEndDate;
-                                    
-                                    $startDate = new DateTime($leave_effectivityStartDate);
-                                    $endDate = new DateTime($leave_effectivityEndDate);
-                                    $endDate = $endDate->modify('+1 day');
-                                    $leave_days = 0;
-
-                                    while ($startDate < $endDate) {
-                                        $leave_days++;
-                                        $startDate->modify('+1 day');
+                                if ($_SESSION['departmentID'] == 3) {
+                                    $leaveQuery = mysqli_query($conn, $employees->viewAdminLeaveRequests());
+                                    while ($leaveDetails = mysqli_fetch_array($leaveQuery)) {
+    
+                                        $leave_id = $leaveDetails['requestID'];
+                                        $leave_dateFiled = $leaveDetails['dateFiled'];
+                                        $leave_employeeName = $leaveDetails['firstName'] . " " . $leaveDetails['lastName'];
+                                        $leave_leaveType = $leaveDetails['leaveType'];
+                                        $leave_effectivityStartDate = $leaveDetails['effectivityStartDate'];
+                                        $leave_effectivityEndDate = $leaveDetails['effectivityEndDate'];
+                                        $leave_remarks = $leaveDetails['remarks'];
+                                        $leave_status = $leaveDetails['status'];
+    
+                                        $leave_dateFiled = formatDate($leave_dateFiled);
+                                        $leave_effectivityStartDate = formatDate($leave_effectivityStartDate);
+                                        $leave_effectivityEndDate = formatDate($leave_effectivityEndDate);
+                                        $leave_effectivityDate = $leave_effectivityStartDate . " - " . $leave_effectivityEndDate;
+                                        
+                                        $startDate = new DateTime($leave_effectivityStartDate);
+                                        $endDate = new DateTime($leave_effectivityEndDate);
+                                        $endDate = $endDate->modify('+1 day');
+                                        $leave_days = 0;
+    
+                                        while ($startDate < $endDate) {
+                                            $leave_days++;
+                                            $startDate->modify('+1 day');
+                                        }
+    
+                                        if ($leave_days <= 1) {
+                                            $leave_days = $leave_days . " day";
+                                        }
+                                        else {
+                                            $leave_days = $leave_days . " days";
+                                        }
+    
+                                        echo "<tr data-id='" . $leave_id . "' data-designation='" . $_SESSION['designationID'] . "' class='leaveView cursor-pointer'>";
+                                        echo "<td class ='whitespace-nowrap'>" . $leave_dateFiled . "</td>";
+                                        echo "<td class ='whitespace-nowrap'>" . $leave_employeeName . "</td>";
+                                        echo "<td class ='whitespace-nowrap'>" . $leave_leaveType . "</td>";
+                                        echo "<td class ='whitespace-nowrap'>" . $leave_days . "</td>";
+                                        echo "<td class ='whitespace-nowrap'>" . $leave_effectivityDate . "</td>";
+                                        echo "<td class ='whitespace-nowrap'>" . $leave_remarks . "</td>";
+                                        if ($leave_status == "Pending") {
+                                            echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $leave_status . "</p></td>";
+                                        }
+                                        else if ($leave_status == "Approved") {
+                                            echo "<td><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $leave_status . "</p></td>";
+                                        }
+                                        else if ($leave_status == "Disapproved") {
+                                            echo "<td><p class='inline-block bg-red-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $leave_status . "</p></td>";
+                                        }
+                                        echo "</td>";
                                     }
-
-                                    if ($leave_days <= 1) {
-                                        $leave_days = $leave_days . " day";
-                                    }
-                                    else {
-                                        $leave_days = $leave_days . " days";
-                                    }
-
-                                    echo "<tr data-id='" . $leave_id . "' data-designation='" . $_SESSION['designationID'] . "' class='leaveView cursor-pointer'>";
-                                    echo "<td class ='whitespace-nowrap'>" . $leave_dateFiled . "</td>";
-                                    echo "<td class ='whitespace-nowrap'>" . $leave_employeeName . "</td>";
-                                    echo "<td class ='whitespace-nowrap'>" . $leave_leaveType . "</td>";
-                                    echo "<td class ='whitespace-nowrap'>" . $leave_days . "</td>";
-                                    echo "<td class ='whitespace-nowrap'>" . $leave_effectivityDate . "</td>";
-                                    echo "<td class ='whitespace-nowrap'>" . $leave_remarks . "</td>";
-                                    if ($leave_status == "Pending") {
-                                        echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $leave_status . "</p></td>";
-                                    }
-                                    else if ($leave_status == "Approved") {
-                                        echo "<td><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $leave_status . "</p></td>";
-                                    }
-                                    else if ($leave_status == "Disapproved") {
-                                        echo "<td><p class='inline-block bg-red-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $leave_status . "</p></td>";
-                                    }
-                                    echo "</td>";
                                 }
+                                else if ($_SESSION['departmentID'] == 5) {
+                                    $leaveQuery = mysqli_query($conn, $employees->viewDirectorLeaveRequests());
+                                    while ($leaveDetails = mysqli_fetch_array($leaveQuery)) {
+    
+                                        $leave_id = $leaveDetails['requestID'];
+                                        $leave_dateFiled = $leaveDetails['dateFiled'];
+                                        $leave_employeeName = $leaveDetails['firstName'] . " " . $leaveDetails['lastName'];
+                                        $leave_leaveType = $leaveDetails['leaveType'];
+                                        $leave_effectivityStartDate = $leaveDetails['effectivityStartDate'];
+                                        $leave_effectivityEndDate = $leaveDetails['effectivityEndDate'];
+                                        $leave_remarks = $leaveDetails['remarks'];
+                                        $leave_status = $leaveDetails['status'];
+    
+                                        $leave_dateFiled = formatDate($leave_dateFiled);
+                                        $leave_effectivityStartDate = formatDate($leave_effectivityStartDate);
+                                        $leave_effectivityEndDate = formatDate($leave_effectivityEndDate);
+                                        $leave_effectivityDate = $leave_effectivityStartDate . " - " . $leave_effectivityEndDate;
+                                        
+                                        $startDate = new DateTime($leave_effectivityStartDate);
+                                        $endDate = new DateTime($leave_effectivityEndDate);
+                                        $endDate = $endDate->modify('+1 day');
+                                        $leave_days = 0;
+    
+                                        while ($startDate < $endDate) {
+                                            $leave_days++;
+                                            $startDate->modify('+1 day');
+                                        }
+    
+                                        if ($leave_days <= 1) {
+                                            $leave_days = $leave_days . " day";
+                                        }
+                                        else {
+                                            $leave_days = $leave_days . " days";
+                                        }
+    
+                                        echo "<tr data-id='" . $leave_id . "' data-designation='" . $_SESSION['designationID'] . "' class='leaveView cursor-pointer'>";
+                                        echo "<td class ='whitespace-nowrap'>" . $leave_dateFiled . "</td>";
+                                        echo "<td class ='whitespace-nowrap'>" . $leave_employeeName . "</td>";
+                                        echo "<td class ='whitespace-nowrap'>" . $leave_leaveType . "</td>";
+                                        echo "<td class ='whitespace-nowrap'>" . $leave_days . "</td>";
+                                        echo "<td class ='whitespace-nowrap'>" . $leave_effectivityDate . "</td>";
+                                        echo "<td class ='whitespace-nowrap'>" . $leave_remarks . "</td>";
+                                        if ($leave_status == "Pending") {
+                                            echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $leave_status . "</p></td>";
+                                        }
+                                        else if ($leave_status == "Approved") {
+                                            echo "<td><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $leave_status . "</p></td>";
+                                        }
+                                        else if ($leave_status == "Disapproved") {
+                                            echo "<td><p class='inline-block bg-red-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $leave_status . "</p></td>";
+                                        }
+                                        echo "</td>";
+                                    }
+                                }
+                                else {
+                                    $leaveQuery = mysqli_query($conn, $employees->viewAllLeaveRequests());
+                                    while ($leaveDetails = mysqli_fetch_array($leaveQuery)) {
+    
+                                        $leave_id = $leaveDetails['requestID'];
+                                        $leave_dateFiled = $leaveDetails['dateFiled'];
+                                        $leave_employeeName = $leaveDetails['firstName'] . " " . $leaveDetails['lastName'];
+                                        $leave_leaveType = $leaveDetails['leaveType'];
+                                        $leave_effectivityStartDate = $leaveDetails['effectivityStartDate'];
+                                        $leave_effectivityEndDate = $leaveDetails['effectivityEndDate'];
+                                        $leave_remarks = $leaveDetails['remarks'];
+                                        $leave_status = $leaveDetails['status'];
+    
+                                        $leave_dateFiled = formatDate($leave_dateFiled);
+                                        $leave_effectivityStartDate = formatDate($leave_effectivityStartDate);
+                                        $leave_effectivityEndDate = formatDate($leave_effectivityEndDate);
+                                        $leave_effectivityDate = $leave_effectivityStartDate . " - " . $leave_effectivityEndDate;
+                                        
+                                        $startDate = new DateTime($leave_effectivityStartDate);
+                                        $endDate = new DateTime($leave_effectivityEndDate);
+                                        $endDate = $endDate->modify('+1 day');
+                                        $leave_days = 0;
+    
+                                        while ($startDate < $endDate) {
+                                            $leave_days++;
+                                            $startDate->modify('+1 day');
+                                        }
+    
+                                        if ($leave_days <= 1) {
+                                            $leave_days = $leave_days . " day";
+                                        }
+                                        else {
+                                            $leave_days = $leave_days . " days";
+                                        }
+    
+                                        echo "<tr data-id='" . $leave_id . "' data-designation='" . $_SESSION['designationID'] . "' class='leaveView cursor-pointer'>";
+                                        echo "<td class ='whitespace-nowrap'>" . $leave_dateFiled . "</td>";
+                                        echo "<td class ='whitespace-nowrap'>" . $leave_employeeName . "</td>";
+                                        echo "<td class ='whitespace-nowrap'>" . $leave_leaveType . "</td>";
+                                        echo "<td class ='whitespace-nowrap'>" . $leave_days . "</td>";
+                                        echo "<td class ='whitespace-nowrap'>" . $leave_effectivityDate . "</td>";
+                                        echo "<td class ='whitespace-nowrap'>" . $leave_remarks . "</td>";
+                                        if ($leave_status == "Pending") {
+                                            echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $leave_status . "</p></td>";
+                                        }
+                                        else if ($leave_status == "Approved") {
+                                            echo "<td><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $leave_status . "</p></td>";
+                                        }
+                                        else if ($leave_status == "Disapproved") {
+                                            echo "<td><p class='inline-block bg-red-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $leave_status . "</p></td>";
+                                        }
+                                        echo "</td>";
+                                    }
+                                }
+                                
                             ?>
                         </tbody>
                     </table>
@@ -116,6 +227,7 @@
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="viewLeaveLabel">View Leave</h1>
                             <input type="hidden" id="viewLeaveID">
+                            <input type="hidden" id="userDept" value="<?php echo $_SESSION['departmentID']; ?>">
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
