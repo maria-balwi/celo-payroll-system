@@ -144,14 +144,26 @@
                         <?php  
                             if ($_SESSION['departmentID'] == 1) 
                             {
-                                $getPendingLeavesQuery = mysqli_query($conn, $attendance->getPendingOperationsLeaves());
-                                $getPendingLeaves = mysqli_num_rows($getPendingLeavesQuery);
+                                if ($_SESSION['designationID'] == 5) {
+                                    $getPendingLeavesQuery = mysqli_query($conn, $attendance->getPendingOperationsLeavesManager());
+                                    $getPendingLeaves = mysqli_num_rows($getPendingLeavesQuery);
 
-                                $getPendingChangeShiftQuery = mysqli_query($conn, $attendance->getPendingOperationsChangeShift());
-                                $getPendingChangeShift = mysqli_num_rows($getPendingChangeShiftQuery);
-                                
-                                $getPendingOvertimeQuery = mysqli_query($conn, $attendance->getPendingOperationsOvertime());
-                                $getPendingOvertime = mysqli_num_rows($getPendingOvertimeQuery);
+                                    $getPendingChangeShiftQuery = mysqli_query($conn, $attendance->getPendingOperationsChangeShiftManager());
+                                    $getPendingChangeShift = mysqli_num_rows($getPendingChangeShiftQuery);
+                                    
+                                    $getPendingOvertimeQuery = mysqli_query($conn, $attendance->getPendingOperationsOvertime());
+                                    $getPendingOvertime = mysqli_num_rows($getPendingOvertimeQuery);
+                                }
+                                else {
+                                    $getPendingLeavesQuery = mysqli_query($conn, $attendance->getPendingOperationsLeavesTL());
+                                    $getPendingLeaves = mysqli_num_rows($getPendingLeavesQuery);
+
+                                    $getPendingChangeShiftQuery = mysqli_query($conn, $attendance->getPendingOperationsChangeShiftTL());
+                                    $getPendingChangeShift = mysqli_num_rows($getPendingChangeShiftQuery);
+                                    
+                                    $getPendingOvertimeQuery = mysqli_query($conn, $attendance->getPendingOperationsOvertime());
+                                    $getPendingOvertime = mysqli_num_rows($getPendingOvertimeQuery);
+                                }
                             }
                             else 
                             {
@@ -345,11 +357,6 @@
                                             }
                                         }
                                     ?>
-                                        
-
-                                            
-
-                                           
                                 </tbody>
                             </table>
                         </div>
