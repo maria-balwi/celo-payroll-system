@@ -17,22 +17,7 @@
 
                     <!-- REQUEST PRE-RENDER BUTTON -->
                     <div class="static inline-block text-right">
-                        <?php
-                            $leaveQuery = mysqli_query($conn, $employees->viewApprovedSickLeaves($_SESSION['id']));
-                            $leaves = mysqli_num_rows($leaveQuery);
-
-                            $leavePointsQuery = mysqli_query($conn, $employees->viewLeavePoints($_SESSION['id']));
-                            $details = mysqli_fetch_array($leaveQuery);
-                            $leavePoints = isset($details['leavePoints']) ? $details['leavePoints'] : 0;
-                            
-                            if ($leaves >= 5 && $leavePoints <= 1.00) { ?>
-                            <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white opacity-50 cursor-not-allowed no-underline">File a Leave</button>
-                        <?php
-                            }
-                            else { ?>
-                            <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none no-underline" data-bs-toggle="modal" data-bs-target="#fileLeaveModal">File a Leave</button>
-                        <?php } ?>
-                        <!-- <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none no-underline" data-bs-toggle="modal" data-bs-target="#fileLeaveModal">File a Leave</button> -->
+                        <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none no-underline" data-bs-toggle="modal" data-bs-target="#fileLeaveModal">File a Leave</button>
                     </div>
                 </div>
 
@@ -147,10 +132,12 @@
                                                 <?php
                                                     $leaveQuery = mysqli_query($conn, $employees->viewApprovedSickLeaves($_SESSION['id']));
                                                     $sickLeaves = mysqli_num_rows($leaveQuery);
-                        
+                                                
+                                                    // Fetch leave points
                                                     $leavePointsQuery = mysqli_query($conn, $employees->viewLeavePoints($_SESSION['id']));
-                                                    $details = mysqli_fetch_array($leaveQuery);
-                                                    $leavePoints = $details['leavePoints'];
+                                                    $details = mysqli_fetch_array($leavePointsQuery);
+                                                    $leavePoints = number_format($details['leavePoints'], 2);
+                                                    $carryOverVLPoints = number_format($details['carryOverVLPoints'], 2);
                                                     
                                                     if ($sickLeaves >= 5) {
                                                 ?>
@@ -161,12 +148,11 @@
                                                     <option value="1">Sick Leave</option>
                                                 <?php
                                                     }
-                                                    if ($leavePoints > 1.00)  { ?>
-                                                    <option value="2" disabled>Vacation Leave</option>
-                                                <?php
-                                                    }
-                                                    else { ?>
+                                                    if ($leavePoints >= 1.00 || $carryOverVLPoints >= 1.00) { ?>
                                                     <option value="2">Vacation Leave</option>
+                                                <?php } 
+                                                    else {?>
+                                                    <option value="2" disabled>Vacation Leave</option>
                                                 <?php } ?>
                                                     <option value="3">Bereavement Leave</option>
                                                     <option value="4">Emergency Leave</option>

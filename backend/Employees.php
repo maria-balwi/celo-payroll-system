@@ -1120,7 +1120,7 @@
 
         public function viewLeavePoints($id) {
             $leavePoints = "
-                SELECT leavePoints 
+                SELECT leavePoints, carryOverVLPoints
                 FROM ".$this->employees."
                 WHERE id = '$id'";
             return $leavePoints;
