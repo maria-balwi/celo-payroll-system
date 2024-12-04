@@ -17,6 +17,7 @@
         private $requirements = 'tbl_requirements';
         private $allowances = 'tbl_allowances';
         private $deductions = 'tbl_deductions';
+        private $auditTrail = 'tbl_audittrail';
         private $dbConnect = false;
         public function __construct() {
             $this->dbConnect = $this->dbConnect();
@@ -656,6 +657,24 @@
             return $inactiveAdmin;
         }
 
+        public function deactivateUser($id) {
+            $deactivate = "
+                UPDATE ".$this->users." SET status = 'Inactive' WHERE userID = '$id'";
+            return $deactivate;
+        }
+
+        public function reactivateUser($id) {
+            $reactivate = "
+                UPDATE ".$this->users." SET status = 'Active' WHERE userID = '$id'";
+            return $reactivate;
+        }
+
+        public function viewUser($id) {
+            $user = "
+                SELECT * FROM ".$this->users." WHERE userID = '$id'";
+            return $user;
+        }
+
         public function viewShifts() {
             $allShifts = "
                 SELECT shiftID, 
@@ -993,11 +1012,37 @@
             return $request;
         }
 
+        public function approveLeave($requestID) {
+            $approveRequest = "
+                UPDATE ".$this->leaves." SET status = 'Approved'
+                WHERE requestID = '$requestID'";
+            return $approveRequest;
+        }
+
         public function approveChangeShift($requestID) {
             $approveRequest = "
                 UPDATE ".$this->changeShift." SET status = 'Approved'
                 WHERE requestID = '$requestID'";
             return $approveRequest;
+        }
+
+        public function disapproveLeave($requestID) {
+            $disapproveRequest = "
+                UPDATE ".$this->leaves." SET status = 'Disapproved'
+                WHERE requestID = '$requestID'";
+            return $disapproveRequest;
+        }
+
+        public function viewLeaveInfo($requestID) {
+            $request = "
+                SELECT empID
+                FROM ".$this->leaves." AS leaves
+                INNER JOIN ".$this->employees." AS employees
+                ON leaves.empID = employees.id
+                INNER JOIN ".$this->leaveType." AS leaveType
+                ON leaveType.leaveTypeID = leaves.leaveTypeID
+                WHERE requestID = '$requestID'";
+            return $request;
         }
 
         public function viewChangeShiftInfo($requestID) {
@@ -1010,6 +1055,16 @@
                 ON shift_1.shiftID = employees.shiftID
                 INNER JOIN ".$this->shift." AS shift_2
                 ON shift_2.shiftID = changeShift.requestedShift
+                WHERE requestID = '$requestID'";
+            return $request;
+        }
+
+        public function viewOTInfo($requestID) {
+            $request = "
+                SELECT empID
+                FROM ".$this->filedOT." AS filedOT
+                INNER JOIN ".$this->employees." AS employees
+                ON filedOT.empID = employees.id
                 WHERE requestID = '$requestID'";
             return $request;
         }
@@ -1087,6 +1142,24 @@
                 e_status = 'Active'
                 WHERE id = '$id'";    
             return $employee;
+        }
+
+        public function viewAuditTrail() {
+            $auditTrail = "
+                SELECT auditTrailID, date, employees.firstName, employees.lastName, module, action, affected.firstName AS affectedFirstName, affected.lastName AS affectedLastName FROM ".$this->auditTrail ." AS auditTrail
+                INNER JOIN ".$this->employees." AS employees
+                ON auditTrail.empID = employees.id
+                INNER JOIN ".$this->employees." AS affected
+                ON auditTrail.affected_empID = affected.id
+                ORDER BY auditTrail.auditTrailID DESC";
+            return $auditTrail;
+        }
+        
+        public function auditTrail($empID, $module, $action, $affected_empID) {
+            $auditTrail = "
+                INSERT INTO ".$this->auditTrail." (date, empID, module, action, affected_empID)
+                VALUES (CURRENT_TIMESTAMP, '$empID', '$module', '$action', '$affected_empID')";
+            return $auditTrail;
         }
     }
 
