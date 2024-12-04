@@ -555,6 +555,7 @@ $(document).ready(function() {
                     $('#viewShiftID').val(res.data.startTime + ' - ' + res.data.endTime);
                     $('#viewEmploymentStatus').val(res.data.employmentStatus);
                     $('#viewDateHired').val(res.data.dateHired);
+                    $('#viewLeavePoints').val(res.data.leavePoints);
 
                     $('#viewDateRegularized').val(res.data.dateRegularized);
                     if (res.data.employmentStatus == 'Regular') {
