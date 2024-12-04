@@ -732,8 +732,8 @@
                                 <div class="col-4">
                                     <label for="viewSickLeaves">Sick Leaves:</label>
                                 </div>
-                                <div class="col-4 cashAdvancePart">
-                                    <label for="viewCashAdvance">Cash Advance:</label>
+                                <div class="col-4">
+                                    <label for="viewLeavePoints">Leave Points:</label>
                                 </div>
                             </div>
                             
@@ -744,6 +744,18 @@
                                 <div class="col-4">
                                     <input type="number" class="form-control" id="viewSickLeaves" name="viewSickLeaves" disabled readonly>
                                 </div>
+                                <div class="col-4">
+                                    <input type="number" class="form-control" id="viewLeavePoints" name="viewLeavePoints" disabled readonly>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-1">
+                                <div class="col-4 cashAdvancePart">
+                                    <label for="viewCashAdvance">Cash Advance:</label>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-2">
                                 <div class="col-4 cashAdvancePart">
                                     <input type="number" class="form-control" id="viewCashAdvance" name="viewCashAdvance" disabled readonly>
                                 </div>
