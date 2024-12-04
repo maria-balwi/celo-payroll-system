@@ -902,7 +902,7 @@
 
         public function getLeaveInfo($leaveID) {
             $request = "
-                SELECT requestID, employeeID,
+                SELECT requestID, employeeID, leaves.leaveTypeID,
                 leaveType, remarks, status, medCert, designationID,
                 CONCAT(firstName, ' ', lastName) AS employeeName,
                 DATE_FORMAT(dateFiled, '%M %d, %Y') AS dateFiled,
