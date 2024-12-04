@@ -52,7 +52,14 @@
                 <a href="../pages/admin_payroll.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Payroll
                 </a>
+                <?php
+                    if ($_SESSION['departmentID'] == '5' || $_SESSION['levelID'] == '0') {
+                ?>
+                <a href="../pages/admin_auditTrail.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
+                    Audit Trail
+                </a>
                 <?php }
+                    }
                     if (($_SESSION['levelID'] == '4') && $_SESSION['activated'] == 1) {
                 ?>
                 <div class="menu-section">
