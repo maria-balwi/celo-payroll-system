@@ -43,8 +43,8 @@ $(document).ready(function() {
                     $('#viewCurrentShift').val(res.data.currentShift);
                     $('#viewRequestedShift').val(res.data.requestedShift);
                     $('#viewLeaveType').val(res.data.leaveType);
-                    $('#viewStartDate').val(res.data.effectivityStartDate);
-                    $('#viewEndDate').val(res.data.effectivityEndDate);
+                    // $('#viewStartDate').val(res.data.effectivityStartDate);
+                    // $('#viewEndDate').val(res.data.effectivityEndDate);
                     $('#viewPurpose').val(res.data.remarks);
                     $('#viewStatus').val(res.data.status);
                     $('#approveChangeShift').hide();
@@ -59,12 +59,11 @@ $(document).ready(function() {
                     $('#viewCurrentShift').val(res.data.currentShift);
                     $('#viewRequestedShift').val(res.data.requestedShift);
                     $('#viewLeaveType').val(res.data.leaveType);
-                    $('#viewStartDate').val(res.data.effectivityStartDate);
-                    $('#viewEndDate').val(res.data.effectivityEndDate);
+                    // $('#viewStartDate').val(res.data.effectivityStartDate);
+                    // $('#viewEndDate').val(res.data.effectivityEndDate);
                     $('#viewPurpose').val(res.data.remarks);
                     $('#viewStatus').val(res.data.status);
                     $('#viewChangeShiftModal').modal('show');
-                    console.log(res.isCheck);
 
                     if (res.isCheck) {
                         $('#approveChangeShift').show();
@@ -115,7 +114,6 @@ $(document).ready(function() {
                                             timer: 2000,
                                             showConfirmButton: false,
                                         }).then(() => {
-                                            // window.location.reload();
                                             updateChangeShiftModal(id_changeshift);
                                         })
                                     }
@@ -168,7 +166,6 @@ $(document).ready(function() {
                                             timer: 2000,
                                             showConfirmButton: false,
                                         }).then(() => {
-                                            // window.location.reload();
                                             updateChangeShiftModal(id_changeshift);
                                         })
                                     }
@@ -201,8 +198,8 @@ $(document).ready(function() {
                     $('#viewCurrentShift').val(res.data.currentShift);
                     $('#viewRequestedShift').val(res.data.requestedShift);
                     $('#viewLeaveType').val(res.data.leaveType);
-                    $('#viewStartDate').val(res.data.effectivityStartDate);
-                    $('#viewEndDate').val(res.data.effectivityEndDate);
+                    // $('#viewStartDate').val(res.data.effectivityStartDate);
+                    // $('#viewEndDate').val(res.data.effectivityEndDate);
                     $('#viewPurpose').val(res.data.remarks);
                     $('#viewStatus').val(res.data.status);
                     $('#approveChangeShift').hide();
@@ -216,8 +213,8 @@ $(document).ready(function() {
                     $('#viewCurrentShift').val(res.data.currentShift);
                     $('#viewRequestedShift').val(res.data.requestedShift);
                     $('#viewLeaveType').val(res.data.leaveType);
-                    $('#viewStartDate').val(res.data.effectivityStartDate);
-                    $('#viewEndDate').val(res.data.effectivityEndDate);
+                    // $('#viewStartDate').val(res.data.effectivityStartDate);
+                    // $('#viewEndDate').val(res.data.effectivityEndDate);
                     $('#viewPurpose').val(res.data.remarks);
                     $('#viewStatus').val(res.data.status);
                 }
