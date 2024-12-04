@@ -5,8 +5,8 @@
 
     $employeeID = $_SESSION['id'];
     $newShift = $_POST['newShift'];
-    $startDate = $_POST['effectivityStartDate'];
-    $endDate = $_POST['effectivityEndDate'];
+    // $startDate = $_POST['effectivityStartDate'];
+    // $endDate = $_POST['effectivityEndDate'];
     $purpose = $_POST['purpose'];
 
     // DEFAULT VALUES
@@ -22,7 +22,7 @@
         exit();
     }
     else {
-        mysqli_query($conn, $employees->fileRequest($employeeID, $newShift, $startDate, $endDate, $purpose, $status));
+        mysqli_query($conn, $employees->fileRequest($employeeID, $newShift, $purpose, $status));
 
         $lastIDQuery = mysqli_query($conn, $employees->viewLastRequest());
         $lastIDResult = mysqli_fetch_array($lastIDQuery);

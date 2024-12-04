@@ -8,10 +8,18 @@
     $action = $_POST['action'];
 
     if ($action == "approve") {
-        $sql = $conn->query("
-            UPDATE tbl_changeshiftrequests SET
-            status = 'Approved'
-            WHERE requestID = '$changeshift_id'");
+        mysqli_query($conn, $employees->approveChangeShift($changeshift_id));
+
+        $getChangeshiftQuery = mysqli_query($conn, $employees->viewChangeShiftInfo($changeshift_id));
+        $changeShiftResult = mysqli_fetch_array($getChangeshiftQuery);
+        $id = $changeShiftResult['empID'];
+        $requestedShift = $changeShiftResult['requestedShift'];
+
+        echo $id;
+        echo "<br>";
+        echo $requestedShift;
+        mysqli_query($conn, $employees->updateShift($id, $requestedShift));
+        
         // ERROR MESSAGE
         $em = "Change Shift Request Approved Successfully";
         // RESPONSE ARRAY
@@ -19,10 +27,8 @@
     }
 
     else if ($action == "disapprove") {
-        $sql = $conn->query("
-            UPDATE tbl_changeshiftrequests SET
-            status = 'Disapproved'
-            WHERE requestID = '$changeshift_id'");
+        mysqli_query($conn, $employees->disapproveChangeShift($changeshift_id));
+
         // ERROR MESSAGE
         $em = "Change Shift Request Disapproved Successfully";
         // RESPONSE ARRAY
