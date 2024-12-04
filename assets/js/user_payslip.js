@@ -24,6 +24,7 @@ $(document).ready(function() {
                 type: 'POST',
                 data: {
                     payrollCycleID: payrollCycleID,
+                    action: 'generate'
                 },
                 success: function(response) {
                     // Check if the response contains the specific message for "not generated"
@@ -54,22 +55,41 @@ $(document).ready(function() {
 
     $(".downloadPayslip").click(function (e) {
         e.preventDefault();
-
+    
         // Reference the payslip container
         var element = document.getElementById('payslipContainer');
-
+    
         // Apply a temporary scaling class
         $(element).addClass('scale-for-pdf');
-
-        html2pdf().from(element).set({
-            margin: .5,
-            filename: 'payslip.pdf',
-            html2canvas: { scale: 3 }, // Keeps quality high
-            jsPDF: { unit: 'in', format: 'A4', orientation: 'portrait' }, // Adjust format and orientation
-        }).save()
-        .then(() => {
-            // Remove the scaling class after the PDF is saved
-            $(element).removeClass('scale-for-pdf');
-        }); 
+    
+        html2pdf()
+            .from(element)
+            .set({
+                margin: 0.5,
+                filename: 'payslip.pdf',
+                html2canvas: { scale: 3 }, // Keeps quality high
+                jsPDF: { unit: 'in', format: 'A4', orientation: 'portrait' }, // Adjust format and orientation
+            })
+            .save()
+            .then(() => {
+                // Remove the scaling class after the PDF is saved
+                $(element).removeClass('scale-for-pdf');
+    
+                // Perform the AJAX call
+                $.ajax({
+                    url: '../backend/user/generatePayslip.php',
+                    type: 'POST',
+                    data: {
+                        action: 'download',
+                    },
+                    success: function (response) {
+                        console.log("AJAX call successful:", response);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("AJAX call failed:", error);
+                    },
+                });
+            });
     });
+    
 });
