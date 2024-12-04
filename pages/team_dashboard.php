@@ -151,7 +151,7 @@
                                     $getPendingChangeShiftQuery = mysqli_query($conn, $attendance->getPendingOperationsChangeShiftManager());
                                     $getPendingChangeShift = mysqli_num_rows($getPendingChangeShiftQuery);
                                     
-                                    $getPendingOvertimeQuery = mysqli_query($conn, $attendance->getPendingOperationsOvertime());
+                                    $getPendingOvertimeQuery = mysqli_query($conn, $attendance->getPendingOperationsOvertimeManager());
                                     $getPendingOvertime = mysqli_num_rows($getPendingOvertimeQuery);
                                 }
                                 else {
@@ -161,7 +161,7 @@
                                     $getPendingChangeShiftQuery = mysqli_query($conn, $attendance->getPendingOperationsChangeShiftTL());
                                     $getPendingChangeShift = mysqli_num_rows($getPendingChangeShiftQuery);
                                     
-                                    $getPendingOvertimeQuery = mysqli_query($conn, $attendance->getPendingOperationsOvertime());
+                                    $getPendingOvertimeQuery = mysqli_query($conn, $attendance->getPendingOperationsOvertimeTL());
                                     $getPendingOvertime = mysqli_num_rows($getPendingOvertimeQuery);
                                 }
                             }

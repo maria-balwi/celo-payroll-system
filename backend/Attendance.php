@@ -152,24 +152,82 @@
             return $undertimeOperations;
         }
 
-        public function getPendingLeaves() {
+        public function getAllPendingLeaves() {
             $pendingLeaves = "
                 SELECT * FROM ".$this->leaves."
                 WHERE status = 'Pending'";
             return $pendingLeaves;
         }
 
-        public function getPendingChangeShift() {
+        public function getDirectorPendingLeaves() {
+            $pendingLeaves = "
+                SELECT * FROM ".$this->leaves." AS leaves
+                INNER JOIN ".$this->employees." AS employees
+                ON leaves.empID = employees.id
+                WHERE leaves.status = 'Pending' AND employees.designationID IN (5,8,9)";
+            return $pendingLeaves;
+        }
+
+        public function getAdminPendingLeaves() {
+            $pendingLeaves = "
+                SELECT * FROM ".$this->leaves." AS leaves
+                INNER JOIN ".$this->employees." AS employees
+                ON leaves.empID = employees.id
+                WHERE leaves.status = 'Pending' AND employees.designationID NOT IN (8,9)";
+            return $pendingLeaves;
+        }
+
+        public function getAllPendingChangeShift() {
             $pendingChangeShifts = "
-                SELECT * FROM ".$this->changeShift."
-                WHERE status = 'Pending'";
+                SELECT * FROM ".$this->changeShift." AS changeShift
+                INNER JOIN ".$this->employees." AS employees
+                ON changeShift.empID = employees.id
+                WHERE changeShift.status = 'Pending'";
             return $pendingChangeShifts;
         }
 
-        public function getPendingOvertimes() {
+        public function getDirectorPendingChangeShift() {
             $pendingChangeShifts = "
-                SELECT * FROM ".$this->filedOT."
-                WHERE status IS NULL";
+                SELECT * FROM ".$this->changeShift." AS changeShift
+                INNER JOIN ".$this->employees." AS employees
+                ON changeShift.empID = employees.id
+                WHERE changeShift.status = 'Pending' AND employees.designationID IN (5,8,9)";
+            return $pendingChangeShifts;
+        }
+
+        public function getAdminPendingChangeShift() {
+            $pendingChangeShifts = "
+                SELECT * FROM ".$this->changeShift." AS changeShift
+                INNER JOIN ".$this->employees." AS employees
+                ON changeShift.empID = employees.id
+                WHERE changeShift.status = 'Pending' AND employees.designationID NOT IN (8,9)";
+            return $pendingChangeShifts;
+        }
+
+        public function getAllPendingOvertimes() {
+            $pendingChangeShifts = "
+                SELECT * FROM ".$this->filedOT." AS filedOT
+                INNER JOIN ".$this->employees." AS employees
+                ON filedOT.empID = employees.id
+                WHERE filedOT.status IS NULL";
+            return $pendingChangeShifts;
+        }
+
+        public function getDirectorPendingOvertimes() {
+            $pendingChangeShifts = "
+                SELECT * FROM ".$this->filedOT." AS filedOT
+                INNER JOIN ".$this->employees." AS employees
+                ON filedOT.empID = employees.id
+                WHERE filedOT.status IS NULL AND employees.designationID IN (5,8,9)";
+            return $pendingChangeShifts;
+        }
+
+        public function getAdminPendingOvertimes() {
+            $pendingChangeShifts = "
+                SELECT * FROM ".$this->filedOT." AS filedOT
+                INNER JOIN ".$this->employees." AS employees
+                ON filedOT.empID = employees.id
+                WHERE filedOT.status IS NULL AND employees.designationID NOT IN (8,9)";
             return $pendingChangeShifts;
         }
 
@@ -246,18 +304,29 @@
                 ON filedOT.empID = employees.id
                 INNER JOIN ".$this->department." AS department
                 ON employees.departmentID = department.departmentID
-                WHERE employees.departmentID = 4 AND status IS NULL";
+                WHERE employees.designationID = 10 AND status IS NULL";
             return $pendingOvertimes;
         }
 
-        public function getPendingOperationsOvertime() {
+        public function getPendingOperationsOvertimeTL() {
             $pendingOvertimes = "
                 SELECT * FROM ".$this->filedOT." AS filedOT
                 INNER JOIN ".$this->employees." AS employees
                 ON filedOT.empID = employees.id
                 INNER JOIN ".$this->department." AS department
                 ON employees.departmentID = department.departmentID
-                WHERE employees.departmentID = 1 AND status IS NULL";
+                WHERE employees.designationID IN (1,2,3) AND status IS NULL";
+            return $pendingOvertimes;
+        }
+
+        public function getPendingOperationsOvertimeManager() {
+            $pendingOvertimes = "
+                SELECT * FROM ".$this->filedOT." AS filedOT
+                INNER JOIN ".$this->employees." AS employees
+                ON filedOT.empID = employees.id
+                INNER JOIN ".$this->department." AS department
+                ON employees.departmentID = department.departmentID
+                WHERE employees.designationID IN (4,11) AND status IS NULL";
             return $pendingOvertimes;
         }
 
