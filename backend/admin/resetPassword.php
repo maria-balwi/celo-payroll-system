@@ -19,6 +19,18 @@
                     $newPass = md5($newPass);
                     // UPDATE PASSWORD
                     mysqli_query($conn, $users->changePassword($userID, $newPass));
+
+                    // GET AFFECTED USER
+                    $query = mysqli_query($conn, $employees->viewUser($userID));
+                    $queryDetails = mysqli_fetch_array($query);
+                    $at_affectedEmpID = $queryDetails['empID'];
+
+                    // AUDIT TRAIL
+                    $at_empID = $_SESSION['id'];
+                    $at_module = "Admin - User List";
+                    $at_action = "Reset Password";
+                    mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $at_affectedEmpID));
+
                     $data = [
                         'status' => 200,
                         'result' => 0,
