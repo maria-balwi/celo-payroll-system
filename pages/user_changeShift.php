@@ -33,7 +33,7 @@
                             <tr>
                                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Date Filed</th>
                                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Requested Shift</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Effectivity Date</th>
+                                <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Effectivity Date</th> -->
                                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Reason | Remarks</th>
                                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                             </tr>
@@ -54,20 +54,20 @@
                                     $shift_id = $shiftDetails['requestID'];
                                     $shift_dateFiled = $shiftDetails['dateFiled'];
                                     $shift_shiftID = $shiftDetails['startTime'] . " - " . $shiftDetails['endTime'];
-                                    $shift_effectivityStartDate = $shiftDetails['effectivityStartDate'];
-                                    $shift_effectivityEndDate = $shiftDetails['effectivityEndDate'];
+                                    // $shift_effectivityStartDate = $shiftDetails['effectivityStartDate'];
+                                    // $shift_effectivityEndDate = $shiftDetails['effectivityEndDate'];
                                     $shift_remarks = $shiftDetails['remarks'];
                                     $shift_status = $shiftDetails['status'];
 
                                     $shift_dateFiled = formatDate($shift_dateFiled);
-                                    $shift_effectivityStartDate = formatDate($shift_effectivityStartDate);
-                                    $shift_effectivityEndDate = formatDate($shift_effectivityEndDate);
-                                    $shift_effectivityDate = $shift_effectivityStartDate . " - " . $shift_effectivityEndDate;
+                                    // $shift_effectivityStartDate = formatDate($shift_effectivityStartDate);
+                                    // $shift_effectivityEndDate = formatDate($shift_effectivityEndDate);
+                                    // $shift_effectivityDate = $shift_effectivityStartDate . " - " . $shift_effectivityEndDate;
 
                                     echo "<tr data-id='" . $shift_id . "' class='changeshiftView cursor-pointer'>";
                                     echo "<td class = ' whitespace-nowrap'>" . $shift_dateFiled . "</td>";
                                     echo "<td class = ' whitespace-nowrap'>" . $shift_shiftID . "</td>";
-                                    echo "<td class = ' whitespace-nowrap'>" . $shift_effectivityDate . "</td>";
+                                    // echo "<td class = ' whitespace-nowrap'>" . $shift_effectivityDate . "</td>";
                                     echo "<td class = ' whitespace-nowrap'>" . $shift_remarks . "</td>";
                                     if ($shift_status == "Pending") {
                                         echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $shift_status . "</p></td>";
@@ -78,12 +78,6 @@
                                     else if ($shift_status == "Disapproved") {
                                         echo "<td><p class='inline-block bg-red-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $shift_status . "</p></td>";
                                     }
-                                    // echo "<td classclass = ' whitespace-nowrap'>
-                                    //     <svg class='h-6 w-6 text-gray-500'  fill='none' viewBox='0 0 24 24' stroke='currentColor'>
-                                    //         <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z'/>
-                                    //         <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M15 12a3 3 0 11-6 0 3 3 0 016 0z'/>
-                                    //     </svg>
-                                    // </td>";
                                     echo "</td>";
                                 }
                             ?>
@@ -133,7 +127,7 @@
                                     </div>
                                 </div>   
                                 
-                                <div class="row g-3 mb-2">
+                                <!-- <div class="row g-3 mb-2">
                                     <div class="col-12">
                                         <label for="effectivityStartDate">Start Date</label>
                                     </div>
@@ -155,7 +149,7 @@
                                     <div class="col-12">
                                         <input type="date" class="form-control" id="effectivityEndDate" name="effectivityEndDate">
                                     </div>
-                                </div>
+                                </div> -->
                                 
                                 <div class="row g-3 mb-2">
                                     <div class="col-12">
@@ -209,24 +203,24 @@
                                 </div>
 
                                 <div class="row g-2 mb-2">
-                                    <div class="col-3">
-                                        <label for="viewEmpID">Employee ID</label>
-                                    </div>
-                                    <div class="col-9">
+                                    <div class="col-6">
                                         <label for="viewName">Employee Name</label>
                                     </div>
+                                    <div class="col-6">
+                                        <label for="viewRequestedShift">Requested Shift</label>
+                                    </div>
                                 </div>
 
                                 <div class="row g-2 mb-2">
-                                    <div class="col-3">
-                                        <input type="text" class="form-control" id="viewEmpID" disabled>
-                                    </div>
-                                    <div class="col-9">
+                                    <div class="col-6">
                                         <input type="text" class="form-control" id="viewName" disabled>
                                     </div>
+                                    <div class="col-6">
+                                        <input type="text" class="form-control" id="viewRequestedShift" disabled>
+                                    </div>
                                 </div>
 
-                                <div class="row g-2 mb-2">
+                                <!-- <div class="row g-2 mb-2">
                                     <div class="col-12">
                                         <label for="viewRequestedShift">Requested Shift</label>
                                     </div>
@@ -236,9 +230,9 @@
                                     <div class="col-12">
                                         <input type="text" class="form-control" id="viewRequestedShift" disabled>
                                     </div>
-                                </div>
+                                </div> -->
 
-                                <div class="row g-2 mb-2">
+                                <!-- <div class="row g-2 mb-2">
                                     <div class="col-3">
                                         <label for="viewStartDate">Inclusive Dates</label>
                                     </div>
@@ -251,7 +245,7 @@
                                     <div class="col-6">
                                         <input type="text" class="form-control" id="viewEndDate" disabled>
                                     </div>
-                                </div>
+                                </div> -->
 
                                 <div class="row g-2 mb-2">
                                     <div class="col-3">
