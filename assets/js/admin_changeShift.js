@@ -13,6 +13,9 @@ $(document).ready(function() {
         }
     });
 
+    $('#approveChangeShift').hide();
+    $('#disapproveChangeShift').hide();
+
     // VIEW CHANGE SHIFT REQUEST
     var array = [];
     $(document).on('click', '.changeshiftView', function() {
@@ -61,6 +64,12 @@ $(document).ready(function() {
                     $('#viewPurpose').val(res.data.remarks);
                     $('#viewStatus').val(res.data.status);
                     $('#viewChangeShiftModal').modal('show');
+                    console.log(res.isCheck);
+
+                    if (res.isCheck) {
+                        $('#approveChangeShift').show();
+                        $('#disapproveChangeShift').show();
+                    }
                 }
             }
         });
