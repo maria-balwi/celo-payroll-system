@@ -6,6 +6,35 @@ $(document).ready(function() {
     const d = new Date();
     var filterMonth = d.getMonth() + 1;
 
+    function nightDiffDTR(timeInDate) {
+        var timeOutHolder = new Date(timeInDate.replace(/\./g, '/'));
+        timeOutHolder.setDate(timeOutHolder.getDate() + 1);
+        timeOutDate = timeOutHolder.getFullYear() + '.' + 
+                    (timeOutHolder.getMonth() + 1).toString().padStart(2, '0') + '.' + 
+                    timeOutHolder.getDate().toString().padStart(2, '0');
+        return timeOutDate;
+    }
+
+    function formatTimeString(timeString) {
+        // Parse the time string
+        const [time, modifier] = timeString.split(' ');
+        let [hours, minutes] = time.split(':');
+    
+        // Convert to 24-hour format
+        if (modifier === 'PM' && hours !== '12') {
+            hours = parseInt(hours, 10) + 12;
+        }
+        if (modifier === 'AM' && hours === '12') {
+            hours = '00';
+        }
+    
+        // Ensure minutes are two digits
+        minutes = minutes.padStart(2, '0');
+    
+        // Return in the desired format (e.g., "HH:MM")
+        return `${hours}:${minutes}`;
+    }
+
     document.getElementById('filterYear').addEventListener('change', function() {
         filterYear = null;
         filterYear = $('#filterYear').val();
@@ -168,8 +197,9 @@ $(document).ready(function() {
                         var timeOut = dtrGroupedByDate[date].timeOut !== null ? dtrGroupedByDate[date].timeOut : '-';
                         timeInDate = dtrGroupedByDate[date].timeInDate;
                         timeOutDate = dtrGroupedByDate[date].timeOutDate;
+
                         var faceDTRhtml = 
-                            '<button class="whitespace-nowrap viewFaceDTR" data-id="' + timeInDate + '" data-id2="' + timeOutDate + '"><svg class="h-6 w-6 text-gray-500 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg></button>';
+                            '<button class="whitespace-nowrap viewFaceDTR" data-id="' + timeInDate + '" data-id2="' + timeOutDate + '" data-id3="' + timeIn + '" data-id4="' + timeOut + '"><svg class="h-6 w-6 text-gray-500 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg></button>';
                         var faceDTR = dtrGroupedByDate[date].timeIn !== null || dtrGroupedByDate[date].timeOut !== null ? faceDTRhtml : '';
                     
                         employeedtrHTML += '<tr>';
@@ -189,8 +219,19 @@ $(document).ready(function() {
                         var timeOutDate = null;
                         timeInDate = $(this).data('id');
                         timeOutDate = $(this).data('id2');
+                        timeIn = formatTimeString($(this).data('id3'));
+                        timeOut = formatTimeString($(this).data('id4'));
+
+                        // console.log(formatTimeString(timeIn));
+                        // console.log(formatTimeString(timeOut));
+                        // // let newTimeOutDate = nightDiffDTR(timeInDate);
+                        // console.log(formatTimeString(timeIn) >= formatTimeString(timeOut))
+                        let newTimeOutDate = timeIn >= timeOut ? nightDiffDTR(timeInDate) : timeOutDate;
+                        // console.log("new time out date: " + newTimeOutDate);
+
+
                         const timeInImagePath = '../assets/images/attendance/' + employeeID.replace("-", "") + '_' + timeInDate + '_time_in.png'; 
-                        const timeOutImagePath = '../assets/images/attendance/' + employeeID.replace("-", "") + '_' + timeOutDate + '_time_out.png'; 
+                        const timeOutImagePath = '../assets/images/attendance/' + employeeID.replace("-", "") + '_' + newTimeOutDate + '_time_out.png'; 
                         
                         // Use the fetch API to check if the images exist
                         Promise.allSettled([fetch(timeInImagePath), fetch(timeOutImagePath)])
