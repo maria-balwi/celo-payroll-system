@@ -57,32 +57,39 @@
                     $dtrDateTime = $attendanceDate . " " . $attendanceTime;
                     $dtrDateTime = new DateTime($dtrDateTime);
 
-                    // ADD 15 HOURS
-                    $interval = new DateInterval('PT2H');
-                    $updatedDateTime = $dtrDateTime->add($interval);
-
                     // SETTING TIME BEFORE GETTING CURRENT DATE AND TIME
                     date_default_timezone_set('Asia/Manila');
                     $currentDateTime = new DateTime(); 
+
+                    // // ADD 2 HOURS INTERVAL
+                    // $interval = new DateInterval('PT2H');
+                    // $updatedDateTime = $dtrDateTime->add($interval);
                     
                     // SESSION VARIABLE FOR DTR
                     $_SESSION['dtr'] = 'forTimeIn';
 
                     if ($logType == "Time In" || $logType == "Late") 
                     {
-                        if ($currentDateTime < $updatedDateTime) 
-                        {
-                            $_SESSION['dtr'] = 'forTimeOut';
-                        }
+                        // CAN TIME OUT ANYTIME
+                        $_SESSION['dtr'] = 'forTimeOut';
+
+                        // if ($currentDateTime < $updatedDateTime) 
+                        // {
+                        //     $_SESSION['dtr'] = 'forTimeOut';
+                        // }
                     }
                     else if ($logType == "Time Out" || $logType == "Undertime")
                     {
-                        // $_SESSION['dtr'] = 'forTimeIn';
+                        // ADD 2 HOURS INTERVAL AFTER TIME OUT
+                        $interval = new DateInterval('PT2H');
+                        $updatedDateTime = $dtrDateTime->add($interval);
+
                         if ($currentDateTime < $updatedDateTime)
                         {
-                            // $_SESSION['dtr'] = 'forWaiting';
-                            $_SESSION['dtr'] = 'forTimeIn';
+                            $_SESSION['dtr'] = 'forWaiting';
                         }
+
+                        // $_SESSION['dtr'] = 'forTimeIn';
                     }
                 }
             }
