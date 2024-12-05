@@ -345,7 +345,7 @@
             return $ITteam;
         }
 
-        public function viewITTeams($yearMonth) {
+        public function viewOperationsTeamManager() {
             $ITteam = "
                 SELECT id, firstName, lastName, employeeID, availableVL, availableSL,
                 DATE_FORMAT(startTime, '%h:%i %p') AS startTime, 
@@ -356,15 +356,12 @@
                 ON employees.departmentID = department.departmentID
                 INNER JOIN ".$this->shifts." AS shifts
                 ON employees.shiftID = shifts.shiftID
-                INNER JOIN ".$this->attendance." AS attendance
-                ON employees.id = attendance.empID
-                WHERE employees.departmentID = 4 AND 
-                DATE_FORMAT(attendanceDate, '%Y-%m') = '2024-07'
-                GROUP BY id";
+                WHERE employees.departmentID = 1
+                ORDER BY employeeID ASC";
             return $ITteam;
         }
 
-        public function viewOperationsTeam() {
+        public function viewOperationsTeamTL() {
             $ITteam = "
                 SELECT id, firstName, lastName, employeeID, availableVL, availableSL,
                 DATE_FORMAT(startTime, '%h:%i %p') AS startTime, 
@@ -375,16 +372,14 @@
                 ON employees.departmentID = department.departmentID
                 INNER JOIN ".$this->shifts." AS shifts
                 ON employees.shiftID = shifts.shiftID
-                INNER JOIN ".$this->attendance." AS attendance
-                ON employees.id = attendance.empID
-                WHERE employees.departmentID = 1
+                WHERE employees.departmentID = 1 AND designationID IN (1,2,3,4)
                 ORDER BY employeeID ASC";
             return $ITteam;
         }
 
         public function dailyAttendance_timeIn($id) {
             $dailyAttendanceIT_timeIn = "
-                SELECT DATE_FORMAT(attendanceTime, '%h:%i %p') AS attendanceTime 
+                SELECT DATE_FORMAT(attendanceTime, '%h:%i %p') AS attendanceTime, attendanceDate
                 FROM ".$this->attendance."
                 WHERE empID = $id AND
                 attendanceDate = CURRENT_DATE() AND
