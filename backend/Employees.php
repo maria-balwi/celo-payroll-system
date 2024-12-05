@@ -129,7 +129,6 @@
                 
                 LEFT JOIN 
                     ".$this->logtype." AS logtype ON attendance.logTypeID = logtype.logTypeID 
-                
                 ORDER BY 
                     all_dates.attendanceDate, attendance.attendanceTime
                 ";

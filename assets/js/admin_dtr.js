@@ -174,8 +174,8 @@ $(document).ready(function() {
                             if (ongoingShift && ongoingShift.date !== date) {
                                 // Time out belongs to the ongoing shift from the previous day
                                 dtrGroupedByDate[ongoingShift.date].timeOut = time;
-                                dtrGroupedByDate[date].timeOutDate = filterDate;
-                                dtrGroupedByDate[date].undertimeMins = undertimeMins;
+                                dtrGroupedByDate[ongoingShift.date].timeOutDate = filterDate;
+                                dtrGroupedByDate[ongoingShift.date].undertimeMins = undertimeMins;
                                 ongoingShift = null; // Reset ongoing shift
                             } else {
                                 dtrGroupedByDate[date].timeOut = time;
