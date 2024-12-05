@@ -359,46 +359,46 @@
                                         }
                                         else 
                                         {
-                                            // $itTeamQuery = mysqli_query($conn, $attendance->viewITTeam());
-                                            // while ($itTeamDetails = mysqli_fetch_array($itTeamQuery)) {
-                                            //     $teamIT_id = $itTeamDetails['id'];
-                                            //     $teamIT_employeeName = $itTeamDetails['firstName'] . " " . $itTeamDetails['lastName'];
-                                            //     $teamIT_shift = $itTeamDetails['startTime'] . " - " . $itTeamDetails['endTime'];
-                                            //     $teamIT_status = "Absent";
-                                            //     $team_timeIn = "-";
-                                            //     $team_timeOut = "-";
+                                            $itTeamQuery = mysqli_query($conn, $attendance->viewITTeam());
+                                            while ($itTeamDetails = mysqli_fetch_array($itTeamQuery)) {
+                                                $teamIT_id = $itTeamDetails['id'];
+                                                $teamIT_employeeName = $itTeamDetails['firstName'] . " " . $itTeamDetails['lastName'];
+                                                $teamIT_shift = $itTeamDetails['startTime'] . " - " . $itTeamDetails['endTime'];
+                                                $teamIT_status = "Absent";
+                                                $team_timeIn = "-";
+                                                $team_timeOut = "-";
 
-                                            //     // GET ATTENDANCE TIME - TIME IN
-                                            //     $dailyAttendanceQuery_timeIn = mysqli_query($conn, $attendance->dailyAttendance_timeIn($teamIT_id));
-                                            //     $dailyAttendance_timeInDetails = mysqli_fetch_array($dailyAttendanceQuery_timeIn);
-                                            //     $dateTime;
-                                            //     if (isset($dailyAttendance_timeInDetails['attendanceTime']))
-                                            //     {
-                                            //         $team_timeIn = $dailyAttendance_timeInDetails['attendanceTime'];
-                                            //         $teamIT_status = "Present";
-                                            //     }
+                                                // GET ATTENDANCE TIME - TIME IN
+                                                $dailyAttendanceQuery_timeIn = mysqli_query($conn, $attendance->dailyAttendance_timeIn($teamIT_id));
+                                                $dailyAttendance_timeInDetails = mysqli_fetch_array($dailyAttendanceQuery_timeIn);
+                                                $dateTime;
+                                                if (isset($dailyAttendance_timeInDetails['attendanceTime']))
+                                                {
+                                                    $team_timeIn = $dailyAttendance_timeInDetails['attendanceTime'];
+                                                    $teamIT_status = "Present";
+                                                }
 
-                                            //     // GET ATTENDANCE TIME - TIME OUT
-                                            //     $dailyAttendanceQuery_timeOut = mysqli_query($conn, $attendance->dailyAttendance_timeOut($teamIT_id));
-                                            //     $dailyAttendance_timeOutDetails = mysqli_fetch_array($dailyAttendanceQuery_timeOut);
-                                            //     if (isset($dailyAttendance_timeOutDetails['attendanceTime']))
-                                            //     {
-                                            //         $team_timeOut = $dailyAttendance_timeOutDetails['attendanceTime'];
-                                            //         $teamIT_status = "Present";
-                                            //     }
-                                            //     echo "<tr data-id='" . $teamIT_id . "'>"; 
-                                            //     echo "<td class ='whitespace-nowrap text-left'>" . $teamIT_employeeName . "</td>";
-                                            //     echo "<td class ='whitespace-nowrap'>" . $teamIT_shift . "</td>";
-                                            //     echo "<td class ='whitespace-nowrap'>" . $team_timeIn . "</td>";
-                                            //     echo "<td class ='whitespace-nowrap'>" . $team_timeOut . "</td>";
-                                            //     if ($teamIT_status == "Present") { 
-                                            //         echo "<td class ='whitespace-nowrap text-green-500'>" . $teamIT_status . "</td>";
-                                            //     }
-                                            //     else { 
-                                            //         echo "<td class ='whitespace-nowrap text-red-500'>" . $teamIT_status . "</td>";
-                                            //     }
-                                            //     echo "</tr>";
-                                            // }
+                                                // GET ATTENDANCE TIME - TIME OUT
+                                                $dailyAttendanceQuery_timeOut = mysqli_query($conn, $attendance->dailyAttendance_timeOut($teamIT_id));
+                                                $dailyAttendance_timeOutDetails = mysqli_fetch_array($dailyAttendanceQuery_timeOut);
+                                                if (isset($dailyAttendance_timeOutDetails['attendanceTime']))
+                                                {
+                                                    $team_timeOut = $dailyAttendance_timeOutDetails['attendanceTime'];
+                                                    $teamIT_status = "Present";
+                                                }
+                                                echo "<tr data-id='" . $teamIT_id . "'>"; 
+                                                echo "<td class ='whitespace-nowrap text-left'>" . $teamIT_employeeName . "</td>";
+                                                echo "<td class ='whitespace-nowrap'>" . $teamIT_shift . "</td>";
+                                                echo "<td class ='whitespace-nowrap'>" . $team_timeIn . "</td>";
+                                                echo "<td class ='whitespace-nowrap'>" . $team_timeOut . "</td>";
+                                                if ($teamIT_status == "Present") { 
+                                                    echo "<td class ='whitespace-nowrap text-green-500'>" . $teamIT_status . "</td>";
+                                                }
+                                                else { 
+                                                    echo "<td class ='whitespace-nowrap text-red-500'>" . $teamIT_status . "</td>";
+                                                }
+                                                echo "</tr>";
+                                            }
                                         }
                                     ?>
                                 </tbody>
