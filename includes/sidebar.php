@@ -72,7 +72,7 @@
                     Employee List
                 </a>
                 <?php }
-                    if (($_SESSION['departmentID'] == '4') && $_SESSION['activated'] == 1) {
+                    if (($_SESSION['departmentID'] == '4') && $_SESSION['activated'] == 1 && $_SESSION['levelID'] != '0') {
                 ?>
                 <div class="menu-section">
                     <h4 class="text-sm font-bold text-gray-500 uppercase pt-2 pb-2">Admin's Portal</h4>
