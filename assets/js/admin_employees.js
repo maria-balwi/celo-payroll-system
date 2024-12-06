@@ -55,40 +55,7 @@ $(document).ready(function() {
 
     $('#updateEmployeeID').inputmask('999-999', {
         placeholder: 'XXX-XXX'
-    });
-
-    $("select[id='designation']").on("change", function() {
-        $("input[id='basicPay']").val('');
-        $("input[id='dailyRate']").val('');
-        $("input[id='hourlyRate']").val('');
-        if ($(this).val() == "Facilities") {
-            // HOURLY RATE COMPUTATION - ADD EMPLOYEE
-            $("input[id='basicPay']").on("input", function() {
-                var basicPay = $(this).val();
-                var dailyRate = (basicPay * 12 / 313).toFixed(2);
-                $('#dailyRate').val(dailyRate).trigger('input');
-            });
-
-            $("input[id='dailyRate']").on("input", function() {
-                var dailyRate = $(this).val();
-                var hourlyRate = (dailyRate / 12).toFixed(2);
-                $('#hourlyRate').val(hourlyRate);
-            });
-        } else {
-            // HOURLY RATE COMPUTATION - ADD EMPLOYEE
-            $("input[id='basicPay']").on("input", function() {
-                var basicPay = $(this).val();
-                var dailyRate = (basicPay * 12 / 261).toFixed(2);
-                $('#dailyRate').val(dailyRate).trigger('input');
-            });
-
-            $("input[id='dailyRate']").on("input", function() {
-                var dailyRate = $(this).val();
-                var hourlyRate = (dailyRate / 8).toFixed(2);
-                $('#hourlyRate').val(hourlyRate);
-            });
-        }
-    });    
+    });  
 
     $("select[id='updateDesignation']").on("change", function() {
         $("input[id='updateBasicPay']").val('');
@@ -155,30 +122,63 @@ $(document).ready(function() {
         $('#updateDateRegularized').val(regularizedDate);
     });
 
-    // // HOURLY RATE COMPUTATION - ADD EMPLOYEE
-    // $("input[id='basicPay']").on("input", function() {
-    //     var basicPay = $(this).val();
-    //     var dailyRate = (basicPay * 12 / 261).toFixed(2);
-    // });
+    // HOURLY RATE COMPUTATION - ADD EMPLOYEE
+    $("input[id='basicPay']").on("input", function() {
+        var basicPay = $(this).val();
+        var dailyRate = (basicPay * 12 / 261).toFixed(2);
+    });
 
-    // $("input[id='dailyRate']").on("input", function() {
-    //     var dailyRate = $(this).val();
-    //     var hourlyRate = (dailyRate / 8).toFixed(2);
-    //     $('#hourlyRate').val(hourlyRate);
-    // });
+    $("input[id='dailyRate']").on("input", function() {
+        var dailyRate = $(this).val();
+        var hourlyRate = (dailyRate / 8).toFixed(2);
+        $('#hourlyRate').val(hourlyRate);
+    });
 
-    // // HOURLY RATE COMPUTATION - UPDATE EMPLOYEE
-    // $("input[id='updateBasicPay']").on("input", function() {
-    //     var basicPay = $(this).val();
-    //     var dailyRate = (basicPay * 12 / 261).toFixed(2);
-    //     $('#updateDailyRate').val(dailyRate).trigger('input');
-    // });
+    // HOURLY RATE COMPUTATION - UPDATE EMPLOYEE
+    $("input[id='updateBasicPay']").on("input", function() {
+        var basicPay = $(this).val();
+        var dailyRate = (basicPay * 12 / 261).toFixed(2);
+        $('#updateDailyRate').val(dailyRate).trigger('input');
+    });
 
-    // $("input[id='updateDailyRate']").on("input", function() {
-    //     var dailyRate = $(this).val();
-    //     var hourlyRate = (dailyRate / 8).toFixed(2);
-    //     $('#updateHourlyRate').val(hourlyRate);
-    // });
+    $("input[id='updateDailyRate']").on("input", function() {
+        var dailyRate = $(this).val();
+        var hourlyRate = (dailyRate / 8).toFixed(2);
+        $('#updateHourlyRate').val(hourlyRate);
+    });
+
+    // $("select[id='designation']").on("change", function() {
+    //     $("input[id='basicPay']").val('');
+    //     $("input[id='dailyRate']").val('');
+    //     $("input[id='hourlyRate']").val('');
+    //     if ($(this).val() == "Facilities") {
+    //         // HOURLY RATE COMPUTATION - ADD EMPLOYEE
+    //         $("input[id='basicPay']").on("input", function() {
+    //             var basicPay = $(this).val();
+    //             var dailyRate = (basicPay * 12 / 313).toFixed(2);
+    //             $('#dailyRate').val(dailyRate).trigger('input');
+    //         });
+
+    //         $("input[id='dailyRate']").on("input", function() {
+    //             var dailyRate = $(this).val();
+    //             var hourlyRate = (dailyRate / 12).toFixed(2);
+    //             $('#hourlyRate').val(hourlyRate);
+    //         });
+    //     } else {
+    //         // HOURLY RATE COMPUTATION - ADD EMPLOYEE
+    //         $("input[id='basicPay']").on("input", function() {
+    //             var basicPay = $(this).val();
+    //             var dailyRate = (basicPay * 12 / 261).toFixed(2);
+    //             $('#dailyRate').val(dailyRate).trigger('input');
+    //         });
+
+    //         $("input[id='dailyRate']").on("input", function() {
+    //             var dailyRate = $(this).val();
+    //             var hourlyRate = (dailyRate / 8).toFixed(2);
+    //             $('#hourlyRate').val(hourlyRate);
+    //         });
+    //     }
+    // });  
 
     
     // CHECKBOXES FOR REQUIREMENTS - SSS, PAGIBIG, PHILHEALTH, TIN (ADD EMPLOYEE)
