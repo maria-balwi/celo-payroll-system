@@ -4,7 +4,7 @@ function formatNumberWithCommas(number) {
 
 $(document).ready(function() {
 
-    if ($('#adminID').val() == 9) {
+    if ($('#adminID').val() == 9 || $('#adminID').val() == 8) {
         $('#btnAddEmployee').show();
         $('#btnUpdateEmployee').show();
         $('#btnResignEmployee').show();
