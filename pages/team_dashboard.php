@@ -296,11 +296,11 @@
                                                     // GET ATTENDANCE TIME - TIME OUT
                                                     $dailyAttendanceQuery_timeOut = mysqli_query($conn, $attendance->dailyAttendance_timeOut($teamOperations_id));
                                                     $dailyAttendance_timeOutDetails = mysqli_fetch_array($dailyAttendanceQuery_timeOut);
-                                                    if (isset($dailyAttendance_timeOutDetails['attendanceTime']))
+                                                    if (isset($dailyAttendance_timeOutDetails['attendanceTime']) && $teamOperations_status == "Present")
                                                     {
                                                         $team_timeOut = $dailyAttendance_timeOutDetails['attendanceTime'];
-                                                        $teamOperations_status = "Present";
                                                     }
+                                                    
                                                     echo "<tr data-id='" . $teamOperations_id . "'>"; 
                                                     echo "<td class ='whitespace-nowrap text-left'>" . $teamOperations_employeeName . "</td>";
                                                     echo "<td class ='whitespace-nowrap'>" . $teamOperations_shift . "</td>";
@@ -337,11 +337,11 @@
                                                     // GET ATTENDANCE TIME - TIME OUT
                                                     $dailyAttendanceQuery_timeOut = mysqli_query($conn, $attendance->dailyAttendance_timeOut($teamOperations_id));
                                                     $dailyAttendance_timeOutDetails = mysqli_fetch_array($dailyAttendanceQuery_timeOut);
-                                                    if (isset($dailyAttendance_timeOutDetails['attendanceTime']))
+                                                    if (isset($dailyAttendance_timeOutDetails['attendanceTime']) && $teamOperations_status)
                                                     {
                                                         $team_timeOut = $dailyAttendance_timeOutDetails['attendanceTime'];
-                                                        $teamOperations_status = "Present";
                                                     }
+
                                                     echo "<tr data-id='" . $teamOperations_id . "'>"; 
                                                     echo "<td class ='whitespace-nowrap text-left'>" . $teamOperations_employeeName . "</td>";
                                                     echo "<td class ='whitespace-nowrap'>" . $teamOperations_shift . "</td>";
@@ -381,11 +381,11 @@
                                                 // GET ATTENDANCE TIME - TIME OUT
                                                 $dailyAttendanceQuery_timeOut = mysqli_query($conn, $attendance->dailyAttendance_timeOut($teamIT_id));
                                                 $dailyAttendance_timeOutDetails = mysqli_fetch_array($dailyAttendanceQuery_timeOut);
-                                                if (isset($dailyAttendance_timeOutDetails['attendanceTime']))
+                                                if (isset($dailyAttendance_timeOutDetails['attendanceTime']) && $teamIT_status == "Present")
                                                 {
                                                     $team_timeOut = $dailyAttendance_timeOutDetails['attendanceTime'];
-                                                    $teamIT_status = "Present";
                                                 }
+
                                                 echo "<tr data-id='" . $teamIT_id . "'>"; 
                                                 echo "<td class ='whitespace-nowrap text-left'>" . $teamIT_employeeName . "</td>";
                                                 echo "<td class ='whitespace-nowrap'>" . $teamIT_shift . "</td>";
