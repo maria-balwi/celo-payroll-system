@@ -155,15 +155,28 @@
                 $updateDateRegularized = new DateTime($updateDateHired);
                 $updateDateRegularized->modify('+6 months');
                 $updateDateRegularized = $updateDateRegularized->format('Y-m-d');
+
                 mysqli_query($conn, $employees->updateEmployeeInfo_reg($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
                 $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
                 $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateCashAdvance, $updateEmploymentStatus, $updateDateHired, $updateDateRegularized));
+
+                // AUDIT TRAIL
+                $at_empID = $_SESSION['id'];
+                $at_module = "Admin - Employee List";
+                $at_action = "Updated Employee Information";
+                mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $updateID));
             }
             else 
             {
-                mysqli_query($conn, $employees->updateEmployeeInfo($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
+                mysqli_query($conn, $employees->updateEmployeeInfo_prob($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
                 $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
                 $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateCashAdvance, $updateEmploymentStatus, $updateDateHired));
+            
+                // AUDIT TRAIL
+                $at_empID = $_SESSION['id'];
+                $at_module = "Admin - Employee List";
+                $at_action = "Updated Employee Information";
+                mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $updateID));
             }
             
             mysqli_query($conn, $employees->updateEmployeeRequirements($updateID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi, $req_medicalExam, $req_2x2pic, $req_vaccineCard, $req_psa, $req_validID, $req_helloMoney));
@@ -240,49 +253,75 @@
             // IF NEW EMPLOYEE ID DOES NOT EXISTS
             else 
             {
-                mysqli_query($conn, $employees->updateEmployeeInfo($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
-                $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
-                $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves , $updateCashAdvance));
+                if ($updateEmploymentStatus == "Regular")
+                {
+                    // ADD REGULAR EMPLOYEE
+                    $updateDateRegularized = new DateTime($updateDateHired);
+                    $updateDateRegularized->modify('+6 months');
+                    $updateDateRegularized = $updateDateRegularized->format('Y-m-d');
 
+                    mysqli_query($conn, $employees->updateEmployeeInfo_reg($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
+                    $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
+                    $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateCashAdvance, $updateEmploymentStatus, $updateDateHired, $updateDateRegularized));
+
+                    // AUDIT TRAIL
+                    $at_empID = $_SESSION['id'];
+                    $at_module = "Admin - Employee List";
+                    $at_action = "Updated Employee Information";
+                    mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $updateID));
+                }
+                else 
+                {
+                    mysqli_query($conn, $employees->updateEmployeeInfo_prob($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
+                    $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
+                    $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateCashAdvance, $updateEmploymentStatus, $updateDateHired));
+                
+                    // AUDIT TRAIL
+                    $at_empID = $_SESSION['id'];
+                    $at_module = "Admin - Employee List";
+                    $at_action = "Updated Employee Information";
+                    mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $updateID));
+                }
+                
                 mysqli_query($conn, $employees->updateEmployeeRequirements($updateID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi, $req_medicalExam, $req_2x2pic, $req_vaccineCard, $req_psa, $req_validID, $req_helloMoney));
 
                 if (isset($_FILES['updateProfilePicture']) && $_FILES['updateProfilePicture']['error'] == 0) {
                     $uploadDir = '../../assets/images/profiles/'; // DIRECTORY TO SAVE UPLOADED FILES
-    
+
                     // EXTRACT THE ORIGINAL FILE EXTENSION
                     // $fileExtension = pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION);
-    
+
                     // GENERATE NEW NAME
                     $modified_employeeID = str_replace("-", "", $updateEmployeeID);
                     $newFileName = $modified_employeeID. '.png';
-    
+
                     // The complete path to save the uploaded file
                     $uploadFile = $uploadDir . $newFileName;
-    
+
                     // CHECK THE DIRECTORY FOLDER IF EXISTING, IF NOT CREATES IT
                     if (!file_exists($uploadDir)) {
                         mkdir($uploadDir, 0755, true);
                     }
-    
+
                     // VALIDATE FILE TYPE
                     $allowedTypes = ['image/jpeg', 'image/png'];
                     if (in_array($_FILES['updateProfilePicture']['type'], $allowedTypes)) {
-                        // DELETE EXISTING FILE
-                        $oldEmployeeID = str_replace("-", "", $oldEmployeeID);
-                        $oldFileName = $oldEmployeeID. '.png';
-                        $filepath = $uploadDir . $oldFileName;
-    
-                        if (file_exists($filepath)) {
-                            // Attempt to delete the file
-                            if (unlink($filepath)) {
-                                echo "File '$oldFileName' was successfully deleted.";
-                            } else {
-                                echo "Error: Could not delete the file.";
-                            }
-                        }
+                        // // DELETE EXISTING FILE
+                        // $oldEmployeeID = str_replace("-", "", $oldEmployeeID);
+                        // $oldFileName = $oldEmployeeID. '.png';
+                        // $filepath = $uploadDir . $oldFileName;
+
+                        // if (file_exists($filepath)) {
+                        //     // Attempt to delete the file
+                        //     if (unlink($filepath)) {
+                        //         echo "File '$oldFileName' was successfully deleted.";
+                        //     } else {
+                        //         echo "Error: Could not delete the file.";
+                        //     }
+                        // }
                         if (move_uploaded_file($_FILES['updateProfilePicture']['tmp_name'], $uploadFile)) {
                             // SUCCESSFULLY UPLOADED FILE
-    
+
                         } 
                         else {
                             $em = "Failed to move uploaded file.";
@@ -322,49 +361,75 @@
             // IF SAME EMPLOYEE ID (OLD AND NEW)
             if ($updateEmployeeID == $oldEmployeeID)
             {
-                mysqli_query($conn, $employees->updateEmployeeInfo($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
-                $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
-                $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateCashAdvance));
+                if ($updateEmploymentStatus == "Regular")
+                {
+                    // ADD REGULAR EMPLOYEE
+                    $updateDateRegularized = new DateTime($updateDateHired);
+                    $updateDateRegularized->modify('+6 months');
+                    $updateDateRegularized = $updateDateRegularized->format('Y-m-d');
 
-                mysqli_query($conn, $employees->updateEmployeeRequirements($updateID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi, $req_medicalExam, $req_2x2pic, $req_vaccineCard, $req_psa, $req_validID, $req_helloMoney));
+                    mysqli_query($conn, $employees->updateEmployeeInfo_reg($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
+                    $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
+                    $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateCashAdvance, $updateEmploymentStatus, $updateDateHired, $updateDateRegularized));
+
+                    // AUDIT TRAIL
+                    $at_empID = $_SESSION['id'];
+                    $at_module = "Admin - Employee List";
+                    $at_action = "Updated Employee Information";
+                    mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $updateID));
+                }
+                else 
+                {
+                    mysqli_query($conn, $employees->updateEmployeeInfo_prob($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
+                    $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
+                    $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateCashAdvance, $updateEmploymentStatus, $updateDateHired));
                 
+                    // AUDIT TRAIL
+                    $at_empID = $_SESSION['id'];
+                    $at_module = "Admin - Employee List";
+                    $at_action = "Updated Employee Information";
+                    mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $updateID));
+                }
+                
+                mysqli_query($conn, $employees->updateEmployeeRequirements($updateID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi, $req_medicalExam, $req_2x2pic, $req_vaccineCard, $req_psa, $req_validID, $req_helloMoney));
+
                 if (isset($_FILES['updateProfilePicture']) && $_FILES['updateProfilePicture']['error'] == 0) {
                     $uploadDir = '../../assets/images/profiles/'; // DIRECTORY TO SAVE UPLOADED FILES
-    
+
                     // EXTRACT THE ORIGINAL FILE EXTENSION
                     // $fileExtension = pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION);
-    
+
                     // GENERATE NEW NAME
                     $modified_employeeID = str_replace("-", "", $updateEmployeeID);
                     $newFileName = $modified_employeeID. '.png';
-    
+
                     // The complete path to save the uploaded file
                     $uploadFile = $uploadDir . $newFileName;
-    
+
                     // CHECK THE DIRECTORY FOLDER IF EXISTING, IF NOT CREATES IT
                     if (!file_exists($uploadDir)) {
                         mkdir($uploadDir, 0755, true);
                     }
-    
+
                     // VALIDATE FILE TYPE
                     $allowedTypes = ['image/jpeg', 'image/png'];
                     if (in_array($_FILES['updateProfilePicture']['type'], $allowedTypes)) {
-                        // DELETE EXISTING FILE
-                        $oldEmployeeID = str_replace("-", "", $oldEmployeeID);
-                        $oldFileName = $oldEmployeeID. '.png';
-                        $filepath = $uploadDir . $oldFileName;
-    
-                        if (file_exists($filepath)) {
-                            // Attempt to delete the file
-                            if (unlink($filepath)) {
-                                echo "File '$oldFileName' was successfully deleted.";
-                            } else {
-                                echo "Error: Could not delete the file.";
-                            }
-                        }
+                        // // DELETE EXISTING FILE
+                        // $oldEmployeeID = str_replace("-", "", $oldEmployeeID);
+                        // $oldFileName = $oldEmployeeID. '.png';
+                        // $filepath = $uploadDir . $oldFileName;
+
+                        // if (file_exists($filepath)) {
+                        //     // Attempt to delete the file
+                        //     if (unlink($filepath)) {
+                        //         echo "File '$oldFileName' was successfully deleted.";
+                        //     } else {
+                        //         echo "Error: Could not delete the file.";
+                        //     }
+                        // }
                         if (move_uploaded_file($_FILES['updateProfilePicture']['tmp_name'], $uploadFile)) {
                             // SUCCESSFULLY UPLOADED FILE
-    
+
                         } 
                         else {
                             $em = "Failed to move uploaded file.";
@@ -400,49 +465,75 @@
                 // IF NEW EMPLOYEE ID DOES NOT EXISTS
                 else 
                 {
-                    mysqli_query($conn, $employees->updateEmployeeInfo($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
-                    $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
-                    $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateCashAdvance));
+                    if ($updateEmploymentStatus == "Regular")
+                    {
+                        // ADD REGULAR EMPLOYEE
+                        $updateDateRegularized = new DateTime($updateDateHired);
+                        $updateDateRegularized->modify('+6 months');
+                        $updateDateRegularized = $updateDateRegularized->format('Y-m-d');
 
+                        mysqli_query($conn, $employees->updateEmployeeInfo_reg($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
+                        $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
+                        $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateCashAdvance, $updateEmploymentStatus, $updateDateHired, $updateDateRegularized));
+
+                        // AUDIT TRAIL
+                        $at_empID = $_SESSION['id'];
+                        $at_module = "Admin - Employee List";
+                        $at_action = "Updated Employee Information";
+                        mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $updateID));
+                    }
+                    else 
+                    {
+                        mysqli_query($conn, $employees->updateEmployeeInfo_prob($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
+                        $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
+                        $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateCashAdvance, $updateEmploymentStatus, $updateDateHired));
+                    
+                        // AUDIT TRAIL
+                        $at_empID = $_SESSION['id'];
+                        $at_module = "Admin - Employee List";
+                        $at_action = "Updated Employee Information";
+                        mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $updateID));
+                    }
+                    
                     mysqli_query($conn, $employees->updateEmployeeRequirements($updateID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi, $req_medicalExam, $req_2x2pic, $req_vaccineCard, $req_psa, $req_validID, $req_helloMoney));
 
                     if (isset($_FILES['updateProfilePicture']) && $_FILES['updateProfilePicture']['error'] == 0) {
                         $uploadDir = '../../assets/images/profiles/'; // DIRECTORY TO SAVE UPLOADED FILES
-        
+
                         // EXTRACT THE ORIGINAL FILE EXTENSION
                         // $fileExtension = pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION);
-        
+
                         // GENERATE NEW NAME
                         $modified_employeeID = str_replace("-", "", $updateEmployeeID);
                         $newFileName = $modified_employeeID. '.png';
-        
+
                         // The complete path to save the uploaded file
                         $uploadFile = $uploadDir . $newFileName;
-        
+
                         // CHECK THE DIRECTORY FOLDER IF EXISTING, IF NOT CREATES IT
                         if (!file_exists($uploadDir)) {
                             mkdir($uploadDir, 0755, true);
                         }
-        
+
                         // VALIDATE FILE TYPE
                         $allowedTypes = ['image/jpeg', 'image/png'];
                         if (in_array($_FILES['updateProfilePicture']['type'], $allowedTypes)) {
-                            // DELETE EXISTING FILE
-                            $oldEmployeeID = str_replace("-", "", $oldEmployeeID);
-                            $oldFileName = $oldEmployeeID. '.png';
-                            $filepath = $uploadDir . $oldFileName;
-        
-                            if (file_exists($filepath)) {
-                                // Attempt to delete the file
-                                if (unlink($filepath)) {
-                                    echo "File '$oldFileName' was successfully deleted.";
-                                } else {
-                                    echo "Error: Could not delete the file.";
-                                }
-                            }
+                            // // DELETE EXISTING FILE
+                            // $oldEmployeeID = str_replace("-", "", $oldEmployeeID);
+                            // $oldFileName = $oldEmployeeID. '.png';
+                            // $filepath = $uploadDir . $oldFileName;
+
+                            // if (file_exists($filepath)) {
+                            //     // Attempt to delete the file
+                            //     if (unlink($filepath)) {
+                            //         echo "File '$oldFileName' was successfully deleted.";
+                            //     } else {
+                            //         echo "Error: Could not delete the file.";
+                            //     }
+                            // }
                             if (move_uploaded_file($_FILES['updateProfilePicture']['tmp_name'], $uploadFile)) {
                                 // SUCCESSFULLY UPLOADED FILE
-        
+
                             } 
                             else {
                                 $em = "Failed to move uploaded file.";

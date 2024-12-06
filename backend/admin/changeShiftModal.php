@@ -12,10 +12,11 @@
         if(mysqli_num_rows($getChangeShiftResult) == 1)
         {
             $leave = mysqli_fetch_array($getChangeShiftResult);
-            
+            $isCheck = $leave['designationID'] == 7 ? true : false;
             $res = [
                 'status' => 200,
                 'message' => 'Leave Fetch Successfully by id',
+                'isCheck' => $isCheck,
                 'data' => $leave
             ];
 

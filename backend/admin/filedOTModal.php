@@ -12,10 +12,11 @@
         if(mysqli_num_rows($getFiledOTResult) == 1)
         {
             $ot = mysqli_fetch_array($getFiledOTResult);
-            
+            $isCheck = $ot['designationID'] == 7 ? true : false;
             $res = [
                 'status' => 200,
                 'message' => 'Filed OT Fetch Successfully by id',
+                'isCheck' => $isCheck,
                 'data' => $ot
             ];
 

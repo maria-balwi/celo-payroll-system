@@ -8,10 +8,19 @@
     $action = $_POST['action'];
 
     if ($action == "approve") {
-        $sql = $conn->query("
-            UPDATE tbl_leaveapplications SET
-            status = 'Approved'
-            WHERE requestID = '$leave_id'");
+        mysqli_query($conn, $employees->approveLeave($leave_id));
+
+        // GET AFFECTED USER
+        $query = mysqli_query($conn, $employees->viewLeaveInfo($leave_id));
+        $queryDetails = mysqli_fetch_array($query);
+        $at_affectedEmpID = $queryDetails['empID'];
+        
+        // AUDIT TRAIL
+        $at_empID = $_SESSION['id'];
+        $at_module = "Admin - Leave Application";
+        $at_action = "Approved Request";
+        mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $at_affectedEmpID));
+
         // ERROR MESSAGE
         $em = "Leave Application Approved Successfully";
         // RESPONSE ARRAY
@@ -19,10 +28,19 @@
     }
 
     else if ($action == "disapprove") {
-        $sql = $conn->query("
-            UPDATE tbl_leaveapplications SET
-            status = 'Disapproved'
-            WHERE requestID = '$leave_id'");
+        mysqli_query($conn, $employees->disapproveLeave($leave_id));
+        
+        // GET AFFECTED USER
+        $query = mysqli_query($conn, $employees->viewLeaveInfo($leave_id));
+        $queryDetails = mysqli_fetch_array($query);
+        $at_affectedEmpID = $queryDetails['empID'];
+
+        // AUDIT TRAIL
+        $at_empID = $_SESSION['id'];
+        $at_module = "Admin - Leave Application";
+        $at_action = "Disapproved Request";
+        mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $at_affectedEmpID));
+        
         // ERROR MESSAGE
         $em = "Leave Application Disapproved Successfully";
         // RESPONSE ARRAY

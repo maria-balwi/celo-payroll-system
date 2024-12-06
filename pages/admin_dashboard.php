@@ -97,14 +97,36 @@
                     <div class="bg-white p-4 rounded-lg col-span-6 lg:col-span-2 shadow-md">
                         <h2 class="text-xl font-bold mb-2">Pending Requests</h2>
                         <?php  
-                            $getPendingLeavesQuery = mysqli_query($conn, $attendance->getPendingLeaves());
-                            $getPendingLeaves = mysqli_num_rows($getPendingLeavesQuery);
-
-                            $getPendingChangeShiftQuery = mysqli_query($conn, $attendance->getPendingChangeShift());
-                            $getPendingChangeShift = mysqli_num_rows($getPendingChangeShiftQuery);
-                            
-                            $getPendingOvertimeQuery = mysqli_query($conn, $attendance->getPendingOvertimes());
-                            $getPendingOvertime = mysqli_num_rows($getPendingOvertimeQuery);
+                            if ($_SESSION['departmentID'] == 3) {
+                                $getPendingLeavesQuery = mysqli_query($conn, $attendance->getAdminPendingLeaves());
+                                $getPendingLeaves = mysqli_num_rows($getPendingLeavesQuery);
+    
+                                $getPendingChangeShiftQuery = mysqli_query($conn, $attendance->getAdminPendingChangeShift());
+                                $getPendingChangeShift = mysqli_num_rows($getPendingChangeShiftQuery);
+                                
+                                $getPendingOvertimeQuery = mysqli_query($conn, $attendance->getAdminPendingOvertimes());
+                                $getPendingOvertime = mysqli_num_rows($getPendingOvertimeQuery);
+                            }
+                            else if ($_SESSION['departmentID'] == 5) {
+                                $getPendingLeavesQuery = mysqli_query($conn, $attendance->getDirectorPendingLeaves());
+                                $getPendingLeaves = mysqli_num_rows($getPendingLeavesQuery);
+    
+                                $getPendingChangeShiftQuery = mysqli_query($conn, $attendance->getDirectorPendingChangeShift());
+                                $getPendingChangeShift = mysqli_num_rows($getPendingChangeShiftQuery);
+                                
+                                $getPendingOvertimeQuery = mysqli_query($conn, $attendance->getDirectorPendingOvertimes());
+                                $getPendingOvertime = mysqli_num_rows($getPendingOvertimeQuery);
+                            }
+                            else {
+                                $getPendingLeavesQuery = mysqli_query($conn, $attendance->getAllPendingLeaves());
+                                $getPendingLeaves = mysqli_num_rows($getPendingLeavesQuery);
+    
+                                $getPendingChangeShiftQuery = mysqli_query($conn, $attendance->getAllPendingChangeShift());
+                                $getPendingChangeShift = mysqli_num_rows($getPendingChangeShiftQuery);
+                                
+                                $getPendingOvertimeQuery = mysqli_query($conn, $attendance->getAllPendingOvertimes());
+                                $getPendingOvertime = mysqli_num_rows($getPendingOvertimeQuery);
+                            }
 
                             if ($getPendingLeaves != 0) { ?>
                                 <!-- ======== LEAVE APPLICATIONS ======== -->

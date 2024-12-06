@@ -13,17 +13,22 @@ $(document).ready(function() {
         }
     });
 
+    // $('#approveLeave').hide();
+    // $('#disapproveLeave').hide();
+
     // VIEW LEAVE APPLICATION
     var array = [];
     $(document).on('click', '.leaveView', function() {
         var leave_id = $(this).data('id');
+        var designationID = $(this).data('designation');
+        console.log({designationID});
         array.push(leave_id);
         var id_leave = array[array.length - 1];
 
         // VIEW LEAVE
         $.ajax({
             type: "GET",
-            url: "../backend/team/leaveModal.php?leave_id=" + id_leave,
+            url: "../backend/team/leaveModal.php?leave_id=" + id_leave + "&designationID=" + designationID,
             success: function(response) {
 
                 var res = jQuery.parseJSON(response);
@@ -46,37 +51,23 @@ $(document).ready(function() {
                     $('#disapproveLeave').hide();
                     $('#viewLeaveModal').modal('show');
 
-                    if (res.data.leaveType == "Sick Leave") {
-                        $('#viewMedCertRow').show();
+                    if (res.data.leaveTypeID == "1") {
+                        
+                        if (res.data.medCert == null) {
+                            $('#viewMedCertRow').hide();
+                        }
+                        else {
+                            $('#viewMedCertRow').show();
+                        }
 
                         $('#viewMedicalCert').click(function(event) {
                             event.preventDefault();
                             
                             const imagePath = '../assets/images/medicalCertificates/' + res.data.medCert; // Set your directory path here
-                            
+
                             // VIEW MEDICAL CERTIFICATE IN NEW TAB
                             window.open(imagePath, '_blank');
-    
-                            // VIEW MEDICAL CERTIFICATE IN MODAL
-                            // Use the fetch API to check if the image exists
-                            // fetch(imagePath)
-                            //     .then(response => {
-                            //         if (response.ok) {
-                            //             Swal.fire({
-                            //                 title: 'Medical Certificate',
-                            //                 imageUrl: imagePath,
-                            //                 imageHeight: 500,
-                            //             });
-                            //         }
-                            //     })
-                            //     .catch(error => {
-                            //         Swal.fire({
-                            //             icon: 'error',
-                            //             title: 'Error',
-                            //             text: 'An error occurred while fetching the image.',
-                            //         });
-                            //         console.error('Error fetching image:', error);
-                            //     });
+                            
                         });
                     }
                     else {
@@ -96,38 +87,24 @@ $(document).ready(function() {
                     $('#approveLeave').show();
                     $('#disapproveLeave').show();
                     $('#viewLeaveModal').modal('show');
-
-                    if (res.data.leaveType == "Sick Leave") {
-                        $('#viewMedCertRow').show();
+                    
+                    if (res.data.leaveTypeID == "1") {
+                        
+                        if (res.data.medCert == null) {
+                            $('#viewMedCertRow').hide();
+                        }
+                        else {
+                            $('#viewMedCertRow').show();
+                        }
 
                         $('#viewMedicalCert').click(function(event) {
                             event.preventDefault();
                             
                             const imagePath = '../assets/images/medicalCertificates/' + res.data.medCert; // Set your directory path here
-                            
+
                             // VIEW MEDICAL CERTIFICATE IN NEW TAB
                             window.open(imagePath, '_blank');
-    
-                            // VIEW MEDICAL CERTIFICATE IN MODAL
-                            // Use the fetch API to check if the image exists
-                            // fetch(imagePath)
-                            //     .then(response => {
-                            //         if (response.ok) {
-                            //             Swal.fire({
-                            //                 title: 'Medical Certificate',
-                            //                 imageUrl: imagePath,
-                            //                 imageHeight: 500,
-                            //             });
-                            //         }
-                            //     })
-                            //     .catch(error => {
-                            //         Swal.fire({
-                            //             icon: 'error',
-                            //             title: 'Error',
-                            //             text: 'An error occurred while fetching the image.',
-                            //         });
-                            //         console.error('Error fetching image:', error);
-                            //     });
+                            
                         });
                     }
                     else {
@@ -269,37 +246,23 @@ $(document).ready(function() {
                     $('#approveLeave').hide();
                     $('#disapproveLeave').hide();
 
-                    if (res.data.leaveType == "Sick Leave") {
-                        $('#viewMedCertRow').show();
+                    if (res.data.leaveTypeID == "1") {
+                        
+                        if (res.data.medCert == null) {
+                            $('#viewMedCertRow').hide();
+                        }
+                        else {
+                            $('#viewMedCertRow').show();
+                        }
 
                         $('#viewMedicalCert').click(function(event) {
                             event.preventDefault();
                             
                             const imagePath = '../assets/images/medicalCertificates/' + res.data.medCert; // Set your directory path here
-                            
+
                             // VIEW MEDICAL CERTIFICATE IN NEW TAB
                             window.open(imagePath, '_blank');
-    
-                            // VIEW MEDICAL CERTIFICATE IN MODAL
-                            // Use the fetch API to check if the image exists
-                            // fetch(imagePath)
-                            //     .then(response => {
-                            //         if (response.ok) {
-                            //             Swal.fire({
-                            //                 title: 'Medical Certificate',
-                            //                 imageUrl: imagePath,
-                            //                 imageHeight: 500,
-                            //             });
-                            //         }
-                            //     })
-                            //     .catch(error => {
-                            //         Swal.fire({
-                            //             icon: 'error',
-                            //             title: 'Error',
-                            //             text: 'An error occurred while fetching the image.',
-                            //         });
-                            //         console.error('Error fetching image:', error);
-                            //     });
+                            
                         });
                     }
                     else {
@@ -319,37 +282,23 @@ $(document).ready(function() {
                     $('#approveLeave').show();
                     $('#disapproveLeave').show();
 
-                    if (res.data.leaveType == "Sick Leave") {
-                        $('#viewMedCertRow').show();
+                    if (res.data.leaveTypeID == "1") {
+                        
+                        if (res.data.medCert == null) {
+                            $('#viewMedCertRow').hide();
+                        }
+                        else {
+                            $('#viewMedCertRow').show();
+                        }
 
                         $('#viewMedicalCert').click(function(event) {
                             event.preventDefault();
                             
                             const imagePath = '../assets/images/medicalCertificates/' + res.data.medCert; // Set your directory path here
-                            
+
                             // VIEW MEDICAL CERTIFICATE IN NEW TAB
                             window.open(imagePath, '_blank');
-    
-                            // VIEW MEDICAL CERTIFICATE IN MODAL
-                            // Use the fetch API to check if the image exists
-                            // fetch(imagePath)
-                            //     .then(response => {
-                            //         if (response.ok) {
-                            //             Swal.fire({
-                            //                 title: 'Medical Certificate',
-                            //                 imageUrl: imagePath,
-                            //                 imageHeight: 500,
-                            //             });
-                            //         }
-                            //     })
-                            //     .catch(error => {
-                            //         Swal.fire({
-                            //             icon: 'error',
-                            //             title: 'Error',
-                            //             text: 'An error occurred while fetching the image.',
-                            //         });
-                            //         console.error('Error fetching image:', error);
-                            //     });
+                            
                         });
                     }
                     else {

@@ -152,24 +152,82 @@
             return $undertimeOperations;
         }
 
-        public function getPendingLeaves() {
+        public function getAllPendingLeaves() {
             $pendingLeaves = "
                 SELECT * FROM ".$this->leaves."
                 WHERE status = 'Pending'";
             return $pendingLeaves;
         }
 
-        public function getPendingChangeShift() {
+        public function getDirectorPendingLeaves() {
+            $pendingLeaves = "
+                SELECT * FROM ".$this->leaves." AS leaves
+                INNER JOIN ".$this->employees." AS employees
+                ON leaves.empID = employees.id
+                WHERE leaves.status = 'Pending' AND employees.designationID IN (5,8,9)";
+            return $pendingLeaves;
+        }
+
+        public function getAdminPendingLeaves() {
+            $pendingLeaves = "
+                SELECT * FROM ".$this->leaves." AS leaves
+                INNER JOIN ".$this->employees." AS employees
+                ON leaves.empID = employees.id
+                WHERE leaves.status = 'Pending' AND employees.designationID NOT IN (8,9)";
+            return $pendingLeaves;
+        }
+
+        public function getAllPendingChangeShift() {
             $pendingChangeShifts = "
-                SELECT * FROM ".$this->changeShift."
-                WHERE status = 'Pending'";
+                SELECT * FROM ".$this->changeShift." AS changeShift
+                INNER JOIN ".$this->employees." AS employees
+                ON changeShift.empID = employees.id
+                WHERE changeShift.status = 'Pending'";
             return $pendingChangeShifts;
         }
 
-        public function getPendingOvertimes() {
+        public function getDirectorPendingChangeShift() {
             $pendingChangeShifts = "
-                SELECT * FROM ".$this->filedOT."
-                WHERE status = 'Pending'";
+                SELECT * FROM ".$this->changeShift." AS changeShift
+                INNER JOIN ".$this->employees." AS employees
+                ON changeShift.empID = employees.id
+                WHERE changeShift.status = 'Pending' AND employees.designationID IN (5,8,9)";
+            return $pendingChangeShifts;
+        }
+
+        public function getAdminPendingChangeShift() {
+            $pendingChangeShifts = "
+                SELECT * FROM ".$this->changeShift." AS changeShift
+                INNER JOIN ".$this->employees." AS employees
+                ON changeShift.empID = employees.id
+                WHERE changeShift.status = 'Pending' AND employees.designationID NOT IN (8,9)";
+            return $pendingChangeShifts;
+        }
+
+        public function getAllPendingOvertimes() {
+            $pendingChangeShifts = "
+                SELECT * FROM ".$this->filedOT." AS filedOT
+                INNER JOIN ".$this->employees." AS employees
+                ON filedOT.empID = employees.id
+                WHERE filedOT.status IS NULL";
+            return $pendingChangeShifts;
+        }
+
+        public function getDirectorPendingOvertimes() {
+            $pendingChangeShifts = "
+                SELECT * FROM ".$this->filedOT." AS filedOT
+                INNER JOIN ".$this->employees." AS employees
+                ON filedOT.empID = employees.id
+                WHERE filedOT.status IS NULL AND employees.designationID IN (5,8,9)";
+            return $pendingChangeShifts;
+        }
+
+        public function getAdminPendingOvertimes() {
+            $pendingChangeShifts = "
+                SELECT * FROM ".$this->filedOT." AS filedOT
+                INNER JOIN ".$this->employees." AS employees
+                ON filedOT.empID = employees.id
+                WHERE filedOT.status IS NULL AND employees.designationID NOT IN (8,9)";
             return $pendingChangeShifts;
         }
 
@@ -180,18 +238,29 @@
                 ON leaves.empID = employees.id
                 INNER JOIN ".$this->department." AS department
                 ON employees.departmentID = department.departmentID
-                WHERE employees.departmentID = 4 AND status = 'Pending'";
+                WHERE employees.designationID = 10 AND status = 'Pending'";
             return $pendingLeaves;
         }
 
-        public function getPendingOperationsLeaves() {
+        public function getPendingOperationsLeavesTL() {
             $pendingLeaves = "
                 SELECT * FROM ".$this->leaves." AS leaves
                 INNER JOIN ".$this->employees." AS employees
                 ON leaves.empID = employees.id
                 INNER JOIN ".$this->department." AS department
                 ON employees.departmentID = department.departmentID
-                WHERE employees.departmentID = 1 AND status = 'Pending'";
+                WHERE employees.designationID IN (1,2,3) AND status = 'Pending'";
+            return $pendingLeaves;
+        }
+
+        public function getPendingOperationsLeavesManager() {
+            $pendingLeaves = "
+                SELECT * FROM ".$this->leaves." AS leaves
+                INNER JOIN ".$this->employees." AS employees
+                ON leaves.empID = employees.id
+                INNER JOIN ".$this->department." AS department
+                ON employees.departmentID = department.departmentID
+                WHERE employees.designationID IN (4,11) AND status = 'Pending'";
             return $pendingLeaves;
         }
 
@@ -202,18 +271,29 @@
                 ON changeShift.empID = employees.id
                 INNER JOIN ".$this->department." AS department
                 ON employees.departmentID = department.departmentID
-                WHERE employees.departmentID = 4 AND status = 'Pending'";
+                WHERE employees.designationID = 10 AND status = 'Pending'";
             return $pendingChangeShifts;
         }
 
-        public function getPendingOperationsChangeShift() {
+        public function getPendingOperationsChangeShiftTL() {
             $pendingChangeShifts = "
                 SELECT * FROM ".$this->changeShift." AS changeShift
                 INNER JOIN ".$this->employees." AS employees
                 ON changeShift.empID = employees.id
                 INNER JOIN ".$this->department." AS department
                 ON employees.departmentID = department.departmentID
-                WHERE employees.departmentID = 1 AND status = 'Pending'";
+                WHERE employees.designationID IN (1,2,3) AND status = 'Pending'";
+            return $pendingChangeShifts;
+        }
+
+        public function getPendingOperationsChangeShiftManager() {
+            $pendingChangeShifts = "
+                SELECT * FROM ".$this->changeShift." AS changeShift
+                INNER JOIN ".$this->employees." AS employees
+                ON changeShift.empID = employees.id
+                INNER JOIN ".$this->department." AS department
+                ON employees.departmentID = department.departmentID
+                WHERE employees.designationID IN (4,11) AND status = 'Pending'";
             return $pendingChangeShifts;
         }
 
@@ -224,18 +304,29 @@
                 ON filedOT.empID = employees.id
                 INNER JOIN ".$this->department." AS department
                 ON employees.departmentID = department.departmentID
-                WHERE employees.departmentID = 4 AND status = 'Pending'";
+                WHERE employees.designationID = 10 AND status IS NULL";
             return $pendingOvertimes;
         }
 
-        public function getPendingOperationsOvertime() {
+        public function getPendingOperationsOvertimeTL() {
             $pendingOvertimes = "
                 SELECT * FROM ".$this->filedOT." AS filedOT
                 INNER JOIN ".$this->employees." AS employees
                 ON filedOT.empID = employees.id
                 INNER JOIN ".$this->department." AS department
                 ON employees.departmentID = department.departmentID
-                WHERE employees.departmentID = 1 AND status = 'Pending'";
+                WHERE employees.designationID IN (1,2,3) AND status IS NULL";
+            return $pendingOvertimes;
+        }
+
+        public function getPendingOperationsOvertimeManager() {
+            $pendingOvertimes = "
+                SELECT * FROM ".$this->filedOT." AS filedOT
+                INNER JOIN ".$this->employees." AS employees
+                ON filedOT.empID = employees.id
+                INNER JOIN ".$this->department." AS department
+                ON employees.departmentID = department.departmentID
+                WHERE employees.designationID IN (4,11) AND status IS NULL";
             return $pendingOvertimes;
         }
 
@@ -254,7 +345,7 @@
             return $ITteam;
         }
 
-        public function viewITTeams($yearMonth) {
+        public function viewOperationsTeamManager() {
             $ITteam = "
                 SELECT id, firstName, lastName, employeeID, availableVL, availableSL,
                 DATE_FORMAT(startTime, '%h:%i %p') AS startTime, 
@@ -265,15 +356,12 @@
                 ON employees.departmentID = department.departmentID
                 INNER JOIN ".$this->shifts." AS shifts
                 ON employees.shiftID = shifts.shiftID
-                INNER JOIN ".$this->attendance." AS attendance
-                ON employees.id = attendance.empID
-                WHERE employees.departmentID = 4 AND 
-                DATE_FORMAT(attendanceDate, '%Y-%m') = '2024-07'
-                GROUP BY id";
+                WHERE employees.departmentID = 1
+                ORDER BY employeeID ASC";
             return $ITteam;
         }
 
-        public function viewOperationsTeam() {
+        public function viewOperationsTeamTL() {
             $ITteam = "
                 SELECT id, firstName, lastName, employeeID, availableVL, availableSL,
                 DATE_FORMAT(startTime, '%h:%i %p') AS startTime, 
@@ -284,16 +372,14 @@
                 ON employees.departmentID = department.departmentID
                 INNER JOIN ".$this->shifts." AS shifts
                 ON employees.shiftID = shifts.shiftID
-                INNER JOIN ".$this->attendance." AS attendance
-                ON employees.id = attendance.empID
-                WHERE employees.departmentID = 1
+                WHERE employees.departmentID = 1 AND designationID IN (1,2,3,4)
                 ORDER BY employeeID ASC";
             return $ITteam;
         }
 
         public function dailyAttendance_timeIn($id) {
             $dailyAttendanceIT_timeIn = "
-                SELECT DATE_FORMAT(attendanceTime, '%h:%i %p') AS attendanceTime 
+                SELECT DATE_FORMAT(attendanceTime, '%h:%i %p') AS attendanceTime, attendanceDate
                 FROM ".$this->attendance."
                 WHERE empID = $id AND
                 attendanceDate = CURRENT_DATE() AND

@@ -155,6 +155,18 @@
                                             <h2 class="text-sm text-gray-500">Shift:</h2>
                                             <h2 class="text-sm text-gray-400"><?php echo $userDetails['startTime']." - ".$userDetails['endTime'] ?></h2>
                                         </div>
+                                        <div class="flex gap-2 py-1">
+                                            <h2 class="text-sm text-gray-500">Available Sick Leaves:</h2>
+                                            <h2 class="text-sm text-gray-400"><?php echo $userDetails['availableSL']?></h2>
+                                        </div>                                        
+                                        <div class="flex gap-2 py-1">
+                                            <h2 class="text-sm text-gray-500">Available Vacation Leaves:</h2>
+                                            <h2 class="text-sm text-gray-400"><?php echo $userDetails['availableVL'] ?></h2>
+                                        </div>
+                                        <div class="flex gap-2 py-1">
+                                            <h2 class="text-sm text-gray-500">Accumulated Leave Points:</h2>
+                                            <h2 class="text-sm text-gray-400"><?php echo $userDetails['leavePoints'] ?></h2>
+                                        </div>
                                     </div>
                                 </div>
 

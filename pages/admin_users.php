@@ -34,7 +34,7 @@
                             </li>
                             <li class="nav-item" role="presentation">
                                 <!--FACILITIES BUTTON-->
-                                <button class="nav-link uncheck" id="pills-facilities-tab" data-bs-toggle="pill" data-bs-target="#pills-facilities" type="button" role="tab" aria-controls="pills-facilities" aria-selected="false">Facilities</button>
+                                <button class="nav-link uncheck" id="pills-facilities-tab" data-bs-toggle="pill" data-bs-target="#pills-facilities" type="button" role="tab" aria-controls="pills-facilities" aria-selected="false">Business Devs</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <!--FINANCE BUTTON-->

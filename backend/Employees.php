@@ -17,6 +17,7 @@
         private $requirements = 'tbl_requirements';
         private $allowances = 'tbl_allowances';
         private $deductions = 'tbl_deductions';
+        private $auditTrail = 'tbl_audittrail';
         private $dbConnect = false;
         public function __construct() {
             $this->dbConnect = $this->dbConnect();
@@ -30,6 +31,30 @@
                 INNER JOIN ".$this->shifts." AS shifts
                 ON employees.shiftID = shifts.shiftID
                 WHERE designationID != 12";
+            return $team;
+        }
+
+        public function viewActiveEmployees() {
+            $team = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->department." AS department
+                ON employees.departmentID = department.departmentID
+                INNER JOIN ".$this->shifts." AS shifts
+                ON employees.shiftID = shifts.shiftID
+                WHERE designationID != 12 AND 
+                employees.e_status = 'Active'";
+            return $team;
+        }
+        
+        public function viewResignedEmployees() {
+            $team = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->department." AS department
+                ON employees.departmentID = department.departmentID
+                INNER JOIN ".$this->shifts." AS shifts
+                ON employees.shiftID = shifts.shiftID
+                WHERE designationID != 12 AND
+                employees.e_status = 'Inactive'";
             return $team;
         }
 
@@ -176,6 +201,19 @@
             return $request;
         }
 
+        public function viewAllFiledOT() {
+            $request = "
+                SELECT requestID, dateFiled, otDate, employeeID, otType,
+                CONCAT(firstName , ' ', lastName) AS employeeName,
+                DATE_FORMAT(fromTime, '%h:%i %p') AS fromTime,
+                DATE_FORMAT(toTime, '%h:%i %p') AS toTime,
+                remarks, status
+                FROM ".$this->filedOT." AS filedOT
+                INNER JOIN ".$this->employees." AS employees
+                ON filedOT.empID = employees.id";
+            return $request;
+        }
+
         public function viewDirectorFiledOT() {
             $request = "
                 SELECT requestID, dateFiled, otDate, employeeID, otType,
@@ -186,7 +224,7 @@
                 FROM ".$this->filedOT." AS filedOT
                 INNER JOIN ".$this->employees." AS employees
                 ON filedOT.empID = employees.id
-                WHERE status IS NOT NULL";
+                WHERE employees.designationID IN (5,8,9)";
             return $request;
         }
 
@@ -199,7 +237,8 @@
                 remarks, status
                 FROM ".$this->filedOT." AS filedOT
                 INNER JOIN ".$this->employees." AS employees
-                ON filedOT.empID = employees.id";
+                ON filedOT.empID = employees.id
+                WHERE employees.designationID NOT IN (8,9)";
             return $request;
         }
 
@@ -215,11 +254,11 @@
                 ON filedOT.empID = employees.id
                 INNER JOIN ".$this->department." AS department
                 ON department.departmentID = employees.departmentID
-                WHERE employees.departmentID = 4";
+                WHERE employees.departmentID = 4 AND employees.designationID = 10";
             return $request;
         }
 
-        public function viewTeamOperationsFiledOT() {
+        public function viewTeamOperationsFiledOTManager() {
             $request = "
                 SELECT requestID, dateFiled, otDate, employeeID, otType,
                 CONCAT(firstName , ' ', lastName) AS employeeName,
@@ -231,7 +270,37 @@
                 ON filedOT.empID = employees.id
                 INNER JOIN ".$this->department." AS department
                 ON department.departmentID = employees.departmentID
-                WHERE employees.departmentID = 1";
+                WHERE employees.designationID IN (4,11)";
+            return $request;
+        }
+
+        public function viewTeamOperationsFiledOTTL() {
+            $request = "
+                SELECT requestID, dateFiled, otDate, employeeID, otType,
+                CONCAT(firstName , ' ', lastName) AS employeeName,
+                DATE_FORMAT(fromTime, '%h:%i %p') AS fromTime,
+                DATE_FORMAT(toTime, '%h:%i %p') AS toTime,
+                remarks, status
+                FROM ".$this->filedOT." AS filedOT
+                INNER JOIN ".$this->employees." AS employees
+                ON filedOT.empID = employees.id
+                INNER JOIN ".$this->department." AS department
+                ON department.departmentID = employees.departmentID
+                WHERE employees.departmentID = 1 AND employees.designationID IN (1,2,3)";
+            return $request;
+        }
+
+        public function approveFiledOT($requestID) {
+            $request = "
+                UPDATE ".$this->filedOT." SET status = 1
+                WHERE requestID = '$requestID'";
+            return $request;
+        }
+
+        public function disapproveFiledOT($requestID) {
+            $request = "
+                UPDATE ".$this->filedOT." SET status = 0
+                WHERE requestID = '$requestID'";
             return $request;
         }
 
@@ -249,11 +318,11 @@
                 WHERE empID='$id'";
             return $request;
         }
-
-        public function viewAdminChangeShiftRequest() {
+        
+        public function viewAllChangeShiftRequest() {
             $request = "
                 SELECT requestID, dateFiled, lastName, firstName, effectivityStartDate, 
-                effectivityEndDate, remarks, status, 
+                effectivityEndDate, remarks, status, designationID,
                 CONCAT(DATE_FORMAT(shift_1.startTime, '%h:%i %p'), ' - ', DATE_FORMAT(shift_1.endTime, '%h:%i %p')) AS currentShift, 
                 CONCAT(DATE_FORMAT(shift_2.startTime, '%h:%i %p'), ' - ', DATE_FORMAT(shift_2.endTime, '%h:%i %p')) AS requestedShift
                 FROM ".$this->changeShift." AS changeShift
@@ -263,6 +332,40 @@
                 ON shift_1.shiftID = employees.shiftID
                 INNER JOIN ".$this->shift." AS shift_2
                 ON shift_2.shiftID = changeShift.requestedShift";
+            return $request;
+        }
+
+        public function viewDirectorChangeShiftRequest() {
+            $request = "
+                SELECT requestID, dateFiled, lastName, firstName, effectivityStartDate, 
+                effectivityEndDate, remarks, status, designationID,
+                CONCAT(DATE_FORMAT(shift_1.startTime, '%h:%i %p'), ' - ', DATE_FORMAT(shift_1.endTime, '%h:%i %p')) AS currentShift, 
+                CONCAT(DATE_FORMAT(shift_2.startTime, '%h:%i %p'), ' - ', DATE_FORMAT(shift_2.endTime, '%h:%i %p')) AS requestedShift
+                FROM ".$this->changeShift." AS changeShift
+                INNER JOIN ".$this->employees." AS employees
+                ON changeShift.empID = employees.id
+                INNER JOIN ".$this->shift." AS shift_1
+                ON shift_1.shiftID = employees.shiftID
+                INNER JOIN ".$this->shift." AS shift_2
+                ON shift_2.shiftID = changeShift.requestedShift
+                WHERE employees.designationID IN (5,8,9)";
+            return $request;
+        }
+
+        public function viewAdminChangeShiftRequest() {
+            $request = "
+                SELECT requestID, dateFiled, lastName, firstName, effectivityStartDate, 
+                effectivityEndDate, remarks, status, designationID,
+                CONCAT(DATE_FORMAT(shift_1.startTime, '%h:%i %p'), ' - ', DATE_FORMAT(shift_1.endTime, '%h:%i %p')) AS currentShift, 
+                CONCAT(DATE_FORMAT(shift_2.startTime, '%h:%i %p'), ' - ', DATE_FORMAT(shift_2.endTime, '%h:%i %p')) AS requestedShift
+                FROM ".$this->changeShift." AS changeShift
+                INNER JOIN ".$this->employees." AS employees
+                ON changeShift.empID = employees.id
+                INNER JOIN ".$this->shift." AS shift_1
+                ON shift_1.shiftID = employees.shiftID
+                INNER JOIN ".$this->shift." AS shift_2
+                ON shift_2.shiftID = changeShift.requestedShift
+                WHERE employees.designationID NOT IN (8,9)";
             return $request;
         }
 
@@ -295,11 +398,11 @@
                 ON shift_1.shiftID = employees.shiftID
                 INNER JOIN ".$this->shift." AS shift_2
                 ON shift_2.shiftID = changeShift.requestedShift
-                WHERE employees.departmentID = 4";
+                WHERE employees.departmentID = 4 AND employees.designationID = 10";
             return $request;
         }
 
-        public function viewChangeShiftRequestOperations() {
+        public function viewChangeShiftRequestOperationsManager() {
             $request = "
                 SELECT requestID, dateFiled, lastName, firstName, effectivityStartDate, remarks, status, effectivityEndDate, 
                 CONCAT(DATE_FORMAT(shift_1.startTime, '%h:%i %p'), ' - ', DATE_FORMAT(shift_1.endTime, '%h:%i %p')) AS currentShift, 
@@ -313,7 +416,25 @@
                 ON shift_1.shiftID = employees.shiftID
                 INNER JOIN ".$this->shift." AS shift_2
                 ON shift_2.shiftID = changeShift.requestedShift
-                WHERE employees.departmentID = 1";
+                WHERE employees.designationID IN (4,11)";
+            return $request;
+        }
+
+        public function viewChangeShiftRequestOperationsTL() {
+            $request = "
+                SELECT requestID, dateFiled, lastName, firstName, effectivityStartDate, remarks, status, effectivityEndDate, 
+                CONCAT(DATE_FORMAT(shift_1.startTime, '%h:%i %p'), ' - ', DATE_FORMAT(shift_1.endTime, '%h:%i %p')) AS currentShift, 
+                CONCAT(DATE_FORMAT(shift_2.startTime, '%h:%i %p'), ' - ', DATE_FORMAT(shift_2.endTime, '%h:%i %p')) AS requestedShift
+                FROM ".$this->changeShift." AS changeShift
+                INNER JOIN ".$this->employees." AS employees
+                ON changeShift.empID = employees.id
+                INNER JOIN ".$this->department." AS department
+                ON department.departmentID = employees.departmentID
+                INNER JOIN ".$this->shift." AS shift_1
+                ON shift_1.shiftID = employees.shiftID
+                INNER JOIN ".$this->shift." AS shift_2
+                ON shift_2.shiftID = changeShift.requestedShift
+                WHERE employees.departmentID = 1 AND employees.designationID IN (1,2,3)";
             return $request;
         }
 
@@ -334,11 +455,23 @@
                 INNER JOIN ".$this->employees." AS employees
                 ON leaves.empID = employees.id
                 INNER JOIN ".$this->leaveType." AS leaveType
-                ON leaveType.leaveTypeID = leaves.leaveTypeID";
+                ON leaveType.leaveTypeID = leaves.leaveTypeID
+                WHERE employees.designationID NOT IN (8,9)";
             return $request;
         }
 
         public function viewDirectorLeaveRequests() {
+            $request = "
+                SELECT * FROM ".$this->leaves." AS leaves
+                INNER JOIN ".$this->employees." AS employees
+                ON leaves.empID = employees.id
+                INNER JOIN ".$this->leaveType." AS leaveType
+                ON leaveType.leaveTypeID = leaves.leaveTypeID
+                WHERE employees.designationID IN (5,8,9)";
+            return $request;
+        }
+
+        public function viewAllLeaveRequests() {
             $request = "
                 SELECT * FROM ".$this->leaves." AS leaves
                 INNER JOIN ".$this->employees." AS employees
@@ -367,11 +500,11 @@
                 ON department.departmentID = employees.departmentID
                 INNER JOIN ".$this->leaveType." AS leaveType
                 ON leaveType.leaveTypeID = leaves.leaveTypeID
-                WHERE employees.departmentID = 4";
+                WHERE employees.departmentID = 4 AND employees.designationID = 10";
             return $request;
         }
 
-        public function viewLeaveRequestsOperations() {
+        public function viewLeaveRequestsOperationsTL() {
             $request = "
                 SELECT * FROM ".$this->leaves." AS leaves
                 INNER JOIN ".$this->employees." AS employees
@@ -380,7 +513,20 @@
                 ON department.departmentID = employees.departmentID
                 INNER JOIN ".$this->leaveType." AS leaveType
                 ON leaveType.leaveTypeID = leaves.leaveTypeID
-                WHERE employees.departmentID = 1";
+                WHERE employees.departmentID = 1 AND employees.designationID IN (1,2,3)";
+            return $request;
+        }
+
+        public function viewLeaveRequestsOperationsManager() {
+            $request = "
+                SELECT * FROM ".$this->leaves." AS leaves
+                INNER JOIN ".$this->employees." AS employees
+                ON leaves.empID = employees.id
+                INNER JOIN ".$this->department." AS department
+                ON department.departmentID = employees.departmentID
+                INNER JOIN ".$this->leaveType." AS leaveType
+                ON leaveType.leaveTypeID = leaves.leaveTypeID
+                WHERE employees.designationID IN (4,11)";
             return $request;
         }
 
@@ -510,6 +656,24 @@
             return $inactiveAdmin;
         }
 
+        public function deactivateUser($id) {
+            $deactivate = "
+                UPDATE ".$this->users." SET status = 'Inactive' WHERE userID = '$id'";
+            return $deactivate;
+        }
+
+        public function reactivateUser($id) {
+            $reactivate = "
+                UPDATE ".$this->users." SET status = 'Active' WHERE userID = '$id'";
+            return $reactivate;
+        }
+
+        public function viewUser($id) {
+            $user = "
+                SELECT * FROM ".$this->users." WHERE userID = '$id'";
+            return $user;
+        }
+
         public function viewShifts() {
             $allShifts = "
                 SELECT shiftID, 
@@ -574,10 +738,10 @@
             $basicPay, $dailyRate, $hourlyRate, $vacationLeaves, $sickLeaves, $employmentStatus, $dateHired) {
             $addEmployee = "
                 INSERT INTO ".$this->employees." (lastName, firstName, gender, civilStatus, address, dateOfBirth, placeOfBirth, 
-                sss, pagIbig, philhealth, tin, emailAddress, employeeID, mobileNumber, departmentID, designationID, shiftID, basicPay, dailyRate, hourlyRate, availableVL, availableSL, employmentStatus, dateHired)
+                sss, pagIbig, philhealth, tin, emailAddress, employeeID, mobileNumber, departmentID, designationID, shiftID, basicPay, dailyRate, hourlyRate, availableVL, availableSL, employmentStatus, dateHired, e_status)
                 VALUES ('".$lastName."', '".$firstName."', '".$gender."', '".$civilStatus."', '".$address."', '".$dateOfBirth."', '".$placeOfBirth."',
                 '".$sss."', '".$pagIbig."', '".$philhealth."', '".$tin."', '".$emailAddress."', '".$employeeID."', '".$mobileNumber."', 
-                '".$departmentID."', '".$designationID."', '".$shiftID."', '".$basicPay."', '".$dailyRate."', '".$hourlyRate."', '".$vacationLeaves."', '".$sickLeaves."', '".$employmentStatus."', '".$dateHired."')";
+                '".$departmentID."', '".$designationID."', '".$shiftID."', '".$basicPay."', '".$dailyRate."', '".$hourlyRate."', '".$vacationLeaves."', '".$sickLeaves."', '".$employmentStatus."', '".$dateHired."', 'Active')";
             return $addEmployee;
         }
 
@@ -586,10 +750,10 @@
             $basicPay, $dailyRate, $hourlyRate, $vacationLeaves, $sickLeaves, $employmentStatus, $dateHired, $dateRegularized) {
             $addEmployee = "
                 INSERT INTO ".$this->employees." (lastName, firstName, gender, civilStatus, address, dateOfBirth, placeOfBirth, 
-                sss, pagIbig, philhealth, tin, emailAddress, employeeID, mobileNumber, departmentID, designationID, shiftID, basicPay, dailyRate, hourlyRate, availableVL, availableSL, employmentStatus, dateHired, dateRegularized)
+                sss, pagIbig, philhealth, tin, emailAddress, employeeID, mobileNumber, departmentID, designationID, shiftID, basicPay, dailyRate, hourlyRate, availableVL, availableSL, employmentStatus, dateHired, dateRegularized, e_status)
                 VALUES ('".$lastName."', '".$firstName."', '".$gender."', '".$civilStatus."', '".$address."', '".$dateOfBirth."', '".$placeOfBirth."',
                 '".$sss."', '".$pagIbig."', '".$philhealth."', '".$tin."', '".$emailAddress."', '".$employeeID."', '".$mobileNumber."', 
-                '".$departmentID."', '".$designationID."', '".$shiftID."', '".$basicPay."', '".$dailyRate."', '".$hourlyRate."', '".$vacationLeaves."', '".$sickLeaves."', '".$employmentStatus."', '".$dateHired."', '".$dateRegularized."')";
+                '".$departmentID."', '".$designationID."', '".$shiftID."', '".$basicPay."', '".$dailyRate."', '".$hourlyRate."', '".$vacationLeaves."', '".$sickLeaves."', '".$employmentStatus."', '".$dateHired."', '".$dateRegularized."', 'Active')";
             return $addEmployee;
         }
 
@@ -703,7 +867,7 @@
                 mobileNumber, departmentName, position, basicPay, dailyRate, hourlyRate,
                 availableVL, availableSL, req_sss, req_pagIbig, req_philhealth, req_tin, req_nbi,
                 req_medicalExam, req_2x2pic, req_vaccineCard, req_psa, req_validID, req_helloMoney,
-                employmentStatus, dateHired, dateRegularized,
+                employmentStatus, dateHired, dateRegularized, leavePoints,
                 DATE_FORMAT(shifts.startTime, '%h:%i %p') AS startTime, 
                 DATE_FORMAT(shifts.endTime, '%h:%i %p') AS endTime
                 FROM ".$this->employees." AS employees
@@ -737,8 +901,8 @@
 
         public function getLeaveInfo($leaveID) {
             $request = "
-                SELECT requestID, employeeID,
-                leaveType, remarks, status, medCert,
+                SELECT requestID, employeeID, leaves.leaveTypeID,
+                leaveType, remarks, status, medCert, designationID,
                 CONCAT(firstName, ' ', lastName) AS employeeName,
                 DATE_FORMAT(dateFiled, '%M %d, %Y') AS dateFiled,
                 DATE_FORMAT(effectivityStartDate, '%M %d, %Y') AS effectivityStartDate,
@@ -755,7 +919,7 @@
         public function getChangeShiftInfo($changeShiftID) {
             $request = "
                 SELECT requestID, employeeID, remarks, status,
-                CONCAT(firstName, ' ', lastName) AS employeeName,
+                CONCAT(firstName, ' ', lastName) AS employeeName, designationID,
                 CONCAT(DATE_FORMAT(shift_1.startTime, '%h:%i %p'), ' - ', DATE_FORMAT(shift_1.endTime, '%h:%i %p')) AS currentShift,
                 CONCAT(DATE_FORMAT(shift_2.startTime, '%h:%i %p'), ' - ', DATE_FORMAT(shift_2.endTime, '%h:%i %p')) AS requestedShift,
                 DATE_FORMAT(dateFiled, '%M %d, %Y') AS dateFiled,
@@ -774,7 +938,7 @@
 
         public function getOTInfo($otID) {
             $request = "
-                SELECT requestID, employeeID, remarks, status, otType,
+                SELECT requestID, employeeID, remarks, status, otType, designationID,
                 DATE_FORMAT(fromTime, '%h:%i %p') AS fromTime,
                 DATE_FORMAT(toTime, '%h:%i %p') AS toTime,
                 CONCAT(firstName, ' ', lastName) AS employeeName,
@@ -831,10 +995,10 @@
             return $request;
         }
 
-        public function fileRequest($employeeID, $newshift, $effectivityStartDate, $effectivityEndDate, $remarks, $status) {
+        public function fileRequest($employeeID, $newshift, $remarks, $status) {
             $fileRequest = "
-                INSERT INTO ".$this->changeShift." (empID, dateFiled, requestedShift, effectivityStartDate, effectivityEndDate, remarks, status)
-                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$newshift', '$effectivityStartDate', '$effectivityEndDate', '$remarks', '$status')";
+                INSERT INTO ".$this->changeShift." (empID, dateFiled, requestedShift, remarks, status)
+                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$newshift', '$remarks', '$status')";
             return $fileRequest;
         }
 
@@ -845,6 +1009,77 @@
                 ORDER BY requestID DESC
                 LIMIT 1";
             return $request;
+        }
+
+        public function approveLeave($requestID) {
+            $approveRequest = "
+                UPDATE ".$this->leaves." SET status = 'Approved'
+                WHERE requestID = '$requestID'";
+            return $approveRequest;
+        }
+
+        public function approveChangeShift($requestID) {
+            $approveRequest = "
+                UPDATE ".$this->changeShift." SET status = 'Approved'
+                WHERE requestID = '$requestID'";
+            return $approveRequest;
+        }
+
+        public function disapproveLeave($requestID) {
+            $disapproveRequest = "
+                UPDATE ".$this->leaves." SET status = 'Disapproved'
+                WHERE requestID = '$requestID'";
+            return $disapproveRequest;
+        }
+
+        public function viewLeaveInfo($requestID) {
+            $request = "
+                SELECT empID
+                FROM ".$this->leaves." AS leaves
+                INNER JOIN ".$this->employees." AS employees
+                ON leaves.empID = employees.id
+                INNER JOIN ".$this->leaveType." AS leaveType
+                ON leaveType.leaveTypeID = leaves.leaveTypeID
+                WHERE requestID = '$requestID'";
+            return $request;
+        }
+
+        public function viewChangeShiftInfo($requestID) {
+            $request = "
+                SELECT requestID, empID, requestedShift
+                FROM ".$this->changeShift." AS changeShift
+                INNER JOIN ".$this->employees." AS employees
+                ON changeShift.empID = employees.id
+                INNER JOIN ".$this->shift." AS shift_1
+                ON shift_1.shiftID = employees.shiftID
+                INNER JOIN ".$this->shift." AS shift_2
+                ON shift_2.shiftID = changeShift.requestedShift
+                WHERE requestID = '$requestID'";
+            return $request;
+        }
+
+        public function viewOTInfo($requestID) {
+            $request = "
+                SELECT empID
+                FROM ".$this->filedOT." AS filedOT
+                INNER JOIN ".$this->employees." AS employees
+                ON filedOT.empID = employees.id
+                WHERE requestID = '$requestID'";
+            return $request;
+        }
+
+        public function updateShift($empID, $shiftID) {
+            $updateShift = "
+                UPDATE ".$this->employees." SET shiftID = '$shiftID'
+                WHERE id = '$empID'";
+            return $updateShift;
+        }
+
+        public function disapproveChangeShift($requestID) {
+            $disapproveRequest = "
+                UPDATE ".$this->changeShift." SET status = 'Disapproved'
+                WHERE requestID = '$requestID'";
+            return $disapproveRequest;
         }
 
         public function viewEmployeeAttendance() {
@@ -884,10 +1119,46 @@
 
         public function viewLeavePoints($id) {
             $leavePoints = "
-                SELECT leavePoints 
+                SELECT leavePoints, carryOverVLPoints
                 FROM ".$this->employees."
                 WHERE id = '$id'";
             return $leavePoints;
+        }
+
+        public function resignEmployee($id) {
+            $employee = "
+                UPDATE ".$this->employees." SET 
+                employmentStatus = 'Resigned',
+                e_status = 'Inactive'
+                WHERE id = '$id'";    
+            return $employee;
+        }
+
+        public function rehireEmployee($id) {
+            $employee = "
+                UPDATE ".$this->employees." SET 
+                employmentStatus = 'Probationary',
+                e_status = 'Active'
+                WHERE id = '$id'";    
+            return $employee;
+        }
+
+        public function viewAuditTrail() {
+            $auditTrail = "
+                SELECT auditTrailID, date, employees.firstName, employees.lastName, module, action, affected.firstName AS affectedFirstName, affected.lastName AS affectedLastName FROM ".$this->auditTrail ." AS auditTrail
+                INNER JOIN ".$this->employees." AS employees
+                ON auditTrail.empID = employees.id
+                INNER JOIN ".$this->employees." AS affected
+                ON auditTrail.affected_empID = affected.id
+                ORDER BY auditTrail.auditTrailID DESC";
+            return $auditTrail;
+        }
+        
+        public function auditTrail($empID, $module, $action, $affected_empID) {
+            $auditTrail = "
+                INSERT INTO ".$this->auditTrail." (date, empID, module, action, affected_empID)
+                VALUES (CURRENT_TIMESTAMP, '$empID', '$module', '$action', '$affected_empID')";
+            return $auditTrail;
         }
     }
 

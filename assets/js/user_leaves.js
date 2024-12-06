@@ -51,6 +51,38 @@ $(document).ready(function() {
         }
     });
 
+    $("select[id='leaveType']").on("change", function () {
+        const leaveDateInput = document.getElementById("effectivityStartDate");
+    
+        if ($(this).val() == 2) {
+            // Get today's date
+            const today = new Date();
+    
+            // Calculate the minimum date (14 days from today)
+            const minDate = new Date(today);
+            minDate.setDate(today.getDate() + 14);
+    
+            // Format the date as YYYY-MM-DD
+            const year = minDate.getFullYear();
+            const month = String(minDate.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
+            const day = String(minDate.getDate()).padStart(2, '0');
+            const formattedMinDate = `${year}-${month}-${day}`;
+    
+            // Set the minimum date attribute on the date input
+            const effectivityStartDate = document.getElementById("effectivityStartDate");
+            const effectivityEndDate = document.getElementById("effectivityEndDate");
+            effectivityStartDate.setAttribute("min", formattedMinDate);
+            effectivityEndDate.setAttribute("min", formattedMinDate);
+        } else {
+            // Remove the min attribute if the leaveType is not 2
+            if (effectivityStartDate) {
+                effectivityStartDate.removeAttribute("min");
+                effectivityEndDate.removeAttribute("min");
+            }
+        }
+    });
+    
+
     // FILE A LEAVE BUTTON
     $("#fileLeaveForm").submit(function (e) {
 

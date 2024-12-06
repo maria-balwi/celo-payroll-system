@@ -8,10 +8,18 @@
     $userID = $_POST['userID'];
 
     if ($loggedInUserPassword == $password) {
-        $sql = $conn->query("
-        UPDATE tbl_users SET
-        status = 'Active'
-        WHERE userID = '$userID'");
+        mysqli_query($conn, $employees->reactivateUser($userID));
+
+        // GET AFFECTED USER
+        $query = mysqli_query($conn, $employees->viewUser($userID));
+        $queryDetails = mysqli_fetch_array($query);
+        $at_affectedEmpID = $queryDetails['empID'];
+
+        // AUDIT TRAIL
+        $at_empID = $_SESSION['id'];
+        $at_module = "Admin - User List";
+        $at_action = "Reactivated User";
+        mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $at_affectedEmpID));
 
         $em = "User Account Reactivated Successfully";
         $error = array('error' => 0, 'em' => $em);

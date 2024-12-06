@@ -56,13 +56,25 @@
                     $_SESSION['password'] = $pass_word;
                     $_SESSION['activated'] = $userDetails['activated']; 
 
-                    // 1 HR SESSION 
+                    // SESSION TIMEOUT 
                     $_SESSION['start'] = time();
-                    $_SESSION['expire'] = $_SESSION['start'] + (60 * 60);
+                    if ($userDetails['levelID'] == 1) {
+                        $_SESSION['expire'] = $_SESSION['start'] + (60 * 3);
+                    }
+                    else if ($userDetails['levelID'] == 2) {
+                        $_SESSION['expire'] = $_SESSION['start'] + (60 * 10);
+                    }
+                    else if ($userDetails['levelID'] == 3) {
+                        $_SESSION['expire'] = $_SESSION['start'] + (60 * 60);
+                    }
+                    else if ($userDetails['levelID'] == 4) {
+                        $_SESSION['expire'] = $_SESSION['start'] + (60 * 10);
+                    }
 
                     // RETURN VALUES
                     $result[0] = '1';
                     $result[1] = $userDetails['levelID'];
+                    $result[2] = $userDetails['e_status'];
                     return $result;
                 }
                 else {
@@ -109,7 +121,7 @@
                 civilStatus, sss, pagIbig, philhealth, tin, 
                 DATE_FORMAT(startTime, '%h:%i %p') AS startTime,
                 DATE_FORMAT(endTime, '%h:%i %p') AS endTime, 
-                basicPay, dailyRate, hourlyRate,
+                basicPay, dailyRate, hourlyRate, leavePoints, availableVL, availableSL,
                 req_sss, req_pagIbig, req_philhealth, req_tin, req_nbi, 
                 req_medicalExam, req_2x2pic, req_vaccineCard, req_psa,
                 req_validID, req_helloMoney, employmentStatus, 

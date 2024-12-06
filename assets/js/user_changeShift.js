@@ -8,13 +8,12 @@ $(document).ready(function() {
         e.preventDefault();
 
         let requestForm = new FormData(this);
-        var employeeID = $('#employeeID').val();
         var newShift = $('#newShift').val();
-        var startDate = $('#effectivityStartDate').val();
-        var endDate = $('#effectivityEndDate').val();
+        // var startDate = $('#effectivityStartDate').val();
+        // var endDate = $('#effectivityEndDate').val();
         var purpose = $('#purpose').val();
 
-        if (employeeID == "" || newShift == "" || startDate == "" || endDate == "" || purpose == "") {
+        if (newShift == "" || purpose == "") {
             Swal.fire({
                 icon: 'warning',
                 title: 'Required Information',
@@ -94,9 +93,6 @@ $(document).ready(function() {
                     $('#viewDateFiled').val(res.data.dateFiled);
                     $('#viewName').val(res.data.employeeName);
                     $('#viewRequestedShift').val(res.data.requestedShift);
-                    // $('#viewInclusiveDates').val(res.data.effectivityStartDate+' - '+res.data.effectivityEndDate);
-                    $('#viewStartDate').val(res.data.effectivityStartDate);
-                    $('#viewEndDate').val(res.data.effectivityEndDate);
                     $('#viewPurpose').val(res.data.remarks);
                     $('#viewStatus').val(res.data.status);
                     $('#viewRequestModal').modal('show');
@@ -122,8 +118,6 @@ $(document).ready(function() {
                     $('#viewDateFiled').val(res.data.dateFiled);
                     $('#viewName').val(res.data.employeeName);
                     $('#viewRequestedShift').val(res.data.requestedShift);
-                    $('#viewStartDate').val(res.data.effectivityStartDate);
-                    $('#viewEndDate').val(res.data.effectivityEndDate);
                     $('#viewPurpose').val(res.data.remarks);
                     $('#viewStatus').val(res.data.status);
                 }

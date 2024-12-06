@@ -14,21 +14,6 @@
                 <div class="mr-4">
                     Change Shift Requests
                 </div>  
-
-                <!-- DATA RANGE DROPDOWN MENU -->
-                <div class="relative inline-block text-right">
-                    <div id="dropdownMenu" class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden">
-                        <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Today</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Yesterday</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Last 7 days</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Last 30 days</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">This Month</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Last Month</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Custom Range</a>
-                        </div>
-                    </div>
-                </div>
             </div>
             
             <!-- CONTENT -->
@@ -42,7 +27,7 @@
                                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee</th>
                                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Current Shift</th>
                                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Requested Shift</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Inclusive Dates</th>
+                                <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Inclusive Dates</th> -->
                                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                             </tr>
@@ -59,41 +44,81 @@
 
                                 if ($_SESSION['departmentID'] == 1) 
                                 {
-                                    $shiftQuery = mysqli_query($conn, $employees->viewChangeShiftRequestOperations());
-                                    while ($shiftDetails = mysqli_fetch_array($shiftQuery)) {
+                                    if ($_SESSION['designationID'] == 5) {
+                                        $shiftQuery = mysqli_query($conn, $employees->viewChangeShiftRequestOperationsManager());
+                                        while ($shiftDetails = mysqli_fetch_array($shiftQuery)) {
 
-                                        $shift_id = $shiftDetails['requestID'];
-                                        $shift_dateFiled = $shiftDetails['dateFiled'];
-                                        $shift_employeeName = $shiftDetails['firstName'] . " " . $shiftDetails['lastName'];
-                                        $shift_currentShift = $shiftDetails['currentShift'];
-                                        $shift_requestedShift = $shiftDetails['requestedShift'];
-                                        $shift_effectivityStartDate = $shiftDetails['effectivityStartDate'];
-                                        $shift_effectivityEndDate = $shiftDetails['effectivityEndDate'];
-                                        $shift_remarks = $shiftDetails['remarks'];
-                                        $shift_status = $shiftDetails['status'];
+                                            $shift_id = $shiftDetails['requestID'];
+                                            $shift_dateFiled = $shiftDetails['dateFiled'];
+                                            $shift_employeeName = $shiftDetails['firstName'] . " " . $shiftDetails['lastName'];
+                                            $shift_currentShift = $shiftDetails['currentShift'];
+                                            $shift_requestedShift = $shiftDetails['requestedShift'];
+                                            // $shift_effectivityStartDate = $shiftDetails['effectivityStartDate'];
+                                            // $shift_effectivityEndDate = $shiftDetails['effectivityEndDate'];
+                                            $shift_remarks = $shiftDetails['remarks'];
+                                            $shift_status = $shiftDetails['status'];
 
-                                        $shift_dateFiled = formatDate($shift_dateFiled);
-                                        $shift_effectivityStartDate = formatDate($shift_effectivityStartDate);
-                                        $shift_effectivityEndDate = formatDate($shift_effectivityEndDate);
-                                        $shift_effectivityDate = $shift_effectivityStartDate . " - " . $shift_effectivityEndDate;
+                                            $shift_dateFiled = formatDate($shift_dateFiled);
+                                            // $shift_effectivityStartDate = formatDate($shift_effectivityStartDate);
+                                            // $shift_effectivityEndDate = formatDate($shift_effectivityEndDate);
+                                            // $shift_effectivityDate = $shift_effectivityStartDate . " - " . $shift_effectivityEndDate;
 
-                                        echo "<tr data-id='" . $shift_id . "' class='changeshiftView cursor-pointer'>";
-                                        echo "<td class = ' whitespace-nowrap'>" . $shift_dateFiled . "</td>";
-                                        echo "<td class = ' whitespace-nowrap'>" . $shift_employeeName . "</td>";
-                                        echo "<td class = ' whitespace-nowrap'>" . $shift_currentShift . "</td>";
-                                        echo "<td class = ' whitespace-nowrap'>" . $shift_requestedShift . "</td>";
-                                        echo "<td class = ' whitespace-nowrap'>" . $shift_effectivityDate . "</td>";
-                                        echo "<td class = ' whitespace-nowrap'>" . $shift_remarks . "</td>";
-                                        if ($shift_status == "Pending") {
-                                            echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $shift_status . "</p></td>";
+                                            echo "<tr data-id='" . $shift_id . "' class='changeshiftView cursor-pointer'>";
+                                            echo "<td class = ' whitespace-nowrap'>" . $shift_dateFiled . "</td>";
+                                            echo "<td class = ' whitespace-nowrap'>" . $shift_employeeName . "</td>";
+                                            echo "<td class = ' whitespace-nowrap'>" . $shift_currentShift . "</td>";
+                                            echo "<td class = ' whitespace-nowrap'>" . $shift_requestedShift . "</td>";
+                                            // echo "<td class = ' whitespace-nowrap'>" . $shift_effectivityDate . "</td>";
+                                            echo "<td class = ' whitespace-nowrap'>" . $shift_remarks . "</td>";
+                                            if ($shift_status == "Pending") {
+                                                echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $shift_status . "</p></td>";
+                                            }
+                                            else if ($shift_status == "Approved") {
+                                                echo "<td><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $shift_status . "</p></td>";
+                                            }
+                                            else if ($shift_status == "Disapproved") {
+                                                echo "<td><p class='inline-block bg-red-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $shift_status . "</p></td>";
+                                            }
+                                            echo "</td>";
                                         }
-                                        else if ($shift_status == "Approved") {
-                                            echo "<td><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $shift_status . "</p></td>";
+                                    }
+                                    else if ($_SESSION['designationID'] == 4) {
+                                        $shiftQuery = mysqli_query($conn, $employees->viewChangeShiftRequestOperationsTL());
+                                        while ($shiftDetails = mysqli_fetch_array($shiftQuery)) {
+
+                                            $shift_id = $shiftDetails['requestID'];
+                                            $shift_dateFiled = $shiftDetails['dateFiled'];
+                                            $shift_employeeName = $shiftDetails['firstName'] . " " . $shiftDetails['lastName'];
+                                            $shift_currentShift = $shiftDetails['currentShift'];
+                                            $shift_requestedShift = $shiftDetails['requestedShift'];
+                                            // $shift_effectivityStartDate = $shiftDetails['effectivityStartDate'];
+                                            // $shift_effectivityEndDate = $shiftDetails['effectivityEndDate'];
+                                            $shift_remarks = $shiftDetails['remarks'];
+                                            $shift_status = $shiftDetails['status'];
+
+                                            $shift_dateFiled = formatDate($shift_dateFiled);
+                                            // $shift_effectivityStartDate = formatDate($shift_effectivityStartDate);
+                                            // $shift_effectivityEndDate = formatDate($shift_effectivityEndDate);
+                                            // $shift_effectivityDate = $shift_effectivityStartDate . " - " . $shift_effectivityEndDate;
+
+                                            echo "<tr data-id='" . $shift_id . "' class='changeshiftView cursor-pointer'>";
+                                            echo "<td class = ' whitespace-nowrap'>" . $shift_dateFiled . "</td>";
+                                            echo "<td class = ' whitespace-nowrap'>" . $shift_employeeName . "</td>";
+                                            echo "<td class = ' whitespace-nowrap'>" . $shift_currentShift . "</td>";
+                                            echo "<td class = ' whitespace-nowrap'>" . $shift_requestedShift . "</td>";
+                                            // echo "<td class = ' whitespace-nowrap'>" . $shift_effectivityDate . "</td>";
+                                            echo "<td class = ' whitespace-nowrap'>" . $shift_remarks . "</td>";
+                                            if ($shift_status == "Pending") {
+                                                echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $shift_status . "</p></td>";
+                                            }
+                                            else if ($shift_status == "Approved") {
+                                                echo "<td><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $shift_status . "</p></td>";
+                                            }
+                                            else if ($shift_status == "Disapproved") {
+                                                echo "<td><p class='inline-block bg-red-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $shift_status . "</p></td>";
+                                            }
+                                            echo "</td>";
                                         }
-                                        else if ($shift_status == "Disapproved") {
-                                            echo "<td><p class='inline-block bg-red-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $shift_status . "</p></td>";
-                                        }
-                                        echo "</td>";
                                     }
                                 }
                                 else 
@@ -106,22 +131,22 @@
                                         $shift_employeeName = $shiftDetails['firstName'] . " " . $shiftDetails['lastName'];
                                         $shift_currentShift = $shiftDetails['currentShift'];
                                         $shift_requestedShift = $shiftDetails['requestedShift'];
-                                        $shift_effectivityStartDate = $shiftDetails['effectivityStartDate'];
-                                        $shift_effectivityEndDate = $shiftDetails['effectivityEndDate'];
+                                        // $shift_effectivityStartDate = $shiftDetails['effectivityStartDate'];
+                                        // $shift_effectivityEndDate = $shiftDetails['effectivityEndDate'];
                                         $shift_remarks = $shiftDetails['remarks'];
                                         $shift_status = $shiftDetails['status'];
 
                                         $shift_dateFiled = formatDate($shift_dateFiled);
-                                        $shift_effectivityStartDate = formatDate($shift_effectivityStartDate);
-                                        $shift_effectivityEndDate = formatDate($shift_effectivityEndDate);
-                                        $shift_effectivityDate = $shift_effectivityStartDate . " - " . $shift_effectivityEndDate;
+                                        // $shift_effectivityStartDate = formatDate($shift_effectivityStartDate);
+                                        // $shift_effectivityEndDate = formatDate($shift_effectivityEndDate);
+                                        // $shift_effectivityDate = $shift_effectivityStartDate . " - " . $shift_effectivityEndDate;
 
                                         echo "<tr data-id='" . $shift_id . "' class='changeshiftView cursor-pointer'>";
                                         echo "<td class = ' whitespace-nowrap'>" . $shift_dateFiled . "</td>";
                                         echo "<td class = ' whitespace-nowrap'>" . $shift_employeeName . "</td>";
                                         echo "<td class = ' whitespace-nowrap'>" . $shift_currentShift . "</td>";
                                         echo "<td class = ' whitespace-nowrap'>" . $shift_requestedShift . "</td>";
-                                        echo "<td class = ' whitespace-nowrap'>" . $shift_effectivityDate . "</td>";
+                                        // echo "<td class = ' whitespace-nowrap'>" . $shift_effectivityDate . "</td>";
                                         echo "<td class = ' whitespace-nowrap'>" . $shift_remarks . "</td>";
                                         if ($shift_status == "Pending") {
                                             echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $shift_status . "</p></td>";
@@ -212,7 +237,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-2">
+                                <!-- <div class="row g-2 mb-2">
                                     <div class="col-3">
                                         <label for="viewStartDate">Inclusive Dates</label>
                                     </div>
@@ -225,7 +250,7 @@
                                     <div class="col-6">
                                         <input type="text" class="form-control" id="viewEndDate" disabled>
                                     </div>
-                                </div>
+                                </div> -->
 
                                 <div class="row g-2 mb-2">
                                     <div class="col-3">

@@ -83,7 +83,7 @@
 
                                     // GET MONTHLY ATTENDANCE
                                     $monthlyAttendanceQuery = mysqli_query($conn, $attendance->getMonthlyAttendance($teamOperations_id, $year, $month));
-                                    $monthlyAttendance = mysqli_num_rows($monthlyAttendanceQuery);
+                                    $monthlyAttendance = round(mysqli_num_rows($monthlyAttendanceQuery) / 2);
 
                                     // GET MONTHLY ABSENCES
                                     $workingDays = $attendance->getWorkingDaysInMonth($year, $month);
@@ -128,7 +128,7 @@
 
                                     // GET MONTHLY ATTENDANCE
                                     $monthlyAttendanceQuery = mysqli_query($conn, $attendance->getMonthlyAttendance($teamIT_id, $year, $month));
-                                    $monthlyAttendance = mysqli_num_rows($monthlyAttendanceQuery);
+                                    $monthlyAttendance = round(mysqli_num_rows($monthlyAttendanceQuery) / 2);
 
                                     // GET MONTHLY ABSENCES
                                     $workingDays = $attendance->getWorkingDaysInMonth($year, $month);

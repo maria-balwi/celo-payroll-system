@@ -4,7 +4,8 @@ function formatNumberWithCommas(number) {
 
 $(document).ready(function() {
 
-    $('#employeeTable').DataTable();
+    $('#activeEmployeeTable').DataTable();
+    $('#resignedEmployeeTable').DataTable();
 
     // INPUT MASK - ADD EMPLOYEE
     $('#sss').inputmask('99-9999999-9', {
@@ -54,40 +55,7 @@ $(document).ready(function() {
 
     $('#updateEmployeeID').inputmask('999-999', {
         placeholder: 'XXX-XXX'
-    });
-
-    $("select[id='designation']").on("change", function() {
-        $("input[id='basicPay']").val('');
-        $("input[id='dailyRate']").val('');
-        $("input[id='hourlyRate']").val('');
-        if ($(this).val() == "Facilities") {
-            // HOURLY RATE COMPUTATION - ADD EMPLOYEE
-            $("input[id='basicPay']").on("input", function() {
-                var basicPay = $(this).val();
-                var dailyRate = (basicPay * 12 / 313).toFixed(2);
-                $('#dailyRate').val(dailyRate).trigger('input');
-            });
-
-            $("input[id='dailyRate']").on("input", function() {
-                var dailyRate = $(this).val();
-                var hourlyRate = (dailyRate / 12).toFixed(2);
-                $('#hourlyRate').val(hourlyRate);
-            });
-        } else {
-            // HOURLY RATE COMPUTATION - ADD EMPLOYEE
-            $("input[id='basicPay']").on("input", function() {
-                var basicPay = $(this).val();
-                var dailyRate = (basicPay * 12 / 261).toFixed(2);
-                $('#dailyRate').val(dailyRate).trigger('input');
-            });
-
-            $("input[id='dailyRate']").on("input", function() {
-                var dailyRate = $(this).val();
-                var hourlyRate = (dailyRate / 8).toFixed(2);
-                $('#hourlyRate').val(hourlyRate);
-            });
-        }
-    });    
+    });  
 
     $("select[id='updateDesignation']").on("change", function() {
         $("input[id='updateBasicPay']").val('');
@@ -154,30 +122,63 @@ $(document).ready(function() {
         $('#updateDateRegularized').val(regularizedDate);
     });
 
-    // // HOURLY RATE COMPUTATION - ADD EMPLOYEE
-    // $("input[id='basicPay']").on("input", function() {
-    //     var basicPay = $(this).val();
-    //     var dailyRate = (basicPay * 12 / 261).toFixed(2);
-    // });
+    // HOURLY RATE COMPUTATION - ADD EMPLOYEE
+    $("input[id='basicPay']").on("input", function() {
+        var basicPay = $(this).val();
+        var dailyRate = (basicPay * 12 / 261).toFixed(2);
+    });
 
-    // $("input[id='dailyRate']").on("input", function() {
-    //     var dailyRate = $(this).val();
-    //     var hourlyRate = (dailyRate / 8).toFixed(2);
-    //     $('#hourlyRate').val(hourlyRate);
-    // });
+    $("input[id='dailyRate']").on("input", function() {
+        var dailyRate = $(this).val();
+        var hourlyRate = (dailyRate / 8).toFixed(2);
+        $('#hourlyRate').val(hourlyRate);
+    });
 
-    // // HOURLY RATE COMPUTATION - UPDATE EMPLOYEE
-    // $("input[id='updateBasicPay']").on("input", function() {
-    //     var basicPay = $(this).val();
-    //     var dailyRate = (basicPay * 12 / 261).toFixed(2);
-    //     $('#updateDailyRate').val(dailyRate).trigger('input');
-    // });
+    // HOURLY RATE COMPUTATION - UPDATE EMPLOYEE
+    $("input[id='updateBasicPay']").on("input", function() {
+        var basicPay = $(this).val();
+        var dailyRate = (basicPay * 12 / 261).toFixed(2);
+        $('#updateDailyRate').val(dailyRate).trigger('input');
+    });
 
-    // $("input[id='updateDailyRate']").on("input", function() {
-    //     var dailyRate = $(this).val();
-    //     var hourlyRate = (dailyRate / 8).toFixed(2);
-    //     $('#updateHourlyRate').val(hourlyRate);
-    // });
+    $("input[id='updateDailyRate']").on("input", function() {
+        var dailyRate = $(this).val();
+        var hourlyRate = (dailyRate / 8).toFixed(2);
+        $('#updateHourlyRate').val(hourlyRate);
+    });
+
+    // $("select[id='designation']").on("change", function() {
+    //     $("input[id='basicPay']").val('');
+    //     $("input[id='dailyRate']").val('');
+    //     $("input[id='hourlyRate']").val('');
+    //     if ($(this).val() == "Facilities") {
+    //         // HOURLY RATE COMPUTATION - ADD EMPLOYEE
+    //         $("input[id='basicPay']").on("input", function() {
+    //             var basicPay = $(this).val();
+    //             var dailyRate = (basicPay * 12 / 313).toFixed(2);
+    //             $('#dailyRate').val(dailyRate).trigger('input');
+    //         });
+
+    //         $("input[id='dailyRate']").on("input", function() {
+    //             var dailyRate = $(this).val();
+    //             var hourlyRate = (dailyRate / 12).toFixed(2);
+    //             $('#hourlyRate').val(hourlyRate);
+    //         });
+    //     } else {
+    //         // HOURLY RATE COMPUTATION - ADD EMPLOYEE
+    //         $("input[id='basicPay']").on("input", function() {
+    //             var basicPay = $(this).val();
+    //             var dailyRate = (basicPay * 12 / 261).toFixed(2);
+    //             $('#dailyRate').val(dailyRate).trigger('input');
+    //         });
+
+    //         $("input[id='dailyRate']").on("input", function() {
+    //             var dailyRate = $(this).val();
+    //             var hourlyRate = (dailyRate / 8).toFixed(2);
+    //             $('#hourlyRate').val(hourlyRate);
+    //         });
+    //     }
+    // });  
 
     
     // CHECKBOXES FOR REQUIREMENTS - SSS, PAGIBIG, PHILHEALTH, TIN (ADD EMPLOYEE)
@@ -425,6 +426,7 @@ $(document).ready(function() {
     })
 
     $('.cashAdvancePart').hide();
+    $('.viewDateRegularizedLabel').hide();
 
     // ADD EMPLOYEE
     $("#addEmployeeForm").submit(function (e) {
@@ -457,7 +459,7 @@ $(document).ready(function() {
         if (lastName == "" || firstName == "" || gender == "" || civilStatus == "" || 
             address == "" || dateOfBirth == "" || placeOfBirth == "" ||
             emailAddress == "" || employeeID == "" || mobileNumber == "" ||
-            department == "" || designation == "" || shiftID == "" ||  
+            department == "" || designation == "" ||
             employmentStatus == "" || dateHired == "" ||
             basicPay == "" || dailyRate == "" || hourlyRate == "" || 
             vacationLeaves == "" || sickLeaves == "") {
@@ -514,7 +516,7 @@ $(document).ready(function() {
         }
     });
 
-    // VIEW AND UPDATE EMPLOYEE
+    // VIEW, UPDATE, DELETE EMPLOYEE
     var array = [];
     $(document).on('click', '.employeeView', function() {
         var employee_id = $(this).data('id');
@@ -532,7 +534,7 @@ $(document).ready(function() {
                 if (res.status == 404) {
                     alert(res.message);
                 } 
-                else if (res.status == 200 & res.data.cashAdvance != null) {
+                else if (res.status == 200) {
                     $('#viewID').val(res.data.id);
                     $('#viewLastName').val(res.data.lastName);
                     $('#viewFirstName').val(res.data.firstName);
@@ -553,14 +555,31 @@ $(document).ready(function() {
                     $('#viewShiftID').val(res.data.startTime + ' - ' + res.data.endTime);
                     $('#viewEmploymentStatus').val(res.data.employmentStatus);
                     $('#viewDateHired').val(res.data.dateHired);
+                    $('#viewLeavePoints').val(res.data.leavePoints);
+
                     $('#viewDateRegularized').val(res.data.dateRegularized);
+                    if (res.data.employmentStatus == 'Regular') {
+                        $('.viewDateRegularizedLabel').show();
+                    }
+                    else {
+                        $('.viewDateRegularizedLabel').hide();
+                    }
+
+                    
                     $('#viewBasicPay').val(res.data.basicPay);
                     $('#viewDailyRate').val(res.data.dailyRate);
                     $('#viewHourlyRate').val(res.data.hourlyRate);
                     $('#viewVacationLeaves').val(res.data.availableVL);
                     $('#viewSickLeaves').val(res.data.availableSL);
-                    $('#viewCashAdvance').val(res.data.cashAdvance);
-                    $('.cashAdvancePart').show();
+
+                    if (res.data.cashAdvance == null || res.data.cashAdvance == "0") { 
+                        $('.cashAdvancePart').hide();
+                    }
+                    else {
+                        $('#viewCashAdvance').val(res.data.cashAdvance);
+                        $('.cashAdvancePart').show();
+                    }
+
                     $('#view_req_sss').val(res.data.req_sss == 1 ? $('#view_req_sss').prop('checked', true) : $('#view_req_sss').prop('checked', false));
                     $('#view_req_pagIbig').val(res.data.req_pagIbig == 1 ? $('#view_req_pagIbig').prop('checked', true) : $('#view_req_pagIbig').prop('checked', false));
                     $('#view_req_philhealth').val(res.data.req_philhealth == 1 ? $('#view_req_philhealth').prop('checked', true) : $('#view_req_philhealth').prop('checked', false));
@@ -672,144 +691,175 @@ $(document).ready(function() {
                             });
                     });
                 }
-                else  {
-                    $('#viewID').val(res.data.id);
-                    $('#viewLastName').val(res.data.lastName);
-                    $('#viewFirstName').val(res.data.firstName);
-                    $('#viewGender').val(res.data.gender);
-                    $('#viewCivilStatus').val(res.data.civilStatus);
-                    $('#viewAddress').val(res.data.address);
-                    $('#viewDateOfBirth').val(res.data.dateOfBirth);
-                    $('#viewPlaceOfBirth').val(res.data.placeOfBirth);
-                    $('#viewsss').val(res.data.sss);
-                    $('#viewpagIbig').val(res.data.pagIbig);
-                    $('#viewphilhealth').val(res.data.philhealth);
-                    $('#viewtin').val(res.data.tin);
-                    $('#viewEmailAddress').val(res.data.emailAddress);
-                    $('#viewEmployeeID').val(res.data.employeeID);
-                    $('#viewMobileNumber').val(res.data.mobileNumber);
-                    $('#viewDepartment').val(res.data.departmentName);
-                    $('#viewDesignation').val(res.data.position);
-                    $('#viewShiftID').val(res.data.startTime + ' - ' + res.data.endTime);
-                    $('#viewEmploymentStatus').val(res.data.employmentStatus);
-                    $('#viewDateHired').val(res.data.dateHired);
-                    $('#viewDateRegularized').val(res.data.dateRegularized);
-                    $('#viewBasicPay').val(res.data.basicPay);
-                    $('#viewDailyRate').val(res.data.dailyRate);
-                    $('#viewHourlyRate').val(res.data.hourlyRate);
-                    $('#viewVacationLeaves').val(res.data.availableVL);
-                    $('#viewSickLeaves').val(res.data.availableSL);
-                    $('#view_req_sss').val(res.data.req_sss == 1 ? $('#view_req_sss').prop('checked', true) : $('#view_req_sss').prop('checked', false));
-                    $('#view_req_pagIbig').val(res.data.req_pagIbig == 1 ? $('#view_req_pagIbig').prop('checked', true) : $('#view_req_pagIbig').prop('checked', false));
-                    $('#view_req_philhealth').val(res.data.req_philhealth == 1 ? $('#view_req_philhealth').prop('checked', true) : $('#view_req_philhealth').prop('checked', false));
-                    $('#view_req_tin').val(res.data.req_tin == 1 ? $('#view_req_tin').prop('checked', true) : $('#view_req_tin').prop('checked', false));
-                    $('#view_req_nbi').val(res.data.req_nbi == 1 ? $('#view_req_nbi').prop('checked', true) : $('#view_req_nbi').prop('checked', false));
-                    $('#view_req_medicalExam').val(res.data.req_medicalExam == 1 ? $('#view_req_medicalExam').prop('checked', true) : $('#view_req_medicalExam').prop('checked', false));
-                    $('#view_req_2x2pic').val(res.data.req_2x2pic == 1 ? $('#view_req_2x2pic').prop('checked', true) : $('#view_req_2x2pic').prop('checked', false));
-                    $('#view_req_vaccineCard').val(res.data.req_vaccineCard == 1 ? $('#view_req_vaccineCard').prop('checked', true) : $('#view_req_vaccineCard').prop('checked', false));
-                    $('#view_req_psa').val(res.data.req_psa == 1 ? $('#view_req_psa').prop('checked', true) : $('#view_req_psa').prop('checked', false));
-                    $('#view_req_validID').val(res.data.req_validID == 1 ? $('#view_req_validID').prop('checked', true) : $('#view_req_validID').prop('checked', false));
-                    $('#view_req_helloMoney').val(res.data.req_helloMoney == 1 ? $('#view_req_helloMoney').prop('checked', true) : $('#view_req_helloMoney').prop('checked', false));
+                // else if (res.status == 200 & res.data.employmentStatus == "Resigned") {
+                //     $('#res_viewID').val(res.data.id);
+                //     $('#res_viewLastName').val(res.data.lastName);
+                //     $('#res_viewFirstName').val(res.data.firstName);
+                //     $('#res_viewGender').val(res.data.gender);
+                //     $('#res_viewCivilStatus').val(res.data.civilStatus);
+                //     $('#res_viewAddress').val(res.data.address);
+                //     $('#res_viewDateOfBirth').val(res.data.dateOfBirth);
+                //     $('#res_viewPlaceOfBirth').val(res.data.placeOfBirth);
+                //     $('#res_viewsss').val(res.data.sss);
+                //     $('#res_viewpagIbig').val(res.data.pagIbig);
+                //     $('#res_viewphilhealth').val(res.data.philhealth);
+                //     $('#res_viewtin').val(res.data.tin);
+                //     $('#res_viewEmailAddress').val(res.data.emailAddress);
+                //     $('#res_viewEmployeeID').val(res.data.employeeID);
+                //     $('#res_viewMobileNumber').val(res.data.mobileNumber);
+                //     $('#res_viewDepartment').val(res.data.departmentName);
+                //     $('#res_viewDesignation').val(res.data.position);
+                //     $('#res_viewShiftID').val(res.data.startTime + ' - ' + res.data.endTime);
+                //     $('#res_viewEmploymentStatus').val(res.data.employmentStatus);
+                //     $('#res_viewDateHired').val(res.data.dateHired);
+                //     $('#res_viewDateRegularized').val(res.data.dateRegularized);
+                //     $('#res_viewBasicPay').val(res.data.basicPay);
+                //     $('#res_viewDailyRate').val(res.data.dailyRate);
+                //     $('#res_viewHourlyRate').val(res.data.hourlyRate);
+                //     $('#res_viewVacationLeaves').val(res.data.availableVL);
+
+                //     // Show the modal
+                //     $('#viewResignedModal').modal('show');
+
+                // }
+                // else  {
+                //     $('#viewID').val(res.data.id);
+                //     $('#viewLastName').val(res.data.lastName);
+                //     $('#viewFirstName').val(res.data.firstName);
+                //     $('#viewGender').val(res.data.gender);
+                //     $('#viewCivilStatus').val(res.data.civilStatus);
+                //     $('#viewAddress').val(res.data.address);
+                //     $('#viewDateOfBirth').val(res.data.dateOfBirth);
+                //     $('#viewPlaceOfBirth').val(res.data.placeOfBirth);
+                //     $('#viewsss').val(res.data.sss);
+                //     $('#viewpagIbig').val(res.data.pagIbig);
+                //     $('#viewphilhealth').val(res.data.philhealth);
+                //     $('#viewtin').val(res.data.tin);
+                //     $('#viewEmailAddress').val(res.data.emailAddress);
+                //     $('#viewEmployeeID').val(res.data.employeeID);
+                //     $('#viewMobileNumber').val(res.data.mobileNumber);
+                //     $('#viewDepartment').val(res.data.departmentName);
+                //     $('#viewDesignation').val(res.data.position);
+                //     $('#viewShiftID').val(res.data.startTime + ' - ' + res.data.endTime);
+                //     $('#viewEmploymentStatus').val(res.data.employmentStatus);
+                //     $('#viewDateHired').val(res.data.dateHired);
+                //     $('#viewDateRegularized').val(res.data.dateRegularized);
+                //     $('#viewBasicPay').val(res.data.basicPay);
+                //     $('#viewDailyRate').val(res.data.dailyRate);
+                //     $('#viewHourlyRate').val(res.data.hourlyRate);
+                //     $('#viewVacationLeaves').val(res.data.availableVL);
+                //     $('#viewSickLeaves').val(res.data.availableSL);
+                //     $('#view_req_sss').val(res.data.req_sss == 1 ? $('#view_req_sss').prop('checked', true) : $('#view_req_sss').prop('checked', false));
+                //     $('#view_req_pagIbig').val(res.data.req_pagIbig == 1 ? $('#view_req_pagIbig').prop('checked', true) : $('#view_req_pagIbig').prop('checked', false));
+                //     $('#view_req_philhealth').val(res.data.req_philhealth == 1 ? $('#view_req_philhealth').prop('checked', true) : $('#view_req_philhealth').prop('checked', false));
+                //     $('#view_req_tin').val(res.data.req_tin == 1 ? $('#view_req_tin').prop('checked', true) : $('#view_req_tin').prop('checked', false));
+                //     $('#view_req_nbi').val(res.data.req_nbi == 1 ? $('#view_req_nbi').prop('checked', true) : $('#view_req_nbi').prop('checked', false));
+                //     $('#view_req_medicalExam').val(res.data.req_medicalExam == 1 ? $('#view_req_medicalExam').prop('checked', true) : $('#view_req_medicalExam').prop('checked', false));
+                //     $('#view_req_2x2pic').val(res.data.req_2x2pic == 1 ? $('#view_req_2x2pic').prop('checked', true) : $('#view_req_2x2pic').prop('checked', false));
+                //     $('#view_req_vaccineCard').val(res.data.req_vaccineCard == 1 ? $('#view_req_vaccineCard').prop('checked', true) : $('#view_req_vaccineCard').prop('checked', false));
+                //     $('#view_req_psa').val(res.data.req_psa == 1 ? $('#view_req_psa').prop('checked', true) : $('#view_req_psa').prop('checked', false));
+                //     $('#view_req_validID').val(res.data.req_validID == 1 ? $('#view_req_validID').prop('checked', true) : $('#view_req_validID').prop('checked', false));
+                //     $('#view_req_helloMoney').val(res.data.req_helloMoney == 1 ? $('#view_req_helloMoney').prop('checked', true) : $('#view_req_helloMoney').prop('checked', false));
                     
-                    // UPDATE ALLOWANCES SECTION
-                    var allowancesHTML = '';
-                    res.allowances.forEach(function(allowance) {
-                        allowancesHTML += '<div class="flex justify-between items-center bg-white p-2 border border-gray-200">';
-                        allowancesHTML += '<span>' + allowance.allowanceName + '</span>';
-                        allowancesHTML += '<p class="text-sm bg-green-500 text-white py-1 px-2 rounded-full my-auto">₱ ' + allowance.amount + '</p>';
-                        allowancesHTML += '<button class="p-2 rounded deleteAllowance" data-id="' + allowance.empAllowanceID + '">';
-                        allowancesHTML += '<svg class="h-5 w-5 text-gray-800"  fill="none" viewBox="0 0 24 24" stroke="currentColor">';
-                        allowancesHTML += '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>';
-                        allowancesHTML += '</svg>';
-                        allowancesHTML += '</button>';
-                        allowancesHTML += '</div>';
-                    });
-                    $('#allowancesSection').html(allowancesHTML);
+                //     // UPDATE ALLOWANCES SECTION
+                //     var allowancesHTML = '';
+                //     res.allowances.forEach(function(allowance) {
+                //         allowancesHTML += '<div class="flex justify-between items-center bg-white p-2 border border-gray-200">';
+                //         allowancesHTML += '<span>' + allowance.allowanceName + '</span>';
+                //         allowancesHTML += '<p class="text-sm bg-green-500 text-white py-1 px-2 rounded-full my-auto">₱ ' + allowance.amount + '</p>';
+                //         allowancesHTML += '<button class="p-2 rounded deleteAllowance" data-id="' + allowance.empAllowanceID + '">';
+                //         allowancesHTML += '<svg class="h-5 w-5 text-gray-800"  fill="none" viewBox="0 0 24 24" stroke="currentColor">';
+                //         allowancesHTML += '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>';
+                //         allowancesHTML += '</svg>';
+                //         allowancesHTML += '</button>';
+                //         allowancesHTML += '</div>';
+                //     });
+                //     $('#allowancesSection').html(allowancesHTML);
 
-                    // UPDATE REIMBURSEMENTS SECTION
-                    var reimbursementsHTML = '';
-                    res.reimbursements.forEach(function(reimbursement) {
-                        reimbursementsHTML += '<div class="flex justify-between items-center bg-white p-2 border border-gray-200">';
-                        reimbursementsHTML += '<span>' + reimbursement.reimbursementName + '</span>';
-                        reimbursementsHTML += '<p class="text-sm bg-green-500 text-white py-1 px-2 rounded-full my-auto">₱ ' + reimbursement.amount + '</p>';
-                        reimbursementsHTML += '<button class="p-2 rounded deleteReimbursement" data-id="' + reimbursement.empReimbursementID + '">';
-                        reimbursementsHTML += '<svg class="h-5 w-5 text-gray-800"  fill="none" viewBox="0 0 24 24" stroke="currentColor">';
-                        reimbursementsHTML += '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>';
-                        reimbursementsHTML += '</svg>';
-                        reimbursementsHTML += '</button>';
-                        reimbursementsHTML += '</div>';
-                    });
-                    $('#reimbursementsSection').html(reimbursementsHTML);
+                //     // UPDATE REIMBURSEMENTS SECTION
+                //     var reimbursementsHTML = '';
+                //     res.reimbursements.forEach(function(reimbursement) {
+                //         reimbursementsHTML += '<div class="flex justify-between items-center bg-white p-2 border border-gray-200">';
+                //         reimbursementsHTML += '<span>' + reimbursement.reimbursementName + '</span>';
+                //         reimbursementsHTML += '<p class="text-sm bg-green-500 text-white py-1 px-2 rounded-full my-auto">₱ ' + reimbursement.amount + '</p>';
+                //         reimbursementsHTML += '<button class="p-2 rounded deleteReimbursement" data-id="' + reimbursement.empReimbursementID + '">';
+                //         reimbursementsHTML += '<svg class="h-5 w-5 text-gray-800"  fill="none" viewBox="0 0 24 24" stroke="currentColor">';
+                //         reimbursementsHTML += '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>';
+                //         reimbursementsHTML += '</svg>';
+                //         reimbursementsHTML += '</button>';
+                //         reimbursementsHTML += '</div>';
+                //     });
+                //     $('#reimbursementsSection').html(reimbursementsHTML);
 
-                    // UPDATE DEDUCTIONS SECTION
-                    var deductionsHTML = '';
-                    res.deductions.forEach(function(deduction) {
-                        deductionsHTML += '<div class="flex justify-between items-center bg-white p-2 border border-gray-200">';
-                        deductionsHTML += '<span>' + deduction.deductionName + '</span>';
-                        deductionsHTML += '<p class="text-sm bg-red-500 text-white py-1 px-2 rounded-full my-auto">₱ ' + deduction.amount + '</p>';
-                        deductionsHTML += '<button class="p-2 rounded deleteDeduction" data-id="' + deduction.empDeductionID + '">';
-                        deductionsHTML += '<svg class="h-5 w-5 text-gray-800"  fill="none" viewBox="0 0 24 24" stroke="currentColor">';
-                        deductionsHTML += '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>';
-                        deductionsHTML += '</svg>';
-                        deductionsHTML += '</button>';
-                        deductionsHTML += '</div>';
-                    });
-                    $('#deductionsSection').html(deductionsHTML);
+                //     // UPDATE DEDUCTIONS SECTION
+                //     var deductionsHTML = '';
+                //     res.deductions.forEach(function(deduction) {
+                //         deductionsHTML += '<div class="flex justify-between items-center bg-white p-2 border border-gray-200">';
+                //         deductionsHTML += '<span>' + deduction.deductionName + '</span>';
+                //         deductionsHTML += '<p class="text-sm bg-red-500 text-white py-1 px-2 rounded-full my-auto">₱ ' + deduction.amount + '</p>';
+                //         deductionsHTML += '<button class="p-2 rounded deleteDeduction" data-id="' + deduction.empDeductionID + '">';
+                //         deductionsHTML += '<svg class="h-5 w-5 text-gray-800"  fill="none" viewBox="0 0 24 24" stroke="currentColor">';
+                //         deductionsHTML += '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>';
+                //         deductionsHTML += '</svg>';
+                //         deductionsHTML += '</button>';
+                //         deductionsHTML += '</div>';
+                //     });
+                //     $('#deductionsSection').html(deductionsHTML);
 
-                    // UPDATE ADJUSTMENTS SECTION
-                    var adjustmentsHTML = '';
-                    res.adjustments.forEach(function(adjustment) {
-                        adjustmentsHTML += '<div class="flex justify-between items-center bg-white p-2 border border-gray-200">';
-                        adjustmentsHTML += '<span>' + adjustment.adjustmentName + '</span>';
-                        if (adjustment.adjustmentType == 'Add') {
-                            adjustmentsHTML += '<p class="text-sm bg-green-500 text-white py-1 px-2 rounded-full my-auto">₱ ' + adjustment.amount + '</p>';
-                        }
-                        else {
-                            adjustmentsHTML += '<p class="text-sm bg-red-500 text-white py-1 px-2 rounded-full my-auto">₱ ' + adjustment.amount + '</p>';
-                        }
-                        adjustmentsHTML += '<button class="p-2 rounded deleteAdjustment" data-id="' + adjustment.empAdjustmentID + '">';
-                        adjustmentsHTML += '<svg class="h-5 w-5 text-gray-800"  fill="none" viewBox="0 0 24 24" stroke="currentColor">';
-                        adjustmentsHTML += '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>';
-                        adjustmentsHTML += '</svg>';
-                        adjustmentsHTML += '</button>';
-                        adjustmentsHTML += '</div>';
-                    });
-                    $('#adjustmentsSection').html(adjustmentsHTML);
+                //     // UPDATE ADJUSTMENTS SECTION
+                //     var adjustmentsHTML = '';
+                //     res.adjustments.forEach(function(adjustment) {
+                //         adjustmentsHTML += '<div class="flex justify-between items-center bg-white p-2 border border-gray-200">';
+                //         adjustmentsHTML += '<span>' + adjustment.adjustmentName + '</span>';
+                //         if (adjustment.adjustmentType == 'Add') {
+                //             adjustmentsHTML += '<p class="text-sm bg-green-500 text-white py-1 px-2 rounded-full my-auto">₱ ' + adjustment.amount + '</p>';
+                //         }
+                //         else {
+                //             adjustmentsHTML += '<p class="text-sm bg-red-500 text-white py-1 px-2 rounded-full my-auto">₱ ' + adjustment.amount + '</p>';
+                //         }
+                //         adjustmentsHTML += '<button class="p-2 rounded deleteAdjustment" data-id="' + adjustment.empAdjustmentID + '">';
+                //         adjustmentsHTML += '<svg class="h-5 w-5 text-gray-800"  fill="none" viewBox="0 0 24 24" stroke="currentColor">';
+                //         adjustmentsHTML += '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>';
+                //         adjustmentsHTML += '</svg>';
+                //         adjustmentsHTML += '</button>';
+                //         adjustmentsHTML += '</div>';
+                //     });
+                //     $('#adjustmentsSection').html(adjustmentsHTML);
 
-                    // Show the modal
-                    $('#viewEmployeeModal').modal('show');
+                //     // Show the modal
+                //     $('#viewEmployeeModal').modal('show');
 
-                    let employeeID_string = res.data.employeeID;
-                    $('#viewProfilePicture').click(function() {
-                        const imagePath = '../assets/images/profiles/' + employeeID_string.replace("-", "") + '.png'; // Set your directory path here
+                //     let employeeID_string = res.data.employeeID;
+                //     $('#viewProfilePicture').click(function() {
+                //         const imagePath = '../assets/images/profiles/' + employeeID_string.replace("-", "") + '.png'; // Set your directory path here
                     
-                        // Use the fetch API to check if the image exists
-                        fetch(imagePath)
-                            .then(response => {
-                                if (response.ok) {
-                                    Swal.fire({
-                                        title: 'Profile Picture',
-                                        imageUrl: imagePath,
-                                        imageHeight: 300,
-                                    });
-                                } else {
-                                    Swal.fire({
-                                        title: 'Profile Picture',
-                                        imageUrl: "../assets/images/profiles/profile.png",
-                                        imageHeight: 300,
-                                    });
-                                }
-                            })
-                            .catch(error => {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Error',
-                                    text: 'An error occurred while fetching the image.',
-                                });
-                                console.error('Error fetching image:', error);
-                            });
-                    });
-                }
+                //         // Use the fetch API to check if the image exists
+                //         fetch(imagePath)
+                //             .then(response => {
+                //                 if (response.ok) {
+                //                     Swal.fire({
+                //                         title: 'Profile Picture',
+                //                         imageUrl: imagePath,
+                //                         imageHeight: 300,
+                //                     });
+                //                 } else {
+                //                     Swal.fire({
+                //                         title: 'Profile Picture',
+                //                         imageUrl: "../assets/images/profiles/profile.png",
+                //                         imageHeight: 300,
+                //                     });
+                //                 }
+                //             })
+                //             .catch(error => {
+                //                 Swal.fire({
+                //                     icon: 'error',
+                //                     title: 'Error',
+                //                     text: 'An error occurred while fetching the image.',
+                //                 });
+                //                 console.error('Error fetching image:', error);
+                //             });
+                //     });
+                // }
             }
         });
 
@@ -869,6 +919,171 @@ $(document).ready(function() {
                         $('#oldEmailAddress').val(res.data.emailAddress);
                         $('#oldEmployeeID').val(res.data.employeeID);
                         $('#updateEmployeeModal').modal('show');
+                    }
+                }
+            });
+        })
+
+        // RESIGN EMPLOYEE
+        $(document).on('click', '.employeeResign', function() {
+            var id_employee = array[array.length - 1];
+
+            $.ajax({
+                type: "GET",
+                url: "../backend/admin/employeeModal.php?employee_id=" + id_employee,
+                success: function(response) {
+
+                    var res = jQuery.parseJSON(response);
+                    if (res.status == 404) {
+                        alert(res.message);
+                    } else if (res.status == 200) {
+
+                        Swal.fire({
+                            icon: 'question',
+                            title: 'Resign Employee',
+                            text: 'Are you sure this employee resigned?',
+                            showCancelButton: true,
+                            cancelButtonColor: '#6c757d',
+                            confirmButtonColor: '#28a745',
+                            confirmButtonText: 'Yes',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $.ajax({
+                                    url: "../backend/admin/employeeAction.php",
+                                    type: 'POST',
+                                    data: {
+                                        id_employee: id_employee, 
+                                        action: 'resign'
+                                    },
+                                    cache: false,
+                                    success: function(data) {
+                                        res = jQuery.parseJSON(data);
+                                        var message = res.em;
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Success',
+                                            text: message,
+                                            timer: 2000,
+                                            showConfirmButton: false,
+                                        }).then(() => {
+                                            // Refresh the View Employee Modal with updated data
+                                            loadInactiveEmployeeData(id_employee);
+                                            $('#viewEmployeeModal').modal('hide');
+                                            $('#viewResignedModal').modal('show');
+                                        })
+                                    }
+                                })
+                            }
+                        })
+                    }
+                }
+            });
+        })
+    });
+
+    // VIEW AND REHIRE RESIGNED EMPLOYEE
+    var array = [];
+    $(document).on('click', '.resignedView', function() {
+        var employee_id = $(this).data('id');
+        array.push(employee_id);
+        var id_employee = array[array.length - 1];
+
+        // VIEW EMPLOYEE
+        $.ajax({
+            type: "GET",
+            url: "../backend/admin/employeeModal.php?employee_id=" + id_employee,
+            success: function(response) {
+
+                var res = jQuery.parseJSON(response);
+
+                if (res.status == 404) {
+                    alert(res.message);
+                } 
+                else if (res.status == 200) {
+                    $('#res_viewID').val(res.data.id);
+                    $('#res_viewLastName').val(res.data.lastName);
+                    $('#res_viewFirstName').val(res.data.firstName);
+                    $('#res_viewGender').val(res.data.gender);
+                    $('#res_viewCivilStatus').val(res.data.civilStatus);
+                    $('#res_viewAddress').val(res.data.address);
+                    $('#res_viewDateOfBirth').val(res.data.dateOfBirth);
+                    $('#res_viewPlaceOfBirth').val(res.data.placeOfBirth);
+                    $('#res_viewsss').val(res.data.sss);
+                    $('#res_viewpagIbig').val(res.data.pagIbig);
+                    $('#res_viewphilhealth').val(res.data.philhealth);
+                    $('#res_viewtin').val(res.data.tin);
+                    $('#res_viewEmailAddress').val(res.data.emailAddress);
+                    $('#res_viewEmployeeID').val(res.data.employeeID);
+                    $('#res_viewMobileNumber').val(res.data.mobileNumber);
+                    $('#res_viewDepartment').val(res.data.departmentName);
+                    $('#res_viewDesignation').val(res.data.position);
+                    $('#res_viewShiftID').val(res.data.startTime + ' - ' + res.data.endTime);
+                    $('#res_viewEmploymentStatus').val(res.data.employmentStatus);
+                    $('#res_viewDateHired').val(res.data.dateHired);
+                    $('#res_viewDateRegularized').val(res.data.dateRegularized);
+                    $('#res_viewBasicPay').val(res.data.basicPay);
+                    $('#res_viewDailyRate').val(res.data.dailyRate);
+                    $('#res_viewHourlyRate').val(res.data.hourlyRate);
+                    $('#res_viewVacationLeaves').val(res.data.availableVL);
+
+                    // Show the modal
+                    $('#viewResignedModal').modal('show');
+
+                }
+            }
+        });
+
+        // REHIRE EMPLOYEE
+        $(document).on('click', '.employeeRehire', function() {
+            var id_employee = array[array.length - 1];
+
+            $.ajax({
+                type: "GET",
+                url: "../backend/admin/employeeModal.php?employee_id=" + id_employee,
+                success: function(response) {
+
+                    var res = jQuery.parseJSON(response);
+                    if (res.status == 404) {
+                        alert(res.message);
+                    } else if (res.status == 200) {
+
+                        Swal.fire({
+                            icon: 'question',
+                            title: 'Rehire Employee',
+                            text: 'Are you sure you want to rehire this employee?',
+                            showCancelButton: true,
+                            cancelButtonColor: '#6c757d',
+                            confirmButtonColor: '#28a745',
+                            confirmButtonText: 'Yes',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $.ajax({
+                                    url: "../backend/admin/employeeAction.php",
+                                    type: 'POST',
+                                    data: {
+                                        id_employee: id_employee, 
+                                        action: 'rehire'
+                                    },
+                                    cache: false,
+                                    success: function(data) {
+                                        res = jQuery.parseJSON(data);
+                                        var message = res.em;
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Success',
+                                            text: message,
+                                            timer: 2000,
+                                            showConfirmButton: false,
+                                        }).then(() => {
+                                            // Refresh the View Employee Modal with updated data
+                                            loadEmployeeData(id_employee);
+                                            $('#viewResignedModal').modal('hide');
+                                            $('#viewEmployeeModal').modal('show');
+                                        })
+                                    }
+                                })
+                            }
+                        })
                     }
                 }
             });
@@ -983,7 +1198,7 @@ $(document).ready(function() {
                 if (res.status == 404) {
                     alert(res.message);
                 } 
-                else if (res.status == 200 && res.data.cashAdvance != null) {
+                else if (res.status == 200) {
                     $('#viewID').val(res.data.id);
                     $('#viewLastName').val(res.data.lastName);
                     $('#viewFirstName').val(res.data.firstName);
@@ -1004,149 +1219,30 @@ $(document).ready(function() {
                     $('#viewShiftID').val(res.data.startTime + ' - ' + res.data.endTime);
                     $('#viewEmploymentStatus').val(res.data.employmentStatus);
                     $('#viewDateHired').val(res.data.dateHired);
+
                     $('#viewDateRegularized').val(res.data.dateRegularized);
+                    if (res.data.employmentStatus == 'Regular') {
+                        $('.viewDateRegularizedLabel').show();
+                    }
+                    else {
+                        $('.viewDateRegularizedLabel').hide();
+                    }
+
+                    
                     $('#viewBasicPay').val(res.data.basicPay);
                     $('#viewDailyRate').val(res.data.dailyRate);
                     $('#viewHourlyRate').val(res.data.hourlyRate);
                     $('#viewVacationLeaves').val(res.data.availableVL);
                     $('#viewSickLeaves').val(res.data.availableSL);
-                    $('#viewCashAdvance').val(res.data.cashAdvance);
-                    $('.cashAdvancePart').show();
-                    $('#view_req_sss').val(res.data.req_sss == 1 ? $('#view_req_sss').prop('checked', true) : $('#view_req_sss').prop('checked', false));
-                    $('#view_req_pagIbig').val(res.data.req_pagIbig == 1 ? $('#view_req_pagIbig').prop('checked', true) : $('#view_req_pagIbig').prop('checked', false));
-                    $('#view_req_philhealth').val(res.data.req_philhealth == 1 ? $('#view_req_philhealth').prop('checked', true) : $('#view_req_philhealth').prop('checked', false));
-                    $('#view_req_tin').val(res.data.req_tin == 1 ? $('#view_req_tin').prop('checked', true) : $('#view_req_tin').prop('checked', false));
-                    $('#view_req_nbi').val(res.data.req_nbi == 1 ? $('#view_req_nbi').prop('checked', true) : $('#view_req_nbi').prop('checked', false));
-                    $('#view_req_medicalExam').val(res.data.req_medicalExam == 1 ? $('#view_req_medicalExam').prop('checked', true) : $('#view_req_medicalExam').prop('checked', false));
-                    $('#view_req_2x2pic').val(res.data.req_2x2pic == 1 ? $('#view_req_2x2pic').prop('checked', true) : $('#view_req_2x2pic').prop('checked', false));
-                    $('#view_req_vaccineCard').val(res.data.req_vaccineCard == 1 ? $('#view_req_vaccineCard').prop('checked', true) : $('#view_req_vaccineCard').prop('checked', false));
-                    $('#view_req_psa').val(res.data.req_psa == 1 ? $('#view_req_psa').prop('checked', true) : $('#view_req_psa').prop('checked', false));
-                    $('#view_req_validID').val(res.data.req_validID == 1 ? $('#view_req_validID').prop('checked', true) : $('#view_req_validID').prop('checked', false));
-                    $('#view_req_helloMoney').val(res.data.req_helloMoney == 1 ? $('#view_req_helloMoney').prop('checked', true) : $('#view_req_helloMoney').prop('checked', false));
-                    
-                    // UPDATE ALLOWANCES SECTION
-                    var allowancesHTML = '';
-                    res.allowances.forEach(function(allowance) {
-                        allowancesHTML += '<div class="flex justify-between items-center bg-white p-2 border border-gray-200">';
-                        allowancesHTML += '<span>' + allowance.allowanceName + '</span>';
-                        allowancesHTML += '<p class="text-sm bg-green-500 text-white py-1 px-2 rounded-full my-auto">₱ ' + allowance.amount + '</p>';
-                        allowancesHTML += '<button class="p-2 rounded deleteAllowance" data-id="' + allowance.empAllowanceID + '">';
-                        allowancesHTML += '<svg class="h-5 w-5 text-gray-800"  fill="none" viewBox="0 0 24 24" stroke="currentColor">';
-                        allowancesHTML += '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>';
-                        allowancesHTML += '</svg>';
-                        allowancesHTML += '</button>';
-                        allowancesHTML += '</div>';
-                    });
-                    $('#allowancesSection').html(allowancesHTML);
 
-                    // UPDATE REIMBURSEMENTS SECTION
-                    var reimbursementsHTML = '';
-                    res.reimbursements.forEach(function(reimbursement) {
-                        reimbursementsHTML += '<div class="flex justify-between items-center bg-white p-2 border border-gray-200">';
-                        reimbursementsHTML += '<span>' + reimbursement.reimbursementName + '</span>';
-                        reimbursementsHTML += '<p class="text-sm bg-green-500 text-white py-1 px-2 rounded-full my-auto">₱ ' + reimbursement.amount + '</p>';
-                        reimbursementsHTML += '<button class="p-2 rounded deleteReimbursement" data-id="' + reimbursement.empReimbursementID + '">';
-                        reimbursementsHTML += '<svg class="h-5 w-5 text-gray-800"  fill="none" viewBox="0 0 24 24" stroke="currentColor">';
-                        reimbursementsHTML += '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>';
-                        reimbursementsHTML += '</svg>';
-                        reimbursementsHTML += '</button>';
-                        reimbursementsHTML += '</div>';
-                    });
-                    $('#reimbursementsSection').html(reimbursementsHTML);
+                    if (res.data.cashAdvance == null || res.data.cashAdvance == "0") { 
+                        $('.cashAdvancePart').hide();
+                    }
+                    else {
+                        $('#viewCashAdvance').val(res.data.cashAdvance);
+                        $('.cashAdvancePart').show();
+                    }
 
-                    // UPDATE DEDUCTIONS SECTION
-                    var deductionsHTML = '';
-                    res.deductions.forEach(function(deduction) {
-                        deductionsHTML += '<div class="flex justify-between items-center bg-white p-2 border border-gray-200">';
-                        deductionsHTML += '<span>' + deduction.deductionName + '</span>';
-                        deductionsHTML += '<p class="text-sm bg-red-500 text-white py-1 px-2 rounded-full my-auto">₱ ' + deduction.amount + '</p>';
-                        deductionsHTML += '<button class="p-2 rounded deleteDeduction" data-id="' + deduction.empDeductionID + '">';
-                        deductionsHTML += '<svg class="h-5 w-5 text-gray-800"  fill="none" viewBox="0 0 24 24" stroke="currentColor">';
-                        deductionsHTML += '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>';
-                        deductionsHTML += '</svg>';
-                        deductionsHTML += '</button>';
-                        deductionsHTML += '</div>';
-                    });
-                    $('#deductionsSection').html(deductionsHTML);
-
-                    // UPDATE ADJUSTMENTS SECTION
-                    var adjustmentsHTML = '';
-                    res.adjustments.forEach(function(adjustment) {
-                        adjustmentsHTML += '<div class="flex justify-between items-center bg-white p-2 border border-gray-200">';
-                        adjustmentsHTML += '<span>' + adjustment.adjustmentName + '</span>';
-                        if (adjustment.adjustmentType == 'Add') {
-                            adjustmentsHTML += '<p class="text-sm bg-green-500 text-white py-1 px-2 rounded-full my-auto">₱ ' + adjustment.amount + '</p>';
-                        }
-                        else {
-                            adjustmentsHTML += '<p class="text-sm bg-red-500 text-white py-1 px-2 rounded-full my-auto">₱ ' + adjustment.amount + '</p>';
-                        }
-                        adjustmentsHTML += '<button class="p-2 rounded deleteAdjustment" data-id="' + adjustment.empAdjustmentID + '">';
-                        adjustmentsHTML += '<svg class="h-5 w-5 text-gray-800"  fill="none" viewBox="0 0 24 24" stroke="currentColor">';
-                        adjustmentsHTML += '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>';
-                        adjustmentsHTML += '</svg>';
-                        adjustmentsHTML += '</button>';
-                        adjustmentsHTML += '</div>';
-                    });
-                    $('#adjustmentsSection').html(adjustmentsHTML);
-
-                    let employeeID_string = res.data.employeeID;
-                    $('#viewProfilePicture').click(function() {
-                        const imagePath = '../assets/images/profiles/' + employeeID_string.replace("-", "") + '.png'; // Set your directory path here
-                    
-                        // Use the fetch API to check if the image exists
-                        fetch(imagePath)
-                            .then(response => {
-                                if (response.ok) {
-                                    Swal.fire({
-                                        title: 'Profile Picture',
-                                        imageUrl: imagePath,
-                                        imageHeight: 300,
-                                    });
-                                } else {
-                                    Swal.fire({
-                                        title: 'Profile Picture',
-                                        imageUrl: "../assets/images/profiles/profile.png",
-                                        imageHeight: 300,
-                                    });
-                                }
-                            })
-                            .catch(error => {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Error',
-                                    text: 'An error occurred while fetching the image.',
-                                });
-                                console.error('Error fetching image:', error);
-                            });
-                    });
-                }
-                else {
-                    $('#viewID').val(res.data.id);
-                    $('#viewLastName').val(res.data.lastName);
-                    $('#viewFirstName').val(res.data.firstName);
-                    $('#viewGender').val(res.data.gender);
-                    $('#viewCivilStatus').val(res.data.civilStatus);
-                    $('#viewAddress').val(res.data.address);
-                    $('#viewDateOfBirth').val(res.data.dateOfBirth);
-                    $('#viewPlaceOfBirth').val(res.data.placeOfBirth);
-                    $('#viewsss').val(res.data.sss);
-                    $('#viewpagIbig').val(res.data.pagIbig);
-                    $('#viewphilhealth').val(res.data.philhealth);
-                    $('#viewtin').val(res.data.tin);
-                    $('#viewEmailAddress').val(res.data.emailAddress);
-                    $('#viewEmployeeID').val(res.data.employeeID);
-                    $('#viewMobileNumber').val(res.data.mobileNumber);
-                    $('#viewDepartment').val(res.data.departmentName);
-                    $('#viewDesignation').val(res.data.position);
-                    $('#viewShiftID').val(res.data.startTime + ' - ' + res.data.endTime);
-                    $('#viewEmploymentStatus').val(res.data.employmentStatus);
-                    $('#viewDateHired').val(res.data.dateHired);
-                    $('#viewDateRegularized').val(res.data.dateRegularized);
-                    $('#viewBasicPay').val(res.data.basicPay);
-                    $('#viewDailyRate').val(res.data.dailyRate);
-                    $('#viewHourlyRate').val(res.data.hourlyRate);
-                    $('#viewVacationLeaves').val(res.data.availableVL);
-                    $('#viewSickLeaves').val(res.data.availableSL);
                     $('#view_req_sss').val(res.data.req_sss == 1 ? $('#view_req_sss').prop('checked', true) : $('#view_req_sss').prop('checked', false));
                     $('#view_req_pagIbig').val(res.data.req_pagIbig == 1 ? $('#view_req_pagIbig').prop('checked', true) : $('#view_req_pagIbig').prop('checked', false));
                     $('#view_req_philhealth').val(res.data.req_philhealth == 1 ? $('#view_req_philhealth').prop('checked', true) : $('#view_req_philhealth').prop('checked', false));
@@ -1259,12 +1355,60 @@ $(document).ready(function() {
         });
     }
 
-    // CLOSE VIEW EMPLOYEE MODAL
+    function loadInactiveEmployeeData(id_employee) {
+        $.ajax({
+            type: "GET",
+            url: "../backend/admin/employeeModal.php?employee_id=" + id_employee,
+            success: function(response) {
+
+                var res = jQuery.parseJSON(response);
+
+                if (res.status == 404) {
+                    alert(res.message);
+                } 
+                else if (res.status == 200) {
+                    $('#res_viewID').val(res.data.id);
+                    $('#res_viewLastName').val(res.data.lastName);
+                    $('#res_viewFirstName').val(res.data.firstName);
+                    $('#res_viewGender').val(res.data.gender);
+                    $('#res_viewCivilStatus').val(res.data.civilStatus);
+                    $('#res_viewAddress').val(res.data.address);
+                    $('#res_viewDateOfBirth').val(res.data.dateOfBirth);
+                    $('#res_viewPlaceOfBirth').val(res.data.placeOfBirth);
+                    $('#res_viewsss').val(res.data.sss);
+                    $('#res_viewpagIbig').val(res.data.pagIbig);
+                    $('#res_viewphilhealth').val(res.data.philhealth);
+                    $('#res_viewtin').val(res.data.tin);
+                    $('#res_viewEmailAddress').val(res.data.emailAddress);
+                    $('#res_viewEmployeeID').val(res.data.employeeID);
+                    $('#res_viewMobileNumber').val(res.data.mobileNumber);
+                    $('#res_viewDepartment').val(res.data.departmentName);
+                    $('#res_viewDesignation').val(res.data.position);
+                    $('#res_viewShiftID').val(res.data.startTime + ' - ' + res.data.endTime);
+                    $('#res_viewEmploymentStatus').val(res.data.employmentStatus);
+                    $('#res_viewDateHired').val(res.data.dateHired);
+                    $('#res_viewDateRegularized').val(res.data.dateRegularized);
+                    $('#res_viewBasicPay').val(res.data.basicPay);
+                    $('#res_viewDailyRate').val(res.data.dailyRate);
+                    $('#res_viewHourlyRate').val(res.data.hourlyRate);
+                    $('#res_viewVacationLeaves').val(res.data.availableVL);
+                }
+            }
+        });
+    }
+
+    // CLOSE VIEW ACTIVE EMPLOYEE MODAL
     $('#btnClose').on('click', function() {
         window.location.reload();
     });
 
+    // CLOSE VIEW INACTIVE EMPLOYEE MODAL
+    $('#btnResClose').on('click', function() {
+        window.location.reload();
+    });
 
+
+    // =============================== ADJUSTMENTS =====================================
     // REMOVE ALLOWANCE ROW ON VIEW EMPLOYEE MODAL
     $(document).on('click', '.deleteAllowance', function() {
         var empAllowanceID = $(this).data('id');
