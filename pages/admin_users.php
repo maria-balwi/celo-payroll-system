@@ -15,6 +15,7 @@
                 <div>
                     Users
                 </div>    
+                <input type="hidden" id="adminID" name="adminID" value="<?php echo $_SESSION['designationID']; ?>">  
             </div>
             
             <!-- CONTENT -->
@@ -636,7 +637,7 @@
 
                     <!-- CARD FOOTER DATA ENTRY BUTTON -->
                     <div class="card-footer d-grid gap-2 d-md-flex justify-content-md-end">
-                        <button class="btn btn-primary me-md-2" type="button" data-bs-toggle="modal" data-bs-target="#addUserModal">Add User</button>
+                        <button class="btn btn-primary me-md-2" type="button" data-bs-toggle="modal" data-bs-target="#addUserModal" id="btnAddUser">Add User</button>
                     </div>
                 </div>
             </div>
