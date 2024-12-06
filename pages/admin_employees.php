@@ -13,7 +13,8 @@
             <div class="flex flex-1 p-2 text-2xl font-bold justify-between items-center">
                 <div>
                     Employees
-                </div>    
+                </div>  
+                <input type="hidden" id="adminID" name="adminID" value="<?php echo $_SESSION['designationID']; ?>">  
             </div>
             
             <!-- CONTENT -->
@@ -128,7 +129,7 @@
 
                     <!-- CARD FOOTER DATA ENTRY BUTTON -->
                     <div class="card-footer d-grid gap-2 d-md-flex justify-content-md-end">
-                        <button class="btn btn-primary me-md-2" type="button" data-bs-toggle="modal" data-bs-target="#addEmployeeModal">Add Employee</button>
+                        <button class="btn btn-primary me-md-2" type="button" data-bs-toggle="modal" data-bs-target="#addEmployeeModal" id="btnAddEmployee">Add Employee</button>
                     </div>
                 </div>
             </div>
@@ -854,10 +855,10 @@
                                 </div>
                             </div>
 
-                            <hr>
+                            <hr class="allAdjustmentsSection">
                             
                             <input type="hidden" id="viewID" name="viewID">
-                            <div class="row g-2 mb-2">
+                            <div class="row g-2 mb-2 allAdjustmentsSection">
                                 <div class="flex space-x-4">
                                     <!-- ALLOWANCES -->
                                     <div class="flex-1 bg-lightblue p-2 border border-gray-300">
@@ -893,7 +894,7 @@
                                 </div>
                             </div>
 
-                            <div class="row g-2">
+                            <div class="row g-2 allAdjustmentsSection">
                                 <div class="flex space-x-4">
                                     <!-- REIMBURSEMENTS -->
                                     <div class="flex-1 bg-lightblue p-2 border border-gray-300">
@@ -931,8 +932,8 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary employeeUpdate">Update</button>
-                            <button type="button" class="btn btn-danger employeeResign">Resign</button>
+                            <button type="button" class="btn btn-primary employeeUpdate" id="btnUpdateEmployee">Update</button>
+                            <button type="button" class="btn btn-danger employeeResign" id="btnResignEmployee">Resign</button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnClose">Close</button>
                         </div>
                     </div>
@@ -1098,7 +1099,7 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary employeeRehire">Rehire</button>
+                            <button type="button" class="btn btn-primary employeeRehire" id="btnRehireEmployee">Rehire</button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnResClose">Close</button>
                         </div>
                     </div>
