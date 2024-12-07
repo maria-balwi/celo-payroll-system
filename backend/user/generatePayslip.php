@@ -93,6 +93,30 @@
                 $payslip_regularHolidayPay = $payslipDetails['pay_regularHoliday'] == 0 ? "-" : number_format($payslipDetails['pay_regularHoliday'], 2);
                 $payslip_regularHolidayND = $payslipDetails['regularHolidayND'] == 0 ? "-" : number_format($payslipDetails['regularHolidayND'], 2);
                 $payslip_regularHolidayNDPay = $payslipDetails['pay_regularHolidayND'] == 0 ? "-" : number_format($payslipDetails['pay_regularHolidayND'], 2);
+                $payslip_regularHolidayOT = $payslipDetails['regularHolidayOT'] == 0 ? "-" : number_format($payslipDetails['regularHolidayOT'], 2);
+                $payslip_regularHolidayOTPay = $payslipDetails['pay_regularHolidayOT'] == 0 ? "-" : number_format($payslipDetails['pay_regularHolidayOT'], 2);
+                $payslip_regularHolidayOTND = $payslipDetails['regularHolidayOTND'] == 0 ? "-" : number_format($payslipDetails['regularHolidayOTND'], 2);
+                $payslip_regularHolidayOTNDPay = $payslipDetails['pay_regularHolidayOTND'] == 0 ? "-" : number_format($payslipDetails['pay_regularHolidayOTND'], 2);
+                $payslip_specialHolidayOT = $payslipDetails['specialHolidayOT'] == 0 ? "-" : number_format($payslipDetails['specialHolidayOT'], 2);
+                $payslip_specialHolidayOTPay = $payslipDetails['pay_specialHolidayOT'] == 0 ? "-" : number_format($payslipDetails['pay_specialHolidayOT'], 2);
+                $payslip_specialHolidayOTND = $payslipDetails['specialHolidayOTND'] == 0 ? "-" : number_format($payslipDetails['specialHolidayOTND'], 2);
+                $payslip_specialHolidayOTNDPay = $payslipDetails['pay_specialHolidayOTND'] == 0 ? "-" : number_format($payslipDetails['pay_specialHolidayOTND'], 2);
+                $payslip_RDOTSH = $payslipDetails['rdotSH'] == 0 ? "-" : number_format($payslipDetails['rdotSH'], 2);
+                $payslip_RDOTSHPay = $payslipDetails['pay_rdotSH'] == 0 ? "-" : number_format($payslipDetails['pay_rdotSH'], 2);
+                $payslip_RDOTSHND = $payslipDetails['rdotSHND'] == 0 ? "-" : number_format($payslipDetails['rdotSHND'], 2);
+                $payslip_RDOTSHNDPay = $payslipDetails['pay_rdotSHND'] == 0 ? "-" : number_format($payslipDetails['pay_rdotSHND'], 2);
+                $payslip_RDOTRH = $payslipDetails['rdotRH'] == 0 ? "-" : number_format($payslipDetails['rdotRH'], 2);
+                $payslip_RDOTRHPay = $payslipDetails['pay_rdotRH'] == 0 ? "-" : number_format($payslipDetails['pay_rdotRH'], 2);
+                $payslip_RDOTRHND = $payslipDetails['rdotRHND'] == 0 ? "-" : number_format($payslipDetails['rdotRHND'], 2);
+                $payslip_RDOTRHNDPay = $payslipDetails['pay_rdotRHND'] == 0 ? "-" : number_format($payslipDetails['pay_rdotRHND'], 2);
+                $payslip_RDOTOT = $payslipDetails['rdotOT'] == 0 ? "-" : number_format($payslipDetails['rdotOT'], 2);
+                $payslip_RDOTOTPay = $payslipDetails['pay_rdotOT'] == 0 ? "-" : number_format($payslipDetails['pay_rdotOT'], 2);
+                $payslip_RDOTOTND = $payslipDetails['rdotOTND'] == 0 ? "-" : number_format($payslipDetails['rdotOTND'], 2);
+                $payslip_RDOTOTNDPay = $payslipDetails['pay_rdotOTND'] == 0 ? "-" : number_format($payslipDetails['pay_rdotOTND'], 2);
+                $payslip_doubleHoliday = $payslipDetails['doubleHoliday'] == 0 ? "-" : number_format($payslipDetails['doubleHoliday'], 2);
+                $payslip_doubleHolidayPay = $payslipDetails['pay_doubleHoliday'] == 0 ? "-" : number_format($payslipDetails['pay_doubleHoliday'], 2);
+                $payslip_doubleHolidayND = $payslipDetails['doubleHolidayND'] == 0 ? "-" : number_format($payslipDetails['doubleHolidayND'], 2);
+                $payslip_doubleHolidayNDPay = $payslipDetails['pay_doubleHolidayND'] == 0 ? "-" : number_format($payslipDetails['pay_doubleHolidayND'], 2);
                 $payslip_allowances = $payslipDetails['payslip_allowances'] == 0 ? "-" : number_format($payslipDetails['payslip_allowances'], 2);
                 $payslip_communication = $payslipDetails['payslip_communication'] == 0 ? "-" : number_format($payslipDetails['payslip_communication'], 2);
                 $payslip_totalGrossPay = $payslipDetails['totalGrossPay'] == 0 ? "-" : number_format($payslipDetails['totalGrossPay'] , 2);
@@ -109,7 +133,6 @@
                 $payslip_cashAdvanceBalance = $payslipDetails['payslip_cashAdvanceBalance'] == 0 ? "-" : number_format($payslipDetails['payslip_cashAdvanceBalance'], 2);
                 $payslip_netPay = $payslipDetails['netPay'] == 0 ? "-" : number_format($payslipDetails['netPay'], 2);
 
-                
                 $payslip = '
                     <div>
                         <div class="text-center font-bold text-xl bg-green-300 py-2">For the Period of '.$date.'</div>
@@ -144,8 +167,7 @@
                             <tr>
                                 <td class="px-2 py-1" colspan="4"></td>
                             <tr class="bg-green-300 font-bold">
-                                <td class="border px-2 py-1" colspan="2">EARNINGS</td>
-                                <td class="border px-2 py-1" colspan="2">DEDUCTIONS</td>
+                                <td class="border px-2 py-1" colspan="4">EARNINGS</td>
                             </tr>
                             <tr>
                                 <td class="border-l-2 text-left px-2 py-1">No. of Days Worked</td>
@@ -276,8 +298,13 @@
                             </tr>
                         </table>
                     </div>
+                    
                 ';
                 echo $payslip;
+
+                // $payslip2 = '
+                // ';
+                // echo $payslip2;
 
                 // AUDIT TRAIL
                 $at_empID = $_SESSION['id'];
