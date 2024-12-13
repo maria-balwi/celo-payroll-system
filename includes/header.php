@@ -57,9 +57,9 @@
                     $dtrDateTime = $attendanceDate . " " . $attendanceTime;
                     $dtrDateTime = new DateTime($dtrDateTime);
 
-                    // SETTING TIME BEFORE GETTING CURRENT DATE AND TIME
-                    date_default_timezone_set('Asia/Manila');
-                    $currentDateTime = new DateTime(); 
+                    // // SETTING TIME BEFORE GETTING CURRENT DATE AND TIME
+                    // date_default_timezone_set('Asia/Manila');
+                    // $currentDateTime = new DateTime(); 
 
                     // // ADD 2 HOURS INTERVAL
                     // $interval = new DateInterval('PT2H');
@@ -80,16 +80,16 @@
                     }
                     else if ($logType == "Time Out" || $logType == "Undertime")
                     {
-                        // ADD 2 HOURS INTERVAL AFTER TIME OUT
-                        $interval = new DateInterval('PT2H');
-                        $updatedDateTime = $dtrDateTime->add($interval);
+                        // // ADD 2 HOURS INTERVAL AFTER TIME OUT
+                        // $interval = new DateInterval('PT2H');
+                        // $updatedDateTime = $dtrDateTime->add($interval);
 
-                        if ($currentDateTime < $updatedDateTime)
-                        {
-                            $_SESSION['dtr'] = 'forWaiting';
-                        }
+                        // if ($currentDateTime < $updatedDateTime)
+                        // {
+                        //     $_SESSION['dtr'] = 'forWaiting';
+                        // }
 
-                        // $_SESSION['dtr'] = 'forTimeIn';
+                        $_SESSION['dtr'] = 'forTimeIn';
                     }
                 }
             }
