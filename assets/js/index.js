@@ -45,7 +45,6 @@ $(document).ready(function() {
                         text: 'A new version of the website is available. Click "OK" to refresh the page.',
                         showCancelButton: true,
                         confirmButtonText: 'OK',
-                        cancelButtonText: 'Cancel',
                     }).then((result) => {
                         if (result.isConfirmed) {
                             // Update client's version and reload the page
