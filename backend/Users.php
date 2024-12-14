@@ -222,6 +222,13 @@
                 SELECT version FROM ".$this->settings." ORDER BY id DESC LIMIT 1";
             return $checkVersion;
         }
+
+        public function cacheBusting() {
+            $db = $this->dbConnect();
+            $query = $db->query($this->checkVersion());
+            $version = $query ? $query->fetch_assoc()['version'] : '1.0.0';
+            return $version;
+        }
     }
 
 ?>

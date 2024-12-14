@@ -96,5 +96,8 @@
                 
             // ====== CHECK DATE FOR LEAVE POINTS AND REGULARIZATION ========
             $payroll->runLeaveManagement();
+
+            // ====== CHECK DATE FOR LEAVE POINTS AND REGULARIZATION ========
+            $version = $users->cacheBusting();
         ?>
     </head>
