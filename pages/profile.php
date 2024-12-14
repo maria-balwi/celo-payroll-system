@@ -406,7 +406,7 @@
             </form>
         </main>
     
-        <script src="../assets/js/profile.js"></script>
+        <script src="../assets/js/profile.js?v=<?php echo $version; ?>"></script>
 
         <!-- FOOTER -->
         <?php include('../includes/footer.php'); ?>

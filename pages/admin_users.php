@@ -940,7 +940,7 @@
             </form>
         </main>
     
-        <script src="../assets/js/admin_users.js"></script>
+        <script src="../assets/js/admin_users.js?v=<?php echo $version; ?>"></script>
         
 
         <!-- FOOTER -->

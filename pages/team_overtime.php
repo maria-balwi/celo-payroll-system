@@ -261,7 +261,7 @@
             </div>
         </main>
     
-        <script src="../assets/js/team_overtime.js"></script>
+        <script src="../assets/js/team_overtime.js?v=<?php echo $version; ?>"></script>
 
         <!-- FOOTER -->
         <?php include('../includes/footer.php'); ?>

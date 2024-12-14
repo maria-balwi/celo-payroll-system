@@ -67,7 +67,7 @@
             
         </main>
     
-        <script src="../assets/js/admin_auditTrail.js"></script>
+        <script src="../assets/js/admin_auditTrail.js?v=<?php echo $version; ?>"></script>
 
         <!-- FOOTER -->
         <?php include('../includes/footer.php'); ?>

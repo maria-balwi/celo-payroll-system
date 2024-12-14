@@ -68,46 +68,93 @@
                         <?php 
                             if ($_SESSION['departmentID'] == 1) // GET OPERATIONS TEAM
                             {
-                                $operationsTeamQuery = mysqli_query($conn, $attendance->viewOperationsTeam());
-                                while ($operationsTeamDetails = mysqli_fetch_array($operationsTeamQuery)) {
+                                if ($_SESSION['designationID'] == 5) {
+                                    $operationsTeamQuery = mysqli_query($conn, $attendance->viewOperationsTeamManager());
+                                    while ($operationsTeamDetails = mysqli_fetch_array($operationsTeamQuery)) {
 
-                                    $teamOperations_id = $operationsTeamDetails['id'];
-                                    $teamOperations_employeeID = $operationsTeamDetails['employeeID'];
-                                    $teamOperations_employeeName = $operationsTeamDetails['firstName'] . " " . $operationsTeamDetails['lastName'];
-                                    $teamOperations_shift = $operationsTeamDetails['startTime'] . " - " . $operationsTeamDetails['endTime'];
-                                    $availableSL = $operationsTeamDetails['availableSL']; 
-                                    $availableVL = $operationsTeamDetails['availableVL']; 
+                                        $teamOperations_id = $operationsTeamDetails['id'];
+                                        $teamOperations_employeeID = $operationsTeamDetails['employeeID'];
+                                        $teamOperations_employeeName = $operationsTeamDetails['firstName'] . " " . $operationsTeamDetails['lastName'];
+                                        $teamOperations_shift = $operationsTeamDetails['startTime'] . " - " . $operationsTeamDetails['endTime'];
+                                        $availableSL = $operationsTeamDetails['availableSL']; 
+                                        $availableVL = $operationsTeamDetails['availableVL']; 
 
-                                    $year = date('Y');
-                                    $month = date('m');
+                                        $year = date('Y');
+                                        $month = date('m');
 
-                                    // GET MONTHLY ATTENDANCE
-                                    $monthlyAttendanceQuery = mysqli_query($conn, $attendance->getMonthlyAttendance($teamOperations_id, $year, $month));
-                                    $monthlyAttendance = round(mysqli_num_rows($monthlyAttendanceQuery) / 2);
+                                        // GET MONTHLY ATTENDANCE
+                                        $monthlyAttendanceQuery = mysqli_query($conn, $attendance->getMonthlyAttendance($teamOperations_id, $year, $month));
+                                        // $monthlyAttendance = round(mysqli_num_rows($monthlyAttendanceQuery) / 2);
+                                        $monthlyAttendance = mysqli_num_rows($monthlyAttendanceQuery);
 
-                                    // GET MONTHLY ABSENCES
-                                    $workingDays = $attendance->getWorkingDaysInMonth($year, $month);
-                                    $monthlyAbsences = $workingDays - $monthlyAttendance;
+                                        // GET MONTHLY ABSENCES
+                                        $workingDays = $attendance->getWorkingDaysInMonth($year, $month);
+                                        $monthlyAbsences = $workingDays - $monthlyAttendance;
 
-                                    // GET MONTHLY LATES
-                                    $monthlyLatesQuery = mysqli_query($conn, $attendance->getMonthlyLates($teamOperations_id, $year, $month));
-                                    $monthlyLates = mysqli_num_rows($monthlyLatesQuery);
+                                        // GET MONTHLY LATES
+                                        $monthlyLatesQuery = mysqli_query($conn, $attendance->getMonthlyLates($teamOperations_id, $year, $month));
+                                        $monthlyLates = mysqli_num_rows($monthlyLatesQuery);
 
-                                    // GET MONTHLY UNDERTIMES
-                                    $monthlyUndertimesQuery = mysqli_query($conn, $attendance->getMonthlyUndertimes($teamOperations_id, $year, $month));
-                                    $monthlyUndertimes = mysqli_num_rows($monthlyUndertimesQuery); 
+                                        // GET MONTHLY UNDERTIMES
+                                        $monthlyUndertimesQuery = mysqli_query($conn, $attendance->getMonthlyUndertimes($teamOperations_id, $year, $month));
+                                        $monthlyUndertimes = mysqli_num_rows($monthlyUndertimesQuery); 
 
-                                    echo "<tr data-id='" . $teamOperations_id . "' class='teamDTRview cursor-pointer'>";
-                                    echo "<td class='whitespace-nowrap'>" . $teamOperations_employeeID . "</td>";
-                                    echo "<td class='whitespace-nowrap text-left'>" . $teamOperations_employeeName . "</td>";
-                                    echo "<td class='whitespace-nowrap'>" . $teamOperations_shift . "</td>";
-                                    echo "<td class='whitespace-nowrap'>" . $monthlyAttendance . "</td>";
-                                    echo "<td class='whitespace-nowrap'>" . $availableVL . "</td>";
-                                    echo "<td class='whitespace-nowrap'>" . $availableSL . "</td>";
-                                    echo "<td class='whitespace-nowrap'>" . $monthlyAbsences . "</td>";
-                                    echo "<td class='whitespace-nowrap'>" . $monthlyLates . "</td>";
-                                    echo "<td class='whitespace-nowrap'>" . $monthlyUndertimes . "</td>";
-                                    echo "</tr>";
+                                        echo "<tr data-id='" . $teamOperations_id . "' class='teamDTRview cursor-pointer'>";
+                                        echo "<td class='whitespace-nowrap'>" . $teamOperations_employeeID . "</td>";
+                                        echo "<td class='whitespace-nowrap text-left'>" . $teamOperations_employeeName . "</td>";
+                                        echo "<td class='whitespace-nowrap'>" . $teamOperations_shift . "</td>";
+                                        echo "<td class='whitespace-nowrap'>" . $monthlyAttendance . "</td>";
+                                        echo "<td class='whitespace-nowrap'>" . $availableVL . "</td>";
+                                        echo "<td class='whitespace-nowrap'>" . $availableSL . "</td>";
+                                        echo "<td class='whitespace-nowrap'>" . $monthlyAbsences . "</td>";
+                                        echo "<td class='whitespace-nowrap'>" . $monthlyLates . "</td>";
+                                        echo "<td class='whitespace-nowrap'>" . $monthlyUndertimes . "</td>";
+                                        echo "</tr>";
+                                    }
+                                }
+                                else if ($_SESSION['designationID'] == 4) {
+                                    $operationsTeamQuery = mysqli_query($conn, $attendance->viewOperationsTeamTL());
+                                    while ($operationsTeamDetails = mysqli_fetch_array($operationsTeamQuery)) {
+
+                                        $teamOperations_id = $operationsTeamDetails['id'];
+                                        $teamOperations_employeeID = $operationsTeamDetails['employeeID'];
+                                        $teamOperations_employeeName = $operationsTeamDetails['firstName'] . " " . $operationsTeamDetails['lastName'];
+                                        $teamOperations_shift = $operationsTeamDetails['startTime'] . " - " . $operationsTeamDetails['endTime'];
+                                        $availableSL = $operationsTeamDetails['availableSL']; 
+                                        $availableVL = $operationsTeamDetails['availableVL']; 
+
+                                        $year = date('Y');
+                                        $month = date('m');
+
+                                        // GET MONTHLY ATTENDANCE
+                                        $monthlyAttendanceQuery = mysqli_query($conn, $attendance->getMonthlyAttendance($teamOperations_id, $year, $month));
+                                        // $monthlyAttendance = round(mysqli_num_rows($monthlyAttendanceQuery) / 2);
+                                        $monthlyAttendance = mysqli_num_rows($monthlyAttendanceQuery);
+
+                                        // GET MONTHLY ABSENCES
+                                        $workingDays = $attendance->getWorkingDaysInMonth($year, $month);
+                                        $monthlyAbsences = $workingDays - $monthlyAttendance;
+
+                                        // GET MONTHLY LATES
+                                        $monthlyLatesQuery = mysqli_query($conn, $attendance->getMonthlyLates($teamOperations_id, $year, $month));
+                                        $monthlyLates = mysqli_num_rows($monthlyLatesQuery);
+
+                                        // GET MONTHLY UNDERTIMES
+                                        $monthlyUndertimesQuery = mysqli_query($conn, $attendance->getMonthlyUndertimes($teamOperations_id, $year, $month));
+                                        $monthlyUndertimes = mysqli_num_rows($monthlyUndertimesQuery); 
+
+                                        echo "<tr data-id='" . $teamOperations_id . "' class='teamDTRview cursor-pointer'>";
+                                        echo "<td class='whitespace-nowrap'>" . $teamOperations_employeeID . "</td>";
+                                        echo "<td class='whitespace-nowrap text-left'>" . $teamOperations_employeeName . "</td>";
+                                        echo "<td class='whitespace-nowrap'>" . $teamOperations_shift . "</td>";
+                                        echo "<td class='whitespace-nowrap'>" . $monthlyAttendance . "</td>";
+                                        echo "<td class='whitespace-nowrap'>" . $availableVL . "</td>";
+                                        echo "<td class='whitespace-nowrap'>" . $availableSL . "</td>";
+                                        echo "<td class='whitespace-nowrap'>" . $monthlyAbsences . "</td>";
+                                        echo "<td class='whitespace-nowrap'>" . $monthlyLates . "</td>";
+                                        echo "<td class='whitespace-nowrap'>" . $monthlyUndertimes . "</td>";
+                                        echo "</tr>";
+                                    }
                                 }
                             }
                             
@@ -306,7 +353,7 @@
             </div>
         </main>
     
-        <script src="../assets/js/team_dtr.js"></script>
+        <script src="../assets/js/team_dtr.js?v=<?php echo $version; ?>"></script>
 
         <!-- FOOTER -->
         <?php include('../includes/footer.php'); ?>

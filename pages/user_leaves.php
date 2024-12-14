@@ -330,7 +330,7 @@
             
         </div>
 
-        <script src="../assets/js/user_leaves.js"></script>
+        <script src="../assets/js/user_leaves.js?v=<?php echo $version; ?>"></script>
 
         <!-- FOOTER -->
         <?php include('../includes/footer.php'); ?>

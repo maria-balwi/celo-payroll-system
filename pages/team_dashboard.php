@@ -410,7 +410,7 @@
             
         </div>
 
-        <script src="../assets/js/team_dashboard.js"></script>
+        <script src="../assets/js/team_dashboard.js?v=<?php echo $version; ?>"></script>
     
         <!-- FOOTER -->
         <?php include('../includes/footer.php'); ?>
