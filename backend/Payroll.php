@@ -2,15 +2,6 @@
 
     class Payroll extends Database
     {
-        // private $employees = 'tbl_employee';
-        // private $users = 'tbl_users';
-        // private $department = 'tbl_department';
-        // private $attendance = 'tbl_attendance';
-        // private $logtype = 'tbl_logtype';
-        // private $shifts = 'tbl_shiftschedule';
-        // private $changeShift = 'tbl_changeshiftrequests';
-        // private $leaves = 'tbl_leaveapplications';
-        // private $filedOT = 'tbl_filedot';
         private $employees = 'tbl_employee';
         private $designation = 'tbl_designation';
         private $allowances = 'tbl_allowances';
