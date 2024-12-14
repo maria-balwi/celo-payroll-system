@@ -10,11 +10,11 @@
 
         <style>
             .scale-for-pdf {
-                transform: scale(0.55); /* Scale down to 80% */
-                transform-origin: top left; /* Anchor scaling to the top-left corner */
-                width: 100%; /* Ensure content remains responsive */
-                height: auto; /* Let height adjust naturally */
-                overflow: hidden; /* Hide any content that overflows */
+                transform: scale(0.45);
+                transform-origin: top left; 
+                width: 100%; 
+                height: auto; 
+                overflow: hidden; 
             }
 
             /* .watermark {
@@ -95,12 +95,12 @@
                     </button>
                 </div>
 
-                <!-- PRINT PAYSLIP CHANGE BUTTON -->
+                <!-- PRINT PAYSLIP CHANGE BUTTON
                 <div class="static inline-block text-right">
                     <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-3 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none printPayslip" id="btnPrintPayslip">
                     Print Payslip
                     </button>
-                </div>
+                </div> -->
 
                 <!-- DOWNLOAD PAYSLIP CHANGE BUTTON -->
                 <div class="static inline-block text-right">

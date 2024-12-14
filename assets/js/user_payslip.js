@@ -49,11 +49,11 @@ $(document).ready(function() {
                         $('#loader').hide();
                         $('#payslipContainer').html(response).show();
                         if (id == 8 || id == 9) {
-                            $('#btnPrintPayslip').show();
+                            // $('#btnPrintPayslip').show();
                             $('#btnDownloadPayslip').show();
                         }
                         else {
-                            $('#btnPrintPayslip').show();
+                            // $('#btnPrintPayslip').show();
                             $('#btnDownloadPayslip').hide();
                         }
                         // $('#btnDownloadPayslip').show();  // Show the download button if payslip is valid
@@ -81,7 +81,7 @@ $(document).ready(function() {
                 margin: 0.5,
                 filename: 'payslip.pdf',
                 html2canvas: { scale: 3 }, // Keeps quality high
-                jsPDF: { unit: 'in', format: 'A4', orientation: 'portrait' }, // Adjust format and orientation
+                jsPDF: { unit: 'in', format: [8.5, 11], orientation: 'portrait' }, // Adjust format and orientation
             })
             .save()
             .then(() => {
@@ -104,5 +104,4 @@ $(document).ready(function() {
                 });
             });
     });
-    
 });
