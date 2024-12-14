@@ -18,7 +18,7 @@
     </head>
     <body class="bg-gray-100 flex items-center justify-center min-h-screen">
         <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
-            <h2 class="text-2xl font-bold mb-6 text-center">Login</h2>
+            <h2 class="text-2xl font-bold mb-6 text-center">CELO Payroll System</h2>
             <form autocomplete="on" id="loginForm" class="form-container">
                 <div class="mb-4">
                     <label for="username" class="block text-gray-700 mb-2">Username</label>

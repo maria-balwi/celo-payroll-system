@@ -10,6 +10,7 @@
         private $logtype = 'tbl_logtype';
         private $shift = 'tbl_shiftschedule';
         private $requirements = 'tbl_requirements';
+        private $settings = 'settings';
         private $dbConnect = false;
 
         public function __construct() {
@@ -214,6 +215,12 @@
                 ORDER BY attendanceID DESC
                 LIMIT 1";
             return $checkLastDTR;
+        }
+
+        public function checkVersion() {
+            $checkVersion = "
+                SELECT version FROM ".$this->settings." ORDER BY id DESC LIMIT 1";
+            return $checkVersion;
         }
     }
 

@@ -26,6 +26,42 @@ $(document).ready(function() {
 
     // Run on page load
     disableLoginOnMobile();
+
+    // CHECK VERSION
+    $.ajax({
+        url: 'backend/session/checkVersion.php', // Endpoint to check the version
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            if (data.version) {
+                const serverVersion = data.version;
+                const clientVersion = localStorage.getItem('websiteVersion');
+
+                if (!clientVersion || clientVersion !== serverVersion) {
+                    // Notify user about the update (optional)
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'New Version Available',
+                        text: 'A new version of the website is available. Click "OK" to refresh the page.',
+                        showCancelButton: true,
+                        confirmButtonText: 'OK',
+                        cancelButtonText: 'Cancel',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Update client's version and reload the page
+                            localStorage.setItem('websiteVersion', serverVersion);
+                            location.reload(); // Reload to fetch new content
+                        }
+                    });
+                }
+            } else {
+                console.error('Version check failed:', data.error);
+            }
+        },
+        error: function () {
+            console.error('Failed to connect to the version endpoint.');
+        }
+    });
     
     // LOGIN FUNCTION
     $("#loginForm").submit(function (e) {
