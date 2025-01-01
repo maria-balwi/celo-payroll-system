@@ -114,6 +114,14 @@
             return $updatePassword;
         }
 
+        public function resetPassword($userID, $newPass) {
+            $resetPassword = "
+                UPDATE ".$this->users." SET
+                password = '$newPass'
+                WHERE userID = ".$userID."";
+            return $resetPassword;
+        }
+
         public function viewUser($id) {
             $user = "
                 SELECT CONCAT(employees.firstName, ' ', employees.lastName) AS employeeName, 

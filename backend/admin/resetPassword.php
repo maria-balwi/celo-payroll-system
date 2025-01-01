@@ -18,7 +18,7 @@
                 {
                     $newPass = md5($newPass);
                     // UPDATE PASSWORD
-                    mysqli_query($conn, $users->changePassword($userID, $newPass));
+                    mysqli_query($conn, $users->resetPassword($userID, $newPass));
 
                     // GET AFFECTED USER
                     $query = mysqli_query($conn, $employees->viewUser($userID));
