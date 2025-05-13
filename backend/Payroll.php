@@ -418,7 +418,7 @@
 
         public function viewAllPayroll() {
             $payroll = "
-                SELECT payrollID, payroll.payrollCycleID, 
+                SELECT payrollID, payroll.payrollCycleID, dateCreated,
                 payrollCycleFrom, payrollCycleTo, status 
                 FROM ".$this->payroll." AS payroll
                 INNER JOIN ".$this->payrollCycle." AS payrollCycle
@@ -433,7 +433,7 @@
             return $createPayroll;
         }
 
-        public function viewAllPayrollCycle2() {
+        public function viewAllPayrollCycle() {
             $payrollCycle = "
                 SELECT * FROM ".$this->payrollCycle . " AS payrollCycle
                 WHERE payrollCycleID NOT IN (SELECT payrollCycleID FROM ".$this->payroll." AS payroll)
@@ -442,10 +442,14 @@
         }
 
         public function viewPayrollCycle($payrollCycleID) {
-            $viewPayrollCycle = "
-                SELECT * FROM ".$this->payrollCycle."
-                WHERE payrollCycleID = '$payrollCycleID'";
-            return $viewPayrollCycle;
+            $payrollCycle = "
+                SELECT payrollCycle.payrollCycleID, dateCreated,
+                payrollCycleFrom, payrollCycleTo
+                FROM ".$this->payrollCycle." AS payrollCycle
+                INNER JOIN ".$this->payroll." AS payroll
+                ON payroll.payrollCycleID = payrollCycle.payrollCycleID
+                WHERE payrollCycle.payrollCycleID = '$payrollCycleID'";
+            return $payrollCycle;
         }
 
         public function calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $payrollCycleFrom, $payrollCycleTo, $attendanceDate) {
@@ -759,8 +763,8 @@
                                 $to = new DateTime($overtime['toTime']);
                                 
                                 $result = $this->calculateOvertimeND($from, $to);
-                                $totalRegularHolidayOTHours += $result['totalOvertimeHours'];
-                                $totalRegularHolidayOTNDHours += $result['totalOvertimeNDHours'];
+                                // $totalRegularHolidayOTHours += $result['totalOvertimeHours'];
+                                // $totalRegularHolidayOTNDHours += $result['totalOvertimeNDHours'];
                                 
                                 // // COUNT ND HOURS
                                 // $NDHours = $this->calculateOvertimeND($from, $to);
@@ -1022,7 +1026,7 @@
 
                 // COMPUTATION FOR REGULAR HOLIDAY OT PAY
                 if ($totalRegularHolidayOTNDHours == 0) { // DAY SHIFT
-                    $employee_regularHolidayOTPay = round((($employee_hourlyRate * 2) * 0.3) * $totalRegularHolidayOTHours + $employee_dailyRate, 2);
+                    $employee_regularHolidayOTPay = round((($employee_hourlyRate * 2) * 0.3) * $totalRegularHolidayOTHours, 2);
                 }
                 else { // NIGHT SHIFT
                     $employee_regularHolidayOTPay = round((($employee_hourlyRate * 2) * 0.3)  * $totalRegularHolidayOTHours, 2);
@@ -1458,7 +1462,7 @@
 
                 // COMPUTATION FOR REGULAR HOLIDAY OT PAY
                 if ($totalRegularHolidayOTNDHours == 0) { // DAY SHIFT
-                    $employee_regularHolidayOTPay = round((($employee_hourlyRate * 2) * 0.3) * $totalRegularHolidayOTHours + $employee_dailyRate, 2);
+                    $employee_regularHolidayOTPay = round((($employee_hourlyRate * 2) * 0.3) * $totalRegularHolidayOTHours, 2);
                 }
                 else { // NIGHT SHIFT
                     $employee_regularHolidayOTPay = round((($employee_hourlyRate * 2) * 0.3)  * $totalRegularHolidayOTHours, 2);
