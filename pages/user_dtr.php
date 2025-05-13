@@ -77,7 +77,7 @@
                                         $shift = $userDTRdetails['shift'];
                                         $logType = $userDTRdetails['logType'];
 
-                                        $sortableDate = date('Y/m/d', strtotime($date));
+                                        $sortableDate = date('m/d/Y', strtotime($date));
 
                                         // Check if the date exists in the dtrGroupedByDate array
                                         if (!isset($dtrGroupedByDate[$sortableDate])) {
@@ -176,7 +176,7 @@
             
         </div>
     
-        <script src="../assets/js/user_dtr.js"></script>
+        <script src="../assets/js/user_dtr.js?v=<?php echo $version; ?>"></script>
 
         <!-- FOOTER -->
         <?php include('../includes/footer.php'); ?>

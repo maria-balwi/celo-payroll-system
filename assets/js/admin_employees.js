@@ -4,6 +4,21 @@ function formatNumberWithCommas(number) {
 
 $(document).ready(function() {
 
+    if ($('#adminID').val() == 9 || $('#adminID').val() == 8) {
+        $('#btnAddEmployee').show();
+        $('#btnUpdateEmployee').show();
+        $('#btnResignEmployee').show();
+        $('#btnRehireEmployee').show();
+        $('.allAdjustmentsSection').show();
+    }
+    else {
+        $('#btnAddEmployee').hide();
+        $('#btnUpdateEmployee').hide();
+        $('#btnResignEmployee').hide();
+        $('#btnRehireEmployee').hide();
+        $('.allAdjustmentsSection').hide();
+    }
+
     $('#activeEmployeeTable').DataTable();
     $('#resignedEmployeeTable').DataTable();
 

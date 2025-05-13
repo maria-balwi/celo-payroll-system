@@ -155,7 +155,8 @@
                                                     <option value="2" disabled>Vacation Leave</option>
                                                 <?php } ?>
                                                     <option value="3">Bereavement Leave</option>
-                                                    <option value="4">Emergency Leave</option>
+                                                    <option value="4">Maternity Leave</option>
+                                                    <option value="5">Emergency Leave</option>
                                             </select>
                                         </div>
                                     </div>   
@@ -330,7 +331,7 @@
             
         </div>
 
-        <script src="../assets/js/user_leaves.js"></script>
+        <script src="../assets/js/user_leaves.js?v=<?php echo $version; ?>"></script>
 
         <!-- FOOTER -->
         <?php include('../includes/footer.php'); ?>

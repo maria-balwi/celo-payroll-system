@@ -327,7 +327,7 @@
             </div>
         </main>
     
-        <script src="../assets/js/team_leaves.js"></script>
+        <script src="../assets/js/team_leaves.js?v=<?php echo $version; ?>"></script>
 
         <!-- FOOTER -->
         <?php include('../includes/footer.php'); ?>

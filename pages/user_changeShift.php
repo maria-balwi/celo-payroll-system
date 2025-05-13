@@ -269,7 +269,7 @@
             </div>
         </main>
     
-        <script src="../assets/js/user_changeShift.js"></script>
+        <script src="../assets/js/user_changeShift.js?v=<?php echo $version; ?>"></script>
 
         <!-- FOOTER -->
         <?php include('../includes/footer.php'); ?>

@@ -10,6 +10,7 @@
         private $logtype = 'tbl_logtype';
         private $shift = 'tbl_shiftschedule';
         private $requirements = 'tbl_requirements';
+        private $settings = 'settings';
         private $dbConnect = false;
 
         public function __construct() {
@@ -113,6 +114,14 @@
             return $updatePassword;
         }
 
+        public function resetPassword($userID, $newPass) {
+            $resetPassword = "
+                UPDATE ".$this->users." SET
+                password = '$newPass'
+                WHERE userID = ".$userID."";
+            return $resetPassword;
+        }
+
         public function viewUser($id) {
             $user = "
                 SELECT CONCAT(employees.firstName, ' ', employees.lastName) AS employeeName, 
@@ -214,6 +223,19 @@
                 ORDER BY attendanceID DESC
                 LIMIT 1";
             return $checkLastDTR;
+        }
+
+        public function checkVersion() {
+            $checkVersion = "
+                SELECT version FROM ".$this->settings." ORDER BY id DESC LIMIT 1";
+            return $checkVersion;
+        }
+
+        public function cacheBusting() {
+            $db = $this->dbConnect();
+            $query = $db->query($this->checkVersion());
+            $version = $query ? $query->fetch_assoc()['version'] : '1.0.0';
+            return $version;
         }
     }
 

@@ -10,12 +10,45 @@
 
         <style>
             .scale-for-pdf {
-                transform: scale(0.55); /* Scale down to 80% */
-                transform-origin: top left; /* Anchor scaling to the top-left corner */
-                width: 100%; /* Ensure content remains responsive */
-                height: auto; /* Let height adjust naturally */
-                overflow: hidden; /* Hide any content that overflows */
+                transform: scale(0.45);
+                transform-origin: top left; 
+                width: 100%; 
+                height: auto; 
+                overflow: hidden; 
             }
+
+            /* .watermark {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                opacity: 0.1;
+                pointer-events: none;
+                z-index: 1;
+            }
+
+            .watermark img {
+                max-width: 25%;
+                opacity: 0.2;
+            } */
+
+            /* .watermark p {
+                color: gray;
+                font-weight: bold;
+                margin-top: 10px;
+                font-size: 14px;
+                text-align: center;
+            }
+
+            .payslip-container {
+                position: relative;
+                background: white;
+                z-index: 10;
+            } */
         </style>
  
         <!-- MAIN CONTENT -->
@@ -57,10 +90,17 @@
 
                  <!-- GENERATE PAYSLIP CHANGE BUTTON -->
                  <div class="static inline-block text-right">
-                    <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-3 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none generatePayslip">
+                    <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-3 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none generatePayslip" data-id="<?php echo $_SESSION['designationID'] ?>">
                     Generate Payslip
                     </button>
                 </div>
+
+                <!-- PRINT PAYSLIP CHANGE BUTTON
+                <div class="static inline-block text-right">
+                    <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-3 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none printPayslip" id="btnPrintPayslip">
+                    Print Payslip
+                    </button>
+                </div> -->
 
                 <!-- DOWNLOAD PAYSLIP CHANGE BUTTON -->
                 <div class="static inline-block text-right">
@@ -83,7 +123,7 @@
             </div>
         </main>
     
-        <script src="../assets/js/user_payslip.js"></script>
+        <script src="../assets/js/user_payslip.js?v=<?php echo $version; ?>"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
 
         <!-- FOOTER -->

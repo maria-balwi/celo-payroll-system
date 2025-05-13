@@ -2,15 +2,6 @@
 
     class Payroll extends Database
     {
-        // private $employees = 'tbl_employee';
-        // private $users = 'tbl_users';
-        // private $department = 'tbl_department';
-        // private $attendance = 'tbl_attendance';
-        // private $logtype = 'tbl_logtype';
-        // private $shifts = 'tbl_shiftschedule';
-        // private $changeShift = 'tbl_changeshiftrequests';
-        // private $leaves = 'tbl_leaveapplications';
-        // private $filedOT = 'tbl_filedot';
         private $employees = 'tbl_employee';
         private $designation = 'tbl_designation';
         private $allowances = 'tbl_allowances';
@@ -427,7 +418,7 @@
 
         public function viewAllPayroll() {
             $payroll = "
-                SELECT payrollID, payroll.payrollCycleID, 
+                SELECT payrollID, payroll.payrollCycleID, dateCreated,
                 payrollCycleFrom, payrollCycleTo, status 
                 FROM ".$this->payroll." AS payroll
                 INNER JOIN ".$this->payrollCycle." AS payrollCycle
@@ -442,7 +433,7 @@
             return $createPayroll;
         }
 
-        public function viewAllPayrollCycle2() {
+        public function viewAllPayrollCycle() {
             $payrollCycle = "
                 SELECT * FROM ".$this->payrollCycle . " AS payrollCycle
                 WHERE payrollCycleID NOT IN (SELECT payrollCycleID FROM ".$this->payroll." AS payroll)
@@ -451,10 +442,14 @@
         }
 
         public function viewPayrollCycle($payrollCycleID) {
-            $viewPayrollCycle = "
-                SELECT * FROM ".$this->payrollCycle."
-                WHERE payrollCycleID = '$payrollCycleID'";
-            return $viewPayrollCycle;
+            $payrollCycle = "
+                SELECT payrollCycle.payrollCycleID, dateCreated,
+                payrollCycleFrom, payrollCycleTo
+                FROM ".$this->payrollCycle." AS payrollCycle
+                INNER JOIN ".$this->payroll." AS payroll
+                ON payroll.payrollCycleID = payrollCycle.payrollCycleID
+                WHERE payrollCycle.payrollCycleID = '$payrollCycleID'";
+            return $payrollCycle;
         }
 
         public function calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $payrollCycleFrom, $payrollCycleTo, $attendanceDate) {
@@ -668,8 +663,10 @@
                 $employee_cashAdvance = ($employeeDetails['cashAdvance'] != null) ? $employeeDetails['cashAdvance'] : null;
 
                 // COMPUTE DAYS WORKED
-                $daysWorkedQuery = $this->dbConnect()->query("SELECT * FROM tbl_attendance WHERE empID = $employeeDetails[id] AND (logTypeID IN (1, 2) OR logTypeID IN (3, 4)) AND attendanceDate BETWEEN DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom'))) AND DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleTo')))");
-                $employee_daysWorked = round(mysqli_num_rows($daysWorkedQuery) / 2);
+                // $daysWorkedQuery = $this->dbConnect()->query("SELECT * FROM tbl_attendance WHERE empID = $employeeDetails[id] AND (logTypeID IN (1, 2) OR logTypeID IN (3, 4)) AND attendanceDate BETWEEN DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom'))) AND DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleTo')))");
+                // $employee_daysWorked = round(mysqli_num_rows($daysWorkedQuery) / 2);
+                $daysWorkedQuery = $this->dbConnect()->query("SELECT * FROM tbl_attendance WHERE empID = $employeeDetails[id] AND (logTypeID IN (1, 2)) AND attendanceDate BETWEEN DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom'))) AND DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleTo')))");
+                $employee_daysWorked = mysqli_num_rows($daysWorkedQuery);
 
                 // CHECK FOR HOLIDAYS
                 $holidaysQuery = $this->dbConnect()->query("SELECT * FROM tbl_holidays WHERE dateFrom BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'");
@@ -766,8 +763,8 @@
                                 $to = new DateTime($overtime['toTime']);
                                 
                                 $result = $this->calculateOvertimeND($from, $to);
-                                $totalRegularHolidayOTHours += $result['totalOvertimeHours'];
-                                $totalRegularHolidayOTNDHours += $result['totalOvertimeNDHours'];
+                                // $totalRegularHolidayOTHours += $result['totalOvertimeHours'];
+                                // $totalRegularHolidayOTNDHours += $result['totalOvertimeNDHours'];
                                 
                                 // // COUNT ND HOURS
                                 // $NDHours = $this->calculateOvertimeND($from, $to);
@@ -1029,7 +1026,7 @@
 
                 // COMPUTATION FOR REGULAR HOLIDAY OT PAY
                 if ($totalRegularHolidayOTNDHours == 0) { // DAY SHIFT
-                    $employee_regularHolidayOTPay = round((($employee_hourlyRate * 2) * 0.3) * $totalRegularHolidayOTHours + $employee_dailyRate, 2);
+                    $employee_regularHolidayOTPay = round((($employee_hourlyRate * 2) * 0.3) * $totalRegularHolidayOTHours, 2);
                 }
                 else { // NIGHT SHIFT
                     $employee_regularHolidayOTPay = round((($employee_hourlyRate * 2) * 0.3)  * $totalRegularHolidayOTHours, 2);
@@ -1102,8 +1099,10 @@
                 $employee_cashAdvance = ($employeeDetails['cashAdvance'] != null) ? $employeeDetails['cashAdvance'] : null;
 
                 // COMPUTE DAYS WORKED
-                $daysWorkedQuery = $this->dbConnect()->query("SELECT * FROM tbl_attendance WHERE empID = $employeeDetails[id] AND (logTypeID IN (1, 2) OR logTypeID IN (3, 4)) AND attendanceDate BETWEEN DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom'))) AND DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleTo')))");
-                $employee_daysWorked = round(mysqli_num_rows($daysWorkedQuery) / 2);
+                // $daysWorkedQuery = $this->dbConnect()->query("SELECT * FROM tbl_attendance WHERE empID = $employeeDetails[id] AND (logTypeID IN (1, 2) OR logTypeID IN (3, 4)) AND attendanceDate BETWEEN DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom'))) AND DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleTo')))");
+                // $employee_daysWorked = round(mysqli_num_rows($daysWorkedQuery) / 2);
+                $daysWorkedQuery = $this->dbConnect()->query("SELECT * FROM tbl_attendance WHERE empID = $employeeDetails[id] AND (logTypeID IN (1, 2)) AND attendanceDate BETWEEN DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom'))) AND DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleTo')))");
+                $employee_daysWorked = mysqli_num_rows($daysWorkedQuery);
 
                 // CHECK FOR HOLIDAYS
                 $holidaysQuery = $this->dbConnect()->query("SELECT * FROM tbl_holidays WHERE dateFrom BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'");
@@ -1463,7 +1462,7 @@
 
                 // COMPUTATION FOR REGULAR HOLIDAY OT PAY
                 if ($totalRegularHolidayOTNDHours == 0) { // DAY SHIFT
-                    $employee_regularHolidayOTPay = round((($employee_hourlyRate * 2) * 0.3) * $totalRegularHolidayOTHours + $employee_dailyRate, 2);
+                    $employee_regularHolidayOTPay = round((($employee_hourlyRate * 2) * 0.3) * $totalRegularHolidayOTHours, 2);
                 }
                 else { // NIGHT SHIFT
                     $employee_regularHolidayOTPay = round((($employee_hourlyRate * 2) * 0.3)  * $totalRegularHolidayOTHours, 2);

@@ -83,7 +83,8 @@
 
                                     // GET DAYS wORKED
                                     $monthlyAttendanceQuery = mysqli_query($conn, $attendance->getMonthlyAttendance($attendance_id, $year, $month));
-                                    $attendance_daysWorked = round($monthlyAttendanceQuery->num_rows / 2);
+                                    $attendance_daysWorked = $monthlyAttendanceQuery->num_rows;
+                                    // $attendance_daysWorked = round($monthlyAttendanceQuery->num_rows / 2);
 
                                     // GET ABSENTS
                                     $workingDays = $attendance->getWorkingDaysInMonth($year, $month);
@@ -260,7 +261,7 @@
             </div>
         </main>
     
-        <script src="../assets/js/admin_dtr.js"></script>
+        <script src="../assets/js/admin_dtr.js?v=<?php echo $version; ?>"></script>
 
         <!-- FOOTER -->
         <?php include('../includes/footer.php'); ?>

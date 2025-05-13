@@ -57,9 +57,9 @@
                     $dtrDateTime = $attendanceDate . " " . $attendanceTime;
                     $dtrDateTime = new DateTime($dtrDateTime);
 
-                    // SETTING TIME BEFORE GETTING CURRENT DATE AND TIME
-                    date_default_timezone_set('Asia/Manila');
-                    $currentDateTime = new DateTime(); 
+                    // // SETTING TIME BEFORE GETTING CURRENT DATE AND TIME
+                    // date_default_timezone_set('Asia/Manila');
+                    // $currentDateTime = new DateTime(); 
 
                     // // ADD 2 HOURS INTERVAL
                     // $interval = new DateInterval('PT2H');
@@ -96,5 +96,8 @@
                 
             // ====== CHECK DATE FOR LEAVE POINTS AND REGULARIZATION ========
             $payroll->runLeaveManagement();
+
+            // ====== CHECK DATE FOR LEAVE POINTS AND REGULARIZATION ========
+            $version = $users->cacheBusting();
         ?>
     </head>

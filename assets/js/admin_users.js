@@ -20,6 +20,19 @@ $(document).ready(function() {
     $('#directorsTable').DataTable();
     $('#inactiveDirectorsTable').DataTable();
 
+    if ($('#adminID').val() == 9 || $('#adminID').val() == 10 || $('#adminID').val() == 11) {
+        $('#btnAddUser').show();
+        $('.userResetPassword').show();
+        $('.userDeactivate').show();
+        $('.userReactivate').show();
+    }
+    else {
+        $('#btnAddUser').hide();
+        $('.userResetPassword').hide();
+        $('.userDeactivate').hide();
+        $('.userReactivate').hide();
+    }
+
     // ADD USER
     $("#addUserForm").submit(function (e) {
         e.preventDefault();

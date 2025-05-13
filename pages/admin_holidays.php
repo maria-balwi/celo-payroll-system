@@ -304,7 +304,7 @@
             </form>
         </main>
     
-        <script src="../assets/js/admin_holidays.js"></script>
+        <script src="../assets/js/admin_holidays.js?v=<?php echo $version; ?>"></script>
 
         <!-- FOOTER -->
         <?php include('../includes/footer.php'); ?>

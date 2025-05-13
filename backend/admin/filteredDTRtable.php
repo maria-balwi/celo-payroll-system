@@ -21,7 +21,8 @@
             
             // GET DAYS wORKED
             $monthlyAttendanceQuery = mysqli_query($conn, $attendance->getMonthlyAttendance($attendance_id, $filterYear, $filterMonth));
-            $attendance_daysWorked = round($monthlyAttendanceQuery->num_rows / 2);
+            // $attendance_daysWorked = round($monthlyAttendanceQuery->num_rows / 2);
+            $attendance_daysWorked = $monthlyAttendanceQuery->num_rows;
 
             // GET ABSENTS
             $workingDays = $attendance->getWorkingDaysInMonth($filterYear, $filterMonth);

@@ -397,11 +397,21 @@
             return $dailyAttendanceIT_timeOut;
         }
 
+        // public function getMonthlyAttendance($id, $year, $month) {
+        //     $monthlyAttendance = "
+        //         SELECT * FROM ".$this->attendance."
+        //         WHERE empID = $id AND
+        //         (logTypeID IN (1, 2) OR logTypeID IN (3, 4)) AND
+        //         YEAR(attendanceDate) = '$year'
+        //         AND MONTH(attendanceDate) = '$month'";
+        //     return $monthlyAttendance;
+        // }
+
         public function getMonthlyAttendance($id, $year, $month) {
             $monthlyAttendance = "
                 SELECT * FROM ".$this->attendance."
                 WHERE empID = $id AND
-                (logTypeID IN (1, 2) OR logTypeID IN (3, 4)) AND
+                logTypeID IN (1, 2) AND
                 YEAR(attendanceDate) = '$year'
                 AND MONTH(attendanceDate) = '$month'";
             return $monthlyAttendance;

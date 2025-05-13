@@ -1,11 +1,16 @@
 $(document).ready(function() {
 
     $('#payslipTable').DataTable();
-    $('#btnDownloadPayslip').hide();
+    $('#btnPrintPayslip').hide();
+    $('#btnDownloadPayslip').hide(); 
+
+    var id;
 
     $('.generatePayslip').click(function(e) {
         e.preventDefault();
         var payrollCycleID = $('#payrollCycleID').val();
+        id = $(this).data('id');
+        console.log({id});
 
         if (payrollCycleID == null) {
             Swal.fire({
@@ -43,7 +48,15 @@ $(document).ready(function() {
                         // If response contains payslip HTML, display it
                         $('#loader').hide();
                         $('#payslipContainer').html(response).show();
-                        $('#btnDownloadPayslip').show();  // Show the download button if payslip is valid
+                        if (id == 8 || id == 9) {
+                            // $('#btnPrintPayslip').show();
+                            $('#btnDownloadPayslip').show();
+                        }
+                        else {
+                            // $('#btnPrintPayslip').show();
+                            $('#btnDownloadPayslip').hide();
+                        }
+                        // $('#btnDownloadPayslip').show();  // Show the download button if payslip is valid
                     }
                 },
                 error: function(xhr, status, error) {
@@ -68,7 +81,7 @@ $(document).ready(function() {
                 margin: 0.5,
                 filename: 'payslip.pdf',
                 html2canvas: { scale: 3 }, // Keeps quality high
-                jsPDF: { unit: 'in', format: 'A4', orientation: 'portrait' }, // Adjust format and orientation
+                jsPDF: { unit: 'in', format: [8.5, 11], orientation: 'portrait' }, // Adjust format and orientation
             })
             .save()
             .then(() => {
@@ -91,5 +104,4 @@ $(document).ready(function() {
                 });
             });
     });
-    
 });

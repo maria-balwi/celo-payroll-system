@@ -273,7 +273,7 @@
             </div>
         </main>
     
-        <script src="../assets/js/admin_changeShift.js"></script>
+        <script src="../assets/js/admin_changeShift.js?v=<?php echo $version; ?>"></script>
 
         <!-- FOOTER -->
         <?php include('../includes/footer.php'); ?>
