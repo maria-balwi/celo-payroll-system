@@ -48,7 +48,7 @@
                     }
                 }
             }
-            else if ($lastLogType == 1 || $lastLogType == 2 || $lastLogType == 0) {
+            else if ($lastLogType == 1 || $lastLogType == 2) {
                 $lastAttendanceDate = $lastAttendance['attendanceDate'];
                 echo $lastAttendanceDate;
                 $lastAttendanceTime = $lastAttendance['attendanceTime'];
