@@ -18,23 +18,12 @@
                 </button>
                 
                 <?php 
-                    function formatDate($date, $dateCreated, $payrollCycleID, $isFrom) {
+                    function formatDate($date) {
                         // Get the current year
                         $currentYear = date('Y');
                         
-                        // Check year if it is the same as the current year
-                        $dateCreatedYear = date('Y', strtotime($dateCreated));
-                        $finalYear = ($dateCreatedYear == $currentYear) ? $currentYear : $dateCreatedYear;
-                        
-                        // Check payroll cycle ID
-                        if ($payrollCycleID == 1) {
-                            if ($isFrom) {
-                                $finalYear = $currentYear - 1;
-                            }
-                        }
-                        
                         // Append the current year to the input date
-                        $dateWithYear = $date . '-' . $finalYear;
+                        $dateWithYear = $date . '-' . $currentYear;
                         
                         // Create a DateTime object from the string (expects format MM-DD-YYYY)
                         $dateTime = DateTime::createFromFormat('m-d-Y', $dateWithYear);
@@ -45,13 +34,11 @@
 
                     $payrollID = $_GET['id']; 
                     $payrollCycleID = $_GET['cycleID']; 
-                    $payrollCycleFrom_date = mysqli_query($conn, $payroll->viewPayrollCycle($payrollCycleID))->fetch_assoc()['payrollCycleFrom'];
-                    $payrollCycleTo_date = mysqli_query($conn, $payroll->viewPayrollCycle($payrollCycleID))->fetch_assoc()['payrollCycleTo'];
-                    $payrollDateCreated = mysqli_query($conn, $payroll->viewPayrollCycle($payrollCycleID))->fetch_assoc()['dateCreated'];
-                    // $payrollCycleFrom_date = mysqli_query($conn, "SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleFrom'];
-                    // $payrollCycleTo_date = mysqli_query($conn, "SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleTo'];
-                    $payrollCycleFrom = formatDate($payrollCycleFrom_date, $payrollDateCreated, $payrollCycleID, $isFrom=true);
-                    $payrollCycleTo = formatDate($payrollCycleTo_date, $payrollDateCreated, $payrollCycleID, $isFrom=false);
+                    // $payrollCycleID = mysqli_query($conn, "SELECT payrollCycleID FROM tbl_payroll WHERE payrollID = $payrollID")->fetch_assoc()['payrollCycleID']; 
+                    $payrollCycleFrom_date = mysqli_query($conn, "SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleFrom'];
+                    $payrollCycleTo_date = mysqli_query($conn, "SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleTo'];
+                    $payrollCycleFrom = formatDate($payrollCycleFrom_date);
+                    $payrollCycleTo = formatDate($payrollCycleTo_date);
                     echo "Payroll from " . $payrollCycleFrom . " to " . $payrollCycleTo;
                 ?>
                 
@@ -208,87 +195,87 @@
                                             $payslip_cashAdvanceBalance = $payslipDetails['payslip_cashAdvanceBalance'];
                                             $payslip_netPay = $payslipDetails['netPay'];
 
-                                            if ($payslip_regNightDiffPay == 0) {
+                                            if ($payslip_regNightDiff == 0) {
                                                 $payslip_regNightDiff = "-";
                                                 $payslip_regNightDiffPay = "-";
                                             }
-                                            if ($payslip_regularOTPay == 0) {
+                                            if ($payslip_regularOT == 0) {
                                                 $payslip_regularOT = "-";
                                                 $payslip_regularOTPay = "-";
                                             }
-                                            if ($payslip_regularOTNDPay == 0) {
+                                            if ($payslip_regularOTND == 0) {
                                                 $payslip_regularOTND = "-";
                                                 $payslip_regularOTNDPay = "-";
                                             }
-                                            if ($payslip_RDOTPay == 0) {
+                                            if ($payslip_RDOT == 0) {
                                                 $payslip_RDOT = "-";
                                                 $payslip_RDOTPay = "-";
                                             }
-                                            if ($payslip_RDOTNDPay == 0) {
+                                            if ($payslip_RDOTND == 0) {
                                                 $payslip_RDOTND = "-";
                                                 $payslip_RDOTNDPay = "-";
                                             }
-                                            if ($payslip_specialHolidayPay == 0) {
+                                            if ($payslip_specialHoliday == 0) {
                                                 $payslip_specialHoliday = "-";
                                                 $payslip_specialHolidayPay = "-";
                                             }
-                                            if ($payslip_specialHolidayNDPay == 0) {
+                                            if ($payslip_specialHolidayND == 0) {
                                                 $payslip_specialHolidayND = "-";
                                                 $payslip_specialHolidayNDPay = "-";
                                             }
-                                            if ($payslip_regularHolidayPay == 0) {
+                                            if ($payslip_regularHoliday == 0) {
                                                 $payslip_regularHoliday = "-";
                                                 $payslip_regularHolidayPay = "-";
                                             }
-                                            if ($payslip_regularHolidayNDPay == 0) {
+                                            if ($payslip_regularHolidayND == 0) {
                                                 $payslip_regularHolidayND = "-";
                                                 $payslip_regularHolidayNDPay = "-";
                                             }
-                                            if ($payslip_regularHolidayOTPay == 0) {
+                                            if ($payslip_regularHolidayOT == 0) {
                                                 $payslip_regularHolidayOT = "-";
                                                 $payslip_regularHolidayOTPay = "-";
                                             }
-                                            if ($payslip_regularHolidayOTNDPay == 0) {
+                                            if ($payslip_regularHolidayOTND == 0) {
                                                 $payslip_regularHolidayOTND = "-";
                                                 $payslip_regularHolidayOTNDPay = "-";
                                             }
-                                            if ($payslip_specialHolidayOTPay == 0) {
+                                            if ($payslip_specialHolidayOT == 0) {
                                                 $payslip_specialHolidayOT = "-";
                                                 $payslip_specialHolidayOTPay = "-";
                                             }
-                                            if ($payslip_specialHolidayOTNDPay == 0) {
+                                            if ($payslip_specialHolidayOTND == 0) {
                                                 $payslip_specialHolidayOTND = "-";
                                                 $payslip_specialHolidayOTNDPay = "-";
                                             }
-                                            if ($payslip_RDOTSHPay == 0) {
+                                            if ($payslip_RDOTSH == 0) {
                                                 $payslip_RDOTSH = "-"; 
                                                 $payslip_RDOTSHPay = "-";
                                             }
-                                            if ($payslip_RDOTSHNDPay == 0) {
+                                            if ($payslip_RDOTSHND == 0) {
                                                 $payslip_RDOTSHND = "-";
                                                 $payslip_RDOTSHNDPay = "-";
                                             }
-                                            if ($payslip_RDOTRHPay == 0) {
+                                            if ($payslip_RDOTRH == 0) {
                                                 $payslip_RDOTRH = "-";
                                                 $payslip_RDOTRHPay = "-";
                                             }
-                                            if ($payslip_RDOTRHNDPay == 0) {
+                                            if ($payslip_RDOTRHND == 0) {
                                                 $payslip_RDOTRHND = "-";    
                                                 $payslip_RDOTRHNDPay = "-";
                                             }
-                                            if ($payslip_RDOTOTPay == 0) {
+                                            if ($payslip_RDOTOT == 0) {
                                                 $payslip_RDOTOT = "-";
                                                 $payslip_RDOTOTPay = "-";
                                             }
-                                            if ($payslip_RDOTOTNDPay == 0) {
+                                            if ($payslip_RDOTOTND == 0) {
                                                 $payslip_RDOTOTND = "-";    
                                                 $payslip_RDOTOTNDPay = "-";
                                             }
-                                            if ($payslip_doubleHolidayPay == 0) {
+                                            if ($payslip_doubleHoliday == 0) {
                                                 $payslip_doubleHoliday = "-";
                                                 $payslip_doubleHolidayPay = "-";
                                             }
-                                            if ($payslip_doubleHolidayNDPay == 0) {
+                                            if ($payslip_doubleHolidayND == 0) {
                                                 $payslip_doubleHolidayND = "-";
                                                 $payslip_doubleHolidayNDPay = "-";
                                             }
