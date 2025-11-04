@@ -60,6 +60,9 @@
                                             $OT_remarks = $otDetails['remarks'];
                                             $OT_status = $otDetails['status'];
 
+                                            $OT_dateFiled = formatDate($OT_dateFiled);
+                                            $OT_otDate = formatDate($OT_otDate);
+
                                             echo "<tr data-id='" . $OT_id . "' class='filedOTview cursor-pointer'>";
                                             echo "<td class = ' whitespace-nowrap'>" . $OT_dateFiled . "</td>";
                                             echo "<td class = ' whitespace-nowrap'>" . $OT_otDate . "</td>";
@@ -93,6 +96,9 @@
                                             $OT_employeeName = $otDetails['employeeName'];
                                             $OT_remarks = $otDetails['remarks'];
                                             $OT_status = $otDetails['status'];
+
+                                            $OT_dateFiled = formatDate($OT_dateFiled);
+                                            $OT_otDate = formatDate($OT_otDate);
 
                                             echo "<tr data-id='" . $OT_id . "' class='filedOTview cursor-pointer'>";
                                             echo "<td class = ' whitespace-nowrap'>" . $OT_dateFiled . "</td>";
@@ -130,6 +136,9 @@
                                         $OT_employeeName = $otDetails['employeeName'];
                                         $OT_remarks = $otDetails['remarks'];
                                         $OT_status = $otDetails['status'];
+
+                                        $OT_dateFiled = formatDate($OT_dateFiled);
+                                        $OT_otDate = formatDate($OT_otDate);
 
                                         echo "<tr data-id='" . $OT_id . "' class='filedOTview cursor-pointer'>";
                                         echo "<td class = ' whitespace-nowrap'>" . $OT_dateFiled . "</td>";

@@ -35,7 +35,7 @@
                                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
                                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">From</th>
                                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">To</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Purpose</th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Purpose / Remarks</th>
                                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                             </tr>
                         </thead>
@@ -60,6 +60,9 @@
                                     $OT_toTime = $otDetails['toTime'];
                                     $OT_remarks = $otDetails['remarks'];
                                     $OT_status = $otDetails['status'];
+
+                                    $OT_dateFiled = formatDate($OT_dateFiled);
+                                    $OT_otDate = formatDate($OT_otDate);
 
                                     echo "<tr data-id='" . $OT_id . "' class='filedOTview cursor-pointer'>";
                                     echo "<td class = ' whitespace-nowrap'>" . $OT_dateFiled . "</td>";
@@ -157,7 +160,7 @@
                                 
                                 <div class="row g-3 mb-2">
                                     <div class="col-12">
-                                        <label for="purpose">Purpose:</label>
+                                        <label for="purpose">Purpose/Remarks:</label>
                                     </div>
                                 </div>
 
@@ -243,7 +246,7 @@
                             
                             <div class="row g-3 mb-2">
                                 <div class="col-12">
-                                    <label for="viewPurpose">Purpose:</label>
+                                    <label for="viewPurpose">Purpose/Remarks:</label>
                                 </div>
                             </div>
 

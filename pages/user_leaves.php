@@ -33,7 +33,7 @@
                                     <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Leave Type</th>
                                     <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Days</th>
                                     <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Inclusive Dates</th>
-                                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Purpose | Remarks</th>
+                                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Purpose / Remarks</th>
                                     <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                                 </tr>
                             </thead>
@@ -187,7 +187,7 @@
                                     
                                     <div class="row g-3 mb-2">
                                         <div class="col-12">
-                                            <label for="purpose">Purpose:</label>
+                                            <label for="purpose">Purpose/Remarks:</label>
                                         </div>
                                     </div>
 
@@ -240,10 +240,10 @@
                                 <form>
                                     <div class="row g-2 mb-2">
                                         <div class="col-6">
-                                            <label for="viewDateFiled">Date Filed</label>
+                                            <label for="viewDateFiled">Date Filed:</label>
                                         </div>
                                         <div class="col-6">
-                                            <label for="viewStatus">Status</label>
+                                            <label for="viewStatus">Status:</label>
                                         </div>
                                     </div>
 
@@ -258,10 +258,10 @@
 
                                     <div class="row g-2 mb-2">
                                         <div class="col-3">
-                                            <label for="viewEmpID">Employee ID</label>
+                                            <label for="viewEmpID">Employee ID:</label>
                                         </div>
                                         <div class="col-9">
-                                            <label for="viewName">Employee Name</label>
+                                            <label for="viewName">Employee Name:</label>
                                         </div>
                                     </div>
 
@@ -276,7 +276,7 @@
 
                                     <div class="row g-2 mb-2">
                                         <div class="col-12">
-                                            <label for="viewLeaveType">Leave Type</label>
+                                            <label for="viewLeaveType">Leave Type:</label>
                                         </div>
                                     </div>
 
@@ -288,7 +288,7 @@
 
                                     <div class="row g-2 mb-2">
                                         <div class="col-3">
-                                            <label for="viewStartDate">Inclusive Dates</label>
+                                            <label for="viewStartDate">Inclusive Dates:</label>
                                         </div>
                                     </div>
 
@@ -303,7 +303,7 @@
 
                                     <div class="row g-2 mb-2">
                                         <div class="col-3">
-                                            <label for="viewPurpose">Purpose</label>
+                                            <label for="viewPurpose">Purpose/Remarks:</label>
                                         </div>
                                     </div>
 
