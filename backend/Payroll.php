@@ -419,7 +419,7 @@
         public function viewAllPayroll() {
             $payroll = "
                 SELECT payrollID, payroll.payrollCycleID, 
-                payrollCycleFrom, payrollCycleTo, status 
+                payrollCycleFrom, payrollCycleTo, status, dateCreated 
                 FROM ".$this->payroll." AS payroll
                 INNER JOIN ".$this->payrollCycle." AS payrollCycle
                 ON payroll.payrollCycleID = payrollCycle.payrollCycleID";
@@ -1040,8 +1040,27 @@
 
                 // COMPUTE GROSS PAY
                 $employee_grossPay = round($employee_dailyRate * $employee_daysWorked + $employee_nightDiffPay + $employee_overtimePay + $employee_overtimeNDPay + $employee_RDOTPay + $employee_RDOTNDPay + $employee_specialHolidayPay + $employee_specialHolidayNDPay+ $employee_regularHolidayPay + $employee_regularHolidayNDPay + $employee_regularHolidayOTPay + $employee_regularHolidayOTNDPay + $employee_specialHolidayOTPay + $employee_specialHolidayOTNDPay + $employee_specialHolidayRDOTPay + $employee_specialHolidayRDOTNDPay, 2);
-                $employee_totalGrossPay = round($employee_grossPay + $totalAllowances + $communication, 2);
-                $employee_netPay = round($employee_totalGrossPay - $sss - $phic - $hdmf - $wtax + $totalReimbursements + $totalAdjustments - $cashAdvance, 2);
+                // $employee_totalGrossPay = round($employee_grossPay + $totalAllowances + $communication, 2);
+
+                // COMPUTATION FOR WTAX
+                $wtax = round($employee_grossPay - $sss - $phic - $hdmf, 2);
+                if ($wtax <= 10417) {
+                    $wtax = 0;
+                }
+                else if (($wtax > 10417) && $wtax <= 16666) {
+                    $wtax = ($wtax - 10417) * .15;
+                }
+                else if (($wtax > 16667) && $wtax <= 33332) {
+                    $wtax = (($wtax - 10417) * .2) + 937.5;
+                }
+                else if (($wtax > 33333) && $wtax <= 83332) {
+                    $wtax = (($wtax - 10417) * .25) + 4270.70;
+                }
+
+                // COMPUTE NET PAY
+                // $employee_netPay = round($employee_totalGrossPay - $sss - $phic - $hdmf - $wtax + $totalReimbursements + $totalAdjustments - $cashAdvance, 2);
+                $employee_netPay = round($employee_grossPay - $sss - $phic - $hdmf - $wtax + $totalReimbursements + $totalAdjustments - $cashAdvance, 2);
+                $employee_netPay = round($employee_netPay + $totalAllowances + $communication, 2);
                 $employee_cashAdvance -= $cashAdvance;
 
                 // ADD ALL PAYROLL DATA TO PAYSLIP TABLE
@@ -1474,10 +1493,36 @@
                     $employee_specialHolidayOTNDPay = round(((($employee_hourlyRate * 1.3) * 1.3) * 0.15) * $totalSpecialHolidayOTNDHours, 2);
                 }
 
+                // OLD COMPUTATION
+                // // COMPUTE GROSS PAY
+                // $employee_grossPay = round($employee_dailyRate * $employee_daysWorked + $employee_nightDiffPay + $employee_overtimePay + $employee_overtimeNDPay + $employee_RDOTPay + $employee_RDOTNDPay + $employee_specialHolidayPay + $employee_specialHolidayNDPay+ $employee_regularHolidayPay + $employee_regularHolidayNDPay + $employee_regularHolidayOTPay + $employee_regularHolidayOTNDPay + $employee_specialHolidayOTPay + $employee_specialHolidayOTNDPay + $employee_specialHolidayRDOTPay + $employee_specialHolidayRDOTNDPay, 2);
+                // $employee_totalGrossPay = round($employee_grossPay + $totalAllowances + $communication, 2);
+                // $employee_netPay = round($employee_totalGrossPay - $sss - $phic - $hdmf - $wtax + $totalReimbursements + $totalAdjustments - $cashAdvance, 2);
+                // $employee_cashAdvance -= $cashAdvance;
+
                 // COMPUTE GROSS PAY
                 $employee_grossPay = round($employee_dailyRate * $employee_daysWorked + $employee_nightDiffPay + $employee_overtimePay + $employee_overtimeNDPay + $employee_RDOTPay + $employee_RDOTNDPay + $employee_specialHolidayPay + $employee_specialHolidayNDPay+ $employee_regularHolidayPay + $employee_regularHolidayNDPay + $employee_regularHolidayOTPay + $employee_regularHolidayOTNDPay + $employee_specialHolidayOTPay + $employee_specialHolidayOTNDPay + $employee_specialHolidayRDOTPay + $employee_specialHolidayRDOTNDPay, 2);
-                $employee_totalGrossPay = round($employee_grossPay + $totalAllowances + $communication, 2);
-                $employee_netPay = round($employee_totalGrossPay - $sss - $phic - $hdmf - $wtax + $totalReimbursements + $totalAdjustments - $cashAdvance, 2);
+                // $employee_totalGrossPay = round($employee_grossPay + $totalAllowances + $communication, 2);
+
+                // COMPUTATION FOR WTAX
+                $wtax = round($employee_grossPay - $sss - $phic - $hdmf, 2);
+                if ($wtax <= 10417) {
+                    $wtax = 0;
+                }
+                else if (($wtax > 10417) && $wtax <= 16666) {
+                    $wtax = ($wtax - 10417) * .15;
+                }
+                else if (($wtax > 16667) && $wtax <= 33332) {
+                    $wtax = (($wtax - 10417) * .2) + 937.5;
+                }
+                else if (($wtax > 33333) && $wtax <= 83332) {
+                    $wtax = (($wtax - 10417) * .25) + 4270.70;
+                }
+
+                // COMPUTE NET PAY
+                // $employee_netPay = round($employee_totalGrossPay - $sss - $phic - $hdmf - $wtax + $totalReimbursements + $totalAdjustments - $cashAdvance, 2);
+                $employee_netPay = round($employee_grossPay - $sss - $phic - $hdmf - $wtax + $totalReimbursements + $totalAdjustments - $cashAdvance, 2);
+                $employee_netPay = round($employee_netPay + $totalAllowances + $communication, 2);
                 $employee_cashAdvance -= $cashAdvance;
 
                 // ADD ALL PAYROLL DATA TO PAYSLIP TABLE

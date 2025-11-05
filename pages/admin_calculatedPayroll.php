@@ -18,12 +18,21 @@
                 </button>
                 
                 <?php 
-                    function formatDate($date) {
+                    function formatDate($date, $dateCreated) {
                         // Get the current year
                         $currentYear = date('Y');
+
+                        $dateCreatedYear = date('Y', strtotime($dateCreated));
+
+                        if ($dateCreatedYear == $currentYear) {
+                            $finalYear = $currentYear;
+                        }
+                        else {
+                            $finalYear = $dateCreatedYear;
+                        }
                         
                         // Append the current year to the input date
-                        $dateWithYear = $date . '-' . $currentYear;
+                        $dateWithYear = $date . '-' . $finalYear;
                         
                         // Create a DateTime object from the string (expects format MM-DD-YYYY)
                         $dateTime = DateTime::createFromFormat('m-d-Y', $dateWithYear);
@@ -34,11 +43,12 @@
 
                     $payrollID = $_GET['id']; 
                     $payrollCycleID = $_GET['cycleID']; 
+                    $payrollDateCreated = $_GET['dateCreated']; 
                     // $payrollCycleID = mysqli_query($conn, "SELECT payrollCycleID FROM tbl_payroll WHERE payrollID = $payrollID")->fetch_assoc()['payrollCycleID']; 
                     $payrollCycleFrom_date = mysqli_query($conn, "SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleFrom'];
                     $payrollCycleTo_date = mysqli_query($conn, "SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleTo'];
-                    $payrollCycleFrom = formatDate($payrollCycleFrom_date);
-                    $payrollCycleTo = formatDate($payrollCycleTo_date);
+                    $payrollCycleFrom = formatDate($payrollCycleFrom_date, $payrollDateCreated);
+                    $payrollCycleTo = formatDate($payrollCycleTo_date, $payrollDateCreated);
                     echo "Payroll from " . $payrollCycleFrom . " to " . $payrollCycleTo;
                 ?>
                 

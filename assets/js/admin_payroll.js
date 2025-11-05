@@ -136,6 +136,9 @@ $(document).ready(function() {
         let viewPayrollForm = new FormData();
         var payrollID = $(this).data('id');
         var payrollCycleID = $(this).data('cycle');
+        var payrollDateCreated = $(this).data('created');
+
+        console.log({payrollDateCreated});
 
         if (payrollID == "") {
             Swal.fire({
@@ -147,6 +150,7 @@ $(document).ready(function() {
         else {
             viewPayrollForm.append('payrollID', payrollID);
             viewPayrollForm.append('payrollCycleID', payrollCycleID);
+            viewPayrollForm.append('payrollDateCreated', payrollDateCreated);
             viewPayrollForm.append('action', 'view');
             $.ajax({
                 type: "POST",
@@ -160,7 +164,8 @@ $(document).ready(function() {
                     if (data.error == 0) {
                         id = data.id;
                         cycleID = data.cycleID;
-                        window.location.href = "../pages/admin_calculatedPayroll.php?id=" + id + "&cycleID=" + payrollCycleID;
+                        dateCreated = data.dateCreated;
+                        window.location.href = "../pages/admin_calculatedPayroll.php?id=" + id + "&cycleID=" + payrollCycleID + "&dateCreated=" + payrollDateCreated;
                     } else {
                         Swal.fire({
                             icon: 'error',
