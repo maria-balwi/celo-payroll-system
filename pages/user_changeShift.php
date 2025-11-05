@@ -34,7 +34,7 @@
                                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Date Filed</th>
                                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Requested Shift</th>
                                 <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Effectivity Date</th> -->
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Reason | Remarks</th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Reason / Remarks</th>
                                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                             </tr>
                         </thead>
@@ -153,7 +153,7 @@
                                 
                                 <div class="row g-3 mb-2">
                                     <div class="col-12">
-                                        <label for="purpose">Purpose:</label>
+                                        <label for="purpose">Reason/Remarks:</label>
                                     </div>
                                 </div>
 
@@ -186,10 +186,10 @@
                             <form>
                                 <div class="row g-2 mb-2">
                                     <div class="col-6">
-                                        <label for="viewDateFiled">Date Filed</label>
+                                        <label for="viewDateFiled">Date Filed:</label>
                                     </div>
                                     <div class="col-6">
-                                        <label for="viewStatus">Status</label>
+                                        <label for="viewStatus">Status:</label>
                                     </div>
                                 </div>
 
@@ -204,10 +204,10 @@
 
                                 <div class="row g-2 mb-2">
                                     <div class="col-6">
-                                        <label for="viewName">Employee Name</label>
+                                        <label for="viewName">Employee Name:</label>
                                     </div>
                                     <div class="col-6">
-                                        <label for="viewRequestedShift">Requested Shift</label>
+                                        <label for="viewRequestedShift">Requested Shift:</label>
                                     </div>
                                 </div>
 
@@ -249,7 +249,7 @@
 
                                 <div class="row g-2 mb-2">
                                     <div class="col-3">
-                                        <label for="viewPurpose">Purpose</label>
+                                        <label for="viewPurpose">Reason/Remarks:</label>
                                     </div>
                                 </div>
 
