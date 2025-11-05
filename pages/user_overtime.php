@@ -160,13 +160,13 @@
                                 
                                 <div class="row g-3 mb-2">
                                     <div class="col-12">
-                                        <label for="purpose">Purpose/Remarks:</label>
+                                        <label for="purpose">Purpose / Remarks:</label>
                                     </div>
                                 </div>
 
                                 <div class="row g-3 mb-2">
                                     <div class="col-12">
-                                        <textarea type="text" id="purpose" name="purpose" placeholder="Purpose" rows="3" class="form-control" required></textarea>
+                                        <textarea type="text" id="purpose" name="purpose" placeholder="Purpose / Remarks" rows="3" class="form-control" required></textarea>
                                     </div>
                                 </div>
                             </div>
