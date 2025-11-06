@@ -35,6 +35,7 @@ $(document).ready(function() {
         return `${hours}:${minutes}`;
     }
 
+    // FILTER YEAR THEN MONTH
     document.getElementById('filterYear').addEventListener('change', function() {
         filterYear = null;
         filterYear = $('#filterYear').val();
@@ -69,6 +70,7 @@ $(document).ready(function() {
         });
     });
 
+    // FILTER MONTH THEN YEAR
     document.getElementById('filterMonth').addEventListener('change', function() {
         filterMonth = null;
         filterMonth = $('#filterMonth').val();
@@ -119,7 +121,8 @@ $(document).ready(function() {
             url: "../backend/admin/employeeDTRModal.php",
             data: { 
                 employee_id: id_employee, 
-                filterMonth: filterMonth 
+                filterMonth: filterMonth,
+                filterYear: filterYear
             },
             success: function(response) {
 

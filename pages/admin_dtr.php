@@ -123,7 +123,7 @@
             <!-- ======================================================================================================================================= -->
 
             <!--------------------------------------------------------------------------------------------------------------------------------------------->
-            <!----------------------------------------------------------- VIEW TEAM MEMBER MONTHLY DTR ---------------------------------------------------->
+            <!----------------------------------------------------------- VIEW EMPLOYEE MONTHLY DTR ---------------------------------------------------->
             <div class="modal fade" id="viewEmployeeDTRModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
                 <div class="modal-dialog modal-none modal-lg modal-dialog-centered modal-dialog-scrollable">
                     <div class="modal-content" id="viewEmployeeDTRModal">
@@ -193,7 +193,7 @@
             </div>
 
             <!--------------------------------------------------------------------------------------------------------------------------------------------->
-            <!----------------------------------------------------------- VIEW TEAM MEMBER FACE DTR ------------------------------------------------------->
+            <!----------------------------------------------------------- VIEW EMPLOYEE FACE DTR ------------------------------------------------------->
             <div class="modal fade" id="viewFaceDTRModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
                 <div class="modal-dialog modal-none modal-lg modal-dialog-centered modal-dialog-scrollable">
                     <div class="modal-content" id="viewFaceDTRModal">
