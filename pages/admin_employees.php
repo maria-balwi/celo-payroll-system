@@ -142,7 +142,7 @@
             <!------------------------------------------------------------------- ADD EMPLOYEE FORM ------------------------------------------------------->
             <form id="addEmployeeForm" enctype="multipart/form-data">
                 <div class="modal fade" id="addEmployeeModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-none modal-lg modal-dialog-centered">
+                    <div class="modal-dialog modal-none modal-xl modal-dialog-centered">
                         <div class="modal-content" id="addEmployeeModal">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="userFormLabel">New Employee</h1>
@@ -155,68 +155,85 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-1">
-                                    <div class="col-4">
-                                        <label for="lastName">Last Name:</label>
+                                <div class="row g-2 mb-2 align-items-end">
+                                    <div class="col-2 d-flex justify-content-center align-items-end">
+                                        <div id="photoContainer" class="position-relative w-100" style="height: 150px;">
+                                            <!-- Profile photo -->
+                                            <img id="previewPhoto"
+                                                alt="Profile Photo"
+                                                src=""
+                                                class="rounded position-absolute top-0 start-0 w-100 h-100"
+                                                style="object-fit: cover; display: none; z-index: 2;">
+
+                                            <!-- Placeholder -->
+                                            <div id="photoPlaceholder"
+                                                class="d-flex align-items-center justify-content-center border rounded bg-light text-muted position-absolute top-0 start-0 w-100 h-100"
+                                                style="z-index: 1;">
+                                            Photo
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-4">
-                                        <label for="firstName">First Name:</label>
-                                    </div>
-                                    <div class="col-2">
-                                        <label for="gender">Gender:</label>
-                                    </div>
-                                    <div class="col-2">
-                                        <label for="civilStatus">Civil Status:</label>
+
+                                    <!-- Right side content (name, gender, civil status, etc.) -->
+                                    <div class="col-10">
+                                        <!-- Row 1 -->
+                                        <div class="row g-2 mb-2">
+                                            <div class="col-4">
+                                                <label for="lastName">Last Name:</label>
+                                                <input type="text" class="form-control" id="lastName" name="lastName">
+                                            </div>
+                                            <div class="col-4">
+                                                <label for="firstName">First Name:</label>
+                                                <input type="text" class="form-control" id="firstName" name="firstName">
+                                            </div>
+                                            <div class="col-2">
+                                                <label for="gender">Gender:</label>
+                                                <select id="gender" name="gender" class="form-select">
+                                                    <option value="" selected disabled>Choose</option>
+                                                    <option value="Male">Male</option>
+                                                    <option value="Female">Female</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-2">
+                                                <label for="civilStatus">Civil Status:</label>
+                                                <select id="civilStatus" name="civilStatus" class="form-select">
+                                                    <option selected disabled>Choose</option>
+                                                    <option value="Single">Single</option>
+                                                    <option value="Married">Married</option>
+                                                    <option value="Separated">Separated</option>
+                                                    <option value="Divorced">Divorced</option>
+                                                    <option value="Widowed">Widowed</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Row 2 -->
+                                        <div class="row g-2">
+                                            <div class="col-6">
+                                                <label for="address">Address:</label>
+                                                <input type="text" class="form-control" id="address" name="address">
+                                            </div>
+                                            <div class="col-2">
+                                                <label for="dateOfBirth">Date of Birth:</label>
+                                                <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth">
+                                            </div>
+                                            <div class="col-4">
+                                                <label for="placeOfBirth">Place of Birth:</label>
+                                                <input type="text" class="form-control" id="placeOfBirth" name="placeOfBirth">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-2">
-                                    <div class="col-4">
-                                        <input type="text" class="form-control" id="lastName" name="lastName">
-                                    </div>
-                                    <div class="col-4">
-                                        <input type="text" class="form-control" id="firstName" name="firstName">
-                                    </div>
-                                    <div class="col-2">
-                                        <select id="gender" name="gender" class="form-select">
-                                            <option value="" selected disabled>Choose</option>
-                                            <option value="Male">Male</option>
-                                            <option value="Female">Female</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-2">
-                                        <select id="civilStatus" name="civilStatus" class="form-select">
-                                            <option selected disabled>Choose</option>
-                                            <option value="Single">Single</option>
-                                            <option value="Married">Married</option>
-                                            <option value="Separated">Separated</option>
-                                            <option value="Divorced">Divorced</option>
-                                            <option value="Widowed">Widowed</option>
-                                        </select>
-                                    </div>
-                                </div>     
-                                
                                 <div class="row g-2 mb-1">
-                                    <div class="col-6">
-                                        <label for="address">Address:</label>
-                                    </div>
-                                    <div class="col-3">
-                                        <label for="dateOfBirth">Date of Birth:</label>
-                                    </div>
-                                    <div class="col-3">
-                                        <label for="placeOfBirth">Place of Birth:</label>
+                                    <div class="col-2">
+                                        <label for="photo">Upload Photo:</label>
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-2">
-                                    <div class="col-6">
-                                        <input type="text" class="form-control" id="address" name="address">
-                                    </div>
-                                    <div class="col-3">
-                                        <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth">
-                                    </div>
-                                    <div class="col-3">
-                                        <input type="text" class="form-control" id="placeOfBirth" name="placeOfBirth">
+                                <div class="row mb-2 g-2">
+                                    <div class="col-4">
+                                        <input type="file" class="form-control" id="photo" name="photo" accept="image/png, image/jpeg, image/jpg">
                                     </div>
                                 </div>
 
@@ -332,6 +349,7 @@
                                             ?>
                                         </select>
                                     </div>
+                                    
                                 </div>
 
                                 <div class="row g-2 mb-1">
@@ -387,41 +405,59 @@
                                 </div>
 
                                 <div class="row g-2 mb-1">
-                                    <div class="col-4">
+                                    <div class="col-2">
                                         <label for="vacationLeaves">Vacation Leaves:</label>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-2">
                                         <label for="sickLeaves">Sick Leaves:</label>
+                                    </div>
+                                    <div class="col-2">
+                                        
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="weekOff">Week Off:</label>
                                     </div>
                                 </div>
                             
                                 <div class="row g-2 mb-2">
-                                    <div class="col-4">
+                                    <div class="col-2">
                                         <input type="number" class="form-control" id="vacationLeaves" name="vacationLeaves">
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-2">
                                         <input type="number" class="form-control" id="sickLeaves" name="sickLeaves">
                                     </div>
-                                </div>
-
-                                <div class="row g-2 mb-1">
-                                    <div class="col-6">
-                                        <label for="photo">Upload Photo:</label>
+                                    <div class="col-2">
+                                        
                                     </div>
-                                </div>
-
-                                <div class="row mb-2 g-2">
                                     <div class="col-6">
-                                        <input type="file" class="form-control" id="photo" name="photo" accept="image/*">
-                                        <img id="previewPhoto" src="" alt="Selected Photo" style="display:none; max-height: 200px; margin-top: 10px;">
-                                    </div>
-                                    <div class="col-1 pt-2 text-left">
-                                        <button id="viewPhoto" disabled>
-                                            <svg class="h-5 w-5 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                            </svg>
-                                        </button>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="sun" value="">
+                                            <label class="form-check-label" for="sun">Sun</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="mon" value="">
+                                            <label class="form-check-label" for="mon">Mon</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="tue" value="">
+                                            <label class="form-check-label" for="tue">Tue</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="wed" value="">
+                                            <label class="form-check-label" for="wed">Wed</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="thu" value="">
+                                            <label class="form-check-label" for="thu">Thu</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="fri" value="">
+                                            <label class="form-check-label" for="fri">Fri</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="sat" value="">
+                                            <label class="form-check-label" for="sat">Sat</label>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -525,7 +561,7 @@
             <!--------------------------------------------------------------------------------------------------------------------------------------------->
             <!----------------------------------------------------------- VIEW ACTIVE EMPLOYEE FORM ------------------------------------------------------->
             <div class="modal fade" id="viewEmployeeModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
-                <div class="modal-dialog modal-none modal-lg modal-dialog-centered modal-scrollable">
+                <div class="modal-dialog modal-none modal-xl modal-dialog-centered modal-scrollable">
                     <div class="modal-content" id="viewEmployeModal">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="userFormLabel">View Employee</h1>
@@ -537,58 +573,54 @@
                                     <h2 class="text-xl font-bold">Personal Information</h2>
                                 </div>
                             </div>
-
-                            <div class="row g-2 mb-1">
-                                <div class="col-4">
-                                    <label for="viewLastName">Last Name:</label>
-                                </div>
-                                <div class="col-4">
-                                    <label for="viewFirstName">First Name:</label>
-                                </div>
-                                <div class="col-2">
-                                    <label for="viewGender">Gender:</label>
-                                </div>
-                                <div class="col-2">
-                                    <label for="viewCivilStatus">Civil Status:</label>
-                                </div>
-                            </div>
-
-                            <div class="row g-2 mb-2">
-                                <div class="col-4">
-                                    <input type="text" class="form-control" id="viewLastName" disabled readonly>
-                                </div>
-                                <div class="col-4">
-                                    <input type="text" class="form-control" id="viewFirstName" disabled readonly>
-                                </div>
-                                <div class="col-2">
-                                    <input type="text" class="form-control" id="viewGender" disabled readonly>
-                                </div>
-                                <div class="col-2">
-                                    <input type="text" class="form-control" id="viewCivilStatus" disabled readonly>
-                                </div>
-                            </div>     
                             
-                            <div class="row g-2 mb-1">
-                                <div class="col-6">
-                                    <label for="viewAddress">Address:</label>
+                            <div class="row g-2 mb-2 align-items-end">
+                                <!-- Profile Photo (occupies 2 rows visually) -->
+                                <div class="col-2 d-flex justify-content-centerv align-items-end">
+                                    <img id="viewProfilePhoto" 
+                                        src="default_photo.jpg" 
+                                        alt="Profile Photo" 
+                                        class="img-thumbnail rounded" 
+                                        style="width: 100%; height: 150px; object-fit: cover;">
                                 </div>
-                                <div class="col-3">
-                                    <label for="viewDateOfBirth">Date of Birth:</label>
-                                </div>
-                                <div class="col-3">
-                                    <label for="viewPlaceOfBirth">Place of Birth:</label>
-                                </div>
-                            </div>
 
-                            <div class="row g-2 mb-2">
-                                <div class="col-6">
-                                    <input type="text" class="form-control" id="viewAddress" disabled readonly>
-                                </div>
-                                <div class="col-3">
-                                    <input type="date" class="form-control" id="viewDateOfBirth" disabled readonly>
-                                </div>
-                                <div class="col-3">
-                                    <input type="text" class="form-control" id="viewPlaceOfBirth" disabled readonly>
+                                <!-- Right side content (name, gender, civil status, etc.) -->
+                                <div class="col-10">
+                                    <!-- Row 1 -->
+                                    <div class="row g-2 mb-2">
+                                        <div class="col-4">
+                                            <label for="viewLastName" class="form-label">Last Name:</label>
+                                            <input type="text" class="form-control" id="viewLastName" disabled readonly>
+                                        </div>
+                                        <div class="col-4">
+                                            <label for="viewFirstName" class="form-label">First Name:</label>
+                                            <input type="text" class="form-control" id="viewFirstName" disabled readonly>
+                                        </div>
+                                        <div class="col-2">
+                                            <label for="viewGender" class="form-label">Gender:</label>
+                                            <input type="text" class="form-control" id="viewGender" disabled readonly>
+                                        </div>
+                                        <div class="col-2">
+                                            <label for="viewCivilStatus" class="form-label">Civil Status:</label>
+                                            <input type="text" class="form-control" id="viewCivilStatus" disabled readonly>
+                                        </div>
+                                    </div>
+
+                                    <!-- Row 2 -->
+                                    <div class="row g-2">
+                                        <div class="col-6">
+                                            <label for="viewAddress" class="form-label">Address:</label>
+                                            <input type="text" class="form-control" id="viewAddress" disabled readonly>
+                                        </div>
+                                        <div class="col-2">
+                                            <label for="viewDateOfBirth" class="form-label">Date of Birth:</label>
+                                            <input type="date" class="form-control" id="viewDateOfBirth" disabled readonly>
+                                        </div>
+                                        <div class="col-4">
+                                            <label for="viewPlaceOfBirth" class="form-label">Place of Birth:</label>
+                                            <input type="text" class="form-control" id="viewPlaceOfBirth" disabled readonly>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
