@@ -13,7 +13,6 @@ $(document).ready(function() {
 
         let addPayrollForm = new FormData();
         var payrollCycleID = $('#payrollCycleID').val();
-        console.log({payrollCycleID});
 
         if (payrollCycleID == null) {
             Swal.fire({
@@ -137,8 +136,6 @@ $(document).ready(function() {
         var payrollID = $(this).data('id');
         var payrollCycleID = $(this).data('cycle');
         var payrollDateCreated = $(this).data('created');
-
-        console.log({payrollDateCreated});
 
         if (payrollID == "") {
             Swal.fire({
