@@ -117,7 +117,8 @@ $(document).ready(function() {
             url: "../backend/team/teamDTRModal.php",
             data: { 
                 team_id: id_team,
-                filterMonth: filterMonth  
+                filterMonth: filterMonth, 
+                filterYear: filterYear
             },
             success: function(response) {
 
