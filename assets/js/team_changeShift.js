@@ -1,6 +1,8 @@
 $(document).ready(function() {
 
-    $('#changeShiftTable').DataTable();
+    $('#changeShiftTable').DataTable({
+        order: [] // Disable default sorting
+    });
 
     $('#dropdownButton').on('click', function() {
         $('#dropdownMenu').toggleClass('hidden');

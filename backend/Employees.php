@@ -197,7 +197,8 @@
                 FROM ".$this->filedOT." AS filedOT
                 INNER JOIN ".$this->employees." AS employees
                 ON filedOT.empID = employees.id
-                WHERE empID='$id'";
+                WHERE empID='$id'
+                ORDER BY dateFiled DESC";
             return $request;
         }
 
@@ -238,7 +239,8 @@
                 FROM ".$this->filedOT." AS filedOT
                 INNER JOIN ".$this->employees." AS employees
                 ON filedOT.empID = employees.id
-                WHERE employees.designationID NOT IN (8,9)";
+                WHERE employees.designationID NOT IN (8,9)
+                ORDER BY dateFiled DESC";
             return $request;
         }
 
@@ -315,7 +317,8 @@
                 ON changeShift.empID = employees.id
                 INNER JOIN ".$this->shift." AS shift
                 ON shift.shiftID = changeShift.requestedShift
-                WHERE empID='$id'";
+                WHERE empID='$id'
+                ORDER BY dateFiled DESC";
             return $request;
         }
         
@@ -365,7 +368,8 @@
                 ON shift_1.shiftID = employees.shiftID
                 INNER JOIN ".$this->shift." AS shift_2
                 ON shift_2.shiftID = changeShift.requestedShift
-                WHERE employees.designationID NOT IN (8,9)";
+                WHERE employees.designationID NOT IN (8,9)
+                ORDER BY dateFiled DESC";
             return $request;
         }
 
@@ -398,7 +402,8 @@
                 ON shift_1.shiftID = employees.shiftID
                 INNER JOIN ".$this->shift." AS shift_2
                 ON shift_2.shiftID = changeShift.requestedShift
-                WHERE employees.departmentID = 4 AND employees.designationID = 10";
+                WHERE employees.departmentID = 4 AND employees.designationID = 10
+                ORDER BY dateFiled DESC";
             return $request;
         }
 
@@ -416,7 +421,8 @@
                 ON shift_1.shiftID = employees.shiftID
                 INNER JOIN ".$this->shift." AS shift_2
                 ON shift_2.shiftID = changeShift.requestedShift
-                WHERE employees.designationID IN (4,11)";
+                WHERE employees.designationID IN (4,11)
+                ORDER BY dateFiled DESC";
             return $request;
         }
 
@@ -434,7 +440,8 @@
                 ON shift_1.shiftID = employees.shiftID
                 INNER JOIN ".$this->shift." AS shift_2
                 ON shift_2.shiftID = changeShift.requestedShift
-                WHERE employees.departmentID = 1 AND employees.designationID IN (1,2,3)";
+                WHERE employees.departmentID = 1 AND employees.designationID IN (1,2,3)
+                ORDER BY dateFiled DESC";
             return $request;
         }
 
@@ -445,7 +452,8 @@
                 ON leaves.empID = employees.id
                 INNER JOIN ".$this->leaveType." AS leaveType
                 ON leaveType.leaveTypeID = leaves.leaveTypeID
-                WHERE empID='$id'";
+                WHERE empID='$id'
+                ORDER BY dateFiled DESC";
             return $request;
         }
 
@@ -456,7 +464,8 @@
                 ON leaves.empID = employees.id
                 INNER JOIN ".$this->leaveType." AS leaveType
                 ON leaveType.leaveTypeID = leaves.leaveTypeID
-                WHERE employees.designationID NOT IN (8,9)";
+                WHERE employees.designationID NOT IN (8,9)
+                ORDER BY dateFiled DESC";
             return $request;
         }
 
