@@ -894,9 +894,6 @@
                     else if ($deductionDetails['deductionName'] == "HDMF") {
                         $hdmf = $deductionDetails['amount'];
                     }
-                    else if ($deductionDetails['deductionName'] == "WTAX") {
-                        $wtax = $deductionDetails['amount'];
-                    }
                     else if ($deductionDetails['deductionName'] == "SSS Salary Loan") {
                         $salaryLoan = $deductionDetails['amount'];
                     }
@@ -1040,21 +1037,27 @@
 
                 // COMPUTE GROSS PAY
                 $employee_grossPay = round($employee_dailyRate * $employee_daysWorked + $employee_nightDiffPay + $employee_overtimePay + $employee_overtimeNDPay + $employee_RDOTPay + $employee_RDOTNDPay + $employee_specialHolidayPay + $employee_specialHolidayNDPay+ $employee_regularHolidayPay + $employee_regularHolidayNDPay + $employee_regularHolidayOTPay + $employee_regularHolidayOTNDPay + $employee_specialHolidayOTPay + $employee_specialHolidayOTNDPay + $employee_specialHolidayRDOTPay + $employee_specialHolidayRDOTNDPay, 2);
-                // $employee_totalGrossPay = round($employee_grossPay + $totalAllowances + $communication, 2);
+                $employee_totalGrossPay = round($employee_grossPay + $totalAllowances + $communication, 2);
 
                 // COMPUTATION FOR WTAX
-                $wtax = round($employee_grossPay - $sss - $phic - $hdmf, 2);
-                if ($wtax <= 10417) {
+                $deductedGrossPay = round($employee_grossPay - $sss - $phic - $hdmf, 2);
+                if ($deductedGrossPay <= 10417) {
                     $wtax = 0;
                 }
-                else if (($wtax > 10417) && $wtax <= 16666) {
-                    $wtax = ($wtax - 10417) * .15;
+                else if (($deductedGrossPay > 10417) && $deductedGrossPay <= 16666) {
+                    $wtax = ($deductedGrossPay - 10417) * .15;
                 }
-                else if (($wtax > 16667) && $wtax <= 33332) {
-                    $wtax = (($wtax - 10417) * .2) + 937.5;
+                else if (($deductedGrossPay > 16667) && $deductedGrossPay <= 33332) {
+                    $wtax = (($deductedGrossPay - 16667) * .2) + 937.5;
                 }
-                else if (($wtax > 33333) && $wtax <= 83332) {
-                    $wtax = (($wtax - 10417) * .25) + 4270.70;
+                else if (($deductedGrossPay > 33333) && $deductedGrossPay <= 83332) {
+                    $wtax = (($deductedGrossPay - 33333) * .25) + 4270.70;
+                }
+                else if (($deductedGrossPay > 83333) && $deductedGrossPay <= 333332) {
+                    $wtax = (($deductedGrossPay - 83333) * .3) + 16770.70;
+                }
+                else if ($deductedGrossPay > 333333) {
+                    $wtax = (($deductedGrossPay - 333333) * .35) + 91770.70;
                 }
 
                 // COMPUTE NET PAY
@@ -1349,9 +1352,6 @@
                     else if ($deductionDetails['deductionName'] == "HDMF") {
                         $hdmf = $deductionDetails['amount'];
                     }
-                    else if ($deductionDetails['deductionName'] == "WTAX") {
-                        $wtax = $deductionDetails['amount'];
-                    }
                     else if ($deductionDetails['deductionName'] == "SSS Salary Loan") {
                         $salaryLoan = $deductionDetails['amount'];
                     }
@@ -1502,21 +1502,27 @@
 
                 // COMPUTE GROSS PAY
                 $employee_grossPay = round($employee_dailyRate * $employee_daysWorked + $employee_nightDiffPay + $employee_overtimePay + $employee_overtimeNDPay + $employee_RDOTPay + $employee_RDOTNDPay + $employee_specialHolidayPay + $employee_specialHolidayNDPay+ $employee_regularHolidayPay + $employee_regularHolidayNDPay + $employee_regularHolidayOTPay + $employee_regularHolidayOTNDPay + $employee_specialHolidayOTPay + $employee_specialHolidayOTNDPay + $employee_specialHolidayRDOTPay + $employee_specialHolidayRDOTNDPay, 2);
-                // $employee_totalGrossPay = round($employee_grossPay + $totalAllowances + $communication, 2);
+                $employee_totalGrossPay = round($employee_grossPay + $totalAllowances + $communication, 2);
 
                 // COMPUTATION FOR WTAX
-                $wtax = round($employee_grossPay - $sss - $phic - $hdmf, 2);
-                if ($wtax <= 10417) {
+                $deductedGrossPay = round($employee_grossPay - $sss - $phic - $hdmf, 2);
+                if ($deductedGrossPay <= 10417) {
                     $wtax = 0;
                 }
-                else if (($wtax > 10417) && $wtax <= 16666) {
-                    $wtax = ($wtax - 10417) * .15;
+                else if (($deductedGrossPay > 10417) && $deductedGrossPay <= 16666) {
+                    $wtax = ($deductedGrossPay - 10417) * .15;
                 }
-                else if (($wtax > 16667) && $wtax <= 33332) {
-                    $wtax = (($wtax - 10417) * .2) + 937.5;
+                else if (($deductedGrossPay > 16667) && $deductedGrossPay <= 33332) {
+                    $wtax = (($deductedGrossPay - 16667) * .2) + 937.5;
                 }
-                else if (($wtax > 33333) && $wtax <= 83332) {
-                    $wtax = (($wtax - 10417) * .25) + 4270.70;
+                else if (($deductedGrossPay > 33333) && $deductedGrossPay <= 83332) {
+                    $wtax = (($deductedGrossPay - 33333) * .25) + 4270.70;
+                }
+                else if (($deductedGrossPay > 83333) && $deductedGrossPay <= 333332) {
+                    $wtax = (($deductedGrossPay - 83333) * .3) + 16770.70;
+                }
+                else if ($deductedGrossPay > 333333) {
+                    $wtax = (($deductedGrossPay - 333333) * .35) + 91770.70;
                 }
 
                 // COMPUTE NET PAY

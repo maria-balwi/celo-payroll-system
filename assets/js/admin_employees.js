@@ -265,53 +265,90 @@ $(document).ready(function() {
     
 
     // ADD EMPLOYEE - UPLOAD PHOTO
-    $('#photo').change(function() {
-        const [file] = photo.files;
-        const acceptedImageTypes = ['image/jpeg', 'image/png'];
+    $("#photo").change(function () {
+        const [file] = this.files;
+        const acceptedImageTypes = ["image/jpeg", "image/png", "image/jpg"];
+        const img = $("#previewPhoto");
+        const placeholder = $("#photoPlaceholder");
+
         if (file) {
-            const fileType = file['type'];
+            const fileType = file["type"];
+
             if ($.inArray(fileType, acceptedImageTypes) < 0) {
                 Swal.fire({
-                    icon: 'warning',
-                    title: 'Invalid Picture',
-                    text: 'Invalid File only accept (JPG/PNG) file',
-                })
-                $('#viewPhoto').attr('disabled', true);
-                // $('#previewPhoto').hide();  // Hide the preview if the file is invalid
+                    icon: "warning",
+                    title: "Invalid Picture",
+                    text: "Invalid File only accept (JPG/PNG) file",
+                });
+                img.hide();
+                placeholder.show().text("Photo");
             } else {
-                $('#viewPhoto').attr('disabled', false);  // Enable the view button
-                // SHOW PREVIEW IMAGE
-                // const reader = new FileReader();
-                // reader.onload = (e) => {
-                //     $('#previewPhoto').attr('src', e.target.result).show();
-                // };
-                // reader.readAsDataURL(file);
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    console.log("Image loaded");
+                    img.attr("src", e.target.result).show();
+                    placeholder.hide();
+                };
+                reader.readAsDataURL(file);
             }
         } else {
-            $('#viewPhoto').attr('disabled', true);  // Disable the view button if no file is selected
-            // $('#previewPhoto').hide();  // Hide the preview if no file is selected
+            placeholder.show().text("Photo");
+            img.hide();
         }
     });
+    
+    // OLD CODE
+    // $('#photo').change(function() { 
+    //     const [file] = photo.files; 
+    //     const acceptedImageTypes = ['image/jpeg', 'image/png', 'image/jpg']; 
+    //     if (file) { 
+    //         const fileType = file['type']; 
+    //         if ($.inArray(fileType, acceptedImageTypes) < 0) { 
+    //             Swal.fire({ 
+    //                 icon: 'warning', 
+    //                 title: 'Invalid Picture', 
+    //                 text: 'Invalid File only accept (JPG/PNG) file', 
+    //             }) 
+    //             $('#viewPhoto').attr('disabled', true); 
+    //             // $('#previewPhoto').hide(); 
+    //             // // Hide the preview if the file is invalid 
+    //         } 
+    //         else { 
+    //             $('#viewPhoto').attr('disabled', false); // Enable the view button 
+    //             // // SHOW PREVIEW IMAGE 
+    //             const reader = new FileReader(); 
+    //             reader.onload = (e) => { 
+    //                 $('#previewPhoto').attr('src', e.target.result).show(); 
+    //             }; 
+    //             reader.readAsDataURL(file); 
+    //         } 
+    //     } else { 
+    //         $('#viewPhoto').attr('disabled', true); // Disable the view button if no file is selected 
+    //         // $('#previewPhoto').hide(); 
+    //         // Hide the preview if no file is selected 
+    //     } 
+    // });
 
-    $('#viewPhoto').click(function() {
-        const [file] = photo.files;
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                Swal.fire({
-                    title: 'Profile Picture',
-                    imageUrl: e.target.result,
-                    imageHeight: 200,
-                });
-            }
-            reader.readAsDataURL(file);
-        }
-    });
+
+    // $('#viewPhoto').click(function() {
+    //     const [file] = photo.files;
+    //     if (file) {
+    //         const reader = new FileReader();
+    //         reader.onload = (e) => {
+    //             Swal.fire({
+    //                 title: 'Profile Picture',
+    //                 imageUrl: e.target.result,
+    //                 imageHeight: 200,
+    //             });
+    //         }
+    //         reader.readAsDataURL(file);
+    //     }
+    // });
 
     // UPDATE EMPLOYEE - UPLOAD PHOTO
     $('#updateProfilePicture').change(function() {
         const [file] = updateProfilePicture.files;
-        const acceptedImageTypes = ['image/jpeg', 'image/png'];
+        const acceptedImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
         if (file) {
             const fileType = file['type'];
             if ($.inArray(fileType, acceptedImageTypes) < 0) {
