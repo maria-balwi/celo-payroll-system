@@ -262,6 +262,22 @@ $(document).ready(function() {
             $('#update_req_tin').prop('checked', false);
         }
     });
+
+    // CHECKBOXES FOR WEEK OFF (ADD EMPLOYEE)
+    $("input[type='checkbox'][name='wo_day']").on("change", function () {
+        // Count checked boxes
+        const checkedCount = $("input[name='wo_day']:checked").length;
+
+        if (checkedCount >= 2) {
+            // Disable all unchecked boxes
+            $("input[name='wo_day']").not(":checked").prop("disabled", true);
+        } else {
+            // Re-enable all boxes
+            $("input[name='wo_day']").prop("disabled", false);
+        }
+    });
+
+    
     
 
     // ADD EMPLOYEE - UPLOAD PHOTO

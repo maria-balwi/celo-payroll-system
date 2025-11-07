@@ -15,6 +15,7 @@
         private $filedOT = 'tbl_filedot';
         private $shifts = 'tbl_shiftschedule';
         private $requirements = 'tbl_requirements';
+        private $weekOff = 'tbl_empWeekOff';
         private $allowances = 'tbl_allowances';
         private $deductions = 'tbl_deductions';
         private $auditTrail = 'tbl_audittrail';
@@ -778,6 +779,13 @@
                 INSERT INTO ".$this->requirements." (empID, req_sss, req_pagIbig, req_philhealth, req_tin, req_nbi, req_medicalExam, req_2x2pic, req_vaccineCard, req_psa, req_validID, req_helloMoney)
                 VALUES ('".$employeeID."', '".$req_sss."', '".$req_pagIbig."', '".$req_philhealth."', '".$req_tin."', '".$req_nbi."', '".$req_medicalExam."', '".$req_2x2pic."', '".$req_vaccineCard."', '".$req_psa."', '".$req_validID."', '".$req_helloMoney."')";
             return $addRequirement;
+        }
+
+        public function addEmployeeWeekOff($employeeID, $wo_mon, $wo_tue, $wo_wed, $wo_thu, $wo_fri, $wo_sat, $wo_sun) {
+            $addWeekOff = "
+                INSERT INTO ".$this->weekOff." (empID, wo_mon, wo_tue, wo_wed, wo_thu, wo_fri, wo_sat, wo_sun)
+                VALUES ('".$employeeID."', '".$wo_mon."', '".$wo_tue."', '".$wo_wed."', '".$wo_thu."', '".$wo_fri."', '".$wo_sat."', '".$wo_sun."')";
+            return $addWeekOff;
         }
 
         public function updateEmployeeInfo_reg($updateUserID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 

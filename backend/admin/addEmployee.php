@@ -127,6 +127,69 @@
         $req_helloMoney = 0;
     }
 
+    if (isset($_POST['wo_mon']))
+    {
+        $wo_mon = 1;
+    }
+    else
+    {
+        $wo_mon = 0;
+    }
+
+    if (isset($_POST['wo_tue']))
+    {
+        $wo_tue = 1;
+    }
+    else
+    {
+        $wo_tue = 0;
+    }
+
+    if (isset($_POST['wo_wed']))
+    {
+        $wo_wed = 1;
+    }
+    else
+    {
+        $wo_wed = 0;
+    }
+
+    if (isset($_POST['wo_thu']))
+    {
+        $wo_thu = 1;
+    }
+    else
+    {
+        $wo_thu = 0;
+    }
+
+    if (isset($_POST['wo_fri']))
+    {
+        $wo_fri = 1;
+    }
+    else
+    {
+        $wo_fri = 0;
+    }
+
+    if (isset($_POST['wo_sat']))
+    {
+        $wo_sat = 1;
+    }
+    else
+    {
+        $wo_sat = 0;
+    }
+
+    if (isset($_POST['wo_sun']))
+    {
+        $wo_sun = 1;
+    }
+    else
+    {
+        $wo_sun = 0;
+    }
+
     // PENDING TO GET ID
     $designationQuery = mysqli_query($conn, $employees->viewDesignation());
     while ($designationDetails = mysqli_fetch_array($designationQuery)) {
@@ -176,7 +239,8 @@
         $lastID = $lastIDResult['id'];
 
         mysqli_query($conn, $employees->addEmployeeRequirements($lastID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi, $req_medicalExam, $req_2x2pic, $req_vaccineCard, $req_psa, $req_validID, $req_helloMoney));
-
+        mysqli_query($conn, $employees->addEmployeeWeekOff($lastID, $wo_mon, $wo_tue, $wo_wed, $wo_thu, $wo_fri, $wo_sat, $wo_sun));
+        
         $lastIDQuery = mysqli_query($conn, $employees->viewLastEmployee());
         $lastIDResult = mysqli_fetch_array($lastIDQuery);
         $lastID = $lastIDResult['id'];
