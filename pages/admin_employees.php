@@ -368,31 +368,31 @@
                                         <label for="weekOff">Week Off:</label>
                                         <div class="col-12">
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" id="wo_mon" name="wo_day">
+                                                <input class="form-check-input wo_day" type="checkbox" id="wo_mon" name="wo_mon">
                                                 <label class="form-check-label" for="wo_mon">Mon</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" id="wo_tue" name="wo_day">
+                                                <input class="form-check-input wo_day" type="checkbox" id="wo_tue" name="wo_tue">
                                                 <label class="form-check-label" for="wo_tue">Tue</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" id="wo_wed" name="wo_day">
+                                                <input class="form-check-input wo_day" type="checkbox" id="wo_wed" name="wo_wed">
                                                 <label class="form-check-label" for="wo_wed">Wed</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" id="wo_thu" name="wo_day">
+                                                <input class="form-check-input wo_day" type="checkbox" id="wo_thu" name="wo_thu">
                                                 <label class="form-check-label" for="wo_thu">Thu</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" id="wo_fri" name="wo_day">
+                                                <input class="form-check-input wo_day" type="checkbox" id="wo_fri" name="wo_fri">
                                                 <label class="form-check-label" for="wo_fri">Fri</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" id="wo_sat" name="wo_day">
+                                                <input class="form-check-input wo_day" type="checkbox" id="wo_sat" name="wo_sat">
                                                 <label class="form-check-label" for="wo_sat">Sat</label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" id="wo_sun" name="wo_day">
+                                                <input class="form-check-input wo_day" type="checkbox" id="wo_sun" name="wo_sun">
                                                 <label class="form-check-label" for="wo_sun">Sun</label>
                                             </div>
                                         </div>
@@ -513,13 +513,15 @@
                             </div>
                             
                             <div class="row g-2 mb-2 align-items-end">
-                                <!-- Profile Photo (occupies 2 rows visually) -->
-                                <div class="col-2 d-flex justify-content-centerv align-items-end">
-                                    <img id="viewProfilePhoto" 
-                                        src="default_photo.jpg" 
+                                <div class="col-2 d-flex justify-content-center align-items-end">
+                                    <div id="photoContainer" class="position-relative w-100" style="height: 150px;">
+                                        <!-- Profile photo -->
+                                        <img id="viewProfilePhoto" 
+                                        src="" 
                                         alt="Profile Photo" 
                                         class="img-thumbnail rounded" 
                                         style="width: 100%; height: 150px; object-fit: cover;">
+                                    </div>
                                 </div>
 
                                 <!-- Right side content (name, gender, civil status, etc.) -->
@@ -562,32 +564,21 @@
                                 </div>
                             </div>
 
-                            <div class="row g-2 mb-1">
-                                <div class="col-3">
-                                    <label for="viewsss">SSS:</label>
-                                </div>
-                                <div class="col-3">
-                                    <label for="viewpagIbig">Pag-Ibig:</label>
-                                </div>
-                                <div class="col-3">
-                                    <label for="viewphilhealth">PhilHealth:</label>
-                                </div>
-                                <div class="col-3">
-                                    <label for="viewtin">TIN:</label>
-                                </div>
-                            </div>
-
                             <div class="row g-2 mb-2">
                                 <div class="col-3">
+                                    <label for="viewsss">SSS:</label>
                                     <input type="text" class="form-control" id="viewsss" disabled readonly>
                                 </div>
                                 <div class="col-3">
+                                    <label for="viewpagIbig">Pag-Ibig:</label>
                                     <input type="text" class="form-control" id="viewpagIbig" disabled readonly>
                                 </div>
                                 <div class="col-3">
+                                    <label for="viewphilhealth">PhilHealth:</label>
                                     <input type="text" class="form-control" id="viewphilhealth" disabled readonly>
                                 </div>
                                 <div class="col-3">
+                                    <label for="viewtin">TIN:</label>
                                     <input type="text" class="form-control" id="viewtin" disabled readonly>
                                 </div>
                             </div>
@@ -600,74 +591,47 @@
                                 </div>
                             </div>
 
-                            <div class="row g-2 mb-1">
-                                <div class="col-6">
-                                    <label for="viewEmailAddress">Email Address:</label>
-                                </div>
-                                <div class="col-3">
-                                    <label for="viewEmployeeID">Employee ID:</label>
-                                </div>
-                                <div class="col-3">
-                                    <label for="viewMobileNumber">Mobile Number:</label>
-                                </div>
-                            </div>
-
                             <div class="row g-2 mb-2">
                                 <div class="col-6">
+                                    <label for="viewEmailAddress">Email Address:</label>
                                     <input type="email" class="form-control" id="viewEmailAddress" disabled readonly>
                                 </div>
                                 <div class="col-3">
+                                    <label for="viewEmployeeID">Employee ID:</label>
                                     <input type="text" class="form-control" id="viewEmployeeID" disabled readonly>
                                 </div>
                                 <div class="col-3">
+                                    <label for="viewMobileNumber">Mobile Number:</label>
                                     <input type="text" class="form-control" id="viewMobileNumber" disabled readonly>
                                 </div>
                             </div>
 
-                            <div class="row g-2 mb-1">
-                                <div class="col-4">
-                                    <label for="viewDepartment">Department:</label>
-                                </div>
-                                <div class="col-4">
-                                    <label for="viewDesignation">Designation:</label>
-                                </div>
-                                <div class="col-4">
-                                    <label for="viewShiftID">Shift:</label>
-                                </div>
-                            </div>
-                        
                             <div class="row g-2 mb-2">
                                 <div class="col-4">
+                                    <label for="viewDepartment">Department:</label>
                                     <input type="text" class="form-control" id="viewDepartment" disabled readonly>
                                 </div>
                                 <div class="col-4">
+                                    <label for="viewDesignation">Designation:</label>
                                     <input type="text" class="form-control" id="viewDesignation" disabled readonly>
                                 </div>
                                 <div class="col-4">
+                                    <label for="viewShiftID">Shift:</label>
                                     <input type="text" class="form-control" id="viewShiftID" disabled readonly>
                                 </div>
                             </div>
 
-                            <div class="row g-2 mb-1">
-                                <div class="col-4">
-                                    <label for="viewBasicPay">Basic Pay:</label>
-                                </div>
-                                <div class="col-4">
-                                    <label for="viewDailyRate">Daily Rate:</label>
-                                </div>
-                                <div class="col-4">
-                                    <label for="viewHourlyRate">Hourly Rate:</label>
-                                </div>
-                            </div>
-                            
                             <div class="row g-2 mb-2">
                                 <div class="col-4">
+                                    <label for="viewBasicPay">Basic Pay:</label>
                                     <input type="number" class="form-control" id="viewBasicPay" name="viewBasicPay" disabled readonly>
                                 </div>
                                 <div class="col-4">
+                                    <label for="viewDailyRate">Daily Rate:</label>
                                     <input type="number" class="form-control" id="viewDailyRate" name="viewDailyRate" disabled readonly>
                                 </div>
                                 <div class="col-4">
+                                    <label for="viewHourlyRate">Hourly Rate:</label>
                                     <input type="number" class="form-control" id="viewHourlyRate" name="viewHourlyRate" disabled readonly>
                                 </div>
                             </div>
@@ -675,48 +639,63 @@
                             <div class="row g-2 mb-1">
                                 <div class="col-4">
                                     <label for="viewEmploymentStatus">Employment Status:</label>
-                                </div>
-                                <div class="col-4">
-                                    <label for="viewDateHired">Date Hired:</label>
-                                </div>
-                                <div class="col-4 viewDateRegularizedLabel">
-                                    <label for="viewDateRegularized">Date Regularized:</label>
-                                </div>
-                            </div>
-                            
-                            <div class="row g-2 mb-2">
-                                <div class="col-4">
                                     <input type="text" class="form-control" id="viewEmploymentStatus" name="viewEmploymentStatus" disabled readonly>
                                 </div>
                                 <div class="col-4">
+                                    <label for="viewDateHired">Date Hired:</label>
                                     <input type="text" class="form-control" id="viewDateHired" name="viewDateHired" disabled readonly>
                                 </div>
                                 <div class="col-4 viewDateRegularizedLabel">
+                                    <label for="viewDateRegularized">Date Regularized:</label>
                                     <input type="text" class="form-control" id="viewDateRegularized" name="viewDateRegularized" disabled readonly>
                                 </div>
                             </div>
 
                             <div class="row g-2 mb-1">
-                                <div class="col-4">
+                                <div class="col-2">
                                     <label for="viewVacationLeaves">Vacation Leaves:</label>
-                                </div>
-                                <div class="col-4">
-                                    <label for="viewSickLeaves">Sick Leaves:</label>
-                                </div>
-                                <div class="col-4">
-                                    <label for="viewLeavePoints">Leave Points:</label>
-                                </div>
-                            </div>
-                            
-                            <div class="row g-2 mb-2">
-                                <div class="col-4">
                                     <input type="number" class="form-control " id="viewVacationLeaves" name="viewVacationLeaves" disabled readonly>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-2">
+                                    <label for="viewSickLeaves">Sick Leaves:</label>
                                     <input type="number" class="form-control" id="viewSickLeaves" name="viewSickLeaves" disabled readonly>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-2">
+                                    <label for="viewLeavePoints">Leave Points:</label>
                                     <input type="number" class="form-control" id="viewLeavePoints" name="viewLeavePoints" disabled readonly>
+                                </div>
+                                <div class="col-6">
+                                    <label for="viewWeekOff">Week Off:</label>
+                                    <div class="col-12">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="view_wo_monday" name="view_wo_monday" value="view_wo_monday" disabled readonly>
+                                            <label class="form-check-label" for="view_wo_monday">Mon</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="view_wo_tuesday" name="view_wo_tuesday" value="view_wo_tuesday" disabled readonly>
+                                            <label class="form-check-label" for="view_wo_tuesday">Tue</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="view_wo_wednesday" name="view_wo_wednesday" value="view_wo_wednesday" disabled readonly>
+                                            <label class="form-check-label" for="view_wo_wednesday">Wed</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="view_wo_thursday" name="view_wo_thursday" value="view_wo_thursday" disabled readonly>
+                                            <label class="form-check-label" for="view_wo_thursday">Thu</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="view_wo_friday" name="view_wo_friday" value="view_wo_friday" disabled readonly>
+                                            <label class="form-check-label" for="view_wo_friday">Fri</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="view_wo_saturday" name="view_wo_saturday" value="view_wo_saturday" disabled readonly>
+                                            <label class="form-check-label" for="view_wo_saturday">Sat</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="view_wo_sunday" name="view_wo_sunday" value="view_wo_sunday" disabled readonly>
+                                            <label class="form-check-label" for="view_wo_sunday">Sun</label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 

@@ -209,15 +209,11 @@
     {
         $em = "Email Address already exists on the system!";
         $error = array('error' => 1, 'em' => $em);
-        echo json_encode($error);
-        exit();
     }
     else if (mysqli_num_rows($checkEmployeeID) == 1)
     {
         $em = "Employee ID already exists on the system!";
         $error = array('error' => 1, 'em' => $em);
-        echo json_encode($error);
-        exit();
     }
     else {
         if ($employmentStatus == "Regular")
@@ -245,49 +241,41 @@
         $lastIDResult = mysqli_fetch_array($lastIDQuery);
         $lastID = $lastIDResult['id'];
 
-        $em = "Employee Added Successfully";
-        $error = array('error' => 0, 'id' => $lastID, 'em' => $em);
-        echo json_encode($error);
-        
+
         if (isset($_FILES['photo']) && $_FILES['photo']['error'] == 0) {
-            $uploadDir = '../../assets/images/profiles/'; // DIRECTORY TO SAVE UPLOADED FILES
-
-            // EXTRACT THE ORIGINAL FILE EXTENSION
-            // $fileExtension = pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION);
-
-            // GENERATE NEW NAME
-            $modified_employeeID = str_replace("-", "", $employeeID);
-            $newFileName = $modified_employeeID. '.png';
-
-            // The complete path to save the uploaded file
-            $uploadFile = $uploadDir . $newFileName;
+            // DIRECTORY TO SAVE UPLOADED PHOTO
+            $uploadDir = __DIR__ . '/../../assets/images/profiles/';
 
             // CHECK THE DIRECTORY FOLDER IF EXISTING, IF NOT CREATES IT
             if (!file_exists($uploadDir)) {
                 mkdir($uploadDir, 0755, true);
             }
 
-            // VALIDATE FILE TYPE
-            $allowedTypes = ['image/jpeg', 'image/png'];
+            // GENERATE NEW FILE NAME
+            $modified_employeeID = str_replace("-", "", $employeeID);
+            $newFileName = $modified_employeeID . '.png';
+            $uploadFile = $uploadDir . $newFileName;
+
+            $allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
             if (in_array($_FILES['photo']['type'], $allowedTypes)) {
                 if (move_uploaded_file($_FILES['photo']['tmp_name'], $uploadFile)) {
-                    // SUCCESSFULLY UPLOADED FILE                    
-                } 
-                else {
+                    $em = "Employee Added Successfully";
+                    $error = ['error' => 0, 'id' => $lastID, 'em' => $em];
+                } else {
                     $em = "Failed to move uploaded file.";
-                    $error = array('error' => 2, 'em' => $em);
-                    echo json_encode($error);
-                    exit();
+                    $error = ['error' => 2, 'em' => $em];
                 }
-            } 
-            else {
+            } else {
                 $em = "Invalid file type";
-                $error = array('error' => 2, 'em' => $em);
-                echo json_encode($error);
-                exit();
+                $error = ['error' => 2, 'em' => $em];
             }
+        } else {
+            $em = "No file uploaded.";
+            $error = ['error' => 2, 'em' => $em];
         }
-        
-        exit();
+
     }
+
+    echo json_encode($error);
+    exit();
 ?>

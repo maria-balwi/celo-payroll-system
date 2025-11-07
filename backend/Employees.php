@@ -885,6 +885,8 @@
                 availableVL, availableSL, req_sss, req_pagIbig, req_philhealth, req_tin, req_nbi,
                 req_medicalExam, req_2x2pic, req_vaccineCard, req_psa, req_validID, req_helloMoney,
                 employmentStatus, dateHired, dateRegularized, leavePoints,
+                wo_mon, wo_tue, wo_wed, wo_thu, 
+                wo_fri, wo_sat, wo_sun,
                 DATE_FORMAT(shifts.startTime, '%h:%i %p') AS startTime, 
                 DATE_FORMAT(shifts.endTime, '%h:%i %p') AS endTime
                 FROM ".$this->employees." AS employees
@@ -896,6 +898,8 @@
                 ON designation.designationID = employees.designationID
                 INNER JOIN ".$this->requirements." AS requirements
                 ON requirements.empID = employees.id
+                INNER JOIN ".$this->weekOff." AS weekOff
+                ON weekOff.empID = employees.id
                 WHERE id = '$id'";
             return $employeeInfo;
         }

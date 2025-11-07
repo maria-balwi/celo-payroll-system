@@ -264,21 +264,32 @@ $(document).ready(function() {
     });
 
     // CHECKBOXES FOR WEEK OFF (ADD EMPLOYEE)
-    $("input[type='checkbox'][name='wo_day']").on("change", function () {
-        // Count checked boxes
-        const checkedCount = $("input[name='wo_day']:checked").length;
+    // $("input[type='checkbox'][name='wo_day']").on("change", function () {
+    //     // Count checked boxes
+    //     const checkedCount = $("input[name='wo_day']:checked").length;
+
+    //     if (checkedCount >= 2) {
+    //         // Disable all unchecked boxes
+    //         $("input[name='wo_day']").not(":checked").prop("disabled", true);
+    //     } else {
+    //         // Re-enable all boxes
+    //         $("input[name='wo_day']").prop("disabled", false);
+    //     }
+    // });
+
+    // CHECKBOXES FOR WEEK OFF (ADD EMPLOYEE)
+    $("input.wo_day[type='checkbox']").on("change", function () {
+        const $checkboxes = $("input.wo_day[type='checkbox']");
+        const checkedCount = $checkboxes.filter(":checked").length;
 
         if (checkedCount >= 2) {
             // Disable all unchecked boxes
-            $("input[name='wo_day']").not(":checked").prop("disabled", true);
+            $checkboxes.not(":checked").prop("disabled", true);
         } else {
             // Re-enable all boxes
-            $("input[name='wo_day']").prop("disabled", false);
+            $checkboxes.prop("disabled", false);
         }
     });
-
-    
-    
 
     // ADD EMPLOYEE - UPLOAD PHOTO
     $("#photo").change(function () {
@@ -294,14 +305,13 @@ $(document).ready(function() {
                 Swal.fire({
                     icon: "warning",
                     title: "Invalid Picture",
-                    text: "Invalid File only accept (JPG/PNG) file",
+                    text: "Invalid File only accept (JPG/JPEG/PNG) file",
                 });
                 img.hide();
                 placeholder.show().text("Photo");
             } else {
                 const reader = new FileReader();
                 reader.onload = (e) => {
-                    console.log("Image loaded");
                     img.attr("src", e.target.result).show();
                     placeholder.hide();
                 };
@@ -557,6 +567,7 @@ $(document).ready(function() {
                         success: function (res) {
                             const data = JSON.parse(res);
                             var message = data.em;
+                            console.log(message);
                             if (data.error == 0) {
                                 var id = data.id;
                                 loadEmployeeData(id);
@@ -649,6 +660,16 @@ $(document).ready(function() {
                         $('.cashAdvancePart').show();
                     }
 
+                    // WEEK OFF SECTION
+                    $('#view_wo_monday').val(res.data.wo_mon == 1 ? $('#view_wo_monday').prop('checked', true) : $('#view_wo_monday').prop('checked', false));
+                    $('#view_wo_tuesday').val(res.data.wo_tue == 1 ? $('#view_wo_tuesday').prop('checked', true) : $('#view_wo_tuesday').prop('checked', false));
+                    $('#view_wo_wednesday').val(res.data.wo_wed == 1 ? $('#view_wo_wednesday').prop('checked', true) : $('#view_wo_wednesday').prop('checked', false));
+                    $('#view_wo_thursday').val(res.data.wo_thu == 1 ? $('#view_wo_thursday').prop('checked', true) : $('#view_wo_thursday').prop('checked', false));
+                    $('#view_wo_friday').val(res.data.wo_fri == 1 ? $('#view_wo_friday').prop('checked', true) : $('#view_wo_friday').prop('checked', false));
+                    $('#view_wo_saturday').val(res.data.wo_sat == 1 ? $('#view_wo_saturday').prop('checked', true) : $('#view_wo_saturday').prop('checked', false));
+                    $('#view_wo_sunday').val(res.data.wo_sun == 1 ? $('#view_wo_sunday').prop('checked', true) : $('#view_wo_sunday').prop('checked', false));
+
+                    // REQUIREMENTS SECTION
                     $('#view_req_sss').val(res.data.req_sss == 1 ? $('#view_req_sss').prop('checked', true) : $('#view_req_sss').prop('checked', false));
                     $('#view_req_pagIbig').val(res.data.req_pagIbig == 1 ? $('#view_req_pagIbig').prop('checked', true) : $('#view_req_pagIbig').prop('checked', false));
                     $('#view_req_philhealth').val(res.data.req_philhealth == 1 ? $('#view_req_philhealth').prop('checked', true) : $('#view_req_philhealth').prop('checked', false));
@@ -726,10 +747,38 @@ $(document).ready(function() {
                     });
                     $('#adjustmentsSection').html(adjustmentsHTML);
 
+                    // LOAD PROFILE PICTURE
+                    const img = $("#viewProfilePhoto");
+                    let employeeID_string = res.data.employeeID;
+                    const imagePath = '../assets/images/profiles/' + employeeID_string.replace("-", "") + '.png'; // Set your directory path here
+                    fetch(imagePath)
+                        .then(response => {
+                            if (response.ok) {
+                                console.log("Image loaded");
+                                img.attr("src", imagePath).show();
+                            } else {
+                                // Swal.fire({
+                                //     title: 'Profile Picture',
+                                //     imageUrl: "../assets/images/profiles/profile.png",
+                                //     imageHeight: 300,
+                                // });
+                                console.log("Image not found");
+                                img.attr("src", "../assets/images/profiles/profile.png").show();
+                            }
+                        })
+                        .catch(error => {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'An error occurred while fetching the image.',
+                            });
+                            console.error('Error fetching image:', error);
+                        });
+
                     // Show the modal
                     $('#viewEmployeeModal').modal('show');
 
-                    let employeeID_string = res.data.employeeID;
+                    // let employeeID_string = res.data.employeeID;
                     $('#viewProfilePicture').click(function() {
                         const imagePath = '../assets/images/profiles/' + employeeID_string.replace("-", "") + '.png'; // Set your directory path here
                     
