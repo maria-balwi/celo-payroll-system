@@ -877,6 +877,20 @@
             return $updateRequirement;
         }
 
+        public function updateEmployeeWeekOff($empID, $wo_mon, $wo_tue, $wo_wed, $wo_thu, $wo_fri, $wo_sat, $wo_sun) {
+            $updateWeekOff = "
+                UPDATE ".$this->weekOff." AS weekOff SET
+                wo_mon = '$wo_mon',
+                wo_tue = '$wo_tue',
+                wo_wed = '$wo_wed',
+                wo_thu = '$wo_thu',
+                wo_fri = '$wo_fri',
+                wo_sat = '$wo_sat',
+                wo_sun = '$wo_sun'
+                WHERE empID = '$empID'";
+            return $updateWeekOff;
+        }
+
         public function getEmployeeInfo($id) {
             $employeeInfo = "
                 SELECT id, lastName, firstName, gender, civilStatus, address, dateOfBirth, cashAdvance,

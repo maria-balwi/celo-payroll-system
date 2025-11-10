@@ -711,13 +711,7 @@
                                 </div>
                             </div>
 
-                            <div class="row g-2 mb-1">
-                                <div class="col-4">
-                                    <button id="viewProfilePicture" class="text-lg text-blue-500">View Photo</button>
-                                </div>
-                            </div>
-
-                            <h2 class="text-lg font-semibold mb-0">Requirements:</h2>
+                            <h2 class="text-lg font-semibold mt-2 mb-0">Requirements:</h2>
                             <div class="row g-3">
                                 <div class="col-md-3">
                                     <!-- SSS -->
@@ -1059,7 +1053,7 @@
             <!---------------------------------------------------------------- UPDATE EMPLOYEE FORM ------------------------------------------------------->
             <form id="updateEmployeeForm" enctype="multipart/form-data">
                 <div class="modal fade" id="updateEmployeeModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="employeeFormLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-none modal-lg modal-dialog-centered modal-scrollable">
+                    <div class="modal-dialog modal-none modal-xl modal-dialog-centered modal-scrollable">
                         <div class="modal-content" id="updateEmployeeModal">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="employeeFormLabel">Update Employee</h1>
@@ -1075,97 +1069,97 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-1">
-                                    <div class="col-4">
-                                        <label for="updateLastName">Last Name:</label>
+                                <div class="row g-2 mb-2 align-items-end">
+                                    <div class="col-2 d-flex justify-content-center align-items-end">
+                                        <div id="photoContainer" class="position-relative w-100" style="height: 150px;">
+                                            <!-- Profile photo -->
+                                            <img id="updatePreviewPhoto"
+                                                alt="Profile Photo"
+                                                src=""
+                                                class="rounded position-absolute top-0 start-0 w-100 h-100"
+                                                style="object-fit: cover; display: none; z-index: 2;">
+
+                                            <!-- Placeholder -->
+                                            <div id="updatePhotoPlaceholder"
+                                                class="d-flex align-items-center justify-content-center border rounded bg-light text-muted position-absolute top-0 start-0 w-100 h-100"
+                                                style="z-index: 1;">
+                                            Photo
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-4">
-                                        <label for="updateFirstName">First Name:</label>
-                                    </div>
-                                    <div class="col-2">
-                                        <label for="updateGender">Gender:</label>
-                                    </div>
-                                    <div class="col-2">
-                                        <label for="updateCivilStatus">Civil Status:</label>
+
+                                    <div class="col-10">
+                                        <!-- Row 1 -->
+                                         <div class="row g-2 mb-2">
+                                            <div class="col-4">
+                                                <label for="updateLastName">Last Name:</label>
+                                                <input type="text" class="form-control" id="updateLastName" name="updateLastName">
+                                            </div>
+                                            <div class="col-4">
+                                                <label for="updateFirstName">First Name:</label>
+                                                <input type="text" class="form-control" id="updateFirstName" name="updateFirstName">
+                                            </div>
+                                            <div class="col-2">
+                                                <label for="updateGender">Gender:</label>
+                                                <select id="updateGender" name="updateGender" class="form-select">
+                                                    <option value="" selected disabled>Choose</option>
+                                                    <option value="Male">Male</option>
+                                                    <option value="Female">Female</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-2">
+                                                <label for="updateCivilStatus">Civil Status:</label>
+                                                <select id="updateCivilStatus" name="updateCivilStatus" class="form-select">
+                                                    <option selected disabled>Choose</option>
+                                                    <option value="Single">Single</option>
+                                                    <option value="Married">Married</option>
+                                                    <option value="Separated">Separated</option>
+                                                    <option value="Divorced">Divorced</option>
+                                                    <option value="Widowed">Widowed</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <!-- Row 2 -->
+                                        <div class="row g-2">
+                                            <div class="col-6">
+                                                <label for="updateAddress">Address:</label>
+                                                <input type="text" class="form-control" id="updateAddress" name="updateAddress">
+                                            </div>
+                                            <div class="col-2">
+                                                <label for="updateDateOfBirth">Date of Birth:</label>
+                                                <input type="date" class="form-control" id="updateDateOfBirth" name="updateDateOfBirth">
+                                            </div>
+                                            <div class="col-4">
+                                                <label for="updatePlaceOfBirth">Place of Birth:</label>
+                                                <input type="text" class="form-control" id="updatePlaceOfBirth" name="updatePlaceOfBirth">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="row g-2 mb-2">
                                     <div class="col-4">
-                                        <input type="text" class="form-control" id="updateLastName" name="updateLastName">
-                                    </div>
-                                    <div class="col-4">
-                                        <input type="text" class="form-control" id="updateFirstName" name="updateFirstName">
-                                    </div>
-                                    <div class="col-2">
-                                        <select id="updateGender" name="updateGender" class="form-select">
-                                            <option value="" selected disabled>Choose</option>
-                                            <option value="Male">Male</option>
-                                            <option value="Female">Female</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-2">
-                                        <select id="updateCivilStatus" name="updateCivilStatus" class="form-select">
-                                            <option selected disabled>Choose</option>
-                                            <option value="Single">Single</option>
-                                            <option value="Married">Married</option>
-                                            <option value="Separated">Separated</option>
-                                            <option value="Divorced">Divorced</option>
-                                            <option value="Widowed">Widowed</option>
-                                        </select>
-                                    </div>
-                                </div>     
-                                
-                                <div class="row g-2 mb-1">
-                                    <div class="col-6">
-                                        <label for="updateAddress">Address:</label>
-                                    </div>
-                                    <div class="col-3">
-                                        <label for="updateDateOfBirth">Date of Birth:</label>
-                                    </div>
-                                    <div class="col-3">
-                                        <label for="updatePlaceOfBirth">Place of Birth:</label>
-                                    </div>
-                                </div>
-
-                                <div class="row g-2 mb-2">
-                                    <div class="col-6">
-                                        <input type="text" class="form-control" id="updateAddress" name="updateAddress">
-                                    </div>
-                                    <div class="col-3">
-                                        <input type="date" class="form-control" id="updateDateOfBirth" name="updateDateOfBirth">
-                                    </div>
-                                    <div class="col-3">
-                                        <input type="text" class="form-control" id="updatePlaceOfBirth" name="updatePlaceOfBirth">
+                                        <label for="updateProfilePhoto">Upload Photo:</label>
+                                        <input type="file" id="updateProfilePhoto" name="updateProfilePhoto" class="form-control" accept="image/jpeg, image/png, image/jpg">
                                     </div>
                                 </div>
 
                                 <div class="row g-2 mb-1">
                                     <div class="col-3">
                                         <label for="updateSSS">SSS:</label>
-                                    </div>
-                                    <div class="col-3">
-                                        <label for="updatePagIbig">Pag-Ibig:</label>
-                                    </div>
-                                    <div class="col-3">
-                                        <label for="updatePhilhealth">PhilHealth:</label>
-                                    </div>
-                                    <div class="col-3">
-                                        <label for="updateTIN">TIN:</label>
-                                    </div>
-                                </div>
-
-                                <div class="row g-2 mb-2">
-                                    <div class="col-3">
                                         <input type="text" class="form-control" id="updateSSS" name="updateSSS">
                                     </div>
                                     <div class="col-3">
+                                        <label for="updatePagIbig">Pag-Ibig:</label>
                                         <input type="text" class="form-control" id="updatePagIbig" name="updatePagIbig">
                                     </div>
                                     <div class="col-3">
+                                        <label for="updatePhilhealth">PhilHealth:</label>
                                         <input type="text" class="form-control" id="updatePhilhealth" name="updatePhilhealth">
                                     </div>
                                     <div class="col-3">
+                                        <label for="updateTIN">TIN:</label>
                                         <input type="text" class="form-control" id="updateTIN" name="updateTIN">
                                     </div>
                                 </div>
@@ -1181,23 +1175,14 @@
                                 <div class="row g-2 mb-1">
                                     <div class="col-6">
                                         <label for="updateEmailAddress">Email Address:</label>
-                                    </div>
-                                    <div class="col-3">
-                                        <label for="updateEmployeeID">Employee ID:</label>
-                                    </div>
-                                    <div class="col-3">
-                                        <label for="updateMobileNumber">Mobile Number:</label>
-                                    </div>
-                                </div>
-
-                                <div class="row g-2 mb-2">
-                                    <div class="col-6">
                                         <input type="email" class="form-control" id="updateEmailAddress" name="updateEmailAddress">
                                     </div>
                                     <div class="col-3">
+                                        <label for="updateEmployeeID">Employee ID:</label>
                                         <input type="text" class="form-control" id="updateEmployeeID" name="updateEmployeeID">
                                     </div>
                                     <div class="col-3">
+                                        <label for="updateMobileNumber">Mobile Number:</label>
                                         <input type="text" class="form-control" id="updateMobileNumber" name="updateMobileNumber">
                                     </div>
                                 </div>
@@ -1205,17 +1190,6 @@
                                 <div class="row g-2 mb-1">
                                     <div class="col-4">
                                         <label for="updateDepartment">Department:</label>
-                                    </div>
-                                    <div class="col-4">
-                                        <label for="updateDesignation">Designation:</label>
-                                    </div>
-                                    <div class="col-4">
-                                        <label for="updateShiftID">Shift:</label>
-                                    </div>
-                                </div>
-                            
-                                <div class="row g-2 mb-2">
-                                    <div class="col-4">
                                         <select class="form-select" id="updateDepartment" name="updateDepartment">
                                             <option value="" selected disabled>Choose</option>
                                             <?php
@@ -1232,6 +1206,7 @@
                                         </select>
                                     </div>
                                     <div class="col-4">
+                                        <label for="updateDesignation">Designation:</label>
                                         <select class="form-select" id="updateDesignation" name="updateDesignation">
                                             <option disabled selected>Choose</option>
                                             <?php
@@ -1248,6 +1223,7 @@
                                         </select>
                                     </div>
                                     <div class="col-4">
+                                        <label for="updateShiftID">Shift:</label>
                                         <select type="dropdown" id="updateShiftID" name="updateShiftID" class="form-select">
                                             <option value="" selected disabled>Choose</option>
                                             <?php
@@ -1268,23 +1244,15 @@
                                 <div class="row g-2 mb-1">
                                     <div class="col-4">
                                         <label for="updateBasicPay">Basic Pay:</label>
+                                        <input type="number" class="form-control" id="updateBasicPay" name="updateBasicPay">
+
                                     </div>
                                     <div class="col-4">
                                         <label for="updateDailyRate">Daily Rate:</label>
-                                    </div>
-                                    <div class="col-4">
-                                        <label for="updateHourlyRate">Hourly Rate:</label>
-                                    </div>
-                                </div>
-                            
-                                <div class="row g-2 mb-2">
-                                    <div class="col-4">
-                                        <input type="number" class="form-control" id="updateBasicPay" name="updateBasicPay">
-                                    </div>
-                                    <div class="col-4">
                                         <input type="number" class="form-control" id="updateDailyRate" name="updateDailyRate" placeholder="1.0" step="0.01" readonly>
                                     </div>
                                     <div class="col-4">
+                                        <label for="updateHourlyRate">Hourly Rate:</label>
                                         <input type="number" class="form-control" id="updateHourlyRate" name="updateHourlyRate" placeholder="1.0" step="0.01" readonly>
                                     </div>
                                 </div>
@@ -1292,17 +1260,6 @@
                                 <div class="row g-2 mb-1">
                                     <div class="col-4">
                                         <label for="updateEmploymentStatus">Employment Status:</label>
-                                    </div>
-                                    <div class="col-4">
-                                        <label for="updateDateHired">Date Hired:</label>
-                                    </div>
-                                    <div class="col-4">
-                                        <label for="updateDateRegularized">Date Regularized:</label>
-                                    </div>
-                                </div>
-                            
-                                <div class="row g-2 mb-2">
-                                    <div class="col-4">
                                         <select id="updateEmploymentStatus" name="updateEmploymentStatus" class="form-select">
                                             <option value="" selected disabled>Choose</option>
                                             <option value="Probationary">Probationary</option>
@@ -1310,55 +1267,60 @@
                                         </select>
                                     </div>
                                     <div class="col-4">
+                                        <label for="updateDateHired">Date Hired:</label>
                                         <input type="date" class="form-control" id="updateDateHired" name="updateDateHired">
                                     </div>
-                                    <div class="col-4">
-                                        <input type="date" class="form-control" id="updateDateRegularized" name="updateDateRegularized">
+                                    <div class="col-4" id="updateDateRegularizedLabel">
+                                        <label for="updateDateRegularized">Date Regularized:</label>
+                                        <input type="date" class="form-control" id="updateDateRegularized" name="updateDateRegularized" disabled readonly>
                                     </div>
                                 </div>
 
                                 <div class="row g-2 mb-1">
-                                    <div class="col-4">
+                                    <div class="col-2">
                                         <label for="updateVacationLeaves">Vacation Leaves:</label>
-                                    </div>
-                                    <div class="col-4">
-                                        <label for="updateSickLeaves">Sick Leaves:</label>
-                                    </div>
-                                    <div class="col-4">
-                                        <label for="updateCashAdvance">Cash Advance:</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="row g-2 mb-2">
-                                    <div class="col-4">
                                         <input type="number" class="form-control" id="updateVacationLeaves" name="updateVacationLeaves">
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-2">
+                                        <label for="updateSickLeaves">Sick Leaves:</label>
                                         <input type="number" class="form-control" id="updateSickLeaves" name="updateSickLeaves">
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-2">
+                                        <label for="updateCashAdvance">Cash Advance:</label>
                                         <input type="number" step="0.001" class="form-control" id="updateCashAdvance" name="updateCashAdvance">
                                     </div>
-                                </div>
-
-                                <div class="row g-2 mb-1">
                                     <div class="col-6">
-                                        <label for="updateProfilePicture">Upload Photo:</label>
-                                    </div>
-                                </div>
-
-                                <div class="row g-2 mb-2">
-                                    <div class="col-6">
-                                        <input type="file" id="updateProfilePicture" name="updateProfilePicture" class="form-control" accept="image/*">
-                                        <img id="previewUploadPhoto" src="" alt="Selected Photo" style="display:none; max-height: 200px; margin-top: 10px;">
-                                    </div>
-                                    <div class="col-1 pt-2 text-left">
-                                        <button id="viewUploadPhoto" disabled>
-                                            <svg class="h-5 w-5 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                            </svg>
-                                        </button>
+                                        <label for="updateWeekOff">Week Off:</label>
+                                        <div class="col-12">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input update_wo_day" type="checkbox" id="update_wo_mon" name="update_wo_mon" value="update_wo_mon">
+                                                <label class="form-check-label" for="update_wo_mon">Mon</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input update_wo_day" type="checkbox" id="update_wo_tue" name="update_wo_tue" value="update_wo_tue">
+                                                <label class="form-check-label" for="update_wo_tue">Tue</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input update_wo_day" type="checkbox" id="update_wo_wed" name="update_wo_wed" value="update_wo_wed">
+                                                <label class="form-check-label" for="update_wo_wed">Wed</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input update_wo_day" type="checkbox" id="update_wo_thu" name="update_wo_thu" value="update_wo_thu">
+                                                <label class="form-check-label" for="update_wo_thu">Thu</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input update_wo_day" type="checkbox" id="update_wo_fri" name="update_wo_fri" value="update_wo_fri">
+                                                <label class="form-check-label" for="update_wo_fri">Fri</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input update_wo_day" type="checkbox" id="update_wo_sat" name="update_wo_sat" value="update_wo_sat">
+                                                <label class="form-check-label" for="update_wo_sat">Sat</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input update_wo_day" type="checkbox" id="update_wo_sun" name="update_wo_sun" value="update_wo_sun">
+                                                <label class="form-check-label" for="update_wo_sun">Sun</label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 

@@ -126,6 +126,20 @@ $(document).ready(function() {
         $('#dateRegularized').val(regularizedDate);
     });
 
+    $("select[id='updateEmploymentStatus']").on("change", function() {
+        if ($(this).val() == "Regular") {
+            var date = new Date($("#updateDateHired").val());
+            date.setMonth(date.getMonth() + 6);
+            // Format the result as 'YYYY-MM-DD'
+            var regularizedDate = date.toISOString().split('T')[0];
+
+            $("#updateDateRegularized").val(regularizedDate);
+            $("#updateDateRegularizedLabel").show();
+        } else {
+            $("#updateDateRegularizedLabel").hide();
+        }
+    });
+
     $("input[id='updateDateHired']").on("input", function() {
         var dateHired = $(this).val();
         var date = new Date(dateHired);
@@ -291,6 +305,20 @@ $(document).ready(function() {
         }
     });
 
+    // CHECKBOXES FOR WEEK OFF (UPDATE EMPLOYEE)
+    $("input.update_wo_day[type='checkbox']").on("change", function () {
+        const $checkboxes = $("input.update_wo_day[type='checkbox']");
+        const checkedCount = $checkboxes.filter(":checked").length;
+
+        if (checkedCount >= 2) {
+            // Disable all unchecked boxes
+            $checkboxes.not(":checked").prop("disabled", true);
+        } else {
+            // Re-enable all boxes
+            $checkboxes.prop("disabled", false);
+        }
+    });
+
     // ADD EMPLOYEE - UPLOAD PHOTO
     $("#photo").change(function () {
         const [file] = this.files;
@@ -307,8 +335,43 @@ $(document).ready(function() {
                     title: "Invalid Picture",
                     text: "Invalid File only accept (JPG/JPEG/PNG) file",
                 });
-                img.hide();
-                placeholder.show().text("Photo");
+                img.show();
+                $(this).val("");
+                // placeholder.show().text("Photo");
+            } else {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    img.attr("src", e.target.result).show();
+                    placeholder.hide();
+                };
+                reader.readAsDataURL(file);
+            }
+        } else {
+            placeholder.show().text("Photo");
+            img.hide();
+        }
+    });
+
+    // UPDATE EMPLOYEE - UPLOAD PHOTO
+    $('#updateProfilePhoto').change(function() {
+        const [file] = this.files;
+        const acceptedImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+        const img = $('#updatePreviewPhoto');
+        const placeholder = $("#updatePhotoPlaceholder");
+
+        if (file) {
+            const fileType = file['type'];
+
+            if ($.inArray(fileType, acceptedImageTypes) < 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Invalid Picture',
+                    text: 'Invalid File only accept (JPG/JPEG/PNG) file',
+                })
+                img.show();
+                $(this).val('');
+                // placeholder.show().text("Photo");
+                
             } else {
                 const reader = new FileReader();
                 reader.onload = (e) => {
@@ -323,41 +386,8 @@ $(document).ready(function() {
         }
     });
     
-    // OLD CODE
-    // $('#photo').change(function() { 
-    //     const [file] = photo.files; 
-    //     const acceptedImageTypes = ['image/jpeg', 'image/png', 'image/jpg']; 
-    //     if (file) { 
-    //         const fileType = file['type']; 
-    //         if ($.inArray(fileType, acceptedImageTypes) < 0) { 
-    //             Swal.fire({ 
-    //                 icon: 'warning', 
-    //                 title: 'Invalid Picture', 
-    //                 text: 'Invalid File only accept (JPG/PNG) file', 
-    //             }) 
-    //             $('#viewPhoto').attr('disabled', true); 
-    //             // $('#previewPhoto').hide(); 
-    //             // // Hide the preview if the file is invalid 
-    //         } 
-    //         else { 
-    //             $('#viewPhoto').attr('disabled', false); // Enable the view button 
-    //             // // SHOW PREVIEW IMAGE 
-    //             const reader = new FileReader(); 
-    //             reader.onload = (e) => { 
-    //                 $('#previewPhoto').attr('src', e.target.result).show(); 
-    //             }; 
-    //             reader.readAsDataURL(file); 
-    //         } 
-    //     } else { 
-    //         $('#viewPhoto').attr('disabled', true); // Disable the view button if no file is selected 
-    //         // $('#previewPhoto').hide(); 
-    //         // Hide the preview if no file is selected 
-    //     } 
-    // });
-
-
-    // $('#viewPhoto').click(function() {
-    //     const [file] = photo.files;
+    // $('#viewUploadPhoto').click(function() {
+    //     const [file] = updateProfilePicture.files;
     //     if (file) {
     //         const reader = new FileReader();
     //         reader.onload = (e) => {
@@ -370,50 +400,6 @@ $(document).ready(function() {
     //         reader.readAsDataURL(file);
     //     }
     // });
-
-    // UPDATE EMPLOYEE - UPLOAD PHOTO
-    $('#updateProfilePicture').change(function() {
-        const [file] = updateProfilePicture.files;
-        const acceptedImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-        if (file) {
-            const fileType = file['type'];
-            if ($.inArray(fileType, acceptedImageTypes) < 0) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Invalid Picture',
-                    text: 'Invalid File only accept (JPG/PNG) file',
-                })
-                $('#viewUploadPhoto').attr('disabled', true);
-                // $('#previewUploadPhoto').hide();  // Hide the preview if the file is invalid
-            } else {
-                $('#viewUploadPhoto').attr('disabled', false);  // Enable the view button
-                // SHOW PREVIEW IMAGE
-                // const reader = new FileReader();
-                // reader.onload = (e) => {
-                //     $('#previewUploadPhoto').attr('src', e.target.result).show();
-                // };
-                // reader.readAsDataURL(file);
-            }
-        } else {
-            $('#viewUploadPhoto').attr('disabled', true);  // Disable the view button if no file is selected
-            // $('#previewUploadPhoto').hide();  // Hide the preview if the file is invalid
-        }
-    });
-    
-    $('#viewUploadPhoto').click(function() {
-        const [file] = updateProfilePicture.files;
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                Swal.fire({
-                    title: 'Profile Picture',
-                    imageUrl: e.target.result,
-                    imageHeight: 200,
-                });
-            }
-            reader.readAsDataURL(file);
-        }
-    });
 
     // ADD ALLOWANCE MODAL
     $('#effectivityDate_allowanceLabel').hide();
@@ -777,37 +763,6 @@ $(document).ready(function() {
 
                     // Show the modal
                     $('#viewEmployeeModal').modal('show');
-
-                    // let employeeID_string = res.data.employeeID;
-                    $('#viewProfilePicture').click(function() {
-                        const imagePath = '../assets/images/profiles/' + employeeID_string.replace("-", "") + '.png'; // Set your directory path here
-                    
-                        // Use the fetch API to check if the image exists
-                        fetch(imagePath)
-                            .then(response => {
-                                if (response.ok) {
-                                    Swal.fire({
-                                        title: 'Profile Picture',
-                                        imageUrl: imagePath,
-                                        imageHeight: 300,
-                                    });
-                                } else {
-                                    Swal.fire({
-                                        title: 'Profile Picture',
-                                        imageUrl: "../assets/images/profiles/profile.png",
-                                        imageHeight: 300,
-                                    });
-                                }
-                            })
-                            .catch(error => {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Error',
-                                    text: 'An error occurred while fetching the image.',
-                                });
-                                console.error('Error fetching image:', error);
-                            });
-                    });
                 }
                 // else if (res.status == 200 & res.data.employmentStatus == "Resigned") {
                 //     $('#res_viewID').val(res.data.id);
@@ -1016,13 +971,82 @@ $(document).ready(function() {
                         $('#updateShiftID').val(res.data.startTime + ' - ' + res.data.endTime);
                         $('#updateEmploymentStatus').val(res.data.employmentStatus);
                         $('#updateDateHired').val(res.data.dateHired);
-                        $('#updateDateRegularized').val(res.data.dateRegularized);
+                        
+                        if (res.data.employmentStatus == 'Regular') {
+                            $('#updateDateRegularized').val(res.data.dateRegularized);
+                        }
+                        else {
+                            $("#updateDateRegularizedLabel").hide();
+                        }
+
                         $('#updateBasicPay').val(res.data.basicPay);
                         $('#updateDailyRate').val(res.data.dailyRate);
                         $('#updateHourlyRate').val(res.data.hourlyRate);
                         $('#updateVacationLeaves').val(res.data.availableVL);
                         $('#updateSickLeaves').val(res.data.availableSL);
                         $('#updateCashAdvance').val(res.data.cashAdvance);
+
+                        // WEEK OFF SECTION
+                        let selectedWeekOffCounter = 0;
+                        // $('#update_wo_mon').val(res.data.wo_mon == 1 ? $('#update_wo_mon').prop('checked', true) : $('#update_wo_mon').prop('checked', false));
+                        if (res.data.wo_mon == 1) {
+                            $('#update_wo_mon').prop('checked', true);
+                            selectedWeekOffCounter++;
+                        }
+                        else {
+                            $('#update_wo_mon').prop('checked', false);
+                        }
+                        if (res.data.wo_tue == 1) {
+                            $('#update_wo_tue').prop('checked', true);
+                            selectedWeekOffCounter++;
+                        }
+                        else {
+                            $('#update_wo_tue').prop('checked', false);
+                        }
+                        if (res.data.wo_wed == 1) {
+                            $('#update_wo_wed').prop('checked', true);
+                            selectedWeekOffCounter++;
+                        }
+                        else {
+                            $('#update_wo_wed').prop('checked', false);
+                        }
+                        if (res.data.wo_thu == 1) {
+                            $('#update_wo_thu').prop('checked', true);
+                            selectedWeekOffCounter++;
+                        }
+                        else {
+                            $('#update_wo_thu').prop('checked', false);
+                        }
+                        if (res.data.wo_fri == 1) {
+                            $('#update_wo_fri').prop('checked', true);
+                            selectedWeekOffCounter++;
+                        }
+                        else {
+                            $('#update_wo_fri').prop('checked', false);
+                        }
+                        if (res.data.wo_sat == 1) {
+                            $('#update_wo_sat').prop('checked', true);
+                            selectedWeekOffCounter++;
+                        }
+                        else {
+                            $('#update_wo_sat').prop('checked', false);
+                        }
+                        if (res.data.wo_sun == 1) {
+                            $('#update_wo_sun').prop('checked', true);
+                            selectedWeekOffCounter++;
+                        }
+                        else {
+                            $('#update_wo_sun').prop('checked', false);
+                        }
+
+                        const $checkboxes = $("input.update_wo_day[type='checkbox']");
+                        if (selectedWeekOffCounter >= 2) {
+                            $checkboxes.not(":checked").prop("disabled", true);
+                        }
+                        else {
+                            checkboxes.prop('disabled', false);
+                        }
+                        // REQUIREMENTS SECTION
                         $('#update_req_sss').val(res.data.req_sss == 1 ? $('#update_req_sss').prop('checked', true) : $('#update_req_sss').prop('checked', false));
                         $('#update_req_pagIbig').val(res.data.req_pagIbig == 1 ? $('#update_req_pagIbig').prop('checked', true) : $('#update_req_pagIbig').prop('checked', false));
                         $('#update_req_philhealth').val(res.data.req_philhealth == 1 ? $('#update_req_philhealth').prop('checked', true) : $('#update_req_philhealth').prop('checked', false));
@@ -1034,8 +1058,32 @@ $(document).ready(function() {
                         $('#update_req_psa').val(res.data.req_psa == 1 ? $('#update_req_psa').prop('checked', true) : $('#update_req_psa').prop('checked', false));
                         $('#update_req_validID').val(res.data.req_validID == 1 ? $('#update_req_validID').prop('checked', true) : $('#update_req_validID').prop('checked', false));
                         $('#update_req_helloMoney').val(res.data.req_helloMoney == 1 ? $('#update_req_helloMoney').prop('checked', true) : $('#update_req_helloMoney').prop('checked', false));
+                        
                         $('#oldEmailAddress').val(res.data.emailAddress);
                         $('#oldEmployeeID').val(res.data.employeeID);
+
+                        // LOAD PROFILE PICTURE
+                        const img = $("#updatePreviewPhoto");
+                        let employeeID_string = res.data.employeeID;
+                        const imagePath = '../assets/images/profiles/' + employeeID_string.replace("-", "") + '.png';
+                        fetch(imagePath)
+                            .then(response => {
+                                if (response.ok) {
+                                    console.log("Image loaded");
+                                    img.attr("src", imagePath).show();
+                                } else {
+                                    console.log("Image not found");
+                                }
+                            })
+                            .catch(error => {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: 'An error occurred while fetching the image.',
+                                });
+                                console.error('Error fetching image:', error);
+                            });
+
                         $('#updateEmployeeModal').modal('show');
                     }
                 }
@@ -1236,7 +1284,6 @@ $(document).ready(function() {
         var updateCashAdvance = $("#updateCashAdvance").val();
         var updateEmploymentStatus = $("#updateEmploymentStatus").val();
         var updateDateHired = $("#updateDateHired").val();
-        var updateDateRegularized = $("#updateDateRegularized").val();
 
         if (updateLastName == "" || updateFirstName == "" || updateGender == "" || updateCivilStatus == "" || 
             updateAddress == "" || updateDateOfBirth == "" || updatePlaceOfBirth == "" ||
@@ -1275,8 +1322,8 @@ $(document).ready(function() {
                         processData: false,
                         success: function(res) {
                             const data = JSON.parse(res);
+                            var message = data.em;
                             if (data.error == 0) {
-                                var message = data.em
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Success',
@@ -1290,7 +1337,6 @@ $(document).ready(function() {
                                     $('#viewEmployeeModal').modal('show');
                                 })
                             } else {
-                                var message = data.em;
                                 Swal.fire({
                                     icon: 'warning',
                                     title: 'Warning', 
@@ -1438,36 +1484,28 @@ $(document).ready(function() {
                     });
                     $('#adjustmentsSection').html(adjustmentsHTML);
 
+                    // LOAD PROFILE PICTURE
+                    const img = $("#viewProfilePhoto");
                     let employeeID_string = res.data.employeeID;
-                    $('#viewProfilePicture').click(function() {
-                        const imagePath = '../assets/images/profiles/' + employeeID_string.replace("-", "") + '.png'; // Set your directory path here
-                    
-                        // Use the fetch API to check if the image exists
-                        fetch(imagePath)
-                            .then(response => {
-                                if (response.ok) {
-                                    Swal.fire({
-                                        title: 'Profile Picture',
-                                        imageUrl: imagePath,
-                                        imageHeight: 300,
-                                    });
-                                } else {
-                                    Swal.fire({
-                                        title: 'Profile Picture',
-                                        imageUrl: "../assets/images/profiles/profile.png",
-                                        imageHeight: 300,
-                                    });
-                                }
-                            })
-                            .catch(error => {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Error',
-                                    text: 'An error occurred while fetching the image.',
-                                });
-                                console.error('Error fetching image:', error);
+                    const imagePath = '../assets/images/profiles/' + employeeID_string.replace("-", "") + '.png'; // Set your directory path here
+                    fetch(imagePath)
+                        .then(response => {
+                            if (response.ok) {
+                                console.log("Image loaded");
+                                img.attr("src", imagePath).show();
+                            } else {
+                                console.log("Image not found");
+                                img.attr("src", "../assets/images/profiles/profile.png").show();
+                            }
+                        })
+                        .catch(error => {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'An error occurred while fetching the image.',
                             });
-                    });
+                            console.error('Error fetching image:', error);
+                        });
                 }
             }
         });
