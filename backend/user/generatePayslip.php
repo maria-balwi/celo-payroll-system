@@ -253,7 +253,7 @@
                                     <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
                                 </tr>
                                 <tr>
-                                    <td class="border-l-2 text-left px-2 py-1 text-left">SH Night</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SH Night</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayND.'</td>
                                     <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
                                 </tr>
@@ -427,7 +427,7 @@
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_RDOTRH.'</td>
                                 </tr>
                                 <tr>
-                                    <td class="border-l-2 text-left px-2 py-1 text-left">SH Night</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SH Night</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayND.'</td>
                                     <td class="border-l-2 text-left px-2 py-1">PAY</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_RDOTRHPay.'</td>
