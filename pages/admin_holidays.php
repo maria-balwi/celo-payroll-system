@@ -22,7 +22,7 @@
             </div>
             
             <!-- CONTENT -->
-            <div class="p-4 m-1 bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700 flex gap-4 p-4">
+            <div class="p-4 m-1 bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700 flex gap-4">
                 <!-- CALENDAR -->
                 <!-- <div id="calendar" class="w-full mx-auto bg-white shadow-md rounded-lg p-4 mb-4"> -->
                 <div id="calendar" class="w-1/2 bg-white shadow-md rounded-lg p-4">
