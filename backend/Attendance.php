@@ -346,7 +346,7 @@
         }
 
         public function viewOperationsTeamManager() {
-            $ITteam = "
+            $ManagerTeam = "
                 SELECT id, firstName, lastName, employeeID, availableVL, availableSL,
                 DATE_FORMAT(startTime, '%h:%i %p') AS startTime, 
                 DATE_FORMAT(endTime, '%h:%i %p') AS endTime,
@@ -356,13 +356,13 @@
                 ON employees.departmentID = department.departmentID
                 INNER JOIN ".$this->shifts." AS shifts
                 ON employees.shiftID = shifts.shiftID
-                WHERE employees.departmentID = 1
+                WHERE employees.departmentID = 1 AND designationID != 5
                 ORDER BY employeeID ASC";
-            return $ITteam;
-        }
+            return $ManagerTeam;
+        } 
 
         public function viewOperationsTeamTL() {
-            $ITteam = "
+            $TLTeam = "
                 SELECT id, firstName, lastName, employeeID, availableVL, availableSL,
                 DATE_FORMAT(startTime, '%h:%i %p') AS startTime, 
                 DATE_FORMAT(endTime, '%h:%i %p') AS endTime,
@@ -372,9 +372,9 @@
                 ON employees.departmentID = department.departmentID
                 INNER JOIN ".$this->shifts." AS shifts
                 ON employees.shiftID = shifts.shiftID
-                WHERE employees.departmentID = 1 AND designationID IN (1,2,3,4)
+                WHERE employees.departmentID = 1 AND designationID IN (1,2,3)
                 ORDER BY employeeID ASC";
-            return $ITteam;
+            return $TLTeam;
         }
 
         public function dailyAttendance_timeIn($id) {
