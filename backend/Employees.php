@@ -1265,21 +1265,47 @@
             return $employee;
         }
 
+        // OLD CODE
+        // public function viewAuditTrail() {
+        //     $auditTrail = "
+        //         SELECT auditTrailID, date, employees.firstName, employees.lastName, module, action, affected.firstName AS affectedFirstName, affected.lastName AS affectedLastName FROM ".$this->auditTrail ." AS auditTrail
+        //         INNER JOIN ".$this->employees." AS employees
+        //         ON auditTrail.empID = employees.id
+        //         INNER JOIN ".$this->employees." AS affected
+        //         ON auditTrail.affected_empID = affected.id
+        //         ORDER BY auditTrail.auditTrailID DESC";
+        //     return $auditTrail;
+        // }
+
+        // NEW CODE
         public function viewAuditTrail() {
             $auditTrail = "
-                SELECT auditTrailID, date, employees.firstName, employees.lastName, module, action, affected.firstName AS affectedFirstName, affected.lastName AS affectedLastName FROM ".$this->auditTrail ." AS auditTrail
+                SELECT auditTrailID, date, employees.firstName, employees.lastName, module, action, affected_empID FROM ".$this->auditTrail ." AS auditTrail
                 INNER JOIN ".$this->employees." AS employees
                 ON auditTrail.empID = employees.id
-                INNER JOIN ".$this->employees." AS affected
-                ON auditTrail.affected_empID = affected.id
                 ORDER BY auditTrail.auditTrailID DESC";
             return $auditTrail;
+        }
+
+        public function viewAffectedUser($empID) {
+            $affectedUser = "
+                SELECT firstName AS affectedFirstName, lastName AS affectedLastName
+                FROM ".$this->employees." AS employees
+                WHERE id = '$empID'";
+            return $affectedUser;
         }
         
         public function auditTrail($empID, $module, $action, $affected_empID) {
             $auditTrail = "
                 INSERT INTO ".$this->auditTrail." (date, empID, module, action, affected_empID)
                 VALUES (CURRENT_TIMESTAMP, '$empID', '$module', '$action', '$affected_empID')";
+            return $auditTrail;
+        }
+
+        public function auditTrailPayroll($empID, $module, $action) {
+            $auditTrail = "
+                INSERT INTO ".$this->auditTrail." (date, empID, module, action)
+                VALUES (CURRENT_TIMESTAMP, '$empID', '$module', '$action')";
             return $auditTrail;
         }
     }

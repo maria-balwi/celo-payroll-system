@@ -47,7 +47,14 @@
                                     $employeeName = $auditTrailDetails['firstName'] . " " . $auditTrailDetails['lastName'];
                                     $module = $auditTrailDetails['module'];
                                     $action = $auditTrailDetails['action'];
-                                    $affected_user = $auditTrailDetails['affectedFirstName'] . " " . $auditTrailDetails['affectedLastName'];
+                                    // $affected_user = $auditTrailDetails['affectedFirstName'] . " " . $auditTrailDetails['affectedLastName'];
+                                    if ($auditTrailDetails['affected_empID'] === null) {
+                                        $affected_user = "-";
+                                    } else {
+                                        $affectedUserQuery = mysqli_query($conn, $employees->viewAffectedUser($auditTrailDetails['affected_empID']));
+                                        $affectedUserDetails = mysqli_fetch_array($affectedUserQuery);
+                                        $affected_user = $affectedUserDetails['affectedFirstName'] . " " . $affectedUserDetails['affectedLastName'];
+                                    }
                                     $date = formatDate($date);
 
                                     echo "<tr>";
