@@ -241,6 +241,12 @@
         $lastIDResult = mysqli_fetch_array($lastIDQuery);
         $lastID = $lastIDResult['id'];
 
+        // AUDIT TRAIL
+        $at_empID = $_SESSION['id'];
+        $at_module = "Admin - Employee List";
+        $at_action = "Added New Employee";
+        mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $lastID));
+
 
         if (isset($_FILES['photo']) && $_FILES['photo']['error'] == 0) {
             // DIRECTORY TO SAVE UPLOADED PHOTO
