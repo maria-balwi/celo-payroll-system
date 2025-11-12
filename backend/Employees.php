@@ -137,7 +137,50 @@
         //     return $dtr;
         // }
 
-        // NEW CODE
+        // NEW CODE - currently working
+        // public function viewDTR($id, $yearMonth) {
+        //     $dtr = "
+        //         SELECT 
+        //             DATE_FORMAT(all_dates.attendanceDate, '%m/%d/%Y') AS attendanceDate,
+        //             DATE_FORMAT(all_dates.attendanceDate, '%Y.%m.%d') AS filterDate,
+        //             DATE_FORMAT(all_dates.attendanceDate, '%a') AS dayOfWeek,
+        //             CONCAT(DATE_FORMAT(shift.startTime, '%h:%i %p'), ' - ', DATE_FORMAT(shift.endTime, '%h:%i %p')) AS shift,
+        //             COALESCE(id, '-') AS id, 
+        //             COALESCE(attendance.logTypeID, '-') AS logTypeID, 
+        //             COALESCE(logtype.logType, '-') AS logType, 
+        //             COALESCE(attendance.lateMins, '-') AS lateMins, 
+        //             COALESCE(attendance.undertimeMins, '-') AS undertimeMins, 
+        //             COALESCE(DATE_FORMAT(attendance.attendanceTime, '%h:%i %p'), '-') AS attendanceTime
+        //         FROM 
+        //             (
+        //                 SELECT DATE('$yearMonth-01') + INTERVAL (a.a + (10 * b.a)) DAY AS attendanceDate
+        //                 FROM 
+        //                     (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL 
+        //                             SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL 
+        //                             SELECT 8 UNION ALL SELECT 9) AS a
+        //                 CROSS JOIN 
+        //                     (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3) AS b
+        //                 WHERE 
+        //                     DATE('$yearMonth-01') + INTERVAL (a.a + (10 * b.a)) DAY 
+        //                     <= LAST_DAY('$yearMonth-01')
+        //             ) AS all_dates
+        //         LEFT JOIN 
+        //             ".$this->employees." AS employees ON employees.id = '$id'
+        //         LEFT JOIN 
+        //             ".$this->shift." AS shift ON employees.shiftID = shift.shiftID
+        //         LEFT JOIN 
+        //             ".$this->attendance." AS attendance 
+        //         ON all_dates.attendanceDate = attendance.attendanceDate AND attendance.empID = '$id'
+                
+        //         LEFT JOIN 
+        //             ".$this->logtype." AS logtype ON attendance.logTypeID = logtype.logTypeID 
+        //         ORDER BY 
+        //             all_dates.attendanceDate, attendance.attendanceTime
+        //         ";
+        //     return $dtr;
+        // }
+
+        // TESTING NEW CODE
         public function viewDTR($id, $yearMonth) {
             $dtr = "
                 SELECT 
@@ -150,7 +193,14 @@
                     COALESCE(logtype.logType, '-') AS logType, 
                     COALESCE(attendance.lateMins, '-') AS lateMins, 
                     COALESCE(attendance.undertimeMins, '-') AS undertimeMins, 
-                    COALESCE(DATE_FORMAT(attendance.attendanceTime, '%h:%i %p'), '-') AS attendanceTime
+                    COALESCE(DATE_FORMAT(attendance.attendanceTime, '%h:%i %p'), '-') AS attendanceTime,
+                    weekoff.wo_mon,
+                    weekoff.wo_tue,
+                    weekoff.wo_wed,
+                    weekoff.wo_thu,
+                    weekoff.wo_fri,
+                    weekoff.wo_sat,
+                    weekoff.wo_sun
                 FROM 
                     (
                         SELECT DATE('$yearMonth-01') + INTERVAL (a.a + (10 * b.a)) DAY AS attendanceDate
@@ -165,20 +215,23 @@
                             <= LAST_DAY('$yearMonth-01')
                     ) AS all_dates
                 LEFT JOIN 
-                    ".$this->employees." AS employees ON employees.id = '$id'
+                    {$this->employees} AS employees ON employees.id = '$id'
                 LEFT JOIN 
-                    ".$this->shift." AS shift ON employees.shiftID = shift.shiftID
+                    {$this->shift} AS shift ON employees.shiftID = shift.shiftID
                 LEFT JOIN 
-                    ".$this->attendance." AS attendance 
-                ON all_dates.attendanceDate = attendance.attendanceDate AND attendance.empID = '$id'
-                
+                    {$this->attendance} AS attendance 
+                    ON all_dates.attendanceDate = attendance.attendanceDate 
+                    AND attendance.empID = '$id'
                 LEFT JOIN 
-                    ".$this->logtype." AS logtype ON attendance.logTypeID = logtype.logTypeID 
+                    {$this->logtype} AS logtype ON attendance.logTypeID = logtype.logTypeID 
+                LEFT JOIN 
+                    {$this->weekOff} AS weekoff ON weekoff.empID = employees.id
                 ORDER BY 
                     all_dates.attendanceDate, attendance.attendanceTime
-                ";
+            ";
             return $dtr;
         }
+
 
         // OLD CODE
         // public function userViewDTR($id, $yearMonth) {

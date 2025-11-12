@@ -165,7 +165,7 @@
 
                             <div class="row g-2 mb-2">
                                 <div class="container mx-auto overflow-auto">
-                                    <table id="attendanceTable" class="table table-auto table-striped table-bordered text-center pt-3">
+                                    <table id="attendanceTable" class="table table-auto table-bordered text-center pt-3">
                                         <thead class="bg-gray-50">
                                             <tr>
                                                 <th class="text-xs font-medium text-yellow-500 uppercase tracking-tight">Face DTR</th>
