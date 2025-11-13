@@ -218,7 +218,7 @@ $(document).ready(function() {
                             case 'Sun': if (wo_sun == 1) isWeekOff = true; break;
                         }
 
-                        if (isWeekOff) {
+                        if (isWeekOff && (timeIn == '-' || timeOut == '-')) {
                             teamdtrHTML += `
                                 <tr class="bg-gray-100 text-center text-gray-500">
                                     <td></td>

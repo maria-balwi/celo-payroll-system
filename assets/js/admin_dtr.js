@@ -201,7 +201,7 @@ $(document).ready(function() {
                         timeInDate = dtrGroupedByDate[date].timeInDate;
                         timeOutDate = dtrGroupedByDate[date].timeOutDate;
 
-                        // Get week-off values from response (since they're same for the whole employee)
+                        // GET WEEK OFF VALUES
                         var wo_mon = res.employeeDTR[0].wo_mon;
                         var wo_tue = res.employeeDTR[0].wo_tue;
                         var wo_wed = res.employeeDTR[0].wo_wed;
@@ -222,7 +222,7 @@ $(document).ready(function() {
                             case 'Sun': if (wo_sun == 1) isWeekOff = true; break;
                         }
 
-                        if (isWeekOff) {
+                        if (isWeekOff && (timeIn == '-' || timeOut == '-')) {
                             employeedtrHTML += `
                                 <tr class="bg-gray-100 text-center text-gray-500">
                                     <td></td>
