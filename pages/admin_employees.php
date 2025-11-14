@@ -1039,6 +1039,11 @@
                                 </div>
                             </div>
 
+                            <div class="row g-2" id="viewClearanceFormRow">
+                                <div class="col-4">
+                                    <button id="viewClearanceFormFile" class="text-blue-500">View Clearance Form</button>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="modal-footer">
@@ -1414,6 +1419,64 @@
 
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-success">Save Changes</button>
+                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#viewEmployeeModal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <!--------------------------------------------------------------------------------------------------------------------------------------------->
+            <!---------------------------------------------------------------- RESIGN EMPLOYEE - CLEARANCE FORM ------------------------------------------------------->
+            <form id="resignClearanceForm" enctype="multipart/form-data">
+                <div class="modal fade" id="resignEmployeeModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="employeeFormLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-none modal-sm modal-dialog-centered modal-scrollable">
+                        <div class="modal-content" id="resignEmployeeModal">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="employeeFormLabel">Resignation Information</h1>
+                                <input type="hidden" id="resignEmpID" name="resignEmpID">
+                                <input type="hidden" id="resignEmployeeID" name="resignEmployeeID">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row g-2 mb-2">
+                                    <div class="col-12">
+                                        <label for="resignee">Employee Name:</label>
+                                        <input type="text" class="form-control" id="resignee" name="resignee" disabled readonly>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <div class="col-12">
+                                        <label for="resignationStatus">Resignation Status:</label>
+                                        <select id="resignationStatus" name="resignationStatus" class="form-select" required>
+                                            <option value="" selected disabled>Choose</option>
+                                            <option value="Immediate">Immediate</option>
+                                            <option value="Terminated">Terminated</option>
+                                            <option value="Rendered">Rendered</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-1">
+                                    <div class="col-11">
+                                        <label for="clearanceForm">Upload Clearance Form:</label>
+                                        <input type="file" class="form-control" id="clearanceForm" name="clearanceForm" accept="application/pdf">
+                                    </div>
+
+                                    <div class="col-1 pt-2 text-left d-flex">
+                                        <button class="mt-3" id="viewClearanceForm" type="button">
+                                            <svg class="h-5 w-5 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">Submit</button>
                                 <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#viewEmployeeModal">Cancel</button>
                             </div>
                         </div>

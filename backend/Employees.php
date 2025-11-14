@@ -1038,7 +1038,7 @@
                 mobileNumber, departmentName, position, basicPay, dailyRate, hourlyRate,
                 availableVL, availableSL, req_sss, req_pagIbig, req_philhealth, req_tin, req_nbi,
                 req_medicalExam, req_2x2pic, req_vaccineCard, req_psa, req_validID, req_helloMoney,
-                employmentStatus, dateHired, dateRegularized, leavePoints,
+                employmentStatus, dateHired, dateRegularized, leavePoints, clearanceForm, resignationStatus,
                 wo_mon, wo_tue, wo_wed, wo_thu, 
                 wo_fri, wo_sat, wo_sun,
                 DATE_FORMAT(shifts.startTime, '%h:%i %p') AS startTime, 
@@ -1300,11 +1300,13 @@
             return $leavePoints;
         }
 
-        public function resignEmployee($id) {
+        public function resignEmployee($id, $resignationStatus, $clearanceForm) {
             $employee = "
                 UPDATE ".$this->employees." SET 
                 employmentStatus = 'Resigned',
-                e_status = 'Inactive'
+                resignationStatus = '$resignationStatus',
+                e_status = 'Inactive',
+                clearanceForm = '$clearanceForm'
                 WHERE id = '$id'";    
             return $employee;
         }
