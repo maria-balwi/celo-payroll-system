@@ -693,6 +693,8 @@
                 $totalRDOTOTNDHours = 0;
                 $totalDoubleHolidayHours = 0;
                 $totalDoubleHolidayNDHours = 0;
+                $totalDoubleHolidayOTHours = 0;
+                $totalDoubleHolidayOTNDHours = 0;
 
                 // INITIALIZE VARIABLES FOR DAYS WORKED (HOLIDAYS) COMPUTATION
                 $specialHolidaysWorked = 0;
@@ -716,6 +718,12 @@
                 $employee_regularHolidayRDOTNDPay = 0;
                 $employee_specialHolidayRDOTPay = 0;
                 $employee_specialHolidayRDOTNDPay = 0;
+                $employee_RDOTOTPay = 0;
+                $employee_RDOTOTNDPay = 0;
+                $employee_doubleHolidayPay = 0;
+                $employee_doubleHolidayNDPay = 0;
+                $employee_doubleHolidayOTPay = 0;
+                $employee_doubleHolidayOTNDPay = 0;
 
                 // ALLOWANCES, DEDUCTIONS, REIMBURSEMENTS, AND ADJUSTMENTS (=,-) COMPUTATION
                 $totalAllowances = 0;
