@@ -31,12 +31,21 @@
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     <?php
-                                        function modifyDate($date) {
+                                        function modifyDate($date, $dateCreated) {
                                             // Get the current year
                                             $currentYear = date('Y');
+
+                                            $dateCreatedYear = date('Y', strtotime($dateCreated));
+
+                                            if ($dateCreatedYear == $currentYear) {
+                                                $finalYear = $currentYear;
+                                            }
+                                            else {
+                                                $finalYear = $dateCreatedYear;
+                                            }
                                             
-                                            // Append the current year to the input date
-                                            $dateWithYear = $date . '-' . $currentYear;
+                                            // Append the year to the input date
+                                            $dateWithYear = $date . '-' . $finalYear;
                                             
                                             // Create a DateTime object from the string (expects format MM-DD-YYYY)
                                             $dateTime = DateTime::createFromFormat('m-d-Y', $dateWithYear);
@@ -52,10 +61,11 @@
                                             $payrollDateFrom = $payrollDetails['payrollCycleFrom'];
                                             $payrollDateTo = $payrollDetails['payrollCycleTo'];
                                             $payrollStatus = $payrollDetails['status'];
+                                            $payrollDateCreated = $payrollDetails['dateCreated'];
 
                                             echo "<tr>";
-                                            echo "<td class ='whitespace-nowrap'>" . modifyDate($payrollDateFrom) . "</td>";
-                                            echo "<td class ='whitespace-nowrap'>" . modifyDate($payrollDateTo) . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . modifyDate($payrollDateFrom, $payrollDateCreated) . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . modifyDate($payrollDateTo, $payrollDateCreated) . "</td>";
                                             if ($payrollStatus == "New") {
                                                 echo "<td><p class='inline-block bg-blue-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $payrollStatus . "</p></td>";
                                             }
@@ -69,7 +79,7 @@
                                             }
                                             else {
                                                 echo "
-                                                    <button class='btn btn-sm btn-outline-primary hover:text-white-500 viewPayroll' data-id='" . $payrollID . "' data-cycle='" . $payrollCycleID . " '>
+                                                    <button class='btn btn-sm btn-outline-primary hover:text-white-500 viewPayroll' data-id='" . $payrollID . "' data-cycle='" . $payrollCycleID . "' data-created='" . $payrollDateCreated . "'>
                                                         <svg class='h-5 w-5 text-blue-500'  fill='none' viewBox='0 0 24 24' stroke='currentColor'>
                                                             <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M15 12a3 3 0 11-6 0 3 3 0 016 0z'/>
                                                             <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z'/>
@@ -138,6 +148,24 @@
                                                     // Format the date as 'M d, Y'
                                                     return $dateTime->format('M d, Y');
                                                 }
+
+                                                function formatStartDate($date, $cycleID) {
+                                                    // Get the current year
+                                                    $currentYear = date('Y');
+
+                                                    if ($cycleID == "1") {
+                                                        $currentYear = date('Y') - 1;
+                                                    }
+                                                    
+                                                    // Append the current year to the input date
+                                                    $dateWithYear = $date . '-' . $currentYear;
+                                                    
+                                                    // Create a DateTime object from the string (expects format MM-DD-YYYY)
+                                                    $dateTime = DateTime::createFromFormat('m-d-Y', $dateWithYear);
+                                                    
+                                                    // Format the date as 'M d, Y'
+                                                    return $dateTime->format('M d, Y');
+                                                }
                                                 
                                                 $payrollCycleQuery = mysqli_query($conn, $payroll->viewAllPayrollCycle2());
                                                 while ($payrollCycleDetails = mysqli_fetch_array($payrollCycleQuery)) {
@@ -145,7 +173,7 @@
                                                     $payrollCycleFrom_date = $payrollCycleDetails['payrollCycleFrom'];
                                                     $payrollCycleTo_date = $payrollCycleDetails['payrollCycleTo'];
 
-                                                    $payrollCycleFrom = formatDate($payrollCycleFrom_date);
+                                                    $payrollCycleFrom = formatStartDate($payrollCycleFrom_date, $payrollCycleID);
                                                     $payrollCycleTo = formatDate($payrollCycleTo_date);
                                                 ?>
                                                 <option value="<?php echo $payrollCycleID; ?>">

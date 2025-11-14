@@ -43,19 +43,21 @@ $(document).ready(function() {
                             $('#payrollCycleID').prop('selectedIndex', 0);
                         });
                         $('#loader').hide();
-                        $('#btnDownloadPayslip').hide();  // Hide button if payslip is not generated
+                        $('#btnDownloadPayslip').hide();
                     } else {
                         // If response contains payslip HTML, display it
                         $('#loader').hide();
                         $('#payslipContainer').html(response).show();
-                        if (id == 8 || id == 9) {
-                            // $('#btnPrintPayslip').show();
-                            $('#btnDownloadPayslip').show();
-                        }
-                        else {
-                            // $('#btnPrintPayslip').show();
-                            $('#btnDownloadPayslip').hide();
-                        }
+                        $("#btnDownloadPayslip").show();
+
+                        // if (id == 8 || id == 9) {
+                        //     // $('#btnPrintPayslip').show();
+                        //     $('#btnDownloadPayslip').show();
+                        // }
+                        // else {
+                        //     // $('#btnPrintPayslip').show();
+                        //     $('#btnDownloadPayslip').hide();
+                        // }
                         // $('#btnDownloadPayslip').show();  // Show the download button if payslip is valid
                     }
                 },
@@ -74,19 +76,33 @@ $(document).ready(function() {
     
         // Apply a temporary scaling class
         $(element).addClass('scale-for-pdf');
+
+        var watermark = document.createElement('div');
+        watermark.innerText = 'Confidential';
+        watermark.className = 'absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-500 font-bold text-4xl opacity-20 rotate-45 pointer-events-none';
+        element.appendChild(watermark);
     
         html2pdf()
             .from(element)
             .set({
-                margin: 0.5,
+                margin: [20, 20, 20, 20],
                 filename: 'payslip.pdf',
-                html2canvas: { scale: 3 }, // Keeps quality high
-                jsPDF: { unit: 'in', format: [8.5, 11], orientation: 'portrait' }, // Adjust format and orientation
+                html2canvas: { 
+                    scale: 3, 
+                    useCORS: true,
+                    scrollY: 0
+                }, // Keeps quality high
+                jsPDF: { 
+                    unit: 'pt', 
+                    format: 'a4', 
+                    orientation: 'portrait' 
+                }, // Adjust format and orientation
             })
             .save()
             .then(() => {
                 // Remove the scaling class after the PDF is saved
                 $(element).removeClass('scale-for-pdf');
+                watermark.remove();
     
                 // Perform the AJAX call
                 $.ajax({

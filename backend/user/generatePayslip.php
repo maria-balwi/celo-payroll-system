@@ -140,8 +140,8 @@
                 if ($isHoliday == 0) {
                     $payslip = '
                         <div>
-                            <div class="text-center font-bold text-xl bg-green-300 py-2">For the Period of '.$date.'
-                                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-500 font-bold text-4xl opacity-20 rotate-45">Confidential</div>
+                            <div class="text-center font-bold text-xl bg-green-300 py-2" id="payslipDate">For the Period of '.$date.'
+                                
                             </div>
                             <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS, INC.</div>
                             <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP</div>
@@ -253,7 +253,7 @@
                                     <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
                                 </tr>
                                 <tr>
-                                    <td class="border-l-2 text-left px-2 py-1 text-left">SH Night</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SH Night</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayND.'</td>
                                     <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
                                 </tr>
@@ -313,7 +313,7 @@
                     $payslip2 = '
                         <div>
                             <div class="text-center font-bold text-xl bg-green-300 py-2">For the Period of '.$date.'
-                                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-500 font-bold text-4xl opacity-20 rotate-45">Confidential</div>
+                                
                             </div>
                             <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS, INC.</div>
                             <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP</div>
@@ -427,7 +427,7 @@
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_RDOTRH.'</td>
                                 </tr>
                                 <tr>
-                                    <td class="border-l-2 text-left px-2 py-1 text-left">SH Night</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SH Night</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayND.'</td>
                                     <td class="border-l-2 text-left px-2 py-1">PAY</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_RDOTRHPay.'</td>

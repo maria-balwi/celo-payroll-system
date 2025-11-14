@@ -1,6 +1,8 @@
 $(document).ready(function() {
 
-    $('#overtimeTable').DataTable();
+    $('#overtimeTable').DataTable({
+        order: [] // Disable default sorting
+    });
     
     // VIEW FILED OT
     var array = [];

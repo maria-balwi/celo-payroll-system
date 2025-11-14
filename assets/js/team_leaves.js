@@ -1,6 +1,8 @@
 $(document).ready(function() {
 
-    $('#leavesTable').DataTable();
+    $('#leavesTable').DataTable({
+        order: [] // Disable default sorting
+    });
 
     $('#dropdownButton').on('click', function() {
         $('#dropdownMenu').toggleClass('hidden');

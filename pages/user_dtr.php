@@ -17,6 +17,7 @@
 
                     <div class="static inline-block text-right ml-3">
                         <select id="filterYear" class="form-select inline-flex justify-center rounded-md border border-gray-300 shadow-sm pr-4 bg-white text-sm font-medium text-gray-700">
+                            <option disabled selected><?php echo date('Y'); ?></option>
                             <option value="2024">2024</option>
                             <option value="2025">2025</option>
                             <option value="2026">2026</option>

@@ -1,8 +1,10 @@
 $(document).ready(function() {
 
-    // $('#overtimeTable').DataTable();
-    var overtimeTable = $('#overtimeTable').DataTable();
-    overtimeTable.order([[0, "desc"], [2, "desc"]]).draw();
+    $('#overtimeTable').DataTable({
+        order: [] // Disable default sorting
+    });
+    // var overtimeTable = $('#overtimeTable').DataTable();
+    // overtimeTable.order([[0, "desc"], [1, "desc"]]).draw();
 
     $('#approveOT').hide();
     $('#disapproveOT').hide();
