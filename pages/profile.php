@@ -42,7 +42,7 @@
                                             $filename = "profile.png";
                                         }
                                     ?>
-                                    <img src="../assets/images/profiles/<?php echo $filename ?>" class="w-32 h-32 bg-gray-300 rounded-md mb-4 shrink-0">
+                                    <img src="../assets/images/profiles/<?php echo $filename ?>" class="w-75 h-150px bg-gray-300 rounded-md mb-4 shrink-0">
 
                                     </img>
                                     <h1 class="text-lg font-bold uppercase"><?php echo $userDetails['employeeName'] ?></h1>
