@@ -20,7 +20,7 @@
             $shift = $userDTRdetails['shift'];
             $logType = $userDTRdetails['logType'];
 
-            $sortableDate = date('Y/m/d', strtotime($date));
+            $sortableDate = date('m/d/Y', strtotime($date));
 
             // Check if the date exists in the dtrGroupedByDate array
             if (!isset($dtrGroupedByDate[$sortableDate])) {

@@ -45,6 +45,12 @@
             $lastIDResult = mysqli_fetch_array($lastIDQuery);
             $lastID = $lastIDResult['userID'];
 
+            // AUDIT TRAIL
+            $at_empID = $_SESSION['id'];
+            $at_module = "Admin - User List";
+            $at_action = "Added User";
+            mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $updateID));
+
             $em = "User Added Successfully";
             $error = array('error' => 0, 'id' => $lastID, 'em' => $em);
             echo json_encode($error);

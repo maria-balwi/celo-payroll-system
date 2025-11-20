@@ -18,6 +18,7 @@
                     
                 <div class="static inline-block text-right ml-3">
                     <select id="filterYear" class="form-select inline-flex justify-center rounded-md border border-gray-300 shadow-sm pr-4 bg-white text-sm font-medium text-gray-700">
+                        <option disabled selected><?php echo date('Y'); ?></option>
                         <option value="2024">2024</option>
                         <option value="2025">2025</option>
                         <option value="2026">2026</option>
@@ -27,7 +28,6 @@
 
                 <div class="static inline-block text-right ml-1 mr-1">
                     <select id="filterMonth" class="form-select inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-6 bg-white text-sm font-medium text-gray-700">
-                        <!-- <option disabled selected>Select Payroll Cycle FROM</option> -->
                         <option disabled selected><?php echo date('F'); ?></option>
                         <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="01">January</option>
                         <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="02">February</option>
@@ -257,7 +257,7 @@
 
                             <div class="row g-2 mb-2">
                                 <div class="container mx-auto overflow-auto">
-                                    <table id="attendanceTable" class="table table-auto table-striped table-bordered text-center pt-3">
+                                    <table id="attendanceTable" class="table table-auto table-bordered text-center pt-3">
                                         <thead class="bg-gray-50">
                                             <tr>
                                                 <th class="text-xs font-medium text-yellow-500 uppercase tracking-tight">Face DTR</th>

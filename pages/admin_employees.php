@@ -142,7 +142,7 @@
             <!------------------------------------------------------------------- ADD EMPLOYEE FORM ------------------------------------------------------->
             <form id="addEmployeeForm" enctype="multipart/form-data">
                 <div class="modal fade" id="addEmployeeModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-none modal-lg modal-dialog-centered">
+                    <div class="modal-dialog modal-none modal-xl modal-dialog-centered">
                         <div class="modal-content" id="addEmployeeModal">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="userFormLabel">New Employee</h1>
@@ -155,97 +155,98 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-1">
-                                    <div class="col-4">
-                                        <label for="lastName">Last Name:</label>
+                                <div class="row g-2 mb-2 align-items-end">
+                                    <div class="col-2 d-flex justify-content-center align-items-end">
+                                        <div id="photoContainer" class="position-relative w-100" style="height: 150px;">
+                                            <!-- Profile photo -->
+                                            <img id="previewPhoto"
+                                                alt="Profile Photo"
+                                                src=""
+                                                class="rounded position-absolute top-0 start-0 w-100 h-100"
+                                                style="object-fit: cover; display: none; z-index: 2;">
+
+                                            <!-- Placeholder -->
+                                            <div id="photoPlaceholder"
+                                                class="d-flex align-items-center justify-content-center border rounded bg-light text-muted position-absolute top-0 start-0 w-100 h-100"
+                                                style="z-index: 1;">
+                                            Photo
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-4">
-                                        <label for="firstName">First Name:</label>
-                                    </div>
-                                    <div class="col-2">
-                                        <label for="gender">Gender:</label>
-                                    </div>
-                                    <div class="col-2">
-                                        <label for="civilStatus">Civil Status:</label>
+
+                                    <!-- Right side content (name, gender, civil status, etc.) -->
+                                    <div class="col-10">
+                                        <!-- Row 1 -->
+                                        <div class="row g-2 mb-2">
+                                            <div class="col-4">
+                                                <label for="lastName">Last Name:</label>
+                                                <input type="text" class="form-control" id="lastName" name="lastName">
+                                            </div>
+                                            <div class="col-4">
+                                                <label for="firstName">First Name:</label>
+                                                <input type="text" class="form-control" id="firstName" name="firstName">
+                                            </div>
+                                            <div class="col-2">
+                                                <label for="gender">Gender:</label>
+                                                <select id="gender" name="gender" class="form-select">
+                                                    <option value="" selected disabled>Choose</option>
+                                                    <option value="Male">Male</option>
+                                                    <option value="Female">Female</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-2">
+                                                <label for="civilStatus">Civil Status:</label>
+                                                <select id="civilStatus" name="civilStatus" class="form-select">
+                                                    <option selected disabled>Choose</option>
+                                                    <option value="Single">Single</option>
+                                                    <option value="Married">Married</option>
+                                                    <option value="Separated">Separated</option>
+                                                    <option value="Divorced">Divorced</option>
+                                                    <option value="Widowed">Widowed</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Row 2 -->
+                                        <div class="row g-2">
+                                            <div class="col-6">
+                                                <label for="address">Address:</label>
+                                                <input type="text" class="form-control" id="address" name="address">
+                                            </div>
+                                            <div class="col-2">
+                                                <label for="dateOfBirth">Date of Birth:</label>
+                                                <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth">
+                                            </div>
+                                            <div class="col-4">
+                                                <label for="placeOfBirth">Place of Birth:</label>
+                                                <input type="text" class="form-control" id="placeOfBirth" name="placeOfBirth">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="row g-2 mb-2">
                                     <div class="col-4">
-                                        <input type="text" class="form-control" id="lastName" name="lastName">
-                                    </div>
-                                    <div class="col-4">
-                                        <input type="text" class="form-control" id="firstName" name="firstName">
-                                    </div>
-                                    <div class="col-2">
-                                        <select id="gender" name="gender" class="form-select">
-                                            <option value="" selected disabled>Choose</option>
-                                            <option value="Male">Male</option>
-                                            <option value="Female">Female</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-2">
-                                        <select id="civilStatus" name="civilStatus" class="form-select">
-                                            <option selected disabled>Choose</option>
-                                            <option value="Single">Single</option>
-                                            <option value="Married">Married</option>
-                                            <option value="Separated">Separated</option>
-                                            <option value="Divorced">Divorced</option>
-                                            <option value="Widowed">Widowed</option>
-                                        </select>
-                                    </div>
-                                </div>     
-                                
-                                <div class="row g-2 mb-1">
-                                    <div class="col-6">
-                                        <label for="address">Address:</label>
-                                    </div>
-                                    <div class="col-3">
-                                        <label for="dateOfBirth">Date of Birth:</label>
-                                    </div>
-                                    <div class="col-3">
-                                        <label for="placeOfBirth">Place of Birth:</label>
+                                        <label for="photo">Upload Photo:</label>
+                                        <input type="file" class="form-control" id="photo" name="photo" accept="image/png, image/jpeg, image/jpg">
                                     </div>
                                 </div>
 
                                 <div class="row g-2 mb-2">
-                                    <div class="col-6">
-                                        <input type="text" class="form-control" id="address" name="address">
-                                    </div>
-                                    <div class="col-3">
-                                        <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth">
-                                    </div>
-                                    <div class="col-3">
-                                        <input type="text" class="form-control" id="placeOfBirth" name="placeOfBirth">
-                                    </div>
-                                </div>
-
-                                <div class="row g-2 mb-1">
                                     <div class="col-3">
                                         <label for="sss">SSS:</label>
-                                    </div>
-                                    <div class="col-3">
-                                        <label for="pagIbig">Pag-Ibig:</label>
-                                    </div>
-                                    <div class="col-3">
-                                        <label for="philhealth">PhilHealth:</label>
-                                    </div>
-                                    <div class="col-3">
-                                        <label for="tin">TIN:</label>
-                                    </div>
-                                </div>
-
-                                <div class="row g-2 mb-2">
-                                    <div class="col-3">
                                         <input type="text" class="form-control" id="sss" name="sss">
                                     </div>
                                     <div class="col-3">
+                                        <label for="pagIbig">Pag-Ibig:</label>
                                         <input type="text" class="form-control" id="pagIbig" name="pagIbig">
                                     </div>
                                     <div class="col-3">
+                                        <label for="philhealth">PhilHealth:</label>
                                         <input type="text" class="form-control" id="philhealth" name="philhealth">
                                     </div>
                                     <div class="col-3">
+                                        <label for="tin">TIN:</label>
                                         <input type="text" class="form-control" id="tin" name="tin">
                                     </div>
                                 </div>
@@ -258,44 +259,24 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-1">
-                                    <div class="col-6">
-                                        <label for="emailAddress">Email Address:</label>
-                                    </div>
-                                    <div class="col-3">
-                                        <label for="employeeID">Employee ID:</label>
-                                    </div>
-                                    <div class="col-3">
-                                        <label for="mobileNumber">Mobile Number:</label>
-                                    </div>
-                                </div>
-
                                 <div class="row g-2 mb-2">
                                     <div class="col-6">
+                                        <label for="emailAddress">Email Address:</label>
                                         <input type="email" class="form-control" id="emailAddress" name="emailAddress">
                                     </div>
                                     <div class="col-3">
+                                        <label for="employeeID">Employee ID:</label>
                                         <input type="text" class="form-control" id="employeeID" name="employeeID">
                                     </div>
                                     <div class="col-3">
+                                        <label for="mobileNumber">Mobile Number:</label>
                                         <input type="text" class="form-control" id="mobileNumber" name="mobileNumber">
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-1">
-                                    <div class="col-4">
-                                        <label for="department">Department:</label>
-                                    </div>
-                                    <div class="col-4">
-                                        <label for="designation">Designation:</label>
-                                    </div>
-                                    <div class="col-4">
-                                        <label for="shiftID">Shift:</label>
-                                    </div>
-                                </div>
-                            
                                 <div class="row g-2 mb-2">
                                     <div class="col-4">
+                                        <label for="department">Department:</label>
                                         <select class="form-select" id="department" name="department">
                                             <option value="" selected disabled>Choose</option>
                                             <?php
@@ -312,11 +293,13 @@
                                         </select>
                                     </div>
                                     <div class="col-4">
+                                        <label for="designation">Designation:</label>
                                         <select class="form-select" id="designation" name="designation">
                                             <option selected disabled>Choose Department First</option>
                                         </select>
                                     </div>
                                     <div class="col-4">
+                                        <label for="shiftID">Shift:</label>
                                         <select type="dropdown" id="shiftID" name="shiftID" class="form-select">
                                             <option value="" selected disabled>Choose</option>
                                             <?php
@@ -334,44 +317,25 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-1">
-                                    <div class="col-4">
-                                        <label for="basicPay">Basic Pay:</label>
-                                    </div>
-                                    <div class="col-4">
-                                        <label for="dailyRate">Daily Rate:</label>
-                                    </div>
-                                    <div class="col-4">
-                                        <label for="hourlyRate">Hourly Rate:</label>
-                                    </div>
-                                </div>
-                            
                                 <div class="row g-2 mb-2">
                                     <div class="col-4">
+                                        <label for="basicPay">Basic Pay:</label>
                                         <input type="number" class="form-control" id="basicPay" name="basicPay">
                                     </div>
                                     <div class="col-4">
+                                        <label for="dailyRate">Daily Rate:</label>
                                         <input type="number" class="form-control" id="dailyRate" name="dailyRate" placeholder="1.0" step="0.01" readonly>
+
                                     </div>
                                     <div class="col-4">
+                                        <label for="hourlyRate">Hourly Rate:</label>
                                         <input type="number" class="form-control" id="hourlyRate" name="hourlyRate" placeholder="1.0" step="0.01" readonly>
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-1">
-                                    <div class="col-4">
-                                        <label for="employmentStatus">Employment Status:</label>
-                                    </div>
-                                    <div class="col-4">
-                                        <label for="dateHired">Date Hired:</label>
-                                    </div>
-                                    <div class="col-4 dateRegularizedLabel">
-                                        <label for="dateRegularized">Date Regularized:</label>
-                                    </div>
-                                </div>
-                            
                                 <div class="row g-2 mb-2">
                                     <div class="col-4">
+                                        <label for="employmentStatus">Employment Status:</label>
                                         <select id="employmentStatus" name="employmentStatus" class="form-select">
                                             <option value="" selected disabled>Choose</option>
                                             <option value="Probationary">Probationary</option>
@@ -379,49 +343,59 @@
                                         </select>
                                     </div>
                                     <div class="col-4">
+                                        <label for="dateHired">Date Hired:</label>
                                         <input type="date" class="form-control" id="dateHired" name="dateHired">
                                     </div>
                                     <div class="col-4 dateRegularizedLabel">
+                                        <label for="dateRegularized">Date Regularized:</label>
                                         <input type="date" class="form-control" id="dateRegularized" name="dateRegularized" disabled>
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-1">
-                                    <div class="col-4">
-                                        <label for="vacationLeaves">Vacation Leaves:</label>
-                                    </div>
-                                    <div class="col-4">
-                                        <label for="sickLeaves">Sick Leaves:</label>
-                                    </div>
-                                </div>
-                            
                                 <div class="row g-2 mb-2">
-                                    <div class="col-4">
+                                    <div class="col-2">
+                                        <label for="vacationLeaves">Vacation Leaves:</label>
                                         <input type="number" class="form-control" id="vacationLeaves" name="vacationLeaves">
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-2">
+                                        <label for="sickLeaves">Sick Leaves:</label>
                                         <input type="number" class="form-control" id="sickLeaves" name="sickLeaves">
                                     </div>
-                                </div>
-
-                                <div class="row g-2 mb-1">
-                                    <div class="col-6">
-                                        <label for="photo">Upload Photo:</label>
+                                    <div class="col-2">
+                                        
                                     </div>
-                                </div>
-
-                                <div class="row mb-2 g-2">
                                     <div class="col-6">
-                                        <input type="file" class="form-control" id="photo" name="photo" accept="image/*">
-                                        <img id="previewPhoto" src="" alt="Selected Photo" style="display:none; max-height: 200px; margin-top: 10px;">
-                                    </div>
-                                    <div class="col-1 pt-2 text-left">
-                                        <button id="viewPhoto" disabled>
-                                            <svg class="h-5 w-5 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                            </svg>
-                                        </button>
+                                        <label for="weekOff">Week Off:</label>
+                                        <div class="col-12">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input wo_day" type="checkbox" id="wo_mon" name="wo_mon">
+                                                <label class="form-check-label" for="wo_mon">Mon</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input wo_day" type="checkbox" id="wo_tue" name="wo_tue">
+                                                <label class="form-check-label" for="wo_tue">Tue</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input wo_day" type="checkbox" id="wo_wed" name="wo_wed">
+                                                <label class="form-check-label" for="wo_wed">Wed</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input wo_day" type="checkbox" id="wo_thu" name="wo_thu">
+                                                <label class="form-check-label" for="wo_thu">Thu</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input wo_day" type="checkbox" id="wo_fri" name="wo_fri">
+                                                <label class="form-check-label" for="wo_fri">Fri</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input wo_day" type="checkbox" id="wo_sat" name="wo_sat">
+                                                <label class="form-check-label" for="wo_sat">Sat</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input wo_day" type="checkbox" id="wo_sun" name="wo_sun">
+                                                <label class="form-check-label" for="wo_sun">Sun</label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -525,7 +499,7 @@
             <!--------------------------------------------------------------------------------------------------------------------------------------------->
             <!----------------------------------------------------------- VIEW ACTIVE EMPLOYEE FORM ------------------------------------------------------->
             <div class="modal fade" id="viewEmployeeModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
-                <div class="modal-dialog modal-none modal-lg modal-dialog-centered modal-scrollable">
+                <div class="modal-dialog modal-none modal-xl modal-dialog-centered modal-scrollable">
                     <div class="modal-content" id="viewEmployeModal">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="userFormLabel">View Employee</h1>
@@ -537,87 +511,74 @@
                                     <h2 class="text-xl font-bold">Personal Information</h2>
                                 </div>
                             </div>
-
-                            <div class="row g-2 mb-1">
-                                <div class="col-4">
-                                    <label for="viewLastName">Last Name:</label>
-                                </div>
-                                <div class="col-4">
-                                    <label for="viewFirstName">First Name:</label>
-                                </div>
-                                <div class="col-2">
-                                    <label for="viewGender">Gender:</label>
-                                </div>
-                                <div class="col-2">
-                                    <label for="viewCivilStatus">Civil Status:</label>
-                                </div>
-                            </div>
-
-                            <div class="row g-2 mb-2">
-                                <div class="col-4">
-                                    <input type="text" class="form-control" id="viewLastName" disabled readonly>
-                                </div>
-                                <div class="col-4">
-                                    <input type="text" class="form-control" id="viewFirstName" disabled readonly>
-                                </div>
-                                <div class="col-2">
-                                    <input type="text" class="form-control" id="viewGender" disabled readonly>
-                                </div>
-                                <div class="col-2">
-                                    <input type="text" class="form-control" id="viewCivilStatus" disabled readonly>
-                                </div>
-                            </div>     
                             
-                            <div class="row g-2 mb-1">
-                                <div class="col-6">
-                                    <label for="viewAddress">Address:</label>
+                            <div class="row g-2 mb-2 align-items-end">
+                                <div class="col-2 d-flex justify-content-center align-items-end">
+                                    <div id="photoContainer" class="position-relative w-100" style="height: 150px;">
+                                        <!-- Profile photo -->
+                                        <img id="viewProfilePhoto" 
+                                        src="" 
+                                        alt="Profile Photo" 
+                                        class="img-thumbnail rounded" 
+                                        style="width: 100%; height: 150px; object-fit: cover;">
+                                    </div>
                                 </div>
-                                <div class="col-3">
-                                    <label for="viewDateOfBirth">Date of Birth:</label>
-                                </div>
-                                <div class="col-3">
-                                    <label for="viewPlaceOfBirth">Place of Birth:</label>
+
+                                <!-- Right side content (name, gender, civil status, etc.) -->
+                                <div class="col-10">
+                                    <!-- Row 1 -->
+                                    <div class="row g-2 mb-2">
+                                        <div class="col-4">
+                                            <label for="viewLastName" class="form-label">Last Name:</label>
+                                            <input type="text" class="form-control" id="viewLastName" disabled readonly>
+                                        </div>
+                                        <div class="col-4">
+                                            <label for="viewFirstName" class="form-label">First Name:</label>
+                                            <input type="text" class="form-control" id="viewFirstName" disabled readonly>
+                                        </div>
+                                        <div class="col-2">
+                                            <label for="viewGender" class="form-label">Gender:</label>
+                                            <input type="text" class="form-control" id="viewGender" disabled readonly>
+                                        </div>
+                                        <div class="col-2">
+                                            <label for="viewCivilStatus" class="form-label">Civil Status:</label>
+                                            <input type="text" class="form-control" id="viewCivilStatus" disabled readonly>
+                                        </div>
+                                    </div>
+
+                                    <!-- Row 2 -->
+                                    <div class="row g-2">
+                                        <div class="col-6">
+                                            <label for="viewAddress" class="form-label">Address:</label>
+                                            <input type="text" class="form-control" id="viewAddress" disabled readonly>
+                                        </div>
+                                        <div class="col-2">
+                                            <label for="viewDateOfBirth" class="form-label">Date of Birth:</label>
+                                            <input type="date" class="form-control" id="viewDateOfBirth" disabled readonly>
+                                        </div>
+                                        <div class="col-4">
+                                            <label for="viewPlaceOfBirth" class="form-label">Place of Birth:</label>
+                                            <input type="text" class="form-control" id="viewPlaceOfBirth" disabled readonly>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="row g-2 mb-2">
-                                <div class="col-6">
-                                    <input type="text" class="form-control" id="viewAddress" disabled readonly>
-                                </div>
-                                <div class="col-3">
-                                    <input type="date" class="form-control" id="viewDateOfBirth" disabled readonly>
-                                </div>
-                                <div class="col-3">
-                                    <input type="text" class="form-control" id="viewPlaceOfBirth" disabled readonly>
-                                </div>
-                            </div>
-
-                            <div class="row g-2 mb-1">
                                 <div class="col-3">
                                     <label for="viewsss">SSS:</label>
-                                </div>
-                                <div class="col-3">
-                                    <label for="viewpagIbig">Pag-Ibig:</label>
-                                </div>
-                                <div class="col-3">
-                                    <label for="viewphilhealth">PhilHealth:</label>
-                                </div>
-                                <div class="col-3">
-                                    <label for="viewtin">TIN:</label>
-                                </div>
-                            </div>
-
-                            <div class="row g-2 mb-2">
-                                <div class="col-3">
                                     <input type="text" class="form-control" id="viewsss" disabled readonly>
                                 </div>
                                 <div class="col-3">
+                                    <label for="viewpagIbig">Pag-Ibig:</label>
                                     <input type="text" class="form-control" id="viewpagIbig" disabled readonly>
                                 </div>
                                 <div class="col-3">
+                                    <label for="viewphilhealth">PhilHealth:</label>
                                     <input type="text" class="form-control" id="viewphilhealth" disabled readonly>
                                 </div>
                                 <div class="col-3">
+                                    <label for="viewtin">TIN:</label>
                                     <input type="text" class="form-control" id="viewtin" disabled readonly>
                                 </div>
                             </div>
@@ -630,74 +591,47 @@
                                 </div>
                             </div>
 
-                            <div class="row g-2 mb-1">
-                                <div class="col-6">
-                                    <label for="viewEmailAddress">Email Address:</label>
-                                </div>
-                                <div class="col-3">
-                                    <label for="viewEmployeeID">Employee ID:</label>
-                                </div>
-                                <div class="col-3">
-                                    <label for="viewMobileNumber">Mobile Number:</label>
-                                </div>
-                            </div>
-
                             <div class="row g-2 mb-2">
                                 <div class="col-6">
+                                    <label for="viewEmailAddress">Email Address:</label>
                                     <input type="email" class="form-control" id="viewEmailAddress" disabled readonly>
                                 </div>
                                 <div class="col-3">
+                                    <label for="viewEmployeeID">Employee ID:</label>
                                     <input type="text" class="form-control" id="viewEmployeeID" disabled readonly>
                                 </div>
                                 <div class="col-3">
+                                    <label for="viewMobileNumber">Mobile Number:</label>
                                     <input type="text" class="form-control" id="viewMobileNumber" disabled readonly>
                                 </div>
                             </div>
 
-                            <div class="row g-2 mb-1">
-                                <div class="col-4">
-                                    <label for="viewDepartment">Department:</label>
-                                </div>
-                                <div class="col-4">
-                                    <label for="viewDesignation">Designation:</label>
-                                </div>
-                                <div class="col-4">
-                                    <label for="viewShiftID">Shift:</label>
-                                </div>
-                            </div>
-                        
                             <div class="row g-2 mb-2">
                                 <div class="col-4">
+                                    <label for="viewDepartment">Department:</label>
                                     <input type="text" class="form-control" id="viewDepartment" disabled readonly>
                                 </div>
                                 <div class="col-4">
+                                    <label for="viewDesignation">Designation:</label>
                                     <input type="text" class="form-control" id="viewDesignation" disabled readonly>
                                 </div>
                                 <div class="col-4">
+                                    <label for="viewShiftID">Shift:</label>
                                     <input type="text" class="form-control" id="viewShiftID" disabled readonly>
                                 </div>
                             </div>
 
-                            <div class="row g-2 mb-1">
-                                <div class="col-4">
-                                    <label for="viewBasicPay">Basic Pay:</label>
-                                </div>
-                                <div class="col-4">
-                                    <label for="viewDailyRate">Daily Rate:</label>
-                                </div>
-                                <div class="col-4">
-                                    <label for="viewHourlyRate">Hourly Rate:</label>
-                                </div>
-                            </div>
-                            
                             <div class="row g-2 mb-2">
                                 <div class="col-4">
+                                    <label for="viewBasicPay">Basic Pay:</label>
                                     <input type="number" class="form-control" id="viewBasicPay" name="viewBasicPay" disabled readonly>
                                 </div>
                                 <div class="col-4">
+                                    <label for="viewDailyRate">Daily Rate:</label>
                                     <input type="number" class="form-control" id="viewDailyRate" name="viewDailyRate" disabled readonly>
                                 </div>
                                 <div class="col-4">
+                                    <label for="viewHourlyRate">Hourly Rate:</label>
                                     <input type="number" class="form-control" id="viewHourlyRate" name="viewHourlyRate" disabled readonly>
                                 </div>
                             </div>
@@ -705,48 +639,63 @@
                             <div class="row g-2 mb-1">
                                 <div class="col-4">
                                     <label for="viewEmploymentStatus">Employment Status:</label>
-                                </div>
-                                <div class="col-4">
-                                    <label for="viewDateHired">Date Hired:</label>
-                                </div>
-                                <div class="col-4 viewDateRegularizedLabel">
-                                    <label for="viewDateRegularized">Date Regularized:</label>
-                                </div>
-                            </div>
-                            
-                            <div class="row g-2 mb-2">
-                                <div class="col-4">
                                     <input type="text" class="form-control" id="viewEmploymentStatus" name="viewEmploymentStatus" disabled readonly>
                                 </div>
                                 <div class="col-4">
+                                    <label for="viewDateHired">Date Hired:</label>
                                     <input type="text" class="form-control" id="viewDateHired" name="viewDateHired" disabled readonly>
                                 </div>
                                 <div class="col-4 viewDateRegularizedLabel">
+                                    <label for="viewDateRegularized">Date Regularized:</label>
                                     <input type="text" class="form-control" id="viewDateRegularized" name="viewDateRegularized" disabled readonly>
                                 </div>
                             </div>
 
                             <div class="row g-2 mb-1">
-                                <div class="col-4">
+                                <div class="col-2">
                                     <label for="viewVacationLeaves">Vacation Leaves:</label>
-                                </div>
-                                <div class="col-4">
-                                    <label for="viewSickLeaves">Sick Leaves:</label>
-                                </div>
-                                <div class="col-4">
-                                    <label for="viewLeavePoints">Leave Points:</label>
-                                </div>
-                            </div>
-                            
-                            <div class="row g-2 mb-2">
-                                <div class="col-4">
                                     <input type="number" class="form-control " id="viewVacationLeaves" name="viewVacationLeaves" disabled readonly>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-2">
+                                    <label for="viewSickLeaves">Sick Leaves:</label>
                                     <input type="number" class="form-control" id="viewSickLeaves" name="viewSickLeaves" disabled readonly>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-2">
+                                    <label for="viewLeavePoints">Leave Points:</label>
                                     <input type="number" class="form-control" id="viewLeavePoints" name="viewLeavePoints" disabled readonly>
+                                </div>
+                                <div class="col-6">
+                                    <label for="viewWeekOff">Week Off:</label>
+                                    <div class="col-12">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="view_wo_monday" name="view_wo_monday" value="view_wo_monday" disabled readonly>
+                                            <label class="form-check-label" for="view_wo_monday">Mon</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="view_wo_tuesday" name="view_wo_tuesday" value="view_wo_tuesday" disabled readonly>
+                                            <label class="form-check-label" for="view_wo_tuesday">Tue</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="view_wo_wednesday" name="view_wo_wednesday" value="view_wo_wednesday" disabled readonly>
+                                            <label class="form-check-label" for="view_wo_wednesday">Wed</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="view_wo_thursday" name="view_wo_thursday" value="view_wo_thursday" disabled readonly>
+                                            <label class="form-check-label" for="view_wo_thursday">Thu</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="view_wo_friday" name="view_wo_friday" value="view_wo_friday" disabled readonly>
+                                            <label class="form-check-label" for="view_wo_friday">Fri</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="view_wo_saturday" name="view_wo_saturday" value="view_wo_saturday" disabled readonly>
+                                            <label class="form-check-label" for="view_wo_saturday">Sat</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="view_wo_sunday" name="view_wo_sunday" value="view_wo_sunday" disabled readonly>
+                                            <label class="form-check-label" for="view_wo_sunday">Sun</label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -762,13 +711,7 @@
                                 </div>
                             </div>
 
-                            <div class="row g-2 mb-1">
-                                <div class="col-4">
-                                    <button id="viewProfilePicture" class="text-lg text-blue-500">View Photo</button>
-                                </div>
-                            </div>
-
-                            <h2 class="text-lg font-semibold mb-0">Requirements:</h2>
+                            <h2 class="text-lg font-semibold mt-2 mb-0">Requirements:</h2>
                             <div class="row g-3">
                                 <div class="col-md-3">
                                     <!-- SSS -->
@@ -1096,6 +1039,11 @@
                                 </div>
                             </div>
 
+                            <div class="row g-2" id="viewClearanceFormRow">
+                                <div class="col-4">
+                                    <button id="viewClearanceFormFile" class="text-blue-500">View Clearance Form</button>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="modal-footer">
@@ -1110,7 +1058,7 @@
             <!---------------------------------------------------------------- UPDATE EMPLOYEE FORM ------------------------------------------------------->
             <form id="updateEmployeeForm" enctype="multipart/form-data">
                 <div class="modal fade" id="updateEmployeeModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="employeeFormLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-none modal-lg modal-dialog-centered modal-scrollable">
+                    <div class="modal-dialog modal-none modal-xl modal-dialog-centered modal-scrollable">
                         <div class="modal-content" id="updateEmployeeModal">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="employeeFormLabel">Update Employee</h1>
@@ -1126,97 +1074,97 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-1">
-                                    <div class="col-4">
-                                        <label for="updateLastName">Last Name:</label>
+                                <div class="row g-2 mb-2 align-items-end">
+                                    <div class="col-2 d-flex justify-content-center align-items-end">
+                                        <div id="photoContainer" class="position-relative w-100" style="height: 150px;">
+                                            <!-- Profile photo -->
+                                            <img id="updatePreviewPhoto"
+                                                alt="Profile Photo"
+                                                src=""
+                                                class="rounded position-absolute top-0 start-0 w-100 h-100"
+                                                style="object-fit: cover; display: none; z-index: 2;">
+
+                                            <!-- Placeholder -->
+                                            <div id="updatePhotoPlaceholder"
+                                                class="d-flex align-items-center justify-content-center border rounded bg-light text-muted position-absolute top-0 start-0 w-100 h-100"
+                                                style="z-index: 1;">
+                                            Photo
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-4">
-                                        <label for="updateFirstName">First Name:</label>
-                                    </div>
-                                    <div class="col-2">
-                                        <label for="updateGender">Gender:</label>
-                                    </div>
-                                    <div class="col-2">
-                                        <label for="updateCivilStatus">Civil Status:</label>
+
+                                    <div class="col-10">
+                                        <!-- Row 1 -->
+                                         <div class="row g-2 mb-2">
+                                            <div class="col-4">
+                                                <label for="updateLastName">Last Name:</label>
+                                                <input type="text" class="form-control" id="updateLastName" name="updateLastName">
+                                            </div>
+                                            <div class="col-4">
+                                                <label for="updateFirstName">First Name:</label>
+                                                <input type="text" class="form-control" id="updateFirstName" name="updateFirstName">
+                                            </div>
+                                            <div class="col-2">
+                                                <label for="updateGender">Gender:</label>
+                                                <select id="updateGender" name="updateGender" class="form-select">
+                                                    <option value="" selected disabled>Choose</option>
+                                                    <option value="Male">Male</option>
+                                                    <option value="Female">Female</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-2">
+                                                <label for="updateCivilStatus">Civil Status:</label>
+                                                <select id="updateCivilStatus" name="updateCivilStatus" class="form-select">
+                                                    <option selected disabled>Choose</option>
+                                                    <option value="Single">Single</option>
+                                                    <option value="Married">Married</option>
+                                                    <option value="Separated">Separated</option>
+                                                    <option value="Divorced">Divorced</option>
+                                                    <option value="Widowed">Widowed</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <!-- Row 2 -->
+                                        <div class="row g-2">
+                                            <div class="col-6">
+                                                <label for="updateAddress">Address:</label>
+                                                <input type="text" class="form-control" id="updateAddress" name="updateAddress">
+                                            </div>
+                                            <div class="col-2">
+                                                <label for="updateDateOfBirth">Date of Birth:</label>
+                                                <input type="date" class="form-control" id="updateDateOfBirth" name="updateDateOfBirth">
+                                            </div>
+                                            <div class="col-4">
+                                                <label for="updatePlaceOfBirth">Place of Birth:</label>
+                                                <input type="text" class="form-control" id="updatePlaceOfBirth" name="updatePlaceOfBirth">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="row g-2 mb-2">
                                     <div class="col-4">
-                                        <input type="text" class="form-control" id="updateLastName" name="updateLastName">
-                                    </div>
-                                    <div class="col-4">
-                                        <input type="text" class="form-control" id="updateFirstName" name="updateFirstName">
-                                    </div>
-                                    <div class="col-2">
-                                        <select id="updateGender" name="updateGender" class="form-select">
-                                            <option value="" selected disabled>Choose</option>
-                                            <option value="Male">Male</option>
-                                            <option value="Female">Female</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-2">
-                                        <select id="updateCivilStatus" name="updateCivilStatus" class="form-select">
-                                            <option selected disabled>Choose</option>
-                                            <option value="Single">Single</option>
-                                            <option value="Married">Married</option>
-                                            <option value="Separated">Separated</option>
-                                            <option value="Divorced">Divorced</option>
-                                            <option value="Widowed">Widowed</option>
-                                        </select>
-                                    </div>
-                                </div>     
-                                
-                                <div class="row g-2 mb-1">
-                                    <div class="col-6">
-                                        <label for="updateAddress">Address:</label>
-                                    </div>
-                                    <div class="col-3">
-                                        <label for="updateDateOfBirth">Date of Birth:</label>
-                                    </div>
-                                    <div class="col-3">
-                                        <label for="updatePlaceOfBirth">Place of Birth:</label>
-                                    </div>
-                                </div>
-
-                                <div class="row g-2 mb-2">
-                                    <div class="col-6">
-                                        <input type="text" class="form-control" id="updateAddress" name="updateAddress">
-                                    </div>
-                                    <div class="col-3">
-                                        <input type="date" class="form-control" id="updateDateOfBirth" name="updateDateOfBirth">
-                                    </div>
-                                    <div class="col-3">
-                                        <input type="text" class="form-control" id="updatePlaceOfBirth" name="updatePlaceOfBirth">
+                                        <label for="updateProfilePhoto">Upload Photo:</label>
+                                        <input type="file" id="updateProfilePhoto" name="updateProfilePhoto" class="form-control" accept="image/jpeg, image/png, image/jpg">
                                     </div>
                                 </div>
 
                                 <div class="row g-2 mb-1">
                                     <div class="col-3">
                                         <label for="updateSSS">SSS:</label>
-                                    </div>
-                                    <div class="col-3">
-                                        <label for="updatePagIbig">Pag-Ibig:</label>
-                                    </div>
-                                    <div class="col-3">
-                                        <label for="updatePhilhealth">PhilHealth:</label>
-                                    </div>
-                                    <div class="col-3">
-                                        <label for="updateTIN">TIN:</label>
-                                    </div>
-                                </div>
-
-                                <div class="row g-2 mb-2">
-                                    <div class="col-3">
                                         <input type="text" class="form-control" id="updateSSS" name="updateSSS">
                                     </div>
                                     <div class="col-3">
+                                        <label for="updatePagIbig">Pag-Ibig:</label>
                                         <input type="text" class="form-control" id="updatePagIbig" name="updatePagIbig">
                                     </div>
                                     <div class="col-3">
+                                        <label for="updatePhilhealth">PhilHealth:</label>
                                         <input type="text" class="form-control" id="updatePhilhealth" name="updatePhilhealth">
                                     </div>
                                     <div class="col-3">
+                                        <label for="updateTIN">TIN:</label>
                                         <input type="text" class="form-control" id="updateTIN" name="updateTIN">
                                     </div>
                                 </div>
@@ -1232,23 +1180,14 @@
                                 <div class="row g-2 mb-1">
                                     <div class="col-6">
                                         <label for="updateEmailAddress">Email Address:</label>
-                                    </div>
-                                    <div class="col-3">
-                                        <label for="updateEmployeeID">Employee ID:</label>
-                                    </div>
-                                    <div class="col-3">
-                                        <label for="updateMobileNumber">Mobile Number:</label>
-                                    </div>
-                                </div>
-
-                                <div class="row g-2 mb-2">
-                                    <div class="col-6">
                                         <input type="email" class="form-control" id="updateEmailAddress" name="updateEmailAddress">
                                     </div>
                                     <div class="col-3">
+                                        <label for="updateEmployeeID">Employee ID:</label>
                                         <input type="text" class="form-control" id="updateEmployeeID" name="updateEmployeeID">
                                     </div>
                                     <div class="col-3">
+                                        <label for="updateMobileNumber">Mobile Number:</label>
                                         <input type="text" class="form-control" id="updateMobileNumber" name="updateMobileNumber">
                                     </div>
                                 </div>
@@ -1256,17 +1195,6 @@
                                 <div class="row g-2 mb-1">
                                     <div class="col-4">
                                         <label for="updateDepartment">Department:</label>
-                                    </div>
-                                    <div class="col-4">
-                                        <label for="updateDesignation">Designation:</label>
-                                    </div>
-                                    <div class="col-4">
-                                        <label for="updateShiftID">Shift:</label>
-                                    </div>
-                                </div>
-                            
-                                <div class="row g-2 mb-2">
-                                    <div class="col-4">
                                         <select class="form-select" id="updateDepartment" name="updateDepartment">
                                             <option value="" selected disabled>Choose</option>
                                             <?php
@@ -1283,6 +1211,7 @@
                                         </select>
                                     </div>
                                     <div class="col-4">
+                                        <label for="updateDesignation">Designation:</label>
                                         <select class="form-select" id="updateDesignation" name="updateDesignation">
                                             <option disabled selected>Choose</option>
                                             <?php
@@ -1299,6 +1228,7 @@
                                         </select>
                                     </div>
                                     <div class="col-4">
+                                        <label for="updateShiftID">Shift:</label>
                                         <select type="dropdown" id="updateShiftID" name="updateShiftID" class="form-select">
                                             <option value="" selected disabled>Choose</option>
                                             <?php
@@ -1319,23 +1249,15 @@
                                 <div class="row g-2 mb-1">
                                     <div class="col-4">
                                         <label for="updateBasicPay">Basic Pay:</label>
+                                        <input type="number" class="form-control" id="updateBasicPay" name="updateBasicPay">
+
                                     </div>
                                     <div class="col-4">
                                         <label for="updateDailyRate">Daily Rate:</label>
-                                    </div>
-                                    <div class="col-4">
-                                        <label for="updateHourlyRate">Hourly Rate:</label>
-                                    </div>
-                                </div>
-                            
-                                <div class="row g-2 mb-2">
-                                    <div class="col-4">
-                                        <input type="number" class="form-control" id="updateBasicPay" name="updateBasicPay">
-                                    </div>
-                                    <div class="col-4">
                                         <input type="number" class="form-control" id="updateDailyRate" name="updateDailyRate" placeholder="1.0" step="0.01" readonly>
                                     </div>
                                     <div class="col-4">
+                                        <label for="updateHourlyRate">Hourly Rate:</label>
                                         <input type="number" class="form-control" id="updateHourlyRate" name="updateHourlyRate" placeholder="1.0" step="0.01" readonly>
                                     </div>
                                 </div>
@@ -1343,17 +1265,6 @@
                                 <div class="row g-2 mb-1">
                                     <div class="col-4">
                                         <label for="updateEmploymentStatus">Employment Status:</label>
-                                    </div>
-                                    <div class="col-4">
-                                        <label for="updateDateHired">Date Hired:</label>
-                                    </div>
-                                    <div class="col-4">
-                                        <label for="updateDateRegularized">Date Regularized:</label>
-                                    </div>
-                                </div>
-                            
-                                <div class="row g-2 mb-2">
-                                    <div class="col-4">
                                         <select id="updateEmploymentStatus" name="updateEmploymentStatus" class="form-select">
                                             <option value="" selected disabled>Choose</option>
                                             <option value="Probationary">Probationary</option>
@@ -1361,55 +1272,60 @@
                                         </select>
                                     </div>
                                     <div class="col-4">
+                                        <label for="updateDateHired">Date Hired:</label>
                                         <input type="date" class="form-control" id="updateDateHired" name="updateDateHired">
                                     </div>
-                                    <div class="col-4">
-                                        <input type="date" class="form-control" id="updateDateRegularized" name="updateDateRegularized">
+                                    <div class="col-4" id="updateDateRegularizedLabel">
+                                        <label for="updateDateRegularized">Date Regularized:</label>
+                                        <input type="date" class="form-control" id="updateDateRegularized" name="updateDateRegularized" disabled readonly>
                                     </div>
                                 </div>
 
                                 <div class="row g-2 mb-1">
-                                    <div class="col-4">
+                                    <div class="col-2">
                                         <label for="updateVacationLeaves">Vacation Leaves:</label>
-                                    </div>
-                                    <div class="col-4">
-                                        <label for="updateSickLeaves">Sick Leaves:</label>
-                                    </div>
-                                    <div class="col-4">
-                                        <label for="updateCashAdvance">Cash Advance:</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="row g-2 mb-2">
-                                    <div class="col-4">
                                         <input type="number" class="form-control" id="updateVacationLeaves" name="updateVacationLeaves">
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-2">
+                                        <label for="updateSickLeaves">Sick Leaves:</label>
                                         <input type="number" class="form-control" id="updateSickLeaves" name="updateSickLeaves">
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-2">
+                                        <label for="updateCashAdvance">Cash Advance:</label>
                                         <input type="number" step="0.001" class="form-control" id="updateCashAdvance" name="updateCashAdvance">
                                     </div>
-                                </div>
-
-                                <div class="row g-2 mb-1">
                                     <div class="col-6">
-                                        <label for="updateProfilePicture">Upload Photo:</label>
-                                    </div>
-                                </div>
-
-                                <div class="row g-2 mb-2">
-                                    <div class="col-6">
-                                        <input type="file" id="updateProfilePicture" name="updateProfilePicture" class="form-control" accept="image/*">
-                                        <img id="previewUploadPhoto" src="" alt="Selected Photo" style="display:none; max-height: 200px; margin-top: 10px;">
-                                    </div>
-                                    <div class="col-1 pt-2 text-left">
-                                        <button id="viewUploadPhoto" disabled>
-                                            <svg class="h-5 w-5 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                            </svg>
-                                        </button>
+                                        <label for="updateWeekOff">Week Off:</label>
+                                        <div class="col-12">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input update_wo_day" type="checkbox" id="update_wo_mon" name="update_wo_mon" value="update_wo_mon">
+                                                <label class="form-check-label" for="update_wo_mon">Mon</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input update_wo_day" type="checkbox" id="update_wo_tue" name="update_wo_tue" value="update_wo_tue">
+                                                <label class="form-check-label" for="update_wo_tue">Tue</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input update_wo_day" type="checkbox" id="update_wo_wed" name="update_wo_wed" value="update_wo_wed">
+                                                <label class="form-check-label" for="update_wo_wed">Wed</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input update_wo_day" type="checkbox" id="update_wo_thu" name="update_wo_thu" value="update_wo_thu">
+                                                <label class="form-check-label" for="update_wo_thu">Thu</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input update_wo_day" type="checkbox" id="update_wo_fri" name="update_wo_fri" value="update_wo_fri">
+                                                <label class="form-check-label" for="update_wo_fri">Fri</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input update_wo_day" type="checkbox" id="update_wo_sat" name="update_wo_sat" value="update_wo_sat">
+                                                <label class="form-check-label" for="update_wo_sat">Sat</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input update_wo_day" type="checkbox" id="update_wo_sun" name="update_wo_sun" value="update_wo_sun">
+                                                <label class="form-check-label" for="update_wo_sun">Sun</label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -1503,6 +1419,64 @@
 
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-success">Save Changes</button>
+                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#viewEmployeeModal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <!--------------------------------------------------------------------------------------------------------------------------------------------->
+            <!---------------------------------------------------------------- RESIGN EMPLOYEE - CLEARANCE FORM ------------------------------------------------------->
+            <form id="resignClearanceForm" enctype="multipart/form-data">
+                <div class="modal fade" id="resignEmployeeModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="employeeFormLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-none modal-sm modal-dialog-centered modal-scrollable">
+                        <div class="modal-content" id="resignEmployeeModal">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="employeeFormLabel">Resignation Information</h1>
+                                <input type="hidden" id="resignEmpID" name="resignEmpID">
+                                <input type="hidden" id="resignEmployeeID" name="resignEmployeeID">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row g-2 mb-2">
+                                    <div class="col-12">
+                                        <label for="resignee">Employee Name:</label>
+                                        <input type="text" class="form-control" id="resignee" name="resignee" disabled readonly>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <div class="col-12">
+                                        <label for="resignationStatus">Resignation Status:</label>
+                                        <select id="resignationStatus" name="resignationStatus" class="form-select" required>
+                                            <option value="" selected disabled>Choose</option>
+                                            <option value="Immediate">Immediate</option>
+                                            <option value="Terminated">Terminated</option>
+                                            <option value="Rendered">Rendered</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-1">
+                                    <div class="col-11">
+                                        <label for="clearanceForm">Upload Clearance Form:</label>
+                                        <input type="file" class="form-control" id="clearanceForm" name="clearanceForm" accept="application/pdf">
+                                    </div>
+
+                                    <div class="col-1 pt-2 text-left d-flex">
+                                        <button class="mt-3" id="viewClearanceForm" type="button">
+                                            <svg class="h-5 w-5 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">Submit</button>
                                 <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#viewEmployeeModal">Cancel</button>
                             </div>
                         </div>

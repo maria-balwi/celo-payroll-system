@@ -1,6 +1,8 @@
 $(document).ready(function() {
 
-    $('#leaveTable').DataTable();
+    $('#leaveTable').DataTable({
+        order: [] // Disable default sorting
+    });
 
     $('.medCertDiv').hide();
     $('#leaveType').on('change', function() {

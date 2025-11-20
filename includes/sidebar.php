@@ -53,7 +53,7 @@
                     Payroll
                 </a>
                 <?php
-                    if ($_SESSION['departmentID'] == '5' || $_SESSION['levelID'] == '0') {
+                    if ($_SESSION['departmentID'] == '5' || $_SESSION['departmentID'] == '4' || $_SESSION['levelID'] == '3' || $_SESSION['levelID'] == '0') {
                 ?>
                 <a href="../pages/admin_auditTrail.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Audit Trail

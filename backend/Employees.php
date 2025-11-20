@@ -15,6 +15,7 @@
         private $filedOT = 'tbl_filedot';
         private $shifts = 'tbl_shiftschedule';
         private $requirements = 'tbl_requirements';
+        private $weekOff = 'tbl_empWeekOff';
         private $allowances = 'tbl_allowances';
         private $deductions = 'tbl_deductions';
         private $auditTrail = 'tbl_audittrail';
@@ -99,6 +100,87 @@
             return $team;
         }
 
+        // OLD CODE
+        // public function viewDTR($id, $yearMonth) {
+        //     $dtr = "
+        //         SELECT 
+        //             DATE_FORMAT(all_dates.attendanceDate, '%m/%d/%Y') AS attendanceDate,
+        //             DATE_FORMAT(all_dates.attendanceDate, '%Y.%m.%d') AS filterDate,
+        //             DATE_FORMAT(all_dates.attendanceDate, '%a') AS dayOfWeek,
+        //             CONCAT(DATE_FORMAT(shift.startTime, '%h:%i %p'), ' - ', DATE_FORMAT(shift.endTime, '%h:%i %p')) AS shift,
+        //             COALESCE(id, '-') AS id, 
+        //             COALESCE(attendance.logTypeID, '-') AS logTypeID, 
+        //             COALESCE(logtype.logType, '-') AS logType, 
+        //             COALESCE(attendance.lateMins, '-') AS lateMins, 
+        //             COALESCE(attendance.undertimeMins, '-') AS undertimeMins, 
+        //             COALESCE(DATE_FORMAT(attendance.attendanceTime, '%h:%i %p'), '-') AS attendanceTime
+        //         FROM 
+        //             (
+        //                 SELECT DATE('$yearMonth-01') + INTERVAL (a.a + (10 * b.a)) DAY AS attendanceDate
+        //                 FROM (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS a
+        //                 CROSS JOIN (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2) AS b
+        //                 LIMIT 31
+        //             ) AS all_dates
+        //         LEFT JOIN 
+        //             ".$this->employees." AS employees ON employees.id = '$id'
+        //         LEFT JOIN 
+        //             ".$this->shift." AS shift ON employees.shiftID = shift.shiftID
+        //         LEFT JOIN 
+        //             ".$this->attendance." AS attendance 
+        //         ON all_dates.attendanceDate = attendance.attendanceDate AND attendance.empID = '$id'
+                
+        //         LEFT JOIN 
+        //             ".$this->logtype." AS logtype ON attendance.logTypeID = logtype.logTypeID 
+        //         ORDER BY 
+        //             all_dates.attendanceDate, attendance.attendanceTime
+        //         ";
+        //     return $dtr;
+        // }
+
+        // NEW CODE - currently working
+        // public function viewDTR($id, $yearMonth) {
+        //     $dtr = "
+        //         SELECT 
+        //             DATE_FORMAT(all_dates.attendanceDate, '%m/%d/%Y') AS attendanceDate,
+        //             DATE_FORMAT(all_dates.attendanceDate, '%Y.%m.%d') AS filterDate,
+        //             DATE_FORMAT(all_dates.attendanceDate, '%a') AS dayOfWeek,
+        //             CONCAT(DATE_FORMAT(shift.startTime, '%h:%i %p'), ' - ', DATE_FORMAT(shift.endTime, '%h:%i %p')) AS shift,
+        //             COALESCE(id, '-') AS id, 
+        //             COALESCE(attendance.logTypeID, '-') AS logTypeID, 
+        //             COALESCE(logtype.logType, '-') AS logType, 
+        //             COALESCE(attendance.lateMins, '-') AS lateMins, 
+        //             COALESCE(attendance.undertimeMins, '-') AS undertimeMins, 
+        //             COALESCE(DATE_FORMAT(attendance.attendanceTime, '%h:%i %p'), '-') AS attendanceTime
+        //         FROM 
+        //             (
+        //                 SELECT DATE('$yearMonth-01') + INTERVAL (a.a + (10 * b.a)) DAY AS attendanceDate
+        //                 FROM 
+        //                     (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL 
+        //                             SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL 
+        //                             SELECT 8 UNION ALL SELECT 9) AS a
+        //                 CROSS JOIN 
+        //                     (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3) AS b
+        //                 WHERE 
+        //                     DATE('$yearMonth-01') + INTERVAL (a.a + (10 * b.a)) DAY 
+        //                     <= LAST_DAY('$yearMonth-01')
+        //             ) AS all_dates
+        //         LEFT JOIN 
+        //             ".$this->employees." AS employees ON employees.id = '$id'
+        //         LEFT JOIN 
+        //             ".$this->shift." AS shift ON employees.shiftID = shift.shiftID
+        //         LEFT JOIN 
+        //             ".$this->attendance." AS attendance 
+        //         ON all_dates.attendanceDate = attendance.attendanceDate AND attendance.empID = '$id'
+                
+        //         LEFT JOIN 
+        //             ".$this->logtype." AS logtype ON attendance.logTypeID = logtype.logTypeID 
+        //         ORDER BY 
+        //             all_dates.attendanceDate, attendance.attendanceTime
+        //         ";
+        //     return $dtr;
+        // }
+
+        // TESTING NEW CODE
         public function viewDTR($id, $yearMonth) {
             $dtr = "
                 SELECT 
@@ -111,30 +193,88 @@
                     COALESCE(logtype.logType, '-') AS logType, 
                     COALESCE(attendance.lateMins, '-') AS lateMins, 
                     COALESCE(attendance.undertimeMins, '-') AS undertimeMins, 
-                    COALESCE(DATE_FORMAT(attendance.attendanceTime, '%h:%i %p'), '-') AS attendanceTime
+                    COALESCE(DATE_FORMAT(attendance.attendanceTime, '%h:%i %p'), '-') AS attendanceTime,
+                    weekoff.wo_mon,
+                    weekoff.wo_tue,
+                    weekoff.wo_wed,
+                    weekoff.wo_thu,
+                    weekoff.wo_fri,
+                    weekoff.wo_sat,
+                    weekoff.wo_sun
                 FROM 
                     (
                         SELECT DATE('$yearMonth-01') + INTERVAL (a.a + (10 * b.a)) DAY AS attendanceDate
-                        FROM (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS a
-                        CROSS JOIN (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2) AS b
-                        LIMIT 31
+                        FROM 
+                            (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL 
+                                    SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL 
+                                    SELECT 8 UNION ALL SELECT 9) AS a
+                        CROSS JOIN 
+                            (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3) AS b
+                        WHERE 
+                            DATE('$yearMonth-01') + INTERVAL (a.a + (10 * b.a)) DAY 
+                            <= LAST_DAY('$yearMonth-01')
                     ) AS all_dates
                 LEFT JOIN 
-                    ".$this->employees." AS employees ON employees.id = '$id'
+                    {$this->employees} AS employees ON employees.id = '$id'
                 LEFT JOIN 
-                    ".$this->shift." AS shift ON employees.shiftID = shift.shiftID
+                    {$this->shift} AS shift ON employees.shiftID = shift.shiftID
                 LEFT JOIN 
-                    ".$this->attendance." AS attendance 
-                ON all_dates.attendanceDate = attendance.attendanceDate AND attendance.empID = '$id'
-                
+                    {$this->attendance} AS attendance 
+                    ON all_dates.attendanceDate = attendance.attendanceDate 
+                    AND attendance.empID = '$id'
                 LEFT JOIN 
-                    ".$this->logtype." AS logtype ON attendance.logTypeID = logtype.logTypeID 
+                    {$this->logtype} AS logtype ON attendance.logTypeID = logtype.logTypeID 
+                LEFT JOIN 
+                    {$this->weekOff} AS weekoff ON weekoff.empID = employees.id
                 ORDER BY 
                     all_dates.attendanceDate, attendance.attendanceTime
-                ";
+            ";
             return $dtr;
         }
 
+
+        // OLD CODE
+        // public function userViewDTR($id, $yearMonth) {
+        //     $dtr = "
+        //         SELECT 
+        //             all_dates.attendanceDate,
+        //             COALESCE(attendance.id, '-') AS id, 
+        //             COALESCE(attendance.logTypeID, '-') AS logTypeID, 
+        //             COALESCE(logtype.logType, '-') AS logType, 
+        //             COALESCE(DATE_FORMAT(attendance.attendanceTime, '%h:%i %p'), '-') AS attendanceTime, 
+        //             COALESCE(DATE_FORMAT(shift.startTime, '%h:%i %p'), '-') AS startTime, 
+        //             COALESCE(DATE_FORMAT(shift.endTime, '%h:%i %p'), '-') AS endTime
+        //         FROM 
+        //             (
+        //                 SELECT 
+        //                     DATE('$yearMonth-01') + INTERVAL n DAY AS attendanceDate
+        //                 FROM (
+        //                     SELECT a.a + (10 * b.a) + (100 * c.a) AS n
+        //                     FROM 
+        //                         (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS a
+        //                     CROSS JOIN 
+        //                         (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2) AS b
+        //                     CROSS JOIN 
+        //                         (SELECT 0 AS a) AS c
+        //                 ) AS days
+        //                 WHERE DATE('$yearMonth-01') + INTERVAL n DAY <= LAST_DAY('$yearMonth-01')
+        //             ) AS all_dates
+        //         LEFT JOIN 
+        //             ".$this->attendance." AS attendance 
+        //             ON all_dates.attendanceDate = attendance.attendanceDate AND attendance.empID = ?
+        //         LEFT JOIN 
+        //             ".$this->employees." AS employees ON attendance.empID = employees.id
+        //         LEFT JOIN 
+        //             ".$this->logtype." AS logtype ON attendance.logTypeID = logtype.logTypeID 
+        //         LEFT JOIN 
+        //             ".$this->shift." AS shift ON employees.shiftID = shift.shiftID
+        //         ORDER BY 
+        //             all_dates.attendanceDate, attendance.attendanceTime;
+        //     ";
+        //     return $dtr;
+        // }
+
+        // NEW CODE
         public function userViewDTR($id, $yearMonth) {
             $dtr = "
                 SELECT 
@@ -152,9 +292,10 @@
                         FROM (
                             SELECT a.a + (10 * b.a) + (100 * c.a) AS n
                             FROM 
-                                (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS a
+                                (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL 
+                                        SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS a
                             CROSS JOIN 
-                                (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2) AS b
+                                (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3) AS b
                             CROSS JOIN 
                                 (SELECT 0 AS a) AS c
                         ) AS days
@@ -197,7 +338,8 @@
                 FROM ".$this->filedOT." AS filedOT
                 INNER JOIN ".$this->employees." AS employees
                 ON filedOT.empID = employees.id
-                WHERE empID='$id'";
+                WHERE empID='$id'
+                ORDER BY dateFiled DESC";
             return $request;
         }
 
@@ -238,7 +380,8 @@
                 FROM ".$this->filedOT." AS filedOT
                 INNER JOIN ".$this->employees." AS employees
                 ON filedOT.empID = employees.id
-                WHERE employees.designationID NOT IN (8,9)";
+                WHERE employees.designationID NOT IN (8,9)
+                ORDER BY dateFiled DESC";
             return $request;
         }
 
@@ -315,7 +458,8 @@
                 ON changeShift.empID = employees.id
                 INNER JOIN ".$this->shift." AS shift
                 ON shift.shiftID = changeShift.requestedShift
-                WHERE empID='$id'";
+                WHERE empID='$id'
+                ORDER BY dateFiled DESC";
             return $request;
         }
         
@@ -365,7 +509,8 @@
                 ON shift_1.shiftID = employees.shiftID
                 INNER JOIN ".$this->shift." AS shift_2
                 ON shift_2.shiftID = changeShift.requestedShift
-                WHERE employees.designationID NOT IN (8,9)";
+                WHERE employees.designationID NOT IN (8,9)
+                ORDER BY dateFiled DESC";
             return $request;
         }
 
@@ -398,7 +543,8 @@
                 ON shift_1.shiftID = employees.shiftID
                 INNER JOIN ".$this->shift." AS shift_2
                 ON shift_2.shiftID = changeShift.requestedShift
-                WHERE employees.departmentID = 4 AND employees.designationID = 10";
+                WHERE employees.departmentID = 4 AND employees.designationID = 10
+                ORDER BY dateFiled DESC";
             return $request;
         }
 
@@ -416,7 +562,8 @@
                 ON shift_1.shiftID = employees.shiftID
                 INNER JOIN ".$this->shift." AS shift_2
                 ON shift_2.shiftID = changeShift.requestedShift
-                WHERE employees.designationID IN (4,11)";
+                WHERE employees.designationID IN (4,11)
+                ORDER BY dateFiled DESC";
             return $request;
         }
 
@@ -434,7 +581,8 @@
                 ON shift_1.shiftID = employees.shiftID
                 INNER JOIN ".$this->shift." AS shift_2
                 ON shift_2.shiftID = changeShift.requestedShift
-                WHERE employees.departmentID = 1 AND employees.designationID IN (1,2,3)";
+                WHERE employees.departmentID = 1 AND employees.designationID IN (1,2,3)
+                ORDER BY dateFiled DESC";
             return $request;
         }
 
@@ -445,7 +593,8 @@
                 ON leaves.empID = employees.id
                 INNER JOIN ".$this->leaveType." AS leaveType
                 ON leaveType.leaveTypeID = leaves.leaveTypeID
-                WHERE empID='$id'";
+                WHERE empID='$id'
+                ORDER BY dateFiled DESC";
             return $request;
         }
 
@@ -456,7 +605,8 @@
                 ON leaves.empID = employees.id
                 INNER JOIN ".$this->leaveType." AS leaveType
                 ON leaveType.leaveTypeID = leaves.leaveTypeID
-                WHERE employees.designationID NOT IN (8,9)";
+                WHERE employees.designationID NOT IN (8,9)
+                ORDER BY dateFiled DESC";
             return $request;
         }
 
@@ -771,6 +921,13 @@
             return $addRequirement;
         }
 
+        public function addEmployeeWeekOff($employeeID, $wo_mon, $wo_tue, $wo_wed, $wo_thu, $wo_fri, $wo_sat, $wo_sun) {
+            $addWeekOff = "
+                INSERT INTO ".$this->weekOff." (empID, wo_mon, wo_tue, wo_wed, wo_thu, wo_fri, wo_sat, wo_sun)
+                VALUES ('".$employeeID."', '".$wo_mon."', '".$wo_tue."', '".$wo_wed."', '".$wo_thu."', '".$wo_fri."', '".$wo_sat."', '".$wo_sun."')";
+            return $addWeekOff;
+        }
+
         public function updateEmployeeInfo_reg($updateUserID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
             $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
             $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, 
@@ -860,6 +1017,20 @@
             return $updateRequirement;
         }
 
+        public function updateEmployeeWeekOff($empID, $wo_mon, $wo_tue, $wo_wed, $wo_thu, $wo_fri, $wo_sat, $wo_sun) {
+            $updateWeekOff = "
+                UPDATE ".$this->weekOff." AS weekOff SET
+                wo_mon = '$wo_mon',
+                wo_tue = '$wo_tue',
+                wo_wed = '$wo_wed',
+                wo_thu = '$wo_thu',
+                wo_fri = '$wo_fri',
+                wo_sat = '$wo_sat',
+                wo_sun = '$wo_sun'
+                WHERE empID = '$empID'";
+            return $updateWeekOff;
+        }
+
         public function getEmployeeInfo($id) {
             $employeeInfo = "
                 SELECT id, lastName, firstName, gender, civilStatus, address, dateOfBirth, cashAdvance,
@@ -867,7 +1038,9 @@
                 mobileNumber, departmentName, position, basicPay, dailyRate, hourlyRate,
                 availableVL, availableSL, req_sss, req_pagIbig, req_philhealth, req_tin, req_nbi,
                 req_medicalExam, req_2x2pic, req_vaccineCard, req_psa, req_validID, req_helloMoney,
-                employmentStatus, dateHired, dateRegularized, leavePoints,
+                employmentStatus, dateHired, dateRegularized, leavePoints, clearanceForm, resignationStatus,
+                wo_mon, wo_tue, wo_wed, wo_thu, 
+                wo_fri, wo_sat, wo_sun,
                 DATE_FORMAT(shifts.startTime, '%h:%i %p') AS startTime, 
                 DATE_FORMAT(shifts.endTime, '%h:%i %p') AS endTime
                 FROM ".$this->employees." AS employees
@@ -879,6 +1052,8 @@
                 ON designation.designationID = employees.designationID
                 INNER JOIN ".$this->requirements." AS requirements
                 ON requirements.empID = employees.id
+                INNER JOIN ".$this->weekOff." AS weekOff
+                ON weekOff.empID = employees.id
                 WHERE id = '$id'";
             return $employeeInfo;
         }
@@ -1125,11 +1300,13 @@
             return $leavePoints;
         }
 
-        public function resignEmployee($id) {
+        public function resignEmployee($id, $resignationStatus, $clearanceForm) {
             $employee = "
                 UPDATE ".$this->employees." SET 
                 employmentStatus = 'Resigned',
-                e_status = 'Inactive'
+                resignationStatus = '$resignationStatus',
+                e_status = 'Inactive',
+                clearanceForm = '$clearanceForm'
                 WHERE id = '$id'";    
             return $employee;
         }
@@ -1143,21 +1320,47 @@
             return $employee;
         }
 
+        // OLD CODE
+        // public function viewAuditTrail() {
+        //     $auditTrail = "
+        //         SELECT auditTrailID, date, employees.firstName, employees.lastName, module, action, affected.firstName AS affectedFirstName, affected.lastName AS affectedLastName FROM ".$this->auditTrail ." AS auditTrail
+        //         INNER JOIN ".$this->employees." AS employees
+        //         ON auditTrail.empID = employees.id
+        //         INNER JOIN ".$this->employees." AS affected
+        //         ON auditTrail.affected_empID = affected.id
+        //         ORDER BY auditTrail.auditTrailID DESC";
+        //     return $auditTrail;
+        // }
+
+        // NEW CODE
         public function viewAuditTrail() {
             $auditTrail = "
-                SELECT auditTrailID, date, employees.firstName, employees.lastName, module, action, affected.firstName AS affectedFirstName, affected.lastName AS affectedLastName FROM ".$this->auditTrail ." AS auditTrail
+                SELECT auditTrailID, date, employees.firstName, employees.lastName, module, action, affected_empID FROM ".$this->auditTrail ." AS auditTrail
                 INNER JOIN ".$this->employees." AS employees
                 ON auditTrail.empID = employees.id
-                INNER JOIN ".$this->employees." AS affected
-                ON auditTrail.affected_empID = affected.id
                 ORDER BY auditTrail.auditTrailID DESC";
             return $auditTrail;
+        }
+
+        public function viewAffectedUser($empID) {
+            $affectedUser = "
+                SELECT firstName AS affectedFirstName, lastName AS affectedLastName
+                FROM ".$this->employees." AS employees
+                WHERE id = '$empID'";
+            return $affectedUser;
         }
         
         public function auditTrail($empID, $module, $action, $affected_empID) {
             $auditTrail = "
                 INSERT INTO ".$this->auditTrail." (date, empID, module, action, affected_empID)
                 VALUES (CURRENT_TIMESTAMP, '$empID', '$module', '$action', '$affected_empID')";
+            return $auditTrail;
+        }
+
+        public function auditTrailPayroll($empID, $module, $action) {
+            $auditTrail = "
+                INSERT INTO ".$this->auditTrail." (date, empID, module, action)
+                VALUES (CURRENT_TIMESTAMP, '$empID', '$module', '$action')";
             return $auditTrail;
         }
     }

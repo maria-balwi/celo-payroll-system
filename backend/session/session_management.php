@@ -18,6 +18,8 @@
                 'result' => 1,
                 'message' => 'Session Expired'
             ];
+
+            echo json_encode($data);
         }
 
     }
@@ -28,6 +30,7 @@
             'status' => 404,
             'message' => 'No one is logged in'
         ];
+
+        echo json_encode($data);
     }
-    echo json_encode($data);
 ?>
