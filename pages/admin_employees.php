@@ -1453,8 +1453,16 @@
                                             <option value="" selected disabled>Choose</option>
                                             <option value="Immediate">Immediate</option>
                                             <option value="Terminated">Terminated</option>
+                                            <option value="Incomplete">Incomplete</option>
                                             <option value="Rendered">Rendered</option>
                                         </select>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2 renderedDaysDiv">
+                                    <div class="col-12">
+                                        <label for="renderedDays">Rendered Days:</label>
+                                        <input type="number" class="form-control" id="renderedDays" name="renderedDays" required>
                                     </div>
                                 </div>
 

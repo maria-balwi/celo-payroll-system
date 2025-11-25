@@ -1301,14 +1301,26 @@
         }
 
         public function resignEmployee($id, $resignationStatus, $clearanceForm) {
-            $employee = "
+            $resignEmployee = "
                 UPDATE ".$this->employees." SET 
                 employmentStatus = 'Resigned',
                 resignationStatus = '$resignationStatus',
                 e_status = 'Inactive',
                 clearanceForm = '$clearanceForm'
                 WHERE id = '$id'";    
-            return $employee;
+            return $resignEmployee;
+        }
+
+        public function resignIncompleteEmployee($id, $resignationStatus, $clearanceForm, $renderedDays) {
+            $resignEmployee = "
+                UPDATE ".$this->employees." SET 
+                employmentStatus = 'Resigned',
+                resignationStatus = '$resignationStatus',
+                e_status = 'Inactive',
+                clearanceForm = '$clearanceForm',
+                renderedDays = '$renderedDays'
+                WHERE id = '$id'";
+            return $resignEmployee;
         }
 
         public function rehireEmployee($id) {

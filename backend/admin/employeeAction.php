@@ -10,6 +10,10 @@
         $resignationStatus = $_POST['resignationStatus'];
         $employeeID = $_POST['employeeID'];
 
+        if (isset($_POST['renderedDays'])) {
+            $renderedDays = $_POST['renderedDays'];
+        }
+
         if (isset($_FILES['clearanceForm']) && $_FILES['clearanceForm']['error'] == 0) {
             // DIRECTORY TO SAVE UPLOADED FILES
             $uploadDir = __DIR__ . '/../../assets/images/clearanceForms/';
@@ -74,7 +78,12 @@
                 echo json_encode($error);
             }
             else {
-                mysqli_query($conn, $employees->resignEmployee($id, $resignationStatus, $newFileName));
+                if ($resignationStatus == "Incomplete") {
+                    mysqli_query($conn, $employees->resignIncompleteEmployee($id, $resignationStatus, $newFileName, $renderedDays));
+                }
+                else {
+                    mysqli_query($conn, $employees->resignEmployee($id, $resignationStatus, $newFileName));
+                }
 
                 $em = "Employee Resigned Successfully";
                 $error = array('error' => 0, 'em' => $em);

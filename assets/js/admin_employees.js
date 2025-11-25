@@ -671,6 +671,17 @@ $(document).ready(function() {
         }
     });
 
+    // RENDERED DAYS DIV
+    $('.renderedDaysDiv').hide();
+    $('#resignationStatus').on('change', function() {
+        var resignationStatus = $(this).val();
+        if (resignationStatus == 'Incomplete') {
+            $('.renderedDaysDiv').show();
+        } else {
+            $('.renderedDaysDiv').hide();
+        }
+    });
+
     // VIEW, UPDATE, RESIGN EMPLOYEE
     var array = [];
     $(document).on('click', '.employeeView', function() {
