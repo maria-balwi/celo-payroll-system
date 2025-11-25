@@ -1040,7 +1040,7 @@
                 req_medicalExam, req_2x2pic, req_vaccineCard, req_psa, req_validID, req_helloMoney,
                 employmentStatus, dateHired, dateRegularized, leavePoints, clearanceForm, resignationStatus,
                 wo_mon, wo_tue, wo_wed, wo_thu, 
-                wo_fri, wo_sat, wo_sun,
+                wo_fri, wo_sat, wo_sun, renderedDays,
                 DATE_FORMAT(shifts.startTime, '%h:%i %p') AS startTime, 
                 DATE_FORMAT(shifts.endTime, '%h:%i %p') AS endTime
                 FROM ".$this->employees." AS employees

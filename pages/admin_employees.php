@@ -1016,25 +1016,25 @@
                             </div>
 
                             <div class="row g-2 mb-1">
-                                <div class="col-4">
+                                <div class="col-3">
                                     <label for="res_viewDepartment">Department:</label>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-3">
                                     <label for="res_viewDesignation">Designation:</label>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-6">
                                     <label for="res_viewEmploymentStatus">Employment Status:</label>
                                 </div>
                             </div>
                         
                             <div class="row g-2 mb-2">
-                                <div class="col-4">
+                                <div class="col-3">
                                     <input type="text" class="form-control" id="res_viewDepartment" disabled readonly>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-3">
                                     <input type="text" class="form-control" id="res_viewDesignation" disabled readonly>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-6">
                                     <input type="text" class="form-control" id="res_viewEmploymentStatus" name="res_viewEmploymentStatus" disabled readonly>
                                 </div>
                             </div>

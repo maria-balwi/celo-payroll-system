@@ -1309,7 +1309,12 @@ $(document).ready(function() {
                     $('#res_viewDepartment').val(res.data.departmentName);
                     $('#res_viewDesignation').val(res.data.position);
                     $('#res_viewShiftID').val(res.data.startTime + ' - ' + res.data.endTime);
-                    $('#res_viewEmploymentStatus').val(res.data.employmentStatus + ' - ' + res.data.resignationStatus);
+                    if (res.data.resignationStatus == "Incomplete") {
+                        $('#res_viewEmploymentStatus').val(res.data.employmentStatus + ' - ' + res.data.resignationStatus + ' (' + res.data.renderedDays + ' days rendered)');
+                    }
+                    else {
+                        $('#res_viewEmploymentStatus').val(res.data.employmentStatus + ' - ' + res.data.resignationStatus);
+                    }
                     $('#res_viewDateHired').val(res.data.dateHired);
                     $('#res_viewDateRegularized').val(res.data.dateRegularized);
                     $('#res_viewBasicPay').val(res.data.basicPay);
@@ -1320,6 +1325,12 @@ $(document).ready(function() {
                     // Show the modal
                     $('#viewResignedModal').modal('show');
 
+                    if (res.data.clearanceForm != null) {
+                        $("#viewClearanceFormRow").show();
+                    }
+                    else {
+                        $("#viewClearanceFormRow").hide();
+                    }
                     $("#viewClearanceFormFile").click(function (event) {
                         event.preventDefault();
 
@@ -1492,6 +1503,7 @@ $(document).ready(function() {
         var resignEmpID = $("#resignEmpID").val();
         var resignEmployeeID = $("#resignEmployeeID").val();
         var resignationStatus = $("#resignationStatus").val();
+        var renderedDays = $("#renderedDays").val();
         var action = "resign";
         var clearanceForm = $("#clearanceForm")[0].files[0];
         
@@ -1507,6 +1519,7 @@ $(document).ready(function() {
             resignEmployee.append("employeeID", resignEmployeeID);
             resignEmployee.append("action", action);
             resignEmployee.append("resignationStatus", resignationStatus);
+            resignEmployee.append("renderedDays", renderedDays);
             resignEmployee.append("clearanceForm", clearanceForm);
 
             Swal.fire({
