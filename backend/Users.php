@@ -60,7 +60,7 @@
                     // SESSION TIMEOUT 
                     $_SESSION['start'] = time();
                     if ($userDetails['levelID'] == 1) {
-                        $_SESSION['expire'] = $_SESSION['start'] + (60 * 3);
+                        $_SESSION['expire'] = $_SESSION['start'] + (60 * 5);
                     }
                     else if ($userDetails['levelID'] == 2) {
                         $_SESSION['expire'] = $_SESSION['start'] + (60 * 10);
