@@ -10,31 +10,17 @@
  
         <!-- MAIN CONTENT -->
         <main class="flex-1 p-3">
-            <div class="flex flex-1 p-2 text-2xl font-bold items-center">
-                <div class="mr-4">
+            <div class="flex flex-1 p-2 text-2xl font-bold justify-between items-center">
+                <div>
                     Overtime
                 </div>  
 
-                <!-- DATA RANGE DROPDOWN MENU -->
-                <!-- <div class="relative inline-block text-right">
-                    <button id="dropdownButton" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-blue-500 hover:bg-gray-50 focus:outline-none">
-                    Jun 15, 2024 - Jun 21, 2024
-                    <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.23 8.29a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
-                    </svg>
+                <!-- FILE OVERTIME BUTTON -->
+                <div class="static inline-block text-right">
+                    <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none" data-bs-toggle="modal" data-bs-target="#fileOTmodal">
+                    File Overtime
                     </button>
-                    <div id="dropdownMenu" class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden">
-                        <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Today</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Yesterday</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Last 7 days</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Last 30 days</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">This Month</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Last Month</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Custom Range</a>
-                        </div>
-                    </div>
-                </div> -->
+                </div>
             </div>
             
             <!-- CONTENT -->
@@ -221,19 +207,19 @@
 
                             <div class="row g-3 mb-1">
                                 <div class="col-6">
-                                    <label for="viewOTDate">OT Date:</label>
+                                    <label for="viewName">Employee Name:</label>
                                 </div>
                                 <div class="col-6">
-                                    <label for="viewName">Employee Name:</label>
+                                    <label for="viewOTDate">OT Date:</label>
                                 </div>
                             </div>
 
                             <div class="row g-3 mb-2">
                                 <div class="col-6">
-                                    <input type="text" class="form-control" id="viewOTDate" name="viewOTDate" disabled readonly>
+                                    <input type="text" class="form-control" id="viewName" name="viewName" disabled readonly>
                                 </div>
                                 <div class="col-6">
-                                    <input type="text" class="form-control" id="viewName" name="viewName" disabled readonly>
+                                    <input type="text" class="form-control" id="viewOTDate" name="viewOTDate" disabled readonly>
                                 </div>
                             </div>   
                                 
@@ -287,6 +273,109 @@
                     </div>
                 </div>
             </div>
+
+            <!--------------------------------------------------------------------------------------------------------------------------------------------->
+            <!---------------------------------------------------------------- FILE OVERTIME -------------------------------------------------------------->
+            <form id="fileOTform">
+                <div class="modal fade" id="fileOTmodal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-none modal-dialog-centered">
+                        <div class="modal-content" id="fileOTmodal">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="userFormLabel">File Overtime</h1>
+                                <input type="hidden" id="userDeptFileOT" value="<?php echo $_SESSION['departmentID']; ?>">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row g-3 mb-2">
+                                    <div class="col-4">
+                                        <label for="dateFiled">Date Filed:</label>
+                                    </div>
+                                    <div class="col-8">
+                                        <label for="optionAffected">User:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mb-2">
+                                    <div class="col-4">
+                                        <input type="text" class="form-control" id="dateFiled" value="<?php echo date("M d, Y") ?>" disabled readonly>
+                                    </div>
+                                    <div class="col-8">
+                                        <select class="form-select border border-1" id="user" name="user" data-live-search="true" required>
+                                            <option selected disabled>Choose User</option>
+                                            <?php
+                                                $allEmployee = mysqli_query($conn, $employees->viewAllEmployees());
+                                                while ($allEmployeeResult = mysqli_fetch_array($allEmployee)) {
+                                                ?>
+                                                <option class="user" value="<?php echo $allEmployeeResult['id']; ?>">
+                                                    <?php echo $allEmployeeResult['lastName'] . ', ' . $allEmployeeResult['firstName']; ?>
+                                                </option>
+                                            <?php        
+                                                }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>    
+                                
+                                <div class="row g-3 mb-2">
+                                    <div class="col-6">
+                                        <label for="otDate">OT Date:</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="otType">Type:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mb-2">
+                                    <div class="col-6">
+                                        <input type="date" class="form-control" id="otDate" name="otDate">
+                                    </div>
+                                    <div class="col-6">
+                                        <select name="otType" id="otType" class="form-select">
+                                            <option disabled selected>Choose</option>
+                                            <option value="Regular">Regular</option>
+                                            <option value="Rest Day">Rest Day</option>
+                                        </select>
+                                    </div>
+                                </div>   
+                                
+                                <div class="row g-3 mb-2">
+                                    <div class="col-6">
+                                        <label for="fromTime">From:</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="toTime">To:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mb-2">
+                                    <div class="col-6">
+                                        <input type="time" class="form-control" id="fromTime" name="fromTime">
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="time" class="form-control" id="toTime" name="toTime">
+                                    </div>  
+                                </div>
+                                
+                                <div class="row g-3 mb-2">
+                                    <div class="col-12">
+                                        <label for="purpose">Purpose / Remarks:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mb-2">
+                                    <div class="col-12">
+                                        <textarea type="text" id="purpose" name="purpose" placeholder="Purpose / Remarks" rows="3" class="form-control" required></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">Add</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnClose">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>  
         </main>
     
         <script src="../assets/js/admin_overtime.js?v=<?php echo $version; ?>"></script>

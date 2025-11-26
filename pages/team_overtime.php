@@ -10,10 +10,28 @@
  
         <!-- MAIN CONTENT -->
         <main class="flex-1 p-3">
-            <div class="flex flex-1 p-2 text-2xl font-bold items-center">
+            <div class="flex flex-1 p-2 text-2xl font-bold justify-between items-center">
                 <div class="mr-4">
                     Overtime
                 </div>  
+
+                <!-- FILE OVERTIME BUTTON -->
+                <div class="static inline-block text-right">
+                    <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none" data-bs-toggle="modal" data-bs-target="#fileOTmodal">
+                    File Overtime
+                    </button>
+                </div>
+
+                <!-- <div class="btn-group">
+                    <button type="button" class="dropdown-toggle inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none" data-bs-toggle="dropdown" aria-expanded="false">
+                        Actions
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#" id="option1">Option 1</a></li>
+                        <li><a class="dropdown-item" href="#" id="option2">Option 2</a></li>
+                    </ul>
+                </div> -->
+
             </div>
             
             <!-- CONTENT -->
@@ -268,6 +286,90 @@
                     </div>
                 </div>
             </div>
+
+            <!--------------------------------------------------------------------------------------------------------------------------------------------->
+            <!---------------------------------------------------------------- FILE OVERTIME -------------------------------------------------------------->
+            <form id="fileOTform">
+                <div class="modal fade" id="fileOTmodal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-none modal-dialog-centered">
+                        <div class="modal-content" id="fileOTmodal">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="userFormLabel">File Overtime</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row g-3 mb-2">
+                                    <div class="col-6">
+                                        <label for="dateFiled">Date Filed:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mb-2">
+                                    <div class="col-6">
+                                        <input type="text" class="form-control" id="dateFiled" value="<?php echo date("M d, Y") ?>" disabled readonly>
+                                    </div>
+                                </div>   
+
+                                <div class="row g-3 mb-2">
+                                    <div class="col-6">
+                                        <label for="otDate">OT Date:</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="otType">Type:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mb-2">
+                                    <div class="col-6">
+                                        <input type="date" class="form-control" id="otDate" name="otDate">
+                                    </div>
+                                    <div class="col-6">
+                                        <select name="otType" id="otType" class="form-select">
+                                            <option disabled selected>Choose</option>
+                                            <option value="Regular">Regular</option>
+                                            <option value="Rest Day">Rest Day</option>
+                                        </select>
+                                    </div>
+                                </div>   
+                                
+                                <div class="row g-3 mb-2">
+                                    <div class="col-6">
+                                        <label for="fromTime">From:</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="toTime">To:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mb-2">
+                                    <div class="col-6">
+                                        <input type="time" class="form-control" id="fromTime" name="fromTime">
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="time" class="form-control" id="toTime" name="toTime">
+                                    </div>  
+                                </div>
+                                
+                                <div class="row g-3 mb-2">
+                                    <div class="col-12">
+                                        <label for="purpose">Purpose / Remarks:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mb-2">
+                                    <div class="col-12">
+                                        <textarea type="text" id="purpose" name="purpose" placeholder="Purpose / Remarks" rows="3" class="form-control" required></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">Add</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>  
         </main>
     
         <script src="../assets/js/team_overtime.js?v=<?php echo $version; ?>"></script>
