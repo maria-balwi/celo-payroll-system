@@ -1395,6 +1395,15 @@
             return $auditTrail;
         }
 
+        public function viewAuditTrailEmployee() {
+            $auditTrail = "
+                SELECT auditTrailID, date, employees.firstName, employees.lastName, module, action, affected_empID FROM ".$this->auditTrail ." AS auditTrail
+                INNER JOIN ".$this->employees." AS employees
+                ON auditTrail.empID = employees.id
+                ORDER BY auditTrail.auditTrailID DESC";
+            return $auditTrail;
+        }
+
         public function viewAffectedUser($empID) {
             $affectedUser = "
                 SELECT firstName AS affectedFirstName, lastName AS affectedLastName
