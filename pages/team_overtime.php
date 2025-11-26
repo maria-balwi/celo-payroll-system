@@ -295,21 +295,44 @@
                         <div class="modal-content" id="fileOTmodal">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="userFormLabel">File Overtime</h1>
+                                <input type="hidden" id="userDeptFileOT" value="<?php echo $_SESSION['departmentID']; ?>">
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="row g-3 mb-2">
-                                    <div class="col-6">
+                                    <div class="col-4">
                                         <label for="dateFiled">Date Filed:</label>
+                                    </div>
+                                    <div class="col-8">
+                                        <label for="optionAffected">User:</label>
                                     </div>
                                 </div>
 
                                 <div class="row g-3 mb-2">
-                                    <div class="col-6">
+                                    <div class="col-4">
                                         <input type="text" class="form-control" id="dateFiled" value="<?php echo date("M d, Y") ?>" disabled readonly>
                                     </div>
-                                </div>   
-
+                                    <div class="col-8">
+                                        <select class="form-select border border-1" id="user" name="user" data-live-search="true" required>
+                                            <option selected disabled>Choose User</option>
+                                            <?php
+                                                if ($_SESSION['departmentID'] == 1) {
+                                                    $allEmployee = mysqli_query($conn, $employees->viewAllOperations());
+                                                } else {
+                                                    $allEmployee = mysqli_query($conn, $employees->viewAllIT());
+                                                }
+                                                while ($allEmployeeResult = mysqli_fetch_array($allEmployee)) {
+                                                ?>
+                                                <option class="user" value="<?php echo $allEmployeeResult['id']; ?>">
+                                                    <?php echo $allEmployeeResult['lastName'] . ', ' . $allEmployeeResult['firstName']; ?>
+                                                </option>
+                                            <?php        
+                                                }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>    
+                                
                                 <div class="row g-3 mb-2">
                                     <div class="col-6">
                                         <label for="otDate">OT Date:</label>
@@ -364,7 +387,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-success">Add</button>
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnClose">Close</button>
                             </div>
                         </div>
                     </div>

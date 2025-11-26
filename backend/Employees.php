@@ -59,6 +59,34 @@
                 ORDER BY employees.lastName ASC";
             return $team;
         }
+
+        public function viewAllOperations() {
+            $team = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->department." AS department
+                ON employees.departmentID = department.departmentID
+                INNER JOIN ".$this->shifts." AS shifts
+                ON employees.shiftID = shifts.shiftID
+                WHERE designationID != 12 AND 
+                department.departmentID = 1 AND
+                employees.e_status = 'Active'
+                ORDER BY employees.lastName ASC";
+            return $team;
+        }
+
+        public function viewAllIT() {
+            $team = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->department." AS department
+                ON employees.departmentID = department.departmentID
+                INNER JOIN ".$this->shifts." AS shifts
+                ON employees.shiftID = shifts.shiftID
+                WHERE designationID != 12 AND 
+                department.departmentID = 4 AND
+                employees.e_status = 'Active'
+                ORDER BY employees.lastName ASC";
+            return $team;
+        }
         
         public function viewResignedEmployees() {
             $team = "
