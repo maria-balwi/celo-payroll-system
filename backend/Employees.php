@@ -23,7 +23,7 @@
         public function __construct() {
             $this->dbConnect = $this->dbConnect();
         }
-        
+
         public function viewActiveEmployees() {
             $team = "
                 SELECT * FROM ".$this->employees." AS employees
@@ -112,12 +112,13 @@
             return $team;
         }
 
-        public function viewTeam() {
+        public function viewTeamIT() {
             $team = "
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->department." AS department
                 ON employees.departmentID = department.departmentID
-                WHERE employees.departmentID = 4";
+                WHERE employees.departmentID = 4
+                AND employees.e_status = 'Active'";
             return $team;
         }
 
@@ -126,7 +127,8 @@
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->department." AS department
                 ON employees.departmentID = department.departmentID
-                WHERE employees.departmentID = 1";
+                WHERE employees.departmentID = 1
+                AND employees.e_status = 'Active'";
             return $team;
         }
 

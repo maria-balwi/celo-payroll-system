@@ -56,7 +56,7 @@
                                 else 
                                 {
                                     // IT TEAM
-                                    $teamQuery = mysqli_query($conn, $employees->viewTeam());
+                                    $teamQuery = mysqli_query($conn, $employees->viewTeamIT());
                                     while ($teamDetails = mysqli_fetch_array($teamQuery)) {
 
                                         $team_id = $teamDetails['id'];
