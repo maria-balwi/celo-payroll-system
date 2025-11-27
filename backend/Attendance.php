@@ -507,6 +507,59 @@
             return $monthlyAttendance;
         }
 
+        public function getMonthlyAbsences($id, $year, $month) {
+            $monthlyAbsences = "
+                SELECT 
+                    COUNT(*) AS total_absences
+                FROM (
+                    SELECT 
+                        DATE(CONCAT($year, '-', $month, '-', day_num)) AS date_day
+                    FROM (
+                        SELECT 1 AS day_num UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION
+                        SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10 UNION
+                        SELECT 11 UNION SELECT 12 UNION SELECT 13 UNION SELECT 14 UNION SELECT 15 UNION
+                        SELECT 16 UNION SELECT 17 UNION SELECT 18 UNION SELECT 19 UNION SELECT 20 UNION
+                        SELECT 21 UNION SELECT 22 UNION SELECT 23 UNION SELECT 24 UNION SELECT 25 UNION
+                        SELECT 26 UNION SELECT 27 UNION SELECT 28 UNION SELECT 29 UNION SELECT 30 UNION
+                        SELECT 31
+                    ) AS days
+                    WHERE 
+                        -- Only include days that exist in the month
+                        DAY(LAST_DAY(CONCAT($year, '-', $month, '-01'))) >= day_num
+                        
+                        -- Only count up to today's date
+                        AND day_num <= DAY(CURRENT_DATE())
+                ) AS calendar_days
+
+                LEFT JOIN ".$this->attendance." AS att
+                    ON att.empID = $id
+                    AND att.attendanceDate = calendar_days.date_day
+                    AND att.logTypeID IN (1,2)  -- Time In or Late
+
+                INNER JOIN ".$this->weekOff." AS weekoff
+                    ON weekoff.empID = $id
+
+                WHERE 
+                    -- No attendance found (means absent)
+                    att.empID IS NULL
+
+                    -- Exclude week-off based on day name
+                    AND (
+                        CASE DAYNAME(calendar_days.date_day)
+                            WHEN 'Monday' THEN weekoff.wo_mon
+                            WHEN 'Tuesday' THEN weekoff.wo_tue
+                            WHEN 'Wednesday' THEN weekoff.wo_wed
+                            WHEN 'Thursday' THEN weekoff.wo_thu
+                            WHEN 'Friday' THEN weekoff.wo_fri
+                            WHEN 'Saturday' THEN weekoff.wo_sat
+                            WHEN 'Sunday' THEN weekoff.wo_sun
+                        END
+                    ) = 0
+                ";
+
+            return $monthlyAbsences;
+        }
+
         public function getMonthlyUndertimes($id, $year, $month) {
             $monthlyUndertimes = "
                 SELECT * FROM ".$this->attendance."

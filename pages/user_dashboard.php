@@ -95,10 +95,9 @@
                                 $year = date('Y');
                                 $month = date('m');
 
-                                $workingDays = $attendance->getWorkingDaysInMonth($year, $month);
-                                $monthlyAttendanceQuery = mysqli_query($conn, $attendance->getMonthlyAttendance($_SESSION['id'], $year, $month));
-                                $monthlyAttendance = mysqli_num_rows($monthlyAttendanceQuery);
-                                $absences = $workingDays - $monthlyAttendance;
+                                $monthlyAttendanceQuery = mysqli_query($conn, $attendance->getMonthlyAbsences($_SESSION['id'], $year, $month));
+                                $monthlyAbsences = mysqli_fetch_assoc($monthlyAttendanceQuery);
+                                $absences = $monthlyAbsences['total_absences'];
                                 echo $absences;
                             ?>
                         </h2>  
@@ -117,7 +116,7 @@
                                 echo $monthlyUndertimes;
                             ?>
                         </h2>
-                        <p class="text-gray-700 text-lg font-semibold">Undertimes</p>
+                        <p class="text-gray-700 text-lg font-semibold">Undertime</p>
                     </div>
 
                     <!-- Card 7 -->
