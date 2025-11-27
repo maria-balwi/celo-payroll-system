@@ -23,18 +23,7 @@
         public function __construct() {
             $this->dbConnect = $this->dbConnect();
         }
-
-        public function viewEmployees() {
-            $team = "
-                SELECT * FROM ".$this->employees." AS employees
-                INNER JOIN ".$this->department." AS department
-                ON employees.departmentID = department.departmentID
-                INNER JOIN ".$this->shifts." AS shifts
-                ON employees.shiftID = shifts.shiftID
-                WHERE designationID != 12";
-            return $team;
-        }
-
+        
         public function viewActiveEmployees() {
             $team = "
                 SELECT * FROM ".$this->employees." AS employees

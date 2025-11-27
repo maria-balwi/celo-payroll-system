@@ -24,7 +24,7 @@
                         </svg>
                         <h2 class="text-xl font-bold mb-1">
                             <?php  
-                                $totalEmployeesQuery = mysqli_query($conn, $employees->viewEmployees());
+                                $totalEmployeesQuery = mysqli_query($conn, $employees->viewActiveEmployees());
                                 $totalEmployees = mysqli_num_rows($totalEmployeesQuery);
                                 echo $totalEmployees;
                             ?>
