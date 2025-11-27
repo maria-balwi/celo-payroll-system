@@ -99,5 +99,9 @@
 
             // ====== CHECK DATE FOR LEAVE POINTS AND REGULARIZATION ========
             $version = $users->cacheBusting();
+
+            // SET TIMEZONE
+            date_default_timezone_set('Asia/Manila');
+
         ?>
     </head>
