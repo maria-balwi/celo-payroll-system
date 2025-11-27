@@ -1388,7 +1388,8 @@
         // NEW CODE
         public function viewAuditTrail() {
             $auditTrail = "
-                SELECT auditTrailID, date, employees.firstName, employees.lastName, module, action, affected_empID FROM ".$this->auditTrail ." AS auditTrail
+                SELECT auditTrailID, date, employees.firstName, employees.lastName, module, action, affected_empID 
+                FROM ".$this->auditTrail ." AS auditTrail
                 INNER JOIN ".$this->employees." AS employees
                 ON auditTrail.empID = employees.id
                 ORDER BY auditTrail.auditTrailID DESC";
@@ -1397,9 +1398,11 @@
 
         public function viewAuditTrailEmployee() {
             $auditTrail = "
-                SELECT auditTrailID, date, employees.firstName, employees.lastName, module, action, affected_empID FROM ".$this->auditTrail ." AS auditTrail
+                SELECT auditTrailID, date, employees.firstName, employees.lastName, module, action, affected_empID 
+                FROM ".$this->auditTrail ." AS auditTrail
                 INNER JOIN ".$this->employees." AS employees
                 ON auditTrail.empID = employees.id
+                WHERE module LIKE '%Employee%'
                 ORDER BY auditTrail.auditTrailID DESC";
             return $auditTrail;
         }
@@ -1410,6 +1413,70 @@
                 FROM ".$this->employees." AS employees
                 WHERE id = '$empID'";
             return $affectedUser;
+        }
+
+        public function viewAuditTrailPayroll() {
+            $payroll = "
+                SELECT auditTrailID, date, employees.firstName, employees.lastName, module, action, affected_empID 
+                FROM ".$this->auditTrail." AS auditTrail
+                INNER JOIN ".$this->employees." AS employees
+                ON auditTrail.empID = employees.id
+                WHERE module LIKE '%Payroll%'
+                ORDER BY auditTrail.auditTrailID DESC";
+            return $payroll;
+        }
+
+        public function viewAuditTrailLeave() {
+            $leave = "
+                SELECT auditTrailID, date, employees.firstName, employees.lastName, module, action, affected_empID 
+                FROM ".$this->auditTrail." AS auditTrail
+                INNER JOIN ".$this->employees." AS employees
+                ON auditTrail.empID = employees.id
+                WHERE module LIKE '%Leave%'
+                ORDER BY auditTrail.auditTrailID DESC";
+            return $leave;
+        }
+
+        public function viewAuditTrailChangeShift() {
+            $changeShift = "
+                SELECT auditTrailID, date, employees.firstName, employees.lastName, module, action, affected_empID 
+                FROM ".$this->auditTrail." AS auditTrail
+                INNER JOIN ".$this->employees." AS employees
+                ON auditTrail.empID = employees.id
+                WHERE module LIKE '%Change Shift%'
+                ORDER BY auditTrail.auditTrailID DESC";
+            return $changeShift;
+        }
+
+        public function viewAuditTrailOvertime() {
+            $overtime = "
+                SELECT auditTrailID, date, employees.firstName, employees.lastName, module, action, affected_empID 
+                FROM ".$this->auditTrail." AS auditTrail
+                INNER JOIN ".$this->employees." AS employees
+                ON auditTrail.empID = employees.id
+                WHERE module LIKE '%OT%' OR module LIKE '%Overtime%'
+                ORDER BY auditTrail.auditTrailID DESC";
+            return $overtime;
+        }
+
+        public function viewAuditTrailAdjustments() {
+            $adjustments = "
+                SELECT auditTrailID, date, employees.firstName, employees.lastName, module, action, affected_empID FROM ".$this->auditTrail." AS auditTrail
+                INNER JOIN ".$this->employees." AS employees
+                ON auditTrail.empID = employees.id
+                WHERE module LIKE '%Adjustments%'
+                ORDER BY auditTrail.auditTrailID DESC";
+            return $adjustments;
+        }
+
+        public function viewAuditTrailUsers() {
+            $users = "
+                SELECT auditTrailID, date, employees.firstName, employees.lastName, module, action, affected_empID FROM ".$this->auditTrail." AS auditTrail
+                INNER JOIN ".$this->employees." AS employees
+                ON auditTrail.empID = employees.id
+                WHERE module LIKE '%User%'
+                ORDER BY auditTrail.auditTrailID DESC";
+            return $users;
         }
         
         public function auditTrail($empID, $module, $action, $affected_empID) {

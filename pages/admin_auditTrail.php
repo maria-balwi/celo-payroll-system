@@ -116,14 +116,16 @@
                             <div class="tab-pane fade show active" id="pills-employee" role="tabpanel" aria-labelledby="pills-employee-tab">
                                 <div class="card border-0">
                                     <div class="tab-content" id="pills-tabContent">
-                                        <table id="activeEmployeeTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3">
+                                        <table id="employeesTable" class="table table-striped table-bordered table-auto min-w-full divide-y divide-gray-200 text-center pt-3">
                                             <thead class="bg-gray-50">
                                                 <tr>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Module</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Affected Employe</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="bg-white divide-y divide-gray-200">
@@ -136,14 +138,20 @@
                                                         return $dateTime->format('F j, Y');
                                                     }
 
-                                                    $query = mysqli_query($conn, $employees->viewAuditTrail());
+                                                    function formatTime($time) {
+                                                        if (empty($time)) return '';
+                                                        return date("h:i A", strtotime($time));
+                                                    }
+
+
+                                                    $query = mysqli_query($conn, $employees->viewAuditTrailEmployee());
                                                     while ($auditTrailDetails = mysqli_fetch_array($query)) {
 
-                                                        $auditTrailID = $auditTrailDetails['auditTrailID'];
-                                                        $date = $auditTrailDetails['date'];
+                                                        $employeeATID = $auditTrailDetails['auditTrailID'];
+                                                        $employeeDate = $auditTrailDetails['date'];
                                                         $employeeName = $auditTrailDetails['firstName'] . " " . $auditTrailDetails['lastName'];
-                                                        $module = $auditTrailDetails['module'];
-                                                        $action = $auditTrailDetails['action'];
+                                                        $employeeModule = $auditTrailDetails['module'];
+                                                        $employeeAction = $auditTrailDetails['action'];
                                                         // $affected_user = $auditTrailDetails['affectedFirstName'] . " " . $auditTrailDetails['affectedLastName'];
                                                         if ($auditTrailDetails['affected_empID'] === null) {
                                                             $affected_user = "-";
@@ -152,14 +160,16 @@
                                                             $affectedUserDetails = mysqli_fetch_array($affectedUserQuery);
                                                             $affected_user = $affectedUserDetails['affectedFirstName'] . " " . $affectedUserDetails['affectedLastName'];
                                                         }
-                                                        $date = formatDate($date);
+                                                        $dateEmployee = formatDate($employeeDate);
+                                                        $timeEmployee = formatTime($employeeDate);
 
                                                         echo "<tr>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $auditTrailID . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $date . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $employeeATID . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $dateEmployee . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $timeEmployee . "</td>";
                                                         echo "<td class ='whitespace-nowrap'>" . $employeeName . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $module . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $action . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $employeeModule . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $employeeAction . "</td>";
                                                         echo "<td class ='whitespace-nowrap'>" . $affected_user . "</td>";
                                                         echo "</tr>";
                                                     }
@@ -176,36 +186,38 @@
                             <div class="tab-pane fade" id="pills-payroll" role="tabpanel" aria-labelledby="pills-payroll-tab">
                                 <div class="card border-0">
                                     <div class="tab-content" id="pills-tabContent">
-                                        <table id="resignedEmployeeTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3">
+                                        <table id="payrollTable" class="table table-striped table-bordered table-auto min-w-full divide-y divide-gray-200 text-center pt-3">
                                             <thead class="bg-gray-50">
                                                 <tr>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Module</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="bg-white divide-y divide-gray-200">
                                                 <?php
-                                                    $employeeQuery = mysqli_query($conn, $employees->viewResignedEmployees());
-                                                    while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+                                                    $query = mysqli_query($conn, $employees->viewAuditTrailPayroll());
+                                                    while ($auditTrailDetails = mysqli_fetch_array($query)) {
 
-                                                        $employee_id = $employeeDetails['id'];
-                                                        $employee_employeeID = $employeeDetails['employeeID'];
-                                                        $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
-                                                        $employee_emailAddress = $employeeDetails['emailAddress'];
-                                                        $employee_mobileNumber = $employeeDetails['mobileNumber'];
-                                                        $employee_department = $employeeDetails['departmentName'];
+                                                        $payrollATID = $auditTrailDetails['auditTrailID'];
+                                                        $payrollDate = $auditTrailDetails['date'];
+                                                        $payrollEmployee = $auditTrailDetails['firstName'] . " " . $auditTrailDetails['lastName'];
+                                                        $payrollModule = $auditTrailDetails['module'];
+                                                        $payrollAction = $auditTrailDetails['action'];
+                                                        $datePayroll = formatDate($payrollDate);
+                                                        $timePayroll = formatTime($payrollDate);
 
-
-                                                        echo "<tr data-id='" . $employee_id . "' class='resignedView cursor-pointer'>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
-                                                        echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
-                                                        echo "</td>";
+                                                        echo "<tr>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $payrollATID . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $datePayroll . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $timePayroll . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $payrollEmployee . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $payrollModule . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $payrollAction . "</td>";
+                                                        echo "</tr>";
                                                     }
                                                 ?>
                                             </tbody>
@@ -220,36 +232,48 @@
                             <div class="tab-pane fade" id="pills-leave" role="tabpanel" aria-labelledby="pills-leave-tab">
                                 <div class="card border-0">
                                     <div class="tab-content" id="pills-tabContent">
-                                        <table id="resignedEmployeeTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3">
+                                        <table id="leaveTable" class="table table-striped table-bordered table-auto min-w-full divide-y divide-gray-200 text-center pt-3">
                                             <thead class="bg-gray-50">
                                                 <tr>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Module</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Affected Employe</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="bg-white divide-y divide-gray-200">
                                                 <?php
-                                                    $employeeQuery = mysqli_query($conn, $employees->viewResignedEmployees());
-                                                    while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+                                                    $query = mysqli_query($conn, $employees->viewAuditTrailLeave());
+                                                    while ($auditTrailDetails = mysqli_fetch_array($query)) {
 
-                                                        $employee_id = $employeeDetails['id'];
-                                                        $employee_employeeID = $employeeDetails['employeeID'];
-                                                        $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
-                                                        $employee_emailAddress = $employeeDetails['emailAddress'];
-                                                        $employee_mobileNumber = $employeeDetails['mobileNumber'];
-                                                        $employee_department = $employeeDetails['departmentName'];
+                                                        $leaveATID = $auditTrailDetails['auditTrailID'];
+                                                        $leaveDate = $auditTrailDetails['date'];
+                                                        $leaveEmployee = $auditTrailDetails['firstName'] . " " . $auditTrailDetails['lastName'];
+                                                        $leaveModule = $auditTrailDetails['module'];
+                                                        $leaveAction = $auditTrailDetails['action'];
+                                                        // $affected_user = $auditTrailDetails['affectedFirstName'] . " " . $auditTrailDetails['affectedLastName'];
+                                                        if ($auditTrailDetails['affected_empID'] === null) {
+                                                            $affected_user = "-";
+                                                        } else {
+                                                            $affectedUserQuery = mysqli_query($conn, $employees->viewAffectedUser($auditTrailDetails['affected_empID']));
+                                                            $affectedUserDetails = mysqli_fetch_array($affectedUserQuery);
+                                                            $affected_user = $affectedUserDetails['affectedFirstName'] . " " . $affectedUserDetails['affectedLastName'];
+                                                        }
+                                                        $dateLeave = formatDate($leaveDate);
+                                                        $timeLeave = formatTime($leaveDate);
 
-
-                                                        echo "<tr data-id='" . $employee_id . "' class='resignedView cursor-pointer'>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
-                                                        echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
-                                                        echo "</td>";
+                                                        echo "<tr>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $leaveATID . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $dateLeave . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $timeLeave . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $leaveEmployee . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $leaveModule . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $leaveAction . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $affected_user . "</td>";
+                                                        echo "</tr>";
                                                     }
                                                 ?>
                                             </tbody>
@@ -264,36 +288,47 @@
                             <div class="tab-pane fade" id="pills-changeshift" role="tabpanel" aria-labelledby="pills-changeshift-tab">
                                 <div class="card border-0">
                                     <div class="tab-content" id="pills-tabContent">
-                                        <table id="resignedEmployeeTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3">
+                                        <table id="changeShiftTable" class="table table-striped table-bordered table-auto min-w-full divide-y divide-gray-200 text-center pt-3">
                                             <thead class="bg-gray-50">
                                                 <tr>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Module</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Affected Employe</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="bg-white divide-y divide-gray-200">
                                                 <?php
-                                                    $employeeQuery = mysqli_query($conn, $employees->viewResignedEmployees());
-                                                    while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+                                                    $query = mysqli_query($conn, $employees->viewAuditTrailChangeShift());
+                                                    while ($auditTrailDetails = mysqli_fetch_array($query)) {
 
-                                                        $employee_id = $employeeDetails['id'];
-                                                        $employee_employeeID = $employeeDetails['employeeID'];
-                                                        $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
-                                                        $employee_emailAddress = $employeeDetails['emailAddress'];
-                                                        $employee_mobileNumber = $employeeDetails['mobileNumber'];
-                                                        $employee_department = $employeeDetails['departmentName'];
+                                                        $changeShiftATID = $auditTrailDetails['auditTrailID'];
+                                                        $changeShiftDate = $auditTrailDetails['date'];
+                                                        $changeShiftEmployee = $auditTrailDetails['firstName'] . " " . $auditTrailDetails['lastName'];
+                                                        $changeShiftModule = $auditTrailDetails['module'];
+                                                        $changeShiftAction = $auditTrailDetails['action'];
+                                                        if ($auditTrailDetails['affected_empID'] === null) {
+                                                            $affected_user = "-";
+                                                        } else {
+                                                            $affectedUserQuery = mysqli_query($conn, $employees->viewAffectedUser($auditTrailDetails['affected_empID']));
+                                                            $affectedUserDetails = mysqli_fetch_array($affectedUserQuery);
+                                                            $affected_user = $affectedUserDetails['affectedFirstName'] . " " . $affectedUserDetails['affectedLastName'];
+                                                        }
+                                                        $dateChangeShift = formatDate($changeShiftDate);
+                                                        $timeChangeShift = formatTime($changeShiftDate);
 
-
-                                                        echo "<tr data-id='" . $employee_id . "' class='resignedView cursor-pointer'>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
-                                                        echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
-                                                        echo "</td>";
+                                                        echo "<tr>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $changeShiftATID . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $dateChangeShift . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $timeChangeShift . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $changeShiftEmployee . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $changeShiftModule . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $changeShiftAction . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $affected_user . "</td>";
+                                                        echo "</tr>";
                                                     }
                                                 ?>
                                             </tbody>
@@ -308,36 +343,48 @@
                             <div class="tab-pane fade" id="pills-overtime" role="tabpanel" aria-labelledby="pills-overtime-tab">
                                 <div class="card border-0">
                                     <div class="tab-content" id="pills-tabContent">
-                                        <table id="resignedEmployeeTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3">
+                                        <table id="overtimeTable" class="table table-striped table-bordered table-auto min-w-full divide-y divide-gray-200 text-center pt-3">
                                             <thead class="bg-gray-50">
                                                 <tr>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Module</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Affected Employe</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="bg-white divide-y divide-gray-200">
                                                 <?php
-                                                    $employeeQuery = mysqli_query($conn, $employees->viewResignedEmployees());
-                                                    while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+                                                    $query = mysqli_query($conn, $employees->viewAuditTrailOvertime());
+                                                    while ($auditTrailDetails = mysqli_fetch_array($query)) {
 
-                                                        $employee_id = $employeeDetails['id'];
-                                                        $employee_employeeID = $employeeDetails['employeeID'];
-                                                        $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
-                                                        $employee_emailAddress = $employeeDetails['emailAddress'];
-                                                        $employee_mobileNumber = $employeeDetails['mobileNumber'];
-                                                        $employee_department = $employeeDetails['departmentName'];
+                                                        $overtimeATID = $auditTrailDetails['auditTrailID'];
+                                                        $overtimeDate = $auditTrailDetails['date'];
+                                                        $overtimeEmployee = $auditTrailDetails['firstName'] . " " . $auditTrailDetails['lastName'];
+                                                        $overtimeModule = $auditTrailDetails['module'];
+                                                        $overtimeAction = $auditTrailDetails['action'];
+                                                        // $affected_user = $auditTrailDetails['affectedFirstName'] . " " . $auditTrailDetails['affectedLastName'];
+                                                        if ($auditTrailDetails['affected_empID'] === null) {
+                                                            $affected_user = "-";
+                                                        } else {
+                                                            $affectedUserQuery = mysqli_query($conn, $employees->viewAffectedUser($auditTrailDetails['affected_empID']));
+                                                            $affectedUserDetails = mysqli_fetch_array($affectedUserQuery);
+                                                            $affected_user = $affectedUserDetails['affectedFirstName'] . " " . $affectedUserDetails['affectedLastName'];
+                                                        }
+                                                        $dateOvertime = formatDate($overtimeDate);
+                                                        $timeOvertime = formatTime($overtimeDate);
 
-
-                                                        echo "<tr data-id='" . $employee_id . "' class='resignedView cursor-pointer'>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
-                                                        echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
-                                                        echo "</td>";
+                                                        echo "<tr>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $overtimeATID . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $dateOvertime . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $timeOvertime . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $overtimeEmployee . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $overtimeModule . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $overtimeAction . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $affected_user . "</td>";
+                                                        echo "</tr>";
                                                     }
                                                 ?>
                                             </tbody>
@@ -349,39 +396,50 @@
                             <!-- ------------------------------------------------------------------------------------------------- -->
                             <!-- ----------------------------------------- ADJUSTMENTS TAB --------------------------------------- -->
                             <!-- ------------------------------------------------------------------------------------------------- -->
-                            <div class="tab-pane fade" id="pills-leave" role="tabpanel" aria-labelledby="pills-leave-tab">
+                            <div class="tab-pane fade" id="pills-adjustments" role="tabpanel" aria-labelledby="pills-adjustments-tab">
                                 <div class="card border-0">
                                     <div class="tab-content" id="pills-tabContent">
-                                        <table id="resignedEmployeeTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3">
+                                        <table id="adjustmentsTable" class="table table-striped table-bordered table-auto min-w-full divide-y divide-gray-200 text-center pt-3">
                                             <thead class="bg-gray-50">
                                                 <tr>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Module</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Affected Employe</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="bg-white divide-y divide-gray-200">
                                                 <?php
-                                                    $employeeQuery = mysqli_query($conn, $employees->viewResignedEmployees());
-                                                    while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+                                                    $query = mysqli_query($conn, $employees->viewAuditTrailAdjustments());
+                                                    while ($auditTrailDetails = mysqli_fetch_array($query)) {
 
-                                                        $employee_id = $employeeDetails['id'];
-                                                        $employee_employeeID = $employeeDetails['employeeID'];
-                                                        $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
-                                                        $employee_emailAddress = $employeeDetails['emailAddress'];
-                                                        $employee_mobileNumber = $employeeDetails['mobileNumber'];
-                                                        $employee_department = $employeeDetails['departmentName'];
+                                                        $adjustmentATID = $auditTrailDetails['auditTrailID'];
+                                                        $adjustmentDate = $auditTrailDetails['date'];
+                                                        $adjustmentEmployee = $auditTrailDetails['firstName'] . " " . $auditTrailDetails['lastName'];
+                                                        $adjustmentModule = $auditTrailDetails['module'];
+                                                        $adjustmentAction = $auditTrailDetails['action'];
+                                                        if ($auditTrailDetails['affected_empID'] === null) {
+                                                            $affected_user = "-";
+                                                        } else {
+                                                            $affectedUserQuery = mysqli_query($conn, $employees->viewAffectedUser($auditTrailDetails['affected_empID']));
+                                                            $affectedUserDetails = mysqli_fetch_array($affectedUserQuery);
+                                                            $affected_user = $affectedUserDetails['affectedFirstName'] . " " . $affectedUserDetails['affectedLastName'];
+                                                        }
+                                                        $dateAdjustment = formatDate($adjustmentDate);
+                                                        $timeAdjustment = formatTime($adjustmentDate);
 
-
-                                                        echo "<tr data-id='" . $employee_id . "' class='resignedView cursor-pointer'>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
-                                                        echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
-                                                        echo "</td>";
+                                                        echo "<tr>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $adjustmentATID . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $dateAdjustment . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $timeAdjustment . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $adjustmentEmployee . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $adjustmentModule . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $adjustmentAction . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $affected_user . "</td>";
+                                                        echo "</tr>";
                                                     }
                                                 ?>
                                             </tbody>
@@ -393,39 +451,51 @@
                             <!-- ------------------------------------------------------------------------------------------------- -->
                             <!-- ------------------------------------------- USERS TAB ------------------------------------------- -->
                             <!-- ------------------------------------------------------------------------------------------------- -->
-                            <div class="tab-pane fade" id="pills-user" role="tabpanel" aria-labelledby="pills-user-tab">
+                            <div class="tab-pane fade" id="pills-users" role="tabpanel" aria-labelledby="pills-users-tab">
                                 <div class="card border-0">
                                     <div class="tab-content" id="pills-tabContent">
-                                        <table id="resignedEmployeeTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3">
+                                        <table id="usersTable" class="table table-striped table-bordered table-auto min-w-full divide-y divide-gray-200 text-center pt-3">
                                             <thead class="bg-gray-50">
                                                 <tr>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Module</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Affected Employe</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="bg-white divide-y divide-gray-200">
                                                 <?php
-                                                    $employeeQuery = mysqli_query($conn, $employees->viewResignedEmployees());
-                                                    while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+                                                    $query = mysqli_query($conn, $employees->viewAuditTrailUsers());
+                                                    while ($auditTrailDetails = mysqli_fetch_array($query)) {
 
-                                                        $employee_id = $employeeDetails['id'];
-                                                        $employee_employeeID = $employeeDetails['employeeID'];
-                                                        $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
-                                                        $employee_emailAddress = $employeeDetails['emailAddress'];
-                                                        $employee_mobileNumber = $employeeDetails['mobileNumber'];
-                                                        $employee_department = $employeeDetails['departmentName'];
+                                                        $usersATID = $auditTrailDetails['auditTrailID'];
+                                                        $usersDate = $auditTrailDetails['date'];
+                                                        $usersEmployee = $auditTrailDetails['firstName'] . " " . $auditTrailDetails['lastName'];
+                                                        $usersModule = $auditTrailDetails['module'];
+                                                        $usersAction = $auditTrailDetails['action'];
+                                                        // $affected_user = $auditTrailDetails['affectedFirstName'] . " " . $auditTrailDetails['affectedLastName'];
+                                                        if ($auditTrailDetails['affected_empID'] === null) {
+                                                            $affected_user = "-";
+                                                        } else {
+                                                            $affectedUserQuery = mysqli_query($conn, $employees->viewAffectedUser($auditTrailDetails['affected_empID']));
+                                                            $affectedUserDetails = mysqli_fetch_array($affectedUserQuery);
+                                                            $affected_user = $affectedUserDetails['affectedFirstName'] . " " . $affectedUserDetails['affectedLastName'];
+                                                        }
+                                                        $dateUsers = formatDate($usersDate);
+                                                        $timeUsers = formatTime($usersDate);
 
-
-                                                        echo "<tr data-id='" . $employee_id . "' class='resignedView cursor-pointer'>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
-                                                        echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
-                                                        echo "</td>";
+                                                        echo "<tr>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $usersATID . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $dateUsers . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $timeUsers . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $usersEmployee . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $usersModule . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $usersAction . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $affected_user . "</td>";
+                                                        echo "</tr>";
                                                     }
                                                 ?>
                                             </tbody>
@@ -435,11 +505,6 @@
                             </div>
 
                         </div>
-                    </div>
-
-                    <!-- CARD FOOTER DATA ENTRY BUTTON -->
-                    <div class="card-footer d-grid gap-2 d-md-flex justify-content-md-end">
-                        <button class="btn btn-primary me-md-2" type="button" data-bs-toggle="modal" data-bs-target="#addEmployeeModal" id="btnAddEmployee">Add Employee</button>
                     </div>
                 </div>
             </div>
