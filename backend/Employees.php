@@ -264,8 +264,7 @@
             return $dtr;
         }
 
-
-        // OLD CODE
+        // NEW CODE
         // public function userViewDTR($id, $yearMonth) {
         //     $dtr = "
         //         SELECT 
@@ -283,9 +282,10 @@
         //                 FROM (
         //                     SELECT a.a + (10 * b.a) + (100 * c.a) AS n
         //                     FROM 
-        //                         (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS a
+        //                         (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL 
+        //                                 SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS a
         //                     CROSS JOIN 
-        //                         (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2) AS b
+        //                         (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3) AS b
         //                     CROSS JOIN 
         //                         (SELECT 0 AS a) AS c
         //                 ) AS days
@@ -305,48 +305,6 @@
         //     ";
         //     return $dtr;
         // }
-
-        // NEW CODE
-        public function userViewDTR($id, $yearMonth) {
-            $dtr = "
-                SELECT 
-                    all_dates.attendanceDate,
-                    COALESCE(attendance.id, '-') AS id, 
-                    COALESCE(attendance.logTypeID, '-') AS logTypeID, 
-                    COALESCE(logtype.logType, '-') AS logType, 
-                    COALESCE(DATE_FORMAT(attendance.attendanceTime, '%h:%i %p'), '-') AS attendanceTime, 
-                    COALESCE(DATE_FORMAT(shift.startTime, '%h:%i %p'), '-') AS startTime, 
-                    COALESCE(DATE_FORMAT(shift.endTime, '%h:%i %p'), '-') AS endTime
-                FROM 
-                    (
-                        SELECT 
-                            DATE('$yearMonth-01') + INTERVAL n DAY AS attendanceDate
-                        FROM (
-                            SELECT a.a + (10 * b.a) + (100 * c.a) AS n
-                            FROM 
-                                (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL 
-                                        SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS a
-                            CROSS JOIN 
-                                (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3) AS b
-                            CROSS JOIN 
-                                (SELECT 0 AS a) AS c
-                        ) AS days
-                        WHERE DATE('$yearMonth-01') + INTERVAL n DAY <= LAST_DAY('$yearMonth-01')
-                    ) AS all_dates
-                LEFT JOIN 
-                    ".$this->attendance." AS attendance 
-                    ON all_dates.attendanceDate = attendance.attendanceDate AND attendance.empID = ?
-                LEFT JOIN 
-                    ".$this->employees." AS employees ON attendance.empID = employees.id
-                LEFT JOIN 
-                    ".$this->logtype." AS logtype ON attendance.logTypeID = logtype.logTypeID 
-                LEFT JOIN 
-                    ".$this->shift." AS shift ON employees.shiftID = shift.shiftID
-                ORDER BY 
-                    all_dates.attendanceDate, attendance.attendanceTime;
-            ";
-            return $dtr;
-        }
 
         public function viewOT($id) {
             $request = "
