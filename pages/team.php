@@ -276,7 +276,20 @@
                                     <label for="updateShiftID">Shift:</label>
                                 </div>
                                 <div class="col-8">
-                                    <input type="text" class="form-control" id="updateShiftID" disabled readonly>
+                                    <select type="dropdown" id="updateShiftID" name="updateShiftID" class="form-select">
+                                        <option value="" selected disabled>Choose</option>
+                                            <?php
+                                                $shift = mysqli_query($conn, $employees->viewShifts());
+                                                while ($shiftResult = mysqli_fetch_array($shift)) {
+                                                ?>
+                                                <option value="<?php echo $shiftResult['startTime'] . " - " . $shiftResult['endTime']; ?>">
+                                                    <?php echo $shiftResult['startTime'] . " - " . $shiftResult['endTime']; ?>
+                                                </option>
+                                                
+                                            <?php        
+                                                }
+                                            ?>
+                                    </select>
                                 </div>
                             </div>
 
@@ -305,11 +318,11 @@
                                         <input class="form-check-input update_wo_day" type="checkbox" id="update_wo_fri" name="update_wo_fri" value="update_wo_fri">
                                         <label class="form-check-label" for="update_wo_fri">Fri</label>
                                     </div>
-                                    <div class="form-check form-check-inline">
+                                    <div class="form-check form-check-inline ml-4">
                                         <input class="form-check-input update_wo_day" type="checkbox" id="update_wo_sat" name="update_wo_sat" value="update_wo_sat">
                                         <label class="form-check-label" for="update_wo_sat">Sat</label>
                                     </div>
-                                    <div class="form-check form-check-inline">
+                                    <div class="form-check form-check-inline ml-0.5">
                                         <input class="form-check-input update_wo_day" type="checkbox" id="update_wo_sun" name="update_wo_sun" value="update_wo_sun">
                                         <label class="form-check-label" for="update_wo_sun">Sun</label>
                                     </div>

@@ -207,9 +207,10 @@ $(document).ready(function() {
         e.preventDefault();
         
         let updateTeam = new FormData(this);
+        var updateShiftID = $("#updateShiftID").val();
         var updateID = $("#updateID").val();
 
-        if (updateID == "") {
+        if (updateID == "" || updateShiftID == "") {
             Swal.fire({
                 icon: 'warning',
                 title: 'Required Information',
