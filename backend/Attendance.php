@@ -37,21 +37,62 @@
             return $absentEmployees;
         }
 
+        // public function getAbsentEmployees() {
+        //     $absentEmployees = "
+        //         SELECT * FROM ".$this->employees." AS employees
+        //         INNER JOIN ".$this->department." AS department
+        //         ON employees.departmentID = department.departmentID
+        //         INNER JOIN ".$this->shifts." AS shifts
+        //         ON shifts.shiftID = employees.shiftID
+        //         INNER JOIN ".$this->weekOff." AS weekoff
+        //         ON weekoff.empID = employees.id
+        //         WHERE employees.id NOT IN
+        //         (SELECT empID FROM ".$this->attendance."
+        //         WHERE attendanceDate = CURRENT_DATE() AND
+        //         logTypeID IN (1, 2)) 
+        //         AND shifts.startTime < CURRENT_TIME() 
+        //         AND shifts.endTime > CURRENT_TIME()
+        //         AND (
+        //             CASE DAYNAME(CURRENT_DATE())
+        //                 WHEN 'Monday' THEN weekoff.wo_mon
+        //                 WHEN 'Tuesday' THEN weekoff.wo_tue
+        //                 WHEN 'Wednesday' THEN weekoff.wo_wed
+        //                 WHEN 'Thursday' THEN weekoff.wo_thu
+        //                 WHEN 'Friday' THEN weekoff.wo_fri
+        //                 WHEN 'Saturday' THEN weekoff.wo_sat
+        //                 WHEN 'Sunday' THEN weekoff.wo_sun
+        //             END
+        //         ) = 0
+        //         AND designationID != 12
+        //         AND employees.e_status = 'Active'";
+        //     return $absentEmployees;
+        // } 
+
         public function getAbsentEmployees() {
             $absentEmployees = "
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->department." AS department
-                ON employees.departmentID = department.departmentID
+                    ON employees.departmentID = department.departmentID
                 INNER JOIN ".$this->shifts." AS shifts
-                ON shifts.shiftID = employees.shiftID
+                    ON shifts.shiftID = employees.shiftID
                 INNER JOIN ".$this->weekOff." AS weekoff
-                ON weekoff.empID = employees.id
-                WHERE employees.id NOT IN
-                (SELECT empID FROM ".$this->attendance."
-                WHERE attendanceDate = CURRENT_DATE() AND
-                logTypeID IN (1, 2)) 
+                    ON weekoff.empID = employees.id
+
+                -- LEFT JOIN LEAVE TABLE
+                LEFT JOIN ".$this->leaves." AS leaves
+                    ON leaves.empID = employees.id
+                    AND leaves.status = 'Approved'
+                    AND CURRENT_DATE() BETWEEN leaves.effectivityStartDate AND leaves.effectivityEndDate
+
+                WHERE employees.id NOT IN (
+                    SELECT empID FROM ".$this->attendance."
+                    WHERE attendanceDate = CURRENT_DATE()
+                    AND logTypeID IN (1, 2)
+                )
                 AND shifts.startTime < CURRENT_TIME() 
                 AND shifts.endTime > CURRENT_TIME()
+
+                -- NOT A WEEK-OFF DAY
                 AND (
                     CASE DAYNAME(CURRENT_DATE())
                         WHEN 'Monday' THEN weekoff.wo_mon
@@ -63,10 +104,17 @@
                         WHEN 'Sunday' THEN weekoff.wo_sun
                     END
                 ) = 0
-                AND designationID != 12
-                AND employees.e_status = 'Active'";
+
+                -- EXCLUDE EMPLOYEES WHO HAVE APPROVED LEAVE TODAY
+                AND leaves.empID IS NULL
+
+                AND employees.designationID != 12
+                AND employees.e_status = 'Active'
+            ";
+
             return $absentEmployees;
-        } 
+        }   
+
 
         public function getLateEmployees() {
             $lateEmployees = "
@@ -536,12 +584,21 @@
                     AND att.attendanceDate = calendar_days.date_day
                     AND att.logTypeID IN (1,2)  -- Time In or Late
 
+                -- LEFT JOIN LEAVE TABLE
+                LEFT JOIN ".$this->leaves." AS leaves
+                    ON leaves.empID = $id
+                    AND leaves.status = 'Approved'
+                    AND calendar_days.date_day BETWEEN leaves.effectivityStartDate AND leaves.effectivityEndDate
+
                 INNER JOIN ".$this->weekOff." AS weekoff
                     ON weekoff.empID = $id
 
                 WHERE 
                     -- No attendance found (means absent)
                     att.empID IS NULL
+
+                    -- EXCLUDE EMPLOYEES WHO HAVE APPROVED LEAVE TODAY
+                    AND leaves.empID IS NULL
 
                     -- Exclude week-off based on day name
                     AND (
