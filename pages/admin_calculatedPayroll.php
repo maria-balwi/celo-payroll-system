@@ -125,6 +125,10 @@
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" colspan="8">Deductions</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">Reimbursements</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">Adjustment +,-</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">Sick Leave</th> 
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">Pay</th> 
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">Vacation Leave</th> 
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">Pay</th> 
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle" rowspan="2">Net Pay</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">C/A Balance</th> 
                                     </tr>
@@ -215,6 +219,10 @@
                                             $payslip_smart = $payslipDetails['payslip_smart'];
                                             $payslip_reimbursements = $payslipDetails['payslip_reimbursements'];
                                             $payslip_adjustments = $payslipDetails['payslip_adjustments'];
+                                            $payslip_sickLeaveCount = $payslipDetails['sickLeaveCount'];
+                                            $payslip_sickLeavePay = $payslipDetails['pay_sickLeave'];
+                                            $payslip_vacationLeaveCount = $payslipDetails['vacationLeaveCount'];
+                                            $payslip_vacationLeavePay = $payslipDetails['pay_vacationLeave'];
                                             $payslip_cashAdvanceDeduction = $payslipDetails['payslip_cashAdvanceDeduction'];
                                             $payslip_cashAdvanceBalance = $payslipDetails['payslip_cashAdvanceBalance'];
                                             $payslip_netPay = $payslipDetails['netPay'];
@@ -386,6 +394,22 @@
                                                 $payslip_adjustments = "-";
                                             }
 
+                                            // LEAVE COMPUTATION
+                                            if ($payslip_sickLeaveCount != 0) {
+                                                $payslip_sickLeavePay = number_format($payslip_sickLeavePay, 2);
+                                            }
+                                            else {
+                                                $payslip_sickLeaveCount = "-";
+                                                $payslip_sickLeavePay = "-";
+                                            }
+                                            if ($payslip_vacationLeaveCount != 0) {
+                                                $payslip_vacationLeavePay = number_format($payslip_vacationLeavePay, 2);
+                                            }
+                                            else {
+                                                $payslip_vacationLeaveCount = "-";
+                                                $payslip_vacationLeavePay = "-";
+                                            }
+
                                             // CASH ADVANCE DEDUCTIONS & BALANCE
                                             if ($payslip_cashAdvanceDeduction != 0) {
                                                 $payslip_cashAdvanceDeduction = number_format($payslip_cashAdvanceDeduction, 2);
@@ -481,6 +505,10 @@
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_smart . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_reimbursements . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_adjustments . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_sickLeaveCount . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_sickLeavePay . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_vacationLeaveCount . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_vacationLeavePay . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_netPay . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_cashAdvanceBalance . "</td>";
                                             echo "</tr>";
