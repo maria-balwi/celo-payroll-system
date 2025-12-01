@@ -1113,6 +1113,12 @@
                 $totalReimbursements = 0;
                 $totalAdjustments = 0;
 
+                // INITIALIZE VARIABLES FOR LEAVE COMPUTATION
+                $totalSickLeaves = 0;
+                $totalVacationLeaves = 0;
+                $sickLeavePay = 0;
+                $vacationLeavePay = 0;
+
                 // INITIALIZE VARIABLES FOR PAYROLL COMPUTATION
                 $basePay = 0;
                 $grossPay = 0;
@@ -1326,6 +1332,19 @@
                         }
                     }
                 }
+
+                // COMPUTATION FOR LEAVES
+                $leaveQuery = $this->dbConnect()->query("SELECT empID, lt.leaveTypeID, effectivityStartDate, effectivityEndDate FROM tbl_leaveapplications AS la INNER JOIN tbl_leavetype as lt WHERE status = 'Approved' AND empID=$employee_id");
+                while ($leaveDetails = mysqli_fetch_array($leaveQuery)) {
+                    if ($leaveDetails['leaveTypeID'] == 1) {
+                        $totalSickLeaves++;
+                    }
+                    else if ($leaveDetails['leaveTypeID'] == 2) {
+                        $totalVacationLeaves++;
+                    }
+                }
+                $totalSickLeaves = $totalSickLeaves * $employee_dailyRate;
+                $totalVacationLeaves = $totalVacationLeaves * $employee_dailyRate;
 
                 //COMPUTATION FOR NIGHT DIFFERENTIAL PAY
                 $totalNightHours = round($totalNightHours, 0);

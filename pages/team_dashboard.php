@@ -410,7 +410,8 @@
                                                     $teamIT_status = "Week Off";
                                                 }
                                                 elseif ($currentDT >= $shiftStartDT && $currentDT <= $shiftEndDT) {
-                                                    $teamIT_status = is_null($attendanceDetails['attendanceTime']) ? "Absent" : "Present";
+                                                    $teamIT_status = isset($attendanceDetails['attendanceTime']) ? "Present" : "Absent";
+                                                    // $teamIT_status = is_null($attendanceDetails['attendanceTime']) ? "Absent" : "Present";
                                                 }
                                                 elseif ($currentDT < $shiftStartDT) {
                                                     $teamIT_status = "Not His Shift Yet";
