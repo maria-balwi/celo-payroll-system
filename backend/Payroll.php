@@ -3,6 +3,7 @@
     class Payroll extends Database
     {
         private $employees = 'tbl_employee';
+        private $department = 'tbl_department';
         private $designation = 'tbl_designation';
         private $allowances = 'tbl_allowances';
         private $deductions = 'tbl_deductions';
@@ -1882,7 +1883,10 @@
         public function viewAllPayslips($payrollID) {
             $viewAllPayslips = "
                 SELECT * FROM ".$this->payslip . " AS payslip
-                INNER JOIN ".$this->employees." AS employee ON payslip.empID = employee.id
+                INNER JOIN ".$this->employees." AS employee 
+                ON payslip.empID = employee.id
+                INNER JOIN ".$this->department." AS department 
+                ON employee.departmentID = department.departmentID
                 WHERE payrollID = $payrollID";
             return $viewAllPayslips;
         }
