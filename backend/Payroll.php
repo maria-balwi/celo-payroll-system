@@ -1102,15 +1102,19 @@
 
 
                 // ALLOWANCES, DEDUCTIONS, REIMBURSEMENTS, AND ADJUSTMENTS (+, -) COMPUTATION
-                $communication = 0;
                 $sss = 0;
+                $sssmpf = 0;
                 $phic = 0;
                 $hdmf = 0;  
+                
                 $salaryLoan = 0;
+                $hdmfLoan = 0;
                 $mpl = 0;
                 $smart = 0;
                 $cashAdvance = 0;
+
                 $totalAllowances = 0;
+                $communication = 0;
                 $totalReimbursements = 0;
                 $totalAdjustments = 0;
 
@@ -1266,6 +1270,9 @@
                 while ($deductionDetails = mysqli_fetch_array($deductionsQuery)) {
                     if ($deductionDetails['deductionName'] == "SSS") {
                         $sss = $deductionDetails['amount'];
+                    }
+                    else if ($deductionDetails['deductionName'] == "SSS MPF") {
+                        $sssmpf = $deductionDetails['amount'];
                     }
                     else if ($deductionDetails['deductionName'] == "PHIC") {
                         $phic = $deductionDetails['amount'];
