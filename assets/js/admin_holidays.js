@@ -36,6 +36,7 @@ $(document).ready(function() {
         }
     }
 
+    // PREVIOUS BUTTON
     $('#prev').click(function () {
         if (currentMonth === 0) {
             currentMonth = 11;
@@ -46,6 +47,8 @@ $(document).ready(function() {
         renderCalendar(currentMonth, currentYear);
     });
 
+
+    // NEXT BUTTON
     $('#next').click(function () {
         if (currentMonth === 11) {
             currentMonth = 0;

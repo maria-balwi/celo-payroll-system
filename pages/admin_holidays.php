@@ -121,7 +121,7 @@
                                     <div class="col-12">
                                         <select name="holidayType" id="holidayType" class="form-select">
                                             <option disabled selected>Choose</option>
-                                            <option value="Regular">Regular</option>
+                                            <option value="Legal">Legal</option>
                                             <option value="Special">Special</option>
                                         </select>
                                     </div>
@@ -149,16 +149,6 @@
                                     </div>
                                    
                                 </div>
-
-                                <!-- <div class="row g-2 mb-2">
-                                     <div class="col-6">
-                                        <label for="dateTo">To:</label>
-                                    </div>
-                                    <div class="col-6">
-                                        <input type="date" class="form-control" id="dateTo" name="dateTo">
-                                    </div>
-                                </div> -->
-
                             </div>
 
                             <div class="modal-footer">
@@ -214,15 +204,6 @@
                                     <input type="text" class="form-control" id="view_dateFrom" name="view_dateFrom" disabled readonly>
                                 </div>
                             </div>
-
-                            <!-- <div class="row g-2 mb-2">
-                                <div class="col-12">
-                                    <label for="view_dateTo">To:</label>
-                                </div>
-                                <div class="col-12">
-                                    <input type="text" class="form-control" id="view_dateTo" name="view_dateTo" disabled readonly>
-                                </div>
-                            </div> -->
                         </div>
 
                         <div class="modal-footer">
@@ -255,9 +236,8 @@
                                     <div class="col-12">
                                         <select name="updateHolidayType" id="updateHolidayType" class="form-select">
                                             <option disabled selected>Choose</option>
-                                            <option value="Regular">Regular</option>
-                                            <option value="Special">Special</option>
                                             <option value="Legal">Legal</option>
+                                            <option value="Special">Special</option>
                                         </select>
                                     </div>
                                 </div>
@@ -283,15 +263,6 @@
                                         <input type="date" class="form-control" id="updateDateFrom" name="updateDateFrom">
                                     </div>
                                 </div>
-
-                                <!-- <div class="row g-2 mb-2">
-                                    <div class="col-6">
-                                        <label for="updateDateTo">To:</label>
-                                    </div>
-                                    <div class="col-6">
-                                        <input type="date" class="form-control" id="updateDateTo" name="updateDateTo">
-                                    </div>
-                                </div> -->
                             </div>
 
                             <div class="modal-footer">
