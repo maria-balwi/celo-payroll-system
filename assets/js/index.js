@@ -137,6 +137,18 @@ $(document).ready(function() {
                                 $("#email").val('');
                                 $("#password").val('');
                             }
+                            else if (data.error == 2) {
+                                var message = data.em
+                                Swal.fire ({
+                                    icon: 'error',
+                                    title: 'Inactive Account',
+                                    text: message,
+                                }).then(() => {
+                                    window.location.reload();
+                                })
+                                $("#email").val('');
+                                $("#password").val('');
+                            }
                             else {
                                 var message = data.em
                                 Swal.fire ({

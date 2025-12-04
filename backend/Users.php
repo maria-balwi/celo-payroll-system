@@ -42,7 +42,7 @@
             if ($isUserValid == 1) {
                 $storedHashedPassword = $userDetails['password'];
                 $password = md5($password);
-                if ($storedHashedPassword == $password) {
+                if ($storedHashedPassword == $password && $userDetails['status'] == "Active") {
                     // SET SESSION VARIABLES
                     $_SESSION["logged_in"] = TRUE;
                     $_SESSION['userID'] = $userDetails['userID'];
@@ -79,9 +79,15 @@
                     return $result;
                 }
                 else {
-                    // INCORRECT PASSWORD
-                    $result[0] = '0';
-                    return $result;
+                    if ($userDetails['status'] == "Inactive") {
+                        $result[0] = '2';
+                        return $result;
+                    }
+                    else {
+                        // INCORRECT PASSWORD
+                        $result[0] = '0';
+                        return $result;
+                    }
                 }
             }
         }
