@@ -26,12 +26,12 @@
                                 <button class="nav-link active uncheck" id="pills-allowances-tab" data-bs-toggle="pill" data-bs-target="#pills-allowances" type="button" role="tab" aria-controls="pills-allowances" aria-selected="true">Allowances</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <!--REIMBURSEMENTS BUTTON-->
-                                <button class="nav-link uncheck" id="pills-reimbursements-tab" data-bs-toggle="pill" data-bs-target="#pills-reimbursements" type="button" role="tab" aria-controls="pills-reimbursements" aria-selected="false">Reimbursements</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
                                 <!--DEDUCTIONS BUTTON-->
                                 <button class="nav-link uncheck" id="pills-deductions-tab" data-bs-toggle="pill" data-bs-target="#pills-deductions" type="button" role="tab" aria-controls="pills-deductions" aria-selected="false">Deductions</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <!--REIMBURSEMENTS BUTTON-->
+                                <button class="nav-link uncheck" id="pills-reimbursements-tab" data-bs-toggle="pill" data-bs-target="#pills-reimbursements" type="button" role="tab" aria-controls="pills-reimbursements" aria-selected="false">Reimbursements</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <!--ADJUSTMENTS BUTTON-->
@@ -76,40 +76,6 @@
                                     </div>
                                 </div>
                             </div>
-                            
-                            <!-- ------------------------------------------------------------------------------------------------- -->
-                            <!-- ----------------------------------------- REIMBURSEMENTS TAB ------------------------------------ -->
-                            <!-- ------------------------------------------------------------------------------------------------- -->
-                            <div class="tab-pane fade" id="pills-reimbursements" role="tabpanel" aria-labelledby="pills-reimbursements-tab">
-                                <div class="card border-0">
-                                    <div class="tab-content" id="pills-tabContent">
-                                        <table id="reimbursementsTable" class="table table-striped table-bordered min-w-full divide-y divide-gray-200 text-center pt-3">
-                                            <thead class="bg-gray-50">
-                                                <tr>
-                                                    <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                                                    <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="bg-white divide-y divide-gray-200">
-                                                <?php
-                                                    $reimbursementQuery = mysqli_query($conn, $payroll->viewAllReimbursements());
-                                                    while ($reimbursementDetails = mysqli_fetch_array($reimbursementQuery)) {
-
-                                                        $reimbursement_id = $reimbursementDetails['reimbursementID'];
-                                                        $reimbursement_name = $reimbursementDetails['reimbursementName'];
-
-
-                                                        echo "<tr data-id='" . $reimbursement_id . "' class='reimbursementView cursor-pointer'>";
-                                                        echo "<td class = 'whitespace-nowrap'>" . $reimbursement_id . "</td>";
-                                                        echo "<td class = 'whitespace-nowrap'>" . $reimbursement_name . "</td>";
-                                                        echo "</td>";
-                                                    }
-                                                ?>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
 
                             <!-- ------------------------------------------------------------------------------------------------- -->
                             <!-- ---------------------------------------- DEDUCTIONS TAB ----------------------------------------- -->
@@ -136,6 +102,40 @@
                                                         echo "<tr data-id='" . $deduction_id . "' class='deductionView cursor-pointer'>";
                                                         echo "<td class = 'whitespace-nowrap'>" . $deduction_id . "</td>";
                                                         echo "<td class = 'whitespace-nowrap'>" . $deduction_name . "</td>";
+                                                        echo "</td>";
+                                                    }
+                                                ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <!-- ----------------------------------------- REIMBURSEMENTS TAB ------------------------------------ -->
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <div class="tab-pane fade" id="pills-reimbursements" role="tabpanel" aria-labelledby="pills-reimbursements-tab">
+                                <div class="card border-0">
+                                    <div class="tab-content" id="pills-tabContent">
+                                        <table id="reimbursementsTable" class="table table-striped table-bordered min-w-full divide-y divide-gray-200 text-center pt-3">
+                                            <thead class="bg-gray-50">
+                                                <tr>
+                                                    <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                                    <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="bg-white divide-y divide-gray-200">
+                                                <?php
+                                                    $reimbursementQuery = mysqli_query($conn, $payroll->viewAllReimbursements());
+                                                    while ($reimbursementDetails = mysqli_fetch_array($reimbursementQuery)) {
+
+                                                        $reimbursement_id = $reimbursementDetails['reimbursementID'];
+                                                        $reimbursement_name = $reimbursementDetails['reimbursementName'];
+
+
+                                                        echo "<tr data-id='" . $reimbursement_id . "' class='reimbursementView cursor-pointer'>";
+                                                        echo "<td class = 'whitespace-nowrap'>" . $reimbursement_id . "</td>";
+                                                        echo "<td class = 'whitespace-nowrap'>" . $reimbursement_name . "</td>";
                                                         echo "</td>";
                                                     }
                                                 ?>
