@@ -123,7 +123,8 @@
         public function resetPassword($userID, $newPass) {
             $resetPassword = "
                 UPDATE ".$this->users." SET
-                password = '$newPass'
+                password = '$newPass', 
+                activated = 0
                 WHERE userID = ".$userID."";
             return $resetPassword;
         }
