@@ -399,24 +399,52 @@
                             <div class="tab-pane fade" id="pills-adjustments" role="tabpanel" aria-labelledby="pills-adjustments-tab">
                                 <div class="card border-0">
                                     <div class="tab-content" id="pills-tabContent">
-                                        <?php
-                                            $employee_id = 14;
-                                            $totalSickLeaves = 0;
-                                            $totalVacationLeaves = 0;
-                                            $sickLeavePay = 0;
-                                            $vacationLeavePay = 0;
-                                            $leaveQuery = mysqli_query($conn, "SELECT empID, lt.leaveTypeID, effectivityStartDate, effectivityEndDate FROM tbl_leaveapplications AS la INNER JOIN tbl_leavetype AS lt ON la.leaveTypeID = lt.leaveTypeID WHERE status = 'Approved' AND empID=$employee_id");
-                                            while ($leaveDetails = mysqli_fetch_array($leaveQuery)) {
-                                                if ($leaveDetails['leaveTypeID'] == 1) {
-                                                    $totalSickLeaves++;
-                                                }
-                                                else if ($leaveDetails['leaveTypeID'] == 2) {
-                                                    $totalVacationLeaves++;
-                                                }
-                                            }
-                                            echo $totalSickLeaves;
-                                            echo $totalVacationLeaves;
-                                        ?>
+                                        <table id="adjustmentsTable" class="table table-striped table-bordered table-auto min-w-full divide-y divide-gray-200 text-center pt-3">
+                                            <thead class="bg-gray-50">
+                                                <tr>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Module</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Affected Employe</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="bg-white divide-y divide-gray-200">
+                                                <?php
+                                                    $query = mysqli_query($conn, $employees->viewAuditTrailAdjustments());
+                                                    while ($auditTrailDetails = mysqli_fetch_array($query)) {
+
+                                                        $adjustmentsATID = $auditTrailDetails['auditTrailID'];
+                                                        $adjustmentsDate = $auditTrailDetails['date'];
+                                                        $adjustmentsEmployee = $auditTrailDetails['firstName'] . " " . $auditTrailDetails['lastName'];
+                                                        $adjustmentsModule = $auditTrailDetails['module'];
+                                                        $adjustmentsAction = $auditTrailDetails['action'];
+                                                        // $affected_user = $auditTrailDetails['affectedFirstName'] . " " . $auditTrailDetails['affectedLastName'];
+                                                        if ($auditTrailDetails['affected_empID'] === null) {
+                                                            $affected_user = "-";
+                                                        } else {
+                                                            $affectedUserQuery = mysqli_query($conn, $employees->viewAffectedUser($auditTrailDetails['affected_empID']));
+                                                            $affectedUserDetails = mysqli_fetch_array($affectedUserQuery);
+                                                            $affected_user = $affectedUserDetails['affectedFirstName'] . " " . $affectedUserDetails['affectedLastName'];
+                                                        }
+                                                        $dateAdjustments = formatDate($adjustmentsDate);
+                                                        $timeAdjustments = formatTime($adjustmentsDate);
+
+                                                        echo "<tr>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $adjustmentsATID . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $dateAdjustments . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $timeAdjustments . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $adjustmentsEmployee . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $adjustmentsModule . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $adjustmentsAction . "</td>";
+                                                        // echo "<td class ='whitespace-nowrap'>" . $affected_user . "</td>";
+                                                        echo "</tr>";
+                                                    }
+                                                ?>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div> 
                             </div>
