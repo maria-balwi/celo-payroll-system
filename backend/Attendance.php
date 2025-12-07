@@ -37,37 +37,6 @@
             return $absentEmployees;
         }
 
-        // public function getAbsentEmployees() {
-        //     $absentEmployees = "
-        //         SELECT * FROM ".$this->employees." AS employees
-        //         INNER JOIN ".$this->department." AS department
-        //         ON employees.departmentID = department.departmentID
-        //         INNER JOIN ".$this->shifts." AS shifts
-        //         ON shifts.shiftID = employees.shiftID
-        //         INNER JOIN ".$this->weekOff." AS weekoff
-        //         ON weekoff.empID = employees.id
-        //         WHERE employees.id NOT IN
-        //         (SELECT empID FROM ".$this->attendance."
-        //         WHERE attendanceDate = CURRENT_DATE() AND
-        //         logTypeID IN (1, 2)) 
-        //         AND shifts.startTime < CURRENT_TIME() 
-        //         AND shifts.endTime > CURRENT_TIME()
-        //         AND (
-        //             CASE DAYNAME(CURRENT_DATE())
-        //                 WHEN 'Monday' THEN weekoff.wo_mon
-        //                 WHEN 'Tuesday' THEN weekoff.wo_tue
-        //                 WHEN 'Wednesday' THEN weekoff.wo_wed
-        //                 WHEN 'Thursday' THEN weekoff.wo_thu
-        //                 WHEN 'Friday' THEN weekoff.wo_fri
-        //                 WHEN 'Saturday' THEN weekoff.wo_sat
-        //                 WHEN 'Sunday' THEN weekoff.wo_sun
-        //             END
-        //         ) = 0
-        //         AND designationID != 12
-        //         AND employees.e_status = 'Active'";
-        //     return $absentEmployees;
-        // } 
-
         public function getAbsentEmployees() {
             $absentEmployees = "
                 SELECT * FROM ".$this->employees." AS employees
@@ -718,6 +687,7 @@
                 DATE_FORMAT(attendanceDate, '%Y-%m') = '$date'";
             return $attendance;
         }
+
     }
 
 ?>

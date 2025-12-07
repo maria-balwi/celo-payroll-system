@@ -276,6 +276,10 @@
                                             $payslip_sickLeavePay = $payslipDetails['pay_sickLeave'];
                                             $payslip_vacationLeaveCount = $payslipDetails['vacationLeaveCount'];
                                             $payslip_vacationLeavePay = $payslipDetails['pay_vacationLeave'];
+                                            $payslip_absences = $payslipDetails['totalAbsences'];
+                                            $payslip_absencesAmt = $payslipDetails['payslip_absences'];
+                                            $payslip_lateMins = $payslipDetails['totalLateMins'];
+                                            $payslip_lateMinsAmt = $payslipDetails['payslip_lateMins'];
                                             $payslip_cashAdvanceDeduction = $payslipDetails['payslip_cashAdvanceDeduction'];
                                             $payslip_cashAdvanceBalance = $payslipDetails['payslip_cashAdvanceBalance'];
                                             $payslip_caPettyCash = $payslipDetails['payslip_caPettyCash'];
@@ -493,6 +497,22 @@
                                                 $payslip_caPettyCash = "-";
                                             }
 
+                                            // ABSENCES AND LATE MINUTES
+                                            if ($payslip_absences != 0) {
+                                                $payslip_absencesAmt = number_format($payslip_absencesAmt, 2);
+                                            }
+                                            else {
+                                                $payslip_absences = "-";
+                                                $payslip_absencesAmt = "-";
+                                            }
+                                            if ($payslip_lateMins != 0) {
+                                                $payslip_lateMinsAmt = number_format($payslip_lateMinsAmt, 2);
+                                            }
+                                            else {
+                                                $payslip_lateMins = "-";
+                                                $payslip_lateMinsAmt = "-";
+                                            }
+
                                             // GROSS, TOTAL GROSS, AND NET PAYS
                                             if ($payslip_basePay != 0) {
                                                 $payslip_basePay = number_format($payslip_basePay, 2);
@@ -565,10 +585,10 @@
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_regularHolidayRDOTNDPay . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_regularHolidayRDOTOTND . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_regularHolidayRDOTOTNDPay . "</td>";
-                                            echo "<td class ='whitespace-nowrap'>-</td>";
-                                            echo "<td class ='whitespace-nowrap'>-</td>";
-                                            echo "<td class ='whitespace-nowrap'>-</td>";
-                                            echo "<td class ='whitespace-nowrap'>-</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_absences . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_absencesAmt . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_lateMins . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_lateMinsAmt . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_allowances . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_communication . "</td>";
                                             // echo "<td class ='whitespace-nowrap'>-</td>";
