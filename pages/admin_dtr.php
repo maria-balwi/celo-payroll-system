@@ -3,6 +3,12 @@
     <head>
         <!-- HEADER -->
         <?php include('../includes/header.php'); ?>
+
+        <style>
+            #attendanceTable td {
+                border: 1px solid black;
+            }
+        </style>
     </head>
     <body>
         <!-- SIDEBAR -->
