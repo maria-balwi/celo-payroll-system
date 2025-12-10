@@ -56,6 +56,7 @@
                     $_SESSION['hashedPassword'] = $userDetails['password'];
                     $_SESSION['password'] = $pass_word;
                     $_SESSION['activated'] = $userDetails['activated']; 
+                    $_SESSION['gender'] = $userDetails['gender'];
 
                     // SESSION TIMEOUT 
                     $_SESSION['start'] = time();
