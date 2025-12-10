@@ -990,7 +990,7 @@
 
 
                 // COMPUTE OVERTIME HOURS
-                $overtimeQuery = $this->dbConnect()->query(("SELECT * FROM tbl_filedot WHERE empID = $employee_id AND (otDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo') AND status = '2'"));
+                $overtimeQuery = $this->dbConnect()->query(("SELECT * FROM tbl_filedot WHERE empID = $employee_id AND (otDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo') AND status = '1'"));
                 while ($overtime = mysqli_fetch_array($overtimeQuery)) {
                     if (isset($holidays[$overtime['otDate']])) {
                         // REGULAR HOLIDAY
@@ -1489,7 +1489,7 @@
 
 
                 // COMPUTE OVERTIME HOURS
-                $overtimeQuery = $this->dbConnect()->query(("SELECT * FROM tbl_filedot WHERE empID = $employee_id AND (otDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo') AND status = '2'"));
+                $overtimeQuery = $this->dbConnect()->query(("SELECT * FROM tbl_filedot WHERE empID = $employee_id AND (otDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo') AND status = '1'"));
                 while ($overtime = mysqli_fetch_array($overtimeQuery)) {
                     if (isset($holidays[$overtime['otDate']])) {
                         // REGULAR HOLIDAY
