@@ -310,9 +310,9 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-2" id="viewMedCertRow">
+                                <div class="row g-2" id="viewPhotoRow">
                                     <div class="col-12">
-                                        <button id="viewMedicalCert" class="text-blue-500">View Medical Certificate</button>
+                                        <button id="viewPhoto" class="text-blue-500">View Uploaded Photo</button>
                                     </div>
                                 </div>
                             </form>
