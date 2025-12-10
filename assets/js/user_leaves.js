@@ -4,51 +4,51 @@ $(document).ready(function() {
         order: [] // Disable default sorting
     });
 
-    $('.medCertDiv').hide();
+    $(".photoUploadDiv").hide();
     $('#leaveType').on('change', function() {
         var leaveType = $('#leaveType').val();
-        if (leaveType == 1) {
-            $('.medCertDiv').show();
-            $('#medCert').attr('required', true);
+        if (leaveType == 1 || leaveType == 3 || leaveType == 4 || leaveType == 5) {
+            $(".photoUploadDiv").show();
+            $("#photoUpload").attr("required", true);
         }
         else {
-            $('.medCertDiv').hide();
-            $('#medCert').attr('required', false);
+            $(".photoUploadDiv").hide();
+            $("#photoUpload").attr("required", false);
         }
     });
 
     // FILE LEAVE - UPLOAD MEDICAL CERTIFICATE
-    $('#medCert').change(function() {
-        const [file] = medCert.files;
-        const acceptedImageTypes = ['image/jpeg', 'image/png'];
+    $("#photoUpload").change(function () {
+        const [file] = photoUpload.files;
+        const acceptedImageTypes = ["image/jpeg", "image/png"];
         if (file) {
-            const fileType = file['type'];
+            const fileType = file["type"];
             if ($.inArray(fileType, acceptedImageTypes) < 0) {
                 Swal.fire({
-                    icon: 'warning',
-                    title: 'Invalid Picture',
-                    text: 'Invalid File only accept (JPG/PNG) file',
-                })
-                $('#viewMedCert').attr('disabled', true);
+                    icon: "warning",
+                    title: "Invalid Picture",
+                    text: "Invalid File only accept (JPG/PNG) file",
+                });
+                $("#viewPhotoUpload").attr("disabled", true);
             } else {
-                $('#viewMedCert').attr('disabled', false);  // Enable the view button
+                $("#viewPhotoUpload").attr("disabled", false); // Enable the view button
             }
         } else {
-            $('#viewMedCert').attr('disabled', true);  // Disable the view button if no file is selected
+            $("#viewPhotoUpload").attr("disabled", true); // Disable the view button if no file is selected
         }
     });
 
-    $('#viewMedCert').click(function() {
-        const [file] = medCert.files;
+    $("#viewPhotoUpload").click(function () {
+        const [file] = photoUpload.files;
         if (file) {
             const reader = new FileReader();
             reader.onload = (e) => {
                 Swal.fire({
-                    title: 'Medical Certificate',
+                    title: "Upload Photo",
                     imageUrl: e.target.result,
                     imageHeight: 500,
                 });
-            }
+            };
             reader.readAsDataURL(file);
         }
     });
@@ -132,7 +132,6 @@ $(document).ready(function() {
                                     timer: 2000,
                                     showConfirmButton: false,
                                 }).then(() => {
-                                    // window.location.reload();
                                     $('#fileLeaveModal').modal('hide');
                                     $('#viewLeaveModal').modal('show');
                                 })
@@ -168,7 +167,7 @@ $(document).ready(function() {
                 if (res.status == 404) {
                     alert(res.message);
                 } 
-                else if (res.status == 200 && res.data.leaveType == "Sick Leave") {
+                else if (res.status == 200 && (res.data.leaveType == "Sick Leave" || res.data.leaveType == "Bereavement Leave" || res.data.leaveType == "Maternity Leave" || res.data.leaveType == "Paternity Leave")) {
                     $('#viewLeaveID').val(res.data.requestID);
                     $('#viewEmpID').val(res.data.employeeID);
                     $('#viewDateFiled').val(res.data.dateFiled);
@@ -178,37 +177,35 @@ $(document).ready(function() {
                     $('#viewEndDate').val(res.data.effectivityEndDate);
                     $('#viewPurpose').val(res.data.remarks);
                     $('#viewStatus').val(res.data.status);
-                    $('#viewMedCertRow').show();
+                    $("#viewPhotoRow").show();
                     $('#viewLeaveModal').modal('show');
                     
-                    $('#viewMedicalCert').click(function(event) {
+                    $('#viewPhoto').click(function(event) {
                         event.preventDefault();
-                        
-                        const imagePath = '../assets/images/medicalCertificates/' + res.data.medCert; // Set your directory path here
-                        
-                        // VIEW MEDICAL CERTIFICATE IN NEW TAB
-                        window.open(imagePath, '_blank');
+                        if (res.data.leaveType == "Sick Leave") {
+                            const imagePath = '../assets/images/medicalCertificates/' + res.data.photoUpload; // Set your directory path here
 
-                        // VIEW MEDICAL CERTIFICATE IN MODAL
-                        // Use the fetch API to check if the image exists
-                        // fetch(imagePath)
-                        //     .then(response => {
-                        //         if (response.ok) {
-                        //             Swal.fire({
-                        //                 title: 'Medical Certificate',
-                        //                 imageUrl: imagePath,
-                        //                 imageHeight: 500,
-                        //             });
-                        //         }
-                        //     })
-                        //     .catch(error => {
-                        //         Swal.fire({
-                        //             icon: 'error',
-                        //             title: 'Error',
-                        //             text: 'An error occurred while fetching the image.',
-                        //         });
-                        //         console.error('Error fetching image:', error);
-                        //     });
+                            // VIEW UPLOADED PHOTO IN NEW TAB
+                            window.open(imagePath, '_blank');
+                        }
+                        else if (res.data.leaveType == "Bereavement Leave") {
+                            const imagePath = '../assets/images/bereavementLeaves/' + res.data.photoUpload; // Set your directory path here
+
+                            // VIEW UPLOADED PHOTO IN NEW TAB
+                            window.open(imagePath, '_blank');
+                        }
+                        else if (res.data.leaveType == "Maternity Leave") {
+                            const imagePath = '../assets/images/maternityLeaves/' + res.data.photoUpload; // Set your directory path here
+
+                            // VIEW UPLOADED PHOTO IN NEW TAB
+                            window.open(imagePath, '_blank');
+                        }
+                        else {
+                            const imagePath = '../assets/images/paternityLeaves/' + res.data.photoUpload; // Set your directory path here
+
+                            // VIEW UPLOADED PHOTO IN NEW TAB
+                            window.open(imagePath, '_blank');
+                        }
                     });
                 }
                 else {
@@ -221,7 +218,7 @@ $(document).ready(function() {
                     $('#viewEndDate').val(res.data.effectivityEndDate);
                     $('#viewPurpose').val(res.data.remarks);
                     $('#viewStatus').val(res.data.status);
-                    $('#viewMedCertRow').hide();
+                    $("#viewPhotoRow").hide();
                     $('#viewLeaveModal').modal('show');
                 }
             }
@@ -238,53 +235,61 @@ $(document).ready(function() {
 
                 if (res.status == 404) {
                     alert(res.message);
-                } 
-                else if (res.status == 200) {
-                    $('#viewLeaveID').val(res.data.requestID);
-                    $('#viewEmpID').val(res.data.employeeID);
-                    $('#viewDateFiled').val(res.data.dateFiled);
-                    $('#viewName').val(res.data.employeeName);
-                    $('#viewLeaveType').val(res.data.leaveType);
-                    $('#viewStartDate').val(res.data.effectivityStartDate);
-                    $('#viewEndDate').val(res.data.effectivityEndDate);
-                    $('#viewPurpose').val(res.data.remarks);
-                    $('#viewStatus').val(res.data.status);
-                    $('#viewMedCertRow').show();
+                } else if (res.status == 200 && (res.data.leaveType == "Sick Leave") || (res.data.leaveType == "Bereavement Leave") || (res.data.leaveType == "Maternity Leave") || (res.data.leaveType == "Paternity Leave")) {
+                    $("#viewLeaveID").val(res.data.requestID);
+                    $("#viewEmpID").val(res.data.employeeID);
+                    $("#viewDateFiled").val(res.data.dateFiled);
+                    $("#viewName").val(res.data.employeeName);
+                    $("#viewLeaveType").val(res.data.leaveType);
+                    $("#viewStartDate").val(res.data.effectivityStartDate);
+                    $("#viewEndDate").val(res.data.effectivityEndDate);
+                    $("#viewPurpose").val(res.data.remarks);
+                    $("#viewStatus").val(res.data.status);
+                    $("#viewPhotoRow").show();
 
-                    if (res.data.leaveType == "Sick Leave") {
-                        $('#viewMedicalCert').click(function(event) {
-                            event.preventDefault();
-                            
-                            const imagePath = '../assets/images/medicalCertificates/' + res.data.medCert; // Set your directory path here
-                            
-                            // VIEW MEDICAL CERTIFICATE IN NEW TAB
-                            window.open(imagePath, '_blank');
-    
-                            // VIEW MEDICAL CERTIFICATE IN MODAL
-                            // Use the fetch API to check if the image exists
-                            // fetch(imagePath)
-                            //     .then(response => {
-                            //         if (response.ok) {
-                            //             Swal.fire({
-                            //                 title: 'Medical Certificate',
-                            //                 imageUrl: imagePath,
-                            //                 imageHeight: 500,
-                            //             });
-                            //         }
-                            //     })
-                            //     .catch(error => {
-                            //         Swal.fire({
-                            //             icon: 'error',
-                            //             title: 'Error',
-                            //             text: 'An error occurred while fetching the image.',
-                            //         });
-                            //         console.error('Error fetching image:', error);
-                            //     });
-                        });
-                    }
-                    else {
-                        $('#viewMedCertRow').hide();
-                    }
+                    $("#viewPhoto").click(function (event) {
+                        event.preventDefault();
+                        if (res.data.leaveType == "Sick Leave") {
+                        const imagePath =
+                            "../assets/images/medicalCertificates/" +
+                            res.data.photoUpload; // Set your directory path here
+
+                        // VIEW UPLOADED PHOTO IN NEW TAB
+                        window.open(imagePath, "_blank");
+                        } else if (res.data.leaveType == "Bereavement Leave") {
+                        const imagePath =
+                            "../assets/images/bereavementLeaves/" +
+                            res.data.photoUpload; // Set your directory path here
+
+                        // VIEW UPLOADED PHOTO IN NEW TAB
+                        window.open(imagePath, "_blank");
+                        } else if (res.data.leaveType == "Maternity Leave") {
+                        const imagePath =
+                            "../assets/images/maternityLeaves/" +
+                            res.data.photoUpload; // Set your directory path here
+
+                        // VIEW UPLOADED PHOTO IN NEW TAB
+                        window.open(imagePath, "_blank");
+                        } else {
+                        const imagePath =
+                            "../assets/images/paternityLeaves/" +
+                            res.data.photoUpload; // Set your directory path here
+
+                        // VIEW UPLOADED PHOTO IN NEW TAB
+                        window.open(imagePath, "_blank");
+                        }
+                    });
+                } else {
+                    $("#viewLeaveID").val(res.data.requestID);
+                    $("#viewEmpID").val(res.data.employeeID);
+                    $("#viewDateFiled").val(res.data.dateFiled);
+                    $("#viewName").val(res.data.employeeName);
+                    $("#viewLeaveType").val(res.data.leaveType);
+                    $("#viewStartDate").val(res.data.effectivityStartDate);
+                    $("#viewEndDate").val(res.data.effectivityEndDate);
+                    $("#viewPurpose").val(res.data.remarks);
+                    $("#viewStatus").val(res.data.status);
+                    $("#viewPhotoRow").hide();
                 }
             }
         });
