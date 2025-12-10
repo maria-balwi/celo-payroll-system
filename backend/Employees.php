@@ -1067,7 +1067,7 @@
         public function getLeaveInfo($leaveID) {
             $request = "
                 SELECT requestID, employeeID, leaves.leaveTypeID,
-                leaveType, remarks, status, medCert, designationID,
+                leaveType, remarks, status, photoUpload, designationID,
                 CONCAT(firstName, ' ', lastName) AS employeeName,
                 DATE_FORMAT(dateFiled, '%M %d, %Y') AS dateFiled,
                 DATE_FORMAT(effectivityStartDate, '%M %d, %Y') AS effectivityStartDate,
@@ -1144,10 +1144,10 @@
             return $fileLeave;
         }
 
-        public function fileSickLeave($employeeID, $leaveTypeID, $effectivityStartDate, $effectivityEndDate, $remarks, $status, $medCert) {
+        public function fileLeaveWithPhoto($employeeID, $leaveTypeID, $effectivityStartDate, $effectivityEndDate, $remarks, $status, $photoUpload) {
             $fileLeave = "
-                INSERT INTO ".$this->leaves." (empID, dateFiled, leaveTypeID, effectivityStartDate, effectivityEndDate, remarks, status, medCert)
-                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$leaveTypeID', '$effectivityStartDate', '$effectivityEndDate', '$remarks', '$status', '$medCert')";
+                INSERT INTO ".$this->leaves." (empID, dateFiled, leaveTypeID, effectivityStartDate, effectivityEndDate, remarks, status, photoUpload)
+                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$leaveTypeID', '$effectivityStartDate', '$effectivityEndDate', '$remarks', '$status', '$photoUpload')";
             return $fileLeave;
         }
 
