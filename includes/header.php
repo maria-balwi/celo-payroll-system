@@ -39,44 +39,52 @@
             // ====== CHECK LAST DTR INFO ========
             // FETCH DATA FROM DATABASE
             if ($_SESSION['levelID'] == 0) {
-                $_SESSION['dtr'] = 'forTimeIn';
+                $_SESSION['dtr'] = 'forWaiting';
             }
             else {
-                $_SESSION['dtr'] = 'forTimeIn';
                 $lastDTRQuery = mysqli_query($conn, $users->checkLastDTR($_SESSION['id']));
+                date_default_timezone_set('Asia/Manila');
                 if (mysqli_num_rows($lastDTRQuery) == 0) {
                     $_SESSION['dtr'] = 'forTimeIn';
                 }
                 else {
                     $lastDTR = mysqli_fetch_array($lastDTRQuery);
-                    $logType = $lastDTR['logType'];
-                    $attendanceDate = $lastDTR['attendanceDate'];
-                    $attendanceTime = $lastDTR['attendanceTime'];
+                    $attendanceDateTime = new DateTime($attendanceDate . " " . $attendanceTime);
 
+                    // INTERVAL AFTER SHIFT FOR POSSIBLE OVERTIME BEFORE AUTOMATIC TIMEOUT
                     // COMBINE DATE AND TIME
-                    $dtrDateTime = $attendanceDate . " " . $attendanceTime;
+                    $dtrDateTime = $attendanceDate . " " . $shiftStart;
                     $dtrDateTime = new DateTime($dtrDateTime);
 
-                    // // SETTING TIME BEFORE GETTING CURRENT DATE AND TIME
-                    // date_default_timezone_set('Asia/Manila');
-                    // $currentDateTime = new DateTime(); 
+                    // SETTING TIME BEFORE GETTING CURRENT DATE AND TIME
+                    $currentDateTime = new DateTime(); 
 
-                    // // ADD 2 HOURS INTERVAL
-                    // $interval = new DateInterval('PT2H');
-                    // $updatedDateTime = $dtrDateTime->add($interval);
-                    
+                    // ADD 8 HOURS TO ALLOW OVERTIME SUBMISSION
+                    $interval = new DateInterval('PT17H');
+                    $dtrDateTime->add($interval);
                     // SESSION VARIABLE FOR DTR
                     $_SESSION['dtr'] = 'forTimeIn';
 
                     if ($logType == "Time In" || $logType == "Late") 
                     {
-                        // CAN TIME OUT ANYTIME
-                        $_SESSION['dtr'] = 'forTimeOut';
+                        // // CAN TIME OUT ANYTIME
+                        // $_SESSION['dtr'] = 'forTimeOut';
 
-                        // if ($currentDateTime < $updatedDateTime) 
-                        // {
-                        //     $_SESSION['dtr'] = 'forTimeOut';
-                        // }
+                        if ($currentDateTime < $dtrDateTime) 
+                        {
+                            $_SESSION['dtr'] = 'forTimeOut';
+                        }
+                        else {
+                            $assumedTimeIn = $attendanceDate . " " . $shiftStart;
+                            $assumedTimeIn = new DateTime($assumedTimeIn);
+
+                            $endOfShiftInterval = new DateInterval('PT9H');
+                            $assumedTimeIn->add($endOfShiftInterval);
+
+                            $newAttendanceDate = $assumedTimeIn->format('Y-m-d');
+
+                            mysqli_query($conn, $attendance->addEmployeeTimeOut($_SESSION['id'], $newAttendanceDate, $shiftEnd));
+                        }
                     }
                     else if ($logType == "Time Out" || $logType == "Undertime")
                     {

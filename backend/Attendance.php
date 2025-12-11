@@ -688,6 +688,12 @@
             return $attendance;
         }
 
+        public function addEmployeeTimeOut($id, $attendanceDate, $attendanceTime) {
+            $attendance = "
+                INSERT INTO {$this->attendance} (empID, logTypeID, attendanceDate, attendanceTime) 
+                VALUES ({$id}, 4, '{$attendanceDate}', '{$attendanceTime}')";
+            return $attendance;
+        }
     }
 
 ?>

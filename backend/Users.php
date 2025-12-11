@@ -227,6 +227,10 @@
                 SELECT * FROM ".$this->attendance." AS attendance
                 INNER JOIN ".$this->logtype." AS logtype
                 ON attendance.logTypeID = logtype.logTypeID
+                INNER JOIN ".$this->employees." AS employees
+                ON attendance.empID = employees.id
+                INNER JOIN ".$this->shift." AS shift
+                ON employees.shiftID = shift.shiftID
                 WHERE attendance.empID = '$id'
                 ORDER BY attendanceID DESC
                 LIMIT 1";
