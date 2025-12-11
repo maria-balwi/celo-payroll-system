@@ -17,7 +17,7 @@
             <!-- Navigation -->
             <nav>
                 <?php
-                    if (($_SESSION['levelID'] == '3' || $_SESSION['levelID'] == '0') && $_SESSION['activated'] == 1) {
+                    if (($_SESSION['levelID'] == '3' || $_SESSION['levelID'] == '0') && $_SESSION['activated'] == 1) { // ADMIN & HR SUPERVISOR LEVEL
                 ?>
                 <div class="menu-section">
                     <h4 class="text-sm font-bold text-gray-500 uppercase pt-2 pb-2">Admin's Portal</h4>
@@ -53,14 +53,14 @@
                     Payroll
                 </a>
                 <?php
-                    if ($_SESSION['departmentID'] == '5' || $_SESSION['departmentID'] == '4' || $_SESSION['levelID'] == '3' || $_SESSION['levelID'] == '0') {
+                    if ($_SESSION['departmentID'] == '5' || $_SESSION['levelID'] == '3' || $_SESSION['levelID'] == '0') {
                 ?>
                 <a href="../pages/admin_auditTrail.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Audit Trail
                 </a>
                 <?php }
                     }
-                    if (($_SESSION['levelID'] == '4') && $_SESSION['activated'] == 1) {
+                    if ($_SESSION['levelID'] == '4' && $_SESSION['activated'] == 1) { // HR & ADMIN STAFF LEVEL
                 ?>
                 <div class="menu-section">
                     <h4 class="text-sm font-bold text-gray-500 uppercase pt-2 pb-2">Admin's Portal</h4>
@@ -71,8 +71,35 @@
                 <a href="../pages/admin_employees.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Employee List
                 </a>
+                 <?php }
+                    if ($_SESSION['levelID'] == '5' && $_SESSION['activated'] == 1) { // HR GENERALIST LEVEL
+                ?>
+                <div class="menu-section">
+                    <h4 class="text-sm font-bold text-gray-500 uppercase pt-2 pb-2">Admin's Portal</h4>
+                </div>
+                <a href="../pages/admin_dashboard.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
+                    Dashboard
+                </a>
+                <a href="../pages/admin_dtr.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
+                    Daily Time Records
+                </a>
+                <a href="../pages/admin_employees.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
+                    Employee List
+                </a>
+                <a href="../pages/admin_users.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
+                    User List
+                </a>
+                <a href="../pages/admin_leaves.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
+                    Leave Application
+                </a>
+                <a href="../pages/admin_changeShift.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
+                    Change Shift Request
+                </a>
+                <a href="../pages/admin_overtime.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
+                    Overtime
+                </a>
                 <?php }
-                    if ($_SESSION['levelID'] == '2' && $_SESSION['activated'] == 1) {
+                    if ($_SESSION['levelID'] == '2' && $_SESSION['activated'] == 1) { // TEAM LEAD & IT SUPERVISOR & MANAGER LEVEL
                 ?>
                 <div class="menu-section">
                     <h4 class="text-sm font-bold text-gray-500 uppercase pt-2 pb-2">Team's Portal</h4>
@@ -95,16 +122,22 @@
                 <a href="../pages/team_overtime.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Overtime
                 </a>
-                <?php
-                    if (($_SESSION['departmentID'] == '4') && $_SESSION['activated'] == 1 && $_SESSION['levelID'] != '0') {
+                <a href="../pages/admin_users.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
+                    User List
+                </a>
+                <?php }
+                    if ($_SESSION['levelID'] == '6' && $_SESSION['activated'] == 1) { // TEAM LEAD & IT SUPERVISOR & MANAGER LEVEL
                 ?>
+                <div class="menu-section">
+                    <h4 class="text-sm font-bold text-gray-500 uppercase pt-2 pb-2">Team's Portal</h4>
+                </div>
                 <a href="../pages/admin_users.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     User List
                 </a>
                 <?php 
                     }
-                }
-                    if (($_SESSION['levelID'] == '1' || $_SESSION['levelID'] == '2' || $_SESSION['levelID'] == '3' || $_SESSION['levelID'] == '4' || $_SESSION['levelID'] == '0') && $_SESSION['activated'] == 1) {
+                    // ALL USERS
+                    if (($_SESSION['levelID'] == '1' || $_SESSION['levelID'] == '2' || $_SESSION['levelID'] == '3' || $_SESSION['levelID'] == '4' || $_SESSION['levelID'] == '5' || $_SESSION['levelID'] == '6' || $_SESSION['levelID'] == '0') && $_SESSION['activated'] == 1) {
                 ?>
                 <div class="menu-section">
                     <h4 class="text-sm font-bold text-gray-500 uppercase pt-2 pb-2">My Portal</h4>
