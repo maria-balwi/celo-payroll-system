@@ -49,6 +49,11 @@
                 }
                 else {
                     $lastDTR = mysqli_fetch_array($lastDTRQuery);
+                    $logType = $lastDTR['logType'];
+                    $attendanceDate = $lastDTR['attendanceDate'];
+                    $attendanceTime = $lastDTR['attendanceTime'];
+                    $shiftStart = $lastDTR['startTime'];
+                    $shiftEnd = $lastDTR['endTime'];
                     $attendanceDateTime = new DateTime($attendanceDate . " " . $attendanceTime);
 
                     // INTERVAL AFTER SHIFT FOR POSSIBLE OVERTIME BEFORE AUTOMATIC TIMEOUT
