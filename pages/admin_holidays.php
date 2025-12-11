@@ -16,7 +16,7 @@
                 </div>    
 
                 <!-- REQUEST SHIFT CHANGE BUTTON -->
-                <div class="relative inline-block text-right">
+                <div class="static inline-block text-right">
                     <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none no-underline" data-bs-toggle="modal" data-bs-target="#addHolidayModal">Add Holiday</button>
                 </div>
             </div>
