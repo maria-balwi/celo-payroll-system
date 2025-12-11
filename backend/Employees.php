@@ -1322,6 +1322,13 @@
             return $employee;
         }
 
+        public function viewApprovedPaternityLeaves($id) {
+            $approvedPaternityLeaves = "
+                SELECT * FROM {$this->leaves}
+                WHERE empID = '{$id}' AND leaveTypeID = '5' AND status = 'Approved'";
+            return $approvedPaternityLeaves;
+        }
+
         // OLD CODE
         // public function viewAuditTrail() {
         //     $auditTrail = "

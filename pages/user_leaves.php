@@ -159,8 +159,15 @@
                                                     if ($_SESSION['gender'] == "Female") { ?>
                                                     <option value="4">Maternity Leave</option>
                                                 <?php } 
-                                                    else { ?>
+                                                    else { 
+                                                        $paternityLeaveQuery = mysqli_query($conn, $employees->viewApprovedPaternityLeaves($_SESSION['id']));
+                                                        $paternityLeaves = mysqli_num_rows($paternityLeaveQuery);
+                                                        if ($paternityLeaves <= 3) {
+                                                ?>
                                                     <option value="5">Paternity Leave</option>
+                                                <?php } else { ?>
+                                                    <option value="5" disabled>Paternity Leave</option>
+                                                <?php   } ?>
                                                 <?php } ?>
                                                     <option value="6">Emergency Leave</option>
                                             </select>
