@@ -1462,7 +1462,7 @@
                                 <div class="row g-2 mb-2 renderedDaysDiv">
                                     <div class="col-12">
                                         <label for="renderedDays">Rendered Days:</label>
-                                        <input type="number" class="form-control" id="renderedDays" name="renderedDays" required>
+                                        <input type="number" class="form-control" id="renderedDays" name="renderedDays">
                                     </div>
                                 </div>
 
