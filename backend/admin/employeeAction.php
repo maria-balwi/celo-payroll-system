@@ -85,6 +85,7 @@
                     mysqli_query($conn, $employees->resignEmployee($id, $resignationStatus, $newFileName));
                 }
 
+                mysqli_query($conn, $employees->deactivateUserbyID($id));
                 $em = "Employee Resigned Successfully";
                 $error = array('error' => 0, 'em' => $em);
                 echo json_encode($error);
