@@ -88,7 +88,6 @@ $(document).ready(function() {
 
     // DROPDOWN FOR DESIGNATION UPDATING USER - DROPDOWN WILL APPEAR WITH SPECIFIED OPTIONS ONLY WHEN DEPARTMENT IS CHOSEN
     $("#updateDepartment").change(function() {
-        $("#updateDesignation").prop("disabled", false);
         $("#updateDesignation").html("<option selected>Chooose Designation</option>");
         const designations = designationList.filter(m=>m.Department == $("#updateDepartment").val());
         designations.forEach(element => {
