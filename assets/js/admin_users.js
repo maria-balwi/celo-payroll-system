@@ -5,8 +5,8 @@ $(document).ready(function() {
     $('#tlqaTable').DataTable();
     $('#inactiveTlqaTable').DataTable();
 
-    $('#facilitiesTable').DataTable();
-    $('#inactiveFacilitiesTable').DataTable();
+    $("#recruitmentTable").DataTable();
+    $("#inactiveRecruitmentTable").DataTable();
 
     $('#hrTable').DataTable();
     $('#inactiveHRtable').DataTable();

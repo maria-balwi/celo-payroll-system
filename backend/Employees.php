@@ -706,21 +706,21 @@
             return $allTLQA;
         }
 
-        public function viewFacilities() {
+        public function viewRecruitment() {
             $allHR = "
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
                 ON employees.id = users.empID
-                WHERE users.status = 'Active' AND designationID = 6";
+                WHERE users.status = 'Active' AND designationID IN (6, 16, 17)";
             return $allHR;
         }
 
-        public function viewInactiveFacilities() {
+        public function viewInactiveRecruitment() {
             $allHR = "
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
                 ON employees.id = users.empID
-                WHERE users.status = 'Inactive' AND designationID = 6";
+                WHERE users.status = 'Inactive' AND designationID IN (6, 16, 17)";
             return $allHR;
         }
 
@@ -799,6 +799,12 @@
         public function deactivateUser($id) {
             $deactivate = "
                 UPDATE ".$this->users." SET status = 'Inactive' WHERE userID = '$id'";
+            return $deactivate;
+        }
+
+        public function deactivateUserbyID($id) {
+            $deactivate = "
+                UPDATE {$this->users} SET status = 'Inactive' WHERE empID = {$id}";
             return $deactivate;
         }
 

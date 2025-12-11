@@ -1212,7 +1212,7 @@
                                     </div>
                                     <div class="col-4">
                                         <label for="updateDesignation">Designation:</label>
-                                        <select class="form-select" id="updateDesignation" name="updateDesignation" disabled>
+                                        <select class="form-select" id="updateDesignation" name="updateDesignation">
                                             <option disabled selected>Choose</option>
                                             <?php
                                                 $designation = mysqli_query($conn, $employees->viewDesignation());

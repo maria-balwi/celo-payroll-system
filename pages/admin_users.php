@@ -34,8 +34,8 @@
                                 <button class="nav-link uncheck" id="pills-tlqa-tab" data-bs-toggle="pill" data-bs-target="#pills-tlqa" type="button" role="tab" aria-controls="pills-tlqa" aria-selected="false">TL/QA</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <!--FACILITIES BUTTON-->
-                                <button class="nav-link uncheck" id="pills-facilities-tab" data-bs-toggle="pill" data-bs-target="#pills-facilities" type="button" role="tab" aria-controls="pills-facilities" aria-selected="false">Business Devs</button>
+                                <!--RECRUITMENT BUTTON-->
+                                <button class="nav-link uncheck" id="pills-recruitment-tab" data-bs-toggle="pill" data-bs-target="#pills-recruitment" type="button" role="tab" aria-controls="pills-recruitment" aria-selected="false">Recruitment</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <!--FINANCE BUTTON-->
@@ -226,23 +226,23 @@
                             <!-- ------------------------------------------------------------------------------------------------- -->
                             <!-- ------------------------------------------ FACILITIES TAB --------------------------------------- -->
                             <!-- ------------------------------------------------------------------------------------------------- -->
-                            <div class="tab-pane fade" id="pills-facilities" role="tabpanel" aria-labelledby="pills-facilities-tab">
+                            <div class="tab-pane fade" id="pills-recruitment" role="tabpanel" aria-labelledby="pills-recruitment-tab">
                                 <div class="card border-0">
                                     <ul class="nav nav-pills mt-0 mb-3" id="pills-tab-inactive" role="tablist">
                                         <!-- ACTIVE BUTTON -->
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link active" id="facilities-active-tab" data-bs-toggle="pill" data-bs-target="#facilities-active" type="button" role="tab" aria-controls="facilities-active" aria-selected="true">Active</button>
+                                            <button class="nav-link active" id="recruitment-active-tab" data-bs-toggle="pill" data-bs-target="#recruitment-active" type="button" role="tab" aria-controls="recruitment-active" aria-selected="true">Active</button>
                                         </li>
                                         <!-- INACTIVE BUTTON -->
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="facilities-inactive-tab" data-bs-toggle="pill" data-bs-target="#facilities-inactive" type="button" role="tab" aria-controls="facilities-inactive" aria-selected="false">Inactive</button>
+                                            <button class="nav-link" id="recruitment-inactive-tab" data-bs-toggle="pill" data-bs-target="#recruitment-inactive" type="button" role="tab" aria-controls="recruitment-inactive" aria-selected="false">Inactive</button>
                                         </li>
                                     </ul>
 
                                     <div class="tab-content" id="pills-tabContent">
-                                        <!-- ACTIVE FACILITIES TABLE  -->
-                                        <div class="tab-pane fade show active" id="facilities-active" role="tabpanel" aria-labelledby="facilities-active-tab">
-                                            <table class="table table-striped table-bordered pt-2" id="facilitiesTable">
+                                        <!-- ACTIVE RECRUITMENT TABLE  -->
+                                        <div class="tab-pane fade show active" id="recruitment-active" role="tabpanel" aria-labelledby="recruitment-active-tab">
+                                            <table class="table table-striped table-bordered pt-2" id="recruitmentTable">
                                                 <thead class="table-light">
                                                     <th>Employee ID</th>
                                                     <th>Name</th>
@@ -250,7 +250,7 @@
                                                 </thead>
                                                 <tbody>
                                                     <?php
-                                                        $facilities = mysqli_query($conn, $employees->viewFacilities());
+                                                        $facilities = mysqli_query($conn, $employees->viewRecruitment());
                                                         while ($facilitiesDetails = mysqli_fetch_array($facilities)) {
                                                             
                                                             $userID = $facilitiesDetails['userID'];
@@ -271,9 +271,9 @@
                                             </table>
                                         </div>
 
-                                        <!-- INACTIVE FACILITIES TABLE  -->
-                                        <div class="tab-pane fade" id="facilities-inactive" role="tabpanel" aria-labelledby="facilities-inactive-tab">
-                                            <table class="table table-striped table-bordered pt-2" id="inactiveFacilitiesTable">
+                                        <!-- INACTIVE RECRUITMENT TABLE  -->
+                                        <div class="tab-pane fade" id="recruitment-inactive" role="tabpanel" aria-labelledby="recruitment-inactive-tab">
+                                            <table class="table table-striped table-bordered pt-2" id="inactiveRecruitmentTable">
                                                 <thead class="table-light">
                                                     <th>Employee ID</th>
                                                     <th>Name</th>
@@ -281,7 +281,7 @@
                                                 </thead>
                                                 <tbody>
                                                     <?php
-                                                        $inactiveFacilities = mysqli_query($conn, $employees->viewInactiveFacilities());
+                                                        $inactiveFacilities = mysqli_query($conn, $employees->viewInactiveRecruitment());
                                                         while ($inactiveFacilitiesDetails = mysqli_fetch_array($inactiveFacilities)) {
                                                             
                                                             $userID = $inactiveFacilitiesDetails['userID'];
