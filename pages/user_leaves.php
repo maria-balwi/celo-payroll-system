@@ -153,8 +153,15 @@
                                                 <?php } 
                                                     else {?>
                                                     <option value="2" disabled>Vacation Leave</option>
-                                                <?php } ?>
+                                                <?php } 
+                                                    $bereavementLeaveQuery = mysqli_query($conn, $employees->viewApprovedBereavementLeaves($_SESSION['id']));
+                                                    $bereavementLeaves = mysqli_num_rows($bereavementLeaveQuery);
+                                                    if ($bereavementLeaves <= 3) {
+                                                ?>
                                                     <option value="3">Bereavement Leave</option>
+                                                <?php } else { ?>
+                                                    <option value="3" disabled>Bereavement Leave</option>
+                                                <?php } ?>
                                                 <?php 
                                                     if ($_SESSION['gender'] == "Female") { ?>
                                                     <option value="4">Maternity Leave</option>

@@ -54,7 +54,7 @@ $(document).ready(function() {
     });
 
     $("select[id='leaveType']").on("change", function () {
-        const leaveDateInput = document.getElementById("effectivityStartDate");
+        // const leaveDateInput = document.getElementById("effectivityStartDate");
     
         if ($(this).val() == 2) {
             // Get today's date
@@ -75,7 +75,60 @@ $(document).ready(function() {
             const effectivityEndDate = document.getElementById("effectivityEndDate");
             effectivityStartDate.setAttribute("min", formattedMinDate);
             effectivityEndDate.setAttribute("min", formattedMinDate);
-        } else {
+        } 
+        else if ($(this).val() == 3) {
+            document.getElementById("effectivityStartDate").addEventListener("change", function () {
+                const startDateValue = this.value; // YYYY-MM-DD
+
+                if (!startDateValue) return;
+
+                // Convert to Date object
+                const startDate = new Date(startDateValue);
+
+                // Add 7 days
+                const endDate = new Date(startDate);
+                endDate.setDate(startDate.getDate() + 4);
+
+                // Format to YYYY-MM-DD
+                const year = endDate.getFullYear();
+                const month = String(endDate.getMonth() + 1).padStart(2, "0");
+                const day = String(endDate.getDate()).padStart(2, "0");
+                const formattedEndDate = `${year}-${month}-${day}`;
+
+                // Set the value of the end date input
+                document.getElementById("effectivityEndDate").value = formattedEndDate;
+
+                // Make the end date readonly
+                effectivityEndDate.setAttribute("readonly", true);
+            });
+        }
+        else if ($(this).val() == 5) {
+            document.getElementById("effectivityStartDate").addEventListener("change", function () {
+                const startDateValue = this.value; // YYYY-MM-DD
+
+                if (!startDateValue) return;
+
+                // Convert to Date object
+                const startDate = new Date(startDateValue);
+
+                // Add 7 days
+                const endDate = new Date(startDate);
+                endDate.setDate(startDate.getDate() + 6);
+
+                // Format to YYYY-MM-DD
+                const year = endDate.getFullYear();
+                const month = String(endDate.getMonth() + 1).padStart(2, "0");
+                const day = String(endDate.getDate()).padStart(2, "0");
+                const formattedEndDate = `${year}-${month}-${day}`;
+
+                // Set the value of the end date input
+                document.getElementById("effectivityEndDate").value = formattedEndDate;
+
+                // Make the end date readonly
+                effectivityEndDate.setAttribute("readonly", true);
+            });
+        } 
+        else {
             // Remove the min attribute if the leaveType is not 2
             if (effectivityStartDate) {
                 effectivityStartDate.removeAttribute("min");

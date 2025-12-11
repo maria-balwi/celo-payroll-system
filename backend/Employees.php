@@ -1322,6 +1322,13 @@
             return $employee;
         }
 
+        public function viewApprovedBereavementLeaves($id) {
+            $approvedBereavementLeaves = "
+                SELECT * FROM {$this->leaves}
+                WHERE empID = '{$id}' AND leaveTypeID = '3' AND status = 'Approved'";
+            return $approvedBereavementLeaves;
+        }
+
         public function viewApprovedPaternityLeaves($id) {
             $approvedPaternityLeaves = "
                 SELECT * FROM {$this->leaves}
