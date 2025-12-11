@@ -70,7 +70,7 @@ $(document).ready(function() {
         {Department:'HR/Admin', Designation:'HR Supervisor'},
         {Department:'HR/Admin', Designation:'Admin Supervisor'},
         {Department:'IT', Designation:'IT L1'},
-        {Department:'IT', Designation:'IT l2'},
+        {Department:'IT', Designation:'IT L2'},
         {Department:'IT', Designation:'IT Web Developer'},
         {Department:'IT', Designation:'IT Supervisor'},
         {Department:'Directors', Designation:'Director'}
