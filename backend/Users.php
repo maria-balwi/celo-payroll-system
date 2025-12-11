@@ -63,14 +63,14 @@
                     if ($userDetails['levelID'] == 1) {
                         $_SESSION['expire'] = $_SESSION['start'] + (60 * 5);
                     }
-                    else if ($userDetails['levelID'] == 2) {
+                    else if ($userDetails['levelID'] == 2 || $userDetails['levelID'] == 6) {
                         $_SESSION['expire'] = $_SESSION['start'] + (60 * 10);
                     }
                     else if ($userDetails['levelID'] == 3) {
                         $_SESSION['expire'] = $_SESSION['start'] + (60 * 60);
                     }
-                    else if ($userDetails['levelID'] == 4) {
-                        $_SESSION['expire'] = $_SESSION['start'] + (60 * 10);
+                    else if ($userDetails['levelID'] == 4 || $userDetails['levelID'] == 5) {
+                        $_SESSION['expire'] = $_SESSION['start'] + (60 * 30);
                     }
 
                     // RETURN VALUES
@@ -220,6 +220,18 @@
                 ON employees.shiftID = shifts.shiftID
                 WHERE employees.id = '$id'";
             return $shift;
+        }
+
+        public function getUserAccount($id) {
+            $getUser = "SELECT * FROM {$this->users} WHERE empID = '$id'";
+            return $getUser;
+        }
+
+        public function updateUserAccount($empID, $levelID) {
+            $updateUser = "
+                UPDATE {$this->users} 
+                SET levelID = '$levelID' WHERE empID = '$empID'";
+            return $updateUser;
         }
 
         public function checkLastDTR($id) {
