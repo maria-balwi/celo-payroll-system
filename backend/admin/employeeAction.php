@@ -14,83 +14,107 @@
             $renderedDays = $_POST['renderedDays'];
         }
 
-        if (isset($_FILES['clearanceForm']) && $_FILES['clearanceForm']['error'] == 0) {
-            // DIRECTORY TO SAVE UPLOADED FILES
-            $uploadDir = __DIR__ . '/../../assets/images/clearanceForms/';
-
-            // CHECK THE DIRECTORY FOLDER IF EXISTING, IF NOT CREATES IT
-            if (!file_exists($uploadDir)) {
-                mkdir($uploadDir, 0755, true);
-            }
-
-            // VALIDATE FILE TYPE
-            $finfo = finfo_open(FILEINFO_MIME_TYPE);
-            $mimeType = finfo_file($finfo, $_FILES['clearanceForm']['tmp_name']);
-            finfo_close($finfo);
-            $allowedTypes = ['application/pdf'];
-            // if (in_array($mimeType, $allowedTypes)) {
-            //     if (move_uploaded_file($_FILES['clearanceForm']['tmp_name'], $uploadFile)) {
-            //         // SUCCESSFULLY UPLOADED FILE                    
-            //     } 
-            //     else {
-            //         $em = "Failed to move uploaded file.";
-            //         $error = array('error' => 2, 'em' => $em);
-            //         echo json_encode($error);
-            //         exit();
-            //     }
-            // } 
-            // else {
-            //     $em = "Invalid file type";
-            //     $error = array('error' => 2, 'em' => $em);
-            //     echo json_encode($error);
-            //     exit();
-            // }
-
-            if (!in_array($mimeType, $allowedTypes)) {
-                $em = "Invalid file type. Only PDF allowed.";
-                $error = array('error' => 2, 'em' => $em);
-                echo json_encode($error);           
-            }
-
-            // GENERATE NEW NAME
-            $modified_employeeID = str_replace("-", "", $employeeID);
-            $ext = pathinfo($_FILES['clearanceForm']['name'], PATHINFO_EXTENSION);
-            $newFileName = 'ClearanceForm-' . $modified_employeeID.'-'.date("m.d.Y"). '.' . $ext; 
-
-            // if ($mimeType === 'application/pdf') {
-            //     // FILE IS PDF
-            //     $ext = pathinfo($_FILES['clearanceForm']['name'], PATHINFO_EXTENSION);
-            //     $newFileName = 'ClearanceForm-' . $modified_employeeID.'-'.date("m.d.Y"). '.' . $ext; 
-            // }
-
-            // if ($mimeType === 'image/jpeg' || $mimeType === 'image/jpg' || $mimeType === 'image/png') {
-            //     // FILE IS IMAGE
-            //     $newFileName = 'ClearanceForm-' . $modified_employeeID.'-'.date("m.d.Y"). '.png';
-            // }
-
-            // The complete path to save the uploaded file
-            $uploadFile = $uploadDir . $newFileName;
-
-            // Upload file
-            if (!move_uploaded_file($_FILES['clearanceForm']['tmp_name'], $uploadFile)) {
-                $em = "Failed to move uploaded file.";
-                $error = array('error' => 2, 'em' => $em);
-                echo json_encode($error);
-            }
-            else {
-                if ($resignationStatus == "Incomplete") {
-                    mysqli_query($conn, $employees->resignIncompleteEmployee($id, $resignationStatus, $newFileName, $renderedDays));
-                }
-                else {
-                    mysqli_query($conn, $employees->resignEmployee($id, $resignationStatus, $newFileName));
-                }
-
-                mysqli_query($conn, $employees->deactivateUserbyID($id));
-                $em = "Employee Resigned Successfully";
-                $error = array('error' => 0, 'em' => $em);
-                echo json_encode($error);
-            }
+        if (isset($_POST['withAttachment']))
+        {
+            $clearanceForm = 1;
         }
+        else if (isset($_POST['withoutAttachment']))
+        {
+            $clearanceForm = 0;
+        }
+        else {
+            $clearanceForm = 0;
+        }
+
+        if ($resignationStatus == "Incomplete") {
+            mysqli_query($conn, $employees->resignIncompleteEmployee($id, $resignationStatus, $clearanceForm, $renderedDays));
+        }
+        else {
+            mysqli_query($conn, $employees->resignEmployee($id, $resignationStatus, $clearanceForm));
+        }
+
+        mysqli_query($conn, $employees->deactivateUserbyID($id));
+        $em = "Employee Resigned Successfully";
+        $error = array('error' => 0, 'em' => $em);
+        echo json_encode($error);
+
+        // if (isset($_FILES['clearanceForm']) && $_FILES['clearanceForm']['error'] == 0) {
+        //     // DIRECTORY TO SAVE UPLOADED FILES
+        //     $uploadDir = __DIR__ . '/../../assets/images/clearanceForms/';
+
+        //     // CHECK THE DIRECTORY FOLDER IF EXISTING, IF NOT CREATES IT
+        //     if (!file_exists($uploadDir)) {
+        //         mkdir($uploadDir, 0755, true);
+        //     }
+
+        //     // VALIDATE FILE TYPE
+        //     $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        //     $mimeType = finfo_file($finfo, $_FILES['clearanceForm']['tmp_name']);
+        //     finfo_close($finfo);
+        //     $allowedTypes = ['application/pdf'];
+        //     // if (in_array($mimeType, $allowedTypes)) {
+        //     //     if (move_uploaded_file($_FILES['clearanceForm']['tmp_name'], $uploadFile)) {
+        //     //         // SUCCESSFULLY UPLOADED FILE                    
+        //     //     } 
+        //     //     else {
+        //     //         $em = "Failed to move uploaded file.";
+        //     //         $error = array('error' => 2, 'em' => $em);
+        //     //         echo json_encode($error);
+        //     //         exit();
+        //     //     }
+        //     // } 
+        //     // else {
+        //     //     $em = "Invalid file type";
+        //     //     $error = array('error' => 2, 'em' => $em);
+        //     //     echo json_encode($error);
+        //     //     exit();
+        //     // }
+
+        //     if (!in_array($mimeType, $allowedTypes)) {
+        //         $em = "Invalid file type. Only PDF allowed.";
+        //         $error = array('error' => 2, 'em' => $em);
+        //         echo json_encode($error);           
+        //     }
+
+        //     // GENERATE NEW NAME
+        //     $modified_employeeID = str_replace("-", "", $employeeID);
+        //     $ext = pathinfo($_FILES['clearanceForm']['name'], PATHINFO_EXTENSION);
+        //     $newFileName = 'ClearanceForm-' . $modified_employeeID.'-'.date("m.d.Y"). '.' . $ext; 
+
+        //     // if ($mimeType === 'application/pdf') {
+        //     //     // FILE IS PDF
+        //     //     $ext = pathinfo($_FILES['clearanceForm']['name'], PATHINFO_EXTENSION);
+        //     //     $newFileName = 'ClearanceForm-' . $modified_employeeID.'-'.date("m.d.Y"). '.' . $ext; 
+        //     // }
+
+        //     // if ($mimeType === 'image/jpeg' || $mimeType === 'image/jpg' || $mimeType === 'image/png') {
+        //     //     // FILE IS IMAGE
+        //     //     $newFileName = 'ClearanceForm-' . $modified_employeeID.'-'.date("m.d.Y"). '.png';
+        //     // }
+
+        //     // The complete path to save the uploaded file
+        //     $uploadFile = $uploadDir . $newFileName;
+
+        //     // Upload file
+        //     if (!move_uploaded_file($_FILES['clearanceForm']['tmp_name'], $uploadFile)) {
+        //         $em = "Failed to move uploaded file.";
+        //         $error = array('error' => 2, 'em' => $em);
+        //         echo json_encode($error);
+        //     }
+        //     else {
+        //         if ($resignationStatus == "Incomplete") {
+        //             mysqli_query($conn, $employees->resignIncompleteEmployee($id, $resignationStatus, $newFileName, $renderedDays));
+        //         }
+        //         else {
+        //             mysqli_query($conn, $employees->resignEmployee($id, $resignationStatus, $newFileName));
+        //         }
+
+        //         mysqli_query($conn, $employees->deactivateUserbyID($id));
+        //         $em = "Employee Resigned Successfully";
+        //         $error = array('error' => 0, 'em' => $em);
+        //         echo json_encode($error);
+        //     }
+        // }
         
         // AUDIT TRAIL
         $at_empID = $_SESSION['id'];

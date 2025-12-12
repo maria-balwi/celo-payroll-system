@@ -437,58 +437,70 @@ $(document).ready(function() {
     //     }
     // });
 
-    $("#viewClearanceForm").hide();
+    // $("#viewClearanceForm").hide();
 
-    $("#clearanceForm").change(function () {
-        const [file] = clearanceForm.files;
+    // $("#clearanceForm").change(function () {
+    //     const [file] = clearanceForm.files;
 
-        const acceptedImageTypes = ["image/jpeg", "image/jpg", "image/png"];
-        const acceptedPdfTypes = ["application/pdf"];
+    //     const acceptedImageTypes = ["image/jpeg", "image/jpg", "image/png"];
+    //     const acceptedPdfTypes = ["application/pdf"];
 
-        if (file) {
-            const fileType = file.type;
+    //     if (file) {
+    //         const fileType = file.type;
 
-            if ($.inArray(fileType, acceptedImageTypes) < 0 && $.inArray(fileType, acceptedPdfTypes) < 0) {
-                Swal.fire({
-                    icon: "warning",
-                    title: "Invalid File",
-                    text: "Only JPG, PNG, or PDF files are allowed",
-                });
-                $("#viewClearanceForm").hide();
-            } else {
-                $("#viewClearanceForm").show();
-            }
+    //         if ($.inArray(fileType, acceptedImageTypes) < 0 && $.inArray(fileType, acceptedPdfTypes) < 0) {
+    //             Swal.fire({
+    //                 icon: "warning",
+    //                 title: "Invalid File",
+    //                 text: "Only JPG, PNG, or PDF files are allowed",
+    //             });
+    //             $("#viewClearanceForm").hide();
+    //         } else {
+    //             $("#viewClearanceForm").show();
+    //         }
+    //     }
+    // });
+
+    // $("#viewClearanceForm").click(function () {
+    //     const [file] = clearanceForm.files;
+
+    //     if (file) {
+    //         const fileType = file.type;
+
+    //         // If it's an image (JPEG/PNG)
+    //         if (fileType.includes("image")) {
+    //             const reader = new FileReader();
+    //             reader.onload = (e) => {
+    //                 Swal.fire({
+    //                     title: "Clearance Form",
+    //                     imageUrl: e.target.result,
+    //                     imageHeight: 500,
+    //                 });
+    //             };
+    //             reader.readAsDataURL(file);
+    //         }
+
+    //         // If it's a PDF
+    //         else if (fileType === "application/pdf") {
+    //             const fileURL = URL.createObjectURL(file);
+
+    //             window.open(fileURL, "_blank"); // Opens PDF in a new tab
+    //         }
+    //     }
+    // });
+
+    $("input.attachment[type='checkbox']").on("change", function () {
+        const $checkboxes = $("input.attachment[type='checkbox']");
+        const checkedCount = $checkboxes.filter(":checked").length;
+
+        if (checkedCount >= 1) {
+            // Disable all unchecked boxes
+            $checkboxes.not(":checked").prop("disabled", true);
+        } else {
+            // Re-enable all boxes
+            $checkboxes.prop("disabled", false);
         }
     });
-
-    $("#viewClearanceForm").click(function () {
-        const [file] = clearanceForm.files;
-
-        if (file) {
-            const fileType = file.type;
-
-            // If it's an image (JPEG/PNG)
-            if (fileType.includes("image")) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    Swal.fire({
-                        title: "Clearance Form",
-                        imageUrl: e.target.result,
-                        imageHeight: 500,
-                    });
-                };
-                reader.readAsDataURL(file);
-            }
-
-            // If it's a PDF
-            else if (fileType === "application/pdf") {
-                const fileURL = URL.createObjectURL(file);
-
-                window.open(fileURL, "_blank"); // Opens PDF in a new tab
-            }
-        }
-    });
-
 
     // ADD ALLOWANCE MODAL
     $('#effectivityDate_allowanceLabel').hide();
@@ -1325,20 +1337,26 @@ $(document).ready(function() {
                     // Show the modal
                     $('#viewResignedModal').modal('show');
 
-                    if (res.data.clearanceForm != null) {
-                        $("#viewClearanceFormRow").show();
+                    if (res.data.clearanceForm == 1) {
+                        $("#withClearanceForm").show();
+                        $("#withoutClearanceForm").hide();
+                    }
+                    else if (res.data.clearanceForm == 0) {
+                        $("#withClearanceForm").hide();
+                        $("#withoutClearanceForm").show();
                     }
                     else {
-                        $("#viewClearanceFormRow").hide();
+                        $("#withClearanceForm").hide();
+                        $("#withoutClearanceForm").hide();
                     }
-                    $("#viewClearanceFormFile").click(function (event) {
-                        event.preventDefault();
+                    // $("#viewClearanceFormFile").click(function (event) {
+                    //     event.preventDefault();
 
-                        const imagePath = "../assets/images/clearanceForms/" + res.data.clearanceForm;
+                    //     const imagePath = "../assets/images/clearanceForms/" + res.data.clearanceForm;
 
-                        // VIEW CLEARANCE FORM IN NEW TAB
-                        window.open(imagePath, "_blank");
-                    });
+                    //     // VIEW CLEARANCE FORM IN NEW TAB
+                    //     window.open(imagePath, "_blank");
+                    // });
                 }
             }
         });
@@ -1505,7 +1523,9 @@ $(document).ready(function() {
         var resignationStatus = $("#resignationStatus").val();
         var renderedDays = $("#renderedDays").val();
         var action = "resign";
-        var clearanceForm = $("#clearanceForm")[0].files[0];
+        // var clearanceForm = $("#clearanceForm")[0].files[0];
+        var withAttachment = $("#withAttachment").val();
+        var withoutAttachment = $("#withoutAttachment").val();
         
         if (resignEmpID == "" || resignationStatus == "") {
             Swal.fire({
@@ -1520,7 +1540,9 @@ $(document).ready(function() {
             resignEmployee.append("action", action);
             resignEmployee.append("resignationStatus", resignationStatus);
             resignEmployee.append("renderedDays", renderedDays);
-            resignEmployee.append("clearanceForm", clearanceForm);
+            // resignEmployee.append("clearanceForm", clearanceForm);
+            resignEmployee.append("withAttachment", withAttachment);
+            resignEmployee.append("withoutAttachment", withoutAttachment);
 
             Swal.fire({
                 icon: "question",
@@ -1759,7 +1781,11 @@ $(document).ready(function() {
                     $("#res_viewDepartment").val(res.data.departmentName);
                     $("#res_viewDesignation").val(res.data.position);
                     $("#res_viewShiftID").val(res.data.startTime + " - " + res.data.endTime);
-                    $("#res_viewEmploymentStatus").val(res.data.employmentStatus + " - " + res.data.resignationStatus);
+                    if (res.data.resignationStatus == "Incomplete") {
+                        $("#res_viewEmploymentStatus").val(res.data.employmentStatus +" - " + res.data.resignationStatus +" (" + res.data.renderedDays +" days rendered)");
+                    } else {
+                        $("#res_viewEmploymentStatus").val(res.data.employmentStatus + " - " + res.data.resignationStatus);
+                    }
                     $("#res_viewDateHired").val(res.data.dateHired);
                     $("#res_viewDateRegularized").val(res.data.dateRegularized);
                     $("#res_viewBasicPay").val(res.data.basicPay);
@@ -1767,16 +1793,19 @@ $(document).ready(function() {
                     $("#res_viewHourlyRate").val(res.data.hourlyRate);
                     $("#res_viewVacationLeaves").val(res.data.availableVL);
 
-                    $("#viewClearanceFormFile").click(function (event) {
-                        event.preventDefault();
+                    // Show the modal
+                    $("#viewResignedModal").modal("show");
 
-                        const imagePath =
-                            "../assets/images/clearanceForms/" +
-                            res.data.clearanceForm;
-
-                        // VIEW CLEARANCE FORM IN NEW TAB
-                        window.open(imagePath, "_blank");
-                    });
+                    if (res.data.clearanceForm == 1) {
+                        $("#withClearanceForm").show();
+                        $("#withoutClearanceForm").hide();
+                    } else if (res.data.clearanceForm == 0) {
+                        $("#withClearanceForm").hide();
+                        $("#withoutClearanceForm").show();
+                    } else {
+                        $("#withClearanceForm").hide();
+                        $("#withoutClearanceForm").hide();
+                    }
                 }
             }
         });

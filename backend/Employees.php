@@ -1325,12 +1325,16 @@
                 WHERE id = '$id'";
             return $resignEmployee;
         }
+        
 
         public function rehireEmployee($id) {
             $employee = "
                 UPDATE ".$this->employees." SET 
                 employmentStatus = 'Probationary',
-                e_status = 'Active'
+                e_status = 'Active', 
+                resignationStatus = NULL, 
+                clearanceForm = NULL,
+                renderedDays = NULL
                 WHERE id = '$id'";    
             return $employee;
         }
