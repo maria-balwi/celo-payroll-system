@@ -4,54 +4,68 @@ $(document).ready(function() {
         order: [] // Disable default sorting
     });
 
-    $(".photoUploadDiv").hide();
+    // $(".photoUploadDiv").hide();
+    // $('#leaveType').on('change', function() {
+    //     var leaveType = $('#leaveType').val();
+    //     if (leaveType == 1 || leaveType == 3 || leaveType == 4 || leaveType == 5) {
+    //         $(".photoUploadDiv").show();
+    //         $("#photoUpload").attr("required", true);
+    //     }
+    //     else {
+    //         $(".photoUploadDiv").hide();
+    //         $("#photoUpload").attr("required", false);
+    //     }
+    // });
+
+    $(".attachmentDiv").hide();
     $('#leaveType').on('change', function() {
         var leaveType = $('#leaveType').val();
         if (leaveType == 1 || leaveType == 3 || leaveType == 4 || leaveType == 5) {
-            $(".photoUploadDiv").show();
-            $("#photoUpload").attr("required", true);
+            $(".attachmentDiv").show();
         }
         else {
-            $(".photoUploadDiv").hide();
-            $("#photoUpload").attr("required", false);
+            $(".attachmentDiv").hide();
         }
     });
+    
+    $(".viewWithAttachmentRow").hide();
+    $(".viewWithoutAttachmentRow").hide();
 
-    // FILE LEAVE - UPLOAD MEDICAL CERTIFICATE
-    $("#photoUpload").change(function () {
-        const [file] = photoUpload.files;
-        const acceptedImageTypes = ["image/jpeg", "image/png"];
-        if (file) {
-            const fileType = file["type"];
-            if ($.inArray(fileType, acceptedImageTypes) < 0) {
-                Swal.fire({
-                    icon: "warning",
-                    title: "Invalid Picture",
-                    text: "Invalid File only accept (JPG/PNG) file",
-                });
-                $("#viewPhotoUpload").attr("disabled", true);
-            } else {
-                $("#viewPhotoUpload").attr("disabled", false); // Enable the view button
-            }
-        } else {
-            $("#viewPhotoUpload").attr("disabled", true); // Disable the view button if no file is selected
-        }
-    });
+    // // FILE LEAVE - UPLOAD MEDICAL CERTIFICATE
+    // $("#photoUpload").change(function () {
+    //     const [file] = photoUpload.files;
+    //     const acceptedImageTypes = ["image/jpeg", "image/png"];
+    //     if (file) {
+    //         const fileType = file["type"];
+    //         if ($.inArray(fileType, acceptedImageTypes) < 0) {
+    //             Swal.fire({
+    //                 icon: "warning",
+    //                 title: "Invalid Picture",
+    //                 text: "Invalid File only accept (JPG/PNG) file",
+    //             });
+    //             $("#viewPhotoUpload").attr("disabled", true);
+    //         } else {
+    //             $("#viewPhotoUpload").attr("disabled", false); // Enable the view button
+    //         }
+    //     } else {
+    //         $("#viewPhotoUpload").attr("disabled", true); // Disable the view button if no file is selected
+    //     }
+    // });
 
-    $("#viewPhotoUpload").click(function () {
-        const [file] = photoUpload.files;
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                Swal.fire({
-                    title: "Upload Photo",
-                    imageUrl: e.target.result,
-                    imageHeight: 500,
-                });
-            };
-            reader.readAsDataURL(file);
-        }
-    });
+    // $("#viewPhotoUpload").click(function () {
+    //     const [file] = photoUpload.files;
+    //     if (file) {
+    //         const reader = new FileReader();
+    //         reader.onload = (e) => {
+    //             Swal.fire({
+    //                 title: "Upload Photo",
+    //                 imageUrl: e.target.result,
+    //                 imageHeight: 500,
+    //             });
+    //         };
+    //         reader.readAsDataURL(file);
+    //     }
+    // });
 
     $("select[id='leaveType']").on("change", function () {
         // const leaveDateInput = document.getElementById("effectivityStartDate");
@@ -137,6 +151,18 @@ $(document).ready(function() {
         }
     });
     
+    $("input.attachment[type='checkbox']").on("change", function () {
+        const $checkboxes = $("input.attachment[type='checkbox']");
+        const checkedCount = $checkboxes.filter(":checked").length;
+
+        if (checkedCount >= 1) {
+            // Disable all unchecked boxes
+            $checkboxes.not(":checked").prop("disabled", true);
+        } else {
+            // Re-enable all boxes
+            $checkboxes.prop("disabled", false);
+        }
+    });
 
     // FILE A LEAVE BUTTON
     $("#fileLeaveForm").submit(function (e) {
@@ -230,36 +256,47 @@ $(document).ready(function() {
                     $('#viewEndDate').val(res.data.effectivityEndDate);
                     $('#viewPurpose').val(res.data.remarks);
                     $('#viewStatus').val(res.data.status);
-                    $("#viewPhotoRow").show();
-                    $('#viewLeaveModal').modal('show');
                     
-                    $('#viewPhoto').click(function(event) {
-                        event.preventDefault();
-                        if (res.data.leaveType == "Sick Leave") {
-                            const imagePath = '../assets/images/medicalCertificates/' + res.data.photoUpload; // Set your directory path here
+                    // $('#viewPhoto').click(function(event) {
+                    //     event.preventDefault();
+                    //     if (res.data.leaveType == "Sick Leave") {
+                    //         const imagePath = '../assets/images/medicalCertificates/' + res.data.photoUpload; // Set your directory path here
 
-                            // VIEW UPLOADED PHOTO IN NEW TAB
-                            window.open(imagePath, '_blank');
-                        }
-                        else if (res.data.leaveType == "Bereavement Leave") {
-                            const imagePath = '../assets/images/bereavementLeaves/' + res.data.photoUpload; // Set your directory path here
+                    //         // VIEW UPLOADED PHOTO IN NEW TAB
+                    //         window.open(imagePath, '_blank');
+                    //     }
+                    //     else if (res.data.leaveType == "Bereavement Leave") {
+                    //         const imagePath = '../assets/images/bereavementLeaves/' + res.data.photoUpload; // Set your directory path here
 
-                            // VIEW UPLOADED PHOTO IN NEW TAB
-                            window.open(imagePath, '_blank');
-                        }
-                        else if (res.data.leaveType == "Maternity Leave") {
-                            const imagePath = '../assets/images/maternityLeaves/' + res.data.photoUpload; // Set your directory path here
+                    //         // VIEW UPLOADED PHOTO IN NEW TAB
+                    //         window.open(imagePath, '_blank');
+                    //     }
+                    //     else if (res.data.leaveType == "Maternity Leave") {
+                    //         const imagePath = '../assets/images/maternityLeaves/' + res.data.photoUpload; // Set your directory path here
 
-                            // VIEW UPLOADED PHOTO IN NEW TAB
-                            window.open(imagePath, '_blank');
-                        }
-                        else {
-                            const imagePath = '../assets/images/paternityLeaves/' + res.data.photoUpload; // Set your directory path here
+                    //         // VIEW UPLOADED PHOTO IN NEW TAB
+                    //         window.open(imagePath, '_blank');
+                    //     }
+                    //     else {
+                    //         const imagePath = '../assets/images/paternityLeaves/' + res.data.photoUpload; // Set your directory path here
 
-                            // VIEW UPLOADED PHOTO IN NEW TAB
-                            window.open(imagePath, '_blank');
-                        }
-                    });
+                    //         // VIEW UPLOADED PHOTO IN NEW TAB
+                    //         window.open(imagePath, '_blank');
+                    //     }
+                    // });
+                    if (res.data.attachment == 1) {
+                        $("#viewWithAttachmentRow").show();
+                        $("#viewWithoutAttachmentRow").hide();
+                    }
+                    else if (res.data.attachment == 0) {
+                        $("#viewWithAttachmentRow").hide();
+                        $("#viewWithoutAttachmentRow").show();
+                    }
+                    else {
+                        $("#viewWithAttachmentRow").hide();
+                        $("#viewWithoutAttachmentRow").hide();
+                    }
+                    $("#viewLeaveModal").modal("show");
                 }
                 else {
                     $('#viewLeaveID').val(res.data.requestID);
@@ -271,8 +308,9 @@ $(document).ready(function() {
                     $('#viewEndDate').val(res.data.effectivityEndDate);
                     $('#viewPurpose').val(res.data.remarks);
                     $('#viewStatus').val(res.data.status);
-                    $("#viewPhotoRow").hide();
-                    $('#viewLeaveModal').modal('show');
+                    $("#viewWithAttachmentRow").hide();
+                    $("#viewWithoutAttachmentRow").hide();
+                    $("#viewLeaveModal").modal("show");
                 }
             }
         });
@@ -298,40 +336,50 @@ $(document).ready(function() {
                     $("#viewEndDate").val(res.data.effectivityEndDate);
                     $("#viewPurpose").val(res.data.remarks);
                     $("#viewStatus").val(res.data.status);
-                    $("#viewPhotoRow").show();
+                    // $("#viewPhotoRow").show();
 
-                    $("#viewPhoto").click(function (event) {
-                        event.preventDefault();
-                        if (res.data.leaveType == "Sick Leave") {
-                        const imagePath =
-                            "../assets/images/medicalCertificates/" +
-                            res.data.photoUpload; // Set your directory path here
+                    // $("#viewPhoto").click(function (event) {
+                    //     event.preventDefault();
+                    //     if (res.data.leaveType == "Sick Leave") {
+                    //     const imagePath =
+                    //         "../assets/images/medicalCertificates/" +
+                    //         res.data.photoUpload; // Set your directory path here
 
-                        // VIEW UPLOADED PHOTO IN NEW TAB
-                        window.open(imagePath, "_blank");
-                        } else if (res.data.leaveType == "Bereavement Leave") {
-                        const imagePath =
-                            "../assets/images/bereavementLeaves/" +
-                            res.data.photoUpload; // Set your directory path here
+                    //     // VIEW UPLOADED PHOTO IN NEW TAB
+                    //     window.open(imagePath, "_blank");
+                    //     } else if (res.data.leaveType == "Bereavement Leave") {
+                    //     const imagePath =
+                    //         "../assets/images/bereavementLeaves/" +
+                    //         res.data.photoUpload; // Set your directory path here
 
-                        // VIEW UPLOADED PHOTO IN NEW TAB
-                        window.open(imagePath, "_blank");
-                        } else if (res.data.leaveType == "Maternity Leave") {
-                        const imagePath =
-                            "../assets/images/maternityLeaves/" +
-                            res.data.photoUpload; // Set your directory path here
+                    //     // VIEW UPLOADED PHOTO IN NEW TAB
+                    //     window.open(imagePath, "_blank");
+                    //     } else if (res.data.leaveType == "Maternity Leave") {
+                    //     const imagePath =
+                    //         "../assets/images/maternityLeaves/" +
+                    //         res.data.photoUpload; // Set your directory path here
 
-                        // VIEW UPLOADED PHOTO IN NEW TAB
-                        window.open(imagePath, "_blank");
-                        } else {
-                        const imagePath =
-                            "../assets/images/paternityLeaves/" +
-                            res.data.photoUpload; // Set your directory path here
+                    //     // VIEW UPLOADED PHOTO IN NEW TAB
+                    //     window.open(imagePath, "_blank");
+                    //     } else {
+                    //     const imagePath =
+                    //         "../assets/images/paternityLeaves/" +
+                    //         res.data.photoUpload; // Set your directory path here
 
-                        // VIEW UPLOADED PHOTO IN NEW TAB
-                        window.open(imagePath, "_blank");
-                        }
-                    });
+                    //     // VIEW UPLOADED PHOTO IN NEW TAB
+                    //     window.open(imagePath, "_blank");
+                    //     }
+                    // });
+                    if (res.data.attachment == 1) {
+                        $("#viewWithAttachmentRow").show();
+                        $("#viewWithoutAttachmentRow").hide();
+                    } else if (res.data.attachment == 0) {
+                        $("#viewWithAttachmentRow").hide();
+                        $("#viewWithoutAttachmentRow").show();
+                    } else {
+                        $("#viewWithAttachmentRow").hide();
+                        $("#viewWithoutAttachmentRow").hide();
+                    }
                 } else {
                     $("#viewLeaveID").val(res.data.requestID);
                     $("#viewEmpID").val(res.data.employeeID);
@@ -342,7 +390,7 @@ $(document).ready(function() {
                     $("#viewEndDate").val(res.data.effectivityEndDate);
                     $("#viewPurpose").val(res.data.remarks);
                     $("#viewStatus").val(res.data.status);
-                    $("#viewPhotoRow").hide();
+                    // $("#viewPhotoRow").hide();
                 }
             }
         });

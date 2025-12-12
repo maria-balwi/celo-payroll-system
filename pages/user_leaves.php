@@ -217,7 +217,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="row g-3 mb-2 photoUploadDiv">
+                                    <!-- <div class="row g-3 mb-2 photoUploadDiv">
                                         <div class="col-12">
                                             <label for="photoUpload">Upload Photo:</label>
                                         </div>
@@ -234,6 +234,18 @@
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                                 </svg>
                                             </button>
+                                        </div>
+                                    </div> -->
+                                    <div class="row g-3 mb-2 attachmentDiv">
+                                        <div class="col-12">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input attachment" type="checkbox" id="withAttachment" name="withAttachment">
+                                                <label class="form-check-label" for="withAttachment">With Attachment</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input attachment" type="checkbox" id="withoutAttachment" name="withoutAttachment">
+                                                <label class="form-check-label" for="withoutAttachment">Without Attachment</label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -334,9 +346,19 @@
                                         </div>
                                     </div>
 
-                                    <div class="row g-2" id="viewPhotoRow">
+                                    <!-- <div class="row g-2" id="viewPhotoRow">
                                         <div class="col-12">
                                             <button id="viewPhoto" class="text-blue-500">View Uploaded Photo</button>
+                                        </div>
+                                    </div> -->
+                                    <div class="row g-2" id="viewWithAttachmentRow">
+                                        <div class="col-12">
+                                            <label class="text-blue-500">With Attachment</label>
+                                        </div>
+                                    </div>
+                                    <div class="row g-2" id="viewWithoutAttachmentRow">
+                                        <div class="col-12">
+                                            <label class="text-blue-500">Without Attachment</label>
                                         </div>
                                     </div>
                                 </form>

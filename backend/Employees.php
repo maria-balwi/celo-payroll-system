@@ -1073,7 +1073,7 @@
         public function getLeaveInfo($leaveID) {
             $request = "
                 SELECT requestID, employeeID, leaves.leaveTypeID,
-                leaveType, remarks, status, photoUpload, designationID,
+                leaveType, remarks, status, attachment, designationID,
                 CONCAT(firstName, ' ', lastName) AS employeeName,
                 DATE_FORMAT(dateFiled, '%M %d, %Y') AS dateFiled,
                 DATE_FORMAT(effectivityStartDate, '%M %d, %Y') AS effectivityStartDate,
@@ -1145,8 +1145,15 @@
 
         public function fileLeave($employeeID, $leaveTypeID, $effectivityStartDate, $effectivityEndDate, $remarks, $status) {
             $fileLeave = "
-                INSERT INTO ".$this->leaves." (empID, dateFiled, leaveTypeID, effectivityStartDate, effectivityEndDate, remarks, status)
-                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$leaveTypeID', '$effectivityStartDate', '$effectivityEndDate', '$remarks', '$status')";
+                INSERT INTO ".$this->leaves." (empID, dateFiled, leaveTypeID, effectivityStartDate, effectivityEndDate, remarks, status, attachment)
+                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$leaveTypeID', '$effectivityStartDate', '$effectivityEndDate', '$remarks', '$status', NULL)";
+            return $fileLeave;
+        }
+
+        public function fileLeaveWithAttachment($employeeID, $leaveTypeID, $effectivityStartDate, $effectivityEndDate, $remarks, $status, $attachment) {
+            $fileLeave = "
+                INSERT INTO ".$this->leaves." (empID, dateFiled, leaveTypeID, effectivityStartDate, effectivityEndDate, remarks, status, attachment)
+                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$leaveTypeID', '$effectivityStartDate', '$effectivityEndDate', '$remarks', '$status', '$attachment')";
             return $fileLeave;
         }
 
