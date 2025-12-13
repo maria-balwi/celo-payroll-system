@@ -12,7 +12,7 @@
         <main class="flex-1 p-3">
             <div class="flex flex-1 p-2 text-2xl font-bold justify-between items-center">
                 <div>
-                    Cash Advances
+                    Employees
                 </div>  
                 <input type="hidden" id="adminID" name="adminID" value="<?php echo $_SESSION['designationID']; ?>">  
             </div>
