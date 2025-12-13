@@ -153,7 +153,7 @@
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" colspan="6">Additions/Adjustments</th> 
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle whitespace-nowrap" rowspan="3">Gross Pay</th> 
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" colspan="5">Government Deductions</th> 
-                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" colspan="4">Loans</th> 
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" colspan="3">Loans</th> 
                                         <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" colspan="2">Other Deductions</th>  -->
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">Other Deductions</th> 
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle whitespace-nowrap" rowspan="3">Net Pay</th>
@@ -179,7 +179,7 @@
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">SSS Salary Loan</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">Cash Advances</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">HDMF Salary Loan</th>
-                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">Cash Advance (PETTY CASH)</th>
+                                        <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">Cash Advance (PETTY CASH)</th> -->
                                         <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider uppercase align-middle">Night Diff OT</th> -->
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider uppercase align-middle">Smart Communication</th>
                                     </tr>
@@ -194,7 +194,7 @@
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">(SSS)</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">(Other Loan)</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">(HDMF)</th>
-                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">(Other Loan)</th>
+                                        <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">(Other Loan)</th> -->
                                         <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">(ADJ)</th> -->
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">(DED)</th>
                                     </tr>
@@ -282,7 +282,7 @@
                                             $payslip_lateMinsAmt = $payslipDetails['payslip_lateMins'];
                                             $payslip_cashAdvanceDeduction = $payslipDetails['payslip_cashAdvanceDeduction'];
                                             $payslip_cashAdvanceBalance = $payslipDetails['payslip_cashAdvanceBalance'];
-                                            $payslip_caPettyCash = $payslipDetails['payslip_caPettyCash'];
+                                            // $payslip_caPettyCash = $payslipDetails['payslip_caPettyCash'];
                                             $payslip_netPay = $payslipDetails['netPay'];
 
                                             if ($payslip_hoursWorked == 0) {
@@ -490,12 +490,12 @@
                                             else {
                                                 $payslip_cashAdvanceBalance = "-";
                                             }
-                                            if ($payslip_caPettyCash != 0) {
-                                                $payslip_caPettyCash = number_format($payslip_caPettyCash, 2);
-                                            }
-                                            else {
-                                                $payslip_caPettyCash = "-";
-                                            }
+                                            // if ($payslip_caPettyCash != 0) {
+                                            //     $payslip_caPettyCash = number_format($payslip_caPettyCash, 2);
+                                            // }
+                                            // else {
+                                            //     $payslip_caPettyCash = "-";
+                                            // }
 
                                             // ABSENCES AND LATE MINUTES
                                             if ($payslip_absences != 0) {
@@ -607,7 +607,7 @@
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_salaryLoan . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_cashAdvanceDeduction . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_hdmfSalaryLoan . "</td>";
-                                            echo "<td class ='whitespace-nowrap'>" . $payslip_caPettyCash . "</td>";
+                                            // echo "<td class ='whitespace-nowrap'>" . $payslip_caPettyCash . "</td>";
                                             // echo "<td class ='whitespace-nowrap'>-</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_smart . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_netPay . "</td>"; 

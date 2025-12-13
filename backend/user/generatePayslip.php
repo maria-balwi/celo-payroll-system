@@ -170,7 +170,7 @@
                 $payslip_lateMinsAmt = $payslipDetails['payslip_lateMins'] == 0 ? "-" : number_format($payslipDetails['payslip_lateMins'], 2);
                 $payslip_cashAdvanceDeduction = $payslipDetails['payslip_cashAdvanceDeduction'] == 0 ? "-" : number_format($payslipDetails['payslip_cashAdvanceDeduction'], 2);
                 $payslip_cashAdvanceBalance = $payslipDetails['payslip_cashAdvanceBalance'] == 0 ? "-" : number_format($payslipDetails['payslip_cashAdvanceBalance'], 2);
-                $payslip_caPettyCash = $payslipDetails['payslip_caPettyCash'] == 0 ? "-" : number_format($payslipDetails['payslip_caPettyCash'], 2);
+                // $payslip_caPettyCash = $payslipDetails['payslip_caPettyCash'] == 0 ? "-" : number_format($payslipDetails['payslip_caPettyCash'], 2);
                 $payslip_netPay = $payslipDetails['netPay'] == 0 ? "-" : number_format($payslipDetails['netPay'], 2);
 
                 $overtimeQuery = mysqli_query($conn, "SELECT * FROM tbl_filedot WHERE empID = $payslip_id AND (otDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo') AND status = 1");
@@ -279,14 +279,13 @@
                                 </tr>
                                 <tr>
                                     <td class="border px-2 py-1 bg-green-300 font-bold" colspan="2">ADDITIONS/ADJUSTMENTS</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Cash Advance (PETTY CASH)</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_caPettyCash.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Smart Communication</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Allowance</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_allowances.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Smart Communication</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Communication</td>
@@ -466,14 +465,13 @@
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Absences</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absences.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Cash Advance (PETTY CASH)</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_caPettyCash.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Smart Communication</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Absences Amt</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absencesAmt.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Smart Communication</td>
-                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Late Mins</td>
@@ -599,14 +597,13 @@
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Absences</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absences.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Cash Advance (PETTY CASH)</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_caPettyCash.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Smart Communication</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Absences Amt</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absencesAmt.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Smart Communication</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Late Mins</td>
@@ -859,14 +856,13 @@
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Sick Leave Amt</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeavePay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Cash Advance (PETTY CASH)</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_caPettyCash.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Smart Communication</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Vacation Leave Amt</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeavePay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Smart Communication</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
                                 </tr>
                                 <tr class="bg-green-300 font-bold">
                                     <td class="border-l-2 border-t-2 text-left px-2 py-1">Gross Pay</td>
@@ -982,14 +978,13 @@
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Absences</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absences.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Cash Advance (PETTY CASH)</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_caPettyCash.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Smart Communication</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Absences Amt</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absencesAmt.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Smart Communication</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Late Mins</td>
@@ -1242,14 +1237,13 @@
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Sick Leave Amt</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeavePay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Cash Advance (PETTY CASH)</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_caPettyCash.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Smart Communication</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Vacation Leave Amt</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeavePay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Smart Communication</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
                                 </tr>
                                 <tr class="bg-green-300 font-bold">
                                     <td class="border-l-2 border-t-2 text-left px-2 py-1">Gross Pay</td>
@@ -1365,14 +1359,13 @@
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Legal Holiday Hrs</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHoliday.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Cash Advance (PETTY CASH)</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_caPettyCash.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Smart Communication</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Legal Holiday Amt</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayPay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Smart Communication</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Night Diff Legal Holiday Hrs</td>
@@ -1699,14 +1692,13 @@
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Sick Leave Amt</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeavePay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Cash Advance (PETTY CASH)</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_caPettyCash.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Smart Communication</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Vacation Leave Amt</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeavePay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Smart Communication</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
                                 </tr>
                                 <tr class="bg-green-300 font-bold">
                                     <td class="border-l-2 border-t-2 text-left px-2 py-1">Gross Pay</td>
