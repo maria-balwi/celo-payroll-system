@@ -19,8 +19,19 @@ $(document).ready(function() {
         $('.allAdjustmentsSection').hide();
     }
 
-    $('#activeEmployeeTable').DataTable();
-    $('#resignedEmployeeTable').DataTable();
+    // iNITIALIZE TABLES
+    $('#activeAgentsTable').DataTable();
+    $('#inactiveAgentsTable').DataTable();
+    $('#activeTLQATable').DataTable();
+    $('#inactiveTLQATable').DataTable();
+    $('#activeRecruitmentTable').DataTable();
+    $('#inactiveRecruitmentTable').DataTable();
+    $('#activeITTable').DataTable();
+    $('#inactiveITTable').DataTable();
+    $('#activeFinanceTable').DataTable();
+    $('#inactiveFinanceTable').DataTable();
+    $('#activeHRTable').DataTable();
+    $('#inactiveHRTable').DataTable();
 
     // INPUT MASK - ADD EMPLOYEE
     $('#sss').inputmask('99-9999999-9', {

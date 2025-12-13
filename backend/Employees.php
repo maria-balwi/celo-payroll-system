@@ -1353,6 +1353,150 @@
             return $approvedPaternityLeaves;
         }
 
+        public function viewActiveAgents() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 1 AND 
+                designationID IN (1,14) AND
+                employees.e_status = 'Active'";
+            return $activeAgents;
+        }
+
+        public function viewResignedAgents() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 1 AND 
+                designationID IN (1,14) AND
+                employees.e_status = 'Inactive'";
+            return $activeAgents;
+        }
+
+        public function viewActiveTLQA() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 1 AND 
+                designationID IN (2,3,4,5) AND
+                employees.e_status = 'Active'";
+            return $activeAgents;
+        }
+
+        public function viewResignedTLQA() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 1 AND 
+                designationID IN (2,3,4,5) AND
+                employees.e_status = 'Inactive'";
+            return $activeAgents;
+        }
+
+        public function viewActiveRecruitment() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 2 AND 
+                designationID IN (6,16,17) AND
+                employees.e_status = 'Active'";
+            return $activeAgents;
+        }
+
+        public function viewResignedRecruitment() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 2 AND 
+                designationID IN (6,16,17) AND
+                employees.e_status = 'Inactive'";
+            return $activeAgents;
+        }
+
+        public function viewActiveIT() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 4 AND 
+                designationID IN (10,11,13,19) AND
+                employees.e_status = 'Active'";
+            return $activeAgents;
+        }
+
+        public function viewResignedIT() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 4 AND 
+                designationID IN (10,11,13,19) AND
+                employees.e_status = 'Inactive'";
+            return $activeAgents;
+        }
+
+        public function viewActiveFinance() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 3 AND 
+                designationID = 8 AND
+                employees.e_status = 'Active'";
+            return $activeAgents;
+        }
+
+        public function viewResignedFinance() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 4 AND 
+                designationID = 8 AND
+                employees.e_status = 'Inactive'";
+            return $activeAgents;
+        }
+
+        public function viewActiveHR() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 3 AND 
+                designationID IN (7,9,15,18) AND
+                employees.e_status = 'Active'";
+            return $activeAgents;
+        }
+
+        public function viewResignedHR() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 3 AND 
+                designationID IN (7,9,15,18) AND
+                employees.e_status = 'Inactive'";
+            return $activeAgents;
+        }
+
         // OLD CODE
         // public function viewAuditTrail() {
         //     $auditTrail = "
