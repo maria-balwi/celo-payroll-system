@@ -61,16 +61,19 @@
                     // SESSION TIMEOUT 
                     $_SESSION['start'] = time();
                     if ($userDetails['levelID'] == 1) {
-                        $_SESSION['expire'] = $_SESSION['start'] + (60 * 5);
+                        $_SESSION['expire'] = $_SESSION['start'] + (60 * 5); // AGENT LEVEL
                     }
                     else if ($userDetails['levelID'] == 2 || $userDetails['levelID'] == 6) {
-                        $_SESSION['expire'] = $_SESSION['start'] + (60 * 10);
+                        $_SESSION['expire'] = $_SESSION['start'] + (60 * 20); // TEAM LEAD & IT SUPERVISOR & MANAGER LEVEL
                     }
                     else if ($userDetails['levelID'] == 3) {
-                        $_SESSION['expire'] = $_SESSION['start'] + (60 * 60);
+                        $_SESSION['expire'] = $_SESSION['start'] + (60 * 60); // ADMIN LEVEL
                     }
                     else if ($userDetails['levelID'] == 4 || $userDetails['levelID'] == 5) {
-                        $_SESSION['expire'] = $_SESSION['start'] + (60 * 30);
+                        $_SESSION['expire'] = $_SESSION['start'] + (60 * 30); // HR & ADMIN STAFF , HR GENERALIST LEVEL
+                    }
+                    else if ($userDetails['levelID'] == 6) {
+                        $_SESSION['expire'] = $_SESSION['start'] + (60  * 15); // IT LEVEL
                     }
 
                     // RETURN VALUES
