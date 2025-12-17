@@ -167,7 +167,7 @@
                                                     return $dateTime->format('M d, Y');
                                                 }
                                                 
-                                                $payrollCycleQuery = mysqli_query($conn, $payroll->viewAllPayrollCycle2());
+                                                $payrollCycleQuery = mysqli_query($conn, $payroll->viewAllPayrollCycle());
                                                 while ($payrollCycleDetails = mysqli_fetch_array($payrollCycleQuery)) {
                                                     $payrollCycleID = $payrollCycleDetails['payrollCycleID'];
                                                     $payrollCycleFrom_date = $payrollCycleDetails['payrollCycleFrom'];
