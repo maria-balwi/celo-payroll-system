@@ -15,9 +15,12 @@
         private $filedOT = 'tbl_filedot';
         private $shifts = 'tbl_shiftschedule';
         private $requirements = 'tbl_requirements';
+        private $cashAdvance = 'tbl_cashadvance';
+        private $caPaymentHistory = 'tbl_caPaymentHistory';
         private $weekOff = 'tbl_empWeekOff';
         private $allowances = 'tbl_allowances';
         private $deductions = 'tbl_deductions';
+        private $payrollcycle = "tbl_payrollcycle";
         private $auditTrail = 'tbl_audittrail';
         private $dbConnect = false;
         public function __construct() {
@@ -670,6 +673,43 @@
             return $request;
         }
 
+        public function viewCashAdvanceApplicationsHR() {
+            $cashAdvance = "
+                SELECT * FROM {$this->cashAdvance} AS cashAdvance
+                INNER JOIN {$this->employees} AS employees
+                ON cashAdvance.empID = employees.id";
+            return $cashAdvance;
+        }
+
+        public function viewCashAdvanceApplicationsOperations() {
+            $cashAdvance = "
+                SELECT * FROM {$this->cashAdvance} AS cashAdvance
+                INNER JOIN {$this->employees} AS employees
+                ON cashAdvance.empID = employees.id
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE department.departmentID = 1";
+            return $cashAdvance;
+        }
+
+        public function viewCashAdvanceApplicationsIT() {
+            $cashAdvance = "
+                SELECT * FROM {$this->cashAdvance} AS cashAdvance
+                INNER JOIN {$this->employees} AS employees
+                ON cashAdvance.empID = employees.id
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE department.departmentID = 4";
+            return $cashAdvance;
+        }
+
+        public function searchEmployeeID($employeeID) {
+            $searchEmployeeID = "
+                SELECT * FROM {$this->employees} AS employees 
+                WHERE employeeID = '$employeeID'";
+            return $searchEmployeeID;
+        }
+
         public function viewPersonnel() {
             $allPersonnel = "
                 SELECT * FROM ".$this->employees." AS employees
@@ -1243,6 +1283,22 @@
                 INNER JOIN ".$this->employees." AS employees
                 ON filedOT.empID = employees.id
                 WHERE requestID = '$requestID'";
+            return $request;
+        }
+
+        public function fileCashAdvance($id, $amount, $monthsToPay, $monthlyAmmortization, $remainingAmount, $cutoffStart, $ca_status, $request_status) {
+            $fileCashAdvance = "
+                INSERT INTO ".$this->cashAdvance." (empID, dateFiled, amount, monthsToPay, monthlyAmmortization, remainingAmount, cutoffStart, ca_status, request_status)
+                VALUES ('$id', CURRENT_TIMESTAMP, '$amount', '$monthsToPay', '$monthlyAmmortization', '$remainingAmount', '$cutoffStart', '$ca_status', '$request_status')";
+            return $fileCashAdvance;
+        }
+
+        public function viewLastCashAdvance() {
+            $request = "
+                SELECT requestID
+                FROM ".$this->cashAdvance."
+                ORDER BY requestID DESC
+                LIMIT 1";
             return $request;
         }
 

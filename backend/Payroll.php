@@ -21,6 +21,8 @@
         private $attendance = 'tbl_attendance';
         private $weekOff = 'tbl_empweekoff';
         private $leaves = 'tbl_leaveapplications';
+        private $cashAdvance = 'tbl_cashadvance';
+        private $caPaymentHistory = 'tbl_caPaymentHistory';
 
         private $dbConnect = false;
         public function __construct() {
@@ -421,6 +423,23 @@
             return $deleteHoliday;
         }
 
+        public function getCashAdvanceInfo($requestID) {
+            $cashAdvance = "
+                SELECT requestID, employees.employeeID, employees.firstName AS firstName, employees.lastName AS lastName, 
+                requestor.firstName AS requestorFirstName, requestor.lastName AS requestorLastName,
+                DATE_FORMAT(dateFiled, '%M %d, %Y') AS dateFiled, amount, remainingAmount,
+                monthsToPay, monthlyAmmortization, 
+                DATE_FORMAT(cutoffStart, '%M %d, %Y') AS cutoffStart,
+                ca_status, requestorID, request_status
+                FROM {$this->cashAdvance} AS cashAdvance
+                INNER JOIN {$this->employees} AS employees
+                ON cashAdvance.empID = employees.id
+                INNER JOIN {$this->employees} AS requestor
+                ON cashAdvance.requestorID = requestor.id
+                WHERE requestID = '$requestID'";
+            return $cashAdvance;
+        }
+
         public function viewAllPayroll() {
             $payroll = "
                 SELECT payrollID, payroll.payrollCycleID, 
@@ -438,10 +457,17 @@
             return $createPayroll;
         }
 
-        public function viewAllPayrollCycle2() {
+        public function viewAllPayrollCycle() {
             $payrollCycle = "
                 SELECT * FROM ".$this->payrollCycle . " AS payrollCycle
                 WHERE payrollCycleID NOT IN (SELECT payrollCycleID FROM ".$this->payroll." AS payroll)
+                ORDER BY payrollCycle.payrollCycleID ASC";
+            return $payrollCycle;
+        }
+
+        public function viewAvailablePayrollCycle() {
+            $payrollCycle = "
+                SELECT * FROM ".$this->payrollCycle . " AS payrollCycle
                 ORDER BY payrollCycle.payrollCycleID ASC";
             return $payrollCycle;
         }
@@ -1192,6 +1218,7 @@
 
                 // COMPUTATION FOR LEAVES
                 $leaveQuery = $this->dbConnect()->query("SELECT empID, lt.leaveTypeID, effectivityStartDate, effectivityEndDate FROM tbl_leaveapplications AS la INNER JOIN tbl_leavetype AS lt ON la.leaveTypeID = lt.leaveTypeID WHERE effectivityStartDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND effectivityEndDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND status = 'Approved' AND empID=$employee_id");
+                // $leaveQuery = $this->dbConnect()->query("SELECT empID, lt.leaveTypeID, effectivityStartDate, effectivityEndDate FROM tbl_leaveapplications AS la INNER JOIN tbl_leavetype AS lt ON la.leaveTypeID = lt.leaveTypeID WHERE (effectivityStartDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND effectivityEndDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND dateFiled BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND status = 'Approved' AND empID = $employee_id) OR (dateFiled BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND status = 'Approved' AND empID = $employee_id)");
                 while ($leaveDetails = mysqli_fetch_array($leaveQuery)) {
                     if ($leaveDetails['leaveTypeID'] == 1) {
                         $totalSickLeaves++;
