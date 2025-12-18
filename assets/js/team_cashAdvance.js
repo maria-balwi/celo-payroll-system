@@ -176,7 +176,7 @@ $(document).ready(function () {
         // VIEW CASH ADVANCE
         $.ajax({
             type: "GET",
-            url: "../backend/admin/cashAdvanceModal.php?requestID=" + id_request,
+            url: "../backend/team/cashAdvanceModal.php?requestID=" + id_request,
             success: function (response) {
                 var res = jQuery.parseJSON(response);
 
@@ -185,30 +185,18 @@ $(document).ready(function () {
                 } else if (res.status == 200) {
                     $("#viewRequestID").val(res.data.requestID);
                     $("#viewEmployeeID").val(res.data.employeeID);
-                    $("#viewEmployeeName").val(
-                        res.data.firstName + " " + res.data.lastName
-                    );
-                    $("#viewRequestorName").val(
-                        res.data.requestorFirstName + " " + res.data.requestorLastName
-                    );
+                    $("#viewEmployeeName").val(res.data.firstName + " " + res.data.lastName);
+                    $("#viewRequestorName").val(res.data.requestorFirstName + " " + res.data.requestorLastName);
                     $("#viewFiledDate").val(res.data.dateFiled);
-                    $("#viewLoanAmount").val(
-                        "₱ " + formatNumberWithCommas(res.data.amount)
-                    );
-                    $("#viewTotalAmount").val(
-                        "₱ " + formatNumberWithCommas(res.data.amount)
-                    );
-                    $("#viewRemainingAmount").val(
-                        "₱ " + formatNumberWithCommas(res.data.remainingAmount)
-                    );
+                    $("#viewLoanAmount").val("₱ " + formatNumberWithCommas(res.data.amount));
+                    $("#viewTotalAmount").val("₱ " + formatNumberWithCommas(res.data.amount));
+                    $("#viewRemainingAmount").val("₱ " + formatNumberWithCommas(res.data.remainingAmount));
                     $("#viewMonthsToPay").val(
                         res.data.monthsToPay <= 1
                         ? res.data.monthsToPay + " month"
                         : res.data.monthsToPay + " months"
                     );
-                    $("#viewMonthlyAmmortization").val(
-                        "₱ " + formatNumberWithCommas(res.data.monthlyAmmortization)
-                    );
+                    $("#viewMonthlyAmmortization").val("₱ " + formatNumberWithCommas(res.data.monthlyAmmortization));
                     $("#viewCutoffStart").val(res.data.cutoffStart);
                     $("#viewCAStatus").val(res.data.ca_status);
                     $("#viewRequestStatus").val(res.data.request_status);
