@@ -2261,11 +2261,16 @@
                                                 <?php
                                                     $allDeductions = mysqli_query($conn, $payroll->viewAllDeductions());
                                                     while ($allDeductionsResult = mysqli_fetch_array($allDeductions)) {
+                                                        if ($allDeductionsResult['deductionID'] == 8) {
+
+                                                        }
+                                                        else {  
                                                 ?>
                                                     <option value="<?php echo $allDeductionsResult['deductionID']; ?>">
                                                         <?php echo $allDeductionsResult['deductionName']; ?>
                                                     </option>
                                                 <?php
+                                                        }
                                                     }
                                                 ?>
                                             </select>
