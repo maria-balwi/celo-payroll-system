@@ -428,7 +428,7 @@
                 SELECT requestID, employees.employeeID, employees.firstName AS firstName, employees.lastName AS lastName, 
                 requestor.firstName AS requestorFirstName, requestor.lastName AS requestorLastName,
                 DATE_FORMAT(dateFiled, '%M %d, %Y') AS dateFiled, amount, remainingAmount,
-                monthsToPay, monthlyAmmortization, 
+                monthsToPay, monthlyAmmortization, empID, requestorID,
                 DATE_FORMAT(cutoffStart, '%M %d, %Y') AS cutoffStart,
                 ca_status, requestorID, request_status
                 FROM {$this->cashAdvance} AS cashAdvance

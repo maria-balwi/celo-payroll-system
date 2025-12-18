@@ -714,6 +714,15 @@
             return $cashAdvance;
         }
 
+        public function viewCashAdvanceApplications($id) {
+            $cashAdvance = "
+                SELECT * FROM {$this->cashAdvance} AS cashAdvance
+                INNER JOIN {$this->employees} AS employees
+                ON cashAdvance.empID = employees.id
+                WHERE empID = $id";
+            return $cashAdvance;
+        }
+
         public function searchEmployeeID($employeeID) {
             $searchEmployeeID = "
                 SELECT * FROM {$this->employees} AS employees 
