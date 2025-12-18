@@ -333,7 +333,7 @@
                 ON leaves.empID = employees.id
                 INNER JOIN ".$this->department." AS department
                 ON employees.departmentID = department.departmentID
-                WHERE employees.designationID = 10 AND status = 'Pending'";
+                WHERE employees.designationID IN (10, 13, 19) AND status = 'Pending'";
             return $pendingLeaves;
         }
 
@@ -344,7 +344,7 @@
                 ON leaves.empID = employees.id
                 INNER JOIN ".$this->department." AS department
                 ON employees.departmentID = department.departmentID
-                WHERE employees.designationID IN (1,2,3) AND status = 'Pending'";
+                WHERE employees.designationID IN (1,2,3,14) AND status = 'Pending'";
             return $pendingLeaves;
         }
 
@@ -366,7 +366,7 @@
                 ON changeShift.empID = employees.id
                 INNER JOIN ".$this->department." AS department
                 ON employees.departmentID = department.departmentID
-                WHERE employees.designationID = 10 AND status = 'Pending'";
+                WHERE employees.designationID IN (10, 13, 19) AND status = 'Pending'";
             return $pendingChangeShifts;
         }
 
@@ -377,7 +377,7 @@
                 ON changeShift.empID = employees.id
                 INNER JOIN ".$this->department." AS department
                 ON employees.departmentID = department.departmentID
-                WHERE employees.designationID IN (1,2,3) AND status = 'Pending'";
+                WHERE employees.designationID IN (1,2,3,14) AND status = 'Pending'";
             return $pendingChangeShifts;
         }
 
@@ -399,7 +399,7 @@
                 ON filedOT.empID = employees.id
                 INNER JOIN ".$this->department." AS department
                 ON employees.departmentID = department.departmentID
-                WHERE employees.designationID = 10 AND status IS NULL";
+                WHERE employees.designationID IN (10, 13, 19) AND status IS NULL";
             return $pendingOvertimes;
         }
 
@@ -410,7 +410,7 @@
                 ON filedOT.empID = employees.id
                 INNER JOIN ".$this->department." AS department
                 ON employees.departmentID = department.departmentID
-                WHERE employees.designationID IN (1,2,3) AND status IS NULL";
+                WHERE employees.designationID IN (1,2,3,14) AND status IS NULL";
             return $pendingOvertimes;
         }
 
@@ -468,7 +468,7 @@
                 ON employees.departmentID = department.departmentID
                 INNER JOIN ".$this->shifts." AS shifts
                 ON employees.shiftID = shifts.shiftID
-                WHERE employees.departmentID = 1 AND designationID IN (1,2,3)
+                WHERE employees.departmentID = 1 AND designationID IN (1,2,3,14)
                 ORDER BY employeeID ASC";
             return $TLTeam;
         }

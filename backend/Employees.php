@@ -390,7 +390,7 @@
                 ON filedOT.empID = employees.id
                 INNER JOIN ".$this->department." AS department
                 ON department.departmentID = employees.departmentID
-                WHERE employees.departmentID = 4 AND employees.designationID = 10";
+                WHERE employees.departmentID = 4 AND employees.designationID IN (10, 13, 19)";
             return $request;
         }
 
@@ -422,7 +422,7 @@
                 ON filedOT.empID = employees.id
                 INNER JOIN ".$this->department." AS department
                 ON department.departmentID = employees.departmentID
-                WHERE employees.departmentID = 1 AND employees.designationID IN (1,2,3)";
+                WHERE employees.departmentID = 1 AND employees.designationID IN (1,2,3,14)";
             return $request;
         }
 
@@ -536,7 +536,7 @@
                 ON shift_1.shiftID = employees.shiftID
                 INNER JOIN ".$this->shift." AS shift_2
                 ON shift_2.shiftID = changeShift.requestedShift
-                WHERE employees.departmentID = 4 AND employees.designationID = 10
+                WHERE employees.departmentID = 4 AND employees.designationID IN (10, 13, 19)
                 ORDER BY dateFiled DESC";
             return $request;
         }
@@ -574,7 +574,7 @@
                 ON shift_1.shiftID = employees.shiftID
                 INNER JOIN ".$this->shift." AS shift_2
                 ON shift_2.shiftID = changeShift.requestedShift
-                WHERE employees.departmentID = 1 AND employees.designationID IN (1,2,3)
+                WHERE employees.departmentID = 1 AND employees.designationID IN (1,2,3,14)
                 ORDER BY dateFiled DESC";
             return $request;
         }
@@ -643,7 +643,7 @@
                 ON department.departmentID = employees.departmentID
                 INNER JOIN ".$this->leaveType." AS leaveType
                 ON leaveType.leaveTypeID = leaves.leaveTypeID
-                WHERE employees.departmentID = 4 AND employees.designationID = 10";
+                WHERE employees.departmentID = 4 AND employees.designationID IN (10, 13, 19)";
             return $request;
         }
 
@@ -656,7 +656,7 @@
                 ON department.departmentID = employees.departmentID
                 INNER JOIN ".$this->leaveType." AS leaveType
                 ON leaveType.leaveTypeID = leaves.leaveTypeID
-                WHERE employees.departmentID = 1 AND employees.designationID IN (1,2,3)";
+                WHERE employees.departmentID = 1 AND employees.designationID IN (1,2,3,14)";
             return $request;
         }
 
@@ -681,14 +681,25 @@
             return $cashAdvance;
         }
 
-        public function viewCashAdvanceApplicationsOperations() {
+        public function viewCashAdvanceApplicationsOperationsManager() {
             $cashAdvance = "
                 SELECT * FROM {$this->cashAdvance} AS cashAdvance
                 INNER JOIN {$this->employees} AS employees
                 ON cashAdvance.empID = employees.id
                 INNER JOIN {$this->department} AS department
                 ON employees.departmentID = department.departmentID
-                WHERE department.departmentID = 1";
+                WHERE employees.departmentID = 1 AND employees.designationID IN (4,11)";
+            return $cashAdvance;
+        }
+
+        public function viewCashAdvanceApplicationsOperationsTL() {
+            $cashAdvance = "
+                SELECT * FROM {$this->cashAdvance} AS cashAdvance
+                INNER JOIN {$this->employees} AS employees
+                ON cashAdvance.empID = employees.id
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE employees.departmentID = 1 AND employees.designationID IN (1,2,3,14)";
             return $cashAdvance;
         }
 
@@ -699,7 +710,7 @@
                 ON cashAdvance.empID = employees.id
                 INNER JOIN {$this->department} AS department
                 ON employees.departmentID = department.departmentID
-                WHERE department.departmentID = 4";
+                WHERE employees.departmentID = 4 AND employees.designationID IN (10, 13, 19)";
             return $cashAdvance;
         }
 
@@ -733,7 +744,7 @@
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
                 ON employees.id = users.empID
-                WHERE users.status = 'Active' AND designationID IN (2,3,4,5) ";
+                WHERE users.status = 'Active' AND designationID IN (2,3,4,5,14) ";
             return $allTLQA;
         }
 
@@ -742,7 +753,7 @@
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
                 ON employees.id = users.empID
-                WHERE users.status = 'Inactive' AND designationID IN (2,3,4,5)";
+                WHERE users.status = 'Inactive' AND designationID IN (2,3,4,5,14)";
             return $allTLQA;
         }
 
@@ -769,7 +780,7 @@
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
                 ON employees.id = users.empID
-                WHERE users.status = 'Active' AND designationID IN (7,9)";
+                WHERE users.status = 'Active' AND designationID IN (7,9,15,18)";
             return $allHR;
         }
 
@@ -778,7 +789,7 @@
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
                 ON employees.id = users.empID
-                WHERE users.status = 'Inactive' AND designationID IN (7,9)";
+                WHERE users.status = 'Inactive' AND designationID IN (7,9,15,18)";
             return $inactiveHR;
         }
 
@@ -1286,10 +1297,10 @@
             return $request;
         }
 
-        public function fileCashAdvance($id, $amount, $monthsToPay, $monthlyAmmortization, $remainingAmount, $cutoffStart, $ca_status, $request_status) {
+        public function fileCashAdvance($id, $amount, $monthsToPay, $monthlyAmmortization, $remainingAmount, $cutoffStart, $ca_status, $requestorID, $request_status) {
             $fileCashAdvance = "
-                INSERT INTO ".$this->cashAdvance." (empID, dateFiled, amount, monthsToPay, monthlyAmmortization, remainingAmount, cutoffStart, ca_status, request_status)
-                VALUES ('$id', CURRENT_TIMESTAMP, '$amount', '$monthsToPay', '$monthlyAmmortization', '$remainingAmount', '$cutoffStart', '$ca_status', '$request_status')";
+                INSERT INTO ".$this->cashAdvance." (empID, dateFiled, amount, monthsToPay, monthlyAmmortization, remainingAmount, cutoffStart, ca_status, requestorID, request_status)
+                VALUES ('$id', CURRENT_TIMESTAMP, '$amount', '$monthsToPay', '$monthlyAmmortization', '$remainingAmount', '$cutoffStart', '$ca_status', '$requestorID', '$request_status')";
             return $fileCashAdvance;
         }
 
@@ -1440,7 +1451,7 @@
                 ON employees.departmentID = department.departmentID
                 WHERE designationID != 12 AND 
                 department.departmentID = 1 AND 
-                designationID IN (2,3,4,5) AND
+                designationID IN (2,3,4,5,14) AND
                 employees.e_status = 'Active'";
             return $activeAgents;
         }
@@ -1452,7 +1463,7 @@
                 ON employees.departmentID = department.departmentID
                 WHERE designationID != 12 AND 
                 department.departmentID = 1 AND 
-                designationID IN (2,3,4,5) AND
+                designationID IN (2,3,4,5,14) AND
                 employees.e_status = 'Inactive'";
             return $activeAgents;
         }

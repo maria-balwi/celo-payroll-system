@@ -49,10 +49,10 @@
                                 <!--HR BUTTON-->
                                 <button class="nav-link uncheck" id="pills-hr-tab" data-bs-toggle="pill" data-bs-target="#pills-hr" type="button" role="tab" aria-controls="pills-hr" aria-selected="false">HR</button>
                             </li>
-                            <li class="nav-item" role="presentation">
-                                <!--DIRECTORS BUTTON-->
+                            <!-- <li class="nav-item" role="presentation">
+                                <!- -DIRECTORS BUTTON-- >
                                 <button class="nav-link uncheck" id="pills-directors-tab" data-bs-toggle="pill" data-bs-target="#pills-directors" type="button" role="tab" aria-controls="pills-directors" aria-selected="false">Directors</button>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>
 
@@ -224,7 +224,7 @@
                             </div>
 
                             <!-- ------------------------------------------------------------------------------------------------- -->
-                            <!-- ------------------------------------------ FACILITIES TAB --------------------------------------- -->
+                            <!-- ------------------------------------------ RECRUITMENT TAB -------------------------------------- -->
                             <!-- ------------------------------------------------------------------------------------------------- -->
                             <div class="tab-pane fade" id="pills-recruitment" role="tabpanel" aria-labelledby="pills-recruitment-tab">
                                 <div class="card border-0">
@@ -554,21 +554,21 @@
                             <!-- ------------------------------------------------------------------------------------------------- -->
                             <!-- ------------------------------------------ DIRECTORS TAB ---------------------------------------- -->
                             <!-- ------------------------------------------------------------------------------------------------- -->
-                            <div class="tab-pane fade" id="pills-directors" role="tabpanel" aria-labelledby="pills-directors-tab">
+                            <!-- <div class="tab-pane fade" id="pills-directors" role="tabpanel" aria-labelledby="pills-directors-tab">
                                 <div class="card border-0">
                                     <ul class="nav nav-pills mt-0 mb-3" id="pills-tab-inactive" role="tablist">
-                                        <!-- ACTIVE BUTTON -->
+                                        <! -- ACTIVE BUTTON -- >
                                         <li class="nav-item" role="presentation">
                                             <button class="nav-link active" id="directors-active-tab" data-bs-toggle="pill" data-bs-target="#directors-active" type="button" role="tab" aria-controls="directors-active" aria-selected="true">Active</button>
                                         </li>
-                                        <!-- INACTIVE BUTTON -->
+                                        <!- - INACTIVE BUTTON - ->
                                         <li class="nav-item" role="presentation">
                                             <button class="nav-link" id="directors-inactive-tab" data-bs-toggle="pill" data-bs-target="#directors-inactive" type="button" role="tab" aria-controls="directors-inactive" aria-selected="false">Inactive</button>
                                         </li>
                                     </ul>
 
                                     <div class="tab-content" id="pills-tabContent">
-                                        <!-- ACTIVE DIRECTORS TABLE  -->
+                                        < !-- ACTIVE DIRECTORS TABLE  -- >
                                         <div class="tab-pane fade show active" id="directors-active" role="tabpanel" aria-labelledby="directors-active-tab">
                                             <table class="table table-striped table-bordered pt-2" id="directorsTable">
                                                 <thead class="table-light">
@@ -577,7 +577,7 @@
                                                     <th>Email Address</th>
                                                 </thead>
                                                 <tbody>
-                                                    <?php
+                                                    < ?php
                                                         $director = mysqli_query($conn, $employees->viewDirectors());
                                                         while ($directorDetails = mysqli_fetch_array($director)) {
                                                             
@@ -599,7 +599,7 @@
                                             </table>
                                         </div>
 
-                                        <!-- INACTIVE DIRECTORS TABLE  -->
+                                        <!- - INACTIVE DIRECTORS TABLE  -- >
                                         <div class="tab-pane fade" id="directors-inactive" role="tabpanel" aria-labelledby="directors-inactive-tab">
                                             <table class="table table-striped table-bordered  pt-2" id="inactiveDirectorsTable">
                                                 <thead class="table-light">
@@ -632,7 +632,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
 
                     <!-- CARD FOOTER DATA ENTRY BUTTON -->

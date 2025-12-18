@@ -258,7 +258,7 @@
                                     <input type="text" class="form-control" id="viewEmployeeName" disabled readonly>
                                 </div>
                                 <div class="col-3">
-                                    <label for="viewEmployeeName">Requested by:</label>
+                                    <label for="viewEmployeeName">Endorsed by:</label>
                                     <input type="text" class="form-control" id="viewRequestorName" disabled readonly>
                                 </div>
                             </div>

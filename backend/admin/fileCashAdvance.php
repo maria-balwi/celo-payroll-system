@@ -3,7 +3,7 @@
     $conn = $database->dbConnect();
     session_start();
 
-    $employeeID = $_SESSION['id'];
+    $requestorID = $_SESSION['id'];
     $id = $_POST['id'];
     $amount = $_POST['amount'];
     $monthsToPay = $_POST['monthsToPay'];
@@ -14,7 +14,7 @@
     $request_status = "Pending";
     
     // INSERT TO tbl_cashAdvance
-    mysqli_query($conn, $employees->fileCashAdvance($id, $amount, $monthsToPay, $monthlyAmmortization, $remainingAmount, $cutoffStart, $ca_status, $request_status));
+    mysqli_query($conn, $employees->fileCashAdvance($id, $amount, $monthsToPay, $monthlyAmmortization, $remainingAmount, $cutoffStart, $ca_status, $requestorID, $request_status));
 
     // GET LAST ID
     $lastIDQuery = mysqli_query($conn, $employees->viewLastCashAdvance());
@@ -23,7 +23,7 @@
 
      // AUDIT TRAIL
     $at_empID = $_SESSION['id'];
-    $at_module = "Admin - Cash Advance";
+    $at_module = "Team - Cash Advance";
     $at_action = "Filed Cash Advance";
     mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $id));
 
