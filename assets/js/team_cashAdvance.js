@@ -403,7 +403,7 @@ $(document).ready(function () {
     function loadCashAdvanceData($requestID) {
         $.ajax({
             type: "GET",
-            url: "../backend/admin/cashAdvanceModal.php?requestID=" + $requestID,
+            url: "../backend/team/cashAdvanceModal.php?requestID=" + $requestID,
             success: function (response) {
                 var res = jQuery.parseJSON(response);
 
