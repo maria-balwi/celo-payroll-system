@@ -3,6 +3,15 @@
     <head>
         <!-- HEADER -->
         <?php include('../includes/header.php'); ?>
+
+        <style>
+            #breakdownTable th {
+                border: 1px solid black;
+            }
+            #breakdownTable td {
+                border: 1px solid black;
+            }
+        </style>
     </head>
     <body>
         <!-- SIDEBAR -->
@@ -235,7 +244,7 @@
             </form>
 
             <!--------------------------------------------------------------------------------------------------------------------------------------------->
-            <!----------------------------------------------------------- VIEW ACTIVE EMPLOYEE FORM ------------------------------------------------------->
+            <!----------------------------------------------------------- VIEW CASH ADVANCE PAYMENT HISTORY ----------------------------------------------->
             <div class="modal fade" id="viewCashAdvanceModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
                 <div class="modal-dialog modal-none modal-xl modal-dialog-centered modal-scrollable">
                     <div class="modal-content" id="viewCashAdvanceModal">
@@ -298,6 +307,24 @@
                                 <div class="col-3">
                                     <label for="viewRequestStatus">Application Status:</label>
                                     <input type="text" class="form-control" id="viewRequestStatus" disabled readonly>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 my-2" id="breakdownDiv">
+                                <h1 class="modal-subtitle fs-5" id="userFormLabel">CA Breakdown</h1>
+                                <div class="container mx-auto overflow-auto">
+                                    <table id="breakdownTable" class="table table-auto table-bordered text-center my-1 pt-3">
+                                        <thead class="bg-gray-50">
+                                            <tr>
+                                                <th class="text-xs font-medium text-yellow-500 uppercase tracking-tight">Payroll Cut Off</th>
+                                                <th class="text-xs font-medium text-yellow-500 uppercase tracking-tight">Principal Balance</th>
+                                                <th class="text-xs font-medium text-gray-500 uppercase tracking-tight">Monthly Ammortization</th>
+                                                <th class="text-xs font-medium text-gray-500 uppercase tracking-tight">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="bg-white divide-y divide-gray-200" id="breakdownSection">
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
