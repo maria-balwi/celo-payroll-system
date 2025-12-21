@@ -119,7 +119,7 @@ $(document).ready(function () {
 
     // ADD CASH ADVANCE
     $("#fileCashAdvanceForm").submit(function (e) {
-      e.preventDefault();
+        e.preventDefault();
 
         let fileCashAdvance = new FormData(this);
         var id = $("#id").val();

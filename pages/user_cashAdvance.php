@@ -310,7 +310,7 @@
                                 </div>
                             </div>
 
-                            <div class="row g-2 my-2">
+                            <div class="row g-2 my-2" id="breakdownDiv">
                                 <h1 class="modal-subtitle fs-5" id="userFormLabel">CA Breakdown</h1>
                                 <div class="container mx-auto overflow-auto">
                                     <table id="breakdownTable" class="table table-auto table-bordered text-center my-1 pt-3">
