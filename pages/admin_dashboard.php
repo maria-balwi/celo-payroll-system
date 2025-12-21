@@ -106,6 +106,9 @@
                                 
                                 $getPendingOvertimeQuery = mysqli_query($conn, $attendance->getAdminPendingOvertimes());
                                 $getPendingOvertime = mysqli_num_rows($getPendingOvertimeQuery);
+
+                                $getPendingCashAdvanceQuery = mysqli_query($conn, $attendance->getAdminPendingCashAdvance());
+                                $getPendingCashAdvance = mysqli_num_rows($getPendingCashAdvanceQuery);
                             }
                             else if ($_SESSION['departmentID'] == 5) {
                                 $getPendingLeavesQuery = mysqli_query($conn, $attendance->getDirectorPendingLeaves());
@@ -116,6 +119,9 @@
                                 
                                 $getPendingOvertimeQuery = mysqli_query($conn, $attendance->getDirectorPendingOvertimes());
                                 $getPendingOvertime = mysqli_num_rows($getPendingOvertimeQuery);
+
+                                $getPendingCashAdvance = mysqli_query($conn, $attendance->getDirectorPendingCashAdvance());
+                                $getPendingCashAdvance = mysqli_num_rows($getPendingCashAdvance);
                             }
                             else {
                                 $getPendingLeavesQuery = mysqli_query($conn, $attendance->getAllPendingLeaves());
@@ -126,6 +132,9 @@
                                 
                                 $getPendingOvertimeQuery = mysqli_query($conn, $attendance->getAllPendingOvertimes());
                                 $getPendingOvertime = mysqli_num_rows($getPendingOvertimeQuery);
+
+                                $getPendingCashAdvanceQuery = mysqli_query($conn, $attendance->getAllPendingCashAdvance());
+                                $getPendingCashAdvance = mysqli_num_rows($getPendingCashAdvanceQuery);                                
                             }
 
                             if ($getPendingLeaves != 0) { ?>
@@ -176,7 +185,7 @@
                                             </svg>
                                         </div>
                                         <div class="py-auto px-auto">
-                                            <h2 class="text-lg mb-0 font-semibold">Filed OTs</h2>
+                                            <h2 class="text-lg mb-0 font-semibold">Filed OT</h2>
                                             <p class="text-gray-500 text-sm">Pending filed overtimes</p>
                                         </div>
                                         <div class="bg-yellow-200 text-gray-700 px-3 py-2 rounded-lg my-auto text-center font-semibold">
@@ -184,8 +193,27 @@
                                         </div>
                                     </div>
                                 </a>
+                        <?php } 
+                            if ($getPendingCashAdvance != 0) { ?>
+                                <!-- ======== CASH ADVANCE APPLICATIONS ======== -->
+                                <a href="admin_cashAdvance.php" class="no-underline text-gray-700">
+                                    <div class="flex gap-2 p-2 rounded-lg hover:bg-blue-100 px-auto">
+                                        <div class="my-auto pb-3">
+                                            <svg class="h-10 w-10 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                            </svg>
+                                        </div>
+                                        <div class="py-auto px-auto">
+                                            <h2 class="text-lg mb-0 font-semibold">Cash Advance Applications</h2>
+                                            <p class="text-gray-500 text-sm">Pending cash advance applications</p>
+                                        </div>
+                                        <div class="bg-yellow-200 text-gray-700 px-3 py-2 rounded-lg my-auto text-center font-semibold">
+                                            <?php echo $getPendingCashAdvance ?>
+                                        </div>
+                                    </div>
+                                </a>
                         <?php }
-                            if ($getPendingLeaves == 0 && $getPendingChangeShift == 0 && $getPendingOvertime == 0) { ?>
+                            if ($getPendingLeaves == 0 && $getPendingChangeShift == 0 && $getPendingOvertime == 0 && $getPendingCashAdvance == 0) { ?>
                                 <!-- ======== NO PENDING REQUESTS ======== -->
                                 <div class="mt-3">
                                     <p class="text-gray-700">There are no pending requests at the moment.</p>

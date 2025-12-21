@@ -12,6 +12,7 @@
         private $leaves = 'tbl_leaveapplications';
         private $filedOT = 'tbl_filedot';
         private $weekOff = 'tbl_empweekoff';
+        private $cashAdvance = 'tbl_cashAdvance';
         private $dbConnect = false;
         public function __construct() {
             $this->dbConnect = $this->dbConnect();
@@ -254,6 +255,13 @@
             return $pendingLeaves;
         }
 
+        public function getAllPendingCashAdvance() {
+            $pendingCashAdvance = "
+                SELECT * FROM ".$this->cashAdvance." AS cashAdvance
+                WHERE request_status = 'Pending'";
+            return $pendingCashAdvance;
+        }
+
         public function getDirectorPendingLeaves() {
             $pendingLeaves = "
                 SELECT * FROM ".$this->leaves." AS leaves
@@ -263,12 +271,21 @@
             return $pendingLeaves;
         }
 
+        public function getDirectorPendingCashAdvance() {
+            $pendingCashAdvance = "
+                SELECT * FROM ".$this->cashAdvance." AS cashAdvance
+                INNER JOIN ".$this->employees." AS employees
+                ON cashAdvance.empID = employees.id
+                WHERE cashAdvance.request_status = 'Pending' AND employees.designationID IN (5,8,9)";
+            return $pendingCashAdvance;
+        }
+
         public function getAdminPendingLeaves() {
             $pendingLeaves = "
                 SELECT * FROM ".$this->leaves." AS leaves
                 INNER JOIN ".$this->employees." AS employees
                 ON leaves.empID = employees.id
-                WHERE leaves.status = 'Pending' AND employees.designationID NOT IN (8,9)";
+                WHERE leaves.status = 'Pending' AND employees.designationID != 9";
             return $pendingLeaves;
         }
 
@@ -295,7 +312,7 @@
                 SELECT * FROM ".$this->changeShift." AS changeShift
                 INNER JOIN ".$this->employees." AS employees
                 ON changeShift.empID = employees.id
-                WHERE changeShift.status = 'Pending' AND employees.designationID NOT IN (8,9)";
+                WHERE changeShift.status = 'Pending' AND employees.designationID != 9";
             return $pendingChangeShifts;
         }
 
@@ -322,8 +339,17 @@
                 SELECT * FROM ".$this->filedOT." AS filedOT
                 INNER JOIN ".$this->employees." AS employees
                 ON filedOT.empID = employees.id
-                WHERE filedOT.status IS NULL AND employees.designationID NOT IN (8,9)";
+                WHERE filedOT.status IS NULL AND employees.designationID != 9";
             return $pendingChangeShifts;
+        }
+
+        public function getAdminPendingCashAdvance() {
+            $pendingCashAdvance = "
+                SELECT * FROM {$this->cashAdvance} AS cashAdvance
+                INNER JOIN {$this->employees} AS employees
+                ON cashAdvance.empID = employees.id
+                WHERE cashAdvance.request_status = 'Pending' AND employees.designationID != 9";
+            return $pendingCashAdvance;
         }
 
         public function getPendingITLeaves() {
@@ -331,8 +357,6 @@
                 SELECT * FROM ".$this->leaves." AS leaves
                 INNER JOIN ".$this->employees." AS employees
                 ON leaves.empID = employees.id
-                INNER JOIN ".$this->department." AS department
-                ON employees.departmentID = department.departmentID
                 WHERE employees.designationID IN (10, 13, 19) AND status = 'Pending'";
             return $pendingLeaves;
         }
@@ -342,8 +366,6 @@
                 SELECT * FROM ".$this->leaves." AS leaves
                 INNER JOIN ".$this->employees." AS employees
                 ON leaves.empID = employees.id
-                INNER JOIN ".$this->department." AS department
-                ON employees.departmentID = department.departmentID
                 WHERE employees.designationID IN (1,2,3,14) AND status = 'Pending'";
             return $pendingLeaves;
         }
@@ -353,8 +375,6 @@
                 SELECT * FROM ".$this->leaves." AS leaves
                 INNER JOIN ".$this->employees." AS employees
                 ON leaves.empID = employees.id
-                INNER JOIN ".$this->department." AS department
-                ON employees.departmentID = department.departmentID
                 WHERE employees.designationID IN (4,11) AND status = 'Pending'";
             return $pendingLeaves;
         }
@@ -364,8 +384,6 @@
                 SELECT * FROM ".$this->changeShift." AS changeShift
                 INNER JOIN ".$this->employees." AS employees
                 ON changeShift.empID = employees.id
-                INNER JOIN ".$this->department." AS department
-                ON employees.departmentID = department.departmentID
                 WHERE employees.designationID IN (10, 13, 19) AND status = 'Pending'";
             return $pendingChangeShifts;
         }
@@ -375,8 +393,6 @@
                 SELECT * FROM ".$this->changeShift." AS changeShift
                 INNER JOIN ".$this->employees." AS employees
                 ON changeShift.empID = employees.id
-                INNER JOIN ".$this->department." AS department
-                ON employees.departmentID = department.departmentID
                 WHERE employees.designationID IN (1,2,3,14) AND status = 'Pending'";
             return $pendingChangeShifts;
         }
@@ -386,8 +402,6 @@
                 SELECT * FROM ".$this->changeShift." AS changeShift
                 INNER JOIN ".$this->employees." AS employees
                 ON changeShift.empID = employees.id
-                INNER JOIN ".$this->department." AS department
-                ON employees.departmentID = department.departmentID
                 WHERE employees.designationID IN (4,11) AND status = 'Pending'";
             return $pendingChangeShifts;
         }
@@ -397,8 +411,6 @@
                 SELECT * FROM ".$this->filedOT." AS filedOT
                 INNER JOIN ".$this->employees." AS employees
                 ON filedOT.empID = employees.id
-                INNER JOIN ".$this->department." AS department
-                ON employees.departmentID = department.departmentID
                 WHERE employees.designationID IN (10, 13, 19) AND status IS NULL";
             return $pendingOvertimes;
         }
@@ -408,8 +420,6 @@
                 SELECT * FROM ".$this->filedOT." AS filedOT
                 INNER JOIN ".$this->employees." AS employees
                 ON filedOT.empID = employees.id
-                INNER JOIN ".$this->department." AS department
-                ON employees.departmentID = department.departmentID
                 WHERE employees.designationID IN (1,2,3,14) AND status IS NULL";
             return $pendingOvertimes;
         }
@@ -419,10 +429,39 @@
                 SELECT * FROM ".$this->filedOT." AS filedOT
                 INNER JOIN ".$this->employees." AS employees
                 ON filedOT.empID = employees.id
-                INNER JOIN ".$this->department." AS department
-                ON employees.departmentID = department.departmentID
                 WHERE employees.designationID IN (4,11) AND status IS NULL";
             return $pendingOvertimes;
+        }
+
+        public function getPendingOperationsCashAdvanceManager() {
+            $getPendingCashAdvance = "
+                SELECT * FROM {$this->cashAdvance} AS ca
+                INNER JOIN {$this->employees} AS employees
+                ON ca.empID = employees.id
+                WHERE employees.designationID IN (4,11) AND request_status = 'Pending'";
+            return $getPendingCashAdvance;
+        }
+
+        public function getPendingOperationsCashAdvanceTL() {
+            $getPendingCashAdvance = "
+                SELECT * FROM {$this->cashAdvance} AS ca 
+                INNER JOIN {$this->employees} AS employees
+                ON ca.empID = employees.id
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE employees.designationID IN (1,2,3,14) AND request_status = 'Pending'";
+            return $getPendingCashAdvance;
+        }
+
+        public function getPendingITCashAdvance() {
+            $getPendingCashAdvance = "
+                SELECT * FROM {$this->cashAdvance} AS ca 
+                INNER JOIN {$this->employees} AS employees
+                ON ca.empID = employees.id
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE employees.designationID IN (10, 13, 19) AND request_status = 'Pending'";
+            return $getPendingCashAdvance;
         }
 
         public function viewITTeam() {
