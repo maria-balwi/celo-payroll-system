@@ -4,31 +4,6 @@ function formatNumberWithCommas(number) {
     return number.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-function formatFullDate(mmdd, year = new Date().getFullYear()) {
-    const [month, day] = mmdd.split('-');
-
-    const date = new Date(year, month - 1, day);
-
-    return date.toLocaleDateString('en-US', {
-        month: 'short',
-        day: '2-digit',
-        year: 'numeric'
-    });
-}
-
-function formatFullDate_nextYear(mmdd, baseYear = new Date().getFullYear()) {
-    const [month, day] = mmdd.split("-");
-
-    const nextYear = baseYear + 1;
-    const date = new Date(nextYear, month - 1, day);
-
-    return date.toLocaleDateString("en-US", {
-        month: "short",
-        day: "2-digit",
-        year: "numeric",
-    });
-}
-
 function formatDate(mmdd, year) {
     const [month, day] = mmdd.split("-");
     return new Date(year, month - 1, day).toLocaleDateString("en-US", {
@@ -38,8 +13,6 @@ function formatDate(mmdd, year) {
     });
 }
 
-
-
 $(document).ready(function () {
     $("#cashAdvanceTable").DataTable({
         order: [],
@@ -48,6 +21,8 @@ $(document).ready(function () {
     $("#employeeID").inputmask("999-999", {
         placeholder: "XXX-XXX",
     });
+
+    $("#breakdownDiv").hide();
 
     let employeeTypingTimer; // OUTSIDE THE EVENT
     const debounceDelay = 400; // ms
@@ -242,57 +217,60 @@ $(document).ready(function () {
                     $("#viewCAStatus").val(res.data.ca_status);
                     $("#viewRequestStatus").val(res.data.request_status);
 
-                    let currentYear = new Date().getFullYear();
-                    let previousCycle = null;
-                    let previousYear = currentYear;
-                    var caBreakdownHTML = "";    
-                    let amount = res.data.amount;
-                    let monthlyAmmortization = res.data.monthlyAmmortization;
-                    
-                    const paidCycleIDs = new Set();
+                    if (res.data.request_status == "Approved") {
+                        $("#breakdownDiv").show();
+                        let currentYear = new Date().getFullYear();
+                        let previousCycle = null;
+                        let previousYear = currentYear;
+                        var caBreakdownHTML = "";    
+                        let amount = res.data.amount;
+                        let monthlyAmmortization = res.data.monthlyAmmortization;
+                        
+                        const paidCycleIDs = new Set();
 
 
-                    // Collect ALL paid cycle IDs
-                    if (Array.isArray(res.caPaymentHistory)) {
-                        res.caPaymentHistory.forEach(row => {
-                            paidCycleIDs.add(Number(row.payrollCycleID));
-                        });
+                        // Collect ALL paid cycle IDs
+                        if (Array.isArray(res.caPaymentHistory)) {
+                            res.caPaymentHistory.forEach(row => {
+                                paidCycleIDs.add(Number(row.payrollCycleID));
+                            });
+                        }
+
+                        if (Array.isArray(res.caBreakdown)) {
+                            res.caBreakdown.forEach(cabreakdown => {
+                                const cycleID = Number(cabreakdown.payrollCycleID);
+                                const isPaid = paidCycleIDs.has(cycleID);
+
+                                // YEAR ROLLOVER: 24 → 1
+                                if (previousCycle == 24 && cycleID == 1) {
+                                    currentYear++;
+
+                                    caBreakdownHTML += `
+                                            <tr>
+                                                <td>${formatDate(cabreakdown.payrollCycleFrom,previousYear)} - ${formatDate(cabreakdown.payrollCycleTo,currentYear)}</td>
+                                                <td>${formatNumberWithCommas(amount)}</td>
+                                                <td>${formatNumberWithCommas(monthlyAmmortization)}</td>
+                                                <td>${isPaid ? `<p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Paid</p>` : ""}</td>
+                                            </tr>
+                                        `;
+                                } else {
+                                    caBreakdownHTML += `
+                                            <tr>
+                                                <td>${formatDate(cabreakdown.payrollCycleFrom,currentYear)} - ${formatDate(cabreakdown.payrollCycleTo,currentYear)}</td>
+                                                <td>${formatNumberWithCommas(amount)}</td>
+                                                <td>${formatNumberWithCommas(monthlyAmmortization)}</td>
+                                                <td>${isPaid ? `<p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Paid</p>` : ""}</td>
+                                            </tr>
+                                        `;
+                                }
+
+                                amount -= monthlyAmmortization;
+                                previousCycle = cycleID;
+                            });
+                        }
+
+                        $("#breakdownSection").html(caBreakdownHTML);
                     }
-
-                    if (Array.isArray(res.caBreakdown)) {
-                        res.caBreakdown.forEach(cabreakdown => {
-                            const cycleID = Number(cabreakdown.payrollCycleID);
-                            const isPaid = paidCycleIDs.has(cycleID);
-
-                            // YEAR ROLLOVER: 24 → 1
-                            if (previousCycle == 24 && cycleID == 1) {
-                                currentYear++;
-
-                                caBreakdownHTML += `
-                                        <tr>
-                                            <td>${formatDate(cabreakdown.payrollCycleFrom,previousYear)} - ${formatDate(cabreakdown.payrollCycleTo,currentYear)}</td>
-                                            <td>${formatNumberWithCommas(amount)}</td>
-                                            <td>${formatNumberWithCommas(monthlyAmmortization)}</td>
-                                            <td>${isPaid ? `<p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Paid</p>` : ""}</td>
-                                        </tr>
-                                    `;
-                            } else {
-                                caBreakdownHTML += `
-                                        <tr>
-                                            <td>${formatDate(cabreakdown.payrollCycleFrom,currentYear)} -${formatDate(cabreakdown.payrollCycleTo,currentYear)}</td>
-                                            <td>${formatNumberWithCommas(amount)}</td>
-                                            <td>${formatNumberWithCommas(monthlyAmmortization)}</td>
-                                            <td>${isPaid ? `<p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Paid</p>` : ""}</td>
-                                        </tr>
-                                    `;
-                            }
-
-                            amount -= monthlyAmmortization;
-                            previousCycle = cycleID;
-                        });
-                    }
-
-                    $("#breakdownSection").html(caBreakdownHTML);
                     // Show the modal
                     $("#viewCashAdvanceModal").modal("show");
 
