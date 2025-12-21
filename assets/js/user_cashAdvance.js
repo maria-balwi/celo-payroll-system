@@ -248,51 +248,49 @@ $(document).ready(function () {
                     var caBreakdownHTML = "";    
                     let amount = res.data.amount;
                     let monthlyAmmortization = res.data.monthlyAmmortization;
+                    
+                    const paidCycleIDs = new Set();
 
 
-                    if (Array.isArray(res.caBreakdown) && res.caBreakdown.length > 0) {
-
-                        res.caBreakdown.forEach(function (cabreakdown) {
-
-                            const cycleID = Number(cabreakdown.payrollCycleID);
-
-                            // ✅ YEAR ROLLOVER: 24 → 1
-                            if (previousCycle === 24 && cycleID === 1) {
-                                currentYear++;
-
-                                caBreakdownHTML += `
-                                <tr>
-                                    <td>
-                                        ${formatDate(cabreakdown.payrollCycleFrom, previousYear)} -
-                                        ${formatDate(cabreakdown.payrollCycleTo, currentYear)}
-                                    </td>
-                                    <td>${formatNumberWithCommas(amount)}</td>
-                                    <td>${formatNumberWithCommas(monthlyAmmortization)}</td>
-                                    <td>${res.data.ca_status}</td>
-                                </tr>
-                            `;
-                            }
-                            else {
-                                caBreakdownHTML += `
-                                    <tr>
-                                        <td>
-                                            ${formatDate(cabreakdown.payrollCycleFrom, currentYear)} -
-                                            ${formatDate(cabreakdown.payrollCycleTo, currentYear)}
-                                        </td>
-                                        <td>${formatNumberWithCommas(amount)}</td>
-                                        <td>${formatNumberWithCommas(monthlyAmmortization)}</td>
-                                        <td>${res.data.ca_status}</td>
-                                    </tr>
-                                `;
-                            }
-                            
-                            amount -= monthlyAmmortization
-
-                            previousCycle = cycleID;
+                    // Collect ALL paid cycle IDs
+                    if (Array.isArray(res.caPaymentHistory)) {
+                        res.caPaymentHistory.forEach(row => {
+                            paidCycleIDs.add(Number(row.payrollCycleID));
                         });
                     }
 
+                    if (Array.isArray(res.caBreakdown)) {
+                        res.caBreakdown.forEach(cabreakdown => {
+                            const cycleID = Number(cabreakdown.payrollCycleID);
+                            const isPaid = paidCycleIDs.has(cycleID);
 
+                            // YEAR ROLLOVER: 24 → 1
+                            if (previousCycle == 24 && cycleID == 1) {
+                                currentYear++;
+
+                                caBreakdownHTML += `
+                                        <tr>
+                                            <td>${formatDate(cabreakdown.payrollCycleFrom,previousYear)} - ${formatDate(cabreakdown.payrollCycleTo,currentYear)}</td>
+                                            <td>${formatNumberWithCommas(amount)}</td>
+                                            <td>${formatNumberWithCommas(monthlyAmmortization)}</td>
+                                            <td>${isPaid ? `<p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Paid</p>` : ""}</td>
+                                        </tr>
+                                    `;
+                            } else {
+                                caBreakdownHTML += `
+                                        <tr>
+                                            <td>${formatDate(cabreakdown.payrollCycleFrom,currentYear)} -${formatDate(cabreakdown.payrollCycleTo,currentYear)}</td>
+                                            <td>${formatNumberWithCommas(amount)}</td>
+                                            <td>${formatNumberWithCommas(monthlyAmmortization)}</td>
+                                            <td>${isPaid ? `<p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Paid</p>` : ""}</td>
+                                        </tr>
+                                    `;
+                            }
+
+                            amount -= monthlyAmmortization;
+                            previousCycle = cycleID;
+                        });
+                    }
 
                     $("#breakdownSection").html(caBreakdownHTML);
                     // Show the modal
@@ -306,7 +304,7 @@ $(document).ready(function () {
     function loadCashAdvanceData($requestID) {
         $.ajax({
             type: "GET",
-            url: "../backend/user/cashAdvanceModal.php?requestID=" + $requestID,
+            url: "../backend/user/cashAdvanceModal.php?requestID=" + id_request,
             success: function (response) {
                 var res = jQuery.parseJSON(response);
 
@@ -315,33 +313,78 @@ $(document).ready(function () {
                 } else if (res.status == 200) {
                     $("#viewRequestID").val(res.data.requestID);
                     $("#viewEmployeeID").val(res.data.employeeID);
-                    $("#viewEmployeeName").val(
-                        res.data.firstName + " " + res.data.lastName
-                    );
-                    $("#viewRequestorName").val(
-                        res.data.requestorFirstName + " " + res.data.requestorLastName
-                    );
+                    $("#viewEmployeeName").val(res.data.firstName + " " + res.data.lastName);
+                    if (res.data.empID == res.data.requestorID) {
+                        $("#endorsedByRow").hide();
+                    }
+                    else {
+                        $("#viewRequestorName").val(res.data.requestorFirstName + " " + res.data.requestorLastName);
+                    }
                     $("#viewFiledDate").val(res.data.dateFiled);
-                    $("#viewLoanAmount").val(
-                        "₱ " + formatNumberWithCommas(res.data.amount)
-                    );
-                    $("#viewTotalAmount").val(
-                        "₱ " + formatNumberWithCommas(res.data.amount)
-                    );
-                    $("#viewRemainingAmount").val(
-                        "₱ " + formatNumberWithCommas(res.data.remainingAmount)
-                    );
+                    $("#viewLoanAmount").val("₱ " + formatNumberWithCommas(res.data.amount));
+                    $("#viewTotalAmount").val("₱ " + formatNumberWithCommas(res.data.amount));
+                    $("#viewRemainingAmount").val("₱ " + formatNumberWithCommas(res.data.remainingAmount));
                     $("#viewMonthsToPay").val(
                         res.data.monthsToPay <= 1
                         ? res.data.monthsToPay + " month"
                         : res.data.monthsToPay + " months"
                     );
-                    $("#viewMonthlyAmmortization").val(
-                        "₱ " + formatNumberWithCommas(res.data.monthlyAmmortization)
-                    );
+                    $("#viewMonthlyAmmortization").val("₱ " + formatNumberWithCommas(res.data.monthlyAmmortization));
                     $("#viewCutoffStart").val(res.data.cutoffStart);
                     $("#viewCAStatus").val(res.data.ca_status);
                     $("#viewRequestStatus").val(res.data.request_status);
+
+                    let currentYear = new Date().getFullYear();
+                    let previousCycle = null;
+                    let previousYear = currentYear;
+                    var caBreakdownHTML = "";    
+                    let amount = res.data.amount;
+                    let monthlyAmmortization = res.data.monthlyAmmortization;
+                    
+                    const paidCycleIDs = new Set();
+
+
+                    // Collect ALL paid cycle IDs
+                    if (Array.isArray(res.caPaymentHistory)) {
+                        res.caPaymentHistory.forEach(row => {
+                            paidCycleIDs.add(Number(row.payrollCycleID));
+                        });
+                    }
+
+                    if (Array.isArray(res.caBreakdown)) {
+                        res.caBreakdown.forEach(cabreakdown => {
+                            const cycleID = Number(cabreakdown.payrollCycleID);
+                            const isPaid = paidCycleIDs.has(cycleID);
+
+                            // YEAR ROLLOVER: 24 → 1
+                            if (previousCycle == 24 && cycleID == 1) {
+                                currentYear++;
+
+                                caBreakdownHTML += `
+                                        <tr>
+                                            <td>${formatDate(cabreakdown.payrollCycleFrom,previousYear)} - ${formatDate(cabreakdown.payrollCycleTo,currentYear)}</td>
+                                            <td>${formatNumberWithCommas(amount)}</td>
+                                            <td>${formatNumberWithCommas(monthlyAmmortization)}</td>
+                                            <td>${isPaid ? `<p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Paid</p>` : ""}</td>
+                                        </tr>
+                                    `;
+                            } else {
+                                caBreakdownHTML += `
+                                        <tr>
+                                            <td>${formatDate(cabreakdown.payrollCycleFrom,currentYear)} -${formatDate(cabreakdown.payrollCycleTo,currentYear)}</td>
+                                            <td>${formatNumberWithCommas(amount)}</td>
+                                            <td>${formatNumberWithCommas(monthlyAmmortization)}</td>
+                                            <td>${isPaid ? `<p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Paid</p>` : ""}</td>
+                                        </tr>
+                                    `;
+                            }
+
+                            amount -= monthlyAmmortization;
+                            previousCycle = cycleID;
+                        });
+                    }
+
+                    $("#breakdownSection").html(caBreakdownHTML);
                 }
             },
         });

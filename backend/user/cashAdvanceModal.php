@@ -33,7 +33,7 @@
             if ($payrollCutoffStart > $payrollCutoffEnd) {
                 $maxCycle = 24;
                 $minCycle = 1;
-                // $counter = $maxCycle - $payrollCutoffStart - 1;
+
                 $caBreakdownQuery = mysqli_query($conn, $payroll->viewCABreakdown($payrollCutoffStart, $maxCycle));
                 while ($caBreakdownResult = mysqli_fetch_array($caBreakdownQuery)) {
                     $caBreakdown[] = $caBreakdownResult;
@@ -46,12 +46,19 @@
             while ($caBreakdownResult = mysqli_fetch_array($caBreakdownQuery)) {
                 $caBreakdown[] = $caBreakdownResult;
             }
+
+            $caPaymentHistory = [];
+            $caPaymentHistoryQuery = mysqli_query($conn, $payroll->viewCAPaymentHistory($request_id));
+            while ($caPaymentHistoryResult = mysqli_fetch_array($caPaymentHistoryQuery)) {
+                $caPaymentHistory[] = $caPaymentHistoryResult;
+            }
             
             $res = [
                 'status' => 200,
                 'message' => 'Cash Advance Fetch Successfully by id',
                 'data' => $cashAdvance,
-                'caBreakdown' => $caBreakdown
+                'caBreakdown' => $caBreakdown, 
+                'caPaymentHistory' => $caPaymentHistory
             ];
 
             echo json_encode($res);

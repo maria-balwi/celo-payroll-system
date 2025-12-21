@@ -3,6 +3,19 @@
     <head>
         <!-- HEADER -->
         <?php include('../includes/header.php'); ?>
+
+        <style>
+            #breakdownTable th {
+                border: 1px solid black;
+            }
+            #breakdownTable td {
+                border: 1px solid black;
+            }
+
+            #paidStatus {
+                color: green;
+            }
+        </style>
     </head>
     <body>
         <!-- SIDEBAR -->
@@ -235,7 +248,7 @@
             </form>
 
             <!--------------------------------------------------------------------------------------------------------------------------------------------->
-            <!----------------------------------------------------------- VIEW ACTIVE EMPLOYEE FORM ------------------------------------------------------->
+            <!----------------------------------------------------------- VIEW CASH ADVANCE PAYMENT HISTORY ----------------------------------------------->
             <div class="modal fade" id="viewCashAdvanceModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
                 <div class="modal-dialog modal-none modal-xl modal-dialog-centered modal-scrollable">
                     <div class="modal-content" id="viewCashAdvanceModal">

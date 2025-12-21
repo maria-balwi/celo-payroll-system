@@ -1306,10 +1306,10 @@
             return $request;
         }
 
-        public function fileCashAdvance($id, $amount, $monthsToPay, $monthlyAmmortization, $remainingAmount, $cutoffStart, $ca_status, $requestorID, $request_status) {
+        public function fileCashAdvance($id, $amount, $monthsToPay, $monthlyAmmortization, $remainingAmount, $cutoffStart, $payrollcutoffStart, $payrollcutoffEnd, $ca_status, $requestorID, $request_status) {
             $fileCashAdvance = "
-                INSERT INTO ".$this->cashAdvance." (empID, dateFiled, amount, monthsToPay, monthlyAmmortization, remainingAmount, cutoffStart, ca_status, requestorID, request_status)
-                VALUES ('$id', CURRENT_TIMESTAMP, '$amount', '$monthsToPay', '$monthlyAmmortization', '$remainingAmount', '$cutoffStart', '$ca_status', '$requestorID', '$request_status')";
+                INSERT INTO ".$this->cashAdvance." (empID, dateFiled, amount, monthsToPay, monthlyAmmortization, remainingAmount, cutoffStart, payrollCutoffStart, payrollCutoffEnd, ca_status, requestorID, request_status)
+                VALUES ('$id', CURRENT_TIMESTAMP, '$amount', '$monthsToPay', '$monthlyAmmortization', '$remainingAmount', '$cutoffStart', '$payrollcutoffStart', '$payrollcutoffEnd', '$ca_status', '$requestorID', '$request_status')";
             return $fileCashAdvance;
         }
 
