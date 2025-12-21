@@ -348,7 +348,7 @@
                 SELECT * FROM {$this->cashAdvance} AS cashAdvance
                 INNER JOIN {$this->employees} AS employees
                 ON cashAdvance.empID = employees.id
-                WHERE cashAdvance.request_status = 'Pending' AND employees.designationID != 9";
+                WHERE cashAdvance.request_status = 'Pending'";
             return $pendingCashAdvance;
         }
 

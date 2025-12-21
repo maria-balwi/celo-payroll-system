@@ -688,7 +688,7 @@
                 ON cashAdvance.empID = employees.id
                 INNER JOIN {$this->department} AS department
                 ON employees.departmentID = department.departmentID
-                WHERE employees.departmentID = 1 AND employees.designationID IN (4,11)";
+                WHERE employees.designationID IN (4,11)";
             return $cashAdvance;
         }
 
