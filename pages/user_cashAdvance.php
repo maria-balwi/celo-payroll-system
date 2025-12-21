@@ -11,10 +11,6 @@
             #breakdownTable td {
                 border: 1px solid black;
             }
-
-            #paidStatus {
-                color: green;
-            }
         </style>
     </head>
     <body>
