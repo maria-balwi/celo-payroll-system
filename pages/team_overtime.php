@@ -197,7 +197,6 @@
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="userFormLabel">View Filed OT</h1>
                             <input type="hidden" id="viewFiledOTID">
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="row g-3 mb-1">
@@ -296,7 +295,6 @@
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="userFormLabel">File Overtime</h1>
                                 <input type="hidden" id="userDeptFileOT" value="<?php echo $_SESSION['departmentID']; ?>">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="row g-3 mb-2">

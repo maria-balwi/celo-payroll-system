@@ -116,7 +116,6 @@
                             <div class="modal-content" id="fileLeaveModal">
                                 <div class="modal-header">
                                     <h1 class="modal-title fs-5" id="userFormLabel">File Leave</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <div class="row g-3 mb-2">
@@ -266,7 +265,6 @@
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="viewLeaveLabel">View Leave</h1>
                                 <input type="hidden" id="viewLeaveID">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <form>

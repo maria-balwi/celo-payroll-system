@@ -222,7 +222,6 @@
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="userFormLabel">View Employee DTR</h1>
                             <input type="hidden" id="viewID">
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="row g-2 mb-2">
@@ -292,7 +291,6 @@
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="userFormLabel">View Employee DTR</h1>
                             <input type="hidden" id="viewID">
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="row g-2 mb-2">

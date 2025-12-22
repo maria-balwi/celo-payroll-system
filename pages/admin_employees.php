@@ -649,7 +649,6 @@
                         <div class="modal-content" id="addEmployeeModal">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="userFormLabel">New Employee</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="row g-2">
@@ -1006,7 +1005,6 @@
                     <div class="modal-content" id="viewEmployeModal">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="userFormLabel">View Employee</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="row g-2">
@@ -1393,7 +1391,6 @@
                     <div class="modal-content" id="viewResignedModal">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="userFormLabel">View Resigned Employee</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="row g-2">
@@ -1571,7 +1568,6 @@
                                 <input type="hidden" id="updateID" name="updateID">
                                 <input type="hidden" id="oldEmailAddress" name="oldEmailAddress">
                                 <input type="hidden" id="oldEmployeeID" name="oldEmployeeID">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="row g-2">
@@ -1942,7 +1938,6 @@
                                 <h1 class="modal-title fs-5" id="employeeFormLabel">Resignation Information</h1>
                                 <input type="hidden" id="resignEmpID" name="resignEmpID">
                                 <input type="hidden" id="resignEmployeeID" name="resignEmployeeID">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="row g-2 mb-2">
@@ -2018,7 +2013,6 @@
                     <div class="modal-content" id="allowanceModal">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="userFormLabel">Allowances</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div> 
                         
                         <div class="modal-body">
@@ -2115,7 +2109,6 @@
                     <div class="modal-content" id="reimbursementModal">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="userFormLabel">Reimbursements</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div> 
                         
                         <div class="modal-body">
@@ -2239,7 +2232,6 @@
                     <div class="modal-content" id="deductionModal">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="userFormLabel">Deductions</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
 
                         <div class="modal-body">
@@ -2368,7 +2360,6 @@
                     <div class="modal-content" id="adjustmentModal">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="userFormLabel">Adjustment/s</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
 
                         <div class="modal-body">

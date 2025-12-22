@@ -230,7 +230,6 @@
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="viewLeaveLabel">View Leave</h1>
                             <input type="hidden" id="viewLeaveID">
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <form>

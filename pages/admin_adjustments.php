@@ -336,7 +336,6 @@
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="userFormLabel">View Deduction</h1>
                             <input type="hidden" id="viewDeductionID">
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="row g-2 mb-1">
@@ -369,7 +368,6 @@
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="userFormLabel">View Adjustment</h1>
                             <input type="hidden" id="viewAdjustmentID">
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="row g-2 mb-1">
@@ -415,7 +413,6 @@
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="userFormLabel">Update Allowance</h1>
                                 <input type="hidden" id="updateAllowanceID" name="updateAllowanceID">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="row g-2 mb-1">
@@ -449,7 +446,6 @@
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="userFormLabel">Update Reimbursement</h1>
                                 <input type="hidden" id="updateReimbursementID" name="updateReimbursementID">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="row g-2 mb-1">
@@ -483,7 +479,6 @@
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="userFormLabel">Update Deduction</h1>
                                 <input type="hidden" id="updateDeductionID" name="updateDeductionID">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="row g-2 mb-1">
@@ -517,7 +512,6 @@
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="userFormLabel">Update Adjustment</h1>
                                 <input type="hidden" id="updateAdjustmentID" name="updateAdjustmentID">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="row g-2 mb-1">

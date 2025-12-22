@@ -655,7 +655,6 @@
                         <div class="modal-content" id="addUserModal">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="userFormLabel">New User</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="row g-3 mb-2">
@@ -722,7 +721,6 @@
                     <div class="modal-content" id="viewUserModal">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="viewUserLabel">View User</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <form>
@@ -791,7 +789,6 @@
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="resetPassLabel">Reset Password</h1>
                                 <input type="hidden" id="viewID">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="row g-3">
@@ -835,7 +832,6 @@
                     <div class="modal-content" id="viewInactiveUserModal">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="viewInactiveUserLabel">View User</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <form>
@@ -904,7 +900,6 @@
                                     Confirm Password
                                     <input type="hidden" id="loggedInUserPassword" value="<?php echo $_SESSION["hashedPassword"]; ?>">
                                 </h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 
