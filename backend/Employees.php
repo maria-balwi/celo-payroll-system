@@ -1263,6 +1263,20 @@
             return $approveRequest;
         }
 
+        public function approveCashAdvance($requestID) {
+            $approveRequest = "
+                UPDATE ".$this->cashAdvance." SET request_status = 'Approved'
+                WHERE requestID = '$requestID'";
+            return $approveRequest;
+        }
+
+        public function disapproveCashAdvance($requestID) {
+            $disapproveRequest = "
+                UPDATE ".$this->cashAdvance." SET request_status = 'Disapproved'
+                WHERE requestID = '$requestID'";
+            return $disapproveRequest;
+        }
+
         public function disapproveLeave($requestID) {
             $disapproveRequest = "
                 UPDATE ".$this->leaves." SET status = 'Disapproved'
@@ -1292,6 +1306,16 @@
                 ON shift_1.shiftID = employees.shiftID
                 INNER JOIN ".$this->shift." AS shift_2
                 ON shift_2.shiftID = changeShift.requestedShift
+                WHERE requestID = '$requestID'";
+            return $request;
+        }
+
+        public function viewCashAdvanceInfo($requestID) {
+            $request = "
+                SELECT requestID, empID
+                FROM ".$this->cashAdvance." AS cashAdvance
+                INNER JOIN ".$this->employees." AS employees
+                ON cashAdvance.empID = employees.id
                 WHERE requestID = '$requestID'";
             return $request;
         }

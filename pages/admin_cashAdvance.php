@@ -115,7 +115,6 @@
                         <div class="modal-content" id="fileCashAdvanceModal">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="userFormLabel">File Cash Advance</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="row g-2 mb-2">
@@ -250,7 +249,6 @@
                     <div class="modal-content" id="viewCashAdvanceModal">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="userFormLabel">View Employee Cash Advance</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="row g-2 mb-2">
@@ -330,8 +328,8 @@
                         </div>
 
                         <div class="modal-footer">
-                            <!-- <button type="button" class="btn btn-primary employeeUpdate" id="btnUpdateEmployee">Update</button>
-                            <button type="button" class="btn btn-danger employeeResign" id="btnResignEmployee">Resign</button> -->
+                            <button type="button" class="btn btn-success approveCashAdvance" id="approveCashAdvance">Approve</button>
+                            <button type="button" class="btn btn-danger disapproveCashAdvance" id="disapproveCashAdvance">Disapprove</button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnClose">Close</button>
                         </div>
                     </div>
