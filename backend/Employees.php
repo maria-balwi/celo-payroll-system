@@ -987,7 +987,7 @@
         public function updateEmployeeInfo_reg($updateUserID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
             $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
             $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, 
-            $updateVacationLeaves, $updateSickLeaves, $updateCashAdvance, $updateEmploymentStatus, $updateDateHired, $updateDateRegularized) {
+            $updateVacationLeaves, $updateSickLeaves, $updateEmploymentStatus, $updateDateHired, $updateDateRegularized) {
             $updateEmployee = "
                 UPDATE ".$this->employees." AS employees 
                 SET lastName = '$updateLastName',
@@ -1012,7 +1012,6 @@
                 hourlyRate = '$updateHourlyRate',
                 availableVL = '$updateVacationLeaves',
                 availableSL = '$updateSickLeaves', 
-                cashAdvance = '$updateCashAdvance', 
                 employmentStatus = '$updateEmploymentStatus',
                 dateHired = '$updateDateHired',
                 dateRegularized = '$updateDateRegularized'
@@ -1023,7 +1022,7 @@
         public function updateEmployeeInfo_prob($updateUserID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
             $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
             $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, 
-            $updateVacationLeaves, $updateSickLeaves, $updateCashAdvance, $updateEmploymentStatus, $updateDateHired) {
+            $updateVacationLeaves, $updateSickLeaves, $updateEmploymentStatus, $updateDateHired) {
             $updateEmployee = "
                 UPDATE ".$this->employees." AS employees 
                 SET lastName = '$updateLastName',
@@ -1048,7 +1047,6 @@
                 hourlyRate = '$updateHourlyRate',
                 availableVL = '$updateVacationLeaves',
                 availableSL = '$updateSickLeaves', 
-                cashAdvance = '$updateCashAdvance', 
                 employmentStatus = '$updateEmploymentStatus',
                 dateHired = '$updateDateHired'
                 WHERE id = '$updateUserID'";
@@ -1089,7 +1087,7 @@
 
         public function getEmployeeInfo($id) {
             $employeeInfo = "
-                SELECT id, lastName, firstName, gender, civilStatus, address, dateOfBirth, cashAdvance,
+                SELECT id, lastName, firstName, gender, civilStatus, address, dateOfBirth,
                 placeOfBirth, sss, pagIbig, philhealth, tin, emailAddress, employeeID, 
                 mobileNumber, departmentName, position, basicPay, dailyRate, hourlyRate,
                 availableVL, availableSL, req_sss, req_pagIbig, req_philhealth, req_tin, req_nbi,

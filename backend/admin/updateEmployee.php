@@ -26,16 +26,8 @@
     $updateHourlyRate = $_POST['updateHourlyRate'];
     $updateVacationLeaves = $_POST['updateVacationLeaves'];
     $updateSickLeaves = $_POST['updateSickLeaves'];
-    $updateCashAdvance = $_POST['updateCashAdvance'];
     $updateEmploymentStatus = $_POST['updateEmploymentStatus'];
     $updateDateHired = $_POST['updateDateHired'];
-
-    if (isset($_POST['updateCashAdvance']) && $_POST['updateCashAdvance'] != "") {
-        $updateCashAdvance = $_POST['updateCashAdvance'];
-    }
-    else {
-        $updateCashAdvance = 0.0;
-    }
 
     if (str_replace(" ", "",$_POST['updateSSS'])) {
 		$req_sss = 1;
@@ -239,7 +231,7 @@
 
                 mysqli_query($conn, $employees->updateEmployeeInfo_reg($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
                 $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
-                $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateCashAdvance, $updateEmploymentStatus, $updateDateHired, $updateDateRegularized));
+                $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateEmploymentStatus, $updateDateHired, $updateDateRegularized));
 
                 // AUDIT TRAIL
                 $at_empID = $_SESSION['id'];
@@ -252,7 +244,7 @@
                 // UPDATE PROBATIONARY EMPLOYEE
                 mysqli_query($conn, $employees->updateEmployeeInfo_prob($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
                 $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
-                $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateCashAdvance, $updateEmploymentStatus, $updateDateHired));
+                $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateEmploymentStatus, $updateDateHired));
             
                 // AUDIT TRAIL
                 $at_empID = $_SESSION['id'];
@@ -340,7 +332,7 @@
 
                     mysqli_query($conn, $employees->updateEmployeeInfo_reg($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
                     $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
-                    $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateCashAdvance, $updateEmploymentStatus, $updateDateHired, $updateDateRegularized));
+                    $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateEmploymentStatus, $updateDateHired, $updateDateRegularized));
 
                     // AUDIT TRAIL
                     $at_empID = $_SESSION['id'];
@@ -352,7 +344,7 @@
                 {
                     mysqli_query($conn, $employees->updateEmployeeInfo_prob($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
                     $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
-                    $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateCashAdvance, $updateEmploymentStatus, $updateDateHired));
+                    $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateEmploymentStatus, $updateDateHired));
                 
                     // AUDIT TRAIL
                     $at_empID = $_SESSION['id'];
@@ -455,7 +447,7 @@
 
                     mysqli_query($conn, $employees->updateEmployeeInfo_reg($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
                     $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
-                    $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateCashAdvance, $updateEmploymentStatus, $updateDateHired, $updateDateRegularized));
+                    $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateEmploymentStatus, $updateDateHired, $updateDateRegularized));
 
                     // AUDIT TRAIL
                     $at_empID = $_SESSION['id'];
@@ -468,7 +460,7 @@
                     // UPDATE PROBATIONARY EMPLOYEE
                     mysqli_query($conn, $employees->updateEmployeeInfo_prob($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
                     $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
-                    $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateCashAdvance, $updateEmploymentStatus, $updateDateHired));
+                    $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateEmploymentStatus, $updateDateHired));
                 
                     // AUDIT TRAIL
                     $at_empID = $_SESSION['id'];
@@ -547,7 +539,7 @@
 
                         mysqli_query($conn, $employees->updateEmployeeInfo_reg($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
                         $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
-                        $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateCashAdvance, $updateEmploymentStatus, $updateDateHired, $updateDateRegularized));
+                        $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateEmploymentStatus, $updateDateHired, $updateDateRegularized));
 
                         // AUDIT TRAIL
                         $at_empID = $_SESSION['id'];
@@ -560,7 +552,7 @@
                         // UPDATE PROBATIONARY EMPLOYEE
                         mysqli_query($conn, $employees->updateEmployeeInfo_prob($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
                         $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
-                        $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateCashAdvance, $updateEmploymentStatus, $updateDateHired));
+                        $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateEmploymentStatus, $updateDateHired));
                     
                         // AUDIT TRAIL
                         $at_empID = $_SESSION['id'];

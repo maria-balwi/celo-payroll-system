@@ -1200,18 +1200,6 @@
                                 </div>
                             </div>
 
-                            <div class="row g-2 mb-1">
-                                <div class="col-4 cashAdvancePart">
-                                    <label for="viewCashAdvance">Cash Advance:</label>
-                                </div>
-                            </div>
-
-                            <div class="row g-2 mb-2">
-                                <div class="col-4 cashAdvancePart">
-                                    <input type="number" class="form-control" id="viewCashAdvance" name="viewCashAdvance" disabled readonly>
-                                </div>
-                            </div>
-
                             <h2 class="text-lg font-semibold mt-2 mb-0">Requirements:</h2>
                             <div class="row g-3">
                                 <div class="col-md-3">
@@ -1791,10 +1779,6 @@
                                     <div class="col-2">
                                         <label for="updateSickLeaves">Sick Leaves:</label>
                                         <input type="number" class="form-control" id="updateSickLeaves" name="updateSickLeaves">
-                                    </div>
-                                    <div class="col-2">
-                                        <label for="updateCashAdvance">Cash Advance:</label>
-                                        <input type="number" step="0.001" class="form-control" id="updateCashAdvance" name="updateCashAdvance">
                                     </div>
                                     <div class="col-6">
                                         <label for="updateWeekOff">Week Off:</label>
