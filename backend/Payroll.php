@@ -877,7 +877,6 @@
                 $employee_basicPay = $employeeDetails['basicPay'];
                 $employee_dailyRate = $employeeDetails['dailyRate'];
                 $employee_hourlyRate = $employeeDetails['hourlyRate'];
-                $employee_cashAdvance = ($employeeDetails['cashAdvance'] != null) ? $employeeDetails['cashAdvance'] : null;
                 $employeee_department = $employeeDetails['departmentID'];
 
                 // COMPUTE DAYS WORKED
@@ -968,8 +967,13 @@
                 $hdmfSalaryLoan = 0;
                 // $hdmfLoan = 0;
                 $smart = 0;
+
+                // CASH ADVANCE
+                $requestID = 0;
                 $cashAdvance = 0;
-                // $caPettyCash = 0;
+                $remainingAmount = 0;
+                $remainingBalance = 0;
+                $ca_status = "";
 
                 $totalAllowances = 0;
                 $communication = 0;
@@ -1175,24 +1179,19 @@
                     }
                     // else if ($deductionDetails['deductionName'] == "HDMF Loan") {
                     //     $hdmfLoan = $deductionDetails['amount'];
-                    // })
+                    // }
                     else if ($deductionDetails['deductionName'] == "Smart Communication") {
                         $smart = $deductionDetails['amount'];
                     }
-                    else if ($deductionDetails['deductionName'] == "Cash Advance") {    
-                        if ($deductionDetails['type'] == 1 && $payrollCycleID % 2 == 0) { // MONTHLY
-                            $cashAdvance = $deductionDetails['amount'];
-                        }
-                        elseif ($deductionDetails['type'] == 2) { // SEMI-MONTHLY
-                            $cashAdvance = $deductionDetails['amount'];
-                        }
-                        elseif ($deductionDetails['type'] == 3 && $deductionDetails['payrollCycleID'] == $payrollCycleID) { // ONCE
-                            $cashAdvance = $deductionDetails['amount'];
-                        }
-                    }
-                    // else if ($deductionDetails['deductionName'] == "Cash Advance (Petty Cash)") {
-                    //     $caPettyCash = $deductionDetails['amount'];
-                    // }
+                }
+
+                // COMPUTATION FOR CASH ADVANCES
+                $cashAdvanceQuery = $this->dbConnect()->query("SELECT * FROM tbl_cashAdvance ca WHERE ca.empID = $employee_id AND ca.request_status = 'Approved' AND ((ca.ca_status = 'New' AND ca.payrollCutoffStart <= $payrollCycleFrom) OR (ca.ca_status = 'Ongoing'))");
+                while ($cashAdvanceDetails = mysqli_fetch_array($cashAdvanceQuery)) {
+                    $requestID = $cashAdvanceDetails['requestID'];
+                    $cashAdvance = $cashAdvanceDetails['monthlyAmmortization'];
+                    $remainingAmount = $cashAdvanceDetails['remainingAmount'];
+                    $ca_status = $cashAdvanceDetails['ca_status'];
                 }
 
                 // COMPUTATION FOR REIMBURSEMENTS
@@ -1324,27 +1323,53 @@
 
                 // COMPUTE NET PAY
                 $netPay = round($grossPay - $sss - $sssmpf - $phic - $hdmf - $wtax - $salaryLoan - $hdmfSalaryLoan -  $cashAdvance - $smart, 2);
-                $employee_cashAdvance -= $cashAdvance;
+                $remainingBalance = $remainingAmount - $cashAdvance;
 
                 $counter++;
                 
                 // ADD ALL PAYROLL DATA TO PAYSLIP TABLE
                 $this->dbConnect()->query("INSERT INTO $this->payslip (payrollID, counter, empID, daysWorked, basePay, regNightDiff, pay_regNightDiff, regOT, pay_regOT, regOTND, pay_regOTND, regRDOT, pay_regRDOT, regRDOTND, pay_regRDOTND, regRDOTOT, pay_regRDOTOT, regRDOTOTND, pay_regRDOTOTND, specialHoliday, pay_specialHoliday, specialHolidayND, pay_specialHolidayND, specialHolidayOT, pay_specialHolidayOT, specialHolidayOTND, pay_specialHolidayOTND, specialHolidayRDOT, pay_specialHolidayRDOT, specialHolidayRDOTND, pay_specialHolidayRDOTND, specialHolidayRDOTOT, pay_specialHolidayRDOTOT, specialHolidayRDOTOTND, pay_specialHolidayRDOTOTND, regularHoliday, pay_regularHoliday, regularHolidayND, pay_regularHolidayND, regularHolidayOT, pay_regularHolidayOT, regularHolidayOTND, pay_regularHolidayOTND, regularHolidayRDOT, pay_regularHolidayRDOT, regularHolidayRDOTND, pay_regularHolidayRDOTND, regularHolidayRDOTOT, pay_regularHolidayRDOTOT, regularHolidayRDOTOTND, pay_regularHolidayRDOTOTND, payslip_allowances, payslip_communication, grossPay, payslip_sss, payslip_sssMPF, payslip_phic, payslip_hdmf, payslip_wtax, payslip_salaryLoan, payslip_hdmfSalaryLoan, payslip_smart, payslip_reimbursements, payslip_adjustments, sickLeaveCount, pay_sickLeave, vacationLeaveCount, pay_vacationLeave, totalAbsences, payslip_absences, totalLateMins, payslip_lateMins, payslip_cashAdvanceDeduction, netPay) VALUES ($payrollID, $counter, $employee_id, $employee_daysWorked, $basePay, $totalNightHours, $nightDiffPay, $totalOvertimeHours, $overtimePay, $totalOvertimeNDHours, $overtimeNDPay, $totalRDOTHours, $RDOTPay, $totalRDOTNDhours, $RDOTNDPay, $totalRDOTOTHours, $RDOTOTPay, $totalRDOTOTNDHours, $RDOTOTNDPay, $totalSpecialHolidayHours, $specialHolidayPay, $totalSpecialHolidayNDHours, $specialHolidayNDPay, $totalSpecialHolidayOTHours, $specialHolidayOTPay, $totalSpecialHolidayOTNDHours, $specialHolidayOTNDPay, $totalSpecialHolidayRDOTHours, $specialHolidayRDOTPay, $totalSpecialHolidayRDOTNDHours, $specialHolidayRDOTNDPay, $totalSpecialHolidayRDOTOTHours, $specialHolidayRDOTOTPay, $totalSpecialHolidayRDOTOTNDHours, $specialHolidayRDOTOTNDPay, $totalRegularHolidayHours, $regularHolidayPay, $totalRegularHolidayNDHours, $regularHolidayNDPay, $totalRegularHolidayOTHours, $regularHolidayOTPay, $totalRegularHolidayOTNDHours, $regularHolidayOTNDPay, $totalRegularHolidayRDOTHours, $regularHolidayRDOTPay, $totalRegularHolidayRDOTNDHours, $regularHolidayRDOTNDPay, $totalRegularHolidayRDOTOTHours, $regularHolidayRDOTOTPay, $totalRegularHolidayRDOTOTNDHours, $regularHolidayRDOTOTNDPay, $totalAllowances, $communication, $grossPay, $sss, $sssmpf, $phic, $hdmf, $wtax, $salaryLoan, $hdmfSalaryLoan, $smart, $totalReimbursements, $totalAdjustments, $totalSickLeaves, $sickLeavePay, $totalVacationLeaves, $vacationLeavePay, $totalAbsences, $absencesAmt, $totalLateMins, $lateMinsAmt, $cashAdvance, $netPay)");
 
-                if ($cashAdvance > 0) {
-                    $this->dbConnect()->query("UPDATE tbl_employee SET cashAdvance = cashAdvance - $cashAdvance WHERE id = $employee_id");
+                // UPDATE CASH ADVANCE PAYMENT HISTORY
+                if ($remainingBalance > 0) {
+                    $this->dbConnect()->query("INSERT INTO tbl_caPaymentHistory (requestID, payrollID, amountDeducted, remainingBalance, dateDeducted) VALUES ($requestID, $payrollID, $cashAdvance, $remainingBalance, CURRENT_DATE())");
+                    if ($ca_status == "New") {
+                        $this->dbConnect()->query("UPDATE tbl_cashAdvance SET remainingAmount = $remainingBalance, ca_status = 'Ongoing' WHERE requestID = $requestID");
+                    }
+                    else if ($remainingBalance == 0) {
+                        $this->dbConnect()->query("UPDATE tbl_cashAdvance SET remainingAmount = $remainingBalance, ca_status = 'Paid' WHERE requestID = $requestID");
+                    } 
+                    else {
+                        $this->dbConnect()->query("UPDATE tbl_cashAdvance SET remainingAmount = $remainingBalance WHERE requestID = $requestID");
+                    }
                 }
             }
         }
 
         public function reCalculatePayroll($payrollID, $payrollCycleID) {
             // UPDATE CASH ADVANCE DETAILS
-            $cashAdvanceQuery = $this->dbConnect()->query("SELECT * FROM tbl_payslip WHERE payrollID = $payrollID AND payslip_cashAdvanceDeduction > 0");
+            $cashAdvanceQuery = $this->dbConnect()->query("SELECT * FROM tbl_caPaymentHistory WHERE payrollID = $payrollID");
             while ($cashAdvanceDetails = mysqli_fetch_array($cashAdvanceQuery)) {
-                $empID = $cashAdvanceDetails['empID'];
-                $cashAdvance = $cashAdvanceDetails['payslip_cashAdvanceDeduction'];
-                $this->dbConnect()->query("UPDATE tbl_employee SET cashAdvance = cashAdvance + $cashAdvance WHERE id = $empID");
+                $requestID = $cashAdvanceDetails['requestID'];
+                $cashAdvance = $cashAdvanceDetails['amountDeducted'];
+                $remainingBalance = $cashAdvanceDetails['remainingBalance'];
+                $remainingBalance = $remainingBalance + $cashAdvance;
+                $ca_status = $cashAdvanceDetails['ca_status'];
+                $request_payrollID = $cashAdvanceDetails['payrollID'];
+
+                if ($request_payrollID == $payrollID) {
+                    $this->dbConnect()->query("UPDATE tbl_cashAdvance SET remainingAmount = $remainingBalance, ca_status = 'New' WHERE requestID = $requestID");
+                }
+                else if ($ca_status == "Paid") {
+                    $this->dbConnect()->query("UPDATE tbl_cashAdvance SET remainingAmount = $remainingBalance, ca_status = 'Ongoing' WHERE requestID = $requestID");
+                }
+                else {
+                    $this->dbConnect()->query("UPDATE tbl_cashAdvance SET remainingAmount = $remainingBalance WHERE requestID = $requestID");
+                }
             }
+
+            // DELETE CURRENT CA PAYMENT HISTORY, RE-CALCULATE FUNCTION
+            $this->dbConnect()->query("DELETE FROM tbl_caPaymentHistory WHERE payrollID = $payrollID");
 
             // DELETE CURRENT PAYSLIP - RE-CALCULATE FUNCTION
             $this->dbConnect()->query("DELETE FROM tbl_payslip WHERE payrollID = $payrollID");
@@ -1377,7 +1402,6 @@
                 $employee_basicPay = $employeeDetails['basicPay'];
                 $employee_dailyRate = $employeeDetails['dailyRate'];
                 $employee_hourlyRate = $employeeDetails['hourlyRate'];
-                $employee_cashAdvance = ($employeeDetails['cashAdvance'] != null) ? $employeeDetails['cashAdvance'] : null;
                 $employeee_department = $employeeDetails['departmentID'];
 
                 // COMPUTE DAYS WORKED
@@ -1468,8 +1492,13 @@
                 $hdmfSalaryLoan = 0;
                 // $hdmfLoan = 0;
                 $smart = 0;
+
+                // CASH ADVANCE
+                $requestID = 0;
                 $cashAdvance = 0;
-                // $caPettyCash = 0;
+                $remainingAmount = 0;
+                $remainingBalance = 0;
+                $ca_status = "";
 
                 $totalAllowances = 0;
                 $communication = 0;
@@ -1675,24 +1704,19 @@
                     }
                     // else if ($deductionDetails['deductionName'] == "HDMF Loan") {
                     //     $hdmfLoan = $deductionDetails['amount'];
-                    // })
+                    // }
                     else if ($deductionDetails['deductionName'] == "Smart Communication") {
                         $smart = $deductionDetails['amount'];
                     }
-                    else if ($deductionDetails['deductionName'] == "Cash Advance") {    
-                        if ($deductionDetails['type'] == 1 && $payrollCycleID % 2 == 0) { // MONTHLY
-                            $cashAdvance = $deductionDetails['amount'];
-                        }
-                        elseif ($deductionDetails['type'] == 2) { // SEMI-MONTHLY
-                            $cashAdvance = $deductionDetails['amount'];
-                        }
-                        elseif ($deductionDetails['type'] == 3 && $deductionDetails['payrollCycleID'] == $payrollCycleID) { // ONCE
-                            $cashAdvance = $deductionDetails['amount'];
-                        }
-                    }
-                    // else if ($deductionDetails['deductionName'] == "Cash Advance (Petty Cash)") {
-                    //     $caPettyCash = $deductionDetails['amount'];
-                    // }
+                }
+
+                // COMPUTATION FOR CASH ADVANCES
+                $cashAdvanceQuery = $this->dbConnect()->query("SELECT * FROM tbl_cashAdvance ca WHERE ca.empID = $employee_id AND ca.request_status = 'Approved' AND ((ca.ca_status = 'New' AND ca.payrollCutoffStart <= $payrollCycleFrom) OR (ca.ca_status = 'Ongoing'))");
+                while ($cashAdvanceDetails = mysqli_fetch_array($cashAdvanceQuery)) {
+                    $requestID = $cashAdvanceDetails['requestID'];
+                    $cashAdvance = $cashAdvanceDetails['monthlyAmmortization'];
+                    $remainingAmount = $cashAdvanceDetails['remainingAmount'];
+                    $ca_status = $cashAdvanceDetails['ca_status'];
                 }
 
                 // COMPUTATION FOR REIMBURSEMENTS
@@ -1736,6 +1760,7 @@
 
                 // COMPUTATION FOR LEAVES
                 $leaveQuery = $this->dbConnect()->query("SELECT empID, lt.leaveTypeID, effectivityStartDate, effectivityEndDate FROM tbl_leaveapplications AS la INNER JOIN tbl_leavetype AS lt ON la.leaveTypeID = lt.leaveTypeID WHERE effectivityStartDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND effectivityEndDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND status = 'Approved' AND empID=$employee_id");
+                // $leaveQuery = $this->dbConnect()->query("SELECT empID, lt.leaveTypeID, effectivityStartDate, effectivityEndDate FROM tbl_leaveapplications AS la INNER JOIN tbl_leavetype AS lt ON la.leaveTypeID = lt.leaveTypeID WHERE (effectivityStartDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND effectivityEndDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND dateFiled BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND status = 'Approved' AND empID = $employee_id) OR (dateFiled BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND status = 'Approved' AND empID = $employee_id)");
                 while ($leaveDetails = mysqli_fetch_array($leaveQuery)) {
                     if ($leaveDetails['leaveTypeID'] == 1) {
                         $totalSickLeaves++;
@@ -1823,15 +1848,25 @@
 
                 // COMPUTE NET PAY
                 $netPay = round($grossPay - $sss - $sssmpf - $phic - $hdmf - $wtax - $salaryLoan - $hdmfSalaryLoan -  $cashAdvance - $smart, 2);
-                $employee_cashAdvance -= $cashAdvance;
+                $remainingBalance = $remainingAmount - $cashAdvance;
 
                 $counter++;
                 
                 // ADD ALL PAYROLL DATA TO PAYSLIP TABLE
-                $this->dbConnect()->query("INSERT INTO $this->payslip (payrollID, counter, empID, daysWorked, basePay, regNightDiff, pay_regNightDiff, regOT, pay_regOT, regOTND, pay_regOTND, regRDOT, pay_regRDOT, regRDOTND, pay_regRDOTND, regRDOTOT, pay_regRDOTOT, regRDOTOTND, pay_regRDOTOTND, specialHoliday, pay_specialHoliday, specialHolidayND, pay_specialHolidayND, specialHolidayOT, pay_specialHolidayOT, specialHolidayOTND, pay_specialHolidayOTND, specialHolidayRDOT, pay_specialHolidayRDOT, specialHolidayRDOTND, pay_specialHolidayRDOTND, specialHolidayRDOTOT, pay_specialHolidayRDOTOT, specialHolidayRDOTOTND, pay_specialHolidayRDOTOTND, regularHoliday, pay_regularHoliday, regularHolidayND, pay_regularHolidayND, regularHolidayOT, pay_regularHolidayOT, regularHolidayOTND, pay_regularHolidayOTND, regularHolidayRDOT, pay_regularHolidayRDOT, regularHolidayRDOTND, pay_regularHolidayRDOTND, regularHolidayRDOTOT, pay_regularHolidayRDOTOT, regularHolidayRDOTOTND, pay_regularHolidayRDOTOTND, payslip_allowances, payslip_communication, grossPay, payslip_sss, payslip_sssMPF, payslip_phic, payslip_hdmf, payslip_wtax, payslip_salaryLoan, payslip_hdmfSalaryLoan, payslip_smart, payslip_reimbursements, payslip_adjustments, sickLeaveCount, pay_sickLeave, vacationLeaveCount, pay_vacationLeave, totalAbsences, payslip_absences, totalLateMins, payslip_lateMins, payslip_cashAdvanceDeduction, payslip_cashAdvanceBalance, netPay) VALUES ($payrollID, $counter, $employee_id, $employee_daysWorked, $basePay, $totalNightHours, $nightDiffPay, $totalOvertimeHours, $overtimePay, $totalOvertimeNDHours, $overtimeNDPay, $totalRDOTHours, $RDOTPay, $totalRDOTNDhours, $RDOTNDPay, $totalRDOTOTHours, $RDOTOTPay, $totalRDOTOTNDHours, $RDOTOTNDPay, $totalSpecialHolidayHours, $specialHolidayPay, $totalSpecialHolidayNDHours, $specialHolidayNDPay, $totalSpecialHolidayOTHours, $specialHolidayOTPay, $totalSpecialHolidayOTNDHours, $specialHolidayOTNDPay, $totalSpecialHolidayRDOTHours, $specialHolidayRDOTPay, $totalSpecialHolidayRDOTNDHours, $specialHolidayRDOTNDPay, $totalSpecialHolidayRDOTOTHours, $specialHolidayRDOTOTPay, $totalSpecialHolidayRDOTOTNDHours, $specialHolidayRDOTOTNDPay, $totalRegularHolidayHours, $regularHolidayPay, $totalRegularHolidayNDHours, $regularHolidayNDPay, $totalRegularHolidayOTHours, $regularHolidayOTPay, $totalRegularHolidayOTNDHours, $regularHolidayOTNDPay, $totalRegularHolidayRDOTHours, $regularHolidayRDOTPay, $totalRegularHolidayRDOTNDHours, $regularHolidayRDOTNDPay, $totalRegularHolidayRDOTOTHours, $regularHolidayRDOTOTPay, $totalRegularHolidayRDOTOTNDHours, $regularHolidayRDOTOTNDPay, $totalAllowances, $communication, $grossPay, $sss, $sssmpf, $phic, $hdmf, $wtax, $salaryLoan, $hdmfSalaryLoan, $smart, $totalReimbursements, $totalAdjustments, $totalSickLeaves, $sickLeavePay, $totalVacationLeaves, $vacationLeavePay, $totalAbsences, $absencesAmt, $totalLateMins, $lateMinsAmt, $cashAdvance, $employee_cashAdvance, $netPay)");
+                $this->dbConnect()->query("INSERT INTO $this->payslip (payrollID, counter, empID, daysWorked, basePay, regNightDiff, pay_regNightDiff, regOT, pay_regOT, regOTND, pay_regOTND, regRDOT, pay_regRDOT, regRDOTND, pay_regRDOTND, regRDOTOT, pay_regRDOTOT, regRDOTOTND, pay_regRDOTOTND, specialHoliday, pay_specialHoliday, specialHolidayND, pay_specialHolidayND, specialHolidayOT, pay_specialHolidayOT, specialHolidayOTND, pay_specialHolidayOTND, specialHolidayRDOT, pay_specialHolidayRDOT, specialHolidayRDOTND, pay_specialHolidayRDOTND, specialHolidayRDOTOT, pay_specialHolidayRDOTOT, specialHolidayRDOTOTND, pay_specialHolidayRDOTOTND, regularHoliday, pay_regularHoliday, regularHolidayND, pay_regularHolidayND, regularHolidayOT, pay_regularHolidayOT, regularHolidayOTND, pay_regularHolidayOTND, regularHolidayRDOT, pay_regularHolidayRDOT, regularHolidayRDOTND, pay_regularHolidayRDOTND, regularHolidayRDOTOT, pay_regularHolidayRDOTOT, regularHolidayRDOTOTND, pay_regularHolidayRDOTOTND, payslip_allowances, payslip_communication, grossPay, payslip_sss, payslip_sssMPF, payslip_phic, payslip_hdmf, payslip_wtax, payslip_salaryLoan, payslip_hdmfSalaryLoan, payslip_smart, payslip_reimbursements, payslip_adjustments, sickLeaveCount, pay_sickLeave, vacationLeaveCount, pay_vacationLeave, totalAbsences, payslip_absences, totalLateMins, payslip_lateMins, payslip_cashAdvanceDeduction, netPay) VALUES ($payrollID, $counter, $employee_id, $employee_daysWorked, $basePay, $totalNightHours, $nightDiffPay, $totalOvertimeHours, $overtimePay, $totalOvertimeNDHours, $overtimeNDPay, $totalRDOTHours, $RDOTPay, $totalRDOTNDhours, $RDOTNDPay, $totalRDOTOTHours, $RDOTOTPay, $totalRDOTOTNDHours, $RDOTOTNDPay, $totalSpecialHolidayHours, $specialHolidayPay, $totalSpecialHolidayNDHours, $specialHolidayNDPay, $totalSpecialHolidayOTHours, $specialHolidayOTPay, $totalSpecialHolidayOTNDHours, $specialHolidayOTNDPay, $totalSpecialHolidayRDOTHours, $specialHolidayRDOTPay, $totalSpecialHolidayRDOTNDHours, $specialHolidayRDOTNDPay, $totalSpecialHolidayRDOTOTHours, $specialHolidayRDOTOTPay, $totalSpecialHolidayRDOTOTNDHours, $specialHolidayRDOTOTNDPay, $totalRegularHolidayHours, $regularHolidayPay, $totalRegularHolidayNDHours, $regularHolidayNDPay, $totalRegularHolidayOTHours, $regularHolidayOTPay, $totalRegularHolidayOTNDHours, $regularHolidayOTNDPay, $totalRegularHolidayRDOTHours, $regularHolidayRDOTPay, $totalRegularHolidayRDOTNDHours, $regularHolidayRDOTNDPay, $totalRegularHolidayRDOTOTHours, $regularHolidayRDOTOTPay, $totalRegularHolidayRDOTOTNDHours, $regularHolidayRDOTOTNDPay, $totalAllowances, $communication, $grossPay, $sss, $sssmpf, $phic, $hdmf, $wtax, $salaryLoan, $hdmfSalaryLoan, $smart, $totalReimbursements, $totalAdjustments, $totalSickLeaves, $sickLeavePay, $totalVacationLeaves, $vacationLeavePay, $totalAbsences, $absencesAmt, $totalLateMins, $lateMinsAmt, $cashAdvance, $netPay)");
 
-                if ($cashAdvance > 0) {
-                    $this->dbConnect()->query("UPDATE tbl_employee SET cashAdvance = cashAdvance - $cashAdvance WHERE id = $employee_id");
+                // UPDATE CASH ADVANCE PAYMENT HISTORY
+                if ($remainingBalance > 0) {
+                    $this->dbConnect()->query("INSERT INTO tbl_caPaymentHistory (requestID, payrollID, amountDeducted, remainingBalance, dateDeducted) VALUES ($requestID, $payrollID, $cashAdvance, $remainingBalance, CURRENT_DATE())");
+                    if ($ca_status == "New") {
+                        $this->dbConnect()->query("UPDATE tbl_cashAdvance SET remainingAmount = $remainingBalance, ca_status = 'Ongoing' WHERE requestID = $requestID");
+                    }
+                    else if ($remainingBalance == 0) {
+                        $this->dbConnect()->query("UPDATE tbl_cashAdvance SET remainingAmount = $remainingBalance, ca_status = 'Paid' WHERE requestID = $requestID");
+                    } 
+                    else {
+                        $this->dbConnect()->query("UPDATE tbl_cashAdvance SET remainingAmount = $remainingBalance WHERE requestID = $requestID");
+                    }
                 }
             }
         }
