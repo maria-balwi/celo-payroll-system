@@ -35,6 +35,14 @@
         $em = "Adjustment Deleted Successfully";
         $error = array('error' => 0, 'em' => $em);
     }
+    else if (isset($_POST['empReferralID'])) {
+        $empReferralID = $_POST['empReferralID'];
+
+        mysqli_query($conn, $payroll->deleteEmpReferral($empReferralID));
+
+        $em = "Referral Deleted Successfully";
+        $error = array('error' => 0, 'em' => $em);
+    }
     else {
         $em = "ID Not Found";
         $error = array('error' => 1, 'em' => $em);

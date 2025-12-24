@@ -2,6 +2,18 @@ function formatNumberWithCommas(number) {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+function formatDate(dateStr) {
+    if (!dateStr) return '';
+
+    var dateObj = new Date(dateStr);
+
+    return dateObj.toLocaleDateString("en-US", {
+        month: "short",
+        day: "2-digit",
+        year: "numeric"
+    });
+}
+
 $(document).ready(function() {
 
     if ($('#adminID').val() == 9 || $('#adminID').val() == 8) {
@@ -83,38 +95,10 @@ $(document).ready(function() {
         placeholder: 'XXX-XXX'
     });  
 
-    // $("select[id='updateDesignation']").on("change", function() {
-    //     $("input[id='updateBasicPay']").val('');
-    //     $("input[id='updateDailyRate']").val('');
-    //     $("input[id='updateHourlyRate']").val('');
-    //     if ($(this).val() == "Facilities") {
-    //         // HOURLY RATE COMPUTATION - ADD EMPLOYEE
-    //         $("input[id='updateBasicPay']").on("input", function() {
-    //             var basicPay = $(this).val();
-    //             var dailyRate = (basicPay * 12 / 313).toFixed(2);
-    //             $('#updateDailyRate').val(dailyRate).trigger('input');
-    //         });
-        
-    //         $("input[id='updateDailyRate']").on("input", function() {
-    //             var dailyRate = $(this).val();
-    //             var hourlyRate = (dailyRate / 12).toFixed(2);
-    //             $('#updateHourlyRate').val(hourlyRate);
-    //         });
-    //     } else {
-    //         // HOURLY RATE COMPUTATION - ADD EMPLOYEE
-    //         $("input[id='updateBasicPay']").on("input", function() {
-    //             var basicPay = $(this).val();
-    //             var dailyRate = (basicPay * 12 / 261).toFixed(2);
-    //             $('#updateDailyRate').val(dailyRate).trigger('input');
-    //         });
-        
-    //         $("input[id='updateDailyRate']").on("input", function() {
-    //             var dailyRate = $(this).val();
-    //             var hourlyRate = (dailyRate / 8).toFixed(2);
-    //             $('#updateHourlyRate').val(hourlyRate);
-    //         });
-    //     }
-    // });   
+    // INPUT MASK - REFERRAL
+    $('#referral_employeeID').inputmask('999-999', {
+        placeholder: 'XXX-XXX'
+    });
 
     $('.dateRegularizedLabel').hide();
     $("select[id='employmentStatus']").on("change", function() {
@@ -187,40 +171,6 @@ $(document).ready(function() {
         var updateHourlyRate = (updateDailyRate / 8).toFixed(2);
         $('#updateHourlyRate').val(updateHourlyRate);
     });
-
-    // $("select[id='designation']").on("change", function() {
-    //     $("input[id='basicPay']").val('');
-    //     $("input[id='dailyRate']").val('');
-    //     $("input[id='hourlyRate']").val('');
-    //     if ($(this).val() == "Facilities") {
-    //         // HOURLY RATE COMPUTATION - ADD EMPLOYEE
-    //         $("input[id='basicPay']").on("input", function() {
-    //             var basicPay = $(this).val();
-    //             var dailyRate = (basicPay * 12 / 313).toFixed(2);
-    //             $('#dailyRate').val(dailyRate).trigger('input');
-    //         });
-
-    //         $("input[id='dailyRate']").on("input", function() {
-    //             var dailyRate = $(this).val();
-    //             var hourlyRate = (dailyRate / 12).toFixed(2);
-    //             $('#hourlyRate').val(hourlyRate);
-    //         });
-    //     } else {
-    //         // HOURLY RATE COMPUTATION - ADD EMPLOYEE
-    //         $("input[id='basicPay']").on("input", function() {
-    //             var basicPay = $(this).val();
-    //             var dailyRate = (basicPay * 12 / 261).toFixed(2);
-    //             $('#dailyRate').val(dailyRate).trigger('input');
-    //         });
-
-    //         $("input[id='dailyRate']").on("input", function() {
-    //             var dailyRate = $(this).val();
-    //             var hourlyRate = (dailyRate / 8).toFixed(2);
-    //             $('#hourlyRate').val(hourlyRate);
-    //         });
-    //     }
-    // });  
-
     
     // CHECKBOXES FOR REQUIREMENTS - SSS, PAGIBIG, PHILHEALTH, TIN (ADD EMPLOYEE)
     $("input[id='sss']").on("input", function() {
@@ -287,20 +237,6 @@ $(document).ready(function() {
             $('#update_req_tin').prop('checked', false);
         }
     });
-
-    // CHECKBOXES FOR WEEK OFF (ADD EMPLOYEE)
-    // $("input[type='checkbox'][name='wo_day']").on("change", function () {
-    //     // Count checked boxes
-    //     const checkedCount = $("input[name='wo_day']:checked").length;
-
-    //     if (checkedCount >= 2) {
-    //         // Disable all unchecked boxes
-    //         $("input[name='wo_day']").not(":checked").prop("disabled", true);
-    //     } else {
-    //         // Re-enable all boxes
-    //         $("input[name='wo_day']").prop("disabled", false);
-    //     }
-    // });
 
     // CHECKBOXES FOR WEEK OFF (ADD EMPLOYEE)
     $("input.wo_day[type='checkbox']").on("change", function () {
@@ -704,12 +640,15 @@ $(document).ready(function() {
         }
     });
 
-    // VIEW, UPDATE, RESIGN EMPLOYEE
+    // VIEW, UPDATE, RESIGN ACTIVE EMPLOYEE
     var array = [];
+    var referrer_empID;
+    var referee_empID;  
     $(document).on('click', '.employeeView', function() {
         var employee_id = $(this).data('id');
         array.push(employee_id);
         var id_employee = array[array.length - 1];
+        referrer_empID = id_employee;
 
         // VIEW EMPLOYEE
         $.ajax({
@@ -846,6 +785,58 @@ $(document).ready(function() {
                         adjustmentsHTML += '</div>';
                     });
                     $('#adjustmentsSection').html(adjustmentsHTML);
+
+                    // UPDATE REFERRAL SECTION
+                    var referralHTML = '';
+                    res.referrals.forEach(function(referral) {
+
+                        referralHTML += `
+                            <div class="flex bg-white p-3 border border-gray-200 gap-4 items-start">
+
+                                <div class="font-semibold min-w-[200px]">
+                                    ${referral.firstName} ${referral.lastName}
+                                </div>
+                                <div class="flex flex-col gap-1 flex-1">
+                                    <span>Employee ID: ${
+                                      referral.employeeID
+                                    }</span>
+                                    <span>Employment Status: ${
+                                      referral.employmentStatus
+                                    }</span>
+                                    <span>Date Hired: ${formatDate(
+                                      referral.dateHired
+                                    )}</span>
+
+                                    <span class="flex flex-col">
+                                        <span>Referral Bonus:</span> 
+                                        <span class="flex items-center gap-2 pl-6">
+                                            - (3 Months) ₱ 2,000
+                                            <span class="text-sm bg-green-500 text-white py-1 px-2 rounded-full">Paid</span>
+                                        </span>
+                                        <span class="flex items-center gap-2 pl-6">
+                                            - (6 Months) ₱ 2,000
+                                        </span>
+                                    </span>
+                                </div>
+
+                                <div>
+                                    <button class="p-2 rounded deleteReferral"
+                                            data-id="${referral.referralID}">
+                                        <svg class="h-5 w-5 text-gray-800" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862
+                                                    a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6
+                                                    m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                        </svg>
+                                    </button>
+                                </div>
+
+                            </div>
+                        `;
+                    });
+                    $('#referralSection').html(referralHTML);
 
                     // LOAD PROFILE PICTURE
                     const img = $("#viewProfilePhoto");
@@ -1057,62 +1048,6 @@ $(document).ready(function() {
                     }
                 }
             });
-
-            // $("#resignEmpID").val(id_employee);
-            
-            // $("#viewEmployeeModal").modal("hide");
-            // $("#resignEmployeeModal").modal("show");
-
-            // $.ajax({
-            //     type: "GET",
-            //     url: "../backend/admin/employeeModal.php?employee_id=" + id_employee,
-            //     success: function(response) {
-
-            //         var res = jQuery.parseJSON(response);
-            //         if (res.status == 404) {
-            //             alert(res.message);
-            //         } else if (res.status == 200) {
-
-            //             Swal.fire({
-            //                 icon: 'question',
-            //                 title: 'Resign Employee',
-            //                 text: 'Are you sure this employee resigned?',
-            //                 showCancelButton: true,
-            //                 cancelButtonColor: '#6c757d',
-            //                 confirmButtonColor: '#28a745',
-            //                 confirmButtonText: 'Yes',
-            //             }).then((result) => {
-            //                 if (result.isConfirmed) {
-            //                     $.ajax({
-            //                         url: "../backend/admin/employeeAction.php",
-            //                         type: 'POST',
-            //                         data: {
-            //                             id_employee: id_employee,
-            //                             action: 'resign'
-            //                         },
-            //                         cache: false,
-            //                         success: function(data) {
-            //                             res = jQuery.parseJSON(data);
-            //                             var message = res.em;
-            //                             Swal.fire({
-            //                                 icon: 'success',
-            //                                 title: 'Success',
-            //                                 text: message,
-            //                                 timer: 2000,
-            //                                 showConfirmButton: false,
-            //                             }).then(() => {
-            //                                 // Refresh the View Employee Modal with updated data
-            //                                 loadInactiveEmployeeData(id_employee);
-            //                                 $('#viewEmployeeModal').modal('hide');
-            //                                 $('#viewResignedModal').modal('show');
-            //                             })
-            //                         }
-            //                     })
-            //                 }
-            //             })
-            //         }
-            //     }
-            // });
         })
     });
 
@@ -1464,7 +1399,6 @@ $(document).ready(function() {
                         $('.viewDateRegularizedLabel').hide();
                     }
 
-                    
                     $('#viewBasicPay').val(res.data.basicPay);
                     $('#viewDailyRate').val(res.data.dailyRate);
                     $('#viewHourlyRate').val(res.data.hourlyRate);
@@ -1557,6 +1491,58 @@ $(document).ready(function() {
                         adjustmentsHTML += '</div>';
                     });
                     $('#adjustmentsSection').html(adjustmentsHTML);
+
+                    // UPDATE REFERRAL SECTION
+                    var referralHTML = '';
+                    res.referrals.forEach(function(referral) {
+
+                        referralHTML += `
+                            <div class="flex bg-white p-3 border border-gray-200 gap-4 items-start">
+
+                                <div class="font-semibold min-w-[200px]">
+                                    ${referral.firstName} ${referral.lastName}
+                                </div>
+                                <div class="flex flex-col gap-1 flex-1">
+                                    <span>Employee ID: ${
+                                      referral.employeeID
+                                    }</span>
+                                    <span>Employment Status: ${
+                                      referral.employmentStatus
+                                    }</span>
+                                    <span>Date Hired: ${formatDate(
+                                      referral.dateHired
+                                    )}</span>
+
+                                    <span class="flex flex-col">
+                                        <span>Referral Bonus:</span> 
+                                        <span class="flex items-center gap-2 pl-6">
+                                            - (3 Months) ₱ 2,000
+                                            <span class="text-sm bg-green-500 text-white py-1 px-2 rounded-full">Paid</span>
+                                        </span>
+                                        <span class="flex items-center gap-2 pl-6">
+                                            - (6 Months) ₱ 2,000
+                                        </span>
+                                    </span>
+                                </div>
+
+                                <div>
+                                    <button class="p-2 rounded deleteReferral"
+                                            data-id="${referral.referralID}">
+                                        <svg class="h-5 w-5 text-gray-800" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862
+                                                    a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6
+                                                    m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                        </svg>
+                                    </button>
+                                </div>
+
+                            </div>
+                        `;
+                    });
+                    $('#referralSection').html(referralHTML);
 
                     // LOAD PROFILE PICTURE
                     const img = $("#viewProfilePhoto");
@@ -1860,6 +1846,54 @@ $(document).ready(function() {
         })
     });
 
+    // REMOVE REFERRAL ROW ON VIEW EMPLOYEE MODAL
+    $(document).on('click', '.deleteReferral', function() {
+        var empReferralID = $(this).data('id');
+        var viewID = $('#viewID').val();
+        console.log({viewID});
+        Swal.fire({
+            icon: 'question',
+            title: 'Delete Referral',
+            text: 'Are you sure you want to delete this referee?',
+            showCancelButton: true,
+            cancelButtonColor: '#6c757d',
+            confirmButtonColor: '#28a745',
+            confirmButtonText: 'Yes',
+
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                $.ajax({
+                    url: "../backend/admin/deleteEmpAdjustment.php",
+                    type: 'POST',
+                    data: { empReferralID: empReferralID },
+                    success: function(response) {
+                        const res = JSON.parse(response);
+                        var message = res.em;
+                        if (res.error == 0) {
+                            loadEmployeeData(viewID);
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: message,
+                                timer: 2000,
+                                showConfirmButton: false
+                            }).then(() => {
+                                $('#viewEmployeeModal').modal('show');
+                            });
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: message
+                            })
+                        }
+                    }
+                })
+            }
+        })
+    });
 
     // ADD DATA - ALLOWANCE MODAL
     $("#allowanceForm").on("submit", function (e) {
@@ -2244,5 +2278,113 @@ $(document).ready(function() {
                 alert("An error occurred while saving the adjustments.");
             }
         });
+    });
+
+    // REFERRAL SECTION - SEARCH EMPLOYEES
+    let employeeTypingTimer; // OUTSIDE THE EVENT
+    const debounceDelay = 400; // ms
+
+    $("#referral_employeeID").on("input", function() {
+        clearTimeout(employeeTypingTimer);
+
+        let employeeID = $(this).val().trim();
+
+        if (employeeID === "") {
+            $("#referral_employeeName").val("");
+            $("#referral_dateHired").val("");
+            $("#referral_employmentStatus").val("");
+            return;
+        }
+
+        employeeTypingTimer = setTimeout(function() {
+            $.ajax({
+                type: "GET",
+                url: "../backend/admin/fetchEmployees.php",
+                data: { employeeID: employeeID },
+                success: function (response) {
+                    var res = jQuery.parseJSON(response);
+
+                    if (res.status == 200) {
+                        $("#referral_employeeName").val(res.data.firstName + " " + res.data.lastName);
+                        $("#referral_dateHired").val(formatDate(res.data.dateHired));
+                        $("#referral_employmentStatus").val(res.data.employmentStatus);
+                        $("#referee_empID").val(res.data.id);
+                        $("#referrer_empID").val(referrer_empID);
+
+                        referee_empID = res.data.id;
+                        console.log(referrer_empID);
+                        console.log(referee_empID);
+                    } else {
+                        $("#referral_employeeName").val("");
+                        $("#referral_dateHired").val("");
+                        $("#referral_employmentStatus").val("");
+                        $("#referee_empID").val("");
+                        $("#referrer_empID").val("");
+                    }
+                },
+            });
+        }, debounceDelay);
+    });
+
+    // ADD REFERRAL FORM
+    $("#referralForm").submit(function (e) {
+        e.preventDefault();
+
+        var referee_empID = $("#referee_empID").val();
+        var action = "referral";
+
+        if (referee_empID == "" || referrer_empID == "") {
+            Swal.fire({
+                icon: "warning",
+                title: "Required Information",
+                text: "Please fill up all the required Information",
+            });
+        } else {
+            Swal.fire({
+                icon: "question",
+                title: "Referral Form",
+                text: "Are you sure you want to add this referee?",
+                showCancelButton: true,
+                cancelButtonColor: "#6c757d",
+                confirmButtonColor: "#28a745",
+                confirmButtonText: "Yes",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "POST",
+                        url: "../backend/admin/employeeAction.php",
+                        data: {
+                            referee_empID: referee_empID,
+                            action: action,
+                            referrer_empID: referrer_empID
+                        },
+                        success: function (res) {
+                            const data = JSON.parse(res);
+                            var message = data.em;
+                            if (data.error == 0) {
+                                loadEmployeeData(referrer_empID);
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Success",
+                                    text: message,
+                                    timer: 2000,
+                                    showConfirmButton: false,
+                                }).then(() => {
+                                    // Refresh the View Employee Modal with new added data
+                                    $("#referralModal").modal("hide");
+                                    $("#viewEmployeeModal").modal("show");
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Error",
+                                    text: message,
+                                });
+                            }
+                        },
+                    });
+                }
+            });
+        }
     });
 });

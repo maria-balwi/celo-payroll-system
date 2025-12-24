@@ -1326,7 +1326,7 @@
                                 </div>
                             </div>
 
-                            <div class="row g-2 allAdjustmentsSection">
+                            <div class="row g-2 allReferralSection">
                                 <div class="flex space-x-4">
                                     <!-- REIMBURSEMENTS -->
                                     <div class="flex-1 bg-lightblue p-2 border border-gray-300">
@@ -1358,6 +1358,30 @@
                                             <div class="space-y-2" id="adjustmentsSection">
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr class="referralSection">
+                            <div class="row g-2 mb-2 allReferralSection">
+                                <div class="flex space-x-4">
+                                    <!-- REFERRAL -->
+                                    <div class="flex-1 bg-lightblue p-2 border border-gray-300">
+                                        <div class="mb-4">
+                                            <div class="flex justify-between items-center mb-2 px-1">
+                                                <h2 class="text-lg font-semibold">Referral/s</h2>
+                                                <button class="bg-blue-500 p-2 rounded" data-bs-toggle="modal" data-bs-target="#referralModal">
+                                                    <svg class="h-5 w-5 text-gray-100"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                            <div class="space-y-2" id="referralSection">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex-1 bg-lightblue p-">
                                     </div>
                                 </div>
                             </div>
@@ -2455,6 +2479,74 @@
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-success adjustmentSave">Save</button>
+                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#viewEmployeeModal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--------------------------------------------------------------------------------------------------------------------------------------------->
+            <!---------------------------------------------------------------- ADD REFERRAL MODAL ------------------------------------------------------->
+            <div class="modal fade" id="referralModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
+                <div class="modal-dialog modal-none modal-dialog-centered">
+                    <div class="modal-content" id="referralModal">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="userFormLabel">Referral Form/s</h1>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="row g-2 mb-2">
+                                <form id="referralForm">
+                                    <div class="row g-2 mb-1">
+                                        <div class="col-6">
+                                            <label for="referral_employeeID">Employee ID:</label>
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="referral_employeeName">Employee Name:</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-2 mb-2">
+                                        <input type="hidden" id="referee_empID" name="referee_empID">
+                                        <input type="hidden" id="referrer_empID" name="referrer_empID">
+
+                                        <div class="col-6">
+                                            <input type="text" class="form-control" id="referral_employeeID" name="referral_employeeID">
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="text" class="form-control" id="referral_employeeName" name="referral_employeeName" disabled readonly>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-2 mb-1">
+                                        <div class="col-6">
+                                            <label for="referral_dateHired">Date Hired:</label>
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="referral_employmentStatus">Employment Status:</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row g-2 mb-3">
+                                        <div class="col-6">
+                                            <input type="text" class="form-control" id="referral_dateHired" name="referral_dateHired" disabled readonly>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="text" class="form-control" id="referral_employmentStatus" name="referral_employmentStatus" disabled readonly>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-2">
+                                        <div class="col-12">
+                                            <button type="submit" class="btn btn-success w-50 justify-center" id="referralAdd">Add</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <!-- <button type="button" class="btn btn-success adjustmentSave">Save</button> -->
                             <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#viewEmployeeModal">Cancel</button>
                         </div>
                     </div>

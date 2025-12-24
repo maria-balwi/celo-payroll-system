@@ -20,6 +20,7 @@
         private $weekOff = 'tbl_empWeekOff';
         private $allowances = 'tbl_allowances';
         private $deductions = 'tbl_deductions';
+        private $referral = "tbl_referral";
         private $payrollcycle = "tbl_payrollcycle";
         private $auditTrail = 'tbl_audittrail';
         private $dbConnect = false;
@@ -1399,6 +1400,22 @@
                 FROM ".$this->employees."
                 WHERE id = '$id'";
             return $leavePoints;
+        }
+        public function addReferral($referrer_empID, $referee_empID) {
+            $addReferral = "
+                INSERT INTO ".$this->referral." (referrer_empID, referee_empID)
+                VALUES ('$referrer_empID', '$referee_empID')";
+            return $addReferral;
+        }
+
+        public function getAllReferral($id) {
+            $getAllReferral = "
+                SELECT referral.referralID, referral.referrer_empID, referral.referee_empID, employees.firstName, employees.lastName, employees.employeeID, employees.dateHired, employees.employmentStatus
+                FROM ".$this->referral." AS referral
+                INNER JOIN ".$this->employees." AS employees
+                ON referral.referee_empID = employees.id
+                WHERE referral.referrer_empID = '$id'";
+            return $getAllReferral;
         }
 
         public function resignEmployee($id, $resignationStatus, $clearanceForm) {

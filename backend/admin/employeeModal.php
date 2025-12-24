@@ -44,6 +44,14 @@
             while ($adjustment = mysqli_fetch_array($getEmpAdjustmentsResult)) {
                 $adjustments[] = $adjustment;
             }
+
+            // REFERRAL QUERY
+            $getReferralQuery = $employees->getAllReferral($employee_id);
+            $getReferralResult = mysqli_query($conn, $getReferralQuery);
+            $referrals = [];
+            while ($referral = mysqli_fetch_array($getReferralResult)) {
+                $referrals[] = $referral;
+            }
             
             $res = [
                 'status' => 200,
@@ -52,7 +60,8 @@
                 'allowances' => $allowances, 
                 'reimbursements' => $reimbursements,
                 'deductions' => $deductions, 
-                'adjustments' => $adjustments
+                'adjustments' => $adjustments,
+                'referrals' => $referrals
             ];
 
             echo json_encode($res);

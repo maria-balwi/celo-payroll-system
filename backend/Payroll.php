@@ -22,6 +22,7 @@
         private $weekOff = 'tbl_empweekoff';
         private $leaves = 'tbl_leaveapplications';
         private $cashAdvance = 'tbl_cashadvance';
+        private $referral = 'tbl_referral';
         private $caPaymentHistory = 'tbl_caPaymentHistory';
 
         private $dbConnect = false;
@@ -374,6 +375,13 @@
                 DELETE FROM ".$this->empAdjustments."
                 WHERE empAdjustmentID = '$empAdjustmentID'";
             return $deleteEmpAdjustment;
+        }
+
+        public function deleteEmpReferral($referralID) {
+            $deleteEmpReferral = "
+                DELETE FROM ".$this->referral." 
+                WHERE referralID = $referralID";
+            return $deleteEmpReferral;
         }
 
         public function viewHolidays() {
