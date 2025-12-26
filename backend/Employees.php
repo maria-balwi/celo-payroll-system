@@ -1709,12 +1709,16 @@
             return $overtime;
         }
 
-        public function viewAuditTrailAdjustments() {
+        public function viewAuditTrailSalaryAdjustments() {
             $adjustments = "
-                SELECT auditTrailID, date, employees.firstName, employees.lastName, module, action, affected_empID FROM ".$this->auditTrail." AS auditTrail
+                SELECT auditTrailID, date, employees.firstName, 
+                employees.lastName, module, action, affected_empID 
+                FROM ".$this->auditTrail." AS auditTrail
                 INNER JOIN ".$this->employees." AS employees
                 ON auditTrail.empID = employees.id
-                WHERE module LIKE '%Adjustments%'
+                INNER JOIN ".$this->employees." AS emp
+                ON auditTrail.affected_empID = emp.id
+                WHERE module LIKE '%Salary%'
                 ORDER BY auditTrail.auditTrailID DESC";
             return $adjustments;
         }

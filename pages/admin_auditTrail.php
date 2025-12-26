@@ -402,7 +402,7 @@
                                         <table id="adjustmentsTable" class="table table-striped table-bordered table-auto min-w-full divide-y divide-gray-200 text-center pt-3">
                                             <thead class="bg-gray-50">
                                                 <tr>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                                    <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th> -->
                                                     <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
                                                     <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
                                                     <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
@@ -413,7 +413,7 @@
                                             </thead>
                                             <tbody class="bg-white divide-y divide-gray-200">
                                                 <?php
-                                                    $query = mysqli_query($conn, $employees->viewAuditTrailAdjustments());
+                                                    $query = mysqli_query($conn, $employees->viewAuditTrailSalaryAdjustments());
                                                     while ($auditTrailDetails = mysqli_fetch_array($query)) {
 
                                                         $adjustmentsATID = $auditTrailDetails['auditTrailID'];
@@ -433,13 +433,13 @@
                                                         $timeAdjustments = formatTime($adjustmentsDate);
 
                                                         echo "<tr>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $adjustmentsATID . "</td>";
+                                                        // echo "<td class ='whitespace-nowrap'>" . $adjustmentsATID . "</td>";
                                                         echo "<td class ='whitespace-nowrap'>" . $dateAdjustments . "</td>";
                                                         echo "<td class ='whitespace-nowrap'>" . $timeAdjustments . "</td>";
                                                         echo "<td class ='whitespace-nowrap'>" . $adjustmentsEmployee . "</td>";
                                                         echo "<td class ='whitespace-nowrap'>" . $adjustmentsModule . "</td>";
                                                         echo "<td class ='whitespace-nowrap'>" . $adjustmentsAction . "</td>";
-                                                        // echo "<td class ='whitespace-nowrap'>" . $affected_user . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $affected_user . "</td>";
                                                         echo "</tr>";
                                                     }
                                                 ?>
