@@ -12,6 +12,7 @@
         <main class="flex-1 p-3">
             <div class="flex flex-1 p-2 text-2xl font-bold justify-between items-center">
                 <div>Adjustments</div>    
+                <input type="hidden" id="adminID" name="adminID" value="<?php echo $_SESSION['designationID']; ?>">  
             </div>
             
             <!-- CONTENT -->
@@ -36,6 +37,10 @@
                             <li class="nav-item" role="presentation">
                                 <!--ADJUSTMENTS BUTTON-->
                                 <button class="nav-link uncheck" id="pills-adjustments-tab" data-bs-toggle="pill" data-bs-target="#pills-adjustments" type="button" role="tab" aria-controls="pills-adjustments" aria-selected="false">Adjustments</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <!--SALARY ADJUSTMENTS BUTTON-->
+                                <button class="nav-link uncheck" id="pills-salary-tab" data-bs-toggle="pill" data-bs-target="#pills-salary" type="button" role="tab" aria-controls="pills-salary" aria-selected="false">Salary Adjustments</button>
                             </li>
                         </ul>
                     </div>
@@ -180,6 +185,66 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <!-- ------------------------------------- SALARY ADJUSTMENTS TAB ------------------------------------ -->
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <div class="tab-pane fade" id="pills-salary" role="tabpanel" aria-labelledby="pills-salary-tab">
+                                <div class="card border-0">
+                                    <div class="tab-content" id="pills-tabContent">
+                                        <table id="salaryTable" class="table table-striped table-bordered table-auto min-w-full divide-y divide-gray-200 text-center pt-3">
+                                            <thead class="bg-gray-50">
+                                                <tr>
+                                                    <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+                                                    <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                    <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Current Salary</th>
+                                                    <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Suggested Salary</th>
+                                                    <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Reason</th>
+                                                    <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="bg-white divide-y divide-gray-200">
+                                                <?php
+                                                    function formatNumber($number) {
+                                                        return number_format($number, 2, '.', ',');
+                                                    }
+
+                                                    $salaryadjQuery = mysqli_query($conn, $payroll->viewAllSalaryAdj());
+                                                    while ($salaryadjDetails = mysqli_fetch_array($salaryadjQuery)) {
+
+                                                        $salaryadjID = $salaryadjDetails['salaryAdjID'];
+                                                        $salaryadj_employeeID = $salaryadjDetails['employeeID'];
+                                                        $salaryadj_employeeName = $salaryadjDetails['firstName'] . " " . $salaryadjDetails['lastName'];
+                                                        $salaryadj_currentSalary = $salaryadjDetails['basicPay'];
+                                                        $salaryadj_newSalary = $salaryadjDetails['suggestedSalary'];
+                                                        $salaryadj_reason = $salaryadjDetails['reason'];
+                                                        $salaryadj_status = $salaryadjDetails['status'];
+
+                                                        echo "<tr data-id='{$salaryadjID}' class='salaryAdjustmentView cursor-pointer'>";
+                                                        echo "<td class='whitespace-nowrap'>{$salaryadj_employeeID}</td>";
+                                                        echo "<td class='whitespace-nowrap'>{$salaryadj_employeeName}</td>";
+                                                        echo "<td class='whitespace-nowrap'>₱ " . formatNumber($salaryadj_currentSalary) . "</td>";
+                                                        echo "<td class='whitespace-nowrap'>₱ " . formatNumber($salaryadj_newSalary) . "</td>";
+                                                        echo "<td class='whitespace-nowrap'>{$salaryadj_reason}</td>";
+                                                        // echo "<td class='whitespace-nowrap'>{$salaryadj_status}</td>";
+
+                                                        if ($salaryadj_status == "Pending") {
+                                                            echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $salaryadj_status . "</p></td>";
+                                                        }
+                                                        else if ($salaryadj_status == "Approved") {
+                                                            echo "<td><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $salaryadj_status . "</p></td>";
+                                                        }
+                                                        else if ($salaryadj_status == "Disapproved") {
+                                                            echo "<td><p class='inline-block bg-red-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $salaryadj_status . "</p></td>";
+                                                        }
+                                                        echo "</tr>";
+                                                    }
+                                                ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -220,34 +285,102 @@
                                             <option value="2">Reimbursement</option>
                                             <!-- <option value="3">Deduction</option> -->
                                             <option value="4">Adjustment</option>
+                                            <option value="5">Salary Adjustment</option>
                                         </select>
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-1">
+                                <div class="row g-2 mb-1 normalAdjustment">
                                     <div class="col-12">
                                         <label for="name">Name:</label>
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-2">
+                                <div class="row g-2 mb-1 normalAdjustment">
                                     <div class="col-12">
                                         <input type="text" class="form-control" id="name" name="name">
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-1">
+                                <div class="row g-2 mb-1 normalAdjustment">
                                     <div class="col-12">
                                         <label for="adjustment" id="adjustmentLabel">Action:</label>
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-2">
+                                <div class="row g-2 mb-1 normalAdjustment">
                                     <div class="col-12">
                                         <select class="form-select" id="adjustment" name="adjustment">
                                             <option disabled selected>Choose</option>
                                             <option value="Add">Add</option>
                                             <option value="Deduct">Deduct</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-1 salaryAdjustment">
+                                    <div class="col-12">
+                                        <label for="employeeID">Employee ID:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2 salaryAdjustment">
+                                    <div class="col-12">
+                                        <input type="text" class="form-control" id="employeeID" name="employeeID">
+                                        <input type="hidden" class="form-control" id="empID" name="empID">
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-1 salaryAdjustment">
+                                    <div class="col-12">
+                                        <label for="employeeName">Employee Name:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2 salaryAdjustment">
+                                    <div class="col-12">
+                                        <input type="text" class="form-control" id="employeeName" name="employeeName" disabled readonly>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-1 salaryAdjustment">
+                                    <div class="col-12">
+                                        <label for="currentSalary">Current Salary:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2 salaryAdjustment">
+                                    <div class="col-12">
+                                        <input type="text" class="form-control" id="currentSalary" name="currentSalary" disabled readonly>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-1 salaryAdjustment">
+                                    <div class="col-12">
+                                        <label for="suggestedSalary">Suggested Salary:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2 salaryAdjustment">
+                                    <div class="col-12">
+                                        <input type="number" class="form-control" id="suggestedSalary" name="suggestedSalary">
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-1 salaryAdjustment">
+                                    <div class="col-12">
+                                        <label for="reason">Reason:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2 salaryAdjustment">
+                                    <div class="col-12">
+                                        <select class="form-select" id="reason" name="reason">
+                                            <option disabled selected>Choose</option>
+                                            <option value="6 Months">6 Months</option>
+                                            <option value="1 Year">1 Year</option>
+                                            <option value="Appraisal">Appraisal</option>
+                                            <option value="Promotion">Promotion</option>
                                         </select>
                                     </div>
                                 </div>
@@ -399,6 +532,92 @@
                             <button type="button" class="btn btn-primary adjustmentUpdate">Update</button>
                             <button type="button" class="btn btn-danger adjustmentDelete">Delete</button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnClose_adjustment">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--------------------------------------------------------------------------------------------------------------------------------------------->
+            <!------------------------------------------------------ VIEW SALARY ADJUSTMENT MODAL --------------------------------------------------------->
+            <div class="modal fade" id="viewSalaryAdjustmentModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content" id="viewSalaryAdjustmentModal">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="userFormLabel">View Salary Adjustment</h1>
+                            <input type="hidden" id="viewSalaryAdjustmentID">
+                        </div>
+                        <div class="modal-body">
+                            <div class="row g-2 mb-1">
+                                <div class="col-6">
+                                    <label for="viewDateFiled">Date Filed:</label>
+                                </div>
+                                <div class="col-6">
+                                    <label for="viewStatus">Status:</label>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-2">
+                                <div class="col-6">
+                                    <input type="text" class="form-control" id="viewDateFiled" disabled readonly>
+                                </div>
+                                <div class="col-6">
+                                    <input type="text" class="form-control" id="viewStatus" disabled readonly>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-1">
+                                <div class="col-6">
+                                    <label for="viewEmployeeID">Employee ID:</label>
+                                </div>
+                                <div class="col-6">
+                                    <label for="viewEmployeeName">Employee Name:</label>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-2">
+                                <div class="col-6">
+                                    <input type="text" class="form-control" id="viewEmployeeID" disabled readonly>
+                                </div>
+                                <div class="col-6">
+                                    <input type="text" class="form-control" id="viewEmployeeName" disabled readonly>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-1">
+                                <div class="col-6">
+                                    <label for="viewCurrentSalary">Current Salary:</label>
+                                </div>
+                                <div class="col-6">
+                                    <label for="viewSuggestedSalary">New Salary:</label>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-2">
+                                <div class="col-6">
+                                    <input type="text" class="form-control" id="viewCurrentSalary" disabled readonly>
+                                </div>
+                                <div class="col-6">
+                                    <input type="text" class="form-control" id="viewSuggestedSalary" disabled readonly>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-1">
+                                <div class="col-6">
+                                    <label for="viewReason">Reason:</label>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-2">
+                                <div class="col-6">
+                                    <input type="text" class="form-control" id="viewReason" disabled readonly>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success salaryApprove" id="approveSalaryAdjustment">Approve</button>
+                            <button type="button" class="btn btn-danger salaryDisapprove" id="disapproveSalaryAdjustment">Disapprove</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnClose_salaryAdjustment">Close</button>
                         </div>
                     </div>
                 </div>

@@ -23,6 +23,7 @@
         private $leaves = 'tbl_leaveapplications';
         private $cashAdvance = 'tbl_cashadvance';
         private $referral = 'tbl_referral';
+        private $salaryadj = 'tbl_salaryadj';
         private $caPaymentHistory = 'tbl_caPaymentHistory';
 
         private $dbConnect = false;
@@ -54,6 +55,14 @@
             return $adjustments;
         }
 
+        public function viewAllSalaryAdj() {
+            $salaryadj = "
+                SELECT * FROM {$this->salaryadj} AS sa
+                INNER JOIN {$this->employees} AS e
+                ON sa.empID = e.id";
+            return $salaryadj;
+        }
+
         public function getAllowanceInfo($allowanceID) {
             $allowance = "
                 SELECT * FROM ".$this->allowances."
@@ -82,6 +91,31 @@
             return $adjustment;
         }
 
+        public function getSalaryInfo($salaryAdjID) {
+            $salaryAdj = "
+                SELECT * FROM {$this->salaryadj} AS sa
+                INNER JOIN {$this->employees} AS e
+                ON sa.empID = e.id
+                WHERE sa.salaryAdjID = '$salaryAdjID'";
+            return $salaryAdj;
+        }
+
+        public function approveSalaryAdjustment($salaryAdjID) {
+            $approveSalaryAdjustment = "
+                UPDATE ".$this->salaryadj." 
+                SET status = 'Approved'
+                WHERE salaryAdjID = '$salaryAdjID'";
+            return $approveSalaryAdjustment;
+        }
+
+        public function disapproveSalaryAdjustment($salaryAdjID) {
+            $disapproveSalaryAdjustment = "
+                UPDATE ".$this->salaryadj." 
+                SET status = 'Disapproved'
+                WHERE salaryAdjID = '$salaryAdjID'";
+            return $disapproveSalaryAdjustment;
+        }
+
         public function addAllowance($allowanceName) {
             $addAllowance = "
                 INSERT INTO ".$this->allowances." (allowanceName)
@@ -108,6 +142,13 @@
                 INSERT INTO ".$this->adjustments." (adjustmentName, adjustmentType)
                 VALUES ('$adjustmentName', '$adjustmentType')";
             return $addAdjustment;
+        }
+
+        public function fileSalaryAdjustment($empID, $suggestedSalary, $reason, $status) {
+            $fileSalaryAdjustment = "
+                INSERT INTO ".$this->salaryadj." (empID, suggestedSalary, reason, dateFiled, status)
+                VALUES ('$empID', '$suggestedSalary', '$reason', CURRENT_DATE(), '$status')";
+            return $fileSalaryAdjustment;
         }
 
         public function updateAllowance($allowanceID, $allowanceName) {
@@ -207,6 +248,15 @@
                 ORDER BY adjustmentID DESC
                 LIMIT 1";
             return $adjustment;
+        }
+
+        public function viewLastSalaryAdjustment() {
+            $salaryAdjustment = "
+                SELECT salaryAdjID
+                FROM ".$this->salaryadj." 
+                ORDER BY salaryAdjID DESC
+                LIMIT 1";
+            return $salaryAdjustment;
         }
 
         public function getAllEmpAllowances($id) {

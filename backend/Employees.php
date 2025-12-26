@@ -22,6 +22,7 @@
         private $deductions = 'tbl_deductions';
         private $referral = "tbl_referral";
         private $payrollcycle = "tbl_payrollcycle";
+        private $salaryAdj = "tbl_salaryadj";
         private $auditTrail = 'tbl_audittrail';
         private $dbConnect = false;
         public function __construct() {
@@ -1326,6 +1327,16 @@
                 INNER JOIN ".$this->employees." AS employees
                 ON filedOT.empID = employees.id
                 WHERE requestID = '$requestID'";
+            return $request;
+        }
+
+        public function viewSalaryAdjInfo($salaryAdjID) {
+            $request = "
+                SELECT empID
+                FROM ".$this->salaryAdj." AS salaryAdj
+                INNER JOIN ".$this->employees." AS employees
+                ON salaryAdj.empID = employees.id
+                WHERE salaryAdjID = '$salaryAdjID'";
             return $request;
         }
 

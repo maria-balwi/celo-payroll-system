@@ -47,7 +47,7 @@
         echo json_encode($error);
         exit();
     }
-    else { // ADJUSTMENT
+    else if ($dataType == 4){ // ADJUSTMENT
         $adjustmentName = $_POST['name'];
         $adjustmentType = $_POST['adjustment'];
         
@@ -58,6 +58,23 @@
         $lastID = $lastIDResult['adjustmentID'];
 
         $em = "Adjustment Added Successfully";
+        $error = array('error' => 0, 'id' => $lastID, 'em' => $em);
+        echo json_encode($error);
+        exit();
+    }
+    else { // SALARY ADJUSTMENT
+        $empID = $_POST['empID'];
+        $suggestedSalary = $_POST['suggestedSalary'];
+        $reason = $_POST['reason'];
+        $status = "Pending";
+
+        mysqli_query($conn, $payroll->fileSalaryAdjustment($empID, $suggestedSalary, $reason, $status));
+
+        $lastIDQuery = mysqli_query($conn, $payroll->viewLastSalaryAdjustment());
+        $lastIDResult = mysqli_fetch_array($lastIDQuery);
+        $lastID = $lastIDResult['salaryAdjID'];
+        
+        $em = "Salary Adjustment Added Successfully";
         $error = array('error' => 0, 'id' => $lastID, 'em' => $em);
         echo json_encode($error);
         exit();
