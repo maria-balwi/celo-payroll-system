@@ -7,6 +7,21 @@ $(document).ready(function() {
     var payrollListTable = $('#payrollListTable').DataTable();
     payrollListTable.order([[0, "asc"]]).draw();
 
+    function showPayrollSpinner() {
+        $("#payrollSpinner").removeClass("hidden");
+
+        // disable buttons only (important)
+        $("button").prop("disabled", true);
+    }
+
+    function hidePayrollSpinner() {
+        $("#payrollSpinner").addClass("hidden");
+        $("button").prop("disabled", false);
+    }
+
+
+
+
     // CREATE PAYROLL
     $("#addPayrollForm").submit(function (e) {
         e.preventDefault();
@@ -95,6 +110,7 @@ $(document).ready(function() {
                 addPayrollForm.append('payrollCycleID', payrollCycleID);
                 addPayrollForm.append('action', 'calculate');
                 if (result.isConfirmed) {
+                    showPayrollSpinner();
                     $.ajax({
                         type: "POST",
                         url: "../backend/admin/calculatePayroll.php",
@@ -121,6 +137,9 @@ $(document).ready(function() {
                                     text: message
                                 }) 
                             }
+                        }, 
+                        complete: function() {
+                            hidePayrollSpinner();
                         }
                     });
                 }
