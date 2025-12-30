@@ -169,7 +169,7 @@
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="3">Late/UT Hrs</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="3">Late/UT Amt</th> 
                                         <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" colspan="9">Additions/Adjustments</th>  -->
-                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" colspan="6">Additions/Adjustments</th> 
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" colspan="7">Additions/Adjustments</th> 
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle whitespace-nowrap" rowspan="3">Gross Pay</th> 
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" colspan="5">Government Deductions</th> 
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" colspan="3">Loans</th> 
@@ -189,6 +189,7 @@
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">Sick Leave Pay</th> 
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">Vacation Leave</th> 
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">Vacation Leave Pay</th> 
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">Referral Incentive</th> 
                                         <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">Late</th>  -->
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">SSS</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">SSS MPF</th>
@@ -209,6 +210,7 @@
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">(ADJ)</th> -->
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" colspan="2">(ADJ)</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" colspan="2">(ADJ)</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">(ADD)</th>
                                         <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">(ADJ)</th> -->
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">(SSS)</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">(Other Loan)</th>
@@ -295,12 +297,13 @@
                                             $payslip_sickLeavePay = $payslipDetails['pay_sickLeave'];
                                             $payslip_vacationLeaveCount = $payslipDetails['vacationLeaveCount'];
                                             $payslip_vacationLeavePay = $payslipDetails['pay_vacationLeave'];
+                                            $payslip_referralIncentivePay = $payslipDetails['pay_referralIncentive'];
                                             $payslip_absences = $payslipDetails['totalAbsences'];
                                             $payslip_absencesAmt = $payslipDetails['payslip_absences'];
                                             $payslip_lateMins = $payslipDetails['totalLateMins'];
                                             $payslip_lateMinsAmt = $payslipDetails['payslip_lateMins'];
                                             $payslip_cashAdvanceDeduction = $payslipDetails['payslip_cashAdvanceDeduction'];
-                                            $payslip_cashAdvanceBalance = $payslipDetails['payslip_cashAdvanceBalance'];
+                                            // $payslip_cashAdvanceBalance = $payslipDetails['payslip_cashAdvanceBalance'];
                                             // $payslip_caPettyCash = $payslipDetails['payslip_caPettyCash'];
                                             $payslip_netPay = $payslipDetails['netPay'];
 
@@ -496,6 +499,14 @@
                                                 $payslip_vacationLeavePay = "-";
                                             }
 
+                                            // REFERRAL INCENTIVE COMPUTATION
+                                            if ($payslip_referralIncentivePay != 0) {
+                                                $payslip_referralIncentivePay = number_format($payslip_referralIncentivePay, 2);
+                                            }
+                                            else {
+                                                $payslip_referralIncentivePay = "-";
+                                            }
+
                                             // CASH ADVANCE DEDUCTIONS & BALANCE
                                             if ($payslip_cashAdvanceDeduction != 0) {
                                                 $payslip_cashAdvanceDeduction = number_format($payslip_cashAdvanceDeduction, 2);
@@ -503,12 +514,12 @@
                                             else {
                                                 $payslip_cashAdvanceDeduction = "-";
                                             }
-                                            if ($payslip_cashAdvanceBalance != 0) {
-                                                $payslip_cashAdvanceBalance = number_format($payslip_cashAdvanceBalance, 2);
-                                            }
-                                            else {
-                                                $payslip_cashAdvanceBalance = "-";
-                                            }
+                                            // if ($payslip_cashAdvanceBalance != 0) {
+                                            //     $payslip_cashAdvanceBalance = number_format($payslip_cashAdvanceBalance, 2);
+                                            // }
+                                            // else {
+                                            //     $payslip_cashAdvanceBalance = "-";
+                                            // }
                                             // if ($payslip_caPettyCash != 0) {
                                             //     $payslip_caPettyCash = number_format($payslip_caPettyCash, 2);
                                             // }
@@ -616,6 +627,7 @@
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_sickLeavePay . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_vacationLeaveCount . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_vacationLeavePay . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_referralIncentivePay . "</td>";
                                             // echo "<td class ='whitespace-nowrap'>-</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_grossPay . "</td>";  
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_sss . "</td>";
