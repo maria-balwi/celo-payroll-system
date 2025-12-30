@@ -35,6 +35,15 @@ $(document).ready(function() {
         return `${hours}:${minutes}`;
     }
 
+    function showDTRSpinner() {
+        $("#dtrSpinner").removeClass("d-none");
+    }
+
+    function hideDTRSpinner() {
+        $("#dtrSpinner").addClass("d-none");
+    }
+
+
     // FILTER YEAR THEN MONTH
     document.getElementById('filterYear').addEventListener('change', function() {
         filterYear = null;
@@ -48,11 +57,18 @@ $(document).ready(function() {
                 url: '../backend/admin/filteredDTRtable.php', 
                 type: 'POST',
                 data: { filterYear: filterYear,
-                    filterMonth: filterMonth },
+                    filterMonth: filterMonth 
+                },
+                beforeSend: function() {
+                    showDTRSpinner();
+                },
                 success: function(response) {
                     $('#dtr').DataTable().clear().destroy(); 
                     $('#dtr tbody').html(response);
                     $('#dtr').DataTable({});
+                }, 
+                complete: function() {
+                    hideDTRSpinner();
                 }
             });
         });
@@ -61,11 +77,18 @@ $(document).ready(function() {
             url: '../backend/admin/filteredDTRtable.php', 
             type: 'POST',
             data: { filterYear: filterYear,
-                filterMonth: filterMonth },
+                filterMonth: filterMonth 
+            },
+            beforeSend: function() {
+                showDTRSpinner();
+            },
             success: function(response) {
                 $('#dtr').DataTable().clear().destroy(); 
                 $('#dtr tbody').html(response);
                 $('#dtr').DataTable({});
+            },
+            complete: function() {
+                hideDTRSpinner();
             }
         });
     });
@@ -84,11 +107,18 @@ $(document).ready(function() {
                 url: '../backend/admin/filteredDTRtable.php', 
                 type: 'POST',
                 data: { filterYear: filterYear,
-                    filterMonth: filterMonth },
+                    filterMonth: filterMonth 
+                },
+                beforeSend: function() {
+                    showDTRSpinner();
+                },
                 success: function(response) {
                     $('#dtr').DataTable().clear().destroy(); 
                     $('#dtr tbody').html(response);
                     $('#dtr').DataTable({});
+                }, 
+                complete: function() {
+                    hideDTRSpinner();
                 }
             });
         });
@@ -97,11 +127,18 @@ $(document).ready(function() {
             url: '../backend/admin/filteredDTRtable.php', 
             type: 'POST',
             data: { filterYear: filterYear,
-                filterMonth: filterMonth },
+                filterMonth: filterMonth 
+            },
+            beforeSend: function() {
+                showDTRSpinner();
+            },
             success: function(response) {
                 $('#dtr').DataTable().clear().destroy(); 
                 $('#dtr tbody').html(response);
                 $('#dtr').DataTable({});
+            },
+            complete: function() {
+                hideDTRSpinner();
             }
         });
     });
