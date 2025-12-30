@@ -48,7 +48,28 @@
                 <div class="p-4 m-0 bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
 
                     <!-- DATATABLE -->
-                    <div class="mx-auto overflow-auto">
+                    <div class="mx-auto overflow-auto position-relative">
+                        <!-- SPINNER OVERLAY -->
+                        <div id="dtrSpinner"
+                            class="d-none position-absolute top-0 start-0 w-100 h-100
+                                    d-flex flex-column align-items-center justify-content-center
+                                    bg-white bg-opacity-75"
+                            style="z-index: 20;">
+
+                            <svg class="animate-spin h-16 w-16 text-gray-500"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10"
+                                        stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                            </svg>
+
+                            <p class="text-sm text-gray-500 mt-3">
+                                Loading DTR…
+                            </p>
+                        </div>
+
                         <table id="dtrTable" class="table text-center table-striped table-bordered table-auto pt-3" style="width: 100%;">
                             <thead class="bg-gray-50">
                                 <tr>

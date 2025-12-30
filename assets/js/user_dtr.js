@@ -4,6 +4,14 @@ $(document).ready(function() {
     dtrTable.order([[1, "asc"]]).draw();
     // $('#dtrTable').DataTable();
 
+    function showDTRSpinner() {
+        $("#dtrSpinner").removeClass("d-none");
+    }
+
+    function hideDTRSpinner() {
+        $("#dtrSpinner").addClass("d-none");
+    }
+
     var filterYear = (new Date). getFullYear();
     const d = new Date();
     var filterMonth = d.getMonth() + 1;
@@ -20,12 +28,19 @@ $(document).ready(function() {
                 url: '../backend/user/filteredDTRtable.php', 
                 type: 'POST',
                 data: { filterYear: filterYear,
-                    filterMonth: filterMonth },
+                    filterMonth: filterMonth 
+                },
+                beforeSend: function() {
+                    showDTRSpinner();
+                },
                 success: function(response) {
                     $('#dtrTable').DataTable().clear().destroy(); 
                     $('#dtrTable tbody').html(response);
                     var dtrTable = $('#dtrTable').DataTable();
                     dtrTable.order([[1, "asc"]]).draw();
+                },
+                complete: function() {
+                    hideDTRSpinner();
                 }
             });
         });
@@ -34,12 +49,19 @@ $(document).ready(function() {
             url: '../backend/user/filteredDTRtable.php', 
             type: 'POST',
             data: { filterYear: filterYear,
-                filterMonth: filterMonth },
+                filterMonth: filterMonth 
+            },
+            beforeSend: function() {
+                showDTRSpinner();
+            },
             success: function(response) {
                 $('#dtrTable').DataTable().clear().destroy(); 
                 $('#dtrTable tbody').html(response);
                 var dtrTable = $('#dtrTable').DataTable();
                 dtrTable.order([[1, "asc"]]).draw();
+            },
+            complete: function() {
+                hideDTRSpinner();
             }
         });
     });
@@ -57,12 +79,19 @@ $(document).ready(function() {
                 url: '../backend/user/filteredDTRtable.php', 
                 type: 'POST',
                 data: { filterYear: filterYear,
-                    filterMonth: filterMonth },
+                    filterMonth: filterMonth 
+                },
+                beforeSend: function() {
+                    showDTRSpinner();
+                },
                 success: function(response) {
                     $('#dtrTable').DataTable().clear().destroy(); 
                     $('#dtrTable tbody').html(response);
                     var dtrTable = $('#dtrTable').DataTable();
                     dtrTable.order([[1, "asc"]]).draw();
+                }, 
+                complete: function() {
+                    hideDTRSpinner();
                 }
             });
         });
@@ -71,12 +100,19 @@ $(document).ready(function() {
             url: '../backend/user/filteredDTRtable.php', 
             type: 'POST',
             data: { filterYear: filterYear,
-                filterMonth: filterMonth },
+                filterMonth: filterMonth 
+            },
+            beforeSend: function() {
+                showDTRSpinner();
+            },
             success: function(response) {
                 $('#dtrTable').DataTable().clear().destroy(); 
                 $('#dtrTable tbody').html(response);
                 var dtrTable = $('#dtrTable').DataTable();
                 dtrTable.order([[1, "asc"]]).draw();
+            },
+            complete: function() {
+                hideDTRSpinner();
             }
         });
     });
