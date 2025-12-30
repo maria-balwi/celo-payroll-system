@@ -19,9 +19,6 @@ $(document).ready(function() {
         $("button").prop("disabled", false);
     }
 
-
-
-
     // CREATE PAYROLL
     $("#addPayrollForm").submit(function (e) {
         e.preventDefault();
