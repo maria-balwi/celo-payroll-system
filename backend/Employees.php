@@ -1421,7 +1421,10 @@
 
         public function getAllReferral($id) {
             $getAllReferral = "
-                SELECT referral.referralID, referral.referrer_empID, referral.referee_empID, employees.firstName, employees.lastName, employees.employeeID, employees.dateHired, employees.employmentStatus
+                SELECT referral.referralID, referral.referrer_empID, 
+                referral.referee_empID, employees.firstName, employees.lastName, 
+                employees.employeeID, employees.dateHired, employees.employmentStatus,
+                referral.threeMonths_status, referral.sixMonths_status
                 FROM ".$this->referral." AS referral
                 INNER JOIN ".$this->employees." AS employees
                 ON referral.referee_empID = employees.id

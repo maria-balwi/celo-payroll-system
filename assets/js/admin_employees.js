@@ -828,10 +828,11 @@ $(document).ready(function() {
                                         <span>Referral Bonus:</span> 
                                         <span class="flex items-center gap-2 pl-6">
                                             - (3 Months) ₱ 2,000
-                                            <span class="text-sm bg-green-500 text-white py-1 px-2 rounded-full">Paid</span>
+                                            ${referral.threeMonths_status == 1 ? '<span class="text-sm bg-green-500 text-white px-2 rounded-full">Paid</span>' : ''}
                                         </span>
                                         <span class="flex items-center gap-2 pl-6">
                                             - (6 Months) ₱ 2,000
+                                            ${referral.sixMonths_status == 1 ? '<span class="text-sm bg-green-500 text-white px-2 rounded-full">Paid</span>' : ''}
                                         </span>
                                     </span>
                                 </div>
