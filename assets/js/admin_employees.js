@@ -16,6 +16,19 @@ function formatDate(dateStr) {
 
 $(document).ready(function() {
 
+    function showAddEmployeeSpinner() {
+        $("#addEmployeeSpinner").removeClass("d-none");
+
+        // disable buttons only (safe)
+        $("#addEmployeeModal button").prop("disabled", true);
+    }
+
+    function hideAddEmployeeSpinner() {
+        $("#addEmployeeSpinner").addClass("d-none");
+        $("#addEmployeeModal button").prop("disabled", false);
+    }
+
+
     if ($('#adminID').val() == 9 || $('#adminID').val() == 8) {
         $('#btnAddEmployee').show();
         $('#btnUpdateEmployee').show();
@@ -591,6 +604,7 @@ $(document).ready(function() {
                 confirmButtonText: 'Yes',
             }).then((result) => {
                 if (result.isConfirmed) {
+                    showAddEmployeeSpinner();
                     $.ajax({
                         type: "POST",
                         url: "../backend/admin/addEmployee.php",
@@ -622,6 +636,9 @@ $(document).ready(function() {
                                     text: message
                                 }) 
                             }
+                        },
+                        complete: function() {
+                            hideAddEmployeeSpinner();
                         }
                     });
                 }

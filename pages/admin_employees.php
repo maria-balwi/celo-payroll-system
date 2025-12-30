@@ -646,7 +646,32 @@
             <form id="addEmployeeForm" enctype="multipart/form-data">
                 <div class="modal fade" id="addEmployeeModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
                     <div class="modal-dialog modal-none modal-xl modal-dialog-centered">
-                        <div class="modal-content" id="addEmployeeModal">
+                        <div class="modal-content position-relative" id="addEmployeeModal">
+                            <!-- MODAL SPINNER OVERLAY -->
+                            <div id="addEmployeeSpinner"
+                                class="position-absolute top-0 start-0 w-100 h-100 d-none
+                                        d-flex align-items-center justify-content-center
+                                        bg-white bg-opacity-75"
+                                style="z-index: 1056;">
+
+                                <!-- YOUR EXISTING SPINNER (UNCHANGED) -->
+                                <div class="flex flex-col items-center gap-3">
+                                    <svg class="animate-spin h-12 w-12 text-gray-500"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10"
+                                                stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor"
+                                            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                                    </svg>
+
+                                    <p class="text-sm text-gray-500">
+                                        Processing employee…
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- ACTUAL MODAL -->
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="userFormLabel">New Employee</h1>
                             </div>
