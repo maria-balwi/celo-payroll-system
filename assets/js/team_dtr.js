@@ -35,6 +35,14 @@ $(document).ready(function() {
         return `${hours}:${minutes}`;
     }
 
+    function showDTRSpinner() {
+        $("#dtrSpinner").removeClass("d-none");
+    }
+
+    function hideDTRSpinner() {
+        $("#dtrSpinner").addClass("d-none");
+    }
+
     document.getElementById('filterYear').addEventListener('change', function() {
         filterYear = null;
         filterYear = $('#filterYear').val();
@@ -47,11 +55,18 @@ $(document).ready(function() {
                 url: '../backend/team/filteredDTRtable.php', 
                 type: 'POST',
                 data: { filterYear: filterYear,
-                    filterMonth: filterMonth },
+                    filterMonth: filterMonth 
+                },
+                beforeSend: function() {
+                    showDTRSpinner();
+                },
                 success: function(response) {
                     $('#teamDTRTable').DataTable().clear().destroy(); 
                     $('#teamDTRTable tbody').html(response);
                     $('#teamDTRTable').DataTable({});
+                },
+                complete: function() {
+                    hideDTRSpinner();
                 }
             });
         });
@@ -60,11 +75,18 @@ $(document).ready(function() {
             url: '../backend/team/filteredDTRtable.php', 
             type: 'POST',
             data: { filterYear: filterYear,
-                filterMonth: filterMonth },
+                filterMonth: filterMonth 
+            },
+            beforeSend: function() {
+                showDTRSpinner();
+            },
             success: function(response) {
                 $('#teamDTRTable').DataTable().clear().destroy(); 
                 $('#teamDTRTable tbody').html(response);
                 $('#teamDTRTable').DataTable({});
+            },
+            complete: function() {
+                hideDTRSpinner();
             }
         });
     });
@@ -82,11 +104,18 @@ $(document).ready(function() {
                 url: '../backend/team/filteredDTRtable.php', 
                 type: 'POST',
                 data: { filterYear: filterYear,
-                    filterMonth: filterMonth },
+                    filterMonth: filterMonth 
+                },
+                beforeSend: function() {
+                    showDTRSpinner();
+                },
                 success: function(response) {
                     $('#teamDTRTable').DataTable().clear().destroy(); 
                     $('#teamDTRTable tbody').html(response);
                     $('#teamDTRTable').DataTable({});
+                },
+                complete: function() {
+                    hideDTRSpinner();
                 }
             });
         });
@@ -95,11 +124,18 @@ $(document).ready(function() {
             url: '../backend/team/filteredDTRtable.php', 
             type: 'POST',
             data: { filterYear: filterYear,
-                filterMonth: filterMonth },
+                filterMonth: filterMonth 
+            },
+            beforeSend: function() {
+                showDTRSpinner();
+            },
             success: function(response) {
                 $('#teamDTRTable').DataTable().clear().destroy(); 
                 $('#teamDTRTable tbody').html(response);
                 $('#teamDTRTable').DataTable({});
+            },
+            complete: function() {
+                hideDTRSpinner();
             }
         });
     });
