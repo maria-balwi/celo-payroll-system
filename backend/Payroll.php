@@ -905,7 +905,37 @@
             ";
             return $cutOffAbsences;
         }
-        
+
+        public function getLeavesForPayroll($empID, $from, $to): string {
+            return "
+                SELECT la.empID, lt.leaveTypeID
+                FROM tbl_leaveapplications la
+                INNER JOIN tbl_leavetype lt 
+                    ON la.leaveTypeID = lt.leaveTypeID
+                WHERE la.empID = $empID
+                AND la.status = 'Approved'
+                AND la.effectivityStartDate <= '$to'
+                AND la.effectivityEndDate   >= '$from'
+                AND la.dateFiled BETWEEN '$from' AND '$to'
+            ";
+        }
+
+        public function getLateFiledLeaves($empID, $from, $to) {
+            return "
+                SELECT 
+                    la.empID,
+                    lt.leaveTypeID
+                FROM tbl_leaveapplications la
+                INNER JOIN tbl_leavetype lt 
+                    ON la.leaveTypeID = lt.leaveTypeID
+                WHERE la.empID = $empID
+                AND la.status = 'Approved'
+                AND la.effectivityStartDate < '$from'
+                AND la.dateFiled BETWEEN '$from' AND '$to';
+
+            ";
+        }
+
         public function calculatePayroll($payrollID, $payrollCycleID) {
             function formatDate($date) {
                 // GET CURRENT YEAR
@@ -1292,13 +1322,24 @@
                 }
 
                 // COMPUTATION FOR LEAVES
-                $leaveQuery = $this->dbConnect()->query("SELECT empID, lt.leaveTypeID, effectivityStartDate, effectivityEndDate FROM tbl_leaveapplications AS la INNER JOIN tbl_leavetype AS lt ON la.leaveTypeID = lt.leaveTypeID WHERE effectivityStartDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND effectivityEndDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND status = 'Approved' AND empID=$employee_id");
-                // $leaveQuery = $this->dbConnect()->query("SELECT empID, lt.leaveTypeID, effectivityStartDate, effectivityEndDate FROM tbl_leaveapplications AS la INNER JOIN tbl_leavetype AS lt ON la.leaveTypeID = lt.leaveTypeID WHERE (effectivityStartDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND effectivityEndDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND dateFiled BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND status = 'Approved' AND empID = $employee_id) OR (dateFiled BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND status = 'Approved' AND empID = $employee_id)");
+                // $leaveQuery = $this->dbConnect()->query("SELECT empID, lt.leaveTypeID, effectivityStartDate, effectivityEndDate FROM tbl_leaveapplications AS la INNER JOIN tbl_leavetype AS lt ON la.leaveTypeID = lt.leaveTypeID WHERE effectivityStartDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND effectivityEndDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND status = 'Approved' AND empID=$employee_id");
+                $sql = $this->getLeavesForPayroll($employee_id, $payrollCycleFrom, $payrollCycleTo);
+                $leaveQuery = $this->dbConnect()->query($sql);
                 while ($leaveDetails = mysqli_fetch_array($leaveQuery)) {
                     if ($leaveDetails['leaveTypeID'] == 1) {
                         $totalSickLeaves++;
                     }
                     else if ($leaveDetails['leaveTypeID'] == 2) {
+                        $totalVacationLeaves++;
+                    }
+                }
+                $lateFiledLeavesQuery = $this->getLateFiledLeaves($employee_id, $payrollCycleFrom, $payrollCycleTo);
+                $lateFiledLeaveQuery = $this->dbConnect()->query($lateFiledLeavesQuery);
+                while ($lateFLDetails = mysqli_fetch_array($lateFiledLeaveQuery)) {
+                    if ($lateFLDetails['leaveTypeID'] == 1) {
+                        $totalSickLeaves++;
+                    }
+                    else if ($lateFLDetails['leaveTypeID'] == 2) {
                         $totalVacationLeaves++;
                     }
                 }
@@ -1453,7 +1494,7 @@
 
             $counter = 0;
 
-            // GET EMPLOYEE DETAILS
+           // GET EMPLOYEE DETAILS
             $employees = $this->dbConnect()->query("SELECT * FROM tbl_employee WHERE designationID != 12 AND e_status = 'Active' ORDER BY lastName");
             while ($employeeDetails = mysqli_fetch_array($employees)) {
                 $employee_id = $employeeDetails['id'];
@@ -1817,13 +1858,24 @@
                 }
 
                 // COMPUTATION FOR LEAVES
-                $leaveQuery = $this->dbConnect()->query("SELECT empID, lt.leaveTypeID, effectivityStartDate, effectivityEndDate FROM tbl_leaveapplications AS la INNER JOIN tbl_leavetype AS lt ON la.leaveTypeID = lt.leaveTypeID WHERE effectivityStartDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND effectivityEndDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND status = 'Approved' AND empID=$employee_id");
-                // $leaveQuery = $this->dbConnect()->query("SELECT empID, lt.leaveTypeID, effectivityStartDate, effectivityEndDate FROM tbl_leaveapplications AS la INNER JOIN tbl_leavetype AS lt ON la.leaveTypeID = lt.leaveTypeID WHERE (effectivityStartDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND effectivityEndDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND dateFiled BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND status = 'Approved' AND empID = $employee_id) OR (dateFiled BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND status = 'Approved' AND empID = $employee_id)");
+                // $leaveQuery = $this->dbConnect()->query("SELECT empID, lt.leaveTypeID, effectivityStartDate, effectivityEndDate FROM tbl_leaveapplications AS la INNER JOIN tbl_leavetype AS lt ON la.leaveTypeID = lt.leaveTypeID WHERE effectivityStartDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND effectivityEndDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND status = 'Approved' AND empID=$employee_id");
+                $sql = $this->getLeavesForPayroll($employee_id, $payrollCycleFrom, $payrollCycleTo);
+                $leaveQuery = $this->dbConnect()->query($sql);
                 while ($leaveDetails = mysqli_fetch_array($leaveQuery)) {
                     if ($leaveDetails['leaveTypeID'] == 1) {
                         $totalSickLeaves++;
                     }
                     else if ($leaveDetails['leaveTypeID'] == 2) {
+                        $totalVacationLeaves++;
+                    }
+                }
+                $lateFiledLeavesQuery = $this->getLateFiledLeaves($employee_id, $payrollCycleFrom, $payrollCycleTo);
+                $lateFiledLeaveQuery = $this->dbConnect()->query($lateFiledLeavesQuery);
+                while ($lateFLDetails = mysqli_fetch_array($lateFiledLeaveQuery)) {
+                    if ($lateFLDetails['leaveTypeID'] == 1) {
+                        $totalSickLeaves++;
+                    }
+                    else if ($lateFLDetails['leaveTypeID'] == 2) {
                         $totalVacationLeaves++;
                     }
                 }
