@@ -262,6 +262,7 @@ $(document).ready(function() {
             confirmButtonColor: '#28a745',
             confirmButtonText: 'Yes',
         }).then((result) => {
+            showPayrollSpinner();
             recalculatePayrollForm.append('payrollID', recal_payrollID);
             recalculatePayrollForm.append('payrollCycleID', recal_cycleID);
             recalculatePayrollForm.append('action', 'recalculate');
@@ -292,6 +293,9 @@ $(document).ready(function() {
                                 text: message
                             }) 
                         }
+                    }, 
+                    complete: function() {
+                        hidePayrollSpinner();
                     }
                 });
             }

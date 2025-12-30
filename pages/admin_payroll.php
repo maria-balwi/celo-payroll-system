@@ -18,11 +18,11 @@
             <div class="bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
                 <div class="card shadow-sm bInfo relative">
                     <div class="card-body">
-                        <!-- SPINNING SKELETON LOADER -->
-                        <div id="payrollSpinner" class="absolute inset-0 hidden z-50 items-center justify-center bg-white/70 dark:bg-gray-900/70 pointer-events-auto">
+                        <!-- SPINNING SKELETON LOADER WITH BLUR -->
+                        <div id="payrollSpinner" class="absolute inset-0 z-50 hidden items-center justify-center bg-white bg-opacity-75" style="z-index: 20;">
 
                             <div class="flex flex-col items-center gap-3">
-                                <svg class="animate-spin h-12 w-12 text-gray-500"
+                                <svg class="animate-spin h-16 w-16 text-gray-500"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none" viewBox="0 0 24 24">
                                     <circle class="opacity-25" cx="12" cy="12" r="10"
@@ -31,7 +31,7 @@
                                         d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
                                 </svg>
 
-                                <p class="text-sm text-gray-500 dark:text-gray-300">
+                                <p class="text-sm text-gray-500">
                                     Processing payroll…
                                 </p>
                             </div>
