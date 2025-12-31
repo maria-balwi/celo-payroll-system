@@ -1488,7 +1488,7 @@
 
         public function reCalculatePayroll($payrollID, $payrollCycleID) {
             // UPDATE CASH ADVANCE DETAILS
-            $cashAdvanceQuery = $this->dbConnect()->query("SELECT * FROM tbl_caPaymentHistory WHERE payrollID = $payrollID");
+            $cashAdvanceQuery = $this->dbConnect()->query($this->resetCAPaymentHistory($payrollID));
             while ($cashAdvanceDetails = mysqli_fetch_array($cashAdvanceQuery)) {
                 $requestID = $cashAdvanceDetails['requestID'];
                 $cashAdvance = $cashAdvanceDetails['amountDeducted'];
@@ -1498,21 +1498,21 @@
                 $request_payrollID = $cashAdvanceDetails['payrollID'];
 
                 if ($request_payrollID == $payrollID) {
-                    $this->dbConnect()->query("UPDATE tbl_cashAdvance SET remainingAmount = $remainingBalance, ca_status = 'New' WHERE requestID = $requestID");
+                    $this->dbConnect()->query($this->resetNewCAstatus($requestID, $remainingBalance));
                 }
                 else if ($ca_status == "Paid") {
-                    $this->dbConnect()->query("UPDATE tbl_cashAdvance SET remainingAmount = $remainingBalance, ca_status = 'Ongoing' WHERE requestID = $requestID");
+                    $this->dbConnect()->query($this->resetOngoingCAstatus($requestID, $remainingBalance));
                 }
                 else {
-                    $this->dbConnect()->query("UPDATE tbl_cashAdvance SET remainingAmount = $remainingBalance WHERE requestID = $requestID");
+                    $this->dbConnect()->query($this->resetCAstatus($requestID, $remainingBalance));
                 }
             }
 
             // DELETE CURRENT CA PAYMENT HISTORY, RE-CALCULATE FUNCTION
-            $this->dbConnect()->query("DELETE FROM tbl_caPaymentHistory WHERE payrollID = $payrollID");
+            $this->dbConnect()->query($this->deleteCAPaymentHistory($payrollID));
 
             // DELETE CURRENT PAYSLIP - RE-CALCULATE FUNCTION
-            $this->dbConnect()->query("DELETE FROM tbl_payslip WHERE payrollID = $payrollID");
+            $this->dbConnect()->query($this->deletePayslip($payrollID));
 
             function formatDate($date) {
                 // GET CURRENT YEAR
@@ -2078,6 +2078,47 @@
 
                 } 
             }
+        }
+
+        public function resetCAPaymentHistory($payrollID) {
+            $resetQuery = "
+                SELECT * FROM {$this->caPaymentHistory} cap
+                INNER JOIN {$this->cashAdvance} AS ca
+                ON cap.requestID = ca.requestID
+                WHERE payrollID = $payrollID";
+            return $resetQuery;
+        }
+
+        public function resetNewCAstatus($requestID, $remainingAmount) {
+            $newCAstatus = "
+                UPDATE {$this->cashAdvance} SET
+                remainingAmount = $remainingAmount, 
+                ca_status = 'New'
+                WHERE requestID = $requestID";
+            return $newCAstatus;
+        }
+
+        public function resetOngoingCAstatus($requestID, $remainingAmount) {
+            $ongoingCAstatus = "
+                UPDATE {$this->cashAdvance} SET
+                remainingAmount = $remainingAmount, 
+                ca_status = 'Ongoing'
+                WHERE requestID = $requestID";
+            return $ongoingCAstatus;
+        }
+
+        public function resetCAstatus($requestID, $remainingAmount) {
+            $ongoingCAstatus = "
+                UPDATE {$this->cashAdvance} SET
+                remainingAmount = $remainingAmount
+                WHERE requestID = $requestID";
+            return $ongoingCAstatus;
+        }
+
+        public function deleteCAPaymentHistory($payrollID) {
+            $deleteCAPaymentHistory = "
+                DELETE FROM {$this->caPaymentHistory} WHERE payrollID = $payrollID";
+            return $deleteCAPaymentHistory;
         }
 
         public function updateCalculatedPayroll($payrollID) {
