@@ -169,7 +169,7 @@
                 $payslip_lateMins = $payslipDetails['totalLateMins'] == 0 ? "-" : number_format($payslipDetails['totalLateMins'], 2);
                 $payslip_lateMinsAmt = $payslipDetails['payslip_lateMins'] == 0 ? "-" : number_format($payslipDetails['payslip_lateMins'], 2);
                 $payslip_cashAdvanceDeduction = $payslipDetails['payslip_cashAdvanceDeduction'] == 0 ? "-" : number_format($payslipDetails['payslip_cashAdvanceDeduction'], 2);
-                $payslip_cashAdvanceBalance = $payslipDetails['payslip_cashAdvanceBalance'] == 0 ? "-" : number_format($payslipDetails['payslip_cashAdvanceBalance'], 2);
+                // $payslip_cashAdvanceBalance = $payslipDetails['payslip_cashAdvanceBalance'] == 0 ? "-" : number_format($payslipDetails['payslip_cashAdvanceBalance'], 2);
                 // $payslip_caPettyCash = $payslipDetails['payslip_caPettyCash'] == 0 ? "-" : number_format($payslipDetails['payslip_caPettyCash'], 2);
                 $payslip_netPay = $payslipDetails['netPay'] == 0 ? "-" : number_format($payslipDetails['netPay'], 2);
 
