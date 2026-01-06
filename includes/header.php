@@ -49,25 +49,34 @@
                 }
                 else {
                     $lastDTR = mysqli_fetch_array($lastDTRQuery);
-                    $logType = $lastDTR['logType'];
-                    $attendanceDate = $lastDTR['attendanceDate'];
+                    $logType = $lastDTR['logType']; // TIME IN, LATE, UNDERTIME, TIME OUT
+                    $attendanceDate = $lastDTR['attendanceDate']; 
                     $attendanceTime = $lastDTR['attendanceTime'];
                     $shiftStart = $lastDTR['startTime'];
                     $shiftEnd = $lastDTR['endTime'];
-                    $attendanceDateTime = new DateTime($attendanceDate . " " . $attendanceTime);
 
-                    // INTERVAL AFTER SHIFT FOR POSSIBLE OVERTIME BEFORE AUTOMATIC TIMEOUT
-                    // COMBINE DATE AND TIME
-                    $dtrDateTime = $attendanceDate . " " . $shiftStart;
-                    $dtrDateTime = new DateTime($dtrDateTime);
+                    // BUILD ACTUAL TIME IN
+                    $timeInDT = new DateTime($attendanceDate . ' ' . $attendanceTime);
+     
+                    // BUILD SHIFT START
+                    $shiftStartDT = new DateTime($attendanceDate . ' ' . $shiftStart);
+
+                    // CHECK IF SHIFT START IS EARL
+                    // MEANS SHIFT STARTS NEXT DAY
+                    // 12 AM SCHEDULES
+                    if ($shiftStartDT < $timeInDT) {
+                        $shiftStartDT->modify('+1 day');
+                    }
+
+                    // AUTO TIME LIMIT
+                    // 9 hrs regular + 8 hrs OT = 17 hrs
+                    $autoTimeoutDT = clone $shiftStartDT;
+                    $autoTimeoutDT->modify('+17 hours');
 
                     // SETTING TIME BEFORE GETTING CURRENT DATE AND TIME
                     $currentDateTime = new DateTime(); 
-
-                    // ADD 8 HOURS TO ALLOW OVERTIME SUBMISSION
-                    $interval = new DateInterval('PT17H');
-                    $dtrDateTime->add($interval);
-                    // SESSION VARIABLE FOR DTR
+                    
+                    // SESSION DEFAULT VALUE FOR DTR VARIABLE
                     $_SESSION['dtr'] = 'forTimeIn';
 
                     if ($logType == "Time In" || $logType == "Late") 
@@ -75,18 +84,22 @@
                         // // CAN TIME OUT ANYTIME
                         // $_SESSION['dtr'] = 'forTimeOut';
 
-                        if ($currentDateTime < $dtrDateTime) 
+                        if ($currentDateTime < $autoTimeoutDT) 
                         {
                             $_SESSION['dtr'] = 'forTimeOut';
                         }
                         else {
-                            $assumedTimeIn = $attendanceDate . " " . $shiftStart;
-                            $assumedTimeIn = new DateTime($assumedTimeIn);
+                            // $assumedTimeIn = $attendanceDate . " " . $shiftStart;
+                            // $assumedTimeIn = new DateTime($assumedTimeIn);
 
-                            $endOfShiftInterval = new DateInterval('PT9H');
-                            $assumedTimeIn->add($endOfShiftInterval);
+                            // $endOfShiftInterval = new DateInterval('PT9H');
+                            // $assumedTimeIn->add($endOfShiftInterval);
 
-                            $newAttendanceDate = $assumedTimeIn->format('Y-m-d');
+                            // $newAttendanceDate = $assumedTimeIn->format('Y-m-d');
+
+                            $newAttendanceDT = clone $shiftStartDT;
+                            $newAttendanceDT->modify('+9 hours');
+                            $newAttendanceDate = $newAttendanceDT->format('Y-m-d');
 
                             mysqli_query($conn, $attendance->addEmployeeTimeOut($_SESSION['id'], $newAttendanceDate, $shiftEnd));
                         }
@@ -95,7 +108,7 @@
                     {
                         // // ADD 2 HOURS INTERVAL AFTER TIME OUT
                         // $interval = new DateInterval('PT2H');
-                        // $updatedDateTime = $dtrDateTime->add($interval);
+                        // $updatedDateTime = $shiftStartDT->add($interval);
 
                         // if ($currentDateTime < $updatedDateTime)
                         // {
