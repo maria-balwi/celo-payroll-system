@@ -84,6 +84,7 @@
                 $payslip_position = $payslipDetails['position'];
                 $payslip_employmentStatus = $payslipDetails['employmentStatus'];
                 $payslip_employeeID = $payslipDetails['employeeID'];
+                $payslip_paymentMethod = $payslipDetails['req_helloMoney'] == 1 ? 'Bank - Hello Money' : 'Cash';
                 $payslip_employeeName = $payslipDetails['lastName'] . ", " . $payslipDetails['firstName'];
                 $payslip_basicPay = number_format($payslipDetails['basicPay'], 2);
                 $payslip_dailyRate = number_format($payslipDetails['dailyRate'], 2);
@@ -215,13 +216,13 @@
                                     <td class="border px-2 py-1">'.$payslip_philhealthnum.'</td>
                                 </tr>
                                 <tr class="bg-green-300 font-bold">
-                                    <td class="border px-2 py-1">Pay Frequency</td>
+                                    <td class="border px-2 py-1">Payment Method</td>
                                     <td class="border px-2 py-1">Monthly Rate</td>
                                     <td class="border px-2 py-1">Daily Rate</td>
                                     <td class="border px-2 py-1">Hourly Rate</td>
                                 </tr>
                                 <tr>
-                                    <td class="border px-2 py-1">Semi-Monthly</td>
+                                    <td class="border px-2 py-1">'.$paymentMethod.'</td>
                                     <td class="border px-2 py-1">'.$payslip_basicPay.'</td>
                                     <td class="border px-2 py-1">'.$payslip_dailyRate.'</td>
                                     <td class="border px-2 py-1">'.$payslip_hourlyRate.'</td>
@@ -328,6 +329,10 @@
                             <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS INCORPORATED</div>
                             <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP</div>
 
+                            <div id="watermark" class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-600 font-bold text-4xl opacity-30 rotate-45 pointer-events-none select-none">
+                                CONFIDENTIAL
+                            </div>
+
                             <table class="w-full text-sm mb-4">
                                 <tr class="bg-green-300 font-bold">
                                     <td class="border px-2 py-1">Employee ID</td>
@@ -354,13 +359,13 @@
                                     <td class="border px-2 py-1">'.$payslip_philhealthnum.'</td>
                                 </tr>
                                 <tr class="bg-green-300 font-bold">
-                                    <td class="border px-2 py-1">Pay Frequency</td>
+                                    <td class="border px-2 py-1">Payment Method</td>
                                     <td class="border px-2 py-1">Monthly Rate</td>
                                     <td class="border px-2 py-1">Daily Rate</td>
                                     <td class="border px-2 py-1">Hourly Rate</td>
                                 </tr>
                                 <tr>
-                                    <td class="border px-2 py-1">Semi-Monthly</td>
+                                    <td class="border px-2 py-1">'.$paymentMethod.'</td>
                                     <td class="border px-2 py-1">'.$payslip_basicPay.'</td>
                                     <td class="border px-2 py-1">'.$payslip_dailyRate.'</td>
                                     <td class="border px-2 py-1">'.$payslip_hourlyRate.'</td>
@@ -506,6 +511,10 @@
                             <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS, INC.</div>
                             <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP</div>
 
+                            <div id="watermark" class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-600 font-bold text-4xl opacity-30 rotate-45 pointer-events-none select-none">
+                                CONFIDENTIAL
+                            </div>
+
                             <table class="w-full text-sm mb-4">
                                 <tr class="bg-green-300 font-bold">
                                     <td class="border px-2 py-1">Employee ID</td>
@@ -532,13 +541,13 @@
                                     <td class="border px-2 py-1">'.$payslip_philhealthnum.'</td>
                                 </tr>
                                 <tr class="bg-green-300 font-bold">
-                                    <td class="border px-2 py-1">Pay Frequency</td>
+                                    <td class="border px-2 py-1">Payment Method</td>
                                     <td class="border px-2 py-1">Monthly Rate</td>
                                     <td class="border px-2 py-1">Daily Rate</td>
                                     <td class="border px-2 py-1">Hourly Rate</td>
                                 </tr>
                                 <tr>
-                                    <td class="border px-2 py-1">Semi-Monthly</td>
+                                    <td class="border px-2 py-1">'.$paymentMethod.'</td>
                                     <td class="border px-2 py-1">'.$payslip_basicPay.'</td>
                                     <td class="border px-2 py-1">'.$payslip_dailyRate.'</td>
                                     <td class="border px-2 py-1">'.$payslip_hourlyRate.'</td>
@@ -667,6 +676,10 @@
                             <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS, INC.</div>
                             <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP</div>
 
+                            <div id="watermark" class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-600 font-bold text-4xl opacity-30 rotate-45 pointer-events-none select-none">
+                                CONFIDENTIAL
+                            </div>
+
                             <table class="w-full text-sm mb-4">
                                 <tr class="bg-green-300 font-bold">
                                     <td class="border px-2 py-1">Employee ID</td>
@@ -693,13 +706,13 @@
                                     <td class="border px-2 py-1">'.$payslip_philhealthnum.'</td>
                                 </tr>
                                 <tr class="bg-green-300 font-bold">
-                                    <td class="border px-2 py-1">Pay Frequency</td>
+                                    <td class="border px-2 py-1">Payment Method</td>
                                     <td class="border px-2 py-1">Monthly Rate</td>
                                     <td class="border px-2 py-1">Daily Rate</td>
                                     <td class="border px-2 py-1">Hourly Rate</td>
                                 </tr>
                                 <tr>
-                                    <td class="border px-2 py-1">Semi-Monthly</td>
+                                    <td class="border px-2 py-1">'.$paymentMethod.'</td>
                                     <td class="border px-2 py-1">'.$payslip_basicPay.'</td>
                                     <td class="border px-2 py-1">'.$payslip_dailyRate.'</td>
                                     <td class="border px-2 py-1">'.$payslip_hourlyRate.'</td>
@@ -887,6 +900,10 @@
                             <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS, INC.</div>
                             <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP</div>
 
+                            <div id="watermark" class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-600 font-bold text-4xl opacity-30 rotate-45 pointer-events-none select-none">
+                                CONFIDENTIAL
+                            </div>
+
                             <table class="w-full text-sm mb-4">
                                 <tr class="bg-green-300 font-bold">
                                     <td class="border px-2 py-1">Employee ID</td>
@@ -913,13 +930,13 @@
                                     <td class="border px-2 py-1">'.$payslip_philhealthnum.'</td>
                                 </tr>
                                 <tr class="bg-green-300 font-bold">
-                                    <td class="border px-2 py-1">Pay Frequency</td>
+                                    <td class="border px-2 py-1">Payment Method</td>
                                     <td class="border px-2 py-1">Monthly Rate</td>
                                     <td class="border px-2 py-1">Daily Rate</td>
                                     <td class="border px-2 py-1">Hourly Rate</td>
                                 </tr>
                                 <tr>
-                                    <td class="border px-2 py-1">Semi-Monthly</td>
+                                    <td class="border px-2 py-1">'.$paymentMethod.'</td>
                                     <td class="border px-2 py-1">'.$payslip_basicPay.'</td>
                                     <td class="border px-2 py-1">'.$payslip_dailyRate.'</td>
                                     <td class="border px-2 py-1">'.$payslip_hourlyRate.'</td>
@@ -1048,6 +1065,10 @@
                             <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS, INC.</div>
                             <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP</div>
 
+                            <div id="watermark" class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-600 font-bold text-4xl opacity-30 rotate-45 pointer-events-none select-none">
+                                CONFIDENTIAL
+                            </div>
+
                             <table class="w-full text-sm mb-4">
                                 <tr class="bg-green-300 font-bold">
                                     <td class="border px-2 py-1">Employee ID</td>
@@ -1074,13 +1095,13 @@
                                     <td class="border px-2 py-1">'.$payslip_philhealthnum.'</td>
                                 </tr>
                                 <tr class="bg-green-300 font-bold">
-                                    <td class="border px-2 py-1">Pay Frequency</td>
+                                    <td class="border px-2 py-1">Payment Method</td>
                                     <td class="border px-2 py-1">Monthly Rate</td>
                                     <td class="border px-2 py-1">Daily Rate</td>
                                     <td class="border px-2 py-1">Hourly Rate</td>
                                 </tr>
                                 <tr>
-                                    <td class="border px-2 py-1">Semi-Monthly</td>
+                                    <td class="border px-2 py-1">'.$paymentMethod.'</td>
                                     <td class="border px-2 py-1">'.$payslip_basicPay.'</td>
                                     <td class="border px-2 py-1">'.$payslip_dailyRate.'</td>
                                     <td class="border px-2 py-1">'.$payslip_hourlyRate.'</td>
@@ -1268,6 +1289,10 @@
                             <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS, INC.</div>
                             <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP</div>
 
+                            <div id="watermark" class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-600 font-bold text-4xl opacity-30 rotate-45 pointer-events-none select-none">
+                                CONFIDENTIAL
+                            </div>
+
                             <table class="w-full text-sm mb-4">
                                 <tr class="bg-green-300 font-bold">
                                     <td class="border px-2 py-1">Employee ID</td>
@@ -1293,14 +1318,14 @@
                                     <td class="border px-2 py-1">'.$payslip_pagIbignum.'</td>
                                     <td class="border px-2 py-1">'.$payslip_philhealthnum.'</td>
                                 </tr>
-                                <tr class="bg-green-300 font-bold">
-                                    <td class="border px-2 py-1">Pay Frequency</td>
+                                <<tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">Payment Method</td>
                                     <td class="border px-2 py-1">Monthly Rate</td>
                                     <td class="border px-2 py-1">Daily Rate</td>
                                     <td class="border px-2 py-1">Hourly Rate</td>
                                 </tr>
                                 <tr>
-                                    <td class="border px-2 py-1">Semi-Monthly</td>
+                                    <td class="border px-2 py-1">'.$paymentMethod.'</td>
                                     <td class="border px-2 py-1">'.$payslip_basicPay.'</td>
                                     <td class="border px-2 py-1">'.$payslip_dailyRate.'</td>
                                     <td class="border px-2 py-1">'.$payslip_hourlyRate.'</td>
@@ -1449,6 +1474,10 @@
                             <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS, INC.</div>
                             <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP</div>
 
+                            <div id="watermark" class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-600 font-bold text-4xl opacity-30 rotate-45 pointer-events-none select-none">
+                                CONFIDENTIAL
+                            </div>
+
                             <table class="w-full text-sm mb-4">
                                 <tr class="bg-green-300 font-bold">
                                     <td class="border px-2 py-1">Employee ID</td>
@@ -1475,13 +1504,13 @@
                                     <td class="border px-2 py-1">'.$payslip_philhealthnum.'</td>
                                 </tr>
                                 <tr class="bg-green-300 font-bold">
-                                    <td class="border px-2 py-1">Pay Frequency</td>
+                                    <td class="border px-2 py-1">Payment Method</td>
                                     <td class="border px-2 py-1">Monthly Rate</td>
                                     <td class="border px-2 py-1">Daily Rate</td>
                                     <td class="border px-2 py-1">Hourly Rate</td>
                                 </tr>
                                 <tr>
-                                    <td class="border px-2 py-1">Semi-Monthly</td>
+                                    <td class="border px-2 py-1">'.$paymentMethod.'</td>
                                     <td class="border px-2 py-1">'.$payslip_basicPay.'</td>
                                     <td class="border px-2 py-1">'.$payslip_dailyRate.'</td>
                                     <td class="border px-2 py-1">'.$payslip_hourlyRate.'</td>

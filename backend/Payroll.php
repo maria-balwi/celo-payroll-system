@@ -5,6 +5,7 @@
         private $employees = 'tbl_employee';
         private $department = 'tbl_department';
         private $designation = 'tbl_designation';
+        private $requirements = 'tbl_requirements';
         private $shifts = 'tbl_shiftschedule';
         private $allowances = 'tbl_allowances';
         private $deductions = 'tbl_deductions';
@@ -2161,11 +2162,13 @@
                 SELECT * FROM ".$this->payslip . " AS payslip
                 INNER JOIN ".$this->employees." AS employee 
                 ON payslip.empID = employee.id
+                INNER JOIN ".$this->requirements." AS requirements
+                ON employee.id = requirements.empID
                 INNER JOIN ".$this->designation." AS designation 
                 ON employee.designationID = designation.designationID
                 INNER JOIN ".$this->department." AS department
                 ON employee.departmentID = department.departmentID
-                WHERE payrollID = $payrollID AND empID = $empID";
+                WHERE payrollID = $payrollID AND payslip.empID = $empID";
             return $viewPayslip;
         }
 
