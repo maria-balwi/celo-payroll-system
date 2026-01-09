@@ -1355,7 +1355,7 @@
                 while ($referralDetails = mysqli_fetch_array($referralQuery)) {
                     $referralCount++;
                 }
-                $referralIncentivePay = round($referralCount * 2000, 2);
+                $referralIncentivePay = round($referralCount * 2500, 2);
 
                 //COMPUTATION FOR NIGHT DIFFERENTIAL PAY
                 $totalNightHours = round($totalNightHours, 0);
@@ -1949,7 +1949,7 @@
                 while ($referralDetails = mysqli_fetch_array($referralQuery)) {
                     $referralCount++;
                 }
-                $referralIncentivePay = round($referralCount * 2000, 2);
+                $referralIncentivePay = round($referralCount * 2500, 2);
 
                 //COMPUTATION FOR NIGHT DIFFERENTIAL PAY
                 $totalNightHours = round($totalNightHours, 0);
