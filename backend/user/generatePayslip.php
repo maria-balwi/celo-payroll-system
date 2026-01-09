@@ -185,6 +185,10 @@
                             <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS INCORPORATED</div>
                             <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP</div>
 
+                            <div id="watermark" class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-600 font-bold text-4xl opacity-30 rotate-45 pointer-events-none select-none">
+                                CONFIDENTIAL
+                            </div>
+
                             <table class="w-full text-sm mb-4">
                                 <tr class="bg-green-300 font-bold">
                                     <td class="border px-2 py-1">Employee ID</td>
@@ -1710,6 +1714,12 @@
                         </div>
                     ';
                 }
+
+                // $payslip += '
+                // <div id="watermark" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-500 font-bold text-4xl opacity-20 rotate-45 pointer-events-none">
+                //     <p>Confidential</p>
+                // </div>
+                // ';
 
                 echo $payslip; 
 

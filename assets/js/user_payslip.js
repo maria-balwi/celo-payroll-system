@@ -34,7 +34,6 @@ $(document).ready(function() {
                 success: function(response) {
                     // Check if the response contains the specific message for "not generated"
                     if (response.includes('<i>Payslip for this payroll cycle not yet generated.</i>')) {
-                        // Show the error message from PHP
                         Swal.fire({
                             icon: 'warning',
                             title: 'Payslip Not Available',
@@ -76,11 +75,6 @@ $(document).ready(function() {
     
         // Apply a temporary scaling class
         $(element).addClass('scale-for-pdf');
-
-        var watermark = document.createElement('div');
-        watermark.innerText = 'Confidential';
-        watermark.className = 'absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-500 font-bold text-4xl opacity-20 rotate-45 pointer-events-none';
-        element.appendChild(watermark);
     
         html2pdf()
             .from(element)
@@ -102,7 +96,6 @@ $(document).ready(function() {
             .then(() => {
                 // Remove the scaling class after the PDF is saved
                 $(element).removeClass('scale-for-pdf');
-                watermark.remove();
     
                 // Perform the AJAX call
                 $.ajax({

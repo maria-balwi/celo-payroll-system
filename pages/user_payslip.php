@@ -34,9 +34,9 @@
             .watermark img {
                 max-width: 25%;
                 opacity: 0.2;
-            } */
+            }
 
-            /* .watermark p {
+            .watermark p {
                 color: gray;
                 font-weight: bold;
                 margin-top: 10px;
@@ -115,8 +115,7 @@
                 
                 <div class="container mx-auto overflow-auto">
                     <div class="loader" id="loader"></div>
-                    <div id="payslipContainer" class="col-span-12 md:col-span-4 table text-center table-auto">
-
+                    <div id="payslipContainer" class="relative col-span-12 md:col-span-4 table text-center table-auto">
                     </div>
                 </div>
 
