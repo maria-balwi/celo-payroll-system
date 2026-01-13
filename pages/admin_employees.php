@@ -632,6 +632,8 @@
 
                     <!-- CARD FOOTER DATA ENTRY BUTTON -->
                     <div class="card-footer d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="../assets/import_employee_template.csv" download class="btn btn-info me-md-2" id="exportTemplate">Export Template</a>
+                        <button class="btn btn-warning me-md-2" type="button" data-bs-toggle="modal" data-bs-target="#importEmployeeModal" id="btnImportEmployee">Import Employees</button>
                         <button class="btn btn-primary me-md-2" type="button" data-bs-toggle="modal" data-bs-target="#addEmployeeModal" id="btnAddEmployee">Add Employee</button>
                     </div>
                 </div>
@@ -2602,6 +2604,47 @@
                     </div>
                 </div>
             </div>
+
+            <!--------------------------------------------------------------------------------------------------------------------------------------------->
+            <!------------------------------------------------------ IMPORT BULK EMPLOYEE DATA FORM ------------------------------------------------------->
+            <form id="importBulkEmployeeForm" enctype="multipart/form-data">
+                <div class="modal fade" id="importEmployeeModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="employeeFormLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-none modal-dialog-centered modal-scrollable">
+                        <div class="modal-content" id="importEmployeeModal">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="employeeFormLabel">Import Bulk Employee Data</h1>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row g-2 mb-2">
+                                    <div class="col-12">
+                                        <label for="csvFile">CSV File:</label>
+                                        <input type="file" class="form-control" id="csvFile" name="csvFile" accept=".csv">
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <div class="col-12">
+                                        <label for="userPassword">Password:</label>
+                                        <input type="password" class="form-control" id="userPassword" name="userPassword">
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <div class="col-12">
+                                        <label for="userRetypePassword">Retype Password:</label>
+                                        <input type="password" class="form-control" id="userRetypePassword" name="userRetypePassword">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">Submit</button>
+                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </main>
     
         <script src="../assets/js/admin_employees.js?v=<?php echo $version; ?>"></script>
