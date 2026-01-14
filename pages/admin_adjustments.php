@@ -198,7 +198,7 @@
                                                     <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
                                                     <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                                                     <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Current Salary</th>
-                                                    <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Suggested Salary</th>
+                                                    <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Additional</th>
                                                     <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Reason</th>
                                                     <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                                                 </tr>
@@ -224,7 +224,7 @@
                                                         echo "<td class='whitespace-nowrap'>{$salaryadj_employeeID}</td>";
                                                         echo "<td class='whitespace-nowrap'>{$salaryadj_employeeName}</td>";
                                                         echo "<td class='whitespace-nowrap'>₱ " . formatNumber($salaryadj_currentSalary) . "</td>";
-                                                        echo "<td class='whitespace-nowrap'>₱ " . formatNumber($salaryadj_newSalary) . "</td>";
+                                                        echo "<td class='whitespace-nowrap'>₱ " . formatNumber($salaryadj_newSalary - $salaryadj_currentSalary) . "</td>";
                                                         echo "<td class='whitespace-nowrap'>{$salaryadj_reason}</td>";
                                                         // echo "<td class='whitespace-nowrap'>{$salaryadj_status}</td>";
 
@@ -377,9 +377,8 @@
                                     <div class="col-12">
                                         <select class="form-select" id="reason" name="reason">
                                             <option disabled selected>Choose</option>
-                                            <option value="6 Months">6 Months</option>
-                                            <option value="1 Year">1 Year</option>
-                                            <option value="Appraisal">Appraisal</option>
+                                            <option value="6 Months Appraisal">6 Months Appraisal</option>
+                                            <option value="Yearly Appraisal">Yearly Appraisal</option>
                                             <option value="Promotion">Promotion</option>
                                         </select>
                                     </div>
@@ -588,7 +587,7 @@
                                     <label for="viewCurrentSalary">Current Salary:</label>
                                 </div>
                                 <div class="col-6">
-                                    <label for="viewSuggestedSalary">New Salary:</label>
+                                    <label for="viewSuggestedSalary">Additional:</label>
                                 </div>
                             </div>
 
