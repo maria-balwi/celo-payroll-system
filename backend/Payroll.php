@@ -2190,7 +2190,7 @@
             return $employee;
         }
 
-        public function resetLeavePoints($id, $leavePoints) {
+        public function resetLeavePoints($id) {
             $employee = "
                 UPDATE ".$this->employees." SET 
                 leavePoints = 0.00
@@ -2238,7 +2238,7 @@
                         $this->dbConnect()->query($resetTLQuery);
                         
                         // RESET LEAVE POINTS FOR REGULAR EMPLOYEES
-                        $resetQuery =$this->resetLeavePoints($id, $leavePoints);
+                        $resetQuery =$this->resetLeavePoints($id);
                         $this->dbConnect()->query($resetQuery);
                     }
                     // LEAVE POINTS ACCUMULATION

@@ -1256,6 +1256,23 @@
             return $approveRequest;
         }
 
+        public function deductSickLeave($id) {
+            $deductLeave = "
+                UPDATE {$this->employees} SET
+                availableSL = availableSL - 1
+                WHERE id = $id";
+            return $deductLeave;
+        }
+
+        public function deductVacationLeave($id) {
+            $deductLeave = "
+                UPDATE {$this->employees} SET
+                availableVL = availableVL - 1, 
+                leavePoints = leavePoints - 1
+                WHERE id = $id";
+            return $deductLeave;
+        }
+
         public function approveChangeShift($requestID) {
             $approveRequest = "
                 UPDATE ".$this->changeShift." SET status = 'Approved'
@@ -1286,7 +1303,7 @@
 
         public function viewLeaveInfo($requestID) {
             $request = "
-                SELECT empID
+                SELECT empID, leaves.leaveTypeID
                 FROM ".$this->leaves." AS leaves
                 INNER JOIN ".$this->employees." AS employees
                 ON leaves.empID = employees.id

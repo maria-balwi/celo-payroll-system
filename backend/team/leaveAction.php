@@ -14,6 +14,14 @@
         $query = mysqli_query($conn, $employees->viewLeaveInfo($leave_id));
         $queryDetails = mysqli_fetch_array($query);
         $at_affectedEmpID = $queryDetails['empID'];
+
+        $leaveTypeID = $queryDetails['leaveTypeID'];
+        if ($leaveTypeID == 1) {
+            mysqli_query($conn, $employees->deductSickLeave($at_affectedEmpID));
+        }
+        else if ($leaveTypeID == 2 || $leaveTypeID == 6) {
+            mysqli_query($conn, $employees->deductVacationLeave($at_affectedEmpID));
+        }
         
         // AUDIT TRAIL
         $at_empID = $_SESSION['id'];
