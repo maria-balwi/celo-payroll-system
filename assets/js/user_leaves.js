@@ -164,6 +164,30 @@ $(document).ready(function() {
         }
     });
 
+    // 90-DAY LIMITATION
+    const today = new Date();
+    const minDate = new Date(today);
+    minDate.setDate(minDate.getDate() - 90);
+
+    function formatDate(date) {
+        let month = '' + (date.getMonth() + 1);
+        let day = '' + date.getDate();
+        const year = date.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+
+    $("#effectivityStartDate").attr({
+        min: formatDate(minDate),
+    });
+
+    $("#effectivityEndDate").attr({
+        min: formatDate(minDate),
+    });
+
     // FILE A LEAVE BUTTON
     $("#fileLeaveForm").submit(function (e) {
 
