@@ -47,11 +47,20 @@ $(document).ready(function () {
                 data: { employeeID: employeeID },
                 success: function (response) {
                     var res = jQuery.parseJSON(response);
-
                     if (res.status == 200) {
-                        $("#employeeLastName").val(res.data.lastName);
-                        $("#employeeFirstName").val(res.data.firstName);
-                        $("#id").val(res.data.id);
+                        if (res.data.employmentStatus == "Probationary") {
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Warning",
+                                text: "Employee is still on Probationary period.",
+                            })
+                            $("#employeeID").val("")
+                        }
+                        else {
+                            $("#employeeLastName").val(res.data.lastName);
+                            $("#employeeFirstName").val(res.data.firstName);
+                            $("#id").val(res.data.id);
+                        }
                     } else {
                         $("#employeeLastName").val("");
                         $("#employeeFirstName").val("");
@@ -60,6 +69,58 @@ $(document).ready(function () {
                 },
             });
         }, debounceDelay);
+    });
+
+    $("#amount").on("input", function () {
+        let amount = $(this).val();
+        let employeeID = $("#employeeID").val().trim();
+
+        $.ajax({
+            type: "GET",
+            url: "../backend/admin/fetchEmployees.php",
+            data: { employeeID: employeeID },
+            success: function (response) {
+                var res = jQuery.parseJSON(response);
+                if (res.status == 200) {
+                    if (res.data.basicPay >= 15000 && res.data.basicPay < 20000) {
+                        if (amount >= 5001) {
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Warning",
+                                text: "Amount exceeds the limit of loanable amount (₱ 5,000).",
+                            })
+                            $("#amount").val("")
+                            $("#totalAmountToBePaid").val("");
+                            $("#remainingAmount").val("");
+                        }
+                    }
+                    else if (res.data.basicPay >= 20000 && res.data.basicPay < 25000) {
+                        if (amount >= 10001) {
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Warning",
+                                text: "Amount exceeds the limit of loanable amount (₱ 10,000).",
+                            })
+                            $("#amount").val("")
+                            $("#totalAmountToBePaid").val("");
+                            $("#remainingAmount").val("");
+                        }
+                    }
+                    else {
+                        if (amount >= 15001) {
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Warning",
+                                text: "Amount exceeds the limit of loanable amount (₱ 15,000).",
+                            })
+                            $("#amount").val("")
+                            $("#totalAmountToBePaid").val("");
+                            $("#remainingAmount").val("");
+                        }
+                    }
+                }
+            },
+        });
     });
 
 
@@ -160,25 +221,25 @@ $(document).ready(function () {
                             const data = JSON.parse(res);
                             var message = data.em;
                             if (data.error == 0) {
-                            var id = data.id;
-                            loadCashAdvanceData(id);
-                            Swal.fire({
-                                icon: "success",
-                                title: "Success",
-                                text: message,
-                                timer: 2000,
-                                showConfirmButton: false,
-                            }).then(() => {
-                                // Refresh the View Employee Modal with new added data
-                                $("#fileCashAdvanceModal").modal("hide");
-                                $("#viewCashAdvanceModal").modal("show");
-                            });
+                                var id = data.id;
+                                loadCashAdvanceData(id);
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Success",
+                                    text: message,
+                                    timer: 2000,
+                                    showConfirmButton: false,
+                                }).then(() => {
+                                    // Refresh the View Employee Modal with new added data
+                                    $("#fileCashAdvanceModal").modal("hide");
+                                    $("#viewCashAdvanceModal").modal("show");
+                                });
                             } else {
-                            Swal.fire({
-                                icon: "error",
-                                title: "Error",
-                                text: message,
-                            });
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Error",
+                                    text: message,
+                                });
                             }
                         },
                     });
