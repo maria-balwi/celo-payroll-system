@@ -1,4 +1,5 @@
 <?php
+    require_once __DIR__ . '/../cron/sentry_fetch_logs.php';
 
     class Attendance extends Database
     {
@@ -13,6 +14,7 @@
         private $filedOT = 'tbl_filedot';
         private $weekOff = 'tbl_empweekoff';
         private $cashAdvance = 'tbl_cashAdvance';
+        private $sentry = 'tbl_sentry_sync_tracker';
         private $dbConnect = false;
         public function __construct() {
             $this->dbConnect = $this->dbConnect();
@@ -732,6 +734,34 @@
                 INSERT INTO {$this->attendance} (empID, logTypeID, attendanceDate, attendanceTime) 
                 VALUES ({$id}, 4, '{$attendanceDate}', '{$attendanceTime}')";
             return $attendance;
+        }
+
+        public function previewSentryLogs($personnelNo, $from, $to) {
+            return fetchSentryLogsAll($personnelNo, $from, $to, 1000);
+        }
+
+        public function getLastSyncDetails() {
+            $lastSync = "
+                SELECT last_sync_datetime 
+                FROM {$this->sentry} 
+                ORDER BY id DESC 
+                LIMIT 1";
+            return $lastSync;
+        }
+
+        public function syncLatestAttendance($newestLog) {
+            $syncLatest = "
+                INSERT INTO {$this->sentry} (last_sync_datetime)
+                VALUES ('$newestLog')";
+            return $syncLatest;
+        }
+
+        public function getEmployeeID() {
+            $lastSync = "
+                SELECT employeeID, id
+                FROM {$this->employees}
+                WHERE e_status = 'Active'";
+            return $lastSync;
         }
     }
 
