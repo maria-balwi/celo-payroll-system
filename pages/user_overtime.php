@@ -15,12 +15,12 @@
                     Overtimes
                 </div>    
 
-                <!-- REQUEST SHIFT CHANGE BUTTON -->
-                <div class="static inline-block text-right">
+                <!-- FILE OVERTIME BUTTON -->
+                <!-- <div class="static inline-block text-right">
                     <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none" data-bs-toggle="modal" data-bs-target="#fileOTmodal">
                     File Overtime
                     </button>
-                </div>
+                </div> -->
             </div>
             
             <!-- CONTENT -->
@@ -103,7 +103,6 @@
                         <div class="modal-content" id="fileOTmodal">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="userFormLabel">File Overtime</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="row g-3 mb-2">
@@ -187,7 +186,6 @@
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="userFormLabel">View Filed OT</h1>
                             <input type="hidden" id="viewFiledOTID">
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="row g-3 mb-2">

@@ -34,8 +34,8 @@
                                 <button class="nav-link uncheck" id="pills-tlqa-tab" data-bs-toggle="pill" data-bs-target="#pills-tlqa" type="button" role="tab" aria-controls="pills-tlqa" aria-selected="false">TL/QA</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <!--FACILITIES BUTTON-->
-                                <button class="nav-link uncheck" id="pills-facilities-tab" data-bs-toggle="pill" data-bs-target="#pills-facilities" type="button" role="tab" aria-controls="pills-facilities" aria-selected="false">Business Devs</button>
+                                <!--RECRUITMENT BUTTON-->
+                                <button class="nav-link uncheck" id="pills-recruitment-tab" data-bs-toggle="pill" data-bs-target="#pills-recruitment" type="button" role="tab" aria-controls="pills-recruitment" aria-selected="false">Recruitment</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <!--FINANCE BUTTON-->
@@ -49,10 +49,10 @@
                                 <!--HR BUTTON-->
                                 <button class="nav-link uncheck" id="pills-hr-tab" data-bs-toggle="pill" data-bs-target="#pills-hr" type="button" role="tab" aria-controls="pills-hr" aria-selected="false">HR</button>
                             </li>
-                            <li class="nav-item" role="presentation">
-                                <!--DIRECTORS BUTTON-->
+                            <!-- <li class="nav-item" role="presentation">
+                                <!- -DIRECTORS BUTTON-- >
                                 <button class="nav-link uncheck" id="pills-directors-tab" data-bs-toggle="pill" data-bs-target="#pills-directors" type="button" role="tab" aria-controls="pills-directors" aria-selected="false">Directors</button>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>
 
@@ -224,25 +224,25 @@
                             </div>
 
                             <!-- ------------------------------------------------------------------------------------------------- -->
-                            <!-- ------------------------------------------ FACILITIES TAB --------------------------------------- -->
+                            <!-- ------------------------------------------ RECRUITMENT TAB -------------------------------------- -->
                             <!-- ------------------------------------------------------------------------------------------------- -->
-                            <div class="tab-pane fade" id="pills-facilities" role="tabpanel" aria-labelledby="pills-facilities-tab">
+                            <div class="tab-pane fade" id="pills-recruitment" role="tabpanel" aria-labelledby="pills-recruitment-tab">
                                 <div class="card border-0">
                                     <ul class="nav nav-pills mt-0 mb-3" id="pills-tab-inactive" role="tablist">
                                         <!-- ACTIVE BUTTON -->
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link active" id="facilities-active-tab" data-bs-toggle="pill" data-bs-target="#facilities-active" type="button" role="tab" aria-controls="facilities-active" aria-selected="true">Active</button>
+                                            <button class="nav-link active" id="recruitment-active-tab" data-bs-toggle="pill" data-bs-target="#recruitment-active" type="button" role="tab" aria-controls="recruitment-active" aria-selected="true">Active</button>
                                         </li>
                                         <!-- INACTIVE BUTTON -->
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="facilities-inactive-tab" data-bs-toggle="pill" data-bs-target="#facilities-inactive" type="button" role="tab" aria-controls="facilities-inactive" aria-selected="false">Inactive</button>
+                                            <button class="nav-link" id="recruitment-inactive-tab" data-bs-toggle="pill" data-bs-target="#recruitment-inactive" type="button" role="tab" aria-controls="recruitment-inactive" aria-selected="false">Inactive</button>
                                         </li>
                                     </ul>
 
                                     <div class="tab-content" id="pills-tabContent">
-                                        <!-- ACTIVE FACILITIES TABLE  -->
-                                        <div class="tab-pane fade show active" id="facilities-active" role="tabpanel" aria-labelledby="facilities-active-tab">
-                                            <table class="table table-striped table-bordered pt-2" id="facilitiesTable">
+                                        <!-- ACTIVE RECRUITMENT TABLE  -->
+                                        <div class="tab-pane fade show active" id="recruitment-active" role="tabpanel" aria-labelledby="recruitment-active-tab">
+                                            <table class="table table-striped table-bordered pt-2" id="recruitmentTable">
                                                 <thead class="table-light">
                                                     <th>Employee ID</th>
                                                     <th>Name</th>
@@ -250,7 +250,7 @@
                                                 </thead>
                                                 <tbody>
                                                     <?php
-                                                        $facilities = mysqli_query($conn, $employees->viewFacilities());
+                                                        $facilities = mysqli_query($conn, $employees->viewRecruitment());
                                                         while ($facilitiesDetails = mysqli_fetch_array($facilities)) {
                                                             
                                                             $userID = $facilitiesDetails['userID'];
@@ -271,9 +271,9 @@
                                             </table>
                                         </div>
 
-                                        <!-- INACTIVE FACILITIES TABLE  -->
-                                        <div class="tab-pane fade" id="facilities-inactive" role="tabpanel" aria-labelledby="facilities-inactive-tab">
-                                            <table class="table table-striped table-bordered pt-2" id="inactiveFacilitiesTable">
+                                        <!-- INACTIVE RECRUITMENT TABLE  -->
+                                        <div class="tab-pane fade" id="recruitment-inactive" role="tabpanel" aria-labelledby="recruitment-inactive-tab">
+                                            <table class="table table-striped table-bordered pt-2" id="inactiveRecruitmentTable">
                                                 <thead class="table-light">
                                                     <th>Employee ID</th>
                                                     <th>Name</th>
@@ -281,7 +281,7 @@
                                                 </thead>
                                                 <tbody>
                                                     <?php
-                                                        $inactiveFacilities = mysqli_query($conn, $employees->viewInactiveFacilities());
+                                                        $inactiveFacilities = mysqli_query($conn, $employees->viewInactiveRecruitment());
                                                         while ($inactiveFacilitiesDetails = mysqli_fetch_array($inactiveFacilities)) {
                                                             
                                                             $userID = $inactiveFacilitiesDetails['userID'];
@@ -554,21 +554,21 @@
                             <!-- ------------------------------------------------------------------------------------------------- -->
                             <!-- ------------------------------------------ DIRECTORS TAB ---------------------------------------- -->
                             <!-- ------------------------------------------------------------------------------------------------- -->
-                            <div class="tab-pane fade" id="pills-directors" role="tabpanel" aria-labelledby="pills-directors-tab">
+                            <!-- <div class="tab-pane fade" id="pills-directors" role="tabpanel" aria-labelledby="pills-directors-tab">
                                 <div class="card border-0">
                                     <ul class="nav nav-pills mt-0 mb-3" id="pills-tab-inactive" role="tablist">
-                                        <!-- ACTIVE BUTTON -->
+                                        <! -- ACTIVE BUTTON -- >
                                         <li class="nav-item" role="presentation">
                                             <button class="nav-link active" id="directors-active-tab" data-bs-toggle="pill" data-bs-target="#directors-active" type="button" role="tab" aria-controls="directors-active" aria-selected="true">Active</button>
                                         </li>
-                                        <!-- INACTIVE BUTTON -->
+                                        <!- - INACTIVE BUTTON - ->
                                         <li class="nav-item" role="presentation">
                                             <button class="nav-link" id="directors-inactive-tab" data-bs-toggle="pill" data-bs-target="#directors-inactive" type="button" role="tab" aria-controls="directors-inactive" aria-selected="false">Inactive</button>
                                         </li>
                                     </ul>
 
                                     <div class="tab-content" id="pills-tabContent">
-                                        <!-- ACTIVE DIRECTORS TABLE  -->
+                                        < !-- ACTIVE DIRECTORS TABLE  -- >
                                         <div class="tab-pane fade show active" id="directors-active" role="tabpanel" aria-labelledby="directors-active-tab">
                                             <table class="table table-striped table-bordered pt-2" id="directorsTable">
                                                 <thead class="table-light">
@@ -577,7 +577,7 @@
                                                     <th>Email Address</th>
                                                 </thead>
                                                 <tbody>
-                                                    <?php
+                                                    < ?php
                                                         $director = mysqli_query($conn, $employees->viewDirectors());
                                                         while ($directorDetails = mysqli_fetch_array($director)) {
                                                             
@@ -599,7 +599,7 @@
                                             </table>
                                         </div>
 
-                                        <!-- INACTIVE DIRECTORS TABLE  -->
+                                        <!- - INACTIVE DIRECTORS TABLE  -- >
                                         <div class="tab-pane fade" id="directors-inactive" role="tabpanel" aria-labelledby="directors-inactive-tab">
                                             <table class="table table-striped table-bordered  pt-2" id="inactiveDirectorsTable">
                                                 <thead class="table-light">
@@ -632,7 +632,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
 
                     <!-- CARD FOOTER DATA ENTRY BUTTON -->
@@ -655,7 +655,6 @@
                         <div class="modal-content" id="addUserModal">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="userFormLabel">New User</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="row g-3 mb-2">
@@ -722,7 +721,6 @@
                     <div class="modal-content" id="viewUserModal">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="viewUserLabel">View User</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <form>
@@ -791,7 +789,6 @@
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="resetPassLabel">Reset Password</h1>
                                 <input type="hidden" id="viewID">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="row g-3">
@@ -835,7 +832,6 @@
                     <div class="modal-content" id="viewInactiveUserModal">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="viewInactiveUserLabel">View User</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <form>
@@ -904,7 +900,6 @@
                                     Confirm Password
                                     <input type="hidden" id="loggedInUserPassword" value="<?php echo $_SESSION["hashedPassword"]; ?>">
                                 </h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 

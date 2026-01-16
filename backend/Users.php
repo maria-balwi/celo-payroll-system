@@ -42,7 +42,7 @@
             if ($isUserValid == 1) {
                 $storedHashedPassword = $userDetails['password'];
                 $password = md5($password);
-                if ($storedHashedPassword == $password) {
+                if ($storedHashedPassword == $password && $userDetails['status'] == "Active") {
                     // SET SESSION VARIABLES
                     $_SESSION["logged_in"] = TRUE;
                     $_SESSION['userID'] = $userDetails['userID'];
@@ -56,20 +56,24 @@
                     $_SESSION['hashedPassword'] = $userDetails['password'];
                     $_SESSION['password'] = $pass_word;
                     $_SESSION['activated'] = $userDetails['activated']; 
+                    $_SESSION['gender'] = $userDetails['gender'];
 
                     // SESSION TIMEOUT 
                     $_SESSION['start'] = time();
                     if ($userDetails['levelID'] == 1) {
-                        $_SESSION['expire'] = $_SESSION['start'] + (60 * 3);
+                        $_SESSION['expire'] = $_SESSION['start'] + (60 * 5); // AGENT LEVEL
                     }
-                    else if ($userDetails['levelID'] == 2) {
-                        $_SESSION['expire'] = $_SESSION['start'] + (60 * 10);
+                    else if ($userDetails['levelID'] == 2 || $userDetails['levelID'] == 6) {
+                        $_SESSION['expire'] = $_SESSION['start'] + (60 * 20); // TEAM LEAD & IT SUPERVISOR & MANAGER LEVEL
                     }
                     else if ($userDetails['levelID'] == 3) {
-                        $_SESSION['expire'] = $_SESSION['start'] + (60 * 60);
+                        $_SESSION['expire'] = $_SESSION['start'] + (60 * 60); // ADMIN LEVEL
                     }
-                    else if ($userDetails['levelID'] == 4) {
-                        $_SESSION['expire'] = $_SESSION['start'] + (60 * 10);
+                    else if ($userDetails['levelID'] == 4 || $userDetails['levelID'] == 5) {
+                        $_SESSION['expire'] = $_SESSION['start'] + (60 * 30); // HR & ADMIN STAFF , HR GENERALIST LEVEL
+                    }
+                    else if ($userDetails['levelID'] == 6) {
+                        $_SESSION['expire'] = $_SESSION['start'] + (60  * 15); // IT LEVEL
                     }
 
                     // RETURN VALUES
@@ -79,9 +83,15 @@
                     return $result;
                 }
                 else {
-                    // INCORRECT PASSWORD
-                    $result[0] = '0';
-                    return $result;
+                    if ($userDetails['status'] == "Inactive") {
+                        $result[0] = '2';
+                        return $result;
+                    }
+                    else {
+                        // INCORRECT PASSWORD
+                        $result[0] = '0';
+                        return $result;
+                    }
                 }
             }
         }
@@ -117,7 +127,8 @@
         public function resetPassword($userID, $newPass) {
             $resetPassword = "
                 UPDATE ".$this->users." SET
-                password = '$newPass'
+                password = '$newPass', 
+                activated = 0
                 WHERE userID = ".$userID."";
             return $resetPassword;
         }
@@ -214,11 +225,27 @@
             return $shift;
         }
 
+        public function getUserAccount($id) {
+            $getUser = "SELECT * FROM {$this->users} WHERE empID = '$id'";
+            return $getUser;
+        }
+
+        public function updateUserAccount($empID, $levelID) {
+            $updateUser = "
+                UPDATE {$this->users} 
+                SET levelID = '$levelID' WHERE empID = '$empID'";
+            return $updateUser;
+        }
+
         public function checkLastDTR($id) {
             $checkLastDTR = "
                 SELECT * FROM ".$this->attendance." AS attendance
                 INNER JOIN ".$this->logtype." AS logtype
                 ON attendance.logTypeID = logtype.logTypeID
+                INNER JOIN ".$this->employees." AS employees
+                ON attendance.empID = employees.id
+                INNER JOIN ".$this->shift." AS shift
+                ON employees.shiftID = shift.shiftID
                 WHERE attendance.empID = '$id'
                 ORDER BY attendanceID DESC
                 LIMIT 1";

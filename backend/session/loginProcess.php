@@ -18,9 +18,9 @@
             echo json_encode($error);
             exit();
         }
-        else if ($loginResult[2] == 'Inactive') {
+        else if ($loginResult[0] == '2') {
             $em = "Sorry, your account has been deactivated.";
-            $error = array('error' => 1, 'em' => $em);
+            $error = array('error' => 2, 'em' => $em);
             echo json_encode($error);
             exit();
         }

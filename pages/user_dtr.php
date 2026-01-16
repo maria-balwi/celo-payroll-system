@@ -48,7 +48,28 @@
                 <div class="p-4 m-0 bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
 
                     <!-- DATATABLE -->
-                    <div class="mx-auto overflow-auto">
+                    <div class="mx-auto overflow-auto position-relative">
+                        <!-- SPINNER OVERLAY -->
+                        <div id="dtrSpinner"
+                            class="d-none position-absolute top-0 start-0 w-100 h-100
+                                    d-flex flex-column align-items-center justify-content-center
+                                    bg-white bg-opacity-75"
+                            style="z-index: 20;">
+
+                            <svg class="animate-spin h-16 w-16 text-gray-500"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10"
+                                        stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                            </svg>
+
+                            <p class="text-sm text-gray-500 mt-3">
+                                Loading DTR…
+                            </p>
+                        </div>
+
                         <table id="dtrTable" class="table text-center table-striped table-bordered table-auto pt-3" style="width: 100%;">
                             <thead class="bg-gray-50">
                                 <tr>
@@ -91,7 +112,16 @@
                                                 'timeInDate' => null, 
                                                 'timeOutDate' => null,
                                                 'shift' => $shift, 
-                                                'displayDate' => $date
+                                                'displayDate' => $date, 
+
+                                                // ADD THESE
+                                                'wo_mon' => $userDTRdetails['wo_mon'],
+                                                'wo_tue' => $userDTRdetails['wo_tue'],
+                                                'wo_wed' => $userDTRdetails['wo_wed'],
+                                                'wo_thu' => $userDTRdetails['wo_thu'],
+                                                'wo_fri' => $userDTRdetails['wo_fri'],
+                                                'wo_sat' => $userDTRdetails['wo_sat'],
+                                                'wo_sun' => $userDTRdetails['wo_sun'],
                                             ];
                                         }
                                         
@@ -134,8 +164,42 @@
                                         $timeOutDate = $dtr['timeOutDate'];
                                         $logTypeIn = $dtr['logTypeIn'];
                                         $logTypeOut = $dtr['logTypeOut'];
-                                    
-                                        // Create faceDTR button only if timeIn is not null
+
+                                        // GET WEEK OFF VALUES
+                                        $wo_mon = $dtr['wo_mon'];
+                                        $wo_tue = $dtr['wo_tue'];
+                                        $wo_wed = $dtr['wo_wed'];
+                                        $wo_thu = $dtr['wo_thu'];
+                                        $wo_fri = $dtr['wo_fri'];
+                                        $wo_sat = $dtr['wo_sat'];
+                                        $wo_sun = $dtr['wo_sun'];
+
+                                        $isWeekOff = false;
+                                        switch($dayOfWeek) {
+                                            case 'Mon': if ($wo_mon == 1) $isWeekOff = true; break;
+                                            case 'Tue': if ($wo_tue == 1) $isWeekOff = true; break;
+                                            case 'Wed': if ($wo_wed == 1) $isWeekOff = true; break;
+                                            case 'Thu': if ($wo_thu == 1) $isWeekOff = true; break;
+                                            case 'Fri': if ($wo_fri == 1) $isWeekOff = true; break;
+                                            case 'Sat': if ($wo_sat == 1) $isWeekOff = true; break;
+                                            case 'Sun': if ($wo_sun == 1) $isWeekOff = true; break;
+                                        }
+
+                                        if ($isWeekOff && ($timeIn == '-' || $timeOut == '-')) {
+                                            echo '
+                                                <tr class="bg-gray-100 text-center text-gray-500">
+                                                    <td class="text-primary font-semibold">WEEK OFF</td>
+                                                    <td>' . $date . '</td>
+                                                    <td>' . $dayOfWeek . '</td>
+                                                    <td>' . $shift . '</td>
+                                                    <td>-</td>
+                                                    <td>-</td>
+                                                </tr>
+                                                ';
+                                                continue;
+                                        }
+
+                                        // IF NOT WEEK OFF
                                         $faceDTRhtml = '
                                             <button class="whitespace-nowrap viewFaceDTR" data-id="' . $timeInDate . '" data-id2="' . $timeOutDate . '" data-id3="' . $_SESSION['employeeID'] . '">
                                                 <svg class="h-6 w-6 text-gray-500 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">

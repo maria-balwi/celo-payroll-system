@@ -11,6 +11,8 @@
         private $changeShift = 'tbl_changeshiftrequests';
         private $leaves = 'tbl_leaveapplications';
         private $filedOT = 'tbl_filedot';
+        private $weekOff = 'tbl_empweekoff';
+        private $cashAdvance = 'tbl_cashAdvance';
         private $dbConnect = false;
         public function __construct() {
             $this->dbConnect = $this->dbConnect();
@@ -18,21 +20,71 @@
 
         public function getPresentEmployees() {
             $presentEmployees = "
-                SELECT * FROM ".$this->attendance."
+                SELECT * FROM ".$this->attendance." AS attendance
+                INNER JOIN ".$this->employees." AS employees
+                ON attendance.empID = employees.id
                 WHERE attendanceDate = CURRENT_DATE() AND
-                logTypeID IN (1, 2)";
+                logTypeID IN (1, 2) AND employees.e_status = 'Active'";
             return $presentEmployees;
         }
 
-        public function getAbsentEmployees() {
+        public function oldgetAbsentEmployees() {
             $absentEmployees = "
-                SELECT * FROM ".$this->employees."
-                WHERE id NOT IN
-                (SELECT empID FROM ".$this->attendance."
+                SELECT * FROM ".$this->employees." 
+                WHERE employees.id NOT IN
+                (SELECT * FROM ".$this->attendance."
                 WHERE attendanceDate = CURRENT_DATE() AND
                 logTypeID IN (1, 2))";
             return $absentEmployees;
         }
+
+        public function getAbsentEmployees() {
+            $absentEmployees = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->department." AS department
+                    ON employees.departmentID = department.departmentID
+                INNER JOIN ".$this->shifts." AS shifts
+                    ON shifts.shiftID = employees.shiftID
+                INNER JOIN ".$this->weekOff." AS weekoff
+                    ON weekoff.empID = employees.id
+
+                -- LEFT JOIN LEAVE TABLE
+                LEFT JOIN ".$this->leaves." AS leaves
+                    ON leaves.empID = employees.id
+                    AND leaves.status = 'Approved'
+                    AND CURRENT_DATE() BETWEEN leaves.effectivityStartDate AND leaves.effectivityEndDate
+
+                WHERE employees.id NOT IN (
+                    SELECT empID FROM ".$this->attendance."
+                    WHERE attendanceDate = CURRENT_DATE()
+                    AND logTypeID IN (1, 2)
+                )
+                AND shifts.startTime < CURRENT_TIME() 
+                AND shifts.endTime > CURRENT_TIME()
+
+                -- NOT A WEEK-OFF DAY
+                AND (
+                    CASE DAYNAME(CURRENT_DATE())
+                        WHEN 'Monday' THEN weekoff.wo_mon
+                        WHEN 'Tuesday' THEN weekoff.wo_tue
+                        WHEN 'Wednesday' THEN weekoff.wo_wed
+                        WHEN 'Thursday' THEN weekoff.wo_thu
+                        WHEN 'Friday' THEN weekoff.wo_fri
+                        WHEN 'Saturday' THEN weekoff.wo_sat
+                        WHEN 'Sunday' THEN weekoff.wo_sun
+                    END
+                ) = 0
+
+                -- EXCLUDE EMPLOYEES WHO HAVE APPROVED LEAVE TODAY
+                AND leaves.empID IS NULL
+
+                AND employees.designationID != 12
+                AND employees.e_status = 'Active'
+            ";
+
+            return $absentEmployees;
+        }   
+
 
         public function getLateEmployees() {
             $lateEmployees = "
@@ -59,7 +111,8 @@
                 ON employees.departmentID = department.departmentID
                 WHERE employees.departmentID = 4 AND
                 attendanceDate = CURRENT_DATE() AND
-                logTypeID IN (1, 2)";
+                logTypeID IN (1, 2)
+                AND employees.e_status = 'Active'";
             return $presentIT;
         }
 
@@ -72,7 +125,8 @@
                 ON employees.departmentID = department.departmentID
                 WHERE employees.departmentID = 1 AND
                 attendanceDate = CURRENT_DATE() AND
-                logTypeID IN (1, 2)";
+                logTypeID IN (1, 2)
+                AND employees.e_status = 'Active'";
             return $presentOperations;
         }
 
@@ -81,10 +135,29 @@
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->department." AS department
                 ON employees.departmentID = department.departmentID
-                WHERE employees.departmentID = 4 AND id NOT IN 
+                INNER JOIN ".$this->shifts." AS shifts
+                ON shifts.shiftID = employees.shiftID
+                INNER JOIN ".$this->weekOff." AS weekoff
+                ON weekoff.empID = employees.id
+                WHERE employees.departmentID = 4 
+                AND employees.id NOT IN 
                 (SELECT empID FROM ".$this->attendance."
                 WHERE attendanceDate = CURRENT_DATE() AND
-                logTypeID IN (1, 2))";
+                logTypeID IN (1, 2))
+                AND shifts.startTime < CURRENT_TIME() 
+                AND shifts.endTime > CURRENT_TIME()
+                AND (
+                    CASE DAYNAME(CURRENT_DATE())
+                        WHEN 'Monday' THEN weekoff.wo_mon
+                        WHEN 'Tuesday' THEN weekoff.wo_tue
+                        WHEN 'Wednesday' THEN weekoff.wo_wed
+                        WHEN 'Thursday' THEN weekoff.wo_thu
+                        WHEN 'Friday' THEN weekoff.wo_fri
+                        WHEN 'Saturday' THEN weekoff.wo_sat
+                        WHEN 'Sunday' THEN weekoff.wo_sun
+                    END
+                ) = 0
+                AND employees.e_status = 'Active'";
             return $absentIT;
         }
 
@@ -93,10 +166,29 @@
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->department." AS department
                 ON employees.departmentID = department.departmentID
-                WHERE employees.departmentID = 1 AND id NOT IN 
+                INNER JOIN ".$this->shifts." AS shifts
+                ON shifts.shiftID = employees.shiftID
+                INNER JOIN ".$this->weekOff." AS weekoff
+                ON weekoff.empID = employees.id
+                WHERE employees.departmentID = 1 
+                AND employees.id NOT IN 
                 (SELECT empID FROM ".$this->attendance."
                 WHERE attendanceDate = CURRENT_DATE() AND
-                logTypeID IN (1, 2))";
+                logTypeID IN (1, 2))
+                AND shifts.startTime < CURRENT_TIME() 
+                AND shifts.endTime > CURRENT_TIME()
+                AND (
+                    CASE DAYNAME(CURRENT_DATE())
+                        WHEN 'Monday' THEN weekoff.wo_mon
+                        WHEN 'Tuesday' THEN weekoff.wo_tue
+                        WHEN 'Wednesday' THEN weekoff.wo_wed
+                        WHEN 'Thursday' THEN weekoff.wo_thu
+                        WHEN 'Friday' THEN weekoff.wo_fri
+                        WHEN 'Saturday' THEN weekoff.wo_sat
+                        WHEN 'Sunday' THEN weekoff.wo_sun
+                    END
+                ) = 0
+                AND employees.e_status = 'Active'";
             return $absentOperations;
         }
 
@@ -109,7 +201,8 @@
                 ON employees.departmentID = department.departmentID
                 WHERE employees.departmentID = 4 AND
                 attendanceDate = CURRENT_DATE() AND
-                logTypeID = 2";
+                logTypeID = 2
+                AND employees.e_status = 'Active'";
             return $lateIT;
         }
 
@@ -122,7 +215,8 @@
                 ON employees.departmentID = department.departmentID
                 WHERE employees.departmentID = 1 AND
                 attendanceDate = CURRENT_DATE() AND
-                logTypeID = 2";
+                logTypeID = 2
+                AND employees.e_status = 'Active'";
             return $lateOperations;
         }
 
@@ -135,7 +229,8 @@
                 ON employees.departmentID = department.departmentID
                 WHERE employees.departmentID = 4 AND
                 attendanceDate = CURRENT_DATE() AND
-                logTypeID = 3";
+                logTypeID = 3
+                AND employees.e_status = 'Active'";
             return $undertimeIT;
         }
 
@@ -148,7 +243,8 @@
                 ON employees.departmentID = department.departmentID
                 WHERE employees.departmentID = 1 AND
                 attendanceDate = CURRENT_DATE() AND
-                logTypeID = 3";
+                logTypeID = 3
+                AND employees.e_status = 'Active'";
             return $undertimeOperations;
         }
 
@@ -157,6 +253,13 @@
                 SELECT * FROM ".$this->leaves."
                 WHERE status = 'Pending'";
             return $pendingLeaves;
+        }
+
+        public function getAllPendingCashAdvance() {
+            $pendingCashAdvance = "
+                SELECT * FROM ".$this->cashAdvance." AS cashAdvance
+                WHERE request_status = 'Pending'";
+            return $pendingCashAdvance;
         }
 
         public function getDirectorPendingLeaves() {
@@ -168,12 +271,21 @@
             return $pendingLeaves;
         }
 
+        public function getDirectorPendingCashAdvance() {
+            $pendingCashAdvance = "
+                SELECT * FROM ".$this->cashAdvance." AS cashAdvance
+                INNER JOIN ".$this->employees." AS employees
+                ON cashAdvance.empID = employees.id
+                WHERE cashAdvance.request_status = 'Pending' AND employees.designationID IN (5,8,9)";
+            return $pendingCashAdvance;
+        }
+
         public function getAdminPendingLeaves() {
             $pendingLeaves = "
                 SELECT * FROM ".$this->leaves." AS leaves
                 INNER JOIN ".$this->employees." AS employees
                 ON leaves.empID = employees.id
-                WHERE leaves.status = 'Pending' AND employees.designationID NOT IN (8,9)";
+                WHERE leaves.status = 'Pending' AND employees.designationID != 9";
             return $pendingLeaves;
         }
 
@@ -200,7 +312,7 @@
                 SELECT * FROM ".$this->changeShift." AS changeShift
                 INNER JOIN ".$this->employees." AS employees
                 ON changeShift.empID = employees.id
-                WHERE changeShift.status = 'Pending' AND employees.designationID NOT IN (8,9)";
+                WHERE changeShift.status = 'Pending' AND employees.designationID != 9";
             return $pendingChangeShifts;
         }
 
@@ -227,8 +339,17 @@
                 SELECT * FROM ".$this->filedOT." AS filedOT
                 INNER JOIN ".$this->employees." AS employees
                 ON filedOT.empID = employees.id
-                WHERE filedOT.status IS NULL AND employees.designationID NOT IN (8,9)";
+                WHERE filedOT.status IS NULL AND employees.designationID != 9";
             return $pendingChangeShifts;
+        }
+
+        public function getAdminPendingCashAdvance() {
+            $pendingCashAdvance = "
+                SELECT * FROM {$this->cashAdvance} AS cashAdvance
+                INNER JOIN {$this->employees} AS employees
+                ON cashAdvance.empID = employees.id
+                WHERE cashAdvance.request_status = 'Pending'";
+            return $pendingCashAdvance;
         }
 
         public function getPendingITLeaves() {
@@ -236,9 +357,7 @@
                 SELECT * FROM ".$this->leaves." AS leaves
                 INNER JOIN ".$this->employees." AS employees
                 ON leaves.empID = employees.id
-                INNER JOIN ".$this->department." AS department
-                ON employees.departmentID = department.departmentID
-                WHERE employees.designationID = 10 AND status = 'Pending'";
+                WHERE employees.designationID IN (10, 13, 19) AND status = 'Pending'";
             return $pendingLeaves;
         }
 
@@ -247,9 +366,7 @@
                 SELECT * FROM ".$this->leaves." AS leaves
                 INNER JOIN ".$this->employees." AS employees
                 ON leaves.empID = employees.id
-                INNER JOIN ".$this->department." AS department
-                ON employees.departmentID = department.departmentID
-                WHERE employees.designationID IN (1,2,3) AND status = 'Pending'";
+                WHERE employees.designationID IN (1,2,3,14) AND status = 'Pending'";
             return $pendingLeaves;
         }
 
@@ -258,8 +375,6 @@
                 SELECT * FROM ".$this->leaves." AS leaves
                 INNER JOIN ".$this->employees." AS employees
                 ON leaves.empID = employees.id
-                INNER JOIN ".$this->department." AS department
-                ON employees.departmentID = department.departmentID
                 WHERE employees.designationID IN (4,11) AND status = 'Pending'";
             return $pendingLeaves;
         }
@@ -269,9 +384,7 @@
                 SELECT * FROM ".$this->changeShift." AS changeShift
                 INNER JOIN ".$this->employees." AS employees
                 ON changeShift.empID = employees.id
-                INNER JOIN ".$this->department." AS department
-                ON employees.departmentID = department.departmentID
-                WHERE employees.designationID = 10 AND status = 'Pending'";
+                WHERE employees.designationID IN (10, 13, 19) AND status = 'Pending'";
             return $pendingChangeShifts;
         }
 
@@ -280,9 +393,7 @@
                 SELECT * FROM ".$this->changeShift." AS changeShift
                 INNER JOIN ".$this->employees." AS employees
                 ON changeShift.empID = employees.id
-                INNER JOIN ".$this->department." AS department
-                ON employees.departmentID = department.departmentID
-                WHERE employees.designationID IN (1,2,3) AND status = 'Pending'";
+                WHERE employees.designationID IN (1,2,3,14) AND status = 'Pending'";
             return $pendingChangeShifts;
         }
 
@@ -291,8 +402,6 @@
                 SELECT * FROM ".$this->changeShift." AS changeShift
                 INNER JOIN ".$this->employees." AS employees
                 ON changeShift.empID = employees.id
-                INNER JOIN ".$this->department." AS department
-                ON employees.departmentID = department.departmentID
                 WHERE employees.designationID IN (4,11) AND status = 'Pending'";
             return $pendingChangeShifts;
         }
@@ -302,9 +411,7 @@
                 SELECT * FROM ".$this->filedOT." AS filedOT
                 INNER JOIN ".$this->employees." AS employees
                 ON filedOT.empID = employees.id
-                INNER JOIN ".$this->department." AS department
-                ON employees.departmentID = department.departmentID
-                WHERE employees.designationID = 10 AND status IS NULL";
+                WHERE employees.designationID IN (10, 13, 19) AND status IS NULL";
             return $pendingOvertimes;
         }
 
@@ -313,9 +420,7 @@
                 SELECT * FROM ".$this->filedOT." AS filedOT
                 INNER JOIN ".$this->employees." AS employees
                 ON filedOT.empID = employees.id
-                INNER JOIN ".$this->department." AS department
-                ON employees.departmentID = department.departmentID
-                WHERE employees.designationID IN (1,2,3) AND status IS NULL";
+                WHERE employees.designationID IN (1,2,3,14) AND status IS NULL";
             return $pendingOvertimes;
         }
 
@@ -324,10 +429,39 @@
                 SELECT * FROM ".$this->filedOT." AS filedOT
                 INNER JOIN ".$this->employees." AS employees
                 ON filedOT.empID = employees.id
-                INNER JOIN ".$this->department." AS department
-                ON employees.departmentID = department.departmentID
                 WHERE employees.designationID IN (4,11) AND status IS NULL";
             return $pendingOvertimes;
+        }
+
+        public function getPendingOperationsCashAdvanceManager() {
+            $getPendingCashAdvance = "
+                SELECT * FROM {$this->cashAdvance} AS ca
+                INNER JOIN {$this->employees} AS employees
+                ON ca.empID = employees.id
+                WHERE employees.designationID IN (4,11) AND request_status = 'Pending'";
+            return $getPendingCashAdvance;
+        }
+
+        public function getPendingOperationsCashAdvanceTL() {
+            $getPendingCashAdvance = "
+                SELECT * FROM {$this->cashAdvance} AS ca 
+                INNER JOIN {$this->employees} AS employees
+                ON ca.empID = employees.id
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE employees.designationID IN (1,2,3,14) AND request_status = 'Pending'";
+            return $getPendingCashAdvance;
+        }
+
+        public function getPendingITCashAdvance() {
+            $getPendingCashAdvance = "
+                SELECT * FROM {$this->cashAdvance} AS ca 
+                INNER JOIN {$this->employees} AS employees
+                ON ca.empID = employees.id
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE employees.designationID IN (10, 13, 19) AND request_status = 'Pending'";
+            return $getPendingCashAdvance;
         }
 
         public function viewITTeam() {
@@ -341,7 +475,8 @@
                 ON employees.departmentID = department.departmentID
                 INNER JOIN ".$this->shifts." AS shifts
                 ON employees.shiftID = shifts.shiftID
-                WHERE employees.departmentID = 4";
+                WHERE employees.departmentID = 4
+                AND employees.e_status = 'Active'";
             return $ITteam;
         }
 
@@ -372,40 +507,51 @@
                 ON employees.departmentID = department.departmentID
                 INNER JOIN ".$this->shifts." AS shifts
                 ON employees.shiftID = shifts.shiftID
-                WHERE employees.departmentID = 1 AND designationID IN (1,2,3)
+                WHERE employees.departmentID = 1 AND designationID IN (1,2,3,14)
                 ORDER BY employeeID ASC";
             return $TLTeam;
         }
 
-        public function dailyAttendance_timeIn($id) {
+        public function getShiftDetails($id) {
             $dailyAttendanceIT_timeIn = "
-                SELECT DATE_FORMAT(attendanceTime, '%h:%i %p') AS attendanceTime, attendanceDate
-                FROM ".$this->attendance."
-                WHERE empID = $id AND
-                attendanceDate = CURRENT_DATE() AND
-                logTypeID IN (1, 2)";
+                SELECT 
+                    s.startTime,
+                    s.endTime,
+                    CASE DAYNAME(CURRENT_DATE())
+                        WHEN 'Monday' THEN w.wo_mon
+                        WHEN 'Tuesday' THEN w.wo_tue
+                        WHEN 'Wednesday' THEN w.wo_wed
+                        WHEN 'Thursday' THEN w.wo_thu
+                        WHEN 'Friday' THEN w.wo_fri
+                        WHEN 'Saturday' THEN w.wo_sat
+                        WHEN 'Sunday' THEN w.wo_sun
+                    END AS isWeekOff
+                FROM " . $this->employees . " AS e
+                LEFT JOIN " . $this->shifts . " AS s ON s.shiftID = e.shiftID
+                LEFT JOIN " . $this->weekOff . " AS w ON w.empID = e.id
+                WHERE e.id = $id";
             return $dailyAttendanceIT_timeIn;
+        }
+
+        public function dailyAttendance_timeIn($id) {
+            $getAttendanceToday = "
+                SELECT attendanceTime
+                FROM " . $this->attendance . " AS attendance
+                WHERE empID = $id
+                AND attendanceDate = CURRENT_DATE()
+                AND logTypeID IN (1, 2)";
+            return $getAttendanceToday;
         }
 
         public function dailyAttendance_timeOut($id) {
             $dailyAttendanceIT_timeOut = "
-                SELECT DATE_FORMAT(attendanceTime, '%h:%i %p') AS attendanceTime 
-                FROM ".$this->attendance."
-                WHERE empID = $id AND
-                attendanceDate = CURRENT_DATE() AND
-                logTypeID IN (3, 4)";
+                SELECT attendanceTime
+                FROM " . $this->attendance . " AS attendance
+                WHERE empID = $id
+                AND attendanceDate = CURRENT_DATE()
+                AND logTypeID IN (3, 4)";
             return $dailyAttendanceIT_timeOut;
         }
-
-        // public function getMonthlyAttendance($id, $year, $month) {
-        //     $monthlyAttendance = "
-        //         SELECT * FROM ".$this->attendance."
-        //         WHERE empID = $id AND
-        //         (logTypeID IN (1, 2) OR logTypeID IN (3, 4)) AND
-        //         YEAR(attendanceDate) = '$year'
-        //         AND MONTH(attendanceDate) = '$month'";
-        //     return $monthlyAttendance;
-        // }
 
         public function getMonthlyAttendance($id, $year, $month) {
             $monthlyAttendance = "
@@ -415,6 +561,68 @@
                 YEAR(attendanceDate) = '$year'
                 AND MONTH(attendanceDate) = '$month'";
             return $monthlyAttendance;
+        }
+
+        public function getMonthlyAbsences($id, $year, $month) {
+            $monthlyAbsences = "
+                SELECT 
+                    COUNT(*) AS total_absences
+                FROM (
+                    SELECT 
+                        DATE(CONCAT($year, '-', $month, '-', day_num)) AS date_day
+                    FROM (
+                        SELECT 1 AS day_num UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION
+                        SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10 UNION
+                        SELECT 11 UNION SELECT 12 UNION SELECT 13 UNION SELECT 14 UNION SELECT 15 UNION
+                        SELECT 16 UNION SELECT 17 UNION SELECT 18 UNION SELECT 19 UNION SELECT 20 UNION
+                        SELECT 21 UNION SELECT 22 UNION SELECT 23 UNION SELECT 24 UNION SELECT 25 UNION
+                        SELECT 26 UNION SELECT 27 UNION SELECT 28 UNION SELECT 29 UNION SELECT 30 UNION
+                        SELECT 31
+                    ) AS days
+                    WHERE 
+                        -- Only include days that exist in the month
+                        DAY(LAST_DAY(CONCAT($year, '-', $month, '-01'))) >= day_num
+                        
+                        -- Only count up to today's date
+                        AND day_num <= DAY(CURRENT_DATE())
+                ) AS calendar_days
+
+                LEFT JOIN ".$this->attendance." AS att
+                    ON att.empID = $id
+                    AND att.attendanceDate = calendar_days.date_day
+                    AND att.logTypeID IN (1,2)  -- Time In or Late
+
+                -- LEFT JOIN LEAVE TABLE
+                LEFT JOIN ".$this->leaves." AS leaves
+                    ON leaves.empID = $id
+                    AND leaves.status = 'Approved'
+                    AND calendar_days.date_day BETWEEN leaves.effectivityStartDate AND leaves.effectivityEndDate
+
+                INNER JOIN ".$this->weekOff." AS weekoff
+                    ON weekoff.empID = $id
+
+                WHERE 
+                    -- No attendance found (means absent)
+                    att.empID IS NULL
+
+                    -- EXCLUDE EMPLOYEES WHO HAVE APPROVED LEAVE TODAY
+                    AND leaves.empID IS NULL
+
+                    -- Exclude week-off based on day name
+                    AND (
+                        CASE DAYNAME(calendar_days.date_day)
+                            WHEN 'Monday' THEN weekoff.wo_mon
+                            WHEN 'Tuesday' THEN weekoff.wo_tue
+                            WHEN 'Wednesday' THEN weekoff.wo_wed
+                            WHEN 'Thursday' THEN weekoff.wo_thu
+                            WHEN 'Friday' THEN weekoff.wo_fri
+                            WHEN 'Saturday' THEN weekoff.wo_sat
+                            WHEN 'Sunday' THEN weekoff.wo_sun
+                        END
+                    ) = 0
+                ";
+
+            return $monthlyAbsences;
         }
 
         public function getMonthlyUndertimes($id, $year, $month) {
@@ -516,6 +724,13 @@
                 SELECT * FROM ".$this->attendance." 
                 WHERE empID = $id AND 
                 DATE_FORMAT(attendanceDate, '%Y-%m') = '$date'";
+            return $attendance;
+        }
+
+        public function addEmployeeTimeOut($id, $attendanceDate, $attendanceTime) {
+            $attendance = "
+                INSERT INTO {$this->attendance} (empID, logTypeID, attendanceDate, attendanceTime) 
+                VALUES ({$id}, 4, '{$attendanceDate}', '{$attendanceTime}')";
             return $attendance;
         }
     }

@@ -116,7 +116,6 @@
                             <div class="modal-content" id="fileLeaveModal">
                                 <div class="modal-header">
                                     <h1 class="modal-title fs-5" id="userFormLabel">File Leave</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <div class="row g-3 mb-2">
@@ -153,10 +152,30 @@
                                                 <?php } 
                                                     else {?>
                                                     <option value="2" disabled>Vacation Leave</option>
-                                                <?php } ?>
+                                                <?php } 
+                                                    $bereavementLeaveQuery = mysqli_query($conn, $employees->viewApprovedBereavementLeaves($_SESSION['id']));
+                                                    $bereavementLeaves = mysqli_num_rows($bereavementLeaveQuery);
+                                                    if ($bereavementLeaves <= 3) {
+                                                ?>
                                                     <option value="3">Bereavement Leave</option>
+                                                <?php } else { ?>
+                                                    <option value="3" disabled>Bereavement Leave</option>
+                                                <?php } ?>
+                                                <?php 
+                                                    if ($_SESSION['gender'] == "Female") { ?>
                                                     <option value="4">Maternity Leave</option>
-                                                    <option value="5">Emergency Leave</option>
+                                                <?php } 
+                                                    else { 
+                                                        $paternityLeaveQuery = mysqli_query($conn, $employees->viewApprovedPaternityLeaves($_SESSION['id']));
+                                                        $paternityLeaves = mysqli_num_rows($paternityLeaveQuery);
+                                                        if ($paternityLeaves <= 3) {
+                                                ?>
+                                                    <option value="5">Paternity Leave</option>
+                                                <?php } else { ?>
+                                                    <option value="5" disabled>Paternity Leave</option>
+                                                <?php   } ?>
+                                                <?php } ?>
+                                                    <option value="6">Emergency Leave</option>
                                             </select>
                                         </div>
                                     </div>   
@@ -197,23 +216,35 @@
                                         </div>
                                     </div>
 
-                                    <div class="row g-3 mb-2 medCertDiv">
+                                    <!-- <div class="row g-3 mb-2 photoUploadDiv">
                                         <div class="col-12">
-                                            <label for="medCert">Medical Certificate:</label>
+                                            <label for="photoUpload">Upload Photo:</label>
                                         </div>
                                     </div>
 
-                                    <div class="row g-3 mb-2 medCertDiv">
+                                    <div class="row g-3 mb-2 photoUploadDiv">
                                         <div class="col-11">
-                                            <input type="file" class="form-control" id="medCert" name="medCert" accept="image/*">
+                                            <input type="file" class="form-control" id="photoUpload" name="photoUpload" accept="image/*">
                                         </div>
                                         <div class="col-1 pt-2 text-left">
-                                            <button id="viewMedCert" disabled>
+                                            <button id="viewPhotoUpload" disabled>
                                                 <svg class="h-5 w-5 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                                 </svg>
                                             </button>
+                                        </div>
+                                    </div> -->
+                                    <div class="row g-3 mb-2 attachmentDiv">
+                                        <div class="col-12">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input attachment" type="checkbox" id="withAttachment" name="withAttachment">
+                                                <label class="form-check-label" for="withAttachment">With Attachment</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input attachment" type="checkbox" id="withoutAttachment" name="withoutAttachment">
+                                                <label class="form-check-label" for="withoutAttachment">Without Attachment</label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -234,7 +265,6 @@
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="viewLeaveLabel">View Leave</h1>
                                 <input type="hidden" id="viewLeaveID">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <form>
@@ -314,9 +344,19 @@
                                         </div>
                                     </div>
 
-                                    <div class="row g-2" id="viewMedCertRow">
+                                    <!-- <div class="row g-2" id="viewPhotoRow">
                                         <div class="col-12">
-                                            <button id="viewMedicalCert" class="text-blue-500">View Medical Certificate</button>
+                                            <button id="viewPhoto" class="text-blue-500">View Uploaded Photo</button>
+                                        </div>
+                                    </div> -->
+                                    <div class="row g-2" id="viewWithAttachmentRow">
+                                        <div class="col-12">
+                                            <label class="text-blue-500">With Attachment</label>
+                                        </div>
+                                    </div>
+                                    <div class="row g-2" id="viewWithoutAttachmentRow">
+                                        <div class="col-12">
+                                            <label class="text-blue-500">Without Attachment</label>
                                         </div>
                                     </div>
                                 </form>

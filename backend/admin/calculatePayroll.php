@@ -34,6 +34,27 @@
         mysqli_query($conn, $payroll->deletePayroll($payrollID));
         mysqli_query($conn, $payroll->deletePayslip($payrollID));
 
+        $resetQuery = mysqli_query($conn, $payroll->resetCAPaymentHistory($payrollID));
+        while ($cashAdvanceDetails = mysqli_fetch_array($resetQuery)) {
+            $requestID = $cashAdvanceDetails['requestID'];
+            $cashAdvance = $cashAdvanceDetails['amountDeducted'];
+            $remainingBalance = $cashAdvanceDetails['remainingBalance'];
+            $remainingBalance = $remainingBalance + $cashAdvance;
+            $ca_status = $cashAdvanceDetails['ca_status'];
+            $request_payrollID = $cashAdvanceDetails['payrollID'];
+
+            if ($request_payrollID == $payrollID) {
+                mysqli_query($conn, $payroll->resetNewCAstatus($requestID, $remainingBalance));
+            }
+            else if ($ca_status == "Paid") {
+                mysqli_query($conn, $payroll->resetOngoingCAstatus($requestID, $remainingBalance));
+            }
+            else {
+                mysqli_query($conn, $payroll->resetCAstatus($requestID, $remainingBalance));
+            }
+        }
+        mysqli_query($conn, $payroll->deleteCAPaymentHistory($payrollID));
+
         // AUDIT TRAIL
         $at_empID = $_SESSION['id'];
         $at_module = "Admin - Payroll";

@@ -7,6 +7,18 @@ $(document).ready(function() {
     var payrollListTable = $('#payrollListTable').DataTable();
     payrollListTable.order([[0, "asc"]]).draw();
 
+    function showPayrollSpinner() {
+        $("#payrollSpinner").removeClass("hidden");
+
+        // disable buttons only (important)
+        $("button").prop("disabled", true);
+    }
+
+    function hidePayrollSpinner() {
+        $("#payrollSpinner").addClass("hidden");
+        $("button").prop("disabled", false);
+    }
+
     // CREATE PAYROLL
     $("#addPayrollForm").submit(function (e) {
         e.preventDefault();
@@ -95,6 +107,7 @@ $(document).ready(function() {
                 addPayrollForm.append('payrollCycleID', payrollCycleID);
                 addPayrollForm.append('action', 'calculate');
                 if (result.isConfirmed) {
+                    showPayrollSpinner();
                     $.ajax({
                         type: "POST",
                         url: "../backend/admin/calculatePayroll.php",
@@ -121,6 +134,9 @@ $(document).ready(function() {
                                     text: message
                                 }) 
                             }
+                        }, 
+                        complete: function() {
+                            hidePayrollSpinner();
                         }
                     });
                 }
@@ -246,6 +262,7 @@ $(document).ready(function() {
             confirmButtonColor: '#28a745',
             confirmButtonText: 'Yes',
         }).then((result) => {
+            showPayrollSpinner();
             recalculatePayrollForm.append('payrollID', recal_payrollID);
             recalculatePayrollForm.append('payrollCycleID', recal_cycleID);
             recalculatePayrollForm.append('action', 'recalculate');
@@ -276,50 +293,91 @@ $(document).ready(function() {
                                 text: message
                             }) 
                         }
+                    }, 
+                    complete: function() {
+                        hidePayrollSpinner();
                     }
                 });
             }
         })
     });
         
-    // $('.exportPayroll').click(function () {
-    //     let csvContent = '';
-    //     const table = $('#payrollListTable'); // Replace with your table ID or class
-    //     const rows = table.find('tr');
+    // $(".exportPayroll").click(function () {
+    //     let csvContent = "";
+    //     let table = $("#payrollListTable").DataTable(); // Use DataTables API
 
-    //     rows.each(function () {
-    //         const cells = $(this).find('th, td');
+    //     // Get ALL rows (not just visible ones)
+    //     let allData = table.rows().data();
+
+    //     allData.each(function (rowData) {
     //         let row = [];
-    //         let isExcluded = false;
 
-    //         cells.each(function () {
-    //             const cellText = $(this).text().trim();
-
-    //             // Check if the cell contains "DEDUCTIONS"
-    //             if (cellText === 'DEDUCTIONS') {
-    //                 isExcluded = true;
-    //             }
-
-    //             // Only process cells if not excluded
-    //             row.push(`"${cellText}"`);
+    //         rowData.forEach(function (cell) {
+    //         row.push('"' + cell + '"');
     //         });
 
-    //         if (!isExcluded) {
-    //             csvContent += row.join(',') + '\n'; // Add row to CSV if not excluded
-    //         }
+    //         csvContent += row.join(",") + "\n";
     //     });
 
-    //     // Create and download the CSV file
-    //     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    //     // Download CSV
+    //     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     //     const url = URL.createObjectURL(blob);
-    //     const link = document.createElement('a');
+    //     const link = document.createElement("a");
+
     //     link.href = url;
-    //     link.download = 'payroll.csv';
+    //     link.download = "payroll.csv";
     //     link.click();
 
-    //     // Clean up
     //     URL.revokeObjectURL(url);
     // });
+
+    $(".exportPayroll").click(function () {
+        let table = $("#payrollListTable").DataTable();
+        let allData = table.rows().data();
+        let csvContent = "";
+
+        // === TITLE ===
+        const reportTitle = "Payroll Summary Report";
+        csvContent += `"${reportTitle}"\n\n`;
+
+        // === COLUMN HEADERS ===
+        let headerRow = [];
+        table
+            .columns()
+            .header()
+            .each(function (th) {
+            headerRow.push('"' + $(th).text().trim() + '"');
+            });
+
+        csvContent += headerRow.join(",") + "\n"; // Add to CSV
+
+        // === ALL DATA ROWS ===
+        allData.each(function (rowData) {
+            // Skip rows containing "DEDUCTIONS"
+            if (rowData.includes("DEDUCTIONS")) {
+            return;
+            }
+
+            let row = [];
+            rowData.forEach(function (cell) {
+            row.push('"' + cell + '"');
+            });
+
+            csvContent += row.join(",") + "\n";
+        });
+
+        // === DOWNLOAD CSV ===
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+
+        link.href = url;
+        link.download = "payroll.csv";
+        link.click();
+
+        URL.revokeObjectURL(url);
+    });
+
 
     $('#btnBack').click(function(e) {
         e.preventDefault();

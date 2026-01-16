@@ -16,7 +16,7 @@
                 </div>    
 
                 <!-- REQUEST SHIFT CHANGE BUTTON -->
-                <div class="relative inline-block text-right">
+                <div class="static inline-block text-right">
                     <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none no-underline" data-bs-toggle="modal" data-bs-target="#addHolidayModal">Add Holiday</button>
                 </div>
             </div>
@@ -108,7 +108,6 @@
                         <div class="modal-content" id="addHolidayModal">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="userFormLabel">Add Holiday</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
 
                             <div class="modal-body">
@@ -121,7 +120,7 @@
                                     <div class="col-12">
                                         <select name="holidayType" id="holidayType" class="form-select">
                                             <option disabled selected>Choose</option>
-                                            <option value="Regular">Regular</option>
+                                            <option value="Legal">Legal</option>
                                             <option value="Special">Special</option>
                                         </select>
                                     </div>
@@ -149,16 +148,6 @@
                                     </div>
                                    
                                 </div>
-
-                                <!-- <div class="row g-2 mb-2">
-                                     <div class="col-6">
-                                        <label for="dateTo">To:</label>
-                                    </div>
-                                    <div class="col-6">
-                                        <input type="date" class="form-control" id="dateTo" name="dateTo">
-                                    </div>
-                                </div> -->
-
                             </div>
 
                             <div class="modal-footer">
@@ -178,7 +167,6 @@
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="userFormLabel">View Holiday</h1>
                             <input type="hidden" id="viewHolidayID">
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         
                         <div class="modal-body">
@@ -214,15 +202,6 @@
                                     <input type="text" class="form-control" id="view_dateFrom" name="view_dateFrom" disabled readonly>
                                 </div>
                             </div>
-
-                            <!-- <div class="row g-2 mb-2">
-                                <div class="col-12">
-                                    <label for="view_dateTo">To:</label>
-                                </div>
-                                <div class="col-12">
-                                    <input type="text" class="form-control" id="view_dateTo" name="view_dateTo" disabled readonly>
-                                </div>
-                            </div> -->
                         </div>
 
                         <div class="modal-footer">
@@ -243,7 +222,6 @@
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="userFormLabel">Update Holiday</h1>
                                 <input type="hidden" id="updateHolidayID" name="updateHolidayID">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="row g-2 mb-1">
@@ -255,9 +233,8 @@
                                     <div class="col-12">
                                         <select name="updateHolidayType" id="updateHolidayType" class="form-select">
                                             <option disabled selected>Choose</option>
-                                            <option value="Regular">Regular</option>
-                                            <option value="Special">Special</option>
                                             <option value="Legal">Legal</option>
+                                            <option value="Special">Special</option>
                                         </select>
                                     </div>
                                 </div>
@@ -283,15 +260,6 @@
                                         <input type="date" class="form-control" id="updateDateFrom" name="updateDateFrom">
                                     </div>
                                 </div>
-
-                                <!-- <div class="row g-2 mb-2">
-                                    <div class="col-6">
-                                        <label for="updateDateTo">To:</label>
-                                    </div>
-                                    <div class="col-6">
-                                        <input type="date" class="form-control" id="updateDateTo" name="updateDateTo">
-                                    </div>
-                                </div> -->
                             </div>
 
                             <div class="modal-footer">

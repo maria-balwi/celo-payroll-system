@@ -2,7 +2,44 @@ function formatNumberWithCommas(number) {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+function formatDate(dateStr) {
+    if (!dateStr) return '';
+
+    var dateObj = new Date(dateStr);
+
+    return dateObj.toLocaleDateString("en-US", {
+        month: "short",
+        day: "2-digit",
+        year: "numeric"
+    });
+}
+
 $(document).ready(function() {
+
+    function showAddEmployeeSpinner() {
+        $("#addEmployeeSpinner").removeClass("d-none");
+
+        // disable buttons only (safe)
+        $("#addEmployeeModal button").prop("disabled", true);
+    }
+
+    function hideAddEmployeeSpinner() {
+        $("#addEmployeeSpinner").addClass("d-none");
+        $("#addEmployeeModal button").prop("disabled", false);
+    }
+
+    function showUpdateEmployeeSpinner() {
+        $("#updateEmployeeSpinner").removeClass("d-none");
+
+        // disable buttons only (safe)
+        $("#updateEmployeeModal button").prop("disabled", true);
+    }
+
+    function hideUpdateEmployeeSpinner() {
+        $("#updateEmployeeSpinner").addClass("d-none");
+        $("#updateEmployeeModal button").prop("disabled", false);
+    }
+
 
     if ($('#adminID').val() == 9 || $('#adminID').val() == 8) {
         $('#btnAddEmployee').show();
@@ -19,8 +56,19 @@ $(document).ready(function() {
         $('.allAdjustmentsSection').hide();
     }
 
-    $('#activeEmployeeTable').DataTable();
-    $('#resignedEmployeeTable').DataTable();
+    // iNITIALIZE TABLES
+    $('#activeAgentsTable').DataTable();
+    $('#inactiveAgentsTable').DataTable();
+    $('#activeTLQATable').DataTable();
+    $('#inactiveTLQATable').DataTable();
+    $('#activeRecruitmentTable').DataTable();
+    $('#inactiveRecruitmentTable').DataTable();
+    $('#activeITTable').DataTable();
+    $('#inactiveITTable').DataTable();
+    $('#activeFinanceTable').DataTable();
+    $('#inactiveFinanceTable').DataTable();
+    $('#activeHRTable').DataTable();
+    $('#inactiveHRTable').DataTable();
 
     // INPUT MASK - ADD EMPLOYEE
     $('#sss').inputmask('99-9999999-9', {
@@ -72,38 +120,10 @@ $(document).ready(function() {
         placeholder: 'XXX-XXX'
     });  
 
-    // $("select[id='updateDesignation']").on("change", function() {
-    //     $("input[id='updateBasicPay']").val('');
-    //     $("input[id='updateDailyRate']").val('');
-    //     $("input[id='updateHourlyRate']").val('');
-    //     if ($(this).val() == "Facilities") {
-    //         // HOURLY RATE COMPUTATION - ADD EMPLOYEE
-    //         $("input[id='updateBasicPay']").on("input", function() {
-    //             var basicPay = $(this).val();
-    //             var dailyRate = (basicPay * 12 / 313).toFixed(2);
-    //             $('#updateDailyRate').val(dailyRate).trigger('input');
-    //         });
-        
-    //         $("input[id='updateDailyRate']").on("input", function() {
-    //             var dailyRate = $(this).val();
-    //             var hourlyRate = (dailyRate / 12).toFixed(2);
-    //             $('#updateHourlyRate').val(hourlyRate);
-    //         });
-    //     } else {
-    //         // HOURLY RATE COMPUTATION - ADD EMPLOYEE
-    //         $("input[id='updateBasicPay']").on("input", function() {
-    //             var basicPay = $(this).val();
-    //             var dailyRate = (basicPay * 12 / 261).toFixed(2);
-    //             $('#updateDailyRate').val(dailyRate).trigger('input');
-    //         });
-        
-    //         $("input[id='updateDailyRate']").on("input", function() {
-    //             var dailyRate = $(this).val();
-    //             var hourlyRate = (dailyRate / 8).toFixed(2);
-    //             $('#updateHourlyRate').val(hourlyRate);
-    //         });
-    //     }
-    // });   
+    // INPUT MASK - REFERRAL
+    $('#referral_employeeID').inputmask('999-999', {
+        placeholder: 'XXX-XXX'
+    });
 
     $('.dateRegularizedLabel').hide();
     $("select[id='employmentStatus']").on("change", function() {
@@ -176,40 +196,6 @@ $(document).ready(function() {
         var updateHourlyRate = (updateDailyRate / 8).toFixed(2);
         $('#updateHourlyRate').val(updateHourlyRate);
     });
-
-    // $("select[id='designation']").on("change", function() {
-    //     $("input[id='basicPay']").val('');
-    //     $("input[id='dailyRate']").val('');
-    //     $("input[id='hourlyRate']").val('');
-    //     if ($(this).val() == "Facilities") {
-    //         // HOURLY RATE COMPUTATION - ADD EMPLOYEE
-    //         $("input[id='basicPay']").on("input", function() {
-    //             var basicPay = $(this).val();
-    //             var dailyRate = (basicPay * 12 / 313).toFixed(2);
-    //             $('#dailyRate').val(dailyRate).trigger('input');
-    //         });
-
-    //         $("input[id='dailyRate']").on("input", function() {
-    //             var dailyRate = $(this).val();
-    //             var hourlyRate = (dailyRate / 12).toFixed(2);
-    //             $('#hourlyRate').val(hourlyRate);
-    //         });
-    //     } else {
-    //         // HOURLY RATE COMPUTATION - ADD EMPLOYEE
-    //         $("input[id='basicPay']").on("input", function() {
-    //             var basicPay = $(this).val();
-    //             var dailyRate = (basicPay * 12 / 261).toFixed(2);
-    //             $('#dailyRate').val(dailyRate).trigger('input');
-    //         });
-
-    //         $("input[id='dailyRate']").on("input", function() {
-    //             var dailyRate = $(this).val();
-    //             var hourlyRate = (dailyRate / 8).toFixed(2);
-    //             $('#hourlyRate').val(hourlyRate);
-    //         });
-    //     }
-    // });  
-
     
     // CHECKBOXES FOR REQUIREMENTS - SSS, PAGIBIG, PHILHEALTH, TIN (ADD EMPLOYEE)
     $("input[id='sss']").on("input", function() {
@@ -276,20 +262,6 @@ $(document).ready(function() {
             $('#update_req_tin').prop('checked', false);
         }
     });
-
-    // CHECKBOXES FOR WEEK OFF (ADD EMPLOYEE)
-    // $("input[type='checkbox'][name='wo_day']").on("change", function () {
-    //     // Count checked boxes
-    //     const checkedCount = $("input[name='wo_day']:checked").length;
-
-    //     if (checkedCount >= 2) {
-    //         // Disable all unchecked boxes
-    //         $("input[name='wo_day']").not(":checked").prop("disabled", true);
-    //     } else {
-    //         // Re-enable all boxes
-    //         $("input[name='wo_day']").prop("disabled", false);
-    //     }
-    // });
 
     // CHECKBOXES FOR WEEK OFF (ADD EMPLOYEE)
     $("input.wo_day[type='checkbox']").on("change", function () {
@@ -437,58 +409,70 @@ $(document).ready(function() {
     //     }
     // });
 
-    $("#viewClearanceForm").hide();
+    // $("#viewClearanceForm").hide();
 
-    $("#clearanceForm").change(function () {
-        const [file] = clearanceForm.files;
+    // $("#clearanceForm").change(function () {
+    //     const [file] = clearanceForm.files;
 
-        const acceptedImageTypes = ["image/jpeg", "image/jpg", "image/png"];
-        const acceptedPdfTypes = ["application/pdf"];
+    //     const acceptedImageTypes = ["image/jpeg", "image/jpg", "image/png"];
+    //     const acceptedPdfTypes = ["application/pdf"];
 
-        if (file) {
-            const fileType = file.type;
+    //     if (file) {
+    //         const fileType = file.type;
 
-            if ($.inArray(fileType, acceptedImageTypes) < 0 && $.inArray(fileType, acceptedPdfTypes) < 0) {
-                Swal.fire({
-                    icon: "warning",
-                    title: "Invalid File",
-                    text: "Only JPG, PNG, or PDF files are allowed",
-                });
-                $("#viewClearanceForm").hide();
-            } else {
-                $("#viewClearanceForm").show();
-            }
+    //         if ($.inArray(fileType, acceptedImageTypes) < 0 && $.inArray(fileType, acceptedPdfTypes) < 0) {
+    //             Swal.fire({
+    //                 icon: "warning",
+    //                 title: "Invalid File",
+    //                 text: "Only JPG, PNG, or PDF files are allowed",
+    //             });
+    //             $("#viewClearanceForm").hide();
+    //         } else {
+    //             $("#viewClearanceForm").show();
+    //         }
+    //     }
+    // });
+
+    // $("#viewClearanceForm").click(function () {
+    //     const [file] = clearanceForm.files;
+
+    //     if (file) {
+    //         const fileType = file.type;
+
+    //         // If it's an image (JPEG/PNG)
+    //         if (fileType.includes("image")) {
+    //             const reader = new FileReader();
+    //             reader.onload = (e) => {
+    //                 Swal.fire({
+    //                     title: "Clearance Form",
+    //                     imageUrl: e.target.result,
+    //                     imageHeight: 500,
+    //                 });
+    //             };
+    //             reader.readAsDataURL(file);
+    //         }
+
+    //         // If it's a PDF
+    //         else if (fileType === "application/pdf") {
+    //             const fileURL = URL.createObjectURL(file);
+
+    //             window.open(fileURL, "_blank"); // Opens PDF in a new tab
+    //         }
+    //     }
+    // });
+
+    $("input.attachment[type='checkbox']").on("change", function () {
+        const $checkboxes = $("input.attachment[type='checkbox']");
+        const checkedCount = $checkboxes.filter(":checked").length;
+
+        if (checkedCount >= 1) {
+            // Disable all unchecked boxes
+            $checkboxes.not(":checked").prop("disabled", true);
+        } else {
+            // Re-enable all boxes
+            $checkboxes.prop("disabled", false);
         }
     });
-
-    $("#viewClearanceForm").click(function () {
-        const [file] = clearanceForm.files;
-
-        if (file) {
-            const fileType = file.type;
-
-            // If it's an image (JPEG/PNG)
-            if (fileType.includes("image")) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    Swal.fire({
-                        title: "Clearance Form",
-                        imageUrl: e.target.result,
-                        imageHeight: 500,
-                    });
-                };
-                reader.readAsDataURL(file);
-            }
-
-            // If it's a PDF
-            else if (fileType === "application/pdf") {
-                const fileURL = URL.createObjectURL(file);
-
-                window.open(fileURL, "_blank"); // Opens PDF in a new tab
-            }
-        }
-    });
-
 
     // ADD ALLOWANCE MODAL
     $('#effectivityDate_allowanceLabel').hide();
@@ -579,7 +563,6 @@ $(document).ready(function() {
         }
     })
 
-    $('.cashAdvancePart').hide();
     $('.viewDateRegularizedLabel').hide();
 
     // ADD EMPLOYEE
@@ -633,6 +616,7 @@ $(document).ready(function() {
                 confirmButtonText: 'Yes',
             }).then((result) => {
                 if (result.isConfirmed) {
+                    showAddEmployeeSpinner();
                     $.ajax({
                         type: "POST",
                         url: "../backend/admin/addEmployee.php",
@@ -664,6 +648,9 @@ $(document).ready(function() {
                                     text: message
                                 }) 
                             }
+                        },
+                        complete: function() {
+                            hideAddEmployeeSpinner();
                         }
                     });
                 }
@@ -671,12 +658,26 @@ $(document).ready(function() {
         }
     });
 
-    // VIEW, UPDATE, RESIGN EMPLOYEE
+    // RENDERED DAYS DIV
+    $('.renderedDaysDiv').hide();
+    $('#resignationStatus').on('change', function() {
+        var resignationStatus = $(this).val();
+        if (resignationStatus == 'Incomplete') {
+            $('.renderedDaysDiv').show();
+        } else {
+            $('.renderedDaysDiv').hide();
+        }
+    });
+
+    // VIEW, UPDATE, RESIGN ACTIVE EMPLOYEE
     var array = [];
+    var referrer_empID;
+    var referee_empID;  
     $(document).on('click', '.employeeView', function() {
         var employee_id = $(this).data('id');
         array.push(employee_id);
         var id_employee = array[array.length - 1];
+        referrer_empID = id_employee;
 
         // VIEW EMPLOYEE
         $.ajax({
@@ -726,14 +727,6 @@ $(document).ready(function() {
                     $('#viewHourlyRate').val(res.data.hourlyRate);
                     $('#viewVacationLeaves').val(res.data.availableVL);
                     $('#viewSickLeaves').val(res.data.availableSL);
-
-                    if (res.data.cashAdvance == null || res.data.cashAdvance == "0") { 
-                        $('.cashAdvancePart').hide();
-                    }
-                    else {
-                        $('#viewCashAdvance').val(res.data.cashAdvance);
-                        $('.cashAdvancePart').show();
-                    }
 
                     // WEEK OFF SECTION
                     $('#view_wo_monday').val(res.data.wo_mon == 1 ? $('#view_wo_monday').prop('checked', true) : $('#view_wo_monday').prop('checked', false));
@@ -822,6 +815,59 @@ $(document).ready(function() {
                     });
                     $('#adjustmentsSection').html(adjustmentsHTML);
 
+                    // UPDATE REFERRAL SECTION
+                    var referralHTML = '';
+                    res.referrals.forEach(function(referral) {
+
+                        referralHTML += `
+                            <div class="flex bg-white p-3 border border-gray-200 gap-4 items-start">
+
+                                <div class="font-semibold min-w-[200px]">
+                                    ${referral.firstName} ${referral.lastName}
+                                </div>
+                                <div class="flex flex-col gap-1 flex-1">
+                                    <span>Employee ID: ${
+                                      referral.employeeID
+                                    }</span>
+                                    <span>Employment Status: ${
+                                      referral.employmentStatus
+                                    }</span>
+                                    <span>Date Hired: ${formatDate(
+                                      referral.dateHired
+                                    )}</span>
+
+                                    <span class="flex flex-col">
+                                        <span>Referral Bonus:</span> 
+                                        <span class="flex items-center gap-2 pl-6">
+                                            - (3 Months) ₱ 2,000
+                                            ${referral.threeMonths_status == 1 ? '<span class="text-sm bg-green-500 text-white px-2 rounded-full">Paid</span>' : ''}
+                                        </span>
+                                        <span class="flex items-center gap-2 pl-6">
+                                            - (6 Months) ₱ 2,000
+                                            ${referral.sixMonths_status == 1 ? '<span class="text-sm bg-green-500 text-white px-2 rounded-full">Paid</span>' : ''}
+                                        </span>
+                                    </span>
+                                </div>
+
+                                <div>
+                                    <button class="p-2 rounded deleteReferral"
+                                            data-id="${referral.referralID}">
+                                        <svg class="h-5 w-5 text-gray-800" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862
+                                                    a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6
+                                                    m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                        </svg>
+                                    </button>
+                                </div>
+
+                            </div>
+                        `;
+                    });
+                    $('#referralSection').html(referralHTML);
+
                     // LOAD PROFILE PICTURE
                     const img = $("#viewProfilePhoto");
                     let employeeID_string = res.data.employeeID;
@@ -853,175 +899,6 @@ $(document).ready(function() {
                     // Show the modal
                     $('#viewEmployeeModal').modal('show');
                 }
-                // else if (res.status == 200 & res.data.employmentStatus == "Resigned") {
-                //     $('#res_viewID').val(res.data.id);
-                //     $('#res_viewLastName').val(res.data.lastName);
-                //     $('#res_viewFirstName').val(res.data.firstName);
-                //     $('#res_viewGender').val(res.data.gender);
-                //     $('#res_viewCivilStatus').val(res.data.civilStatus);
-                //     $('#res_viewAddress').val(res.data.address);
-                //     $('#res_viewDateOfBirth').val(res.data.dateOfBirth);
-                //     $('#res_viewPlaceOfBirth').val(res.data.placeOfBirth);
-                //     $('#res_viewsss').val(res.data.sss);
-                //     $('#res_viewpagIbig').val(res.data.pagIbig);
-                //     $('#res_viewphilhealth').val(res.data.philhealth);
-                //     $('#res_viewtin').val(res.data.tin);
-                //     $('#res_viewEmailAddress').val(res.data.emailAddress);
-                //     $('#res_viewEmployeeID').val(res.data.employeeID);
-                //     $('#res_viewMobileNumber').val(res.data.mobileNumber);
-                //     $('#res_viewDepartment').val(res.data.departmentName);
-                //     $('#res_viewDesignation').val(res.data.position);
-                //     $('#res_viewShiftID').val(res.data.startTime + ' - ' + res.data.endTime);
-                //     $('#res_viewEmploymentStatus').val(res.data.employmentStatus);
-                //     $('#res_viewDateHired').val(res.data.dateHired);
-                //     $('#res_viewDateRegularized').val(res.data.dateRegularized);
-                //     $('#res_viewBasicPay').val(res.data.basicPay);
-                //     $('#res_viewDailyRate').val(res.data.dailyRate);
-                //     $('#res_viewHourlyRate').val(res.data.hourlyRate);
-                //     $('#res_viewVacationLeaves').val(res.data.availableVL);
-
-                //     // Show the modal
-                //     $('#viewResignedModal').modal('show');
-
-                // }
-                // else  {
-                //     $('#viewID').val(res.data.id);
-                //     $('#viewLastName').val(res.data.lastName);
-                //     $('#viewFirstName').val(res.data.firstName);
-                //     $('#viewGender').val(res.data.gender);
-                //     $('#viewCivilStatus').val(res.data.civilStatus);
-                //     $('#viewAddress').val(res.data.address);
-                //     $('#viewDateOfBirth').val(res.data.dateOfBirth);
-                //     $('#viewPlaceOfBirth').val(res.data.placeOfBirth);
-                //     $('#viewsss').val(res.data.sss);
-                //     $('#viewpagIbig').val(res.data.pagIbig);
-                //     $('#viewphilhealth').val(res.data.philhealth);
-                //     $('#viewtin').val(res.data.tin);
-                //     $('#viewEmailAddress').val(res.data.emailAddress);
-                //     $('#viewEmployeeID').val(res.data.employeeID);
-                //     $('#viewMobileNumber').val(res.data.mobileNumber);
-                //     $('#viewDepartment').val(res.data.departmentName);
-                //     $('#viewDesignation').val(res.data.position);
-                //     $('#viewShiftID').val(res.data.startTime + ' - ' + res.data.endTime);
-                //     $('#viewEmploymentStatus').val(res.data.employmentStatus);
-                //     $('#viewDateHired').val(res.data.dateHired);
-                //     $('#viewDateRegularized').val(res.data.dateRegularized);
-                //     $('#viewBasicPay').val(res.data.basicPay);
-                //     $('#viewDailyRate').val(res.data.dailyRate);
-                //     $('#viewHourlyRate').val(res.data.hourlyRate);
-                //     $('#viewVacationLeaves').val(res.data.availableVL);
-                //     $('#viewSickLeaves').val(res.data.availableSL);
-                //     $('#view_req_sss').val(res.data.req_sss == 1 ? $('#view_req_sss').prop('checked', true) : $('#view_req_sss').prop('checked', false));
-                //     $('#view_req_pagIbig').val(res.data.req_pagIbig == 1 ? $('#view_req_pagIbig').prop('checked', true) : $('#view_req_pagIbig').prop('checked', false));
-                //     $('#view_req_philhealth').val(res.data.req_philhealth == 1 ? $('#view_req_philhealth').prop('checked', true) : $('#view_req_philhealth').prop('checked', false));
-                //     $('#view_req_tin').val(res.data.req_tin == 1 ? $('#view_req_tin').prop('checked', true) : $('#view_req_tin').prop('checked', false));
-                //     $('#view_req_nbi').val(res.data.req_nbi == 1 ? $('#view_req_nbi').prop('checked', true) : $('#view_req_nbi').prop('checked', false));
-                //     $('#view_req_medicalExam').val(res.data.req_medicalExam == 1 ? $('#view_req_medicalExam').prop('checked', true) : $('#view_req_medicalExam').prop('checked', false));
-                //     $('#view_req_2x2pic').val(res.data.req_2x2pic == 1 ? $('#view_req_2x2pic').prop('checked', true) : $('#view_req_2x2pic').prop('checked', false));
-                //     $('#view_req_vaccineCard').val(res.data.req_vaccineCard == 1 ? $('#view_req_vaccineCard').prop('checked', true) : $('#view_req_vaccineCard').prop('checked', false));
-                //     $('#view_req_psa').val(res.data.req_psa == 1 ? $('#view_req_psa').prop('checked', true) : $('#view_req_psa').prop('checked', false));
-                //     $('#view_req_validID').val(res.data.req_validID == 1 ? $('#view_req_validID').prop('checked', true) : $('#view_req_validID').prop('checked', false));
-                //     $('#view_req_helloMoney').val(res.data.req_helloMoney == 1 ? $('#view_req_helloMoney').prop('checked', true) : $('#view_req_helloMoney').prop('checked', false));
-                    
-                //     // UPDATE ALLOWANCES SECTION
-                //     var allowancesHTML = '';
-                //     res.allowances.forEach(function(allowance) {
-                //         allowancesHTML += '<div class="flex justify-between items-center bg-white p-2 border border-gray-200">';
-                //         allowancesHTML += '<span>' + allowance.allowanceName + '</span>';
-                //         allowancesHTML += '<p class="text-sm bg-green-500 text-white py-1 px-2 rounded-full my-auto">₱ ' + allowance.amount + '</p>';
-                //         allowancesHTML += '<button class="p-2 rounded deleteAllowance" data-id="' + allowance.empAllowanceID + '">';
-                //         allowancesHTML += '<svg class="h-5 w-5 text-gray-800"  fill="none" viewBox="0 0 24 24" stroke="currentColor">';
-                //         allowancesHTML += '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>';
-                //         allowancesHTML += '</svg>';
-                //         allowancesHTML += '</button>';
-                //         allowancesHTML += '</div>';
-                //     });
-                //     $('#allowancesSection').html(allowancesHTML);
-
-                //     // UPDATE REIMBURSEMENTS SECTION
-                //     var reimbursementsHTML = '';
-                //     res.reimbursements.forEach(function(reimbursement) {
-                //         reimbursementsHTML += '<div class="flex justify-between items-center bg-white p-2 border border-gray-200">';
-                //         reimbursementsHTML += '<span>' + reimbursement.reimbursementName + '</span>';
-                //         reimbursementsHTML += '<p class="text-sm bg-green-500 text-white py-1 px-2 rounded-full my-auto">₱ ' + reimbursement.amount + '</p>';
-                //         reimbursementsHTML += '<button class="p-2 rounded deleteReimbursement" data-id="' + reimbursement.empReimbursementID + '">';
-                //         reimbursementsHTML += '<svg class="h-5 w-5 text-gray-800"  fill="none" viewBox="0 0 24 24" stroke="currentColor">';
-                //         reimbursementsHTML += '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>';
-                //         reimbursementsHTML += '</svg>';
-                //         reimbursementsHTML += '</button>';
-                //         reimbursementsHTML += '</div>';
-                //     });
-                //     $('#reimbursementsSection').html(reimbursementsHTML);
-
-                //     // UPDATE DEDUCTIONS SECTION
-                //     var deductionsHTML = '';
-                //     res.deductions.forEach(function(deduction) {
-                //         deductionsHTML += '<div class="flex justify-between items-center bg-white p-2 border border-gray-200">';
-                //         deductionsHTML += '<span>' + deduction.deductionName + '</span>';
-                //         deductionsHTML += '<p class="text-sm bg-red-500 text-white py-1 px-2 rounded-full my-auto">₱ ' + deduction.amount + '</p>';
-                //         deductionsHTML += '<button class="p-2 rounded deleteDeduction" data-id="' + deduction.empDeductionID + '">';
-                //         deductionsHTML += '<svg class="h-5 w-5 text-gray-800"  fill="none" viewBox="0 0 24 24" stroke="currentColor">';
-                //         deductionsHTML += '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>';
-                //         deductionsHTML += '</svg>';
-                //         deductionsHTML += '</button>';
-                //         deductionsHTML += '</div>';
-                //     });
-                //     $('#deductionsSection').html(deductionsHTML);
-
-                //     // UPDATE ADJUSTMENTS SECTION
-                //     var adjustmentsHTML = '';
-                //     res.adjustments.forEach(function(adjustment) {
-                //         adjustmentsHTML += '<div class="flex justify-between items-center bg-white p-2 border border-gray-200">';
-                //         adjustmentsHTML += '<span>' + adjustment.adjustmentName + '</span>';
-                //         if (adjustment.adjustmentType == 'Add') {
-                //             adjustmentsHTML += '<p class="text-sm bg-green-500 text-white py-1 px-2 rounded-full my-auto">₱ ' + adjustment.amount + '</p>';
-                //         }
-                //         else {
-                //             adjustmentsHTML += '<p class="text-sm bg-red-500 text-white py-1 px-2 rounded-full my-auto">₱ ' + adjustment.amount + '</p>';
-                //         }
-                //         adjustmentsHTML += '<button class="p-2 rounded deleteAdjustment" data-id="' + adjustment.empAdjustmentID + '">';
-                //         adjustmentsHTML += '<svg class="h-5 w-5 text-gray-800"  fill="none" viewBox="0 0 24 24" stroke="currentColor">';
-                //         adjustmentsHTML += '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>';
-                //         adjustmentsHTML += '</svg>';
-                //         adjustmentsHTML += '</button>';
-                //         adjustmentsHTML += '</div>';
-                //     });
-                //     $('#adjustmentsSection').html(adjustmentsHTML);
-
-                //     // Show the modal
-                //     $('#viewEmployeeModal').modal('show');
-
-                //     let employeeID_string = res.data.employeeID;
-                //     $('#viewProfilePicture').click(function() {
-                //         const imagePath = '../assets/images/profiles/' + employeeID_string.replace("-", "") + '.png'; // Set your directory path here
-                    
-                //         // Use the fetch API to check if the image exists
-                //         fetch(imagePath)
-                //             .then(response => {
-                //                 if (response.ok) {
-                //                     Swal.fire({
-                //                         title: 'Profile Picture',
-                //                         imageUrl: imagePath,
-                //                         imageHeight: 300,
-                //                     });
-                //                 } else {
-                //                     Swal.fire({
-                //                         title: 'Profile Picture',
-                //                         imageUrl: "../assets/images/profiles/profile.png",
-                //                         imageHeight: 300,
-                //                     });
-                //                 }
-                //             })
-                //             .catch(error => {
-                //                 Swal.fire({
-                //                     icon: 'error',
-                //                     title: 'Error',
-                //                     text: 'An error occurred while fetching the image.',
-                //                 });
-                //                 console.error('Error fetching image:', error);
-                //             });
-                //     });
-                // }
             }
         });
 
@@ -1073,7 +950,6 @@ $(document).ready(function() {
                         $('#updateHourlyRate').val(res.data.hourlyRate);
                         $('#updateVacationLeaves').val(res.data.availableVL);
                         $('#updateSickLeaves').val(res.data.availableSL);
-                        $('#updateCashAdvance').val(res.data.cashAdvance);
 
                         // WEEK OFF SECTION
                         let selectedWeekOffCounter = 0;
@@ -1202,62 +1078,6 @@ $(document).ready(function() {
                     }
                 }
             });
-
-            // $("#resignEmpID").val(id_employee);
-            
-            // $("#viewEmployeeModal").modal("hide");
-            // $("#resignEmployeeModal").modal("show");
-
-            // $.ajax({
-            //     type: "GET",
-            //     url: "../backend/admin/employeeModal.php?employee_id=" + id_employee,
-            //     success: function(response) {
-
-            //         var res = jQuery.parseJSON(response);
-            //         if (res.status == 404) {
-            //             alert(res.message);
-            //         } else if (res.status == 200) {
-
-            //             Swal.fire({
-            //                 icon: 'question',
-            //                 title: 'Resign Employee',
-            //                 text: 'Are you sure this employee resigned?',
-            //                 showCancelButton: true,
-            //                 cancelButtonColor: '#6c757d',
-            //                 confirmButtonColor: '#28a745',
-            //                 confirmButtonText: 'Yes',
-            //             }).then((result) => {
-            //                 if (result.isConfirmed) {
-            //                     $.ajax({
-            //                         url: "../backend/admin/employeeAction.php",
-            //                         type: 'POST',
-            //                         data: {
-            //                             id_employee: id_employee,
-            //                             action: 'resign'
-            //                         },
-            //                         cache: false,
-            //                         success: function(data) {
-            //                             res = jQuery.parseJSON(data);
-            //                             var message = res.em;
-            //                             Swal.fire({
-            //                                 icon: 'success',
-            //                                 title: 'Success',
-            //                                 text: message,
-            //                                 timer: 2000,
-            //                                 showConfirmButton: false,
-            //                             }).then(() => {
-            //                                 // Refresh the View Employee Modal with updated data
-            //                                 loadInactiveEmployeeData(id_employee);
-            //                                 $('#viewEmployeeModal').modal('hide');
-            //                                 $('#viewResignedModal').modal('show');
-            //                             })
-            //                         }
-            //                     })
-            //                 }
-            //             })
-            //         }
-            //     }
-            // });
         })
     });
 
@@ -1298,7 +1118,12 @@ $(document).ready(function() {
                     $('#res_viewDepartment').val(res.data.departmentName);
                     $('#res_viewDesignation').val(res.data.position);
                     $('#res_viewShiftID').val(res.data.startTime + ' - ' + res.data.endTime);
-                    $('#res_viewEmploymentStatus').val(res.data.employmentStatus + ' - ' + res.data.resignationStatus);
+                    if (res.data.resignationStatus == "Incomplete") {
+                        $('#res_viewEmploymentStatus').val(res.data.employmentStatus + ' - ' + res.data.resignationStatus + ' (' + res.data.renderedDays + ' days rendered)');
+                    }
+                    else {
+                        $('#res_viewEmploymentStatus').val(res.data.employmentStatus + ' - ' + res.data.resignationStatus);
+                    }
                     $('#res_viewDateHired').val(res.data.dateHired);
                     $('#res_viewDateRegularized').val(res.data.dateRegularized);
                     $('#res_viewBasicPay').val(res.data.basicPay);
@@ -1309,14 +1134,26 @@ $(document).ready(function() {
                     // Show the modal
                     $('#viewResignedModal').modal('show');
 
-                    $("#viewClearanceFormFile").click(function (event) {
-                        event.preventDefault();
+                    if (res.data.clearanceForm == 1) {
+                        $("#withClearanceForm").show();
+                        $("#withoutClearanceForm").hide();
+                    }
+                    else if (res.data.clearanceForm == 0) {
+                        $("#withClearanceForm").hide();
+                        $("#withoutClearanceForm").show();
+                    }
+                    else {
+                        $("#withClearanceForm").hide();
+                        $("#withoutClearanceForm").hide();
+                    }
+                    // $("#viewClearanceFormFile").click(function (event) {
+                    //     event.preventDefault();
 
-                        const imagePath = "../assets/images/clearanceForms/" + res.data.clearanceForm;
+                    //     const imagePath = "../assets/images/clearanceForms/" + res.data.clearanceForm;
 
-                        // VIEW CLEARANCE FORM IN NEW TAB
-                        window.open(imagePath, "_blank");
-                    });
+                    //     // VIEW CLEARANCE FORM IN NEW TAB
+                    //     window.open(imagePath, "_blank");
+                    // });
                 }
             }
         });
@@ -1403,7 +1240,6 @@ $(document).ready(function() {
         var updateHourlyRate = $("#updateHourlyRate").val();
         var updateVacationLeaves = $("#updateVacationLeaves").val();
         var updateSickLeaves = $("#updateSickLeaves").val();
-        var updateCashAdvance = $("#updateCashAdvance").val();
         var updateEmploymentStatus = $("#updateEmploymentStatus").val();
         var updateDateHired = $("#updateDateHired").val();
 
@@ -1435,7 +1271,7 @@ $(document).ready(function() {
 
             }).then((result) => {
                 if (result.isConfirmed) {
-
+                    showUpdateEmployeeSpinner
                     $.ajax({
                         url: '../backend/admin/updateEmployee.php',
                         type: 'POST',
@@ -1465,6 +1301,9 @@ $(document).ready(function() {
                                     text: message,
                                 })
                             }
+                        }, 
+                        complete: function() {
+                            hideUpdateEmployeeSpinner();
                         }
                     })
                 }
@@ -1481,8 +1320,11 @@ $(document).ready(function() {
         var resignEmpID = $("#resignEmpID").val();
         var resignEmployeeID = $("#resignEmployeeID").val();
         var resignationStatus = $("#resignationStatus").val();
+        var renderedDays = $("#renderedDays").val();
         var action = "resign";
-        var clearanceForm = $("#clearanceForm")[0].files[0];
+        // var clearanceForm = $("#clearanceForm")[0].files[0];
+        var withAttachment = $("#withAttachment").val();
+        var withoutAttachment = $("#withoutAttachment").val();
         
         if (resignEmpID == "" || resignationStatus == "") {
             Swal.fire({
@@ -1496,7 +1338,10 @@ $(document).ready(function() {
             resignEmployee.append("employeeID", resignEmployeeID);
             resignEmployee.append("action", action);
             resignEmployee.append("resignationStatus", resignationStatus);
-            resignEmployee.append("clearanceForm", clearanceForm);
+            resignEmployee.append("renderedDays", renderedDays);
+            // resignEmployee.append("clearanceForm", clearanceForm);
+            resignEmployee.append("withAttachment", withAttachment);
+            resignEmployee.append("withoutAttachment", withoutAttachment);
 
             Swal.fire({
                 icon: "question",
@@ -1577,6 +1422,7 @@ $(document).ready(function() {
                     $('#viewShiftID').val(res.data.startTime + ' - ' + res.data.endTime);
                     $('#viewEmploymentStatus').val(res.data.employmentStatus);
                     $('#viewDateHired').val(res.data.dateHired);
+                    $('#viewLeavePoints').val(res.data.leavePoints);
 
                     $('#viewDateRegularized').val(res.data.dateRegularized);
                     if (res.data.employmentStatus == 'Regular') {
@@ -1586,21 +1432,22 @@ $(document).ready(function() {
                         $('.viewDateRegularizedLabel').hide();
                     }
 
-                    
                     $('#viewBasicPay').val(res.data.basicPay);
                     $('#viewDailyRate').val(res.data.dailyRate);
                     $('#viewHourlyRate').val(res.data.hourlyRate);
                     $('#viewVacationLeaves').val(res.data.availableVL);
                     $('#viewSickLeaves').val(res.data.availableSL);
 
-                    if (res.data.cashAdvance == null || res.data.cashAdvance == "0") { 
-                        $('.cashAdvancePart').hide();
-                    }
-                    else {
-                        $('#viewCashAdvance').val(res.data.cashAdvance);
-                        $('.cashAdvancePart').show();
-                    }
+                    // WEEK OFF SECTION
+                    $('#view_wo_monday').val(res.data.wo_mon == 1 ? $('#view_wo_monday').prop('checked', true) : $('#view_wo_monday').prop('checked', false));
+                    $('#view_wo_tuesday').val(res.data.wo_tue == 1 ? $('#view_wo_tuesday').prop('checked', true) : $('#view_wo_tuesday').prop('checked', false));
+                    $('#view_wo_wednesday').val(res.data.wo_wed == 1 ? $('#view_wo_wednesday').prop('checked', true) : $('#view_wo_wednesday').prop('checked', false));
+                    $('#view_wo_thursday').val(res.data.wo_thu == 1 ? $('#view_wo_thursday').prop('checked', true) : $('#view_wo_thursday').prop('checked', false));
+                    $('#view_wo_friday').val(res.data.wo_fri == 1 ? $('#view_wo_friday').prop('checked', true) : $('#view_wo_friday').prop('checked', false));
+                    $('#view_wo_saturday').val(res.data.wo_sat == 1 ? $('#view_wo_saturday').prop('checked', true) : $('#view_wo_saturday').prop('checked', false));
+                    $('#view_wo_sunday').val(res.data.wo_sun == 1 ? $('#view_wo_sunday').prop('checked', true) : $('#view_wo_sunday').prop('checked', false));
 
+                    // REQUIREMENTS SECTION
                     $('#view_req_sss').val(res.data.req_sss == 1 ? $('#view_req_sss').prop('checked', true) : $('#view_req_sss').prop('checked', false));
                     $('#view_req_pagIbig').val(res.data.req_pagIbig == 1 ? $('#view_req_pagIbig').prop('checked', true) : $('#view_req_pagIbig').prop('checked', false));
                     $('#view_req_philhealth').val(res.data.req_philhealth == 1 ? $('#view_req_philhealth').prop('checked', true) : $('#view_req_philhealth').prop('checked', false));
@@ -1678,6 +1525,59 @@ $(document).ready(function() {
                     });
                     $('#adjustmentsSection').html(adjustmentsHTML);
 
+                    // UPDATE REFERRAL SECTION
+                    var referralHTML = '';
+                    res.referrals.forEach(function(referral) {
+
+                        referralHTML += `
+                            <div class="flex bg-white p-3 border border-gray-200 gap-4 items-start">
+
+                                <div class="font-semibold min-w-[200px]">
+                                    ${referral.firstName} ${referral.lastName}
+                                </div>
+                                <div class="flex flex-col gap-1 flex-1">
+                                    <span>Employee ID: ${
+                                      referral.employeeID
+                                    }</span>
+                                    <span>Employment Status: ${
+                                      referral.employmentStatus
+                                    }</span>
+                                    <span>Date Hired: ${formatDate(
+                                      referral.dateHired
+                                    )}</span>
+
+                                    <span class="flex flex-col">
+                                        <span>Referral Bonus:</span> 
+                                        <span class="flex items-center gap-2 pl-6">
+                                            - (3 Months) ₱ 2,000
+                                            ${referral.threeMonths_status == 1 ? '<span class="text-sm bg-green-500 text-white px-2 rounded-full">Paid</span>' : ''}
+                                        </span>
+                                        <span class="flex items-center gap-2 pl-6">
+                                            - (6 Months) ₱ 2,000
+                                            ${referral.sixMonths_status == 1 ? '<span class="text-sm bg-green-500 text-white px-2 rounded-full">Paid</span>' : ''}
+                                        </span>
+                                    </span>
+                                </div>
+
+                                <div>
+                                    <button class="p-2 rounded deleteReferral"
+                                            data-id="${referral.referralID}">
+                                        <svg class="h-5 w-5 text-gray-800" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862
+                                                    a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6
+                                                    m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                        </svg>
+                                    </button>
+                                </div>
+
+                            </div>
+                        `;
+                    });
+                    $('#referralSection').html(referralHTML);
+
                     // LOAD PROFILE PICTURE
                     const img = $("#viewProfilePhoto");
                     let employeeID_string = res.data.employeeID;
@@ -1688,6 +1588,11 @@ $(document).ready(function() {
                                 console.log("Image loaded");
                                 img.attr("src", imagePath).show();
                             } else {
+                                // Swal.fire({
+                                //     title: 'Profile Picture',
+                                //     imageUrl: "../assets/images/profiles/profile.png",
+                                //     imageHeight: 300,
+                                // });
                                 console.log("Image not found");
                                 img.attr("src", "../assets/images/profiles/profile.png").show();
                             }
@@ -1735,7 +1640,11 @@ $(document).ready(function() {
                     $("#res_viewDepartment").val(res.data.departmentName);
                     $("#res_viewDesignation").val(res.data.position);
                     $("#res_viewShiftID").val(res.data.startTime + " - " + res.data.endTime);
-                    $("#res_viewEmploymentStatus").val(res.data.employmentStatus + " - " + res.data.resignationStatus);
+                    if (res.data.resignationStatus == "Incomplete") {
+                        $("#res_viewEmploymentStatus").val(res.data.employmentStatus +" - " + res.data.resignationStatus +" (" + res.data.renderedDays +" days rendered)");
+                    } else {
+                        $("#res_viewEmploymentStatus").val(res.data.employmentStatus + " - " + res.data.resignationStatus);
+                    }
                     $("#res_viewDateHired").val(res.data.dateHired);
                     $("#res_viewDateRegularized").val(res.data.dateRegularized);
                     $("#res_viewBasicPay").val(res.data.basicPay);
@@ -1743,16 +1652,19 @@ $(document).ready(function() {
                     $("#res_viewHourlyRate").val(res.data.hourlyRate);
                     $("#res_viewVacationLeaves").val(res.data.availableVL);
 
-                    $("#viewClearanceFormFile").click(function (event) {
-                        event.preventDefault();
+                    // Show the modal
+                    $("#viewResignedModal").modal("show");
 
-                        const imagePath =
-                            "../assets/images/clearanceForms/" +
-                            res.data.clearanceForm;
-
-                        // VIEW CLEARANCE FORM IN NEW TAB
-                        window.open(imagePath, "_blank");
-                    });
+                    if (res.data.clearanceForm == 1) {
+                        $("#withClearanceForm").show();
+                        $("#withoutClearanceForm").hide();
+                    } else if (res.data.clearanceForm == 0) {
+                        $("#withClearanceForm").hide();
+                        $("#withoutClearanceForm").show();
+                    } else {
+                        $("#withClearanceForm").hide();
+                        $("#withoutClearanceForm").hide();
+                    }
                 }
             }
         });
@@ -1968,6 +1880,54 @@ $(document).ready(function() {
         })
     });
 
+    // REMOVE REFERRAL ROW ON VIEW EMPLOYEE MODAL
+    $(document).on('click', '.deleteReferral', function() {
+        var empReferralID = $(this).data('id');
+        var viewID = $('#viewID').val();
+        console.log({viewID});
+        Swal.fire({
+            icon: 'question',
+            title: 'Delete Referral',
+            text: 'Are you sure you want to delete this referee?',
+            showCancelButton: true,
+            cancelButtonColor: '#6c757d',
+            confirmButtonColor: '#28a745',
+            confirmButtonText: 'Yes',
+
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                $.ajax({
+                    url: "../backend/admin/deleteEmpAdjustment.php",
+                    type: 'POST',
+                    data: { empReferralID: empReferralID },
+                    success: function(response) {
+                        const res = JSON.parse(response);
+                        var message = res.em;
+                        if (res.error == 0) {
+                            loadEmployeeData(viewID);
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: message,
+                                timer: 2000,
+                                showConfirmButton: false
+                            }).then(() => {
+                                $('#viewEmployeeModal').modal('show');
+                            });
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: message
+                            })
+                        }
+                    }
+                })
+            }
+        })
+    });
 
     // ADD DATA - ALLOWANCE MODAL
     $("#allowanceForm").on("submit", function (e) {
@@ -2352,5 +2312,113 @@ $(document).ready(function() {
                 alert("An error occurred while saving the adjustments.");
             }
         });
+    });
+
+    // REFERRAL SECTION - SEARCH EMPLOYEES
+    let employeeTypingTimer; // OUTSIDE THE EVENT
+    const debounceDelay = 400; // ms
+
+    $("#referral_employeeID").on("input", function() {
+        clearTimeout(employeeTypingTimer);
+
+        let employeeID = $(this).val().trim();
+
+        if (employeeID === "") {
+            $("#referral_employeeName").val("");
+            $("#referral_dateHired").val("");
+            $("#referral_employmentStatus").val("");
+            return;
+        }
+
+        employeeTypingTimer = setTimeout(function() {
+            $.ajax({
+                type: "GET",
+                url: "../backend/admin/fetchEmployees.php",
+                data: { employeeID: employeeID },
+                success: function (response) {
+                    var res = jQuery.parseJSON(response);
+
+                    if (res.status == 200) {
+                        $("#referral_employeeName").val(res.data.firstName + " " + res.data.lastName);
+                        $("#referral_dateHired").val(formatDate(res.data.dateHired));
+                        $("#referral_employmentStatus").val(res.data.employmentStatus);
+                        $("#referee_empID").val(res.data.id);
+                        $("#referrer_empID").val(referrer_empID);
+
+                        referee_empID = res.data.id;
+                        console.log(referrer_empID);
+                        console.log(referee_empID);
+                    } else {
+                        $("#referral_employeeName").val("");
+                        $("#referral_dateHired").val("");
+                        $("#referral_employmentStatus").val("");
+                        $("#referee_empID").val("");
+                        $("#referrer_empID").val("");
+                    }
+                },
+            });
+        }, debounceDelay);
+    });
+
+    // ADD REFERRAL FORM
+    $("#referralForm").submit(function (e) {
+        e.preventDefault();
+
+        var referee_empID = $("#referee_empID").val();
+        var action = "referral";
+
+        if (referee_empID == "" || referrer_empID == "") {
+            Swal.fire({
+                icon: "warning",
+                title: "Required Information",
+                text: "Please fill up all the required Information",
+            });
+        } else {
+            Swal.fire({
+                icon: "question",
+                title: "Referral Form",
+                text: "Are you sure you want to add this referee?",
+                showCancelButton: true,
+                cancelButtonColor: "#6c757d",
+                confirmButtonColor: "#28a745",
+                confirmButtonText: "Yes",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "POST",
+                        url: "../backend/admin/employeeAction.php",
+                        data: {
+                            referee_empID: referee_empID,
+                            action: action,
+                            referrer_empID: referrer_empID
+                        },
+                        success: function (res) {
+                            const data = JSON.parse(res);
+                            var message = data.em;
+                            if (data.error == 0) {
+                                loadEmployeeData(referrer_empID);
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Success",
+                                    text: message,
+                                    timer: 2000,
+                                    showConfirmButton: false,
+                                }).then(() => {
+                                    // Refresh the View Employee Modal with new added data
+                                    $("#referralModal").modal("hide");
+                                    $("#viewEmployeeModal").modal("show");
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Error",
+                                    text: message,
+                                });
+                            }
+                        },
+                    });
+                }
+            });
+        }
     });
 });

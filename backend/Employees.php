@@ -15,24 +15,18 @@
         private $filedOT = 'tbl_filedot';
         private $shifts = 'tbl_shiftschedule';
         private $requirements = 'tbl_requirements';
+        private $cashAdvance = 'tbl_cashadvance';
+        private $caPaymentHistory = 'tbl_caPaymentHistory';
         private $weekOff = 'tbl_empWeekOff';
         private $allowances = 'tbl_allowances';
         private $deductions = 'tbl_deductions';
+        private $referral = "tbl_referral";
+        private $payrollcycle = "tbl_payrollcycle";
+        private $salaryAdj = "tbl_salaryadj";
         private $auditTrail = 'tbl_audittrail';
         private $dbConnect = false;
         public function __construct() {
             $this->dbConnect = $this->dbConnect();
-        }
-
-        public function viewEmployees() {
-            $team = "
-                SELECT * FROM ".$this->employees." AS employees
-                INNER JOIN ".$this->department." AS department
-                ON employees.departmentID = department.departmentID
-                INNER JOIN ".$this->shifts." AS shifts
-                ON employees.shiftID = shifts.shiftID
-                WHERE designationID != 12";
-            return $team;
         }
 
         public function viewActiveEmployees() {
@@ -44,6 +38,47 @@
                 ON employees.shiftID = shifts.shiftID
                 WHERE designationID != 12 AND 
                 employees.e_status = 'Active'";
+            return $team;
+        }
+
+        public function viewAllEmployees() {
+            $team = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->department." AS department
+                ON employees.departmentID = department.departmentID
+                INNER JOIN ".$this->shifts." AS shifts
+                ON employees.shiftID = shifts.shiftID
+                WHERE designationID != 12 AND 
+                employees.e_status = 'Active'
+                ORDER BY employees.lastName ASC";
+            return $team;
+        }
+
+        public function viewAllOperations() {
+            $team = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->department." AS department
+                ON employees.departmentID = department.departmentID
+                INNER JOIN ".$this->shifts." AS shifts
+                ON employees.shiftID = shifts.shiftID
+                WHERE designationID != 12 AND 
+                department.departmentID = 1 AND
+                employees.e_status = 'Active'
+                ORDER BY employees.lastName ASC";
+            return $team;
+        }
+
+        public function viewAllIT() {
+            $team = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->department." AS department
+                ON employees.departmentID = department.departmentID
+                INNER JOIN ".$this->shifts." AS shifts
+                ON employees.shiftID = shifts.shiftID
+                WHERE designationID != 12 AND 
+                department.departmentID = 4 AND
+                employees.e_status = 'Active'
+                ORDER BY employees.lastName ASC";
             return $team;
         }
         
@@ -82,12 +117,13 @@
             return $team;
         }
 
-        public function viewTeam() {
+        public function viewTeamIT() {
             $team = "
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->department." AS department
                 ON employees.departmentID = department.departmentID
-                WHERE employees.departmentID = 4";
+                WHERE employees.departmentID = 4
+                AND employees.e_status = 'Active'";
             return $team;
         }
 
@@ -96,7 +132,8 @@
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->department." AS department
                 ON employees.departmentID = department.departmentID
-                WHERE employees.departmentID = 1";
+                WHERE employees.departmentID = 1
+                AND employees.e_status = 'Active'";
             return $team;
         }
 
@@ -232,8 +269,7 @@
             return $dtr;
         }
 
-
-        // OLD CODE
+        // NEW CODE
         // public function userViewDTR($id, $yearMonth) {
         //     $dtr = "
         //         SELECT 
@@ -251,9 +287,10 @@
         //                 FROM (
         //                     SELECT a.a + (10 * b.a) + (100 * c.a) AS n
         //                     FROM 
-        //                         (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS a
+        //                         (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL 
+        //                                 SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS a
         //                     CROSS JOIN 
-        //                         (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2) AS b
+        //                         (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3) AS b
         //                     CROSS JOIN 
         //                         (SELECT 0 AS a) AS c
         //                 ) AS days
@@ -273,48 +310,6 @@
         //     ";
         //     return $dtr;
         // }
-
-        // NEW CODE
-        public function userViewDTR($id, $yearMonth) {
-            $dtr = "
-                SELECT 
-                    all_dates.attendanceDate,
-                    COALESCE(attendance.id, '-') AS id, 
-                    COALESCE(attendance.logTypeID, '-') AS logTypeID, 
-                    COALESCE(logtype.logType, '-') AS logType, 
-                    COALESCE(DATE_FORMAT(attendance.attendanceTime, '%h:%i %p'), '-') AS attendanceTime, 
-                    COALESCE(DATE_FORMAT(shift.startTime, '%h:%i %p'), '-') AS startTime, 
-                    COALESCE(DATE_FORMAT(shift.endTime, '%h:%i %p'), '-') AS endTime
-                FROM 
-                    (
-                        SELECT 
-                            DATE('$yearMonth-01') + INTERVAL n DAY AS attendanceDate
-                        FROM (
-                            SELECT a.a + (10 * b.a) + (100 * c.a) AS n
-                            FROM 
-                                (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL 
-                                        SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS a
-                            CROSS JOIN 
-                                (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3) AS b
-                            CROSS JOIN 
-                                (SELECT 0 AS a) AS c
-                        ) AS days
-                        WHERE DATE('$yearMonth-01') + INTERVAL n DAY <= LAST_DAY('$yearMonth-01')
-                    ) AS all_dates
-                LEFT JOIN 
-                    ".$this->attendance." AS attendance 
-                    ON all_dates.attendanceDate = attendance.attendanceDate AND attendance.empID = ?
-                LEFT JOIN 
-                    ".$this->employees." AS employees ON attendance.empID = employees.id
-                LEFT JOIN 
-                    ".$this->logtype." AS logtype ON attendance.logTypeID = logtype.logTypeID 
-                LEFT JOIN 
-                    ".$this->shift." AS shift ON employees.shiftID = shift.shiftID
-                ORDER BY 
-                    all_dates.attendanceDate, attendance.attendanceTime;
-            ";
-            return $dtr;
-        }
 
         public function viewOT($id) {
             $request = "
@@ -397,7 +392,7 @@
                 ON filedOT.empID = employees.id
                 INNER JOIN ".$this->department." AS department
                 ON department.departmentID = employees.departmentID
-                WHERE employees.departmentID = 4 AND employees.designationID = 10";
+                WHERE employees.departmentID = 4 AND employees.designationID IN (10, 13, 19)";
             return $request;
         }
 
@@ -429,7 +424,7 @@
                 ON filedOT.empID = employees.id
                 INNER JOIN ".$this->department." AS department
                 ON department.departmentID = employees.departmentID
-                WHERE employees.departmentID = 1 AND employees.designationID IN (1,2,3)";
+                WHERE employees.departmentID = 1 AND employees.designationID IN (1,2,3,14)";
             return $request;
         }
 
@@ -543,7 +538,7 @@
                 ON shift_1.shiftID = employees.shiftID
                 INNER JOIN ".$this->shift." AS shift_2
                 ON shift_2.shiftID = changeShift.requestedShift
-                WHERE employees.departmentID = 4 AND employees.designationID = 10
+                WHERE employees.departmentID = 4 AND employees.designationID IN (10, 13, 19)
                 ORDER BY dateFiled DESC";
             return $request;
         }
@@ -581,7 +576,7 @@
                 ON shift_1.shiftID = employees.shiftID
                 INNER JOIN ".$this->shift." AS shift_2
                 ON shift_2.shiftID = changeShift.requestedShift
-                WHERE employees.departmentID = 1 AND employees.designationID IN (1,2,3)
+                WHERE employees.departmentID = 1 AND employees.designationID IN (1,2,3,14)
                 ORDER BY dateFiled DESC";
             return $request;
         }
@@ -650,7 +645,7 @@
                 ON department.departmentID = employees.departmentID
                 INNER JOIN ".$this->leaveType." AS leaveType
                 ON leaveType.leaveTypeID = leaves.leaveTypeID
-                WHERE employees.departmentID = 4 AND employees.designationID = 10";
+                WHERE employees.departmentID = 4 AND employees.designationID IN (10, 13, 19)";
             return $request;
         }
 
@@ -663,7 +658,7 @@
                 ON department.departmentID = employees.departmentID
                 INNER JOIN ".$this->leaveType." AS leaveType
                 ON leaveType.leaveTypeID = leaves.leaveTypeID
-                WHERE employees.departmentID = 1 AND employees.designationID IN (1,2,3)";
+                WHERE employees.departmentID = 1 AND employees.designationID IN (1,2,3,14)";
             return $request;
         }
 
@@ -678,6 +673,63 @@
                 ON leaveType.leaveTypeID = leaves.leaveTypeID
                 WHERE employees.designationID IN (4,11)";
             return $request;
+        }
+
+        public function viewCashAdvanceApplicationsHR() {
+            $cashAdvance = "
+                SELECT * FROM {$this->cashAdvance} AS cashAdvance
+                INNER JOIN {$this->employees} AS employees
+                ON cashAdvance.empID = employees.id";
+            return $cashAdvance;
+        }
+
+        public function viewCashAdvanceApplicationsOperationsManager() {
+            $cashAdvance = "
+                SELECT * FROM {$this->cashAdvance} AS cashAdvance
+                INNER JOIN {$this->employees} AS employees
+                ON cashAdvance.empID = employees.id
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE employees.designationID IN (4,11)";
+            return $cashAdvance;
+        }
+
+        public function viewCashAdvanceApplicationsOperationsTL() {
+            $cashAdvance = "
+                SELECT * FROM {$this->cashAdvance} AS cashAdvance
+                INNER JOIN {$this->employees} AS employees
+                ON cashAdvance.empID = employees.id
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE employees.departmentID = 1 AND employees.designationID IN (1,2,3,14)";
+            return $cashAdvance;
+        }
+
+        public function viewCashAdvanceApplicationsIT() {
+            $cashAdvance = "
+                SELECT * FROM {$this->cashAdvance} AS cashAdvance
+                INNER JOIN {$this->employees} AS employees
+                ON cashAdvance.empID = employees.id
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE employees.departmentID = 4 AND employees.designationID IN (10, 13, 19)";
+            return $cashAdvance;
+        }
+
+        public function viewCashAdvanceApplications($id) {
+            $cashAdvance = "
+                SELECT * FROM {$this->cashAdvance} AS cashAdvance
+                INNER JOIN {$this->employees} AS employees
+                ON cashAdvance.empID = employees.id
+                WHERE empID = $id";
+            return $cashAdvance;
+        }
+
+        public function searchEmployeeID($employeeID) {
+            $searchEmployeeID = "
+                SELECT * FROM {$this->employees} AS employees 
+                WHERE employeeID = '$employeeID'";
+            return $searchEmployeeID;
         }
 
         public function viewPersonnel() {
@@ -703,7 +755,7 @@
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
                 ON employees.id = users.empID
-                WHERE users.status = 'Active' AND designationID IN (2,3,4,5) ";
+                WHERE users.status = 'Active' AND designationID IN (2,3,4,5,14) ";
             return $allTLQA;
         }
 
@@ -712,25 +764,25 @@
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
                 ON employees.id = users.empID
-                WHERE users.status = 'Inactive' AND designationID IN (2,3,4,5)";
+                WHERE users.status = 'Inactive' AND designationID IN (2,3,4,5,14)";
             return $allTLQA;
         }
 
-        public function viewFacilities() {
+        public function viewRecruitment() {
             $allHR = "
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
                 ON employees.id = users.empID
-                WHERE users.status = 'Active' AND designationID = 6";
+                WHERE users.status = 'Active' AND designationID IN (6, 16, 17)";
             return $allHR;
         }
 
-        public function viewInactiveFacilities() {
+        public function viewInactiveRecruitment() {
             $allHR = "
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
                 ON employees.id = users.empID
-                WHERE users.status = 'Inactive' AND designationID = 6";
+                WHERE users.status = 'Inactive' AND designationID IN (6, 16, 17)";
             return $allHR;
         }
 
@@ -739,7 +791,7 @@
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
                 ON employees.id = users.empID
-                WHERE users.status = 'Active' AND designationID IN (7,9)";
+                WHERE users.status = 'Active' AND designationID IN (7,9,15,18)";
             return $allHR;
         }
 
@@ -748,7 +800,7 @@
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
                 ON employees.id = users.empID
-                WHERE users.status = 'Inactive' AND designationID IN (7,9)";
+                WHERE users.status = 'Inactive' AND designationID IN (7,9,15,18)";
             return $inactiveHR;
         }
 
@@ -809,6 +861,12 @@
         public function deactivateUser($id) {
             $deactivate = "
                 UPDATE ".$this->users." SET status = 'Inactive' WHERE userID = '$id'";
+            return $deactivate;
+        }
+
+        public function deactivateUserbyID($id) {
+            $deactivate = "
+                UPDATE {$this->users} SET status = 'Inactive' WHERE empID = {$id}";
             return $deactivate;
         }
 
@@ -931,7 +989,7 @@
         public function updateEmployeeInfo_reg($updateUserID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
             $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
             $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, 
-            $updateVacationLeaves, $updateSickLeaves, $updateCashAdvance, $updateEmploymentStatus, $updateDateHired, $updateDateRegularized) {
+            $updateVacationLeaves, $updateSickLeaves, $updateEmploymentStatus, $updateDateHired, $updateDateRegularized) {
             $updateEmployee = "
                 UPDATE ".$this->employees." AS employees 
                 SET lastName = '$updateLastName',
@@ -956,7 +1014,6 @@
                 hourlyRate = '$updateHourlyRate',
                 availableVL = '$updateVacationLeaves',
                 availableSL = '$updateSickLeaves', 
-                cashAdvance = '$updateCashAdvance', 
                 employmentStatus = '$updateEmploymentStatus',
                 dateHired = '$updateDateHired',
                 dateRegularized = '$updateDateRegularized'
@@ -967,7 +1024,7 @@
         public function updateEmployeeInfo_prob($updateUserID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
             $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
             $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, 
-            $updateVacationLeaves, $updateSickLeaves, $updateCashAdvance, $updateEmploymentStatus, $updateDateHired) {
+            $updateVacationLeaves, $updateSickLeaves, $updateEmploymentStatus, $updateDateHired) {
             $updateEmployee = "
                 UPDATE ".$this->employees." AS employees 
                 SET lastName = '$updateLastName',
@@ -992,7 +1049,6 @@
                 hourlyRate = '$updateHourlyRate',
                 availableVL = '$updateVacationLeaves',
                 availableSL = '$updateSickLeaves', 
-                cashAdvance = '$updateCashAdvance', 
                 employmentStatus = '$updateEmploymentStatus',
                 dateHired = '$updateDateHired'
                 WHERE id = '$updateUserID'";
@@ -1033,14 +1089,14 @@
 
         public function getEmployeeInfo($id) {
             $employeeInfo = "
-                SELECT id, lastName, firstName, gender, civilStatus, address, dateOfBirth, cashAdvance,
+                SELECT id, lastName, firstName, gender, civilStatus, address, dateOfBirth,
                 placeOfBirth, sss, pagIbig, philhealth, tin, emailAddress, employeeID, 
                 mobileNumber, departmentName, position, basicPay, dailyRate, hourlyRate,
                 availableVL, availableSL, req_sss, req_pagIbig, req_philhealth, req_tin, req_nbi,
                 req_medicalExam, req_2x2pic, req_vaccineCard, req_psa, req_validID, req_helloMoney,
                 employmentStatus, dateHired, dateRegularized, leavePoints, clearanceForm, resignationStatus,
                 wo_mon, wo_tue, wo_wed, wo_thu, 
-                wo_fri, wo_sat, wo_sun,
+                wo_fri, wo_sat, wo_sun, renderedDays,
                 DATE_FORMAT(shifts.startTime, '%h:%i %p') AS startTime, 
                 DATE_FORMAT(shifts.endTime, '%h:%i %p') AS endTime
                 FROM ".$this->employees." AS employees
@@ -1077,7 +1133,7 @@
         public function getLeaveInfo($leaveID) {
             $request = "
                 SELECT requestID, employeeID, leaves.leaveTypeID,
-                leaveType, remarks, status, medCert, designationID,
+                leaveType, remarks, status, attachment, designationID,
                 CONCAT(firstName, ' ', lastName) AS employeeName,
                 DATE_FORMAT(dateFiled, '%M %d, %Y') AS dateFiled,
                 DATE_FORMAT(effectivityStartDate, '%M %d, %Y') AS effectivityStartDate,
@@ -1149,15 +1205,22 @@
 
         public function fileLeave($employeeID, $leaveTypeID, $effectivityStartDate, $effectivityEndDate, $remarks, $status) {
             $fileLeave = "
-                INSERT INTO ".$this->leaves." (empID, dateFiled, leaveTypeID, effectivityStartDate, effectivityEndDate, remarks, status)
-                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$leaveTypeID', '$effectivityStartDate', '$effectivityEndDate', '$remarks', '$status')";
+                INSERT INTO ".$this->leaves." (empID, dateFiled, leaveTypeID, effectivityStartDate, effectivityEndDate, remarks, status, attachment)
+                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$leaveTypeID', '$effectivityStartDate', '$effectivityEndDate', '$remarks', '$status', NULL)";
             return $fileLeave;
         }
 
-        public function fileSickLeave($employeeID, $leaveTypeID, $effectivityStartDate, $effectivityEndDate, $remarks, $status, $medCert) {
+        public function fileLeaveWithAttachment($employeeID, $leaveTypeID, $effectivityStartDate, $effectivityEndDate, $remarks, $status, $attachment) {
             $fileLeave = "
-                INSERT INTO ".$this->leaves." (empID, dateFiled, leaveTypeID, effectivityStartDate, effectivityEndDate, remarks, status, medCert)
-                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$leaveTypeID', '$effectivityStartDate', '$effectivityEndDate', '$remarks', '$status', '$medCert')";
+                INSERT INTO ".$this->leaves." (empID, dateFiled, leaveTypeID, effectivityStartDate, effectivityEndDate, remarks, status, attachment)
+                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$leaveTypeID', '$effectivityStartDate', '$effectivityEndDate', '$remarks', '$status', '$attachment')";
+            return $fileLeave;
+        }
+
+        public function fileLeaveWithPhoto($employeeID, $leaveTypeID, $effectivityStartDate, $effectivityEndDate, $remarks, $status, $photoUpload) {
+            $fileLeave = "
+                INSERT INTO ".$this->leaves." (empID, dateFiled, leaveTypeID, effectivityStartDate, effectivityEndDate, remarks, status, photoUpload)
+                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$leaveTypeID', '$effectivityStartDate', '$effectivityEndDate', '$remarks', '$status', '$photoUpload')";
             return $fileLeave;
         }
 
@@ -1200,6 +1263,20 @@
             return $approveRequest;
         }
 
+        public function approveCashAdvance($requestID) {
+            $approveRequest = "
+                UPDATE ".$this->cashAdvance." SET request_status = 'Approved'
+                WHERE requestID = '$requestID'";
+            return $approveRequest;
+        }
+
+        public function disapproveCashAdvance($requestID) {
+            $disapproveRequest = "
+                UPDATE ".$this->cashAdvance." SET request_status = 'Disapproved'
+                WHERE requestID = '$requestID'";
+            return $disapproveRequest;
+        }
+
         public function disapproveLeave($requestID) {
             $disapproveRequest = "
                 UPDATE ".$this->leaves." SET status = 'Disapproved'
@@ -1233,6 +1310,16 @@
             return $request;
         }
 
+        public function viewCashAdvanceInfo($requestID) {
+            $request = "
+                SELECT requestID, empID
+                FROM ".$this->cashAdvance." AS cashAdvance
+                INNER JOIN ".$this->employees." AS employees
+                ON cashAdvance.empID = employees.id
+                WHERE requestID = '$requestID'";
+            return $request;
+        }
+
         public function viewOTInfo($requestID) {
             $request = "
                 SELECT empID
@@ -1240,6 +1327,32 @@
                 INNER JOIN ".$this->employees." AS employees
                 ON filedOT.empID = employees.id
                 WHERE requestID = '$requestID'";
+            return $request;
+        }
+
+        public function viewSalaryAdjInfo($salaryAdjID) {
+            $request = "
+                SELECT empID
+                FROM ".$this->salaryAdj." AS salaryAdj
+                INNER JOIN ".$this->employees." AS employees
+                ON salaryAdj.empID = employees.id
+                WHERE salaryAdjID = '$salaryAdjID'";
+            return $request;
+        }
+
+        public function fileCashAdvance($id, $amount, $monthsToPay, $monthlyAmmortization, $remainingAmount, $cutoffStart, $payrollcutoffStart, $payrollcutoffEnd, $ca_status, $requestorID, $request_status) {
+            $fileCashAdvance = "
+                INSERT INTO ".$this->cashAdvance." (empID, dateFiled, amount, monthsToPay, monthlyAmmortization, remainingAmount, cutoffStart, payrollCutoffStart, payrollCutoffEnd, ca_status, requestorID, request_status)
+                VALUES ('$id', CURRENT_TIMESTAMP, '$amount', '$monthsToPay', '$monthlyAmmortization', '$remainingAmount', '$cutoffStart', '$payrollcutoffStart', '$payrollcutoffEnd', '$ca_status', '$requestorID', '$request_status')";
+            return $fileCashAdvance;
+        }
+
+        public function viewLastCashAdvance() {
+            $request = "
+                SELECT requestID
+                FROM ".$this->cashAdvance."
+                ORDER BY requestID DESC
+                LIMIT 1";
             return $request;
         }
 
@@ -1299,25 +1412,218 @@
                 WHERE id = '$id'";
             return $leavePoints;
         }
+        public function addReferral($referrer_empID, $referee_empID) {
+            $addReferral = "
+                INSERT INTO ".$this->referral." (referrer_empID, referee_empID)
+                VALUES ('$referrer_empID', '$referee_empID')";
+            return $addReferral;
+        }
+
+        public function getAllReferral($id) {
+            $getAllReferral = "
+                SELECT referral.referralID, referral.referrer_empID, 
+                referral.referee_empID, employees.firstName, employees.lastName, 
+                employees.employeeID, employees.dateHired, employees.employmentStatus,
+                referral.threeMonths_status, referral.sixMonths_status
+                FROM ".$this->referral." AS referral
+                INNER JOIN ".$this->employees." AS employees
+                ON referral.referee_empID = employees.id
+                WHERE referral.referrer_empID = '$id'";
+            return $getAllReferral;
+        }
 
         public function resignEmployee($id, $resignationStatus, $clearanceForm) {
-            $employee = "
+            $resignEmployee = "
                 UPDATE ".$this->employees." SET 
                 employmentStatus = 'Resigned',
                 resignationStatus = '$resignationStatus',
                 e_status = 'Inactive',
                 clearanceForm = '$clearanceForm'
                 WHERE id = '$id'";    
-            return $employee;
+            return $resignEmployee;
         }
+
+        public function resignIncompleteEmployee($id, $resignationStatus, $clearanceForm, $renderedDays) {
+            $resignEmployee = "
+                UPDATE ".$this->employees." SET 
+                employmentStatus = 'Resigned',
+                resignationStatus = '$resignationStatus',
+                e_status = 'Inactive',
+                clearanceForm = '$clearanceForm',
+                renderedDays = '$renderedDays'
+                WHERE id = '$id'";
+            return $resignEmployee;
+        }
+        
 
         public function rehireEmployee($id) {
             $employee = "
                 UPDATE ".$this->employees." SET 
                 employmentStatus = 'Probationary',
-                e_status = 'Active'
+                e_status = 'Active', 
+                resignationStatus = NULL, 
+                clearanceForm = NULL,
+                renderedDays = NULL
                 WHERE id = '$id'";    
             return $employee;
+        }
+
+        public function viewApprovedBereavementLeaves($id) {
+            $approvedBereavementLeaves = "
+                SELECT * FROM {$this->leaves}
+                WHERE empID = '{$id}' AND leaveTypeID = '3' AND status = 'Approved'";
+            return $approvedBereavementLeaves;
+        }
+
+        public function viewApprovedPaternityLeaves($id) {
+            $approvedPaternityLeaves = "
+                SELECT * FROM {$this->leaves}
+                WHERE empID = '{$id}' AND leaveTypeID = '5' AND status = 'Approved'";
+            return $approvedPaternityLeaves;
+        }
+
+        public function viewActiveAgents() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 1 AND 
+                designationID IN (1,14) AND
+                employees.e_status = 'Active'";
+            return $activeAgents;
+        }
+
+        public function viewResignedAgents() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 1 AND 
+                designationID IN (1,14) AND
+                employees.e_status = 'Inactive'";
+            return $activeAgents;
+        }
+
+        public function viewActiveTLQA() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 1 AND 
+                designationID IN (2,3,4,5,14) AND
+                employees.e_status = 'Active'";
+            return $activeAgents;
+        }
+
+        public function viewResignedTLQA() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 1 AND 
+                designationID IN (2,3,4,5,14) AND
+                employees.e_status = 'Inactive'";
+            return $activeAgents;
+        }
+
+        public function viewActiveRecruitment() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 2 AND 
+                designationID IN (6,16,17) AND
+                employees.e_status = 'Active'";
+            return $activeAgents;
+        }
+
+        public function viewResignedRecruitment() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 2 AND 
+                designationID IN (6,16,17) AND
+                employees.e_status = 'Inactive'";
+            return $activeAgents;
+        }
+
+        public function viewActiveIT() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 4 AND 
+                designationID IN (10,11,13,19) AND
+                employees.e_status = 'Active'";
+            return $activeAgents;
+        }
+
+        public function viewResignedIT() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 4 AND 
+                designationID IN (10,11,13,19) AND
+                employees.e_status = 'Inactive'";
+            return $activeAgents;
+        }
+
+        public function viewActiveFinance() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 3 AND 
+                designationID = 8 AND
+                employees.e_status = 'Active'";
+            return $activeAgents;
+        }
+
+        public function viewResignedFinance() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 4 AND 
+                designationID = 8 AND
+                employees.e_status = 'Inactive'";
+            return $activeAgents;
+        }
+
+        public function viewActiveHR() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 3 AND 
+                designationID IN (7,9,15,18) AND
+                employees.e_status = 'Active'";
+            return $activeAgents;
+        }
+
+        public function viewResignedHR() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 3 AND 
+                designationID IN (7,9,15,18) AND
+                employees.e_status = 'Inactive'";
+            return $activeAgents;
         }
 
         // OLD CODE
@@ -1335,9 +1641,21 @@
         // NEW CODE
         public function viewAuditTrail() {
             $auditTrail = "
-                SELECT auditTrailID, date, employees.firstName, employees.lastName, module, action, affected_empID FROM ".$this->auditTrail ." AS auditTrail
+                SELECT auditTrailID, date, employees.firstName, employees.lastName, module, action, affected_empID 
+                FROM ".$this->auditTrail ." AS auditTrail
                 INNER JOIN ".$this->employees." AS employees
                 ON auditTrail.empID = employees.id
+                ORDER BY auditTrail.auditTrailID DESC";
+            return $auditTrail;
+        }
+
+        public function viewAuditTrailEmployee() {
+            $auditTrail = "
+                SELECT auditTrailID, date, employees.firstName, employees.lastName, module, action, affected_empID 
+                FROM ".$this->auditTrail ." AS auditTrail
+                INNER JOIN ".$this->employees." AS employees
+                ON auditTrail.empID = employees.id
+                WHERE module LIKE '%Employee%'
                 ORDER BY auditTrail.auditTrailID DESC";
             return $auditTrail;
         }
@@ -1348,6 +1666,74 @@
                 FROM ".$this->employees." AS employees
                 WHERE id = '$empID'";
             return $affectedUser;
+        }
+
+        public function viewAuditTrailPayroll() {
+            $payroll = "
+                SELECT auditTrailID, date, employees.firstName, employees.lastName, module, action, affected_empID 
+                FROM ".$this->auditTrail." AS auditTrail
+                INNER JOIN ".$this->employees." AS employees
+                ON auditTrail.empID = employees.id
+                WHERE module LIKE '%Payroll%'
+                ORDER BY auditTrail.auditTrailID DESC";
+            return $payroll;
+        }
+
+        public function viewAuditTrailLeave() {
+            $leave = "
+                SELECT auditTrailID, date, employees.firstName, employees.lastName, module, action, affected_empID 
+                FROM ".$this->auditTrail." AS auditTrail
+                INNER JOIN ".$this->employees." AS employees
+                ON auditTrail.empID = employees.id
+                WHERE module LIKE '%Leave%'
+                ORDER BY auditTrail.auditTrailID DESC";
+            return $leave;
+        }
+
+        public function viewAuditTrailChangeShift() {
+            $changeShift = "
+                SELECT auditTrailID, date, employees.firstName, employees.lastName, module, action, affected_empID 
+                FROM ".$this->auditTrail." AS auditTrail
+                INNER JOIN ".$this->employees." AS employees
+                ON auditTrail.empID = employees.id
+                WHERE module LIKE '%Change Shift%'
+                ORDER BY auditTrail.auditTrailID DESC";
+            return $changeShift;
+        }
+
+        public function viewAuditTrailOvertime() {
+            $overtime = "
+                SELECT auditTrailID, date, employees.firstName, employees.lastName, module, action, affected_empID 
+                FROM ".$this->auditTrail." AS auditTrail
+                INNER JOIN ".$this->employees." AS employees
+                ON auditTrail.empID = employees.id
+                WHERE module LIKE '%OT%' OR module LIKE '%Overtime%'
+                ORDER BY auditTrail.auditTrailID DESC";
+            return $overtime;
+        }
+
+        public function viewAuditTrailSalaryAdjustments() {
+            $adjustments = "
+                SELECT auditTrailID, date, employees.firstName, 
+                employees.lastName, module, action, affected_empID 
+                FROM ".$this->auditTrail." AS auditTrail
+                INNER JOIN ".$this->employees." AS employees
+                ON auditTrail.empID = employees.id
+                INNER JOIN ".$this->employees." AS emp
+                ON auditTrail.affected_empID = emp.id
+                WHERE module LIKE '%Salary%'
+                ORDER BY auditTrail.auditTrailID DESC";
+            return $adjustments;
+        }
+
+        public function viewAuditTrailUsers() {
+            $users = "
+                SELECT auditTrailID, date, employees.firstName, employees.lastName, module, action, affected_empID FROM ".$this->auditTrail." AS auditTrail
+                INNER JOIN ".$this->employees." AS employees
+                ON auditTrail.empID = employees.id
+                WHERE module LIKE '%User%'
+                ORDER BY auditTrail.auditTrailID DESC";
+            return $users;
         }
         
         public function auditTrail($empID, $module, $action, $affected_empID) {

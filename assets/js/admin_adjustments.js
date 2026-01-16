@@ -1,22 +1,96 @@
+function formatDate(dateStr) {
+    if (!dateStr) return '';
+
+    var dateObj = new Date(dateStr);
+
+    return dateObj.toLocaleDateString("en-US", {
+        month: "short",
+        day: "2-digit",
+        year: "numeric"
+    });
+}
+
+function formatNumberWithCommas(number) {
+    number = parseFloat(number);
+    if (isNaN(number)) return "0.00";
+    return number.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 $(document).ready(function() {
 
     $('#allowancesTable').DataTable();
     $('#reimbursementsTable').DataTable();
     $('#deductionsTable').DataTable();
     $('#adjustmentsTable').DataTable();
+    $("#salaryTable").DataTable();
 
     // ADD ADJUSTMENT 
     $('#adjustmentLabel').hide();
     $('#adjustment').hide();
 
+    $('.salaryAdjustment').hide();
+
     $('#dataType').change(function() {
         if ($(this).val() == 4) {
             $('#adjustmentLabel').show();
             $('#adjustment').show();
-        } else {
+            $(".normalAdjustment").show();
+            $(".salaryAdjustment").hide();
+        }
+        else if ($(this).val() == 5) {
+            $('.salaryAdjustment').show();
+            $(".normalAdjustment").hide();
+        }
+        else {
             $('#adjustmentLabel').hide();
             $('#adjustment').hide();
+            $(".normalAdjustment").show();
+            $(".salaryAdjustment").hide();
         }
+    });
+
+    $("#approveSalaryAdjustment").hide();
+    $("#disapproveSalaryAdjustment").hide();
+
+    $('#employeeID').inputmask('999-999', {
+        placeholder: 'XXX-XXX'
+    });
+
+    // REFERRAL SECTION - SEARCH EMPLOYEES
+    let employeeTypingTimer; // OUTSIDE THE EVENT
+    const debounceDelay = 400; // ms
+
+    $("#employeeID").on("input", function() {
+        clearTimeout(employeeTypingTimer);
+
+        let employeeID = $(this).val().trim();
+
+        if (employeeID === "") {
+            $("#employeeName").val("");
+            $("#currentSalary").val("");
+            return;
+        }
+
+        employeeTypingTimer = setTimeout(function() {
+            $.ajax({
+                type: "GET",
+                url: "../backend/admin/fetchEmployees.php",
+                data: { employeeID: employeeID },
+                success: function (response) {
+                    var res = jQuery.parseJSON(response);
+
+                    if (res.status == 200) {
+                        $("#employeeName").val(res.data.firstName + " " + res.data.lastName);
+                        $("#currentSalary").val(formatNumberWithCommas(res.data.basicPay));
+                        $("#empID").val(res.data.id);
+                    } else {
+                        $("#employeeName").val("");
+                        $("#currentSalary").val("");
+                        $("#empID").val("");
+                    }
+                },
+            });
+        }, debounceDelay);
     });
     
     // ADD DATA
@@ -25,9 +99,8 @@ $(document).ready(function() {
         e.preventDefault();
 
         var dataType = $("#dataType").val();
-        var name = $("#name").val();
 
-        if (dataType == '' || name == '') {
+        if (dataType == '') {
             Swal.fire({
                 icon: 'warning',
                 title: 'Required Information',
@@ -67,6 +140,9 @@ $(document).ready(function() {
                                 else if (dataType == 4) {
                                     loadAdjustmentData(id);
                                 }
+                                else if (dataType == 5) {
+                                    loadSalaryAdjustmentData(id);
+                                }
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Success',
@@ -86,6 +162,9 @@ $(document).ready(function() {
                                     }
                                     else if (dataType == 4) {
                                         $('#viewAdjustmentModal').modal('show');
+                                    }
+                                    else if (dataType == 5) {
+                                        $('#viewSalaryAdjustmentModal').modal('show');
                                     }
                                 })
                             } else {
@@ -523,6 +602,230 @@ $(document).ready(function() {
         })
     });
 
+    // VIEW AND UPDATE SALARY ADJUSTMENTS
+    var array = [];
+    $(document).on('click', '.salaryAdjustmentView  ', function() {
+        var salary_id = $(this).data('id');
+        array.push(salary_id);
+        var id_salary = array[array.length - 1];
+
+        // VIEW SALARY ADJUSTMENTS
+        $.ajax({
+            type: "GET",
+            url: "../backend/admin/adjustmentModal.php?salary_id=" + id_salary,
+            success: function(response) {
+
+                var res = jQuery.parseJSON(response);
+
+                if (res.status == 404) {
+                    alert(res.message);
+                } 
+                else if (res.status == 200) {
+                    $("#viewDateFiled").val(formatDate(res.data.dateFiled));
+                    $("#viewStatus").val(res.data.status);
+                    $("#viewEmployeeID").val(res.data.employeeID);
+                    $("#viewEmployeeName").val(res.data.firstName + " " + res.data.lastName);
+                    $("#viewCurrentSalary").val("₱ " + formatNumberWithCommas(res.data.basicPay));
+                    $("#viewSuggestedSalary").val("₱ " + formatNumberWithCommas(res.data.suggestedSalary));
+                    $("#viewReason").val(res.data.reason);
+
+                    if (res.data.status == "Pending") {
+                        $("#approveSalaryAdjustment").show();
+                        $("#disapproveSalaryAdjustment").show();
+                    }
+                    else {
+                        $("#approveSalaryAdjustment").hide();
+                        $("#disapproveSalaryAdjustment").hide();
+                    }
+
+                    $("#viewSalaryAdjustmentModal").modal("show");
+                }
+            }
+        });
+
+        // APPROVE SALARY ADJUSTMENT
+        $(document).on('click', '.salaryApprove', function() {
+            var id_salary = array[array.length - 1];
+
+            $.ajax({
+                type: "GET",
+                url: "../backend/admin/adjustmentModal.php?salary_id=" + id_salary,
+                success: function(response) {
+
+                    var res = jQuery.parseJSON(response);
+                    if (res.status == 404) {
+                        alert(res.message);
+                    } else if (res.status == 200) {
+
+                        Swal.fire({
+                            icon: 'question',
+                            title: 'Approve Salary Adjustment',
+                            text: 'Are you sure you want to approve this salary adjustment?',
+                            showCancelButton: true,
+                            cancelButtonColor: '#6c757d',
+                            confirmButtonColor: '#28a745',
+                            confirmButtonText: 'Yes',
+
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $.ajax({
+                                    url: "../backend/admin/salaryAdjAction.php",
+                                    type: 'POST',
+                                    data: {
+                                        id_salary: id_salary,
+                                        action: 'approve'
+                                    },
+                                    cache: false,
+                                    success: function(data) {
+
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Success',
+                                            text: 'Salary adjustment has been approved!',
+                                            timer: 2000,
+                                            showConfirmButton: false,                                        didClose: () => {
+                                                loadSalaryAdjustmentData(id_salary);
+                                            }    
+                                        })
+                                    }
+                                })
+                            }
+                        })
+                    }
+                }
+            });
+        })
+
+        // DISAPPROVE SALARY ADJUSTMENT
+        $(document).on('click', '.salaryDisapprove', function() {
+            var id_salary = array[array.length - 1];
+
+            $.ajax({
+                type: "GET",
+                url: "../backend/admin/adjustmentModal.php?salary_id=" + id_salary,
+                success: function(response) {
+
+                    var res = jQuery.parseJSON(response);
+                    if (res.status == 404) {
+                        alert(res.message);
+                    } else if (res.status == 200) {
+
+                        Swal.fire({
+                            icon: 'question',
+                            title: 'Disapprove Salary Adjustment',
+                            text: 'Are you sure you want to disapprove this salary adjustment?',
+                            showCancelButton: true,
+                            cancelButtonColor: '#6c757d',
+                            confirmButtonColor: '#28a745',
+                            confirmButtonText: 'Yes',
+
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $.ajax({
+                                    url: "../backend/admin/salaryAdjAction.php",
+                                    type: 'POST',
+                                    data: {
+                                        id_salary: id_salary,
+                                        action: 'disapprove'
+                                    },
+                                    cache: false,
+                                    success: function(data) {
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Success',
+                                            text: 'Salary adjustment has been disapproved!',
+                                            timer: 2000,
+                                            showConfirmButton: false,
+                                            didClose: () => {
+                                                loadSalaryAdjustmentData(id_salary);
+                                            }
+                                        })
+                                    }
+                                })
+                            }
+                        })
+                    }
+                }
+            });
+        })
+
+        // UPDATE SALARY ADJUSTMENTS
+        $(document).on('click', '.salaryAdjustmentUpdate', function() {
+            $('#viewAdjustmentModal').modal('hide');
+            var id_salary = array[array.length - 1];
+
+            $.ajax({
+                type: "GET",
+                url: "../backend/admin/adjustmentModal.php?salary_id=" + id_salary,
+                success: function(response) {
+
+                    var res = jQuery.parseJSON(response);
+                    if (res.status == 404) {
+                        alert(res.message);
+                    } 
+                    else if (res.status == 200) {
+                        $('#updateAdjustmentID').val(res.data.adjustmentID);
+                        $('#updateAdjustmentName').val(res.data.adjustmentName);
+                        $('#updateAdjustmentType').val(res.data.adjustmentType);
+                        $('#updateAdjustmentModal').modal('show');
+                    }
+                }
+            });
+        })
+
+        // DELETE SALARY ADJUSTMENTS
+        $(document).on('click', '.salaryAdjustmentDelete', function() {
+            var id_salary = array[array.length - 1];
+
+            $.ajax({
+                type: "GET",
+                url: "../backend/admin/adjustmentModal.php?salary_id=" + id_salary,
+                success: function(response) {
+
+                    var res = jQuery.parseJSON(response);
+                    if (res.status == 404) {
+                        alert(res.message);
+                    } else if (res.status == 200) {
+
+                        Swal.fire({
+                            icon: 'question',
+                            title: 'Delete Salary Adjustment',
+                            text: 'Are you sure you want to delete this salary adjustment?',
+                            showCancelButton: true,
+                            cancelButtonColor: '#6c757d',
+                            confirmButtonColor: '#28a745',
+                            confirmButtonText: 'Yes',
+
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+
+                                $.ajax({
+                                    url: "../backend/admin/deleteAdjustment.php",
+                                    type: 'POST',
+                                    data: {
+                                        id_salary: id_salary
+                                    },
+                                    cache: false,
+                                    success: function(data) {
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Success',
+                                            text: 'Adjustment Deleted Successfully',
+                                            timer: 2000,
+                                            showConfirmButton: false,
+                                        }).then(() => {
+                                            window.location.reload();
+                                        })
+                                    }
+                                })
+                            }
+                        })
+                    }
+                }
+            });
+        })
+    });
+
 
     // UPDATE ALLOWANCE
     $("#updateAllowanceForm").submit(function (e) {
@@ -872,6 +1175,39 @@ $(document).ready(function() {
         });
     }
 
+    function loadSalaryAdjustmentData(id_salary) {
+        $.ajax({
+            type: "GET",
+            url: "../backend/admin/adjustmentModal.php?salary_id=" + id_salary,
+            success: function(response) {
+
+                var res = jQuery.parseJSON(response);
+
+                if (res.status == 404) {
+                    alert(res.message);
+                } 
+                else if (res.status == 200) {
+                    $("#viewDateFiled").val(formatDate(res.data.dateFiled));
+                    $("#viewStatus").val(res.data.status);
+                    $("#viewEmployeeID").val(res.data.employeeID);
+                    $("#viewEmployeeName").val(res.data.firstName + " " + res.data.lastName);
+                    $("#viewCurrentSalary").val("₱ " + formatNumberWithCommas(res.data.basicPay));
+                    $("#viewSuggestedSalary").val("₱ " + formatNumberWithCommas(res.data.suggestedSalary));
+                    $("#viewReason").val(res.data.reason);
+
+                    if (res.data.status == "Pending") {
+                        $("#approveSalaryAdjustment").show();
+                        $("#disapproveSalaryAdjustment").show();
+                    }
+                    else {
+                        $("#approveSalaryAdjustment").hide();
+                        $("#disapproveSalaryAdjustment").hide();
+                    }
+                }
+            }
+        });
+    }
+
 
     $('#btnClose_allowance').on('click', function() {
         window.location.reload();
@@ -886,6 +1222,10 @@ $(document).ready(function() {
     });
 
     $('#btnClose_adjustment').on('click', function() {
+        window.location.reload();
+    });
+
+    $('#btnClose_salaryAdjustment').on('click', function() {
         window.location.reload();
     });
 });

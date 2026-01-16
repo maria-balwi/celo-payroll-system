@@ -32,7 +32,7 @@
                                 }
                                 else 
                                 {
-                                    $totalITTeamQuery = mysqli_query($conn, $employees->viewTeam());
+                                    $totalITTeamQuery = mysqli_query($conn, $employees->viewTeamIT());
                                     $totalITTeam = mysqli_num_rows($totalITTeamQuery);
                                     echo $totalITTeam;
                                 }
@@ -153,6 +153,9 @@
                                     
                                     $getPendingOvertimeQuery = mysqli_query($conn, $attendance->getPendingOperationsOvertimeManager());
                                     $getPendingOvertime = mysqli_num_rows($getPendingOvertimeQuery);
+
+                                    $getPendingCashAdvanceQuery = mysqli_query($conn, $attendance->getPendingOperationsCashAdvanceManager());
+                                    $getPendingCashAdvance = mysqli_num_rows($getPendingCashAdvanceQuery);
                                 }
                                 else {
                                     $getPendingLeavesQuery = mysqli_query($conn, $attendance->getPendingOperationsLeavesTL());
@@ -163,6 +166,9 @@
                                     
                                     $getPendingOvertimeQuery = mysqli_query($conn, $attendance->getPendingOperationsOvertimeTL());
                                     $getPendingOvertime = mysqli_num_rows($getPendingOvertimeQuery);
+
+                                    $getPendingCashAdvanceQuery = mysqli_query($conn, $attendance->getPendingOperationsCashAdvanceTL());
+                                    $getPendingCashAdvance = mysqli_num_rows($getPendingCashAdvanceQuery);
                                 }
                             }
                             else 
@@ -175,6 +181,9 @@
 
                                 $getPendingOvertimeQuery = mysqli_query($conn, $attendance->getPendingITOvertime());
                                 $getPendingOvertime = mysqli_num_rows($getPendingOvertimeQuery);
+
+                                $getPendingCashAdvanceQuery = mysqli_query($conn, $attendance->getPendingITCashAdvance());
+                                $getPendingCashAdvance = mysqli_num_rows($getPendingCashAdvanceQuery);
                             }
 
                             if ($getPendingLeaves != 0) { ?>
@@ -214,7 +223,6 @@
                                         </div>
                                     </div>
                                 </a>
-
                         <?php } 
                             if ($getPendingOvertime != 0) { ?>
                                 <!-- ======== FILED OTs ======== -->
@@ -231,6 +239,25 @@
                                         </div>
                                         <div class="bg-yellow-200 text-gray-700 px-3 py-2 rounded-lg my-auto text-center font-semibold">
                                             <?php echo $getPendingOvertime ?>
+                                        </div>
+                                    </div>
+                                </a>
+                         <?php } 
+                            if ($getPendingCashAdvance != 0) { ?>
+                                <!-- ======== CASH ADVANCE APPLICATIONS ======== -->
+                                <a href="team_cashAdvance.php" class="no-underline text-gray-700">
+                                    <div class="flex gap-2 p-2 rounded-lg hover:bg-blue-100 px-auto">
+                                        <div class="my-auto pb-3">
+                                            <svg class="h-10 w-10 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                            </svg>
+                                        </div>
+                                        <div class="py-auto px-auto">
+                                            <h2 class="text-lg mb-0 font-semibold">Cash Advance Applications</h2>
+                                            <p class="text-gray-500 text-sm">Pending cash advance applications</p>
+                                        </div>
+                                        <div class="bg-yellow-200 text-gray-700 px-3 py-2 rounded-lg my-auto text-center font-semibold">
+                                            <?php echo $getPendingCashAdvance ?>
                                         </div>
                                     </div>
                                 </a>
@@ -272,6 +299,16 @@
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     <?php
+                                        function formatTime ($time) {
+                                            if ($time == "-" || $time == null) {
+                                                return "-";
+                                            }
+                                            else {
+                                                $time = strtotime($time);
+                                                return date('h:i A', $time);
+                                            }
+                                        }
+
                                         if ($_SESSION['departmentID'] == 1) 
                                         {
                                             if ($_SESSION['designationID'] == 5) {
@@ -364,19 +401,56 @@
                                                 $teamIT_id = $itTeamDetails['id'];
                                                 $teamIT_employeeName = $itTeamDetails['firstName'] . " " . $itTeamDetails['lastName'];
                                                 $teamIT_shift = $itTeamDetails['startTime'] . " - " . $itTeamDetails['endTime'];
-                                                $teamIT_status = "Absent";
                                                 $team_timeIn = "-";
                                                 $team_timeOut = "-";
 
                                                 // GET ATTENDANCE TIME - TIME IN
-                                                $dailyAttendanceQuery_timeIn = mysqli_query($conn, $attendance->dailyAttendance_timeIn($teamIT_id));
-                                                $dailyAttendance_timeInDetails = mysqli_fetch_array($dailyAttendanceQuery_timeIn);
-                                                $dateTime;
-                                                if (isset($dailyAttendance_timeInDetails['attendanceTime']))
-                                                {
-                                                    $team_timeIn = $dailyAttendance_timeInDetails['attendanceTime'];
-                                                    $teamIT_status = "Present";
+                                                // $dailyAttendanceQuery_timeIn = mysqli_query($conn, $attendance->dailyAttendance_timeIn($teamIT_id));
+                                                // $dailyAttendance_timeInDetails = mysqli_fetch_array($dailyAttendanceQuery_timeIn);
+                                                // $dateTime;
+                                                // if (isset($dailyAttendance_timeInDetails['attendanceTime']))
+                                                // {
+                                                //     $team_timeIn = $dailyAttendance_timeInDetails['attendanceTime'];
+                                                //     $teamIT_status = "Present";
+                                                // }
+                                                // else {
+                                                //     $teamIT_status = "Absent";
+                                                // }
+
+                                                $currentDT = new DateTime();
+                                                // FETCH SHIFT DETAILS
+                                                $getShiftDetailsQuery = mysqli_query($conn, $attendance->getShiftDetails($teamIT_id));
+                                                $getShiftDetailsDetails = mysqli_fetch_array($getShiftDetailsQuery);
+                                                $shiftStart = $getShiftDetailsDetails['startTime'];
+                                                $shiftEnd = $getShiftDetailsDetails['endTime'];
+                                                $isWeekOff = $getShiftDetailsDetails['isWeekOff'];
+                                                
+                                                $shiftStartDT = DateTime::createFromFormat('H:i:s', $shiftStart);
+                                                $shiftEndDT   = DateTime::createFromFormat('H:i:s', $shiftEnd);
+
+                                                // FETCH ATTENDANCE DETAILS
+                                                $attendanceQuery = mysqli_query($conn, $attendance->dailyAttendance_timeIn($teamIT_id));
+                                                $attendanceDetails = mysqli_fetch_array($attendanceQuery);
+                                                $team_timeIn = $attendanceDetails['attendanceTime'] ?? "-";
+
+                                                if ($isWeekOff == 1) {
+                                                    $teamIT_status = "Week Off";
                                                 }
+                                                elseif ($currentDT >= $shiftStartDT && $currentDT <= $shiftEndDT) {
+                                                    $teamIT_status = isset($attendanceDetails['attendanceTime']) ? "Present" : "Absent";
+                                                    // $teamIT_status = is_null($attendanceDetails['attendanceTime']) ? "Absent" : "Present";
+                                                }
+                                                elseif ($currentDT < $shiftStartDT) {
+                                                    $teamIT_status = "Not His Shift Yet";
+                                                }
+                                                else {
+                                                    $teamIT_status = "Absent"; // fallback
+                                                }
+
+                                                $attendanceQuery = mysqli_query($conn, $attendance->dailyAttendance_timeOut($teamIT_id));
+                                                $attendanceDetails = mysqli_fetch_array($attendanceQuery);
+                                                $team_timeOut = $attendanceDetails['attendanceTime'] ?? "-";
+
 
                                                 // GET ATTENDANCE TIME - TIME OUT
                                                 $dailyAttendanceQuery_timeOut = mysqli_query($conn, $attendance->dailyAttendance_timeOut($teamIT_id));
@@ -389,9 +463,9 @@
                                                 echo "<tr data-id='" . $teamIT_id . "'>"; 
                                                 echo "<td class ='whitespace-nowrap text-left'>" . $teamIT_employeeName . "</td>";
                                                 echo "<td class ='whitespace-nowrap'>" . $teamIT_shift . "</td>";
-                                                echo "<td class ='whitespace-nowrap'>" . $team_timeIn . "</td>";
-                                                echo "<td class ='whitespace-nowrap'>" . $team_timeOut . "</td>";
-                                                if ($teamIT_status == "Present") { 
+                                                echo "<td class ='whitespace-nowrap'>" . formatTime($team_timeIn) . "</td>";
+                                                echo "<td class ='whitespace-nowrap'>" . formatTime($team_timeOut) . "</td>";
+                                                if ($teamIT_status == "Present") {
                                                     echo "<td class ='whitespace-nowrap text-green-500'>" . $teamIT_status . "</td>";
                                                 }
                                                 else { 

@@ -228,7 +228,6 @@
                             <h1 class="modal-title fs-5" id="viewLeaveLabel">View Leave</h1>
                             <input type="hidden" id="viewLeaveID">
                             <input type="hidden" id="userDept" value="<?php echo $_SESSION['departmentID']; ?>">
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <form>
@@ -308,9 +307,19 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-2" id="viewMedCertRow">
+                                <!-- <div class="row g-2" id="viewPhotoRow">
                                     <div class="col-12">
-                                        <button id="viewMedicalCert" class="text-blue-500">View Medical Certificate</button>
+                                        <button id="viewPhoto" class="text-blue-500">View Uploaded Photo</button>
+                                    </div>
+                                </div> -->
+                                <div class="row g-2" id="viewWithAttachmentRow">
+                                    <div class="col-12">
+                                        <label class="text-blue-500">With Attachment</label>
+                                    </div>
+                                </div>
+                                <div class="row g-2" id="viewWithoutAttachmentRow">
+                                    <div class="col-12">
+                                        <label class="text-blue-500">Without Attachment</label>
                                     </div>
                                 </div>
                             </form>

@@ -5,8 +5,8 @@ $(document).ready(function() {
     $('#tlqaTable').DataTable();
     $('#inactiveTlqaTable').DataTable();
 
-    $('#facilitiesTable').DataTable();
-    $('#inactiveFacilitiesTable').DataTable();
+    $("#recruitmentTable").DataTable();
+    $("#inactiveRecruitmentTable").DataTable();
 
     $('#hrTable').DataTable();
     $('#inactiveHRtable').DataTable();
@@ -20,7 +20,7 @@ $(document).ready(function() {
     $('#directorsTable').DataTable();
     $('#inactiveDirectorsTable').DataTable();
 
-    if ($('#adminID').val() == 9 || $('#adminID').val() == 10 || $('#adminID').val() == 11) {
+    if ($('#adminID').val() == 9 || $('#adminID').val() == 10 || $('#adminID').val() == 11 || $('#adminID').val() == 13 || $('#adminID').val() == 15 || $('#adminID').val() == 18 || $('#adminID').val() == 19) {
         $('#btnAddUser').show();
         $('.userResetPassword').show();
         $('.userDeactivate').show();

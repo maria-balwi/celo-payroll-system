@@ -39,50 +39,76 @@
             // ====== CHECK LAST DTR INFO ========
             // FETCH DATA FROM DATABASE
             if ($_SESSION['levelID'] == 0) {
-                $_SESSION['dtr'] = 'forTimeIn';
+                $_SESSION['dtr'] = 'forWaiting';
             }
             else {
-                $_SESSION['dtr'] = 'forTimeIn';
                 $lastDTRQuery = mysqli_query($conn, $users->checkLastDTR($_SESSION['id']));
+                date_default_timezone_set('Asia/Manila');
                 if (mysqli_num_rows($lastDTRQuery) == 0) {
                     $_SESSION['dtr'] = 'forTimeIn';
                 }
                 else {
                     $lastDTR = mysqli_fetch_array($lastDTRQuery);
-                    $logType = $lastDTR['logType'];
-                    $attendanceDate = $lastDTR['attendanceDate'];
+                    $logType = $lastDTR['logType']; // TIME IN, LATE, UNDERTIME, TIME OUT
+                    $attendanceDate = $lastDTR['attendanceDate']; 
                     $attendanceTime = $lastDTR['attendanceTime'];
+                    $shiftStart = $lastDTR['startTime'];
+                    $shiftEnd = $lastDTR['endTime'];
 
-                    // COMBINE DATE AND TIME
-                    $dtrDateTime = $attendanceDate . " " . $attendanceTime;
-                    $dtrDateTime = new DateTime($dtrDateTime);
+                    // BUILD ACTUAL TIME IN
+                    $timeInDT = new DateTime($attendanceDate . ' ' . $attendanceTime);
+     
+                    // BUILD SHIFT START
+                    $shiftStartDT = new DateTime($attendanceDate . ' ' . $shiftStart);
 
-                    // // SETTING TIME BEFORE GETTING CURRENT DATE AND TIME
-                    // date_default_timezone_set('Asia/Manila');
-                    // $currentDateTime = new DateTime(); 
+                    // CHECK IF SHIFT START IS EARL
+                    // MEANS SHIFT STARTS NEXT DAY
+                    // 12 AM SCHEDULES
+                    if ($shiftStartDT < $timeInDT) {
+                        $shiftStartDT->modify('+1 day');
+                    }
 
-                    // // ADD 2 HOURS INTERVAL
-                    // $interval = new DateInterval('PT2H');
-                    // $updatedDateTime = $dtrDateTime->add($interval);
+                    // AUTO TIME LIMIT
+                    // 9 hrs regular + 8 hrs OT = 17 hrs
+                    $autoTimeoutDT = clone $shiftStartDT;
+                    $autoTimeoutDT->modify('+17 hours');
+
+                    // SETTING TIME BEFORE GETTING CURRENT DATE AND TIME
+                    $currentDateTime = new DateTime(); 
                     
-                    // SESSION VARIABLE FOR DTR
+                    // SESSION DEFAULT VALUE FOR DTR VARIABLE
                     $_SESSION['dtr'] = 'forTimeIn';
 
                     if ($logType == "Time In" || $logType == "Late") 
                     {
-                        // CAN TIME OUT ANYTIME
-                        $_SESSION['dtr'] = 'forTimeOut';
+                        // // CAN TIME OUT ANYTIME
+                        // $_SESSION['dtr'] = 'forTimeOut';
 
-                        // if ($currentDateTime < $updatedDateTime) 
-                        // {
-                        //     $_SESSION['dtr'] = 'forTimeOut';
-                        // }
+                        if ($currentDateTime < $autoTimeoutDT) 
+                        {
+                            $_SESSION['dtr'] = 'forTimeOut';
+                        }
+                        else {
+                            // $assumedTimeIn = $attendanceDate . " " . $shiftStart;
+                            // $assumedTimeIn = new DateTime($assumedTimeIn);
+
+                            // $endOfShiftInterval = new DateInterval('PT9H');
+                            // $assumedTimeIn->add($endOfShiftInterval);
+
+                            // $newAttendanceDate = $assumedTimeIn->format('Y-m-d');
+
+                            $newAttendanceDT = clone $shiftStartDT;
+                            $newAttendanceDT->modify('+9 hours');
+                            $newAttendanceDate = $newAttendanceDT->format('Y-m-d');
+
+                            mysqli_query($conn, $attendance->addEmployeeTimeOut($_SESSION['id'], $newAttendanceDate, $shiftEnd));
+                        }
                     }
                     else if ($logType == "Time Out" || $logType == "Undertime")
                     {
                         // // ADD 2 HOURS INTERVAL AFTER TIME OUT
                         // $interval = new DateInterval('PT2H');
-                        // $updatedDateTime = $dtrDateTime->add($interval);
+                        // $updatedDateTime = $shiftStartDT->add($interval);
 
                         // if ($currentDateTime < $updatedDateTime)
                         // {
@@ -99,5 +125,9 @@
 
             // ====== CHECK DATE FOR LEAVE POINTS AND REGULARIZATION ========
             $version = $users->cacheBusting();
+
+            // SET TIMEZONE
+            date_default_timezone_set('Asia/Manila');
+
         ?>
     </head>

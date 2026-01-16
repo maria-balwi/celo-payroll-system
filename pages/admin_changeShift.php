@@ -176,7 +176,6 @@
                             <h1 class="modal-title fs-5" id="viewLeaveLabel">View Change Shift</h1>
                             <input type="hidden" id="viewLeaveID">
                             <input type="hidden" id="userDept" value="<?php echo $_SESSION['departmentID']; ?>">
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <form>

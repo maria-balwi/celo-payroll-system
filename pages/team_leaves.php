@@ -230,7 +230,6 @@
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="viewLeaveLabel">View Leave</h1>
                             <input type="hidden" id="viewLeaveID">
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <form>
@@ -310,9 +309,9 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-2" id="viewMedCertRow">
+                                <div class="row g-2" id="viewPhotoRow">
                                     <div class="col-12">
-                                        <button id="viewMedicalCert" class="text-blue-500">View Medical Certificate</button>
+                                        <button id="viewPhoto" class="text-blue-500">View Uploaded Photo</button>
                                     </div>
                                 </div>
                             </form>

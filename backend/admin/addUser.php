@@ -14,15 +14,21 @@
 
     if (($departmentID == 4 && $designationID == 11) || ($departmentID == 1 && $designationID == 4))
     {
-        $levelID = 2; // TEAM LEAD & IT SUPERVISOR
+        $levelID = 2; // TEAM LEAD & IT SUPERVISOR & MANAGER LEVEL
     }
-    else if (($departmentID == 3 || $departmentID == 5) && ($designationID == 8 || $designationID == 9 || $designationID == 12))
+    else if (($departmentID == 3 || $departmentID == 5) && ($designationID == 8 || $designationID == 9 || $designationID == 12 || $designationID == 18))
     {
         $levelID = 3; // ADMIN LEVEL
     }
     else if ($departmentID == 3 && $designationID == 7)
     {
-        $levelID = 4; // HR LEVEL
+        $levelID = 4; // HR & ADMIN STAFF LEVEL
+    }
+    else if ($departmentID == 3 && $designationID == 15) {
+        $levelID = 5; // HR GENERALIST LEVEL
+    }
+    else if ($departmentID == 4 && ($designationID == 10 || $designationID == 13 || $designationID == 19)) {
+        $levelID = 6; // IT LEVEL
     }
     else  
     {

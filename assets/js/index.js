@@ -125,11 +125,29 @@ $(document).ready(function() {
                             else if (data.level == 0) {
                                 window.location.href = "pages/admin_dashboard.php";
                             }
+                            else if (data.level == 5) {
+                                window.location.href = "pages/admin_dashboard.php";
+                            }
+                            else if (data.level == 6) {
+                                window.location.href = "pages/user_dashboard.php";
+                            }
                             else if (data.error == 1) {
                                 var message = data.em
                                 Swal.fire ({
                                     icon: 'error',
                                     title: 'Incorrect credentials',
+                                    text: message,
+                                }).then(() => {
+                                    window.location.reload();
+                                })
+                                $("#email").val('');
+                                $("#password").val('');
+                            }
+                            else if (data.error == 2) {
+                                var message = data.em
+                                Swal.fire ({
+                                    icon: 'error',
+                                    title: 'Inactive Account',
                                     text: message,
                                 }).then(() => {
                                     window.location.reload();

@@ -23,12 +23,28 @@
                     <div class="card-header">
                         <ul class="nav nav-pills" id="pills-tab" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <!--ACTIVE BUTTON-->
-                                <button class="nav-link active uncheck" id="pills-current-tab" data-bs-toggle="pill" data-bs-target="#pills-current" type="button" role="tab" aria-controls="pills-current" aria-selected="true">Active</button>
+                                <!--AGENTS BUTTON-->
+                                <button class="nav-link active uncheck" id="pills-agents-tab" data-bs-toggle="pill" data-bs-target="#pills-agents" type="button" role="tab" aria-controls="pills-agents" aria-selected="true">Agents</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <!--RESIGNED BUTTON-->
-                                <button class="nav-link uncheck" id="pills-resigned-tab" data-bs-toggle="pill" data-bs-target="#pills-resigned" type="button" role="tab" aria-controls="pills-resigned" aria-selected="false">Resigned</button>
+                                <!--TL/QA BUTTON-->
+                                <button class="nav-link uncheck" id="pills-tlqa-tab" data-bs-toggle="pill" data-bs-target="#pills-tlqa" type="button" role="tab" aria-controls="pills-tlqa" aria-selected="false">TL/QA</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <!--RECRUITMENT BUTTON-->
+                                <button class="nav-link uncheck" id="pills-recruitment-tab" data-bs-toggle="pill" data-bs-target="#pills-recruitment" type="button" role="tab" aria-controls="pills-recruitment" aria-selected="false">Recruitment</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <!--IT BUTTON-->
+                                <button class="nav-link uncheck" id="pills-it-tab" data-bs-toggle="pill" data-bs-target="#pills-it" type="button" role="tab" aria-controls="pills-it" aria-selected="false">IT</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                    <!--FINANCE BUTTON-->
+                                    <button class="nav-link uncheck" id="pills-finance-tab" data-bs-toggle="pill" data-bs-target="#pills-finance" type="button" role="tab" aria-controls="pills-finance" aria-selected="false">Finance</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <!--HR BUTTON-->
+                                <button class="nav-link uncheck" id="pills-hr-tab" data-bs-toggle="pill" data-bs-target="#pills-hr" type="button" role="tab" aria-controls="pills-hr" aria-selected="false">HR</button>
                             </li>
                         </ul>
                     </div>
@@ -37,94 +53,581 @@
                         <div class="tab-content" id="pills-tabContent">
 
                             <!-- ------------------------------------------------------------------------------------------------- -->
-                            <!-- ------------------------------------- ACTIVE EMPLOYEES TAB -------------------------------------- -->
+                            <!-- -------------------------------------------- AGENTS TAB ----------------------------------------- -->
                             <!-- ------------------------------------------------------------------------------------------------- -->
-                            <div class="tab-pane fade show active" id="pills-current" role="tabpanel" aria-labelledby="pills-current-tab">
+                            <div class="tab-pane fade show active" id="pills-agents" role="tabpanel" aria-labelledby="pills-agents-tab">
                                 <div class="card border-0">
-                                    <div class="tab-content" id="pills-tabContent">
-                                        <table id="activeEmployeeTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3">
-                                            <thead class="bg-gray-50">
-                                                <tr>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="bg-white divide-y divide-gray-200">
-                                                <?php
-                                                    $employeeQuery = mysqli_query($conn, $employees->viewActiveEmployees());
-                                                    while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+                                    <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <!--ACTIVE BUTTON-->
+                                            <button class="nav-link active" id="agents-active-tab" data-bs-toggle="pill" data-bs-target="#agents-active" type="button" role="tab" aria-controls="agents-active" aria-selected="true">Active</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <!--RESIGNED BUTTON-->
+                                            <button class="nav-link" id="agents-inactive-tab" data-bs-toggle="pill" data-bs-target="#agents-inactive" type="button" role="tab" aria-controls="agents-inactive" aria-selected="false">Resigned</button>
+                                        </li>
+                                    </ul>
 
-                                                        $employee_id = $employeeDetails['id'];
-                                                        $employee_employeeID = $employeeDetails['employeeID'];
-                                                        $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
-                                                        $employee_emailAddress = $employeeDetails['emailAddress'];
-                                                        $employee_mobileNumber = $employeeDetails['mobileNumber'];
-                                                        $employee_department = $employeeDetails['departmentName'];
+                                    <div class="tab-content mt-2" id="pills-tabContent">
+                                        <!-- ACTIVE AGENTS TABLE  -->
+                                        <div class="tab-pane fade show active" id="agents-active" role="tabpanel" aria-labelledby="agents-active-tab">
+                                            <table id="activeAgentsTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                <thead class="bg-gray-50">
+                                                    <tr>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="bg-white divide-y divide-gray-200">
+                                                    <?php
+                                                        $employeeQuery = mysqli_query($conn, $employees->viewActiveAgents());
+                                                        while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+
+                                                            $employee_id = $employeeDetails['id'];
+                                                            $employee_employeeID = $employeeDetails['employeeID'];
+                                                            $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                            $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                            $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                            $employee_department = $employeeDetails['departmentName'];
 
 
-                                                        echo "<tr data-id='" . $employee_id . "' class='employeeView cursor-pointer'>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
-                                                        echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
-                                                        echo "</td>";
-                                                    }
-                                                ?>
-                                            </tbody>
-                                        </table>
+                                                            echo "<tr data-id='" . $employee_id . "' class='employeeView cursor-pointer'>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                            echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
+                                                            echo "</td>";
+                                                        }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <!-- ACTIVE AGENTS TABLE  -->
+                                        <div class="tab-pane fade" id="agents-inactive" role="tabpanel" aria-labelledby="agents-inactive-tab">
+                                            <table id="inactiveAgentsTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                <thead class="bg-gray-50">
+                                                    <tr>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="bg-white divide-y divide-gray-200">
+                                                    <?php
+                                                        $employeeQuery = mysqli_query($conn, $employees->viewResignedAgents());
+                                                        while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+
+                                                            $employee_id = $employeeDetails['id'];
+                                                            $employee_employeeID = $employeeDetails['employeeID'];
+                                                            $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                            $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                            $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                            $employee_department = $employeeDetails['departmentName'];
+
+
+                                                            echo "<tr data-id='" . $employee_id . "' class='resignedView cursor-pointer'>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                            echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
+                                                            echo "</td>";
+                                                        }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- ------------------------------------------------------------------------------------------------- -->
-                            <!-- ------------------------------------- RESIGNED EMPLOYEES TAB ------------------------------------ -->
+                            <!-- --------------------------------------------- TL/QA TAB ----------------------------------------- -->
                             <!-- ------------------------------------------------------------------------------------------------- -->
-                            <div class="tab-pane fade" id="pills-resigned" role="tabpanel" aria-labelledby="pills-resigned-tab">
+                            <div class="tab-pane fade" id="pills-tlqa" role="tabpanel" aria-labelledby="pills-tlqa-tab">
                                 <div class="card border-0">
-                                    <div class="tab-content" id="pills-tabContent">
-                                        <table id="resignedEmployeeTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3">
-                                            <thead class="bg-gray-50">
-                                                <tr>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="bg-white divide-y divide-gray-200">
-                                                <?php
-                                                    $employeeQuery = mysqli_query($conn, $employees->viewResignedEmployees());
-                                                    while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+                                    <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <!--ACTIVE BUTTON-->
+                                            <button class="nav-link active" id="tlqa-active-tab" data-bs-toggle="pill" data-bs-target="#tlqa-active" type="button" role="tab" aria-controls="tlqa-active" aria-selected="true">Active</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <!--RESIGNED BUTTON-->
+                                            <button class="nav-link" id="tlqa-inactive-tab" data-bs-toggle="pill" data-bs-target="#tlqa-inactive" type="button" role="tab" aria-controls="tlqa-inactive" aria-selected="false">Resigned</button>
+                                        </li>
+                                    </ul>
 
-                                                        $employee_id = $employeeDetails['id'];
-                                                        $employee_employeeID = $employeeDetails['employeeID'];
-                                                        $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
-                                                        $employee_emailAddress = $employeeDetails['emailAddress'];
-                                                        $employee_mobileNumber = $employeeDetails['mobileNumber'];
-                                                        $employee_department = $employeeDetails['departmentName'];
+                                    <div class="tab-content mt-2" id="pills-tabContent">
+                                        <!-- ACTIVE TLQA TABLE  -->
+                                        <div class="tab-pane fade show active" id="tlqa-active" role="tabpanel" aria-labelledby="tlqa-active-tab">
+                                            <table id="activeTLQATable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                <thead class="bg-gray-50">
+                                                    <tr>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="bg-white divide-y divide-gray-200">
+                                                    <?php
+                                                        $employeeQuery = mysqli_query($conn, $employees->viewActiveTLQA());
+                                                        while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+
+                                                            $employee_id = $employeeDetails['id'];
+                                                            $employee_employeeID = $employeeDetails['employeeID'];
+                                                            $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                            $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                            $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                            $employee_department = $employeeDetails['departmentName'];
 
 
-                                                        echo "<tr data-id='" . $employee_id . "' class='resignedView cursor-pointer'>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
-                                                        echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
-                                                        echo "</td>";
-                                                    }
-                                                ?>
-                                            </tbody>
-                                        </table>
+                                                            echo "<tr data-id='" . $employee_id . "' class='employeeView cursor-pointer'>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                            echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
+                                                            echo "</td>";
+                                                        }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <!-- ACTIVE TLQA TABLE  -->
+                                        <div class="tab-pane fade" id="tlqa-inactive" role="tabpanel" aria-labelledby="tlqa-inactive-tab">
+                                            <table id="inactiveTLQATable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                <thead class="bg-gray-50">
+                                                    <tr>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="bg-white divide-y divide-gray-200">
+                                                    <?php
+                                                        $employeeQuery = mysqli_query($conn, $employees->viewResignedTLQA());
+                                                        while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+
+                                                            $employee_id = $employeeDetails['id'];
+                                                            $employee_employeeID = $employeeDetails['employeeID'];
+                                                            $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                            $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                            $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                            $employee_department = $employeeDetails['departmentName'];
+
+
+                                                            echo "<tr data-id='" . $employee_id . "' class='resignedView cursor-pointer'>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                            echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
+                                                            echo "</td>";
+                                                        }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
-                                </div> 
+                                </div>
                             </div>
 
-                        </div>
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <!-- ------------------------------------------ RECRUITMENT TAB -------------------------------------- -->
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <div class="tab-pane fade" id="pills-recruitment" role="tabpanel" aria-labelledby="pills-recruitment-tab">
+                                <div class="card border-0">
+                                    <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <!--ACTIVE BUTTON-->
+                                            <button class="nav-link active" id="recruitment-active-tab" data-bs-toggle="pill" data-bs-target="#recruitment-active" type="button" role="tab" aria-controls="recruitment-active" aria-selected="true">Active</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <!--RESIGNED BUTTON-->
+                                            <button class="nav-link" id="recruitment-inactive-tab" data-bs-toggle="pill" data-bs-target="#recruitment-inactive" type="button" role="tab" aria-controls="recruitment-inactive" aria-selected="false">Resigned</button>
+                                        </li>
+                                    </ul>
+
+                                    <div class="tab-content mt-2" id="pills-tabContent">
+                                        <!-- ACTIVE RECRUITMENT TABLE  -->
+                                        <div class="tab-pane fade show active" id="recruitment-active" role="tabpanel" aria-labelledby="recruitment-active-tab">
+                                            <table id="activeRecruitmentTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                <thead class="bg-gray-50">
+                                                    <tr>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="bg-white divide-y divide-gray-200">
+                                                    <?php
+                                                        $employeeQuery = mysqli_query($conn, $employees->viewActiveRecruitment());
+                                                        while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+
+                                                            $employee_id = $employeeDetails['id'];
+                                                            $employee_employeeID = $employeeDetails['employeeID'];
+                                                            $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                            $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                            $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                            $employee_department = $employeeDetails['departmentName'];
+
+
+                                                            echo "<tr data-id='" . $employee_id . "' class='employeeView cursor-pointer'>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                            echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
+                                                            echo "</td>";
+                                                        }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <!-- ACTIVE RECRUITMENT TABLE  -->
+                                        <div class="tab-pane fade" id="recruitment-inactive" role="tabpanel" aria-labelledby="recruitment-inactive-tab">
+                                            <table id="inactiveRecruitmentTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                <thead class="bg-gray-50">
+                                                    <tr>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="bg-white divide-y divide-gray-200">
+                                                    <?php
+                                                        $employeeQuery = mysqli_query($conn, $employees->viewResignedRecruitment());
+                                                        while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+
+                                                            $employee_id = $employeeDetails['id'];
+                                                            $employee_employeeID = $employeeDetails['employeeID'];
+                                                            $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                            $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                            $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                            $employee_department = $employeeDetails['departmentName'];
+
+
+                                                            echo "<tr data-id='" . $employee_id . "' class='resignedView cursor-pointer'>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                            echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
+                                                            echo "</td>";
+                                                        }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <!-- ---------------------------------------------- IT TAB ------------------------------------------- -->
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <div class="tab-pane fade" id="pills-it" role="tabpanel" aria-labelledby="pills-it-tab">
+                                <div class="card border-0">
+                                    <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <!--ACTIVE BUTTON-->
+                                            <button class="nav-link active" id="it-active-tab" data-bs-toggle="pill" data-bs-target="#it-active" type="button" role="tab" aria-controls="it-active" aria-selected="true">Active</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <!--RESIGNED BUTTON-->
+                                            <button class="nav-link" id="it-inactive-tab" data-bs-toggle="pill" data-bs-target="#it-inactive" type="button" role="tab" aria-controls="it-inactive" aria-selected="false">Resigned</button>
+                                        </li>
+                                    </ul>
+
+                                    <div class="tab-content mt-2" id="pills-tabContent">
+                                        <!-- ACTIVE IT TABLE  -->
+                                        <div class="tab-pane fade show active" id="it-active" role="tabpanel" aria-labelledby="it-active-tab">
+                                            <table id="activeITTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                <thead class="bg-gray-50">
+                                                    <tr>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="bg-white divide-y divide-gray-200">
+                                                    <?php
+                                                        $employeeQuery = mysqli_query($conn, $employees->viewActiveIT());
+                                                        while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+
+                                                            $employee_id = $employeeDetails['id'];
+                                                            $employee_employeeID = $employeeDetails['employeeID'];
+                                                            $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                            $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                            $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                            $employee_department = $employeeDetails['departmentName'];
+
+
+                                                            echo "<tr data-id='" . $employee_id . "' class='employeeView cursor-pointer'>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                            echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
+                                                            echo "</td>";
+                                                        }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <!-- ACTIVE IT TABLE  -->
+                                        <div class="tab-pane fade" id="it-inactive" role="tabpanel" aria-labelledby="it-inactive-tab">
+                                            <table id="inactiveITTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                <thead class="bg-gray-50">
+                                                    <tr>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="bg-white divide-y divide-gray-200">
+                                                    <?php
+                                                        $employeeQuery = mysqli_query($conn, $employees->viewResignedIT());
+                                                        while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+
+                                                            $employee_id = $employeeDetails['id'];
+                                                            $employee_employeeID = $employeeDetails['employeeID'];
+                                                            $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                            $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                            $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                            $employee_department = $employeeDetails['departmentName'];
+
+
+                                                            echo "<tr data-id='" . $employee_id . "' class='resignedView cursor-pointer'>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                            echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
+                                                            echo "</td>";
+                                                        }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <!-- --------------------------------------------- FINANCE TAB --------------------------------------- -->
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <div class="tab-pane fade" id="pills-finance" role="tabpanel" aria-labelledby="pills-finance-tab">
+                                <div class="card border-0">
+                                    <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <!--ACTIVE BUTTON-->
+                                            <button class="nav-link active" id="finance-active-tab" data-bs-toggle="pill" data-bs-target="#finance-active" type="button" role="tab" aria-controls="finance-active" aria-selected="true">Active</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <!--RESIGNED BUTTON-->
+                                            <button class="nav-link" id="finance-inactive-tab" data-bs-toggle="pill" data-bs-target="#finance-inactive" type="button" role="tab" aria-controls="finance-inactive" aria-selected="false">Resigned</button>
+                                        </li>
+                                    </ul>
+
+                                    <div class="tab-content mt-2" id="pills-tabContent">
+                                        <!-- ACTIVE FINANCE TABLE  -->
+                                        <div class="tab-pane fade show active" id="finance-active" role="tabpanel" aria-labelledby="finance-active-tab">
+                                            <table id="activeFinanceTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                <thead class="bg-gray-50">
+                                                    <tr>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="bg-white divide-y divide-gray-200">
+                                                    <?php
+                                                        $employeeQuery = mysqli_query($conn, $employees->viewActiveFinance());
+                                                        while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+
+                                                            $employee_id = $employeeDetails['id'];
+                                                            $employee_employeeID = $employeeDetails['employeeID'];
+                                                            $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                            $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                            $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                            $employee_department = $employeeDetails['departmentName'];
+
+
+                                                            echo "<tr data-id='" . $employee_id . "' class='employeeView cursor-pointer'>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                            echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
+                                                            echo "</td>";
+                                                        }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <!-- ACTIVE FINANCE TABLE  -->
+                                        <div class="tab-pane fade" id="finance-inactive" role="tabpanel" aria-labelledby="finance-inactive-tab">
+                                            <table id="inactiveFinanceTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                <thead class="bg-gray-50">
+                                                    <tr>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="bg-white divide-y divide-gray-200">
+                                                    <?php
+                                                        $employeeQuery = mysqli_query($conn, $employees->viewResignedFinance());
+                                                        while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+
+                                                            $employee_id = $employeeDetails['id'];
+                                                            $employee_employeeID = $employeeDetails['employeeID'];
+                                                            $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                            $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                            $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                            $employee_department = $employeeDetails['departmentName'];
+
+
+                                                            echo "<tr data-id='" . $employee_id . "' class='resignedView cursor-pointer'>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                            echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
+                                                            echo "</td>";
+                                                        }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <!-- ---------------------------------------------- HR TAB ------------------------------------------- -->
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <div class="tab-pane fade" id="pills-hr" role="tabpanel" aria-labelledby="pills-hr-tab">
+                                <div class="card border-0">
+                                    <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <!--ACTIVE BUTTON-->
+                                            <button class="nav-link active" id="hr-active-tab" data-bs-toggle="pill" data-bs-target="#hr-active" type="button" role="tab" aria-controls="hr-active" aria-selected="true">Active</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <!--RESIGNED BUTTON-->
+                                            <button class="nav-link" id="hr-inactive-tab" data-bs-toggle="pill" data-bs-target="#hr-inactive" type="button" role="tab" aria-controls="hr-inactive" aria-selected="false">Resigned</button>
+                                        </li>
+                                    </ul>
+
+                                    <div class="tab-content mt-2" id="pills-tabContent">
+                                        <!-- ACTIVE HR TABLE  -->
+                                        <div class="tab-pane fade show active" id="hr-active" role="tabpanel" aria-labelledby="hr-active-tab">
+                                            <table id="activeHRTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                <thead class="bg-gray-50">
+                                                    <tr>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="bg-white divide-y divide-gray-200">
+                                                    <?php
+                                                        $employeeQuery = mysqli_query($conn, $employees->viewActiveHR());
+                                                        while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+
+                                                            $employee_id = $employeeDetails['id'];
+                                                            $employee_employeeID = $employeeDetails['employeeID'];
+                                                            $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                            $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                            $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                            $employee_department = $employeeDetails['departmentName'];
+
+
+                                                            echo "<tr data-id='" . $employee_id . "' class='employeeView cursor-pointer'>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                            echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
+                                                            echo "</td>";
+                                                        }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <!-- ACTIVE HR TABLE  -->
+                                        <div class="tab-pane fade" id="hr-inactive" role="tabpanel" aria-labelledby="hr-inactive-tab">
+                                            <table id="inactiveHRTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                <thead class="bg-gray-50">
+                                                    <tr>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="bg-white divide-y divide-gray-200">
+                                                    <?php
+                                                        $employeeQuery = mysqli_query($conn, $employees->viewResignedHR());
+                                                        while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+
+                                                            $employee_id = $employeeDetails['id'];
+                                                            $employee_employeeID = $employeeDetails['employeeID'];
+                                                            $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                            $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                            $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                            $employee_department = $employeeDetails['departmentName'];
+
+
+                                                            echo "<tr data-id='" . $employee_id . "' class='resignedView cursor-pointer'>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                            echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
+                                                            echo "</td>";
+                                                        }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                     </div>
 
                     <!-- CARD FOOTER DATA ENTRY BUTTON -->
@@ -143,10 +646,34 @@
             <form id="addEmployeeForm" enctype="multipart/form-data">
                 <div class="modal fade" id="addEmployeeModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
                     <div class="modal-dialog modal-none modal-xl modal-dialog-centered">
-                        <div class="modal-content" id="addEmployeeModal">
+                        <div class="modal-content position-relative" id="addEmployeeModal">
+                            <!-- MODAL SPINNER OVERLAY -->
+                            <div id="addEmployeeSpinner"
+                                class="position-absolute top-0 start-0 w-100 h-100 d-none
+                                        d-flex align-items-center justify-content-center
+                                        bg-white bg-opacity-75"
+                                style="z-index: 1056;">
+
+                                <!-- YOUR EXISTING SPINNER -->
+                                <div class="flex flex-col items-center gap-3">
+                                    <svg class="animate-spin h-12 w-12 text-gray-500"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10"
+                                                stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor"
+                                            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                                    </svg>
+
+                                    <p class="text-sm text-gray-500">
+                                        Adding employee…
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- ACTUAL MODAL -->
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="userFormLabel">New Employee</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="row g-2">
@@ -503,7 +1030,6 @@
                     <div class="modal-content" id="viewEmployeModal">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="userFormLabel">View Employee</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="row g-2">
@@ -699,18 +1225,6 @@
                                 </div>
                             </div>
 
-                            <div class="row g-2 mb-1">
-                                <div class="col-4 cashAdvancePart">
-                                    <label for="viewCashAdvance">Cash Advance:</label>
-                                </div>
-                            </div>
-
-                            <div class="row g-2 mb-2">
-                                <div class="col-4 cashAdvancePart">
-                                    <input type="number" class="form-control" id="viewCashAdvance" name="viewCashAdvance" disabled readonly>
-                                </div>
-                            </div>
-
                             <h2 class="text-lg font-semibold mt-2 mb-0">Requirements:</h2>
                             <div class="row g-3">
                                 <div class="col-md-3">
@@ -837,7 +1351,7 @@
                                 </div>
                             </div>
 
-                            <div class="row g-2 allAdjustmentsSection">
+                            <div class="row g-2 allReferralSection">
                                 <div class="flex space-x-4">
                                     <!-- REIMBURSEMENTS -->
                                     <div class="flex-1 bg-lightblue p-2 border border-gray-300">
@@ -872,6 +1386,30 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <hr class="referralSection">
+                            <div class="row g-2 mb-2 allReferralSection">
+                                <div class="flex space-x-4">
+                                    <!-- REFERRAL -->
+                                    <div class="flex-1 bg-lightblue p-2 border border-gray-300">
+                                        <div class="mb-4">
+                                            <div class="flex justify-between items-center mb-2 px-1">
+                                                <h2 class="text-lg font-semibold">Referral/s</h2>
+                                                <button class="bg-blue-500 p-2 rounded" data-bs-toggle="modal" data-bs-target="#referralModal">
+                                                    <svg class="h-5 w-5 text-gray-100"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                            <div class="space-y-2" id="referralSection">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex-1 bg-lightblue p-">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="modal-footer">
@@ -890,7 +1428,6 @@
                     <div class="modal-content" id="viewResignedModal">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="userFormLabel">View Resigned Employee</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="row g-2">
@@ -1016,32 +1553,35 @@
                             </div>
 
                             <div class="row g-2 mb-1">
-                                <div class="col-4">
+                                <div class="col-3">
                                     <label for="res_viewDepartment">Department:</label>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-3">
                                     <label for="res_viewDesignation">Designation:</label>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-6">
                                     <label for="res_viewEmploymentStatus">Employment Status:</label>
                                 </div>
                             </div>
                         
                             <div class="row g-2 mb-2">
-                                <div class="col-4">
+                                <div class="col-3">
                                     <input type="text" class="form-control" id="res_viewDepartment" disabled readonly>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-3">
                                     <input type="text" class="form-control" id="res_viewDesignation" disabled readonly>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-6">
                                     <input type="text" class="form-control" id="res_viewEmploymentStatus" name="res_viewEmploymentStatus" disabled readonly>
                                 </div>
                             </div>
 
-                            <div class="row g-2" id="viewClearanceFormRow">
-                                <div class="col-4">
-                                    <button id="viewClearanceFormFile" class="text-blue-500">View Clearance Form</button>
+                            <div class="row g-2">
+                                <div class="col-12">
+                                    <button id="withClearanceForm" class="text-blue-500" disabled>With Clearance Form</button>
+                                </div>
+                                <div class="col-12">
+                                    <button id="withoutClearanceForm" class="text-blue-500" disabled>Without Clearance Form</button>
                                 </div>
                             </div>
                         </div>
@@ -1059,13 +1599,37 @@
             <form id="updateEmployeeForm" enctype="multipart/form-data">
                 <div class="modal fade" id="updateEmployeeModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="employeeFormLabel" aria-hidden="true">
                     <div class="modal-dialog modal-none modal-xl modal-dialog-centered modal-scrollable">
-                        <div class="modal-content" id="updateEmployeeModal">
+                        <div class="modal-content position-relative" id="updateEmployeeModal">
+                            <!-- MODAL SPINNER OVERLAY -->
+                            <div id="updateEmployeeSpinner"
+                                class="position-absolute top-0 start-0 w-100 h-100 d-none
+                                        d-flex align-items-center justify-content-center
+                                        bg-white bg-opacity-75"
+                                style="z-index: 1056;">
+
+                                <!-- YOUR EXISTING SPINNER -->
+                                <div class="flex flex-col items-center gap-3">
+                                    <svg class="animate-spin h-12 w-12 text-gray-500"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10"
+                                                stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor"
+                                            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                                    </svg>
+
+                                    <p class="text-sm text-gray-500">
+                                        Updating employee data…
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- ACTUAL MODAL -->
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="employeeFormLabel">Update Employee</h1>
                                 <input type="hidden" id="updateID" name="updateID">
                                 <input type="hidden" id="oldEmailAddress" name="oldEmailAddress">
                                 <input type="hidden" id="oldEmployeeID" name="oldEmployeeID">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="row g-2">
@@ -1290,10 +1854,6 @@
                                         <label for="updateSickLeaves">Sick Leaves:</label>
                                         <input type="number" class="form-control" id="updateSickLeaves" name="updateSickLeaves">
                                     </div>
-                                    <div class="col-2">
-                                        <label for="updateCashAdvance">Cash Advance:</label>
-                                        <input type="number" step="0.001" class="form-control" id="updateCashAdvance" name="updateCashAdvance">
-                                    </div>
                                     <div class="col-6">
                                         <label for="updateWeekOff">Week Off:</label>
                                         <div class="col-12">
@@ -1436,7 +1996,6 @@
                                 <h1 class="modal-title fs-5" id="employeeFormLabel">Resignation Information</h1>
                                 <input type="hidden" id="resignEmpID" name="resignEmpID">
                                 <input type="hidden" id="resignEmployeeID" name="resignEmployeeID">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="row g-2 mb-2">
@@ -1453,12 +2012,20 @@
                                             <option value="" selected disabled>Choose</option>
                                             <option value="Immediate">Immediate</option>
                                             <option value="Terminated">Terminated</option>
+                                            <option value="Incomplete">Incomplete</option>
                                             <option value="Rendered">Rendered</option>
                                         </select>
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-1">
+                                <div class="row g-2 mb-2 renderedDaysDiv">
+                                    <div class="col-12">
+                                        <label for="renderedDays">Rendered Days:</label>
+                                        <input type="number" class="form-control" id="renderedDays" name="renderedDays">
+                                    </div>
+                                </div>
+
+                                <!-- <div class="row g-2 mb-2">
                                     <div class="col-11">
                                         <label for="clearanceForm">Upload Clearance Form:</label>
                                         <input type="file" class="form-control" id="clearanceForm" name="clearanceForm" accept="application/pdf">
@@ -1471,6 +2038,19 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                             </svg>
                                         </button>
+                                    </div>
+                                </div> -->
+
+                                <div class="row g-3 mb-1">
+                                    <div class="col-12">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input attachment" type="checkbox" id="withAttachment" name="withAttachment">
+                                            <label class="form-check-label" for="withAttachment">With Clearance Form</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input attachment" type="checkbox" id="withoutAttachment" name="withoutAttachment">
+                                            <label class="form-check-label" for="withoutAttachment">Without Clearance Form</label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1491,7 +2071,6 @@
                     <div class="modal-content" id="allowanceModal">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="userFormLabel">Allowances</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div> 
                         
                         <div class="modal-body">
@@ -1541,7 +2120,6 @@
                                                 <option selected disabled>Choose</option>
                                                 <option value="1">Monthly</option>
                                                 <option value="2">Semi-Monthly</option>
-                                                <!-- <option value="3">Once</option> -->
                                             </select>
                                         </div>
                                         <div class="col-6">
@@ -1589,7 +2167,6 @@
                     <div class="modal-content" id="reimbursementModal">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="userFormLabel">Reimbursements</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div> 
                         
                         <div class="modal-body">
@@ -1637,7 +2214,7 @@
                                         <div class="col-6">
                                             <select name="reimbursementType" id="reimbursementType" class="form-select">
                                                 <option selected disabled>Choose</option>
-                                                <option value="1">Monthly</option>
+                                                <!-- <option value="1">Monthly</option> -->
                                                 <option value="2">Semi-Monthly</option>
                                                 <option value="3">Once</option>
                                             </select>
@@ -1645,30 +2222,30 @@
                                         <div class="col-6">
                                             <select name="reimbursement_oncePayrollCycleID" id="reimbursement_oncePayrollCycleID" class="form-select">
                                                 <option disabled selected>Select Payroll Cycle</option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="1">1 - Dec 26, <?php echo date('Y') - 1; ?> to Jan 10, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="2">2 - Jan 11, <?php echo date('Y'); ?> to Jan 25, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="3">3 - Jan 26, <?php echo date('Y'); ?> to Feb 10, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="4">4 - Feb 11, <?php echo date('Y'); ?> to Feb 25, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="5">5 - Feb 26, <?php echo date('Y'); ?> to Mar 10, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="6">6 - Mar 11, <?php echo date('Y'); ?> to Mar 25, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="7">7 - Mar 26, <?php echo date('Y'); ?> to Apr 10, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="8">8 - Apr 11, <?php echo date('Y'); ?> to Apr 25, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="9">9 - Apr 26, <?php echo date('Y'); ?> to May 10, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="10">10 - May 11, <?php echo date('Y'); ?> to May 25, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="11">11 - May 26, <?php echo date('Y'); ?> to Jun 10, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="12">12 - Jun 11, <?php echo date('Y'); ?> to Jun 25, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="13">13 - Jun 26, <?php echo date('Y'); ?> to Jul 10, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="14">14 - Jul 11, <?php echo date('Y'); ?> to Jul 25, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="15">15 - Jul 26, <?php echo date('Y'); ?> to Aug 10, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="16">16 - Aug 11, <?php echo date('Y'); ?> to Aug 25, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="17">17 - Aug 26, <?php echo date('Y'); ?> to Sep 10, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="18">18 - Sep 11, <?php echo date('Y'); ?> to Sep 25, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="19">19 - Sep 26, <?php echo date('Y'); ?> to Oct 10, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="20">20 - Oct 11, <?php echo date('Y'); ?> to Oct 25, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="21">21 - Oct 26, <?php echo date('Y'); ?> to Nov 10, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="22">22 - Nov 11, <?php echo date('Y'); ?> to Nov 25, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="23">23 - Nov 26, <?php echo date('Y'); ?> to Dec 10, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="24">24 - Dec 11, <?php echo date('Y'); ?> to Dec 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="1">Dec 26, <?php echo date('Y') - 1; ?> to Jan 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="2">Jan 11, <?php echo date('Y'); ?> to Jan 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="3">Jan 26, <?php echo date('Y'); ?> to Feb 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="4">Feb 11, <?php echo date('Y'); ?> to Feb 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="5">Feb 26, <?php echo date('Y'); ?> to Mar 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="6">Mar 11, <?php echo date('Y'); ?> to Mar 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="7">Mar 26, <?php echo date('Y'); ?> to Apr 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="8">Apr 11, <?php echo date('Y'); ?> to Apr 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="9">Apr 26, <?php echo date('Y'); ?> to May 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="10">May 11, <?php echo date('Y'); ?> to May 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="11">May 26, <?php echo date('Y'); ?> to Jun 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="12">Jun 11, <?php echo date('Y'); ?> to Jun 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="13">Jun 26, <?php echo date('Y'); ?> to Jul 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="14">Jul 11, <?php echo date('Y'); ?> to Jul 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="15">Jul 26, <?php echo date('Y'); ?> to Aug 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="16">Aug 11, <?php echo date('Y'); ?> to Aug 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="17">Aug 26, <?php echo date('Y'); ?> to Sep 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="18">Sep 11, <?php echo date('Y'); ?> to Sep 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="19">Sep 26, <?php echo date('Y'); ?> to Oct 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="20">Oct 11, <?php echo date('Y'); ?> to Oct 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="21">Oct 26, <?php echo date('Y'); ?> to Nov 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="22">Nov 11, <?php echo date('Y'); ?> to Nov 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="23">Nov 26, <?php echo date('Y'); ?> to Dec 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="24">Dec 11, <?php echo date('Y'); ?> to Dec 25, <?php echo date('Y'); ?></option>
                                             </select>
                                         </div>
                                     </div>
@@ -1713,7 +2290,6 @@
                     <div class="modal-content" id="deductionModal">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="userFormLabel">Deductions</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
 
                         <div class="modal-body">
@@ -1735,11 +2311,16 @@
                                                 <?php
                                                     $allDeductions = mysqli_query($conn, $payroll->viewAllDeductions());
                                                     while ($allDeductionsResult = mysqli_fetch_array($allDeductions)) {
+                                                        if ($allDeductionsResult['deductionID'] == 8) {
+
+                                                        }
+                                                        else {  
                                                 ?>
                                                     <option value="<?php echo $allDeductionsResult['deductionID']; ?>">
                                                         <?php echo $allDeductionsResult['deductionName']; ?>
                                                     </option>
                                                 <?php
+                                                        }
                                                     }
                                                 ?>
                                             </select>
@@ -1761,7 +2342,7 @@
                                         <div class="col-6">
                                             <select name="deductionType" id="deductionType" class="form-select">
                                                 <option selected disabled>Choose</option>
-                                                <option value="1">Monthly</option>
+                                                <!-- <option value="1">Monthly</option> -->
                                                 <option value="2">Semi-Monthly</option>
                                                 <option value="3">Once</option>
                                             </select>
@@ -1769,30 +2350,30 @@
                                         <div class="col-6">
                                             <select name="deduction_oncePayrollCycleID" id="deduction_oncePayrollCycleID" class="form-select">
                                                 <option disabled selected>Select Payroll Cycle</option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="1">1 - Dec 26, <?php echo date('Y') - 1; ?> to Jan 10, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="2">2 - Jan 11, <?php echo date('Y'); ?> to Jan 25, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="3">3 - Jan 26, <?php echo date('Y'); ?> to Feb 10, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="4">4 - Feb 11, <?php echo date('Y'); ?> to Feb 25, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="5">5 - Feb 26, <?php echo date('Y'); ?> to Mar 10, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="6">6 - Mar 11, <?php echo date('Y'); ?> to Mar 25, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="7">7 - Mar 26, <?php echo date('Y'); ?> to Apr 10, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="8">8 - Apr 11, <?php echo date('Y'); ?> to Apr 25, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="9">9 - Apr 26, <?php echo date('Y'); ?> to May 10, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="10">10 - May 11, <?php echo date('Y'); ?> to May 25, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="11">11 - May 26, <?php echo date('Y'); ?> to Jun 10, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="12">12 - Jun 11, <?php echo date('Y'); ?> to Jun 25, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="13">13 - Jun 26, <?php echo date('Y'); ?> to Jul 10, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="14">14 - Jul 11, <?php echo date('Y'); ?> to Jul 25, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="15">15 - Jul 26, <?php echo date('Y'); ?> to Aug 10, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="16">16 - Aug 11, <?php echo date('Y'); ?> to Aug 25, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="17">17 - Aug 26, <?php echo date('Y'); ?> to Sep 10, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="18">18 - Sep 11, <?php echo date('Y'); ?> to Sep 25, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="19">19 - Sep 26, <?php echo date('Y'); ?> to Oct 10, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="20">20 - Oct 11, <?php echo date('Y'); ?> to Oct 25, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="21">21 - Oct 26, <?php echo date('Y'); ?> to Nov 10, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="22">22 - Nov 11, <?php echo date('Y'); ?> to Nov 25, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="23">23 - Nov 26, <?php echo date('Y'); ?> to Dec 10, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="24">24 - Dec 11, <?php echo date('Y'); ?> to Dec 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="1">Dec 26, <?php echo date('Y') - 1; ?> to Jan 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="2">Jan 11, <?php echo date('Y'); ?> to Jan 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="3">Jan 26, <?php echo date('Y'); ?> to Feb 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="4">Feb 11, <?php echo date('Y'); ?> to Feb 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="5">Feb 26, <?php echo date('Y'); ?> to Mar 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="6">Mar 11, <?php echo date('Y'); ?> to Mar 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="7">Mar 26, <?php echo date('Y'); ?> to Apr 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="8">Apr 11, <?php echo date('Y'); ?> to Apr 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="9">Apr 26, <?php echo date('Y'); ?> to May 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="10">May 11, <?php echo date('Y'); ?> to May 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="11">May 26, <?php echo date('Y'); ?> to Jun 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="12">Jun 11, <?php echo date('Y'); ?> to Jun 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="13">Jun 26, <?php echo date('Y'); ?> to Jul 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="14">Jul 11, <?php echo date('Y'); ?> to Jul 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="15">Jul 26, <?php echo date('Y'); ?> to Aug 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="16">Aug 11, <?php echo date('Y'); ?> to Aug 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="17">Aug 26, <?php echo date('Y'); ?> to Sep 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="18">Sep 11, <?php echo date('Y'); ?> to Sep 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="19">Sep 26, <?php echo date('Y'); ?> to Oct 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="20">Oct 11, <?php echo date('Y'); ?> to Oct 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="21">Oct 26, <?php echo date('Y'); ?> to Nov 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="22">Nov 11, <?php echo date('Y'); ?> to Nov 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="23">Nov 26, <?php echo date('Y'); ?> to Dec 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="24">Dec 11, <?php echo date('Y'); ?> to Dec 25, <?php echo date('Y'); ?></option>
                                             </select>
                                         </div>
                                     </div>
@@ -1837,7 +2418,6 @@
                     <div class="modal-content" id="adjustmentModal">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="userFormLabel">Adjustment/s</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
 
                         <div class="modal-body">
@@ -1886,7 +2466,7 @@
                                         <div class="col-6">
                                             <select name="adjustmentType" id="adjustmentType" class="form-select">
                                                 <option selected disabled>Choose</option>
-                                                <option value="1">Monthly</option>
+                                                <!-- <option value="1">Monthly</option> -->
                                                 <option value="2">Semi-Monthly</option>
                                                 <option value="3">Once</option>
                                             </select>
@@ -1894,30 +2474,30 @@
                                         <div class="col-6">
                                             <select name="adjustment_oncePayrollCycleID" id="adjustment_oncePayrollCycleID" class="form-select">
                                                 <option disabled selected>Select Payroll Cycle</option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="1">1 - Dec 26, <?php echo date('Y') - 1; ?> to Jan 10, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="2">2 - Jan 11, <?php echo date('Y'); ?> to Jan 25, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="3">3 - Jan 26, <?php echo date('Y'); ?> to Feb 10, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="4">4 - Feb 11, <?php echo date('Y'); ?> to Feb 25, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="5">5 - Feb 26, <?php echo date('Y'); ?> to Mar 10, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="6">6 - Mar 11, <?php echo date('Y'); ?> to Mar 25, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="7">7 - Mar 26, <?php echo date('Y'); ?> to Apr 10, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="8">8 - Apr 11, <?php echo date('Y'); ?> to Apr 25, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="9">9 - Apr 26, <?php echo date('Y'); ?> to May 10, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="10">10 - May 11, <?php echo date('Y'); ?> to May 25, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="11">11 - May 26, <?php echo date('Y'); ?> to Jun 10, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="12">12 - Jun 11, <?php echo date('Y'); ?> to Jun 25, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="13">13 - Jun 26, <?php echo date('Y'); ?> to Jul 10, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="14">14 - Jul 11, <?php echo date('Y'); ?> to Jul 25, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="15">15 - Jul 26, <?php echo date('Y'); ?> to Aug 10, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="16">16 - Aug 11, <?php echo date('Y'); ?> to Aug 25, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="17">17 - Aug 26, <?php echo date('Y'); ?> to Sep 10, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="18">18 - Sep 11, <?php echo date('Y'); ?> to Sep 25, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="19">19 - Sep 26, <?php echo date('Y'); ?> to Oct 10, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="20">20 - Oct 11, <?php echo date('Y'); ?> to Oct 25, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="21">21 - Oct 26, <?php echo date('Y'); ?> to Nov 10, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="22">22 - Nov 11, <?php echo date('Y'); ?> to Nov 25, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="23">23 - Nov 26, <?php echo date('Y'); ?> to Dec 10, <?php echo date('Y'); ?></option>
-                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="24">24 - Dec 11, <?php echo date('Y'); ?> to Dec 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="1">Dec 26, <?php echo date('Y') - 1; ?> to Jan 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="2">Jan 11, <?php echo date('Y'); ?> to Jan 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="3">Jan 26, <?php echo date('Y'); ?> to Feb 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="4">Feb 11, <?php echo date('Y'); ?> to Feb 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="5">Feb 26, <?php echo date('Y'); ?> to Mar 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="6">Mar 11, <?php echo date('Y'); ?> to Mar 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="7">Mar 26, <?php echo date('Y'); ?> to Apr 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="8">Apr 11, <?php echo date('Y'); ?> to Apr 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="9">Apr 26, <?php echo date('Y'); ?> to May 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="10">May 11, <?php echo date('Y'); ?> to May 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="11">May 26, <?php echo date('Y'); ?> to Jun 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="12">Jun 11, <?php echo date('Y'); ?> to Jun 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="13">Jun 26, <?php echo date('Y'); ?> to Jul 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="14">Jul 11, <?php echo date('Y'); ?> to Jul 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="15">Jul 26, <?php echo date('Y'); ?> to Aug 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="16">Aug 11, <?php echo date('Y'); ?> to Aug 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="17">Aug 26, <?php echo date('Y'); ?> to Sep 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="18">Sep 11, <?php echo date('Y'); ?> to Sep 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="19">Sep 26, <?php echo date('Y'); ?> to Oct 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="20">Oct 11, <?php echo date('Y'); ?> to Oct 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="21">Oct 26, <?php echo date('Y'); ?> to Nov 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="22">Nov 11, <?php echo date('Y'); ?> to Nov 25, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="23">Nov 26, <?php echo date('Y'); ?> to Dec 10, <?php echo date('Y'); ?></option>
+                                                <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="24">Dec 11, <?php echo date('Y'); ?> to Dec 25, <?php echo date('Y'); ?></option>
                                             </select>
                                         </div>
                                     </div>
@@ -1949,6 +2529,74 @@
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-success adjustmentSave">Save</button>
+                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#viewEmployeeModal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--------------------------------------------------------------------------------------------------------------------------------------------->
+            <!---------------------------------------------------------------- ADD REFERRAL MODAL ------------------------------------------------------->
+            <div class="modal fade" id="referralModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
+                <div class="modal-dialog modal-none modal-dialog-centered">
+                    <div class="modal-content" id="referralModal">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="userFormLabel">Referral Form/s</h1>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="row g-2 mb-2">
+                                <form id="referralForm">
+                                    <div class="row g-2 mb-1">
+                                        <div class="col-6">
+                                            <label for="referral_employeeID">Employee ID:</label>
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="referral_employeeName">Employee Name:</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-2 mb-2">
+                                        <input type="hidden" id="referee_empID" name="referee_empID">
+                                        <input type="hidden" id="referrer_empID" name="referrer_empID">
+
+                                        <div class="col-6">
+                                            <input type="text" class="form-control" id="referral_employeeID" name="referral_employeeID">
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="text" class="form-control" id="referral_employeeName" name="referral_employeeName" disabled readonly>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-2 mb-1">
+                                        <div class="col-6">
+                                            <label for="referral_dateHired">Date Hired:</label>
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="referral_employmentStatus">Employment Status:</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row g-2 mb-3">
+                                        <div class="col-6">
+                                            <input type="text" class="form-control" id="referral_dateHired" name="referral_dateHired" disabled readonly>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="text" class="form-control" id="referral_employmentStatus" name="referral_employmentStatus" disabled readonly>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-2">
+                                        <div class="col-12">
+                                            <button type="submit" class="btn btn-success w-50 justify-center" id="referralAdd">Add</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <!-- <button type="button" class="btn btn-success adjustmentSave">Save</button> -->
                             <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#viewEmployeeModal">Cancel</button>
                         </div>
                     </div>
