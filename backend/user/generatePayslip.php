@@ -222,7 +222,7 @@
                                     <td class="border px-2 py-1">Hourly Rate</td>
                                 </tr>
                                 <tr>
-                                    <td class="border px-2 py-1">'.$paymentMethod.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_paymentMethod.'</td>
                                     <td class="border px-2 py-1">'.$payslip_basicPay.'</td>
                                     <td class="border px-2 py-1">'.$payslip_dailyRate.'</td>
                                     <td class="border px-2 py-1">'.$payslip_hourlyRate.'</td>
@@ -365,7 +365,7 @@
                                     <td class="border px-2 py-1">Hourly Rate</td>
                                 </tr>
                                 <tr>
-                                    <td class="border px-2 py-1">'.$paymentMethod.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_paymentMethod.'</td>
                                     <td class="border px-2 py-1">'.$payslip_basicPay.'</td>
                                     <td class="border px-2 py-1">'.$payslip_dailyRate.'</td>
                                     <td class="border px-2 py-1">'.$payslip_hourlyRate.'</td>
@@ -547,7 +547,7 @@
                                     <td class="border px-2 py-1">Hourly Rate</td>
                                 </tr>
                                 <tr>
-                                    <td class="border px-2 py-1">'.$paymentMethod.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_paymentMethod.'</td>
                                     <td class="border px-2 py-1">'.$payslip_basicPay.'</td>
                                     <td class="border px-2 py-1">'.$payslip_dailyRate.'</td>
                                     <td class="border px-2 py-1">'.$payslip_hourlyRate.'</td>
@@ -712,7 +712,7 @@
                                     <td class="border px-2 py-1">Hourly Rate</td>
                                 </tr>
                                 <tr>
-                                    <td class="border px-2 py-1">'.$paymentMethod.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_paymentMethod.'</td>
                                     <td class="border px-2 py-1">'.$payslip_basicPay.'</td>
                                     <td class="border px-2 py-1">'.$payslip_dailyRate.'</td>
                                     <td class="border px-2 py-1">'.$payslip_hourlyRate.'</td>
@@ -936,7 +936,7 @@
                                     <td class="border px-2 py-1">Hourly Rate</td>
                                 </tr>
                                 <tr>
-                                    <td class="border px-2 py-1">'.$paymentMethod.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_paymentMethod.'</td>
                                     <td class="border px-2 py-1">'.$payslip_basicPay.'</td>
                                     <td class="border px-2 py-1">'.$payslip_dailyRate.'</td>
                                     <td class="border px-2 py-1">'.$payslip_hourlyRate.'</td>
@@ -1101,7 +1101,7 @@
                                     <td class="border px-2 py-1">Hourly Rate</td>
                                 </tr>
                                 <tr>
-                                    <td class="border px-2 py-1">'.$paymentMethod.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_paymentMethod.'</td>
                                     <td class="border px-2 py-1">'.$payslip_basicPay.'</td>
                                     <td class="border px-2 py-1">'.$payslip_dailyRate.'</td>
                                     <td class="border px-2 py-1">'.$payslip_hourlyRate.'</td>
@@ -1325,7 +1325,7 @@
                                     <td class="border px-2 py-1">Hourly Rate</td>
                                 </tr>
                                 <tr>
-                                    <td class="border px-2 py-1">'.$paymentMethod.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_paymentMethod.'</td>
                                     <td class="border px-2 py-1">'.$payslip_basicPay.'</td>
                                     <td class="border px-2 py-1">'.$payslip_dailyRate.'</td>
                                     <td class="border px-2 py-1">'.$payslip_hourlyRate.'</td>
@@ -1510,7 +1510,7 @@
                                     <td class="border px-2 py-1">Hourly Rate</td>
                                 </tr>
                                 <tr>
-                                    <td class="border px-2 py-1">'.$paymentMethod.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_paymentMethod.'</td>
                                     <td class="border px-2 py-1">'.$payslip_basicPay.'</td>
                                     <td class="border px-2 py-1">'.$payslip_dailyRate.'</td>
                                     <td class="border px-2 py-1">'.$payslip_hourlyRate.'</td>
