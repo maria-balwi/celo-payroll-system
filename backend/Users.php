@@ -189,29 +189,29 @@
 
         public function saveDTR($id, $logTypeID, $attendanceDate, $attendanceTime) {
             $saveDTR = "
-                INSERT INTO ".$this->attendance." (empID, logTypeID, attendanceDate, attendanceTime)
-                VALUES ('$id', '$logTypeID', '$attendanceDate', '$attendanceTime')";
+                INSERT INTO ".$this->attendance." (empID, logTypeID, attendanceSource, attendanceDate, attendanceTime)
+                VALUES ('$id', '$logTypeID', 'FACE', '$attendanceDate', '$attendanceTime')";
             return $saveDTR;
         }
 
         public function saveDTRLate($id, $logTypeID, $attendanceDate, $attendanceTime, $lateMins) {
             $saveDTR = "
-                INSERT INTO ".$this->attendance." (empID, logTypeID, attendanceDate, attendanceTime, lateMins)
-                VALUES ('$id', '$logTypeID', '$attendanceDate', '$attendanceTime', '$lateMins')";
+                INSERT INTO ".$this->attendance." (empID, logTypeID, attendanceSource, attendanceDate, attendanceTime, lateMins)
+                VALUES ('$id', '$logTypeID', 'FACE', '$attendanceDate', '$attendanceTime', '$lateMins')";
             return $saveDTR;
         }
 
         public function saveDTRUndertime($id, $logTypeID, $attendanceDate, $attendanceTime, $undertimeMins) {
             $saveDTR = "
-                INSERT INTO ".$this->attendance." (empID, logTypeID, attendanceDate, attendanceTime, undertimeMins)
-                VALUES ('$id', '$logTypeID', '$attendanceDate', '$attendanceTime', '$undertimeMins')";
+                INSERT INTO ".$this->attendance." (empID, logTypeID, attendanceSource, attendanceDate, attendanceTime, undertimeMins)
+                VALUES ('$id', '$logTypeID', 'FACE', '$attendanceDate', '$attendanceTime', '$undertimeMins')";
             return $saveDTR;
         }
 
         public function saveMissingDTR($id, $logTypeID, $attendanceDate, $attendanceTime) {
             $saveDTR = "
-                INSERT INTO ".$this->attendance." (empID, logTypeID, attendanceDate, attendanceTime)
-                VALUES ('$id', '$logTypeID', '$attendanceDate', '$attendanceTime')";
+                INSERT INTO ".$this->attendance." (empID, logTypeID, attendanceSource, attendanceDate, attendanceTime)
+                VALUES ('$id', '$logTypeID', 'FACE', '$attendanceDate', '$attendanceTime')";
             return $saveDTR;
         }
 
