@@ -2211,7 +2211,7 @@
             $currentDate = date('Y-m-d');
 
             // CHECK IF THE SCRIPT HAS BEEN RUN TODAY
-            $checkLogQuery = "SELECT * FROM script_logs WHERE run_date = '$currentDate'";
+            $checkLogQuery = "SELECT 1 FROM script_logs WHERE run_date = '$currentDate' LIMIT 1";
             $logResult = $this->dbConnect()->query($checkLogQuery);
 
             if (mysqli_num_rows($logResult) === 0) {
@@ -2219,18 +2219,19 @@
                 $newYear = date('Y-01-01');
 
                 // END OF THE MONTH DATES
-                $febMonth = date('Y-02-28');
-                $febMonthLY = date('Y-02-29');
-                $thirtyDays = date('Y-m-30');
-                $thirtyOneDays = date('Y-m-02');
+                // $febMonth = date('Y-02-28');
+                // $febMonthLY = date('Y-02-29');
+                // $thirtyDays = date('Y-m-30');
+                // $thirtyOneDays = date('Y-m-02');
+                $isLastDayOfMonth = (date('Y-m-d') === date('Y-m-t'));
 
                 $employeesQuery = $this->dbConnect()->query("SELECT * FROM ".$this->employees." WHERE designationID != 12 AND e_status = 'Active'");
-                while ($employeeDetails = mysqli_fetch_array($employeesQuery)) {
+                while ($employeeDetails = mysqli_fetch_assoc($employeesQuery)) {
                     $id = $employeeDetails['id'];
                     $employmentStatus = $employeeDetails['employmentStatus'];
 
                     // NEW YEAR LEAVE POINTS RESET
-                    if ($currentDate == $newYear) {
+                    if ($currentDate === $newYear) {
                         $leavePoints = $employeeDetails['leavePoints'];
 
                         // RESET LEAVE POINTS FOR TL
@@ -2242,7 +2243,8 @@
                         $this->dbConnect()->query($resetQuery);
                     }
                     // LEAVE POINTS ACCUMULATION
-                    elseif (($currentDate == $febMonth || $currentDate == $febMonthLY || $currentDate == $thirtyDays || $currentDate == $thirtyOneDays) && $employmentStatus == "Regular") {
+                    // elseif (($currentDate == $febMonth || $currentDate == $febMonthLY || $currentDate == $thirtyDays || $currentDate == $thirtyOneDays) && $employmentStatus == "Regular") {
+                    elseif ($isLastDayOfMonth && $employmentStatus === "Regular") {
                         $vl = $employeeDetails['availableVL'];
                         $addLeavePoints = ($vl == 10) ? 0.83 : 1.25;
                         $addLeavePointsQuery = $this->addLeavePoints($id, $addLeavePoints);
@@ -2253,7 +2255,7 @@
                     $dateHired = $employeeDetails['dateHired'];
                     $dateRegularized = (new DateTime($dateHired))->modify('+6 months')->format('Y-m-d');
 
-                    if ($currentDate == $dateRegularized && $employmentStatus == "Probationary") {
+                    if ($currentDate === $dateRegularized && $employmentStatus === "Probationary") {
                         $updateEmploymentStatusQuery = $this->updateEmploymentStatus($id, $dateRegularized);
                         $this->dbConnect()->query($updateEmploymentStatusQuery);
                     }
