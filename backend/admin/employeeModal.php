@@ -2,6 +2,11 @@
 
     include '../../init.php';
     session_start();
+
+    header('Content-Type: application/json; charset=utf-8');
+    ini_set('display_errors', 0);
+    error_reporting(E_ALL);
+
     $conn = $database->dbConnect();
 
     if (isset($_GET['employee_id'])) {
