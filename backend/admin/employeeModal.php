@@ -4,15 +4,26 @@
     session_start();
 
     header('Content-Type: application/json; charset=utf-8');
-    ini_set('display_errors', 0);
+    ini_set('display_errors', 1);
     error_reporting(E_ALL);
 
     $conn = $database->dbConnect();
 
     if (isset($_GET['employee_id'])) {
-        $employee_id = mysqli_real_escape_string($conn, $_GET['employee_id']);
+        // $employee_id = mysqli_real_escape_string($conn, $_GET['employee_id']);
+        $employee_id = (int) $_GET['employee_id'];
         $getEmployeeQuery = $employees->getEmployeeInfo($employee_id);
         $getEmployeeResult = mysqli_query($conn, $getEmployeeQuery);
+
+        if ($getEmployeeResult === false) {
+            echo json_encode([
+                'status' => 404,
+                'message' => 'Query failed',
+                'sql_error' => mysqli_error($conn),
+                'sql' => $getEmployeeQuery
+            ]);
+            exit;
+        }
 
         if(mysqli_num_rows($getEmployeeResult) == 1)
         {

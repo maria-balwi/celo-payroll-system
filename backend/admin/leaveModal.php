@@ -9,6 +9,16 @@
         $getLeaveQuery = $employees->getLeaveInfo($leave_id);
         $getLeaveResult = mysqli_query($conn, $getLeaveQuery);
 
+      if ($getLeaveResult === false) {
+        echo json_encode([
+            'status' => 404,
+            'message' => 'Query failed',
+            'sql_error' => mysqli_error($conn),
+            'sql' => $getLeaveQuery
+        ]);
+        exit;
+      }
+
         if(mysqli_num_rows($getLeaveResult) == 1)
         {
             $leave = mysqli_fetch_array($getLeaveResult);

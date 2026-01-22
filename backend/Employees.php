@@ -17,7 +17,7 @@
         private $requirements = 'tbl_requirements';
         private $cashAdvance = 'tbl_cashadvance';
         private $caPaymentHistory = 'tbl_caPaymentHistory';
-        private $weekOff = 'tbl_empWeekOff';
+        private $weekOff = 'tbl_empweekoff';
         private $allowances = 'tbl_allowances';
         private $deductions = 'tbl_deductions';
         private $referral = "tbl_referral";
@@ -1110,7 +1110,7 @@
                 ON requirements.empID = employees.id
                 INNER JOIN ".$this->weekOff." AS weekOff
                 ON weekOff.empID = employees.id
-                WHERE id = '$id'";
+                WHERE employees.id = '$id'";
             return $employeeInfo;
         }
 
