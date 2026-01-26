@@ -98,7 +98,7 @@
                             </li>
                             <li class="nav-item" role="presentation">
                                 <!--ADJUSTMENTS BUTTON-->
-                                <button class="nav-link uncheck" id="pills-adjustments-tab" data-bs-toggle="pill" data-bs-target="#pills-adjustments" type="button" role="tab" aria-controls="pills-adjustments" aria-selected="false">Adjustments</button>
+                                <button class="nav-link uncheck" id="pills-adjustments-tab" data-bs-toggle="pill" data-bs-target="#pills-adjustments" type="button" role="tab" aria-controls="pills-adjustments" aria-selected="false">Salary Adjustments</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <!--USERS BUTTON-->
@@ -432,8 +432,7 @@
                                                         $dateAdjustments = formatDate($adjustmentsDate);
                                                         $timeAdjustments = formatTime($adjustmentsDate);
 
-                                                        echo "<tr>";
-                                                        // echo "<td class ='whitespace-nowrap'>" . $adjustmentsATID . "</td>";
+                                                        echo "<tr data-id='{$adjustmentsATID}' class='salaryAdjustmentView cursor-pointer'>";
                                                         echo "<td class ='whitespace-nowrap'>" . $dateAdjustments . "</td>";
                                                         echo "<td class ='whitespace-nowrap'>" . $timeAdjustments . "</td>";
                                                         echo "<td class ='whitespace-nowrap'>" . $adjustmentsEmployee . "</td>";
@@ -510,6 +509,95 @@
                 </div>
             </div>
             
+            <!-- ======================================================================================================================================= -->
+            <!-- ================================================================= MODAL =============================================================== -->
+            <!-- ======================================================================================================================================= -->
+
+            <!--------------------------------------------------------------------------------------------------------------------------------------------->
+            <!------------------------------------------------------ VIEW SALARY ADJUSTMENT MODAL --------------------------------------------------------->
+            <div class="modal fade" id="viewSalaryAdjustmentModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content" id="viewSalaryAdjustmentModal">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="userFormLabel">View Salary Adjustment</h1>
+                            <input type="hidden" id="viewSalaryAdjustmentID">
+                        </div>
+                        <div class="modal-body">
+                            <div class="row g-2 mb-1">
+                                <div class="col-6">
+                                    <label for="viewDateFiled">Date Filed:</label>
+                                </div>
+                                <div class="col-6">
+                                    <label for="viewStatus">Status:</label>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-2">
+                                <div class="col-6">
+                                    <input type="text" class="form-control" id="viewDateFiled" disabled readonly>
+                                </div>
+                                <div class="col-6">
+                                    <input type="text" class="form-control" id="viewStatus" disabled readonly>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-1">
+                                <div class="col-6">
+                                    <label for="viewEmployeeID">Employee ID:</label>
+                                </div>
+                                <div class="col-6">
+                                    <label for="viewEmployeeName">Employee Name:</label>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-2">
+                                <div class="col-6">
+                                    <input type="text" class="form-control" id="viewEmployeeID" disabled readonly>
+                                </div>
+                                <div class="col-6">
+                                    <input type="text" class="form-control" id="viewEmployeeName" disabled readonly>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-1">
+                                <div class="col-6">
+                                    <label for="viewCurrentSalary">Current Salary:</label>
+                                </div>
+                                <div class="col-6">
+                                    <label for="viewSuggestedSalary">Additional:</label>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-2">
+                                <div class="col-6">
+                                    <input type="text" class="form-control" id="viewCurrentSalary" disabled readonly>
+                                </div>
+                                <div class="col-6">
+                                    <input type="text" class="form-control" id="viewSuggestedSalary" disabled readonly>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-1">
+                                <div class="col-6">
+                                    <label for="viewReason">Reason:</label>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-2">
+                                <div class="col-6">
+                                    <input type="text" class="form-control" id="viewReason" disabled readonly>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success salaryApprove" id="approveSalaryAdjustment">Approve</button>
+                            <button type="button" class="btn btn-danger salaryDisapprove" id="disapproveSalaryAdjustment">Disapprove</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnClose_salaryAdjustment">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
     
         <script src="../assets/js/admin_auditTrail.js?v=<?php echo $version; ?>"></script>

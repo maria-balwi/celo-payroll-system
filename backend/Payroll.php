@@ -25,6 +25,7 @@
         private $cashAdvance = 'tbl_cashadvance';
         private $referral = 'tbl_referral';
         private $salaryadj = 'tbl_salaryadj';
+        private $auditTrail = 'tbl_audittrail';
         private $caPaymentHistory = 'tbl_caPaymentHistory';
 
         private $dbConnect = false;
@@ -115,6 +116,17 @@
                 SET status = 'Disapproved'
                 WHERE salaryAdjID = '$salaryAdjID'";
             return $disapproveSalaryAdjustment;
+        }
+
+        public function getSalaryInfoAT($auditTrailID) {
+          $salaryAdj = "
+            SELECT * FROM {$this->auditTrail} AS at
+            INNER JOIN {$this->salaryadj} AS sa
+            ON at.auditTrailID = sa.salaryAdjID
+            INNER JOIN {$this->employees} AS e
+            ON sa.empID = e.id
+            WHERE at.auditTrailID = '$auditTrailID'";
+          return $salaryAdj;
         }
 
         public function addAllowance($allowanceName) {
