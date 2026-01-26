@@ -18,7 +18,7 @@
         $at_empID = $_SESSION['id'];
         $at_module = "Admin - Salary Adjustment";
         $at_action = "Approved Salary Adjustment";
-        mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $at_affectedEmpID));
+        mysqli_query($conn, $employees->auditTrailSalaryAdj($at_empID, $at_module, $id_salary, $at_action, $at_affectedEmpID));
 
 
         $em = "Salary Adjustment Approved Successfully";
@@ -39,7 +39,7 @@
         $at_empID = $_SESSION['id'];
         $at_module = "Admin - Salary Adjustment";
         $at_action = "Disapproved Salary Adjustment";
-        mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $at_affectedEmpID));
+        mysqli_query($conn, $employees->auditTrailSalaryAdj($at_empID, $at_module, $id_salary, $at_action, $at_affectedEmpID));
 
         $em = "Salary Adjustment Disapproved Successfully";
         $error = array('error' => 0, 'id' => $id_salary, 'em' => $em);

@@ -1760,6 +1760,13 @@
             return $auditTrail;
         }
 
+        public function auditTrailSalaryAdj($empID, $module, $salaryAdjID, $action, $affected_empID) {
+            $auditTrail = "
+                INSERT INTO ".$this->auditTrail." (date, empID, module, salaryAdjID, action, affected_empID)
+                VALUES (CURRENT_TIMESTAMP, '$empID', '$module', '$salaryAdjID', '$action', '$affected_empID')";
+            return $auditTrail;
+        }
+
         public function auditTrailPayroll($empID, $module, $action) {
             $auditTrail = "
                 INSERT INTO ".$this->auditTrail." (date, empID, module, action)

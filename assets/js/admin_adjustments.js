@@ -626,7 +626,7 @@ $(document).ready(function() {
                     $("#viewEmployeeID").val(res.data.employeeID);
                     $("#viewEmployeeName").val(res.data.firstName + " " + res.data.lastName);
                     $("#viewCurrentSalary").val("₱ " + formatNumberWithCommas(res.data.basicPay));
-                    $("#viewSuggestedSalary").val("₱ " + formatNumberWithCommas(res.data.suggestedSalary - res.data.basicPay));
+                    $("#viewSuggestedSalary").val("₱ " + formatNumberWithCommas(res.data.suggestedSalary));
                     $("#viewReason").val(res.data.reason);
 
                     if (res.data.status == "Pending") {
