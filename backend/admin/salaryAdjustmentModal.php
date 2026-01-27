@@ -4,10 +4,20 @@
     session_start();
     $conn = $database->dbConnect();
 
-    if (isset($_GET['salary_id'])) {
-        $salary_id = mysqli_real_escape_string($conn, $_GET['salary_id']);
-        $getSalaryQuery = $payroll->getSalaryInfoAT($salary_id);
+    if (isset($_GET['salaryadj_id'])) {
+        $salaryadj_id = mysqli_real_escape_string($conn, $_GET['salaryadj_id']);
+        $getSalaryQuery = $payroll->getSalaryInfoAT($salaryadj_id);
         $getSalaryResult = mysqli_query($conn, $getSalaryQuery);
+
+        if ($getSalaryResult === false) {
+            echo json_encode([
+                'status' => 404,
+                'message' => 'Query failed',
+                'sql_error' => mysqli_error($conn),
+                'sql' => $getSalaryQuery
+            ]);
+            exit;
+        }
 
         if(mysqli_num_rows($getSalaryResult) == 1)
         {

@@ -1,3 +1,21 @@
+function formatDate(dateStr) {
+    if (!dateStr) return '';
+
+    var dateObj = new Date(dateStr);
+
+    return dateObj.toLocaleDateString("en-US", {
+        month: "short",
+        day: "2-digit",
+        year: "numeric"
+    });
+}
+
+function formatNumberWithCommas(number) {
+    number = parseFloat(number);
+    if (isNaN(number)) return "0.00";
+    return number.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 $(document).ready(function() {
 
     // $('#auditTrailTable').DataTable();
@@ -26,14 +44,14 @@ $(document).ready(function() {
     // VIEW AND UPDATE SALARY ADJUSTMENTS
     var array = [];
     $(document).on('click', '.salaryAdjustmentView  ', function() {
-        var salary_id = $(this).data('id');
-        array.push(salary_id);
-        var id_salary = array[array.length - 1];
+        var salaryadj_id = $(this).data('id');
+        array.push(salaryadj_id);
+        var id_salaryadj = array[array.length - 1];
 
         // VIEW SALARY ADJUSTMENTS
         $.ajax({
             type: "GET",
-            url: "../backend/admin/salaryAdjustmentModal.php?salary_id=" + id_salary,
+            url: "../backend/admin/salaryAdjustmentModal.php?salaryadj_id=" + id_salaryadj,
             success: function(response) {
 
                 var res = jQuery.parseJSON(response);
@@ -42,12 +60,14 @@ $(document).ready(function() {
                     alert(res.message);
                 } 
                 else if (res.status == 200) {
+                    $("#viewAction").val(res.data.action);
+                    $("#viewUser").val(res.data.firstName + " " + res.data.lastName);
                     $("#viewDateFiled").val(formatDate(res.data.dateFiled));
-                    $("#viewStatus").val(res.data.status);
                     $("#viewEmployeeID").val(res.data.employeeID);
-                    $("#viewEmployeeName").val(res.data.firstName + " " + res.data.lastName);
+                    $("#viewReason").val(res.data.reason);
+                    $("#viewEmployeeName").val(res.data.affectedFirstName + " " + res.data.affectedLastName);
                     $("#viewCurrentSalary").val("₱ " + formatNumberWithCommas(res.data.basicPay));
-                    $("#viewSuggestedSalary").val("₱ " + formatNumberWithCommas(res.data.suggestedSalary - res.data.basicPay));
+                    $("#viewSuggestedSalary").val("₱ " + formatNumberWithCommas(res.data.suggestedSalary));
                     $("#viewReason").val(res.data.reason);
 
                     $("#viewSalaryAdjustmentModal").modal("show");

@@ -120,11 +120,19 @@
 
         public function getSalaryInfoAT($auditTrailID) {
           $salaryAdj = "
-            SELECT * FROM {$this->auditTrail} AS at
+            SELECT action, dateFiled, emp.employeeID, 
+            emp.firstName AS affectedFirstName, 
+            emp.lastName AS affectedLastName,
+            e.firstName AS firstName,
+            e.lastName AS lastName, emp.basicPay, 
+            suggestedSalary, reason
+            FROM {$this->auditTrail} AS at
             INNER JOIN {$this->salaryadj} AS sa
-            ON at.auditTrailID = sa.salaryAdjID
+            ON at.salaryAdjID = sa.salaryAdjID
             INNER JOIN {$this->employees} AS e
-            ON sa.empID = e.id
+            ON at.empID = e.id
+            INNER JOIN {$this->employees} AS emp
+            ON at.affected_empID = emp.id
             WHERE at.auditTrailID = '$auditTrailID'";
           return $salaryAdj;
         }

@@ -15,63 +15,6 @@
             </div>
             
             <!-- CONTENT -->
-            <!-- <div class="px-3 bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
-                <! -- DATATABLE - ->
-                <div class="mx-auto my-3 overflow-auto">
-                    <table id="auditTrailTable" class="table table-striped table-bordered table-auto min-w-full divide-y divide-gray-200 text-center pt-3">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Module</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Affected Employe</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            < ?php
-                                // function formatDate($date) {
-                                //     // Create a DateTime object from the string
-                                //     $dateTime = new DateTime($date);
-                                
-                                //     // Format the date
-                                //     return $dateTime->format('F j, Y');
-                                // }
-
-                                // $query = mysqli_query($conn, $employees->viewAuditTrail());
-                                // while ($auditTrailDetails = mysqli_fetch_array($query)) {
-
-                                //     $auditTrailID = $auditTrailDetails['auditTrailID'];
-                                //     $date = $auditTrailDetails['date'];
-                                //     $employeeName = $auditTrailDetails['firstName'] . " " . $auditTrailDetails['lastName'];
-                                //     $module = $auditTrailDetails['module'];
-                                //     $action = $auditTrailDetails['action'];
-                                //     // $affected_user = $auditTrailDetails['affectedFirstName'] . " " . $auditTrailDetails['affectedLastName'];
-                                //     if ($auditTrailDetails['affected_empID'] === null) {
-                                //         $affected_user = "-";
-                                //     } else {
-                                //         $affectedUserQuery = mysqli_query($conn, $employees->viewAffectedUser($auditTrailDetails['affected_empID']));
-                                //         $affectedUserDetails = mysqli_fetch_array($affectedUserQuery);
-                                //         $affected_user = $affectedUserDetails['affectedFirstName'] . " " . $affectedUserDetails['affectedLastName'];
-                                //     }
-                                //     $date = formatDate($date);
-
-                                //     echo "<tr>";
-                                //     echo "<td class ='whitespace-nowrap'>" . $auditTrailID . "</td>";
-                                //     echo "<td class ='whitespace-nowrap'>" . $date . "</td>";
-                                //     echo "<td class ='whitespace-nowrap'>" . $employeeName . "</td>";
-                                //     echo "<td class ='whitespace-nowrap'>" . $module . "</td>";
-                                //     echo "<td class ='whitespace-nowrap'>" . $action . "</td>";
-                                //     echo "<td class ='whitespace-nowrap'>" . $affected_user . "</td>";
-                                //     echo "</tr>";
-                                // }
-                            ? >
-                        </tbody>
-                    </table>
-                </div>
-            </div> -->
-
             <div class="bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
                 <div class="card shadow-sm bInfo">
                     <div class="card-header">
@@ -525,10 +468,28 @@
                         <div class="modal-body">
                             <div class="row g-2 mb-1">
                                 <div class="col-6">
+                                    <label for="viewAction">Action:</label>
+                                </div>
+                                <div class="col-6">
+                                    <label for="viewUser">User:</label>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-2">
+                                <div class="col-6">
+                                    <input type="text" class="form-control" id="viewAction" disabled readonly>
+                                </div>
+                                <div class="col-6">
+                                    <input type="text" class="form-control" id="viewUser" disabled readonly>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-1">
+                                <div class="col-6">
                                     <label for="viewDateFiled">Date Filed:</label>
                                 </div>
                                 <div class="col-6">
-                                    <label for="viewStatus">Status:</label>
+                                    <label for="viewReason">Reason:</label>
                                 </div>
                             </div>
 
@@ -537,7 +498,7 @@
                                     <input type="text" class="form-control" id="viewDateFiled" disabled readonly>
                                 </div>
                                 <div class="col-6">
-                                    <input type="text" class="form-control" id="viewStatus" disabled readonly>
+                                    <input type="text" class="form-control" id="viewReason" disabled readonly>
                                 </div>
                             </div>
 
@@ -576,23 +537,9 @@
                                     <input type="text" class="form-control" id="viewSuggestedSalary" disabled readonly>
                                 </div>
                             </div>
-
-                            <div class="row g-2 mb-1">
-                                <div class="col-6">
-                                    <label for="viewReason">Reason:</label>
-                                </div>
-                            </div>
-
-                            <div class="row g-2 mb-2">
-                                <div class="col-6">
-                                    <input type="text" class="form-control" id="viewReason" disabled readonly>
-                                </div>
-                            </div>
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-success salaryApprove" id="approveSalaryAdjustment">Approve</button>
-                            <button type="button" class="btn btn-danger salaryDisapprove" id="disapproveSalaryAdjustment">Disapprove</button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnClose_salaryAdjustment">Close</button>
                         </div>
                     </div>
