@@ -55,6 +55,9 @@
                 <a href="../pages/admin_payroll.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Payroll
                 </a>
+                <a href="../pages/admin_notifications.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
+                    Memo
+                </a>
                 <?php
                     if ($_SESSION['departmentID'] == '5' || $_SESSION['levelID'] == '3' || $_SESSION['levelID'] == '0') {
                 ?>
@@ -181,8 +184,33 @@
                 <button onclick="toggleSidebar()" class="text-gray-800">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </button>
+
                 <div class="text-2xl font-bold px-2">Celo Business Solutions Incorporated</div>
+
                 <div class="relative">
+                    <!-- Bell (clickable) -->
+                    <button id="notifBtn" type="button" class="relative align-middle text-gray-800 mr-2">
+                        <i class="bi bi-bell text-2xl"></i>
+
+                        <!-- badge -->
+                        <span id="notifCount"
+                            class="absolute -top-1 -right-2 bg-red-600 text-white text-[10px] font-bold rounded-full px-1.5 py-0.5 hidden">
+                            0
+                        </span>
+                    </button>
+
+                    <!-- Notifications dropdown (hidden by default) -->
+                    <div id="notifDropdown"
+                        class="absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg hidden z-50 overflow-hidden">
+                        <div class="px-4 py-2 font-semibold border-b">Notifications</div>
+                        <div id="notifList" class="max-h-80 overflow-auto">
+                            <div class="px-4 py-3 text-sm text-gray-500">Loading...</div>
+                        </div>
+                        <div class="px-4 py-2 text-xs text-gray-500 border-t text-center">
+                            Showing latest 3
+                        </div>
+                    </div>
+            
                     <button onclick="toggleDropdown()" class=" text-gray-800 font-bold px-4 py-2">
                         <?php echo $_SESSION['employeeName']; ?> 
                     </button>
@@ -192,6 +220,25 @@
                     </div>
                 </div>
             </div>
+
+            <!-- ======================================================================================================================================= -->
+            <!-- ================================================================= MODAL =============================================================== -->
+            <!-- ======================================================================================================================================= -->
+
+            <div id="notifModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+                <div class="bg-white rounded-lg shadow-lg w-11/12 md:w-3/4 lg:w-1/2 overflow-hidden">
+                    <div class="flex justify-between items-center p-4 border-b">
+                        <h2 id="notifModalTitle" class="text-lg font-semibold">Notification</h2>
+                        <button id="closeNotifModal" class="text-gray-600 hover:text-gray-900 text-2xl leading-none">&times;</button>
+                    </div>
+                    <div class="p-4">
+                        <img id="notifModalImg" src="" class="w-full rounded" alt="Notification Photo">
+                        <p id="notifModalCaption" class="text-sm text-gray-600 mt-2"></p>
+                        <p id="notifModalDate" class="text-xs text-gray-500 mt-1"></p>
+                    </div>
+                </div>
+            </div>
+
 
         <!-- JS -->
         <script>
@@ -243,6 +290,109 @@
                     });
                 });
             });
+
+            // NOTIFICATION
+            function loadNotifCount() {
+                $.getJSON('../backend/user/getNotifCount.php', function (res) {
+                    const count = res.count || 0;
+                    if (count > 0) {
+                        $('#notifCount').text(count).removeClass('hidden');
+                    } else {
+                        $('#notifCount').addClass('hidden');
+                    }
+                });
+            }
+
+            function loadNotifList() {
+                $('#notifList').html('<div class="px-4 py-3 text-sm text-gray-500">Loading...</div>');
+
+                $.getJSON('../backend/user/getNotifList.php', function (res) {
+                    const items = res.items || [];
+                    if (!items.length) {
+                        $('#notifList').html('<div class="px-4 py-3 text-sm text-gray-500">No notifications</div>');
+                        return;
+                    }
+
+                    let html = '';
+                    items.forEach(item => {
+                        const isNew = item.is_read === 0;
+
+                        html += `
+                            <button type="button"
+                                    class="w-full text-left px-4 py-3 hover:bg-gray-100 border-b notif-item"
+                                    data-id="${item.id}"
+                                    data-photo="${encodeURI(item.photo_path)}"
+                                    data-title="${(item.title || 'Notification').replace(/"/g,'&quot;')}"
+                                    data-date="${item.created_at}">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-semibold text-sm">${item.title || 'Photo uploaded'}</span>
+                                    ${isNew ? '<span class="text-xs bg-red-600 text-white px-2 py-0.5 rounded-full">new</span>' : ''}
+                                </div>
+                                <div class="text-xs text-gray-500 mt-1">${item.created_at}</div>
+                                <div class="text-sm text-gray-700 mt-1 truncate">${item.caption || ''}</div>
+                            </button>
+                        `;
+                    });
+
+                    $('#notifList').html(html);
+                });
+            }
+
+            // open/close notif dropdown
+            $('#notifBtn').on('click', function (e) {
+                e.stopPropagation();
+
+                // close user dropdown if open (optional)
+                $('#dropdown').addClass('hidden');
+
+                $('#notifDropdown').toggleClass('hidden');
+
+                if (!$('#notifDropdown').hasClass('hidden')) {
+                    loadNotifList();
+                }
+            });
+
+            // close dropdown if click outside
+            $(document).on('click', function () {
+                $('#notifDropdown').addClass('hidden');
+            });
+
+            // prevent closing when clicking inside dropdown
+            $('#notifDropdown').on('click', function (e) {
+                e.stopPropagation();
+            });
+
+            // click notif item -> mark read + open modal
+            $(document).on('click', '.notif-item', function () {
+                const id = $(this).data('id');
+
+                $.post('../backend/user/markNotifRead.php', { id }, function () {
+                    loadNotifCount();
+                    loadNotifList();
+                }, 'json');
+
+                $('#notifModalTitle').text($(this).data('title'));
+                $('#notifModalImg').attr('src', $(this).data('photo'));
+                $('#notifModalCaption').text($(this).data('caption') || '');
+                $('#notifModalDate').text($(this).data('date') || '');
+
+                $('#notifModal').removeClass('hidden').addClass('flex');
+            });
+
+            // close modal
+            $('#closeNotifModal').on('click', function () {
+                $('#notifModal').addClass('hidden').removeClass('flex');
+            });
+            $('#notifModal').on('click', function (e) {
+                if (e.target.id === 'notifModal') {
+                    $('#notifModal').addClass('hidden').removeClass('flex');
+                }
+            });
+
+            // init + polling
+            loadNotifCount();
+            setInterval(loadNotifCount, 10000);
+
         </script>
 
         <script src="../assets/js/sidebar.js"></script>

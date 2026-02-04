@@ -21,7 +21,7 @@
         private $allowances = 'tbl_allowances';
         private $deductions = 'tbl_deductions';
         private $referral = "tbl_referral";
-        private $payrollcycle = "tbl_payrollcycle";
+        private $notifications = "tbl_notifications";
         private $salaryAdj = "tbl_salaryadj";
         private $auditTrail = 'tbl_audittrail';
         private $dbConnect = false;
@@ -730,6 +730,55 @@
                 SELECT * FROM {$this->employees} AS employees 
                 WHERE employeeID = '$employeeID'";
             return $searchEmployeeID;
+        }
+
+        public function viewNotifications() {
+            $notifications = "
+                SELECT * FROM {$this->notifications} AS notification
+                INNER JOIN {$this->employees} AS employee
+                ON notification.created_by = employee.id
+                ";
+            return $notifications;
+        }
+
+        public function addNotification($title, $photoPath, $createdBy) {
+            $addNotification = "
+                INSERT INTO {$this->notifications} (title, photo_path, created_by, created_at)
+                VALUES ('{$title}', '{$photoPath}', '{$createdBy}', CURRENT_TIMESTAMP)";
+            return $addNotification;
+        }
+
+        public function viewLastNotificationAdded() {
+            $notification = "
+                SELECT * FROM {$this->notifications}
+                ORDER BY notificationID DESC
+                LIMIT 1";
+            return $notification;
+        }
+
+        public function getNotificationInfo($notificationID) {
+            $notification = "
+                SELECT * FROM {$this->notifications} AS notification
+                INNER JOIN {$this->employees} AS employee
+                ON notification.created_by = employee.id
+                WHERE notificationID = $notificationID";
+            return $notification;
+        }
+
+        public function updateNotification ($notificationID, $title, $photoPath) {
+            $notification = "
+                UPDATE {$this->notifications} SET
+                title = '$title', 
+                photo_path = '$photoPath'
+                WHERE notificationID = '$notificationID'";
+            return $notification;
+        }
+
+        public function deleteNotification ($notificationID) {
+            $notification = "
+                DELETE FROM {$this->notifications} 
+                WHERE notificationID = '$notificationID'";
+            return $notification;
         }
 
         public function viewPersonnel() {

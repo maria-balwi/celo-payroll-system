@@ -20,6 +20,9 @@
         <!-- SWEET ALERT 2 -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.3/dist/sweetalert2.min.css">
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.3/dist/sweetalert2.all.min.js"></script>
+
+        <!-- BOOTSTRAP ICON -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
               
         <!-- WEBSITE LOGO AND TITLE -->
         <link rel="icon" href="../assets/images/logo.png" type="image/icon type">
