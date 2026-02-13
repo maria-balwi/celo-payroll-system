@@ -194,7 +194,7 @@
 
                         <!-- badge -->
                         <span id="notifCount"
-                            class="absolute -top-1 -right-2 bg-red-600 text-white text-[10px] font-bold rounded-full px-1.5 py-0.5 hidden">
+                            class="absolute -top-1 -right-2 bg-red-600 text-white text-[10px] rounded-full px-1 py-0 hidden">
                             0
                         </span>
                     </button>
@@ -225,16 +225,51 @@
             <!-- ================================================================= MODAL =============================================================== -->
             <!-- ======================================================================================================================================= -->
 
-            <div id="notifModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
-                <div class="bg-white rounded-lg shadow-lg w-11/12 md:w-3/4 lg:w-1/2 overflow-hidden">
-                    <div class="flex justify-between items-center p-4 border-b">
-                        <h2 id="notifModalTitle" class="text-lg font-semibold">Notification</h2>
-                        <button id="closeNotifModal" class="text-gray-600 hover:text-gray-900 text-2xl leading-none">&times;</button>
-                    </div>
-                    <div class="p-4">
-                        <img id="notifModalImg" src="" class="w-full rounded" alt="Notification Photo">
-                        <p id="notifModalCaption" class="text-sm text-gray-600 mt-2"></p>
-                        <p id="notifModalDate" class="text-xs text-gray-500 mt-1"></p>
+            <!--------------------------------------------------------------------------------------------------------------------------------------------->
+            <!----------------------------------------------------------- VIEW NOTIFICATION MODAL --------------------------------------------------------->
+            <div class="modal fade" id="viewNotifModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
+                <div class="modal-dialog modal-none modal-xl modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="userFormLabel">View Notification</h1>
+                            <input type="hidden" id="view_notificationID">
+                        </div>
+                        
+                        <div class="modal-body">
+                            <div class="row g-2 mb-1">
+                                <div class="col-4">
+                                    <label for="view_dateCreated">Date Created:</label>
+                                </div>
+                                <div class="col-4">
+                                    <label for="view_title">Name:</label>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-2">
+                                <div class="col-4">
+                                    <input type="text" class="form-control" id="view_dateCreated" name="view_dateCreated" disabled readonly>
+                                </div>
+                                <div class="col-4">
+                                    <input type="text" class="form-control" id="view_title" name="view_title" disabled readonly>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-2">
+                                <div class="col-12">
+                                    <div id="photo_container" class="w-100 overflow-auto" style="height: 350px;">
+                                        <img id="view_profilePhoto"
+                                            src=""
+                                            alt="Profile Photo"
+                                            class="img-thumbnail rounded w-100"
+                                            style="height: auto;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btn_close">Close</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -279,6 +314,19 @@
                 }
             }
 
+            function formatDateTime(dateInput) {
+                let date = dateInput ? new Date(dateInput.replace(' ', 'T')) : new Date();
+
+                return date.toLocaleString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true
+                });
+            }
+
             document.addEventListener('DOMContentLoaded', () => {
                 document.addEventListener('click', closeSidebar);
                 // Add event listeners to sidebar links to set the active class
@@ -303,6 +351,7 @@
                 });
             }
 
+            // DROPDOWN LIST NOTIFICATIONS
             function loadNotifList() {
                 $('#notifList').html('<div class="px-4 py-3 text-sm text-gray-500">Loading...</div>');
 
@@ -319,17 +368,17 @@
 
                         html += `
                             <button type="button"
-                                    class="w-full text-left px-4 py-3 hover:bg-gray-100 border-b notif-item"
-                                    data-id="${item.id}"
-                                    data-photo="${encodeURI(item.photo_path)}"
-                                    data-title="${(item.title || 'Notification').replace(/"/g,'&quot;')}"
-                                    data-date="${item.created_at}">
+                                    class="notifView w-full text-left px-4 py-3 hover:bg-gray-100 border-b"
+                                    data-id="${item.notificationID}"
+                                    data-photo="${item.photo_path}"
+                                    data-date="${item.created_at}"
+                                    data-title="${item.title}"
+                                    data-bs-toggle="modal" data-bs-target="#viewNotifModal">
                                 <div class="flex items-center justify-between">
-                                    <span class="font-semibold text-sm">${item.title || 'Photo uploaded'}</span>
-                                    ${isNew ? '<span class="text-xs bg-red-600 text-white px-2 py-0.5 rounded-full">new</span>' : ''}
+                                    <span class="font-semibold text-sm">${item.title}</span>
+                                    ${isNew ? '<span class="text-xs bg-blue-600 text-white px-2 py-0.5 rounded-full">new</span>' : ''}
                                 </div>
-                                <div class="text-xs text-gray-500 mt-1">${item.created_at}</div>
-                                <div class="text-sm text-gray-700 mt-1 truncate">${item.caption || ''}</div>
+                                <div class="text-xs text-gray-500 mt-1">${formatDateTime(item.created_at)}</div>
                             </button>
                         `;
                     });
@@ -352,42 +401,50 @@
                 }
             });
 
+            // VIEW NOTIF MODAL - UPON CLICKING ITEM IN NOTIF LIST DROPDOWN
+            $(document).on("click", ".notifView", function () {
+                const id = $(this).data("id");
+                const photo = $(this).data("photo");
+                const date = $(this).data("date");
+                const title = $(this).data("title");
+
+                // ASSIGN TO MODAL
+                $("#view_notificationID").val(id);
+                $("#view_dateCreated").val(formatDateTime(date)); 
+                $("#view_title").val(title); 
+                $("#view_profilePhoto").attr("src", photo);
+
+                $.ajax({
+                    url: "../backend/user/markNotifRead.php",
+                    type: "POST",
+                    dataType: "json",
+                    data: { notificationID: id },
+                    success: function (res) {
+                        if (res.error === 0) {
+                            loadNotifCount();
+                            loadNotifList();
+                        }
+                        else {
+                            console.log(res.em);
+                        }
+                    }, 
+                    error: function(xhr) {
+                        console.log(xhr.responseText);
+                    }
+                });
+            });
+
             // close dropdown if click outside
             $(document).on('click', function () {
                 $('#notifDropdown').addClass('hidden');
             });
 
-            // prevent closing when clicking inside dropdown
-            $('#notifDropdown').on('click', function (e) {
-                e.stopPropagation();
-            });
-
-            // click notif item -> mark read + open modal
-            $(document).on('click', '.notif-item', function () {
-                const id = $(this).data('id');
-
-                $.post('../backend/user/markNotifRead.php', { id }, function () {
-                    loadNotifCount();
-                    loadNotifList();
-                }, 'json');
-
-                $('#notifModalTitle').text($(this).data('title'));
-                $('#notifModalImg').attr('src', $(this).data('photo'));
-                $('#notifModalCaption').text($(this).data('caption') || '');
-                $('#notifModalDate').text($(this).data('date') || '');
-
-                $('#notifModal').removeClass('hidden').addClass('flex');
-            });
-
-            // close modal
-            $('#closeNotifModal').on('click', function () {
-                $('#notifModal').addClass('hidden').removeClass('flex');
-            });
-            $('#notifModal').on('click', function (e) {
-                if (e.target.id === 'notifModal') {
-                    $('#notifModal').addClass('hidden').removeClass('flex');
+            $(document).on('click', function (e) {
+                if (!$(e.target).closest('#notifDropdown, #notifBtn').length) {
+                    $('#notifDropdown').addClass('hidden');
                 }
             });
+
 
             // init + polling
             loadNotifCount();

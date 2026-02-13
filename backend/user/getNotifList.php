@@ -10,7 +10,7 @@
     }
 
     $sql = "
-        SELECT n.notificationID, n.photo_path, n.caption, n.created_at,
+        SELECT n.notificationID, n.photo_path, n.created_at, n.title,
                 CASE WHEN r.notificationID IS NULL THEN 0 ELSE 1 END AS is_read
         FROM tbl_notifications n
         LEFT JOIN tbl_notification_reads r
@@ -28,7 +28,7 @@
     $items[] = [
         'notificationID' => (int)$r['notificationID'],
         'photo_path' => $r['photo_path'],
-        'caption' => $r['caption'] ?? '',
+        'title' => $r['title'] ?? '',
         'created_at' => $r['created_at'],
         'is_read' => (int)$r['is_read']
     ];

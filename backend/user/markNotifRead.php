@@ -7,7 +7,8 @@
     $notifID = (int)($_POST['notificationID'] ?? 0);
 
     if ($empID <= 0 || $notifID <= 0) {
-        echo json_encode(['ok' => false]);
+        $error = array('error' => 1, 'em' => 'Invalid ID');
+        echo json_encode($error);
         exit;
     }
 
@@ -16,5 +17,7 @@
     $stmt->bind_param("ii", $notifID, $empID);
     $stmt->execute();
 
-    echo json_encode(['ok' => true]);
+    $error = array('error' => 0, 'em' => 'Successfully marked as read');
+    echo json_encode($error);
+    exit();
 ?>
