@@ -1,5 +1,4 @@
 <?php 
-
     require_once __DIR__ . '/../init.php';
     require_once __DIR__ . '/sentry_fetch_logs.php';
 
@@ -19,7 +18,8 @@
 
     // SET START AND END DATE WITH BUFFER
     $startDate = date("Y-m-d", strtotime($lastSync . ' -2 days'));
-    $endDate = date("Y-m-d");
+    $endDateCandidate = date("Y-m-d", strtotime($lastSync . ' +7 days'));
+    $endDate = ($endDateCandidate > date("Y-m-d")) ? date("Y-m-d") : $endDateCandidate;
 
     // FETCH EMPLOYEE ID (TBL_ATTENDANCE) / PERSONNEL NUMBER (SENTRY)
     $employees = mysqli_query($conn, $attendance->getEmployeeID());
@@ -39,14 +39,11 @@
         foreach ($logs as $log) {
             // BUILD DATETIME & NORMALIZE TIMEZONE
             $logDateTime = date('Y-m-d H:i:s',strtotime($log['logdate'] . ' ' . $log['logtime']));
-            // $logDateTimeLocal = $dt->format('Y-m-d H:i:s');
 
             // if ($logDateTime <= $lastSync) continue;
 
             $date = date("Y-m-d", strtotime(($log['logdate'])));
-            $time = date("H:i:s", strtotime(($log['logtime'])));
-            // $date = $dt->format('Y-m-d');
-            // $time = $dt->format('H:i:s');   
+            $time = date("H:i:s", strtotime(($log['logtime'])));   
             $logTypeID = $log['logtype'] == 0 ? 1 : 4;
 
             $attendanceSource = 'SENTRY';
@@ -71,6 +68,4 @@
     if ($newestLog > $lastSync) {
         mysqli_query($conn, $attendance->syncLatestAttendance($newestLog));
     }
-
-
 ?>
