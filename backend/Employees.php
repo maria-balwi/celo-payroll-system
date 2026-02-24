@@ -1398,12 +1398,22 @@
 
         public function viewSalaryAdjInfo($salaryAdjID) {
             $request = "
-                SELECT empID
+                SELECT empID, basicPay, suggestedSalary
                 FROM ".$this->salaryAdj." AS salaryAdj
                 INNER JOIN ".$this->employees." AS employees
                 ON salaryAdj.empID = employees.id
                 WHERE salaryAdjID = '$salaryAdjID'";
             return $request;
+        }
+
+        public function updateEmployeeSalary($id, $newSalary, $newDailyRate, $newHourlyRate) {
+            $updateEmployeeSalary = "
+                UPDATE {$this->employees} SET
+                basicPay = '$newSalary',
+                dailyRate = '$newDailyRate',
+                hourlyRate = '$newHourlyRate'
+                WHERE id = '$id'";
+            return $updateEmployeeSalary;
         }
 
         public function fileCashAdvance($id, $amount, $monthsToPay, $monthlyAmmortization, $remainingAmount, $cutoffStart, $payrollcutoffStart, $payrollcutoffEnd, $ca_status, $requestorID, $request_status) {

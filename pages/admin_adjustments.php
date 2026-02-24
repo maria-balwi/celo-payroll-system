@@ -215,7 +215,7 @@
                                                         $salaryadjID = $salaryadjDetails['salaryAdjID'];
                                                         $salaryadj_employeeID = $salaryadjDetails['employeeID'];
                                                         $salaryadj_employeeName = $salaryadjDetails['firstName'] . " " . $salaryadjDetails['lastName'];
-                                                        $salaryadj_currentSalary = $salaryadjDetails['basicPay'];
+                                                        $salaryadj_currentSalary = $salaryadjDetails['currentSalary'];
                                                         $salaryadj_newSalary = $salaryadjDetails['suggestedSalary'];
                                                         $salaryadj_reason = $salaryadjDetails['reason'];
                                                         $salaryadj_status = $salaryadjDetails['status'];

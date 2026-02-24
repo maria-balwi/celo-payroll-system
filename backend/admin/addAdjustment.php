@@ -68,7 +68,11 @@
         $reason = $_POST['reason'];
         $status = "Pending";
 
-        mysqli_query($conn, $payroll->fileSalaryAdjustment($empID, $suggestedSalary, $reason, $status));
+        $salaryQuery = mysqli_query($conn, $employees->viewEmployee($empID));
+        $salaryResult = mysqli_fetch_array($salaryQuery);
+        $currentSalary = $salaryResult['basicPay'];
+
+        mysqli_query($conn, $payroll->fileSalaryAdjustment($empID, $currentSalary, $suggestedSalary, $reason, $status));
 
         $lastIDQuery = mysqli_query($conn, $payroll->viewLastSalaryAdjustment());
         $lastIDResult = mysqli_fetch_array($lastIDQuery);

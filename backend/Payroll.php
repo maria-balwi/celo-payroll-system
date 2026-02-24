@@ -124,7 +124,7 @@
             emp.firstName AS affectedFirstName, 
             emp.lastName AS affectedLastName,
             e.firstName AS firstName,
-            e.lastName AS lastName, emp.basicPay, 
+            e.lastName AS lastName, currentSalary, 
             suggestedSalary, reason
             FROM {$this->auditTrail} AS at
             INNER JOIN {$this->salaryadj} AS sa
@@ -165,10 +165,10 @@
             return $addAdjustment;
         }
 
-        public function fileSalaryAdjustment($empID, $suggestedSalary, $reason, $status) {
+        public function fileSalaryAdjustment($empID, $currentSalary, $suggestedSalary, $reason, $status) {
             $fileSalaryAdjustment = "
-                INSERT INTO ".$this->salaryadj." (empID, suggestedSalary, reason, dateFiled, status)
-                VALUES ('$empID', '$suggestedSalary', '$reason', CURRENT_DATE(), '$status')";
+                INSERT INTO ".$this->salaryadj." (empID, currentSalary, suggestedSalary, reason, dateFiled, status)
+                VALUES ('$empID', '$currentSalary', '$suggestedSalary', '$reason', CURRENT_DATE(), '$status')";
             return $fileSalaryAdjustment;
         }
 

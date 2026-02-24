@@ -66,7 +66,7 @@ $(document).ready(function() {
                     $("#viewEmployeeID").val(res.data.employeeID);
                     $("#viewReason").val(res.data.reason);
                     $("#viewEmployeeName").val(res.data.affectedFirstName + " " + res.data.affectedLastName);
-                    $("#viewCurrentSalary").val("₱ " + formatNumberWithCommas(res.data.basicPay));
+                    $("#viewCurrentSalary").val("₱ " + formatNumberWithCommas(res.data.currentSalary));
                     $("#viewSuggestedSalary").val("₱ " + formatNumberWithCommas(res.data.suggestedSalary));
                     $("#viewReason").val(res.data.reason);
 
