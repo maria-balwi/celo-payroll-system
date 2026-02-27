@@ -30,8 +30,10 @@
                         <thead class="bg-gray-50">
                             <tr>
                                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Date Created</th>
-                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Subject</th>
                                 <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Created by</th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Read</th>
+                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Unread</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -43,6 +45,7 @@
                                     // Format the date
                                     return $dateTime->format('M d, Y');
                                 }
+
                                 $notificationQuery = mysqli_query($conn, $employees->viewNotifications());
                                 while ($notificationDetails = mysqli_fetch_array($notificationQuery)) {
 
@@ -51,10 +54,17 @@
                                     $notification_employeeName = $notificationDetails['firstName'] . " " . $notificationDetails['lastName'];
                                     $notification_createdAt = $notificationDetails['created_at'];
 
+                                    $employeeReadNotifCountQuery = mysqli_query($conn, $employees->viewReadNotifications($notification_id));
+                                    $employeeReadNotifCount = mysqli_num_rows($employeeReadNotifCountQuery);
+                                    $employeeUnreadNotifCountQuery = mysqli_query($conn, $employees->viewUnreadNotifications($notification_id));
+                                    $employeeUnreadNotifCount = mysqli_num_rows($employeeUnreadNotifCountQuery);
+
                                     echo "<tr data-id='" . $notification_id . "' class='notificationView cursor-pointer'>";
                                     echo "<td class ='whitespace-nowrap'>" . formatDate($notification_createdAt) . "</td>";
                                     echo "<td class ='whitespace-nowrap'>" . $notification_title . "</td>";
                                     echo "<td class ='whitespace-nowrap'>" . $notification_employeeName . "</td>";
+                                    echo "<td class ='whitespace-nowrap'>" . $employeeReadNotifCount . "</td>";
+                                    echo "<td class ='whitespace-nowrap'>" . $employeeUnreadNotifCount . "</td>";
                                     echo "</tr>";
                                 }
                             ?>
@@ -80,7 +90,7 @@
                             <div class="modal-body">
                                 <div class="row g-2 mb-1">
                                     <div class="col-12">
-                                        <label for="notificationName">Name:</label>
+                                        <label for="notificationName">Subject:</label>
                                     </div>
                                 </div>
                                 <div class="row g-2 mb-2">
@@ -126,14 +136,14 @@
                                     <label for="viewDateCreated">Date Created:</label>
                                 </div>
                                 <div class="col-4">
-                                    <label for="viewTitle">Name:</label>
+                                    <label for="viewTitle">Subject:</label>
                                 </div>
                                 <div class="col-4">
                                     <label for="viewCreatedBy">Posted by:</label>
                                 </div>
                             </div>
 
-                            <div class="row g-2 mb-2">
+                            <div class="row g-2 mb-3">
                                 <div class="col-4">
                                     <input type="text" class="form-control" id="viewDateCreated" name="viewDateCreated" disabled readonly>
                                 </div>
@@ -145,7 +155,7 @@
                                 </div>
                             </div>
 
-                            <div class="row g-2 mb-2">
+                            <div class="row g-2 mb-4">
                                 <div class="col-12">
                                     <div id="photoContainer" class="w-100 overflow-auto" style="height: 350px;">
                                         <img id="viewProfilePhoto"
@@ -154,6 +164,22 @@
                                             class="img-thumbnail rounded w-100"
                                             style="height: auto;">
                                     </div>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-2">
+                                <div class="col-12">
+                                    <table id="notificationReadTable" class="table table-auto table-striped table-bordered min-w-full divide-y divide-gray-200 text-center pt-3">
+                                        <thead class="bg-gray-50">
+                                            <tr>
+                                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee Name</th>
+                                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="notificationReadTableBody">
+                                            
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -166,7 +192,6 @@
                     </div>
                 </div>
             </div>
-
 
             <!--------------------------------------------------------------------------------------------------------------------------------------------->
             <!------------------------------------------------------ UPDATE NOTIFICATION MODAL ------------------------------------------------------------>
@@ -184,7 +209,7 @@
                                         <label for="updateDateCreated">Date Created:</label>
                                     </div>
                                     <div class="col-4">
-                                        <label for="updateTitle">Name:</label>
+                                        <label for="updateTitle">Subject:</label>
                                     </div>
                                     <div class="col-4">
                                         <label for="updateCreatedBy">Posted by:</label>

@@ -22,6 +22,7 @@
         private $deductions = 'tbl_deductions';
         private $referral = "tbl_referral";
         private $notifications = "tbl_notifications";
+        private $notificationRead = "tbl_notification_reads";
         private $salaryAdj = "tbl_salaryadj";
         private $auditTrail = 'tbl_audittrail';
         private $dbConnect = false;
@@ -741,6 +742,37 @@
             return $notifications;
         }
 
+        public function viewReadNotifications($notificationID) {
+            $read = "
+                SELECT * FROM {$this->notificationRead} AS notificationRead
+                INNER JOIN {$this->notifications} AS notifications
+                ON notificationRead.notificationID = notifications.notificationID
+                WHERE notifications.notificationID = $notificationID";
+            return $read;
+        }
+
+        public function viewUnreadNotifications($notificationID) {
+            $unread = "
+                SELECT * FROM {$this->employees} AS employees
+                WHERE employees.id NOT IN (
+                SELECT empID FROM {$this->notificationRead} AS notificationRead
+                INNER JOIN {$this->notifications} AS notifications
+                ON notificationRead.notificationID = notifications.notificationID
+                WHERE notifications.notificationID = $notificationID)
+                AND e_status = 'Active'";
+            return $unread;
+        }
+
+        public function viewEmployees_Notifications($notificationID) {
+            $employees = "
+                SELECT * FROM {$this->employees} AS employees
+                LEFT JOIN {$this->notificationRead} AS notificationRead
+                ON employees.id = notificationRead.empID
+                AND notificationRead.notificationID = $notificationID
+                WHERE e_status = 'Active'";
+            return $employees;
+        }
+ 
         public function addNotification($title, $photoPath, $createdBy) {
             $addNotification = "
                 INSERT INTO {$this->notifications} (title, photo_path, created_by, created_at)
