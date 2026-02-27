@@ -367,7 +367,7 @@ $(document).ready(function () {
 
                     // LOAD PROFILE PICTURE
                     const img = $("#viewProfilePhoto");
-                    const imagePath = "../assets/images/notifications/" + res.data.title.replace(/\s+/g, '') + ".png";
+                    const imagePath = res.data.photo_path;
                     fetch(imagePath)
                         .then((response) => {
                             if (response.ok) {
@@ -385,6 +385,22 @@ $(document).ready(function () {
                             });
                             console.error("Error fetching image:", error);
                         });
+
+                    // LOAD NOTIFICATION READ TABLE
+                    var readNotificationsHTML = "";
+                    res.readNotifications.forEach(function ($readNotification) {
+                        readNotificationsHTML += "<tr>";
+                        readNotificationsHTML += "<td>" + $readNotification.firstName + ' ' + $readNotification.lastName + "</td>";
+                        if ($readNotification.read_at) {
+                            readNotificationsHTML += "<td><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Read at " + formatTimestamp($readNotification.read_at) + "</p></td>";
+                        } else {
+                            readNotificationsHTML += "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Unread</p></td>";
+                        }
+                        readNotificationsHTML += "</tr>";
+                    })
+                    
+                    $("#notificationReadTableBody").html(readNotificationsHTML);
+                    $("#notificationReadTable").DataTable();
                 }
             },
         });
