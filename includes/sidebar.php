@@ -203,12 +203,12 @@
                     <div id="notifDropdown"
                         class="absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg hidden z-50 overflow-hidden">
                         <div class="px-4 py-2 font-semibold border-b">Notifications</div>
-                        <div id="notifList" class="max-h-80 overflow-auto">
+                        <div id="notifList" class="max-h-80 overflow-auto" style="max-height: 200px;">
                             <div class="px-4 py-3 text-sm text-gray-500">Loading...</div>
                         </div>
-                        <div class="px-4 py-2 text-xs text-gray-500 border-t text-center">
+                        <!-- <div class="px-4 py-2 text-xs text-gray-500 border-t text-center">
                             Showing latest 3
-                        </div>
+                        </div> -->
                     </div>
             
                     <button onclick="toggleDropdown()" class=" text-gray-800 font-bold px-4 py-2">
@@ -315,16 +315,23 @@
             }
 
             function formatDateTime(dateInput) {
-                let date = dateInput ? new Date(dateInput.replace(' ', 'T')) : new Date();
+                if (!dateInput) return '';
 
-                return date.toLocaleString('en-US', {
+                var jsDate = new Date(dateInput.replace(" ", "T"));
+
+                var datePart = jsDate.toLocaleDateString('en-US', {
                     year: 'numeric',
-                    month: 'short',
-                    day: '2-digit',
+                    month: 'long',
+                    day: '2-digit'
+                });
+
+                var timePart = jsDate.toLocaleTimeString('en-US', {
                     hour: '2-digit',
                     minute: '2-digit',
                     hour12: true
                 });
+
+                return datePart + ' ' + timePart;
             }
 
             document.addEventListener('DOMContentLoaded', () => {
