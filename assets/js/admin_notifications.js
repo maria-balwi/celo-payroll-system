@@ -1,3 +1,23 @@
+function formatTimestamp(timestamp) {
+    if (!timestamp) return '';
+
+    var jsDate = new Date(timestamp.replace(" ", "T"));
+
+    var datePart = jsDate.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: '2-digit'
+    });
+
+    var timePart = jsDate.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+    });
+
+    return datePart + ' ' + timePart;
+}
+
 $(document).ready(function () {
     $("#notificationsTable").DataTable();
 
@@ -115,7 +135,7 @@ $(document).ready(function () {
                 } else if (res.status == 200) {
                     $("#viewNotificationID").val(res.data.notificationID);
                     $("#viewTitle").val(res.data.title);
-                    $("#viewDateCreated").val(res.data.created_at);
+                    $("#viewDateCreated").val(formatTimestamp(res.data.created_at));
                     $("#viewCreatedBy").val(res.data.firstName + " " + res.data.lastName,);
 
                     // LOAD PROFILE PICTURE
@@ -158,7 +178,7 @@ $(document).ready(function () {
                     } else if (res.status == 200) {
                         $("#updateNotificationID").val(res.data.notificationID);
                         $("#updateTitle").val(res.data.title);
-                        $("#updateDateCreated").val(res.data.created_at);
+                        $("#updateDateCreated").val(formatTimestamp(res.data.created_at));
                         $("#updateCreatedBy").val(res.data.firstName + " " + res.data.lastName,);
 
                         // LOAD PROFILE PICTURE
@@ -323,7 +343,7 @@ $(document).ready(function () {
                 } else if (res.status == 200) {
                     $("#viewNotificationID").val(res.data.notificationID);
                     $("#viewTitle").val(res.data.title);
-                    $("#viewDateCreated").val(res.data.created_at);
+                    $("#viewDateCreated").val(formatTimestamp(res.data.created_at));
                     $("#viewCreatedBy").val(res.data.firstName + " " + res.data.lastName,);
 
                     // LOAD PROFILE PICTURE
