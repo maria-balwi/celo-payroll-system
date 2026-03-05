@@ -849,7 +849,7 @@
                                 <div class="row g-2 mb-2">
                                     <div class="col-4">
                                         <label for="basicPay">Basic Pay:</label>
-                                        <input type="number" class="form-control" id="basicPay" name="basicPay">
+                                        <input type="number" class="form-control" id="basicPay" name="basicPay" step="0.01">
                                     </div>
                                     <div class="col-4">
                                         <label for="dailyRate">Daily Rate:</label>
@@ -1815,7 +1815,7 @@
                                 <div class="row g-2 mb-1">
                                     <div class="col-4">
                                         <label for="updateBasicPay">Basic Pay:</label>
-                                        <input type="number" class="form-control" id="updateBasicPay" name="updateBasicPay">
+                                        <input type="number" class="form-control" id="updateBasicPay" name="updateBasicPay" step="0.01">
 
                                     </div>
                                     <div class="col-4">
