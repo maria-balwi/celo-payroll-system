@@ -625,8 +625,8 @@ $(document).ready(function() {
                     $("#viewStatus").val(res.data.status);
                     $("#viewEmployeeID").val(res.data.employeeID);
                     $("#viewEmployeeName").val(res.data.firstName + " " + res.data.lastName);
-                    $("#viewCurrentSalary").val("₱ " + formatNumberWithCommas(res.data.basicPay));
-                    $("#viewSuggestedSalary").val("₱ " + formatNumberWithCommas(res.data.suggestedSalary - res.data.basicPay));
+                    $("#viewCurrentSalary").val("₱ " + formatNumberWithCommas(res.data.currentSalary));
+                    $("#viewSuggestedSalary").val("₱ " + formatNumberWithCommas(res.data.suggestedSalary));
                     $("#viewReason").val(res.data.reason);
 
                     if (res.data.status == "Pending") {
@@ -1191,7 +1191,7 @@ $(document).ready(function() {
                     $("#viewStatus").val(res.data.status);
                     $("#viewEmployeeID").val(res.data.employeeID);
                     $("#viewEmployeeName").val(res.data.firstName + " " + res.data.lastName);
-                    $("#viewCurrentSalary").val("₱ " + formatNumberWithCommas(res.data.basicPay));
+                    $("#viewCurrentSalary").val("₱ " + formatNumberWithCommas(res.data.currentSalary));
                     $("#viewSuggestedSalary").val("₱ " + formatNumberWithCommas(res.data.suggestedSalary));
                     $("#viewReason").val(res.data.reason);
 

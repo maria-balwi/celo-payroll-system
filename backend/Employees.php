@@ -21,7 +21,8 @@
         private $allowances = 'tbl_allowances';
         private $deductions = 'tbl_deductions';
         private $referral = "tbl_referral";
-        private $payrollcycle = "tbl_payrollcycle";
+        private $notifications = "tbl_notifications";
+        private $notificationRead = "tbl_notification_reads";
         private $salaryAdj = "tbl_salaryadj";
         private $auditTrail = 'tbl_audittrail';
         private $dbConnect = false;
@@ -732,6 +733,86 @@
             return $searchEmployeeID;
         }
 
+        public function viewNotifications() {
+            $notifications = "
+                SELECT * FROM {$this->notifications} AS notification
+                INNER JOIN {$this->employees} AS employee
+                ON notification.created_by = employee.id
+                ";
+            return $notifications;
+        }
+
+        public function viewReadNotifications($notificationID) {
+            $read = "
+                SELECT * FROM {$this->notificationRead} AS notificationRead
+                INNER JOIN {$this->notifications} AS notifications
+                ON notificationRead.notificationID = notifications.notificationID
+                WHERE notifications.notificationID = $notificationID";
+            return $read;
+        }
+
+        public function viewUnreadNotifications($notificationID) {
+            $unread = "
+                SELECT * FROM {$this->employees} AS employees
+                WHERE employees.id NOT IN (
+                SELECT empID FROM {$this->notificationRead} AS notificationRead
+                INNER JOIN {$this->notifications} AS notifications
+                ON notificationRead.notificationID = notifications.notificationID
+                WHERE notifications.notificationID = $notificationID)
+                AND e_status = 'Active'";
+            return $unread;
+        }
+
+        public function viewEmployees_Notifications($notificationID) {
+            $employees = "
+                SELECT * FROM {$this->employees} AS employees
+                LEFT JOIN {$this->notificationRead} AS notificationRead
+                ON employees.id = notificationRead.empID
+                AND notificationRead.notificationID = $notificationID
+                WHERE e_status = 'Active'";
+            return $employees;
+        }
+ 
+        public function addNotification($title, $photoPath, $createdBy) {
+            $addNotification = "
+                INSERT INTO {$this->notifications} (title, photo_path, created_by, created_at)
+                VALUES ('{$title}', '{$photoPath}', '{$createdBy}', CURRENT_TIMESTAMP)";
+            return $addNotification;
+        }
+
+        public function viewLastNotificationAdded() {
+            $notification = "
+                SELECT * FROM {$this->notifications}
+                ORDER BY notificationID DESC
+                LIMIT 1";
+            return $notification;
+        }
+
+        public function getNotificationInfo($notificationID) {
+            $notification = "
+                SELECT * FROM {$this->notifications} AS notification
+                INNER JOIN {$this->employees} AS employee
+                ON notification.created_by = employee.id
+                WHERE notificationID = $notificationID";
+            return $notification;
+        }
+
+        public function updateNotification ($notificationID, $title, $photoPath) {
+            $notification = "
+                UPDATE {$this->notifications} SET
+                title = '$title', 
+                photo_path = '$photoPath'
+                WHERE notificationID = '$notificationID'";
+            return $notification;
+        }
+
+        public function deleteNotification ($notificationID) {
+            $notification = "
+                DELETE FROM {$this->notifications} 
+                WHERE notificationID = '$notificationID'";
+            return $notification;
+        }
+
         public function viewPersonnel() {
             $allPersonnel = "
                 SELECT * FROM ".$this->employees." AS employees
@@ -1349,12 +1430,22 @@
 
         public function viewSalaryAdjInfo($salaryAdjID) {
             $request = "
-                SELECT empID
+                SELECT empID, basicPay, suggestedSalary
                 FROM ".$this->salaryAdj." AS salaryAdj
                 INNER JOIN ".$this->employees." AS employees
                 ON salaryAdj.empID = employees.id
                 WHERE salaryAdjID = '$salaryAdjID'";
             return $request;
+        }
+
+        public function updateEmployeeSalary($id, $newSalary, $newDailyRate, $newHourlyRate) {
+            $updateEmployeeSalary = "
+                UPDATE {$this->employees} SET
+                basicPay = '$newSalary',
+                dailyRate = '$newDailyRate',
+                hourlyRate = '$newHourlyRate'
+                WHERE id = '$id'";
+            return $updateEmployeeSalary;
         }
 
         public function fileCashAdvance($id, $amount, $monthsToPay, $monthlyAmmortization, $remainingAmount, $cutoffStart, $payrollcutoffStart, $payrollcutoffEnd, $ca_status, $requestorID, $request_status) {
@@ -1757,6 +1848,13 @@
             $auditTrail = "
                 INSERT INTO ".$this->auditTrail." (date, empID, module, action, affected_empID)
                 VALUES (CURRENT_TIMESTAMP, '$empID', '$module', '$action', '$affected_empID')";
+            return $auditTrail;
+        }
+
+        public function auditTrailSalaryAdj($empID, $module, $salaryAdjID, $action, $affected_empID) {
+            $auditTrail = "
+                INSERT INTO ".$this->auditTrail." (date, empID, module, salaryAdjID, action, affected_empID)
+                VALUES (CURRENT_TIMESTAMP, '$empID', '$module', '$salaryAdjID', '$action', '$affected_empID')";
             return $auditTrail;
         }
 

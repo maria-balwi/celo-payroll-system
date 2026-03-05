@@ -76,6 +76,55 @@
                 }
                 $isHoliday = $isLegal && $isSpecial ? 1 : 0;
 
+                // COMPUTATION TO GET PAYSLIP COUNTER
+                $employeeQuery = mysqli_query($conn, $employees->viewEmployee($empID)); 
+                $employee = mysqli_fetch_array($employeeQuery);
+                $dateHired = $employee['dateHired'];
+                $dateHired = new DateTime($dateHired);
+                $today = new DateTime($payrollCycleTo);
+                $today->modify('+5 days');
+
+                // ---------- START INDEX (first cutoff end after dateHired) ----------
+                $y = (int)$dateHired->format('Y');
+                $m = (int)$dateHired->format('n');
+                $d = (int)$dateHired->format('j');
+
+                if ($d <= 10) {          // ends on 10 (same month)
+                    $slot = 1;
+                } elseif ($d <= 25) {    // ends on 25 (same month)
+                    $slot = 2;
+                } else {                 // ends on 10 (next month)
+                    $dateHired->modify('+1 month');
+                    $y = (int)$dateHired->format('Y');
+                    $m = (int)$dateHired->format('n');
+                    $slot = 1;
+                }
+
+                $startIndex = ($y * 24) + (($m - 1) * 2) + $slot;
+
+                // ---------- END INDEX (last COMPLETED cutoff as of today) ----------
+                $y2 = (int)$today->format('Y');
+                $m2 = (int)$today->format('n');
+                $d2 = (int)$today->format('j');
+
+                if ($d2 <= 10) {                 // current cutoff not finished; last completed was 25 of prev month
+                    $today->modify('-1 month');
+                    $y2 = (int)$today->format('Y');
+                    $m2 = (int)$today->format('n');
+                    $slot2 = 2;
+                } elseif ($d2 <= 25) {           // last completed is 10 of this month
+                    $slot2 = 1;
+                } else {                         // last completed is 25 of this month
+                    $slot2 = 2;
+                }
+
+                $endIndex = ($y2 * 24) + (($m2 - 1) * 2) + $slot2;
+
+                // ---------- TOTAL ----------
+                $payslipCounter = ($endIndex >= $startIndex) ? (($endIndex - $startIndex) + 1) : 0;
+
+                // echo $payslipCounter;
+
                 $payslipQuery = mysqli_query($conn, $payroll->viewPayslip($payrollID, $empID));
                 $payslipDetails = mysqli_fetch_array($payslipQuery);
                 $payslip_id = $payslipDetails['payslipID'];
@@ -177,14 +226,14 @@
                 $overtimeQuery = mysqli_query($conn, "SELECT * FROM tbl_filedot WHERE empID = $payslip_id AND (otDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo') AND status = 1");
                 $overtimeCount = mysqli_num_rows($overtimeQuery);
                 $isOvertime = $overtimeCount > 0 ? 1 : 0;
-
+ 
                 $payslip = '';
                 if ($isHoliday == 0 && $isOvertime == 0) {
                     $payslip = '
                         <div>
                             <div class="text-center font-bold text-xl bg-green-300 py-2" id="payslipDate">For the Period of '.$date.'</div>
                             <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS INCORPORATED</div>
-                            <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP</div>
+                            <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP #'.$payslipCounter.'</div>
 
                             <div id="watermark" class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-600 font-bold text-4xl opacity-30 rotate-45 pointer-events-none select-none">
                                 CONFIDENTIAL
@@ -327,7 +376,7 @@
                         <div>
                             <div class="text-center font-bold text-xl bg-green-300 py-2" id="payslipDate">For the Period of '.$date.'</div>
                             <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS INCORPORATED</div>
-                            <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP</div>
+                            <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP #'.$payslipCounter.'</div>
 
                             <div id="watermark" class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-600 font-bold text-4xl opacity-30 rotate-45 pointer-events-none select-none">
                                 CONFIDENTIAL
@@ -509,7 +558,7 @@
                                 
                             </div>
                             <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS, INC.</div>
-                            <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP</div>
+                            <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP #'.$payslipCounter.'</div>
 
                             <div id="watermark" class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-600 font-bold text-4xl opacity-30 rotate-45 pointer-events-none select-none">
                                 CONFIDENTIAL
@@ -674,7 +723,7 @@
                                 
                             </div>
                             <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS, INC.</div>
-                            <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP</div>
+                            <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP #'.$payslipCounter.'</div>
 
                             <div id="watermark" class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-600 font-bold text-4xl opacity-30 rotate-45 pointer-events-none select-none">
                                 CONFIDENTIAL
@@ -898,7 +947,7 @@
                                 
                             </div>
                             <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS, INC.</div>
-                            <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP</div>
+                            <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP #'.$payslipCounter.'</div>
 
                             <div id="watermark" class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-600 font-bold text-4xl opacity-30 rotate-45 pointer-events-none select-none">
                                 CONFIDENTIAL
@@ -1063,7 +1112,7 @@
                                 
                             </div>
                             <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS, INC.</div>
-                            <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP</div>
+                            <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP #'.$payslipCounter.'</div>
 
                             <div id="watermark" class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-600 font-bold text-4xl opacity-30 rotate-45 pointer-events-none select-none">
                                 CONFIDENTIAL
@@ -1287,7 +1336,7 @@
                                 
                             </div>
                             <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS, INC.</div>
-                            <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP</div>
+                            <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP #'.$payslipCounter.'</div>
 
                             <div id="watermark" class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-600 font-bold text-4xl opacity-30 rotate-45 pointer-events-none select-none">
                                 CONFIDENTIAL
@@ -1472,7 +1521,7 @@
                                 
                             </div>
                             <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS, INC.</div>
-                            <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP</div>
+                            <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP #'.$payslipCounter.'</div>
 
                             <div id="watermark" class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-600 font-bold text-4xl opacity-30 rotate-45 pointer-events-none select-none">
                                 CONFIDENTIAL

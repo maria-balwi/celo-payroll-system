@@ -215,7 +215,7 @@
                                                         $salaryadjID = $salaryadjDetails['salaryAdjID'];
                                                         $salaryadj_employeeID = $salaryadjDetails['employeeID'];
                                                         $salaryadj_employeeName = $salaryadjDetails['firstName'] . " " . $salaryadjDetails['lastName'];
-                                                        $salaryadj_currentSalary = $salaryadjDetails['basicPay'];
+                                                        $salaryadj_currentSalary = $salaryadjDetails['currentSalary'];
                                                         $salaryadj_newSalary = $salaryadjDetails['suggestedSalary'];
                                                         $salaryadj_reason = $salaryadjDetails['reason'];
                                                         $salaryadj_status = $salaryadjDetails['status'];
@@ -224,7 +224,7 @@
                                                         echo "<td class='whitespace-nowrap'>{$salaryadj_employeeID}</td>";
                                                         echo "<td class='whitespace-nowrap'>{$salaryadj_employeeName}</td>";
                                                         echo "<td class='whitespace-nowrap'>₱ " . formatNumber($salaryadj_currentSalary) . "</td>";
-                                                        echo "<td class='whitespace-nowrap'>₱ " . formatNumber($salaryadj_newSalary - $salaryadj_currentSalary) . "</td>";
+                                                        echo "<td class='whitespace-nowrap'>₱ " . formatNumber($salaryadj_newSalary) . "</td>";
                                                         echo "<td class='whitespace-nowrap'>{$salaryadj_reason}</td>";
                                                         // echo "<td class='whitespace-nowrap'>{$salaryadj_status}</td>";
 
@@ -357,7 +357,7 @@
 
                                 <div class="row g-2 mb-1 salaryAdjustment">
                                     <div class="col-12">
-                                        <label for="suggestedSalary">Suggested Salary:</label>
+                                        <label for="suggestedSalary">Additional:</label>
                                     </div>
                                 </div>
 

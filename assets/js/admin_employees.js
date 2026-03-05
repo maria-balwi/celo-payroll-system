@@ -1054,354 +1054,362 @@ $(document).ready(function () {
 
         // UPDATE EMPLOYEE
         $(document).on("click", ".employeeUpdate", function () {
-        $("#viewEmployeeModal").modal("hide");
-        var id_employee = array[array.length - 1];
+            $("#viewEmployeeModal").modal("hide");
+            var id_employee = array[array.length - 1];
 
-        $.ajax({
-            type: "GET",
-            url: "../backend/admin/employeeModal.php?employee_id=" + id_employee,
-            success: function (response) {
-            var res = jQuery.parseJSON(response);
-            if (res.status == 404) {
-                alert(res.message);
-            } else if (res.status == 200) {
-                $("#updateID").val(res.data.id);
-                $("#updateLastName").val(res.data.lastName);
-                $("#updateFirstName").val(res.data.firstName);
-                $("#updateGender").val(res.data.gender);
-                $("#updateCivilStatus").val(res.data.civilStatus);
-                $("#updateAddress").val(res.data.address);
-                $("#updateDateOfBirth").val(res.data.dateOfBirth);
-                $("#updatePlaceOfBirth").val(res.data.placeOfBirth);
-                $("#updateSSS").val(res.data.sss);
-                $("#updatePagIbig").val(res.data.pagIbig);
-                $("#updatePhilhealth").val(res.data.philhealth);
-                $("#updateTIN").val(res.data.tin);
-                $("#updateEmailAddress").val(res.data.emailAddress);
-                $("#updateEmployeeID").val(res.data.employeeID);
-                $("#updateMobileNumber").val(res.data.mobileNumber);
-                $("#updateDepartment").val(res.data.departmentName);
-                $("#updateDesignation").val(res.data.position);
-                $("#updateShiftID").val(
-                res.data.startTime + " - " + res.data.endTime
-                );
-                $("#updateEmploymentStatus").val(res.data.employmentStatus);
-                $("#updateDateHired").val(res.data.dateHired);
+            $.ajax({
+                url: "..//backend/admin/employeeModal.php",
+                method: "GET",
+                data: { employee_id: employee_id },
+                dataType: "json",
+                success: function (res) {
+                    // var res = jQuery.parseJSON(response);
+                    if (res.status == 404) {
+                        alert(res.message);
+                    } else if (res.status == 200) {
+                        $("#updateID").val(res.data.id);
+                        $("#updateLastName").val(res.data.lastName);
+                        $("#updateFirstName").val(res.data.firstName);
+                        $("#updateGender").val(res.data.gender);
+                        $("#updateCivilStatus").val(res.data.civilStatus);
+                        $("#updateAddress").val(res.data.address);
+                        $("#updateDateOfBirth").val(res.data.dateOfBirth);
+                        $("#updatePlaceOfBirth").val(res.data.placeOfBirth);
+                        $("#updateSSS").val(res.data.sss);
+                        $("#updatePagIbig").val(res.data.pagIbig);
+                        $("#updatePhilhealth").val(res.data.philhealth);
+                        $("#updateTIN").val(res.data.tin);
+                        $("#updateEmailAddress").val(res.data.emailAddress);
+                        $("#updateEmployeeID").val(res.data.employeeID);
+                        $("#updateMobileNumber").val(res.data.mobileNumber);
+                        $("#updateDepartment").val(res.data.departmentName);
+                        $("#updateDesignation").val(res.data.position);
+                        $("#updateShiftID").val(
+                        res.data.startTime + " - " + res.data.endTime
+                        );
+                        $("#updateEmploymentStatus").val(res.data.employmentStatus);
+                        $("#updateDateHired").val(res.data.dateHired);
 
-                if (res.data.employmentStatus == "Regular") {
-                $("#updateDateRegularized").val(res.data.dateRegularized);
-                } else {
-                $("#updateDateRegularizedLabel").hide();
-                }
+                        if (res.data.employmentStatus == "Regular") {
+                        $("#updateDateRegularized").val(res.data.dateRegularized);
+                        } else {
+                        $("#updateDateRegularizedLabel").hide();
+                        }
 
-                $("#updateBasicPay").val(res.data.basicPay);
-                $("#updateDailyRate").val(res.data.dailyRate);
-                $("#updateHourlyRate").val(res.data.hourlyRate);
-                $("#updateVacationLeaves").val(res.data.availableVL);
-                $("#updateSickLeaves").val(res.data.availableSL);
+                        $("#updateBasicPay").val(res.data.basicPay);
+                        $("#updateDailyRate").val(res.data.dailyRate);
+                        $("#updateHourlyRate").val(res.data.hourlyRate);
+                        $("#updateVacationLeaves").val(res.data.availableVL);
+                        $("#updateSickLeaves").val(res.data.availableSL);
 
-                // WEEK OFF SECTION
-                let selectedWeekOffCounter = 0;
-                // $('#update_wo_mon').val(res.data.wo_mon == 1 ? $('#update_wo_mon').prop('checked', true) : $('#update_wo_mon').prop('checked', false));
-                if (res.data.wo_mon == 1) {
-                $("#update_wo_mon").prop("checked", true);
-                selectedWeekOffCounter++;
-                } else {
-                $("#update_wo_mon").prop("checked", false);
-                }
-                if (res.data.wo_tue == 1) {
-                $("#update_wo_tue").prop("checked", true);
-                selectedWeekOffCounter++;
-                } else {
-                $("#update_wo_tue").prop("checked", false);
-                }
-                if (res.data.wo_wed == 1) {
-                $("#update_wo_wed").prop("checked", true);
-                selectedWeekOffCounter++;
-                } else {
-                $("#update_wo_wed").prop("checked", false);
-                }
-                if (res.data.wo_thu == 1) {
-                $("#update_wo_thu").prop("checked", true);
-                selectedWeekOffCounter++;
-                } else {
-                $("#update_wo_thu").prop("checked", false);
-                }
-                if (res.data.wo_fri == 1) {
-                $("#update_wo_fri").prop("checked", true);
-                selectedWeekOffCounter++;
-                } else {
-                $("#update_wo_fri").prop("checked", false);
-                }
-                if (res.data.wo_sat == 1) {
-                $("#update_wo_sat").prop("checked", true);
-                selectedWeekOffCounter++;
-                } else {
-                $("#update_wo_sat").prop("checked", false);
-                }
-                if (res.data.wo_sun == 1) {
-                $("#update_wo_sun").prop("checked", true);
-                selectedWeekOffCounter++;
-                } else {
-                $("#update_wo_sun").prop("checked", false);
-                }
+                        // WEEK OFF SECTION
+                        let selectedWeekOffCounter = 0;
+                        // $('#update_wo_mon').val(res.data.wo_mon == 1 ? $('#update_wo_mon').prop('checked', true) : $('#update_wo_mon').prop('checked', false));
+                        if (res.data.wo_mon == 1) {
+                            $("#update_wo_mon").prop("checked", true);
+                            selectedWeekOffCounter++;
+                        } else {
+                            $("#update_wo_mon").prop("checked", false);
+                        }
+                        if (res.data.wo_tue == 1) {
+                            $("#update_wo_tue").prop("checked", true);
+                            selectedWeekOffCounter++;
+                        } else {
+                            $("#update_wo_tue").prop("checked", false);
+                        }
+                        if (res.data.wo_wed == 1) {
+                            $("#update_wo_wed").prop("checked", true);
+                            selectedWeekOffCounter++;
+                        } else {
+                            $("#update_wo_wed").prop("checked", false);
+                        }
+                        if (res.data.wo_thu == 1) {
+                            $("#update_wo_thu").prop("checked", true);
+                            selectedWeekOffCounter++;
+                        } else {
+                            $("#update_wo_thu").prop("checked", false);
+                        }
+                        if (res.data.wo_fri == 1) {
+                            $("#update_wo_fri").prop("checked", true);
+                            selectedWeekOffCounter++;
+                        } else {
+                            $("#update_wo_fri").prop("checked", false);
+                        }
+                        if (res.data.wo_sat == 1) {
+                            $("#update_wo_sat").prop("checked", true);
+                            selectedWeekOffCounter++;
+                        } else {
+                            $("#update_wo_sat").prop("checked", false);
+                        }
+                        if (res.data.wo_sun == 1) {
+                            $("#update_wo_sun").prop("checked", true);
+                            selectedWeekOffCounter++;
+                        } else {
+                            $("#update_wo_sun").prop("checked", false);
+                        }
 
-                const $checkboxes = $("input.update_wo_day[type='checkbox']");
-                if (selectedWeekOffCounter >= 2) {
-                $checkboxes.not(":checked").prop("disabled", true);
-                } else {
-                checkboxes.prop("disabled", false);
-                }
-                // REQUIREMENTS SECTION
-                $("#update_req_sss").val(
-                res.data.req_sss == 1
-                    ? $("#update_req_sss").prop("checked", true)
-                    : $("#update_req_sss").prop("checked", false)
-                );
-                $("#update_req_pagIbig").val(
-                res.data.req_pagIbig == 1
-                    ? $("#update_req_pagIbig").prop("checked", true)
-                    : $("#update_req_pagIbig").prop("checked", false)
-                );
-                $("#update_req_philhealth").val(
-                res.data.req_philhealth == 1
-                    ? $("#update_req_philhealth").prop("checked", true)
-                    : $("#update_req_philhealth").prop("checked", false)
-                );
-                $("#update_req_tin").val(
-                res.data.req_tin == 1
-                    ? $("#update_req_tin").prop("checked", true)
-                    : $("#update_req_tin").prop("checked", false)
-                );
-                $("#update_req_nbi").val(
-                res.data.req_nbi == 1
-                    ? $("#update_req_nbi").prop("checked", true)
-                    : $("#update_req_nbi").prop("checked", false)
-                );
-                $("#update_req_medicalExam").val(
-                res.data.req_medicalExam == 1
-                    ? $("#update_req_medicalExam").prop("checked", true)
-                    : $("#update_req_medicalExam").prop("checked", false)
-                );
-                $("#update_req_2x2pic").val(
-                res.data.req_2x2pic == 1
-                    ? $("#update_req_2x2pic").prop("checked", true)
-                    : $("#update_req_2x2pic").prop("checked", false)
-                );
-                $("#update_req_vaccineCard").val(
-                res.data.req_vaccineCard == 1
-                    ? $("#update_req_vaccineCard").prop("checked", true)
-                    : $("#update_req_vaccineCard").prop("checked", false)
-                );
-                $("#update_req_psa").val(
-                res.data.req_psa == 1
-                    ? $("#update_req_psa").prop("checked", true)
-                    : $("#update_req_psa").prop("checked", false)
-                );
-                $("#update_req_validID").val(
-                res.data.req_validID == 1
-                    ? $("#update_req_validID").prop("checked", true)
-                    : $("#update_req_validID").prop("checked", false)
-                );
-                $("#update_req_helloMoney").val(
-                res.data.req_helloMoney == 1
-                    ? $("#update_req_helloMoney").prop("checked", true)
-                    : $("#update_req_helloMoney").prop("checked", false)
-                );
+                        const $checkboxes = $("input.update_wo_day[type='checkbox']");
+                        if (selectedWeekOffCounter >= 2) {
+                            $checkboxes.not(":checked").prop("disabled", true);
+                        } else {
+                            $checkboxes.prop("disabled", false);
+                        }
+                        // REQUIREMENTS SECTION
+                        $("#update_req_sss").val(
+                        res.data.req_sss == 1
+                            ? $("#update_req_sss").prop("checked", true)
+                            : $("#update_req_sss").prop("checked", false)
+                        );
+                        $("#update_req_pagIbig").val(
+                        res.data.req_pagIbig == 1
+                            ? $("#update_req_pagIbig").prop("checked", true)
+                            : $("#update_req_pagIbig").prop("checked", false)
+                        );
+                        $("#update_req_philhealth").val(
+                        res.data.req_philhealth == 1
+                            ? $("#update_req_philhealth").prop("checked", true)
+                            : $("#update_req_philhealth").prop("checked", false)
+                        );
+                        $("#update_req_tin").val(
+                        res.data.req_tin == 1
+                            ? $("#update_req_tin").prop("checked", true)
+                            : $("#update_req_tin").prop("checked", false)
+                        );
+                        $("#update_req_nbi").val(
+                        res.data.req_nbi == 1
+                            ? $("#update_req_nbi").prop("checked", true)
+                            : $("#update_req_nbi").prop("checked", false)
+                        );
+                        $("#update_req_medicalExam").val(
+                        res.data.req_medicalExam == 1
+                            ? $("#update_req_medicalExam").prop("checked", true)
+                            : $("#update_req_medicalExam").prop("checked", false)
+                        );
+                        $("#update_req_2x2pic").val(
+                        res.data.req_2x2pic == 1
+                            ? $("#update_req_2x2pic").prop("checked", true)
+                            : $("#update_req_2x2pic").prop("checked", false)
+                        );
+                        $("#update_req_vaccineCard").val(
+                        res.data.req_vaccineCard == 1
+                            ? $("#update_req_vaccineCard").prop("checked", true)
+                            : $("#update_req_vaccineCard").prop("checked", false)
+                        );
+                        $("#update_req_psa").val(
+                        res.data.req_psa == 1
+                            ? $("#update_req_psa").prop("checked", true)
+                            : $("#update_req_psa").prop("checked", false)
+                        );
+                        $("#update_req_validID").val(
+                        res.data.req_validID == 1
+                            ? $("#update_req_validID").prop("checked", true)
+                            : $("#update_req_validID").prop("checked", false)
+                        );
+                        $("#update_req_helloMoney").val(
+                        res.data.req_helloMoney == 1
+                            ? $("#update_req_helloMoney").prop("checked", true)
+                            : $("#update_req_helloMoney").prop("checked", false)
+                        );
 
-                $("#oldEmailAddress").val(res.data.emailAddress);
-                $("#oldEmployeeID").val(res.data.employeeID);
+                        $("#oldEmailAddress").val(res.data.emailAddress);
+                        $("#oldEmployeeID").val(res.data.employeeID);
 
-                // LOAD PROFILE PICTURE
-                const img = $("#updatePreviewPhoto");
-                let employeeID_string = res.data.employeeID;
-                const imagePath =
-                "../assets/images/profiles/" +
-                employeeID_string.replace("-", "") +
-                ".png";
-                fetch(imagePath)
-                .then((response) => {
-                    if (response.ok) {
-                    console.log("Image loaded");
-                    img.attr("src", imagePath).show();
-                    } else {
-                    console.log("Image not found");
+                        // LOAD PROFILE PICTURE
+                        const img = $("#updatePreviewPhoto");
+                        let employeeID_string = res.data.employeeID;
+                        const imagePath =
+                        "../assets/images/profiles/" +
+                        employeeID_string.replace("-", "") +
+                        ".png";
+                        fetch(imagePath)
+                        .then((response) => {
+                            if (response.ok) {
+                            console.log("Image loaded");
+                            img.attr("src", imagePath).show();
+                            } else {
+                            console.log("Image not found");
+                            }
+                        })
+                        .catch((error) => {
+                            Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: "An error occurred while fetching the image.",
+                            });
+                            console.error("Error fetching image:", error);
+                        });
+
+                        $("#updateEmployeeModal").modal("show");
                     }
-                })
-                .catch((error) => {
-                    Swal.fire({
-                    icon: "error",
-                    title: "Error",
-                    text: "An error occurred while fetching the image.",
-                    });
-                    console.error("Error fetching image:", error);
-                });
-
-                $("#updateEmployeeModal").modal("show");
-            }
-            },
-        });
+                },
+            });
         });
 
         // RESIGN EMPLOYEE
         $(document).on("click", ".employeeResign", function () {
-        var id_employee = array[array.length - 1];
+            var id_employee = array[array.length - 1];
 
-        $.ajax({
-            type: "GET",
-            url: "../backend/admin/employeeModal.php?employee_id=" + id_employee,
-            success: function (response) {
-            var res = jQuery.parseJSON(response);
+            $.ajax({
+                url: "..//backend/admin/employeeModal.php",
+                method: "GET",
+                data: { employee_id: employee_id },
+                dataType: "json",
+                success: function (res) {
+                // var res = jQuery.parseJSON(response);
 
-            if (res.status == 404) {
-                alert(res.message);
-            } else if (res.status == 200) {
-                $("#resignee").val(res.data.firstName + " " + res.data.lastName);
-                $("#resignEmpID").val(id_employee);
-                $("#resignEmployeeID").val(res.data.employeeID);
-                $("#viewEmployeeModal").modal("hide");
-                $("#resignEmployeeModal").modal("show");
-            }
-            },
-        });
+                if (res.status == 404) {
+                    alert(res.message);
+                } else if (res.status == 200) {
+                    $("#resignee").val(res.data.firstName + " " + res.data.lastName);
+                    $("#resignEmpID").val(id_employee);
+                    $("#resignEmployeeID").val(res.data.employeeID);
+                    $("#viewEmployeeModal").modal("hide");
+                    $("#resignEmployeeModal").modal("show");
+                }
+                },
+            });
         });
     });
 
     // VIEW AND REHIRE RESIGNED EMPLOYEE
     var array = [];
     $(document).on("click", ".resignedView", function () {
-    var employee_id = $(this).data("id");
-    array.push(employee_id);
-    var id_employee = array[array.length - 1];
-
-    // VIEW EMPLOYEE
-    $.ajax({
-      type: "GET",
-      url: "../backend/admin/employeeModal.php?employee_id=" + id_employee,
-      success: function (response) {
-        var res = jQuery.parseJSON(response);
-
-        if (res.status == 404) {
-          alert(res.message);
-        } else if (res.status == 200) {
-          $("#res_viewID").val(res.data.id);
-          $("#res_viewLastName").val(res.data.lastName);
-          $("#res_viewFirstName").val(res.data.firstName);
-          $("#res_viewGender").val(res.data.gender);
-          $("#res_viewCivilStatus").val(res.data.civilStatus);
-          $("#res_viewAddress").val(res.data.address);
-          $("#res_viewDateOfBirth").val(res.data.dateOfBirth);
-          $("#res_viewPlaceOfBirth").val(res.data.placeOfBirth);
-          $("#res_viewsss").val(res.data.sss);
-          $("#res_viewpagIbig").val(res.data.pagIbig);
-          $("#res_viewphilhealth").val(res.data.philhealth);
-          $("#res_viewtin").val(res.data.tin);
-          $("#res_viewEmailAddress").val(res.data.emailAddress);
-          $("#res_viewEmployeeID").val(res.data.employeeID);
-          $("#res_viewMobileNumber").val(res.data.mobileNumber);
-          $("#res_viewDepartment").val(res.data.departmentName);
-          $("#res_viewDesignation").val(res.data.position);
-          $("#res_viewShiftID").val(
-            res.data.startTime + " - " + res.data.endTime
-          );
-          if (res.data.resignationStatus == "Incomplete") {
-            $("#res_viewEmploymentStatus").val(
-              res.data.employmentStatus +
-                " - " +
-                res.data.resignationStatus +
-                " (" +
-                res.data.renderedDays +
-                " days rendered)"
-            );
-          } else {
-            $("#res_viewEmploymentStatus").val(
-              res.data.employmentStatus + " - " + res.data.resignationStatus
-            );
-          }
-          $("#res_viewDateHired").val(res.data.dateHired);
-          $("#res_viewDateRegularized").val(res.data.dateRegularized);
-          $("#res_viewBasicPay").val(res.data.basicPay);
-          $("#res_viewDailyRate").val(res.data.dailyRate);
-          $("#res_viewHourlyRate").val(res.data.hourlyRate);
-          $("#res_viewVacationLeaves").val(res.data.availableVL);
-
-          // Show the modal
-          $("#viewResignedModal").modal("show");
-
-          if (res.data.clearanceForm == 1) {
-            $("#withClearanceForm").show();
-            $("#withoutClearanceForm").hide();
-          } else if (res.data.clearanceForm == 0) {
-            $("#withClearanceForm").hide();
-            $("#withoutClearanceForm").show();
-          } else {
-            $("#withClearanceForm").hide();
-            $("#withoutClearanceForm").hide();
-          }
-          // $("#viewClearanceFormFile").click(function (event) {
-          //     event.preventDefault();
-
-          //     const imagePath = "../assets/images/clearanceForms/" + res.data.clearanceForm;
-
-          //     // VIEW CLEARANCE FORM IN NEW TAB
-          //     window.open(imagePath, "_blank");
-          // });
-        }
-      },
-    });
-
-    // REHIRE EMPLOYEE
-    $(document).on("click", ".employeeRehire", function () {
+        var employee_id = $(this).data("id");
+        array.push(employee_id);
         var id_employee = array[array.length - 1];
 
+        // VIEW EMPLOYEE
         $.ajax({
-            type: "GET",
-            url: "../backend/admin/employeeModal.php?employee_id=" + id_employee,
-            success: function (response) {
-            var res = jQuery.parseJSON(response);
-            if (res.status == 404) {
-                alert(res.message);
-            } else if (res.status == 200) {
-                Swal.fire({
-                icon: "question",
-                title: "Rehire Employee",
-                text: "Are you sure you want to rehire this employee?",
-                showCancelButton: true,
-                cancelButtonColor: "#6c757d",
-                confirmButtonColor: "#28a745",
-                confirmButtonText: "Yes",
-                }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                    url: "../backend/admin/employeeAction.php",
-                    type: "POST",
-                    data: {
-                        id_employee: id_employee,
-                        action: "rehire",
-                    },
-                    cache: false,
-                    success: function (data) {
-                        res = jQuery.parseJSON(data);
-                        var message = res.em;
-                        Swal.fire({
-                        icon: "success",
-                        title: "Success",
-                        text: message,
-                        timer: 2000,
-                        showConfirmButton: false,
-                        }).then(() => {
-                        // Refresh the View Employee Modal with updated data
-                        loadEmployeeData(id_employee);
-                        $("#viewResignedModal").modal("hide");
-                        $("#viewEmployeeModal").modal("show");
-                        });
-                    },
-                    });
+            url: "..//backend/admin/employeeModal.php",
+            method: "GET",
+            data: { employee_id: employee_id },
+            dataType: "json",
+            success: function (res) {
+                // var res = jQuery.parseJSON(response);
+
+                if (res.status == 404) {
+                    alert(res.message);
+                } else if (res.status == 200) {
+                $("#res_viewID").val(res.data.id);
+                $("#res_viewLastName").val(res.data.lastName);
+                $("#res_viewFirstName").val(res.data.firstName);
+                $("#res_viewGender").val(res.data.gender);
+                $("#res_viewCivilStatus").val(res.data.civilStatus);
+                $("#res_viewAddress").val(res.data.address);
+                $("#res_viewDateOfBirth").val(res.data.dateOfBirth);
+                $("#res_viewPlaceOfBirth").val(res.data.placeOfBirth);
+                $("#res_viewsss").val(res.data.sss);
+                $("#res_viewpagIbig").val(res.data.pagIbig);
+                $("#res_viewphilhealth").val(res.data.philhealth);
+                $("#res_viewtin").val(res.data.tin);
+                $("#res_viewEmailAddress").val(res.data.emailAddress);
+                $("#res_viewEmployeeID").val(res.data.employeeID);
+                $("#res_viewMobileNumber").val(res.data.mobileNumber);
+                $("#res_viewDepartment").val(res.data.departmentName);
+                $("#res_viewDesignation").val(res.data.position);
+                $("#res_viewShiftID").val(
+                    res.data.startTime + " - " + res.data.endTime
+                );
+                if (res.data.resignationStatus == "Incomplete") {
+                    $("#res_viewEmploymentStatus").val(
+                    res.data.employmentStatus +
+                        " - " +
+                        res.data.resignationStatus +
+                        " (" +
+                        res.data.renderedDays +
+                        " days rendered)"
+                    );
+                } else {
+                    $("#res_viewEmploymentStatus").val(
+                    res.data.employmentStatus + " - " + res.data.resignationStatus
+                    );
                 }
-                });
-            }
+                $("#res_viewDateHired").val(res.data.dateHired);
+                $("#res_viewDateRegularized").val(res.data.dateRegularized);
+                $("#res_viewBasicPay").val(res.data.basicPay);
+                $("#res_viewDailyRate").val(res.data.dailyRate);
+                $("#res_viewHourlyRate").val(res.data.hourlyRate);
+                $("#res_viewVacationLeaves").val(res.data.availableVL);
+
+                // Show the modal
+                $("#viewResignedModal").modal("show");
+
+                if (res.data.clearanceForm == 1) {
+                    $("#withClearanceForm").show();
+                    $("#withoutClearanceForm").hide();
+                } else if (res.data.clearanceForm == 0) {
+                    $("#withClearanceForm").hide();
+                    $("#withoutClearanceForm").show();
+                } else {
+                    $("#withClearanceForm").hide();
+                    $("#withoutClearanceForm").hide();
+                }
+                // $("#viewClearanceFormFile").click(function (event) {
+                //     event.preventDefault();
+
+                //     const imagePath = "../assets/images/clearanceForms/" + res.data.clearanceForm;
+
+                //     // VIEW CLEARANCE FORM IN NEW TAB
+                //     window.open(imagePath, "_blank");
+                // });
+                }
             },
         });
+
+        // REHIRE EMPLOYEE
+        $(document).on("click", ".employeeRehire", function () {
+            var id_employee = array[array.length - 1];
+
+            $.ajax({
+                url: "..//backend/admin/employeeModal.php",
+                method: "GET",
+                data: { employee_id: employee_id },
+                dataType: "json",
+                success: function (res) {
+                    // var res = jQuery.parseJSON(response);
+                    if (res.status == 404) {
+                        alert(res.message);
+                    } else if (res.status == 200) {
+                        Swal.fire({
+                        icon: "question",
+                        title: "Rehire Employee",
+                        text: "Are you sure you want to rehire this employee?",
+                        showCancelButton: true,
+                        cancelButtonColor: "#6c757d",
+                        confirmButtonColor: "#28a745",
+                        confirmButtonText: "Yes",
+                        }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                            url: "../backend/admin/employeeAction.php",
+                            type: "POST",
+                            data: {
+                                id_employee: id_employee,
+                                action: "rehire",
+                            },
+                            cache: false,
+                            success: function (data) {
+                                res = jQuery.parseJSON(data);
+                                var message = res.em;
+                                Swal.fire({
+                                icon: "success",
+                                title: "Success",
+                                text: message,
+                                timer: 2000,
+                                showConfirmButton: false,
+                                }).then(() => {
+                                // Refresh the View Employee Modal with updated data
+                                loadEmployeeData(id_employee);
+                                $("#viewResignedModal").modal("hide");
+                                $("#viewEmployeeModal").modal("show");
+                                });
+                            },
+                            });
+                        }
+                        });
+                    }
+                },
+            });
         });
     });
 

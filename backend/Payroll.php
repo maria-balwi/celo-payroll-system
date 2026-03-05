@@ -25,6 +25,7 @@
         private $cashAdvance = 'tbl_cashadvance';
         private $referral = 'tbl_referral';
         private $salaryadj = 'tbl_salaryadj';
+        private $auditTrail = 'tbl_audittrail';
         private $caPaymentHistory = 'tbl_caPaymentHistory';
 
         private $dbConnect = false;
@@ -117,6 +118,25 @@
             return $disapproveSalaryAdjustment;
         }
 
+        public function getSalaryInfoAT($auditTrailID) {
+          $salaryAdj = "
+            SELECT action, dateFiled, emp.employeeID, 
+            emp.firstName AS affectedFirstName, 
+            emp.lastName AS affectedLastName,
+            e.firstName AS firstName,
+            e.lastName AS lastName, currentSalary, 
+            suggestedSalary, reason
+            FROM {$this->auditTrail} AS at
+            INNER JOIN {$this->salaryadj} AS sa
+            ON at.salaryAdjID = sa.salaryAdjID
+            INNER JOIN {$this->employees} AS e
+            ON at.empID = e.id
+            INNER JOIN {$this->employees} AS emp
+            ON at.affected_empID = emp.id
+            WHERE at.auditTrailID = '$auditTrailID'";
+          return $salaryAdj;
+        }
+
         public function addAllowance($allowanceName) {
             $addAllowance = "
                 INSERT INTO ".$this->allowances." (allowanceName)
@@ -145,10 +165,10 @@
             return $addAdjustment;
         }
 
-        public function fileSalaryAdjustment($empID, $suggestedSalary, $reason, $status) {
+        public function fileSalaryAdjustment($empID, $currentSalary, $suggestedSalary, $reason, $status) {
             $fileSalaryAdjustment = "
-                INSERT INTO ".$this->salaryadj." (empID, suggestedSalary, reason, dateFiled, status)
-                VALUES ('$empID', '$suggestedSalary', '$reason', CURRENT_DATE(), '$status')";
+                INSERT INTO ".$this->salaryadj." (empID, currentSalary, suggestedSalary, reason, dateFiled, status)
+                VALUES ('$empID', '$currentSalary', '$suggestedSalary', '$reason', CURRENT_DATE(), '$status')";
             return $fileSalaryAdjustment;
         }
 
