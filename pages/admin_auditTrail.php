@@ -47,6 +47,10 @@
                                 <!--USERS BUTTON-->
                                 <button class="nav-link uncheck" id="pills-users-tab" data-bs-toggle="pill" data-bs-target="#pills-users" type="button" role="tab" aria-controls="pills-users" aria-selected="false">Users</button>
                             </li>
+                            <li class="nav-item" role="presentation">
+                                <!--MEMO BUTTON-->
+                                <button class="nav-link uncheck" id="pills-memo-tab" data-bs-toggle="pill" data-bs-target="#pills-memo" type="button" role="tab" aria-controls="pills-memo" aria-selected="false">Memo</button>
+                            </li>
                         </ul>
                     </div>
 
@@ -447,6 +451,54 @@
                                 </div> 
                             </div>
 
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <!-- -------------------------------------------- MEMO TAB ------------------------------------------- -->
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <div class="tab-pane fade" id="pills-memo" role="tabpanel" aria-labelledby="pills-memo-tab">
+                                <div class="card border-0">
+                                    <div class="tab-content" id="pills-tabContent">
+                                        <table id="notificationsTable" class="table table-striped table-bordered table-auto min-w-full divide-y divide-gray-200 text-center pt-3">
+                                            <thead class="bg-gray-50">
+                                                <tr>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Module</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Notification Subject</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="bg-white divide-y divide-gray-200">
+                                                <?php
+                                                    $query = mysqli_query($conn, $employees->viewAuditTrailMemo());
+                                                    while ($auditTrailDetails = mysqli_fetch_array($query)) {
+
+                                                        $memoATID = $auditTrailDetails['auditTrailID'];
+                                                        $memoDate = $auditTrailDetails['date'];
+                                                        $memoEmployee = $auditTrailDetails['firstName'] . " " . $auditTrailDetails['lastName'];
+                                                        $memoModule = $auditTrailDetails['module'];
+                                                        $memoAction = $auditTrailDetails['action'];
+                                                        $memoTitle = $auditTrailDetails['title'];
+                                                        $dateMemo = formatDate($memoDate);
+                                                        $timeMemo = formatTime($memoDate);
+
+                                                        echo "<tr>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $memoATID . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $dateMemo . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $timeMemo . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $memoEmployee . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $memoModule . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $memoAction . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $memoTitle . "</td>";
+                                                        echo "</tr>";
+                                                    }
+                                                ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div> 
+                            </div>
                         </div>
                     </div>
                 </div>
