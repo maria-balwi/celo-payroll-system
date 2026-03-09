@@ -39,6 +39,13 @@
 
                     $em = "Memo Added Successfully";
                     $error = ['error' => 0, 'id' => $lastID, 'em' => $em];
+
+                    // AUDIT TRAIL
+                    $at_empID = $_SESSION['id'];
+                    $at_module = "Admin - Memo Module";
+                    $at_action = "Added New Notification";
+                    mysqli_query($conn, $employees->auditTrailMemo($at_empID, $at_module, $at_action, $lastID));
+
                 } else {
                     $em = "Failed to move uploaded file.";
                     $error = ['error' => 2, 'em' => $em];
@@ -78,6 +85,12 @@
 
             $em = "Memo Updated Successfully";
             $error = ['error' => 0, 'id' => $notificationID, 'em' => $em];
+
+            // AUDIT TRAIL
+            $at_empID = $_SESSION['id'];
+            $at_module = "Admin - Memo Module";
+            $at_action = "Updated Notification";
+            mysqli_query($conn, $employees->auditTrailMemo($at_empID, $at_module, $at_action, $notificationID));
         }
         else {
             if (!isset($_FILES['uploadPhoto']) || $_FILES['uploadPhoto']['error'] !== UPLOAD_ERR_OK) {
@@ -111,6 +124,12 @@
 
                         $em = "Memo Updated Successfully";
                         $error = ['error' => 0, 'id' => $notificationID, 'em' => $em];
+
+                        // AUDIT TRAIL
+                        $at_empID = $_SESSION['id'];
+                        $at_module = "Admin - Memo Module";
+                        $at_action = "Updated Notification";
+                        mysqli_query($conn, $employees->auditTrailMemo($at_empID, $at_module, $at_action, $notificationID));
                     } else {
                         $em = "Failed to move uploaded file.";
                         $error = ['error' => 2, 'em' => $em];
@@ -136,6 +155,12 @@
         
         // DELETE NOTIFICATION
         mysqli_query($conn, $employees->deleteNotification($notificationID));
+
+        // AUDIT TRAIL
+        $at_empID = $_SESSION['id'];
+        $at_module = "Admin - Memo Module";
+        $at_action = "Deleted Notification";
+        mysqli_query($conn, $employees->auditTrailMemo($at_empID, $at_module, $at_action, $notificationID));
         
         // DELETE NOTIFICATION PHOTO
         if (file_exists($file)) {

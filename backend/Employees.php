@@ -1843,6 +1843,18 @@
                 ORDER BY auditTrail.auditTrailID DESC";
             return $users;
         }
+
+        public function viewAuditTrailMemo() {
+            $notification = "
+                SELECT auditTrailID, date, employees.firstName, employees.lastName, module, action, title FROM ".$this->auditTrail." AS auditTrail
+                INNER JOIN ".$this->employees." AS employees
+                ON auditTrail.empID = employees.id
+                INNER JOIN ".$this->notifications." AS notifications
+                ON notifications.notificationID = auditTrail.notificationID
+                WHERE module LIKE '%Memo%'
+                ORDER BY auditTrail.auditTrailID DESC";
+            return $notification;
+        }
         
         public function auditTrail($empID, $module, $action, $affected_empID) {
             $auditTrail = "
@@ -1862,6 +1874,13 @@
             $auditTrail = "
                 INSERT INTO ".$this->auditTrail." (date, empID, module, action)
                 VALUES (CURRENT_TIMESTAMP, '$empID', '$module', '$action')";
+            return $auditTrail;
+        }
+
+        public function auditTrailMemo($empID, $module, $action, $notificationID) {
+            $auditTrail = "
+                INSERT INTO ".$this->auditTrail." (date, empID, module, action, notificationID)
+                VALUES (CURRENT_TIMESTAMP, '$empID', '$module', '$action', '$notificationID')";
             return $auditTrail;
         }
     }
