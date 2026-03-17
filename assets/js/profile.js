@@ -23,17 +23,12 @@ $(document).ready(function() {
         var newPassword = $("#newPassword").val();
         var retypePassword = $("#retypePassword").val();
 
-        console.log({userID});
-        console.log({newPassword});
-        console.log({retypePassword});
-
         if (newPassword == '' || retypePassword == '') {
 
             Swal.fire({
                 icon: 'warning',
                 title: 'Required Information',
                 text: 'Please fill up all the required Information',
-
             })
 
         } else {

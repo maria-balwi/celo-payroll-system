@@ -173,4 +173,119 @@ $(document).ready(function() {
             });
         }
     });
+
+    // FORGOT PASSWORD
+    $('#forgotPasswordForm').on('submit', function(e) {
+        e.preventDefault();
+        
+        $.ajax({
+            url: 'backend/session/sendForgotOTP.php',
+            type: 'POST',
+            data: $(this).serialize(),
+            dataType: 'json',
+            success: function(res) {
+
+                if (res.status == 404) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'User not found',
+                        text: res.message,
+                        confirmButtonColor: '#1975ff',
+                        confirmButtonText: 'OK'
+                    });
+                }
+                else if (res.status == 200) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'OTP Sent!',
+                        text: 'An OTP has been sent to your email address.',
+                        confirmButtonColor: '#1975ff',
+                        confirmButtonText: 'OK'
+                    }).then((res) => {
+                        if (res.isConfirmed) {
+                            $('#forgotPasswordModal').modal('hide');
+                            $('#verifyNewPassModal').modal('show');
+                        }
+                    });
+                }
+            },
+            // error: function(xhr, status, error) {
+            //     Swal.fire({
+            //         icon: 'error',
+            //         title: 'Error',
+            //         text: 'An error occurred while sending the OTP.',
+            //         confirmButtonColor: '#3085d6',
+            //         confirmButtonText: 'OK'
+            //     });
+            // }
+        });
+    });
+
+    $('#resetPasswordForm').on('submit', function(e) {
+        e.preventDefault();
+        
+        var newPassword = $('#newPassword').val();
+        var retypePassword = $('#retypePassword').val();
+
+        if (newPassword == '' || retypePassword == '') {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Required Information',
+                text: 'Please fill up all the required Information',
+            })
+            return;
+        }
+        else if (newPassword != retypePassword) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Required Information',
+                text: 'Passwords do not match',
+            })
+            return;
+        }
+        else {
+            Swal.fire({
+                icon: 'question',
+                title: 'Reset Password',
+                text: 'Are you sure you want to reset your password?',
+                showCancelButton: true,
+                cancelButtonColor: '#6c757d',
+                confirmButtonColor: '#28a745',
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: 'backend/session/verifyForgotOTP.php',
+                        type: 'POST',
+                        data: $(this).serialize(),
+                        dataType: 'json',
+                        success: function(res) {
+                            const data = JSON.parse(res);
+                            var message = data.message;
+                            if (data.status == 200 && data.error == 1) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Warning',
+                                    text: message
+                                })
+                                $('#newPassword').val('');
+                                $('#retypePassword').val('');
+                            }
+                            else {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: message, 
+                                    timer: 2000, 
+                                    showConfirmButton: false
+                                }).then(() => {
+                                    window.location.reload();
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+        }
+    });
 });

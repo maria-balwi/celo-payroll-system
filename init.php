@@ -8,6 +8,8 @@
     define('USER', $username);
     define('PASSWORD', $password);
     define('DATABASE', $database);
+    define('MAIL_USERNAME', 'automatedemail.celoph@gmail.com');
+    define('MAIL_PASSWORD', 'nice yyce dkxd gofy');
 
     require 'backend/Database.php';
     require 'backend/Users.php';

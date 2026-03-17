@@ -54,20 +54,16 @@
         <!---------------------------------------------------------- FORGOT PASSWORD MODAL ------------------------------------------------------------>
         <form id="forgotPasswordForm" enctype="multipart/form-data">
             <div class="modal fade" id="forgotPasswordModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
-                <div class="modal-dialog modal-none modal-dialog-centered">
+                <div class="modal-dialog modal-none modal-sm modal-dialog-centered">
                     <div class="modal-content position-relative" id="forgotPasswordModal">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="userFormLabel">Forgot Password</h1>
                         </div>
                         <div class="modal-body">
                             <div class="row g-2">
-                                <div class="col-9">
-                                    <label for="email">Email Address:</label>
+                                <div class="col-12">
+                                    <label for="email">Email:</label>
                                     <input type="text" id="forgot_email" name="forgot_email" class="form-control" autofocus placeholder="Enter your email">
-                                </div>
-                                <div class="col-3">
-                                    <label for="email">OTP:</label>
-                                    <input type="text" id="forgot_otp" name="forgot_otp" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -79,49 +75,7 @@
                 </div>
             </div>
         </form>
-
-        <!--------------------------------------------------------------------------------------------------------------------------------------------->
-        <!-------------------------------------------------------------- RESET PASSWORD MODAL ------------------------------------------------------------->
-        <form id="resetPasswordForm" enctype="multipart/form-data">
-            <div class="modal fade" id="resetPasswordModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
-                <div class="modal-dialog modal-none modal-sm modal-dialog-centered">
-                    <div class="modal-content position-relative" id="resetPasswordModal">
-                        <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="resetPassLabel">Reset Password</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row g-3">
-                                    <div class="col-12">
-                                        <label for="newPassword">New Password</label>
-                                    </div>
-                                </div>
-                                <div class="row g-3 mb-2">
-                                    <div class="col-12">
-                                        <input type="password" class="form-control" id="newPassword" placeholder="Password">
-                                    </div>
-                                </div>
-
-                                <div class="row g-3">
-                                    <div class="col-12">
-                                        <label for="retypePassword">Retype New Password</label>
-                                    </div>
-                                </div>
-                                <div class="row g-3 mb-2">
-                                    <div class="col-12">
-                                        <input type="password" class="form-control" id="retypePassword" placeholder="Password">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-success">Save</button>
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-                </div>
-            </div>
-        </form>
-
+        
         <script src="assets/js/index.js"></script>
         <script>
             $(document).ready(function() {
