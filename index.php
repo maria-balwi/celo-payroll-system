@@ -51,34 +51,6 @@
 
         <!--------------------------------------------------------------------------------------------------------------------------------------------->
         <!---------------------------------------------------------- FORGOT PASSWORD MODAL ------------------------------------------------------------>
-        <!-- <form id="forgotPasswordForm" enctype="multipart/form-data">
-            <div class="modal fade" id="forgotPasswordModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
-                <div class="modal-dialog modal-none modal-dialog-centered">
-                    <div class="modal-content position-relative" id="forgotPasswordModal">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="userFormLabel">Forgot Password</h1>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row g-2">
-                                <div class="col-9">
-                                    <label for="email">Email Address:</label>
-                                    <input type="text" id="forgot_email" name="forgot_email" class="form-control" autofocus placeholder="Enter your email">
-                                </div>
-                                <div class="col-3">
-                                    <label for="email">OTP:</label>
-                                    <input type="text" id="forgot_otp" name="forgot_otp" class="form-control">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary" id="btnSendOTP">Send OTP</button>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form> -->
-
         <form id="forgotPasswordForm">
             <div class="modal fade" id="forgotPasswordModal" tabindex="-1" data-bs-backdrop="static">
                 <div class="modal-dialog modal-dialog-centered">

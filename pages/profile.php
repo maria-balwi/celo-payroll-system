@@ -353,6 +353,19 @@
                                         <input type="password" class="form-control" id="retypePass" placeholder="Password">
                                     </div>
                                 </div>
+
+                                <div class="row g-3 mb-2">
+                                    <div class="col-12">
+                                        <p class="text-muted small mb-0">Password must be:</p>
+                                        <ul class="text-muted small" style="list-style-type: disc; padding-left: 20px; margin-bottom: 0;">
+                                            <li>At least 8 characters long</li>
+                                            <li>At least one uppercase letter</li>
+                                            <li>At least one lowercase letter</li>
+                                            <li>At least one number</li>
+                                            <li>At least one special character</li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-success">Save</button>
@@ -393,6 +406,19 @@
                                 <div class="row g-3 mb-2">
                                     <div class="col-12">
                                         <input type="password" class="form-control" id="retypePassword" placeholder="Password">
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mb-2">
+                                    <div class="col-12">
+                                        <p class="text-muted small mb-0">Password must be:</p>
+                                        <ul class="text-muted small" style="list-style-type: disc; padding-left: 20px; margin-bottom: 0;">
+                                            <li>At least 8 characters long</li>
+                                            <li>At least one uppercase letter</li>
+                                            <li>At least one lowercase letter</li>
+                                            <li>At least one number</li>
+                                            <li>At least one special character</li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>

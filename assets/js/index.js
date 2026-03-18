@@ -31,24 +31,6 @@ $(document).ready(function() {
     let otpRequestCount = 0;
     const maxOTPRequests = 3; // 1 send + 2 resends
 
-    // function startOTPCooldown() {
-    //     timeLeft = 60;
-
-    //     $('#btnSendOTP').prop('disabled', true);
-
-    //     otpTimer = setInterval(function () {
-    //         $('#btnSendOTP').text('Resend in ' + timeLeft + 's');
-    //         timeLeft--;
-
-    //         if (timeLeft < 0) {
-    //             clearInterval(otpTimer);
-    //             $('#btnSendOTP')
-    //                 .prop('disabled', false)
-    //                 .text('Resend OTP');
-    //         }
-    //     }, 1000);
-    // }
-
     function startOTPCooldown() {
         timeLeft = 60;
 
@@ -225,22 +207,7 @@ $(document).ready(function() {
         }
     });
 
-    // $('#forgotPasswordModal').on('hidden.bs.modal', function () {
-
-    //     clearInterval(otpTimer);
-
-    //     $('#forgot_email').val('').prop('readonly', false);
-    //     $('#forgot_otp').val('');
-
-    //     $('#otpContainer').hide();
-
-    //     $('#btnSendOTP')
-    //         .prop('disabled', false)
-    //         .text('Send OTP');
-
-    //     $('#otpTimerText').text('');
-    // });
-
+    // RESET OTP TIMER WHEN MODAL IS CLOSED
     $('#forgotPasswordModal').on('hidden.bs.modal', function () {
 
         clearInterval(otpTimer);
@@ -259,164 +226,7 @@ $(document).ready(function() {
         $('#otpTimerText').text('');
     });
 
-    // // FORGOT PASSWORD
-    // $('#forgotPasswordForm').on('submit', function(e) {
-    //     e.preventDefault();
-        
-    //     $.ajax({
-    //         url: 'backend/session/sendForgotOTP.php',
-    //         type: 'POST',
-    //         data: $(this).serialize(),
-    //         dataType: 'json',
-    //         success: function(res) {
-
-    //             if (res.status == 404) {
-    //                 Swal.fire({
-    //                     icon: 'error',
-    //                     title: 'User not found',
-    //                     text: res.message,
-    //                     confirmButtonColor: '#1975ff',
-    //                     confirmButtonText: 'OK'
-    //                 });
-    //             }
-    //             else if (res.status == 200) {
-
-    //                 Swal.fire({
-    //                     icon: 'success',
-    //                     title: 'OTP Sent!',
-    //                     text: 'Check your email for the OTP.',
-    //                     confirmButtonColor: '#1975ff'
-    //                 });
-
-    //                 $('#otpContainer').fadeIn();
-    //                 $('#forgot_email').prop('readonly', true);
-
-    //                 // ✅ START COOLDOWN HERE
-    //                 startOTPCooldown();
-    //             }
-    //         },
-    //         // error: function(xhr, status, error) {
-    //         //     Swal.fire({
-    //         //         icon: 'error',
-    //         //         title: 'Error',
-    //         //         text: 'An error occurred while sending the OTP.',
-    //         //         confirmButtonColor: '#3085d6',
-    //         //         confirmButtonText: 'OK'
-    //         //     });
-    //         // }
-    //     });
-    // });
-
     // SEND OTP THRU EMAIL
-    // $('#btnSendOTP').click(function (e) {
-    //     e.preventDefault();
-
-    //     let email = $('#forgot_email').val();
-
-    //     $.ajax({
-    //         url: 'backend/session/sendForgotOTP.php',
-    //         type: 'POST',
-    //         data: { forgot_email: email },
-    //         dataType: 'json',
-    //         success: function (res) {
-
-    //             if (res.status == 404) {
-    //                 Swal.fire({
-    //                     icon: 'error',
-    //                     title: 'User not found',
-    //                     text: res.message,
-    //                     confirmButtonColor: '#1975ff'
-    //                 });
-    //             } 
-    //             else if (res.status == 200) {
-
-    //                 Swal.fire({
-    //                     icon: 'success',
-    //                     title: 'OTP Sent!',
-    //                     text: 'Check your email for the OTP.',
-    //                     confirmButtonColor: '#1975ff'
-    //                 });
-
-    //                 // ✅ SHOW OTP FIELD (instead of new modal)
-    //                 $('#otpContainer').fadeIn();
-
-    //                 // ✅ LOCK EMAIL INPUT
-    //                 $('#forgot_email').prop('readonly', true);
-
-    //                 // OPTIONAL: hide send button
-    //                 $('#btnSendOTP').prop('disabled', true);
-    //             }
-    //         }
-    //     });
-    // });
-    // $('#btnSendOTP').click(function (e) {
-    //     e.preventDefault();
-
-    //     let email = $('#forgot_email').val();
-
-    //     if (email === '') {
-    //         Swal.fire({
-    //             icon: 'warning',
-    //             title: 'Required',
-    //             text: 'Please enter your email',
-    //             confirmButtonColor: '#1975ff'
-    //         });
-    //         return;
-    //     }
-
-    //     // Disable immediately (prevent spam click)
-    //     $('#btnSendOTP').prop('disabled', true).text('Sending...');
-
-    //     $.ajax({
-    //         url: 'backend/session/sendForgotOTP.php',
-    //         type: 'POST',
-    //         data: { forgot_email: email },
-    //         dataType: 'json',
-    //         success: function (res) {
-
-    //             if (res.status == 404) {
-
-    //                 $('#btnSendOTP').prop('disabled', false).text('Send OTP');
-
-    //                 Swal.fire({
-    //                     icon: 'error',
-    //                     title: 'User not found',
-    //                     text: res.message,
-    //                     confirmButtonColor: '#1975ff'
-    //                 });
-
-    //             } else if (res.status == 200) {
-
-    //                 Swal.fire({
-    //                     icon: 'success',
-    //                     title: 'OTP Sent!',
-    //                     text: 'Check your email for the OTP.',
-    //                     confirmButtonColor: '#1975ff'
-    //                 });
-
-    //                 // SHOW OTP FIELD
-    //                 $('#otpContainer').fadeIn();
-
-    //                 // LOCK EMAIL
-    //                 $('#forgot_email').prop('readonly', true);
-    //                 $('#forgot_otp').val('');
-
-    //                 // START TIMER
-    //                 startOTPCooldown();
-    //             }
-    //         },
-    //         error: function () {
-    //             $('#btnSendOTP').prop('disabled', false).text('Send OTP');
-
-    //             Swal.fire({
-    //                 icon: 'error',
-    //                 title: 'Error',
-    //                 text: 'Failed to send OTP.',
-    //                 confirmButtonColor: '#1975ff'
-    //             });
-    //         }
-    //     });
-    // });
     $('#btnSendOTP').click(function (e) {
         e.preventDefault();
 
@@ -478,10 +288,10 @@ $(document).ready(function() {
                     $('#forgot_otp').val('');
                     $('#forgot_otp').focus();
 
-                    // START COOLDOWN
+                    // START OTP COOLDOWN
                     startOTPCooldown();
 
-                    // 🔥 If max reached → disable permanently
+                    // IF MAX REQUEST REACHED, DISABLE BUTTON PERMANENTLY
                     if (otpRequestCount >= maxOTPRequests) {
                         $('#btnSendOTP')
                             .prop('disabled', true)
@@ -556,6 +366,7 @@ $(document).ready(function() {
         });
     });
 
+    // RESET PASSWORD FORM
     $('#resetPasswordForm').on('submit', function(e) {
         e.preventDefault();
         
