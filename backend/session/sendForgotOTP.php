@@ -13,26 +13,29 @@
     $email = trim($_POST['forgot_email']);
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         echo json_encode([
-            'status' => 'error',
-            'message' => 'Invalid email'
+            'status' => '1',
+            'title' => 'Invalid Email',
+            'message' => 'Please provide a valid email address.'
         ]);
         exit();
     }
 
-    
-
+    // CHECK IF EMAIL EXISTS
     $result = mysqli_query($conn, $employees->searchEmail($email));
     if ($result && mysqli_num_rows($result) > 0) {
         
         // SET USERID VARIABLE
         $row = $result->fetch_assoc();
         $userID = $row['userID'];
+
+        // CHECK IF OTP WAS SENT LESS THAN 60 SECONDS AGO
         $now  = time();
         $lastSent = strtotime($row['reset_otp_last_sent']);
 
         if ($lastSent && ($now - $lastSent) < 60) {
             echo json_encode([
-                'status' => 'error',
+                'status' => '1',
+                'title' => 'OTP Request Limit',
                 'message' => 'Please wait before requesting another OTP'
             ]);
             exit();
@@ -43,7 +46,7 @@
             $expiresAt = date('Y-m-d H:i:s', strtotime('+10 minutes'));
 
             // SAVE OTP TO DATABASE
-            // mysqli_query($conn, $employees->sentOTP($userID, $otpHash, $expiresAt));
+            mysqli_query($conn, $employees->sendOTP($userID, $otpHash, $expiresAt));
 
             $mail = new PHPMailer(true);
 
@@ -78,19 +81,24 @@
                 $mail->send();
 
                 echo json_encode([
-                    'status' => 200,
+                    'status' => 0,
                     'message' => 'OTP sent successfully'
                 ]);
 
             } catch (Exception $e) {
                 echo json_encode([
-                    'status' => 404,
+                    'status' => '1',
+                    'title' => 'Email Send Failed',
                     'message' => $mail->ErrorInfo
                 ]);
+            }
         }
-    } else {
+    } 
+    // EMAIL NOT FOUND
+    else {
         echo json_encode([
-            'status' => 404,
+            'status' => '1',
+            'title' => 'User not found',
             'message' => 'Email does not exist in the system.'
         ]);
     }

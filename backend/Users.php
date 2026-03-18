@@ -133,6 +133,14 @@
             return $resetPassword;
         }
 
+        public function userResetPassword($userID, $newPassword) { 
+            $resetPassword = "
+                UPDATE ".$this->users." SET
+                password = '$newPassword'
+                WHERE userID = '$userID'";
+            return $resetPassword;
+        }
+
         public function viewUser($id) {
             $user = "
                 SELECT CONCAT(employees.firstName, ' ', employees.lastName) AS employeeName, 

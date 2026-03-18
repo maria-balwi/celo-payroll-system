@@ -39,7 +39,6 @@
                     <input type="password" id="password" name="password" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
                 <div class="mb-4 text-right">
-                    <!-- <a href="forgotPassword.php" class="text-blue-500 hover:text-blue-600 no-underline">Forgot Password?</a> -->
                     <button type="button" class="text-blue-500 hover:text-blue-600" id="btnForgotPassword" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">Forgot Password?</button>
                 </div>
                 <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600" id="btnLogin">Login</button>
@@ -52,7 +51,7 @@
 
         <!--------------------------------------------------------------------------------------------------------------------------------------------->
         <!---------------------------------------------------------- FORGOT PASSWORD MODAL ------------------------------------------------------------>
-        <form id="forgotPasswordForm" enctype="multipart/form-data">
+        <!-- <form id="forgotPasswordForm" enctype="multipart/form-data">
             <div class="modal fade" id="forgotPasswordModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
                 <div class="modal-dialog modal-none modal-dialog-centered">
                     <div class="modal-content position-relative" id="forgotPasswordModal">
@@ -78,6 +77,57 @@
                     </div>
                 </div>
             </div>
+        </form> -->
+
+        <form id="forgotPasswordForm">
+            <div class="modal fade" id="forgotPasswordModal" tabindex="-1" data-bs-backdrop="static">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h5 class="modal-title">Forgot Password</h5>
+                        </div>
+
+                        <div class="modal-body">
+
+                            <!-- EMAIL + SEND OTP -->
+                            <label>Email Address:</label>
+                            <div class="input-group mb-2">
+                                <input type="text" id="forgot_email" name="forgot_email"
+                                    class="form-control" placeholder="Enter your email">
+
+                                <button type="button" class="btn btn-primary" id="btnSendOTP">
+                                    Send OTP
+                                </button>
+                            </div>
+
+                            <!-- OPTIONAL TIMER TEXT -->
+                            <small id="otpTimerText" class="text-muted"></small>
+
+                            <!-- OTP FIELD (HIDDEN FIRST) -->
+                            <div id="otpContainer" style="display:none;" class="mt-3">
+                                <label>OTP:</label>
+                                <div class="input-group">
+                                    <input type="text" id="forgot_otp" name="forgot_otp"
+                                        class="form-control" placeholder="Enter OTP">
+
+                                    <button type="button" class="btn btn-success" id="btnVerifyOTP">
+                                        Verify
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                Close
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
         </form>
 
         <!--------------------------------------------------------------------------------------------------------------------------------------------->
@@ -88,6 +138,7 @@
                     <div class="modal-content position-relative" id="resetPasswordModal">
                         <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="resetPassLabel">Reset Password</h1>
+                                <input type="hidden" id="userID" name="userID">
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
@@ -98,7 +149,7 @@
                                 </div>
                                 <div class="row g-3 mb-2">
                                     <div class="col-12">
-                                        <input type="password" class="form-control" id="newPassword" placeholder="Password">
+                                        <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="Password">
                                     </div>
                                 </div>
 
@@ -109,7 +160,19 @@
                                 </div>
                                 <div class="row g-3 mb-2">
                                     <div class="col-12">
-                                        <input type="password" class="form-control" id="retypePassword" placeholder="Password">
+                                        <input type="password" class="form-control" id="retypePassword" name="retypePassword" placeholder="Password">
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-2">
+                                    <div class="col-12">
+                                        <p class="text-muted small mb-0">Password must be:</p>
+                                        <ul class="text-muted small" style="list-style-type: disc; padding-left: 20px; margin-bottom: 0;">
+                                            <li>At least 8 characters long</li>
+                                            <li>At least one uppercase letter</li>
+                                            <li>At least one lowercase letter</li>
+                                            <li>At least one number</li>
+                                            <li>At least one special character</li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>

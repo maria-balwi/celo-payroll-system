@@ -140,7 +140,9 @@
 
         public function searchEmail($email) {
             $email = "
-                SELECT userID, reset_otp_last_sent
+                SELECT userID, reset_otp_hash, 
+                reset_otp_expires, reset_otp_attempts, 
+                reset_otp_used, reset_otp_last_sent
                 FROM ".$this->employees." AS employees
                 INNER JOIN {$this->users} AS users
                 ON employees.id = users.empID
@@ -148,12 +150,21 @@
             return $email;
         }
 
-        public function sentOTP($userID, $hashedOTP, $otpExpiry) {
+        public function sendOTP($userID, $hashedOTP, $otpExpiry) {
             $otp = "
                 UPDATE {$this->users} 
                 SET 
                     reset_otp_hash = '$hashedOTP',
                     reset_otp_expires = '$otpExpiry'
+                WHERE userID = '$userID'";
+            return $otp;
+        }
+
+        public function updateResetOTPAttempts($userID, $attempts) {
+            $otp = "
+                UPDATE {$this->users} 
+                SET 
+                    reset_otp_attempts = $attempts
                 WHERE userID = '$userID'";
             return $otp;
         }
