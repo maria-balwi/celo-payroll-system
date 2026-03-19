@@ -51,6 +51,10 @@
                                 <!--MEMO BUTTON-->
                                 <button class="nav-link uncheck" id="pills-memo-tab" data-bs-toggle="pill" data-bs-target="#pills-memo" type="button" role="tab" aria-controls="pills-memo" aria-selected="false">Memo</button>
                             </li>
+                            <li class="nav-item" role="presentation">
+                                <!--PASSWORD BUTTON-->
+                                <button class="nav-link uncheck" id="pills-password-tab" data-bs-toggle="pill" data-bs-target="#pills-password" type="button" role="tab" aria-controls="pills-password" aria-selected="false">Password Reset</button>
+                            </li>
                         </ul>
                     </div>
 
@@ -491,6 +495,52 @@
                                                         echo "<td class ='whitespace-nowrap'>" . $memoModule . "</td>";
                                                         echo "<td class ='whitespace-nowrap'>" . $memoAction . "</td>";
                                                         echo "<td class ='whitespace-nowrap'>" . $memoTitle . "</td>";
+                                                        echo "</tr>";
+                                                    }
+                                                ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div> 
+                            </div>
+
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <!-- --------------------------------------- PASSWORD RESET TAB -------------------------------------- -->
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <div class="tab-pane fade" id="pills-password" role="tabpanel" aria-labelledby="pills-password-tab">
+                                <div class="card border-0">
+                                    <div class="tab-content" id="pills-tabContent">
+                                        <table id="passwordResetTable" class="table table-striped table-bordered table-auto min-w-full divide-y divide-gray-200 text-center pt-3">
+                                            <thead class="bg-gray-50">
+                                                <tr>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Module</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="bg-white divide-y divide-gray-200">
+                                                <?php
+                                                    $query = mysqli_query($conn, $employees->viewAuditTrailPasswordReset());
+                                                    while ($auditTrailDetails = mysqli_fetch_array($query)) {
+
+                                                        $passwordATID = $auditTrailDetails['auditTrailID'];
+                                                        $passwordDate = $auditTrailDetails['date'];
+                                                        $passwordEmployee = $auditTrailDetails['firstName'] . " " . $auditTrailDetails['lastName'];
+                                                        $passwordModule = $auditTrailDetails['module'];
+                                                        $passwordAction = $auditTrailDetails['action'];
+                                                        $datePassword = formatDate($passwordDate);
+                                                        $timePassword = formatTime($passwordDate);
+
+                                                        echo "<tr>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $passwordATID . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $datePassword . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $timePassword . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $passwordEmployee . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $passwordModule . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $passwordAction . "</td>";
                                                         echo "</tr>";
                                                     }
                                                 ?>

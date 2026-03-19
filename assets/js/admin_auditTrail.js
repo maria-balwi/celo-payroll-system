@@ -42,6 +42,9 @@ $(document).ready(function() {
 
     var notificationsTable = $("#notificationsTable").DataTable();
     notificationsTable.order([[0, "desc"]]).draw();
+    
+    var passwordResetTable = $("#passwordResetTable").DataTable();
+    passwordResetTable.order([[0, "desc"]]).draw();
 	
     // VIEW AND UPDATE SALARY ADJUSTMENTS
     var array = [];

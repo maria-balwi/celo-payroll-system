@@ -17,6 +17,17 @@
             'title' => 'Password Reset',
             'message' => 'Password Changed Successfully'
         ]);
+
+        // CHECK EMPLOYEE ID
+        $employeeQuery = mysqli_query($conn, $users->getUserInfo($userID));
+        $employee = mysqli_fetch_assoc($employeeQuery);
+        $empID = $employee['empID'];
+
+        // AUDIT TRAIL
+        $at_empID = $empID;
+        $at_module = "Login Page";
+        $at_action = "Forgot Password - OTP";
+        mysqli_query($conn, $employees->auditTrailPasswordReset($at_empID, $at_module, $at_action));
     }
     else 
     {

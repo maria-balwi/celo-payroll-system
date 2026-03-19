@@ -140,7 +140,7 @@
 
         public function searchEmail($email) {
             $email = "
-                SELECT userID, reset_otp_hash, 
+                SELECT userID, empID, reset_otp_hash, 
                 reset_otp_expires, reset_otp_attempts, 
                 reset_otp_used, reset_otp_last_sent
                 FROM ".$this->employees." AS employees
@@ -1806,6 +1806,18 @@
                 ORDER BY auditTrail.auditTrailID DESC";
             return $notification;
         }
+
+        public function viewAuditTrailPasswordReset() {
+            $passwordReset = "
+                SELECT auditTrailID, date, employees.firstName, 
+                employees.lastName, module, action 
+                FROM ".$this->auditTrail." AS auditTrail
+                INNER JOIN ".$this->employees." AS employees
+                ON auditTrail.empID = employees.id
+                WHERE module LIKE '%Login%'
+                ORDER BY auditTrail.auditTrailID DESC";
+            return $passwordReset;
+        }
         
         public function auditTrail($empID, $module, $action, $affected_empID) {
             $auditTrail = "
@@ -1832,6 +1844,13 @@
             $auditTrail = "
                 INSERT INTO ".$this->auditTrail." (date, empID, module, action, notificationID)
                 VALUES (CURRENT_TIMESTAMP, '$empID', '$module', '$action', '$notificationID')";
+            return $auditTrail;
+        }
+
+        public function auditTrailPasswordReset($empID, $module, $action) {
+            $auditTrail = "
+                INSERT INTO ".$this->auditTrail." (date, empID, module, action)
+                VALUES (CURRENT_TIMESTAMP, '$empID', '$module', '$action')";
             return $auditTrail;
         }
     }
