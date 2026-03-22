@@ -31,9 +31,15 @@
                 <a href="../pages/admin_employees.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Employee List
                 </a>
+                <?php
+                    if ($_SESSION['designationID'] != '8') { // ONLY FOR FINANCE STAFF
+                ?>
                 <a href="../pages/admin_users.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     User List
                 </a>
+                <?php
+                    }
+                ?>
                 <a href="../pages/admin_leaves.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Leave Application
                 </a>
@@ -131,15 +137,6 @@
                 <a href="../pages/team_cashAdvance.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Cash Advance
                 </a>
-                <a href="../pages/admin_users.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
-                    User List
-                </a>
-                <?php }
-                    if ($_SESSION['levelID'] == '6' && $_SESSION['activated'] == 1) { // IT LEVEL
-                ?>
-                <div class="menu-section">
-                    <h4 class="text-sm font-bold text-gray-500 uppercase pt-2 pb-2">Team's Portal</h4>
-                </div>
                 <a href="../pages/admin_users.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     User List
                 </a>
