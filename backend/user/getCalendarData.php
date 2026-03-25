@@ -28,20 +28,6 @@
     /* =========================
     LEAVES
     ========================= */
-    // $q2 = "
-    // SELECT effectivityStartDate, effectivityEndDate, leaveTypeID
-    // FROM tbl_leaveapplications
-    // WHERE empID = '$employeeID'
-    // AND DATE_FORMAT(effectivityStartDate, '%Y-%m') = '$month'
-    // ";
-
-    // $res = mysqli_query($conn, $q2);
-
-    // while ($row = mysqli_fetch_assoc($res)) {
-    //     $date = $row['effectivityStartDate'];
-    //     $calendar[$date]['leaves'][] = $row['leaveTypeID'];
-    // }
-
     function getLeaveName($leaveTypeID) {
         switch($leaveTypeID) {
             case 1: return "sl";
@@ -55,7 +41,7 @@
     }
 
     $q2 = "
-    SELECT effectivityStartDate, effectivityEndDate, leaveTypeID
+    SELECT effectivityStartDate, effectivityEndDate, leaveTypeID, isPaid
     FROM tbl_leaveapplications
     WHERE empID = '$employeeID'
     AND (
@@ -76,6 +62,16 @@
             $date = $start->format('Y-m-d');    
 
             $type = getLeaveName($row['leaveTypeID']);
+
+            // CHECK IF PAID FOR SL AND VL
+            if (in_array($row['leaveTypeID'], [1, 2])) {
+            if ((int)$row['isPaid'] === 1) {
+                $type .= "-paid";
+            } else {
+                $type .= "-unpaid";
+            }
+        }
+
             $calendar[$date]['leaves'][] = $type;
 
             $start->modify('+1 day');

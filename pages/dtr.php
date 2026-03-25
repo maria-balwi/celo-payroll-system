@@ -52,9 +52,14 @@
             .absent { background: #db3f34; }   /* Red */
             .late { background: #f1c40f; color: black; } 
             .undertime { background: #d35400; }
-            .vl { background: #3498db; }    /* Vacation Leave */
-            .sl { background: #2ecc71; }    /* Sick Leave */
+            .vl-paid { background: #3498db; }    /* Vacation Leave - Paid */
+            .vl-unpaid { background: #674EA7; }    /* Vacation Leave - Unpaid */
+            .sl-paid { background: #2ecc71; }    /* Sick Leave - Paid */
+            .sl-unpaid { background: #FFD966; }    /* Sick Leave - Unpaid */
+            .el { background: #E69138; }    /* Emergency Leave */
             .bl { background: #713600; }    /* Bereavement Leave */
+            .ml { background: #C27BA0; }    /* Maternity Leave */
+            .pl { background: #073763; }    /* Paternity Leave */
             .ot { background: #a0512d; }    /* Overtime */
             .off { background: #7f8c8d; }   /* Week Off */
             .holiday { background: #16a085; } /* Holiday */
