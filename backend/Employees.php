@@ -1166,7 +1166,7 @@
             $request = "
                 SELECT requestID, employeeID, leaves.leaveTypeID,
                 leaveType, remarks, status, attachment, designationID,
-                CONCAT(firstName, ' ', lastName) AS employeeName,
+                CONCAT(firstName, ' ', lastName) AS employeeName, isPaid,
                 DATE_FORMAT(dateFiled, '%M %d, %Y') AS dateFiled,
                 DATE_FORMAT(effectivityStartDate, '%M %d, %Y') AS effectivityStartDate,
                 DATE_FORMAT(effectivityEndDate, '%M %d, %Y') AS effectivityEndDate
@@ -1281,7 +1281,14 @@
             return $request;
         }
 
-        public function approveLeave($requestID) {
+        public function approvePaidLeave($requestID) {
+            $approveRequest = "
+                UPDATE ".$this->leaves." SET status = 'Approved', isPaid = 1
+                WHERE requestID = '$requestID'";
+            return $approveRequest;
+        }
+
+        public function approveUnpaidLeave($requestID) {
             $approveRequest = "
                 UPDATE ".$this->leaves." SET status = 'Approved'
                 WHERE requestID = '$requestID'";

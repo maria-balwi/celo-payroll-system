@@ -6,9 +6,10 @@
 
     $leave_id = $_POST['id_leave'];
     $action = $_POST['action'];
+    $isPaid = $_POST['isPaid'];
 
-    if ($action == "approve") {
-        mysqli_query($conn, $employees->approveLeave($leave_id));
+    if ($action == "approve" && $isPaid == 1) {
+        mysqli_query($conn, $employees->approvePaidLeave($leave_id));
         
         // GET AFFECTED USER
         $query = mysqli_query($conn, $employees->viewLeaveInfo($leave_id));
@@ -22,6 +23,26 @@
         else if ($leaveTypeID == 2 || $leaveTypeID == 6) {
             mysqli_query($conn, $employees->deductVacationLeave($at_affectedEmpID));
         }
+        
+        // AUDIT TRAIL
+        $at_empID = $_SESSION['id'];
+        $at_module = "Admin - Leave Application";
+        $at_action = "Approved Request";
+        mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $at_affectedEmpID));
+
+        // ERROR MESSAGE
+        $em = "Leave Application Approved Successfully";
+        // RESPONSE ARRAY
+        $error = array('error' => 0, 'em' => $em);
+    }
+
+    else if ($action == "approve" && $isPaid == 0) {
+        mysqli_query($conn, $employees->approveUnpaidLeave($leave_id));
+        
+        // GET AFFECTED USER
+        $query = mysqli_query($conn, $employees->viewLeaveInfo($leave_id));
+        $queryDetails = mysqli_fetch_array($query);
+        $at_affectedEmpID = $queryDetails['empID'];
         
         // AUDIT TRAIL
         $at_empID = $_SESSION['id'];
