@@ -4,23 +4,10 @@ $(document).ready(function() {
         order: [] // Disable default sorting
     });
 
-    // $(".photoUploadDiv").hide();
-    // $('#leaveType').on('change', function() {
-    //     var leaveType = $('#leaveType').val();
-    //     if (leaveType == 1 || leaveType == 3 || leaveType == 4 || leaveType == 5) {
-    //         $(".photoUploadDiv").show();
-    //         $("#photoUpload").attr("required", true);
-    //     }
-    //     else {
-    //         $(".photoUploadDiv").hide();
-    //         $("#photoUpload").attr("required", false);
-    //     }
-    // });
-
     $(".attachmentDiv").hide();
     $('#leaveType').on('change', function() {
         var leaveType = $('#leaveType').val();
-        if (leaveType == 1 || leaveType == 3 || leaveType == 4 || leaveType == 5) {
+        if (leaveType == 1 || leaveType == 3 || leaveType == 4 || leaveType == 5 || leaveType == 6 || leaveType == 7 || leaveType == 8) {
             $(".attachmentDiv").show();
         }
         else {
@@ -31,114 +18,156 @@ $(document).ready(function() {
     $(".viewWithAttachmentRow").hide();
     $(".viewWithoutAttachmentRow").hide();
 
-    // // FILE LEAVE - UPLOAD MEDICAL CERTIFICATE
-    // $("#photoUpload").change(function () {
-    //     const [file] = photoUpload.files;
-    //     const acceptedImageTypes = ["image/jpeg", "image/png"];
-    //     if (file) {
-    //         const fileType = file["type"];
-    //         if ($.inArray(fileType, acceptedImageTypes) < 0) {
-    //             Swal.fire({
-    //                 icon: "warning",
-    //                 title: "Invalid Picture",
-    //                 text: "Invalid File only accept (JPG/PNG) file",
-    //             });
-    //             $("#viewPhotoUpload").attr("disabled", true);
-    //         } else {
-    //             $("#viewPhotoUpload").attr("disabled", false); // Enable the view button
-    //         }
-    //     } else {
-    //         $("#viewPhotoUpload").attr("disabled", true); // Disable the view button if no file is selected
-    //     }
-    // });
-
-    // $("#viewPhotoUpload").click(function () {
-    //     const [file] = photoUpload.files;
-    //     if (file) {
-    //         const reader = new FileReader();
-    //         reader.onload = (e) => {
-    //             Swal.fire({
-    //                 title: "Upload Photo",
-    //                 imageUrl: e.target.result,
-    //                 imageHeight: 500,
-    //             });
-    //         };
-    //         reader.readAsDataURL(file);
-    //     }
-    // });
 
     $("select[id='leaveType']").on("change", function () {
-        // const leaveDateInput = document.getElementById("effectivityStartDate");
-    
-        if ($(this).val() == 2) {
-            // Get today's date
+        if ($(this).val() == 2) { // VACATION LEAVE
+            // GET DATE TODAY
             const today = new Date();
     
-            // Calculate the minimum date (14 days from today)
+            // ADD 14 DAYS FROM TODAY FOR ADVANCE FILING OF VL
             const minDate = new Date(today);
             minDate.setDate(today.getDate() + 14);
     
-            // Format the date as YYYY-MM-DD
+            // FORMAT DATE AS YYYY-MM-DD
             const year = minDate.getFullYear();
             const month = String(minDate.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
             const day = String(minDate.getDate()).padStart(2, '0');
             const formattedMinDate = `${year}-${month}-${day}`;
     
-            // Set the minimum date attribute on the date input
+            // SET THE MINIMUM DATE ATTRIBUTE ON THE DATE INPUT
             const effectivityStartDate = document.getElementById("effectivityStartDate");
             const effectivityEndDate = document.getElementById("effectivityEndDate");
             effectivityStartDate.setAttribute("min", formattedMinDate);
             effectivityEndDate.setAttribute("min", formattedMinDate);
         } 
-        else if ($(this).val() == 3) {
+        else if ($(this).val() == 3) { // BEREAVEMENT LEAVE
             document.getElementById("effectivityStartDate").addEventListener("change", function () {
                 const startDateValue = this.value; // YYYY-MM-DD
 
                 if (!startDateValue) return;
 
-                // Convert to Date object
                 const startDate = new Date(startDateValue);
 
-                // Add 7 days
-                const endDate = new Date(startDate);
-                endDate.setDate(startDate.getDate() + 4);
+                // ADD 5 DAYS
+                const maxDate = new Date(startDate);
+                maxDate.setDate(startDate.getDate() + 4);
 
-                // Format to YYYY-MM-DD
+                // FORMAT FUNCTION
+                function formatDate(date) {
+                    const year = date.getFullYear();
+                    const month = String(date.getMonth() + 1).padStart(2, "0");
+                    const day = String(date.getDate()).padStart(2, "0");
+                    return `${year}-${month}-${day}`;
+                }
+
+                const effectivityEndDate = document.getElementById("effectivityEndDate");
+
+                // SET THE MINIMUM AND MAXIMUM DATE FOR EACH INPUT
+                effectivityEndDate.min = formatDate(startDate);
+                effectivityEndDate.max = formatDate(maxDate);
+            });
+        }
+        else if ($(this).val() == 4) { // MATERNITY LEAVE
+            document.getElementById("effectivityStartDate").addEventListener("change", function () {
+                const startDateValue = this.value; // YYYY-MM-DD
+
+                if (!startDateValue) return;
+
+                // CONVERT TO DATE OBJECT 
+                const startDate = new Date(startDateValue);
+
+                // Add 105 days
+                const endDate = new Date(startDate);
+                endDate.setDate(startDate.getDate() + 104);
+
+                // FORMAT TO YYYY-MM-DD
                 const year = endDate.getFullYear();
                 const month = String(endDate.getMonth() + 1).padStart(2, "0");
                 const day = String(endDate.getDate()).padStart(2, "0");
                 const formattedEndDate = `${year}-${month}-${day}`;
 
-                // Set the value of the end date input
+                // SET THE VALUE OF THE END DATE INPUT
                 document.getElementById("effectivityEndDate").value = formattedEndDate;
 
-                // Make the end date readonly
+                // MAKE THE END DATE READONLY
                 effectivityEndDate.setAttribute("readonly", true);
             });
         }
-        else if ($(this).val() == 5) {
+        else if ($(this).val() == 5) { // MATERNITY LEAVE - SOLO PARENT
             document.getElementById("effectivityStartDate").addEventListener("change", function () {
                 const startDateValue = this.value; // YYYY-MM-DD
 
                 if (!startDateValue) return;
 
-                // Convert to Date object
+                // CONVERT TO DATE OBJECT 
                 const startDate = new Date(startDateValue);
 
-                // Add 7 days
+                // ADD 120 DAYS
                 const endDate = new Date(startDate);
-                endDate.setDate(startDate.getDate() + 6);
+                endDate.setDate(startDate.getDate() + 119);
 
-                // Format to YYYY-MM-DD
+                // FORMAT TO YYYY-MM-DD
                 const year = endDate.getFullYear();
                 const month = String(endDate.getMonth() + 1).padStart(2, "0");
                 const day = String(endDate.getDate()).padStart(2, "0");
                 const formattedEndDate = `${year}-${month}-${day}`;
 
-                // Set the value of the end date input
+                // SET THE VALUE OF THE END DATE INPUT
                 document.getElementById("effectivityEndDate").value = formattedEndDate;
 
-                // Make the end date readonly
+                // MAKE THE END DATE READONLY
+                effectivityEndDate.setAttribute("readonly", true);
+            });
+        }
+        else if ($(this).val() == 6) { // MATERNITY LEAVE - MISCARRIAGE
+            document.getElementById("effectivityStartDate").addEventListener("change", function () {
+                const startDateValue = this.value; // YYYY-MM-DD
+
+                if (!startDateValue) return;
+
+                // CONVERT TO DATE OBJECT 
+                const startDate = new Date(startDateValue);
+
+                // ADD 60 DAYS
+                const endDate = new Date(startDate);
+                endDate.setDate(startDate.getDate() + 59);
+
+                // FORMAT TO YYYY-MM-DD
+                const year = endDate.getFullYear();
+                const month = String(endDate.getMonth() + 1).padStart(2, "0");
+                const day = String(endDate.getDate()).padStart(2, "0");
+                const formattedEndDate = `${year}-${month}-${day}`;
+
+                // SET THE VALUE OF THE END DATE INPUT
+                document.getElementById("effectivityEndDate").value = formattedEndDate;
+
+                // MAKE THE END DATE READONLY
+                effectivityEndDate.setAttribute("readonly", true);
+            });
+        }
+        else if ($(this).val() == 7 || $(this).val() == 8) { // PATERNITY AND SOLO PARENT LEAVE
+            document.getElementById("effectivityStartDate").addEventListener("change", function () {
+                const startDateValue = this.value; // YYYY-MM-DD
+
+                if (!startDateValue) return;
+
+                // CONVERT TO DATE OBJECT 
+                const startDate = new Date(startDateValue);
+
+                // ADD 7 DAYS
+                const endDate = new Date(startDate);
+                endDate.setDate(startDate.getDate() + 6);
+
+                // FORMAT TO YYYY-MM-DD
+                const year = endDate.getFullYear();
+                const month = String(endDate.getMonth() + 1).padStart(2, "0");
+                const day = String(endDate.getDate()).padStart(2, "0");
+                const formattedEndDate = `${year}-${month}-${day}`;
+
+                // SET THE VALUE OF THE END DATE INPUT
+                document.getElementById("effectivityEndDate").value = formattedEndDate;
+
+                // MAKE THE END DATE READONLY
                 effectivityEndDate.setAttribute("readonly", true);
             });
         } 
@@ -270,7 +299,8 @@ $(document).ready(function() {
                 if (res.status == 404) {
                     alert(res.message);
                 } 
-                else if (res.status == 200 && (res.data.leaveType == "Sick Leave" || res.data.leaveType == "Bereavement Leave" || res.data.leaveType == "Maternity Leave" || res.data.leaveType == "Paternity Leave")) {
+                else if (res.status == 200 && (res.data.leaveType == "Sick Leave" || res.data.leaveType == "Bereavement Leave" || res.data.leaveType == "Maternity Leave" || 
+                    res.data.leaveType == "Maternity Leave - Solo Parent" || res.data.leaveType == "Maternity Leave - Miscarriage" || res.data.leaveType == "Paternity Leave" || res.data.leaveType == "Solo Parent Leave")) {
                     $('#viewLeaveID').val(res.data.requestID);
                     $('#viewEmpID').val(res.data.employeeID);
                     $('#viewDateFiled').val(res.data.dateFiled);
@@ -350,7 +380,8 @@ $(document).ready(function() {
 
                 if (res.status == 404) {
                     alert(res.message);
-                } else if (res.status == 200 && (res.data.leaveType == "Sick Leave") || (res.data.leaveType == "Bereavement Leave") || (res.data.leaveType == "Maternity Leave") || (res.data.leaveType == "Paternity Leave")) {
+                } else if (res.status == 200 && (res.data.leaveType == "Sick Leave" || res.data.leaveType == "Bereavement Leave" || res.data.leaveType == "Maternity Leave" || 
+                    res.data.leaveType == "Maternity Leave - Solo Parent" || res.data.leaveType == "Maternity Leave - Miscarriage" || res.data.leaveType == "Paternity Leave" || res.data.leaveType == "Solo Parent Leave")){
                     $("#viewLeaveID").val(res.data.requestID);
                     $("#viewEmpID").val(res.data.employeeID);
                     $("#viewDateFiled").val(res.data.dateFiled);

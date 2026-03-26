@@ -44,7 +44,7 @@
     //     $uploadDir = '../../assets/images/paternityLeaves/';
     //     mysqli_query($conn, $employees->fileLeaveWithPhoto($employeeID, $leaveType, $startDate, $endDate, $purpose, $status, $newFileName));
     // }
-    if ($leaveType == 1 || $leaveType == 3 || $leaveType == 4 || $leaveType == 5) {
+    if ($leaveType == 1 || $leaveType == 3 || $leaveType == 4 || $leaveType == 5 || $leaveType == 6 || $leaveType == 7 || $leaveType == 8) {
         mysqli_query($conn, $employees->fileLeaveWithAttachment($employeeID, $leaveType, $startDate, $endDate, $purpose, $status, $attachment));
     }
     else {

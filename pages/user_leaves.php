@@ -164,18 +164,21 @@
                                                 <?php 
                                                     if ($_SESSION['gender'] == "Female") { ?>
                                                     <option value="4">Maternity Leave</option>
+                                                    <option value="5">Maternity Leave (Solo Parent)</option>
+                                                    <option value="6">Maternity Leave (Miscarriage)</option>
                                                 <?php } 
                                                     else { 
                                                         $paternityLeaveQuery = mysqli_query($conn, $employees->viewApprovedPaternityLeaves($_SESSION['id']));
                                                         $paternityLeaves = mysqli_num_rows($paternityLeaveQuery);
                                                         if ($paternityLeaves <= 3) {
                                                 ?>
-                                                    <option value="5">Paternity Leave</option>
+                                                    <option value="7">Paternity Leave</option>
                                                 <?php } else { ?>
-                                                    <option value="5" disabled>Paternity Leave</option>
+                                                    <opt`ion value="7" disabled>Paternity Leave</opt>
                                                 <?php   } ?>
                                                 <?php } ?>
-                                                    <option value="6">Emergency Leave</option>
+                                                    <option value="8">Solo Parent Leave</option>
+                                                    <option value="9">Emergency Leave</option>
                                             </select>
                                         </div>
                                     </div>   
