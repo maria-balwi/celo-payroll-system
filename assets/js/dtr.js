@@ -85,7 +85,7 @@ function renderCalendar(month, data, weekOff) {
     let html = "<tr>";
     let count = 0;
 
-    // Empty cells before start
+    // EMPTY CELLS BEFORE START
     for (let i = 0; i < firstDay; i++) {
         html += "<td></td>";
         count++;
@@ -99,10 +99,7 @@ function renderCalendar(month, data, weekOff) {
         html += `<td>`;
         html += `<div class="day-number">${d}</div>`;
 
-        // Week Off (Sunday)
-        // if (dayOfWeek === 0) {
-        //     html += `<span class="label off">OFF</span>`;
-        // }
+        // WEEK OFF
         let isOff = false;
         if (dayOfWeek === 0 && weekOff.wo_sun == "1") isOff = true;
         if (dayOfWeek === 1 && weekOff.wo_mon == "1") isOff = true;
@@ -117,81 +114,53 @@ function renderCalendar(month, data, weekOff) {
         }
 
         if (data[fullDate]) {
-
-            // // Attendance
-            // if (data[fullDate].attendance) {
-            //     html += `<span class="label att">ATT</span>`;
-            // }
-
-            // // Leaves
-            // if (data[fullDate].leaves) {
-            //     data[fullDate].leaves.forEach(type => {
-            //         html += `<span class="label ${type.toLowerCase()}">${type}</span>`;
-            //     });
-            // }
-
-            // // Overtime
-            // if (data[fullDate].overtime) {
-            //     let hours = data[fullDate].overtime[0];
-            //     html += `<span class="label ot">OT (${hours}h)</span>`;
-            // }
-
-            // // Holiday (optional)
-            // if (data[fullDate].holiday) {
-            //    
-            
             let hasAttendance = false;
             let isLate = false;
             let isUndertime = false;
 
-            // Check attendance
+            // CHECK ATTENDANCE
             if (data[fullDate] && data[fullDate].attendance) {
-
                 hasAttendance = true;
 
                 data[fullDate].attendance.forEach(type => {
-                    if (type == 2) isLate = true;
-                    if (type == 3) isUndertime = true;
+                    if (type == 'late') isLate = true;
+                    if (type == 'undertime') isUndertime = true;
                 });
             }
 
-            // Leaves
+            // LEAVES
             let hasLeave = data[fullDate] && data[fullDate].leaves;
 
-            // ✅ PRIORITY DISPLAY
-
-            // 1. Leave (highest priority)
+            // PRIORITY DISPLAY
+            // 1. LEAVE (HIGHEST PRIORITY)
             if (hasLeave) {
                 data[fullDate].leaves.forEach(type => {
-                    html += `<span class="label ${type.toLowerCase()}">${type}</span>`;
+                    html += `<span class="label ${type.toLowerCase()}">${type.toUpperCase()}</span>`;
                 });
             }
 
-            // 2. Week Off
+            // 2. WEEK OFF
             else if (isOff) {
                 html += `<span class="label off">OFF</span>`;
             }
 
-            // 3. Attendance
+            // 3. ATTENDANCE
             else if (hasAttendance) {
-
-                html += `<span class="label att">ATT</span>`;
-
                 if (isLate) {
                     html += `<span class="label late">LATE</span>`;
                 }
 
                 if (isUndertime) {
-                    html += `<span class="label undertime">UT</span>`;
+                    html += `<span class="label undertime">UNDERTIME</span>`;
                 }
             }
 
-            // 4. Absent
+            // 4. ABSENT
             else {
                 html += `<span class="label absent">ABSENT</span>`;
             }
 
-            // 5. Overtime (can exist with others)
+            // 5. OVERTIME (CAN EXIST WITH OTHERS)
             if (data[fullDate] && data[fullDate].overtime) {
                 let hours = data[fullDate].overtime[0];
                 html += `<span class="label ot">OT (${hours}h)</span>`;
@@ -209,7 +178,7 @@ function renderCalendar(month, data, weekOff) {
     $("#calendarBody").html(html);
 }
 
-// Auto load on page load
+// AUTO LOAD ON PAGE LOAD
 $(document).ready(function() {
     loadCalendar();
 });

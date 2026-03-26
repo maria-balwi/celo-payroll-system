@@ -22,7 +22,18 @@
 
     while ($row = mysqli_fetch_assoc($res)) {
         $date = $row['attendanceDate'];
-        $calendar[$date]['attendance'][] = $row['logTypeID'];
+        $logTypeID = (int)$row['logTypeID'];
+
+        // DEFAULT VALUE
+        $tag = '';
+
+        if (in_array($logTypeID, [2,3])) {
+            $tag = ($logTypeID == 2) ? 'late' : 'undertime';
+        }
+        else {
+            $tag = ($logTypeID == 1) ? 'in' : 'out';
+        }
+        $calendar[$date]['attendance'][] = $tag;
     }
 
     /* =========================
@@ -34,8 +45,11 @@
             case 2: return "vl";
             case 3: return "bl";
             case 4: return "ml";
-            case 5: return "pl";
-            case 6: return "el";
+            case 5: return "ml-solo";
+            case 6: return "ml-mis";
+            case 7: return "pl";
+            case 8: return "spl";
+            case 9: return "el";
             default: return "lv";
         }
     }
@@ -44,33 +58,33 @@
     SELECT effectivityStartDate, effectivityEndDate, leaveTypeID, isPaid
     FROM tbl_leaveapplications
     WHERE empID = '$employeeID'
-    AND (
-        DATE_FORMAT(effectivityStartDate, '%Y-%m') = '$month'
-        OR DATE_FORMAT(effectivityEndDate, '%Y-%m') = '$month'
-    )
+    AND effectivityStartDate <= LAST_DAY('$month-01') 
+    AND effectivityEndDate >= DATE_FORMAT('$month-01', '%Y-%m-01')
+    AND status='Approved'
     ";
 
     $res = mysqli_query($conn, $q2);
 
+    $monthStart = new DateTime($month . "-01");
+    $monthEnd = new DateTime($month . "-" . date("t", strtotime($month . "-01")));
+
     while ($row = mysqli_fetch_assoc($res)) {
 
-        $start = new DateTime($row['effectivityStartDate']);
-        $end = new DateTime($row['effectivityEndDate']);
+        $leaveStart = new DateTime($row['effectivityStartDate']);
+        $leaveEnd   = new DateTime($row['effectivityEndDate']);
 
-        // loop each day
+        // Clamp the leave range to the current month
+        $start = max($leaveStart, $monthStart);
+        $end   = min($leaveEnd, $monthEnd);
+
         while ($start <= $end) {
-            $date = $start->format('Y-m-d');    
-
+            $date = $start->format('Y-m-d');
             $type = getLeaveName($row['leaveTypeID']);
 
-            // CHECK IF PAID FOR SL AND VL
-            if (in_array($row['leaveTypeID'], [1, 2])) {
-            if ((int)$row['isPaid'] === 1) {
-                $type .= "-paid";
-            } else {
-                $type .= "-unpaid";
+            // Check if Paid for SL/VL
+            if (in_array($row['leaveTypeID'], [1,2])) {
+                $type .= ((int)$row['isPaid'] === 1) ? "-paid" : "-unpaid";
             }
-        }
 
             $calendar[$date]['leaves'][] = $type;
 
