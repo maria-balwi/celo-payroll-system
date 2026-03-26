@@ -309,9 +309,19 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-2" id="viewPhotoRow">
+                                <!-- <div class="row g-2" id="viewPhotoRow">
                                     <div class="col-12">
                                         <button id="viewPhoto" class="text-blue-500">View Uploaded Photo</button>
+                                    </div>
+                                </div> -->
+                                <div class="row g-2" id="viewWithAttachmentRow">
+                                    <div class="col-12">
+                                        <label class="text-blue-500">With Attachment</label>
+                                    </div>
+                                </div>
+                                <div class="row g-2" id="viewWithoutAttachmentRow">
+                                    <div class="col-12">
+                                        <label class="text-blue-500">Without Attachment</label>
                                     </div>
                                 </div>
                             </form>
