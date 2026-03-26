@@ -115,8 +115,8 @@
             }
 
             /* Color Codes */
-            /* .att { background: #db3f34; }  Attendance */
-            .absent { background: #EF4444; }   /* Red */
+            .attendance { background: #0D9668; } /* Attendance */
+            .absent { background: #EF4444; }   /* Absent */
             .late { background: #F97316; } 
             .undertime { background: #92400E; }
             .sl-paid { background: #2ecc71; }    /* Sick Leave - Paid */
@@ -170,6 +170,7 @@
                         <div class="legend-group">
                             <span class="legend-title">Attendance</span>
                             <div class="legend-items">
+                                <span><i class="box attendance"></i> Present</span>
                                 <span><i class="box absent"></i> Absent</span>
                                 <span><i class="box late"></i> Late</span>
                                 <span><i class="box undertime"></i> Undertime</span>

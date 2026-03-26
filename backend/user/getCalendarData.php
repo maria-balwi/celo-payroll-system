@@ -12,7 +12,7 @@
     ATTENDANCE
     ========================= */
     $q1 = "
-    SELECT attendanceDate, logTypeID
+    SELECT attendanceDate, logTypeID, attendanceTime
     FROM tbl_attendance
     WHERE empID = '$employeeID'
     AND DATE_FORMAT(attendanceDate, '%Y-%m') = '$month'
@@ -23,17 +23,31 @@
     while ($row = mysqli_fetch_assoc($res)) {
         $date = $row['attendanceDate'];
         $logTypeID = (int)$row['logTypeID'];
+        $time = date("h:i A", strtotime($row['attendanceTime']));
 
-        // DEFAULT VALUE
-        $tag = '';
+        // INIT OBJECT
+        if (!isset($calendar[$date]['attendance'])) {
+            $calendar[$date]['attendance'] = [
+                'time_in' => null,
+                'time_out' => null,
+                'late' => false,
+                'undertime' => false
+            ];
+        }
 
-        if (in_array($logTypeID, [2,3])) {
-            $tag = ($logTypeID == 2) ? 'late' : 'undertime';
+        // MAP LOG TYPES
+        if ($logTypeID == 1) {
+            $calendar[$date]['attendance']['time_in'] = $time;
         }
-        else {
-            $tag = ($logTypeID == 1) ? 'in' : 'out';
+        elseif ($logTypeID == 4) {
+            $calendar[$date]['attendance']['time_out'] = $time;
         }
-        $calendar[$date]['attendance'][] = $tag;
+        elseif ($logTypeID == 2) {
+            $calendar[$date]['attendance']['late'] = true;
+        }
+        elseif ($logTypeID == 3) {
+            $calendar[$date]['attendance']['undertime'] = true;
+        }
     }
 
     /* =========================

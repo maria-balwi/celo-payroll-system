@@ -114,22 +114,26 @@ function renderCalendar(month, data, weekOff) {
         }
 
         if (data[fullDate]) {
-            let hasAttendance = false;
-            let isLate = false;
-            let isUndertime = false;
+            let dayData = data[fullDate];
 
-            // CHECK ATTENDANCE
-            if (data[fullDate] && data[fullDate].attendance) {
-                hasAttendance = true;
+            let hasLeave = dayData.leaves;
+            let attendance = dayData.attendance;
 
-                data[fullDate].attendance.forEach(type => {
-                    if (type == 'late') isLate = true;
-                    if (type == 'undertime') isUndertime = true;
-                });
-            }
+            let isLate = attendance && attendance.late;
+            let isUndertime = attendance && attendance.undertime;
+
+            // // CHECK ATTENDANCE
+            // if (data[fullDate] && data[fullDate].attendance) {
+            //     hasAttendance = true;
+
+            //     data[fullDate].attendance.forEach(type => {
+            //         if (type == 'late') isLate = true;
+            //         if (type == 'undertime') isUndertime = true;
+            //     });
+            // }
 
             // LEAVES
-            let hasLeave = data[fullDate] && data[fullDate].leaves;
+            // let hasLeave = data[fullDate] && data[fullDate].leaves;
 
             // PRIORITY DISPLAY
             // 1. LEAVE (HIGHEST PRIORITY)
@@ -145,7 +149,37 @@ function renderCalendar(month, data, weekOff) {
             }
 
             // 3. ATTENDANCE
-            else if (hasAttendance) {
+            // else if (hasAttendance) {
+            //     if (isLate) {
+            //         html += `<span class="label late">LATE</span>`;
+            //     }
+
+            //     if (isUndertime) {
+            //         html += `<span class="label undertime">UNDERTIME</span>`;
+            //     }
+            // }
+            else if (attendance) {
+                let timeIn = attendance.time_in;
+                let timeOut = attendance.time_out;
+
+                // DISPLAY TIME
+                if (timeIn && timeOut) {
+                    html += `
+                        <span class="label attendance">
+                            IN: ${timeIn}<br>
+                            OUT: ${timeOut}
+                        </span>
+                    `;
+                } 
+                else if (timeIn && !timeOut) {
+                    html += `
+                        <span class="label attendance">
+                            IN: ${timeIn}
+                        </span>
+                    `;
+                }
+
+                // STATUS TAGS
                 if (isLate) {
                     html += `<span class="label late">LATE</span>`;
                 }
