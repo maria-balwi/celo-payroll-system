@@ -27,6 +27,10 @@
         private $salaryadj = 'tbl_salaryadj';
         private $auditTrail = 'tbl_audittrail';
         private $caPaymentHistory = 'tbl_caPaymentHistory';
+        private $disputes = 'tbl_disputes';
+        private $disputeAttendance = 'tbl_disputeattendance';
+        private $disputeLeaves = 'tbl_disputeleaves';
+        private $disputeOvertime = 'tbl_disputeovertime';
 
         private $dbConnect = false;
         public function __construct() {
@@ -500,6 +504,135 @@
                 DELETE FROM ".$this->holidays."
                 WHERE holidayID = '$holidayID'";
             return $deleteHoliday;
+        }
+
+        public function pendingDisputesAttendance() {
+            $attendanceDisputes = "
+                SELECT disputeID, employeeID, firstName, lastName,
+                attendanceDate_timeIn, attendanceTime_timeIn,
+                attendanceDate_timeOut, attendanceTime_timeOut, 
+                remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
+                ON dispute.attendanceID = disputeAttendance.attendanceID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeAttendance.empID = employee.id
+                WHERE dispute.status = 'Pending'";
+            return $attendanceDisputes;
+        }
+
+        public function approvedDisputesAttendance() {
+            $attendanceDisputes = "
+                SELECT disputeID, employeeID, firstName, lastName,
+                attendanceDate_timeIn, attendanceTime_timeIn,
+                attendanceDate_timeOut, attendanceTime_timeOut, 
+                remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
+                ON dispute.attendanceID = disputeAttendance.attendanceID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeAttendance.empID = employee.id
+                WHERE dispute.status = 'Approved'";
+            return $attendanceDisputes;
+        }
+
+        public function disapprovedDisputesAttendance() {
+            $attendanceDisputes = "
+                SELECT disputeID, employeeID, firstName, lastName,
+                attendanceDate_timeIn, attendanceTime_timeIn,
+                attendanceDate_timeOut, attendanceTime_timeOut, 
+                remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
+                ON dispute.attendanceID = disputeAttendance.attendanceID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeAttendance.empID = employee.id
+                WHERE dispute.status = 'Disapproved'";
+            return $attendanceDisputes;
+        }
+
+        public function pendingDisputesLeaves() {
+            $leavesDisputes = "
+                SELECT disputeID, dateFiled, firstName, lastName,
+                leaveType, startDate, endDate, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
+                ON dispute.leaveID = disputeLeaves.leaveID
+                INNER JOIN tbl_leavetype AS leaves
+                ON disputeLeaves.leaveTypeID = leaves.leaveTypeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeLeaves.empID = employee.id
+                WHERE dispute.status = 'Pending'";
+            return $leavesDisputes;
+        }
+
+        public function approvedDisputesLeaves() {
+            $pendingDisputes = "
+                SELECT disputeID, dateFiled, firstName, lastName,
+                leaveType, startDate, endDate, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
+                ON dispute.leaveID = disputeLeaves.leaveID
+                INNER JOIN tbl_leavetype AS leaves
+                ON disputeLeaves.leaveTypeID = leaves.leaveTypeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeLeaves.empID = employee.id
+                WHERE dispute.status = 'Approved'";
+            return $pendingDisputes;
+        }
+
+        public function disapprovedDisputesLeaves() {
+            $pendingDisputes = "
+                SELECT disputeID, dateFiled, firstName, lastName,
+                leaveType, startDate, endDate, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
+                ON dispute.leaveID = disputeLeaves.leaveID
+                INNER JOIN tbl_leavetype AS leaves
+                ON disputeLeaves.leaveTypeID = leaves.leaveTypeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeLeaves.empID = employee.id
+                WHERE dispute.status = 'Disapproved'";
+            return $pendingDisputes;
+        }
+
+        public function pendingDisputesOvertime() {
+            $overtimeDisputes = "
+                SELECT disputeID, dateFiled, firstName, lastName,
+                otDate, otType, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
+                ON dispute.overtimeID = disputeOvertime.overtimeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeOvertime.empID = employee.id
+                WHERE dispute.status = 'Pending'";
+            return $overtimeDisputes;
+        }
+
+        public function approvedDisputesOvertime() {
+            $overtimeDisputes = "
+                SELECT disputeID, dateFiled, firstName, lastName,
+                otDate, otType, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
+                ON dispute.overtimeID = disputeOvertime.overtimeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeOvertime.empID = employee.id
+                WHERE dispute.status = 'Approved'";
+            return $overtimeDisputes;
+        }
+
+        public function disapprovedDisputesOvertime() {
+            $overtimeDisputes = "
+                SELECT disputeID, dateFiled, firstName, lastName,
+                otDate, otType, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
+                ON dispute.overtimeID = disputeOvertime.overtimeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeOvertime.empID = employee.id
+                WHERE dispute.status = 'Disapproved'";
+            return $overtimeDisputes;
         }
 
         public function getCashAdvanceInfo($requestID) {

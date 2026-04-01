@@ -41,103 +41,445 @@
                         <div class="tab-content" id="pills-tabContent">
 
                             <!-- ------------------------------------------------------------------------------------------------- -->
-                            <!-- ------------------------------------------- ALLOWANCES TAB -------------------------------------- -->
+                            <!-- ------------------------------------------- ATTENDANCE TAB -------------------------------------- -->
                             <!-- ------------------------------------------------------------------------------------------------- -->
                             <div class="tab-pane fade show active" id="pills-attendance" role="tabpanel" aria-labelledby="pills-attendance-tab">
                                 <div class="card border-0">
-                                    <div class="tab-content" id="pills-tabContent">
-                                        <table id="allowancesTable" class="table table-striped table-bordered min-w-full divide-y divide-gray-200 text-center pt-3">
-                                            <thead class="bg-gray-50">
-                                                <tr>
-                                                    <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                                                    <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="bg-white divide-y divide-gray-200">
-                                                <?php
-                                                    $allowanceQuery = mysqli_query($conn, $payroll->viewAllAllowances());
-                                                    while ($allowanceDetails = mysqli_fetch_array($allowanceQuery)) {
+                                    <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <!--PENDING BUTTON-->
+                                            <button class="nav-link active" id="attendance-pending-tab" data-bs-toggle="pill" data-bs-target="#attendance-pending" type="button" role="tab" aria-controls="attendance-pending" aria-selected="true">Pending</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <!--APPROVED BUTTON-->
+                                            <button class="nav-link" id="attendance-approved-tab" data-bs-toggle="pill" data-bs-target="#attendance-approved" type="button" role="tab" aria-controls="attendance-approved" aria-selected="false">Approved</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <!--DISAPPROVED BUTTON-->
+                                            <button class="nav-link" id="attendance-disapproved-tab" data-bs-toggle="pill" data-bs-target="#attendance-disapproved" type="button" role="tab" aria-controls="attendance-disapproved" aria-selected="false">Disapproved</button>
+                                        </li>
+                                    </ul>
 
-                                                        $allowance_id = $allowanceDetails['allowanceID'];
-                                                        $allowance_name = $allowanceDetails['allowanceName'];
+                                    <div class="tab-content mt-2" id="pills-tabContent">
+                                        <!-- ATTENDANCE - PENDING TABLE  -->
+                                        <div class="tab-pane fade show active" id="attendance-pending" role="tabpanel" aria-labelledby="attendance-pending-tab">
+                                            <table id="pendingAttendanceTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                <thead class="bg-gray-50">
+                                                    <tr>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Time In</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Time Out</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Remarks</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="bg-white divide-y divide-gray-200">
+                                                    <?php
+                                                        $disputeAttendance = mysqli_query($conn, $payroll->pendingDisputesAttendance());
+                                                        while ($disputeDetails = mysqli_fetch_array($disputeAttendance)) {
+
+                                                            $disputeID = $disputeDetails['disputeID'];
+                                                            $employeeID = $disputeDetails['employeeID'];
+                                                            $employeeName = $disputeDetails['firstName'] . " " . $disputeDetails['lastName'];
+                                                            $timeIn = $disputeDetails['attendanceDate_timeIn'] . " " . $disputeDetails['attendanceDate_timeIn'];
+                                                            $timeOut = $disputeDetails['attendanceDate_timeOut'] . " " . $disputeDetails['attendanceDate_timeOut'];
+                                                            $remarks = $disputeDetails['remarks'] ?? '';
+                                                            $status = $disputeDetails['status'] ?? '';
 
 
-                                                        echo "<tr data-id='" . $allowance_id . "' class='allowanceView cursor-pointer'>";
-                                                        echo "<td class = 'whitespace-nowrap'>" . $allowance_id . "</td>";
-                                                        echo "<td class = 'whitespace-nowrap'>" . $allowance_name . "</td>";
-                                                        echo "</td>";
-                                                    }
-                                                ?>
-                                            </tbody>
-                                        </table>
+                                                            echo "<tr data-id='" . $disputeID . "' class='attendanceView cursor-pointer'>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employeeID . "</td>";
+                                                            echo "<td class =' text-left whitespace-nowrap'>" . $employeeName . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $timeIn . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $timeOut . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $remarks . "</td>";
+                                                            echo "</tr>";
+                                                        }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <!-- ATTENDANCE - APPROVED TABLE  -->
+                                        <div class="tab-pane fade" id="attendance-approved" role="tabpanel" aria-labelledby="attendance-approved-tab">
+                                            <table id="approvedAttendanceTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                <thead class="bg-gray-50">
+                                                    <tr>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Time In</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Time Out</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Remarks</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="bg-white divide-y divide-gray-200">
+                                                    <?php
+                                                        $disputeAttendance = mysqli_query($conn, $payroll->approvedDisputesAttendance());
+                                                        while ($disputeDetails = mysqli_fetch_array($disputeAttendance)) {
+
+                                                            $disputeID = $disputeDetails['disputeID'];
+                                                            $employeeID = $disputeDetails['employeeID'];
+                                                            $employeeName = $disputeDetails['firstName'] . " " . $disputeDetails['lastName'];
+                                                            $timeIn = $disputeDetails['attendanceDate_timeIn'] . " " . $disputeDetails['attendanceDate_timeIn'];
+                                                            $timeOut = $disputeDetails['attendanceDate_timeOut'] . " " . $disputeDetails['attendanceDate_timeOut'];
+                                                            $remarks = $disputeDetails['remarks'] ?? '';
+                                                            $status = $disputeDetails['status'] ?? '';
+
+
+                                                            echo "<tr data-id='" . $disputeID . "' class='attendanceView cursor-pointer'>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employeeID . "</td>";
+                                                            echo "<td class =' text-left whitespace-nowrap'>" . $employeeName . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $timeIn . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $timeOut . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $remarks . "</td>";
+                                                            echo "</tr>";
+                                                        }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <!-- ATTENDANCE - DISAPPROVED TABLE  -->
+                                        <div class="tab-pane fade" id="attendance-disapproved" role="tabpanel" aria-labelledby="attendance-disapproved-tab">
+                                            <table id="disapprovedAttendanceTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                <thead class="bg-gray-50">
+                                                    <tr>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Time In</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Time Out</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Remarks</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="bg-white divide-y divide-gray-200">
+                                                    <?php
+                                                        $disputeAttendance = mysqli_query($conn, $payroll->disapprovedDisputesAttendance());
+                                                        while ($disputeDetails = mysqli_fetch_array($disputeAttendance)) {
+
+                                                            $disputeID = $disputeDetails['disputeID'];
+                                                            $employeeID = $disputeDetails['employeeID'];
+                                                            $employeeName = $disputeDetails['firstName'] . " " . $disputeDetails['lastName'];
+                                                            $timeIn = $disputeDetails['attendanceDate_timeIn'] . " " . $disputeDetails['attendanceDate_timeIn'];
+                                                            $timeOut = $disputeDetails['attendanceDate_timeOut'] . " " . $disputeDetails['attendanceDate_timeOut'];
+                                                            $remarks = $disputeDetails['remarks'] ?? '';
+                                                            $status = $disputeDetails['status'] ?? '';
+
+
+                                                            echo "<tr data-id='" . $disputeID . "' class='attendanceView cursor-pointer'>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employeeID . "</td>";
+                                                            echo "<td class =' text-left whitespace-nowrap'>" . $employeeName . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $timeIn . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $timeOut . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $remarks . "</td>";
+                                                            echo "</tr>";
+                                                        }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- ------------------------------------------------------------------------------------------------- -->
-                            <!-- ---------------------------------------- DEDUCTIONS TAB ----------------------------------------- -->
+                            <!-- ------------------------------------------- LEAVES TAB ------------------------------------------ -->
                             <!-- ------------------------------------------------------------------------------------------------- -->
                             <div class="tab-pane fade" id="pills-leaves" role="tabpanel" aria-labelledby="pills-leaves-tab">
                                 <div class="card border-0">
-                                    <div class="tab-content" id="pills-tabContent">
-                                        <table id="deductionsTable" class="table table-striped table-bordered table-auto min-w-full divide-y divide-gray-200 text-center pt-3">
-                                            <thead class="bg-gray-50">
-                                                <tr>
-                                                    <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                                                    <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="bg-white divide-y divide-gray-200">
-                                                <?php
-                                                    $employeeQuery = mysqli_query($conn, $payroll->viewAllDeductions());
-                                                    while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+                                    <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <!--PENDING BUTTON-->
+                                            <button class="nav-link active" id="leaves-pending-tab" data-bs-toggle="pill" data-bs-target="#leaves-pending" type="button" role="tab" aria-controls="leaves-pending" aria-selected="true">Pending</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <!--APPROVED BUTTON-->
+                                            <button class="nav-link" id="leaves-approved-tab" data-bs-toggle="pill" data-bs-target="#leaves-approved" type="button" role="tab" aria-controls="leaves-approved" aria-selected="false">Approved</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <!--DISAPPROVED BUTTON-->
+                                            <button class="nav-link" id="leaves-disapproved-tab" data-bs-toggle="pill" data-bs-target="#leaves-disapproved" type="button" role="tab" aria-controls="leaves-disapproved" aria-selected="false">Disapproved</button>
+                                        </li>
+                                    </ul>
 
-                                                        $deduction_id = $employeeDetails['deductionID'];
-                                                        $deduction_name = $employeeDetails['deductionName'];
+                                    <div class="tab-content mt-2" id="pills-tabContent">
+                                        <!-- LEAVES - PENDING TABLE  -->
+                                        <div class="tab-pane fade show active" id="leaves-pending" role="tabpanel" aria-labelledby="leaves-pending-tab">
+                                            <table id="pendingLeavesTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                <thead class="bg-gray-50">
+                                                    <tr>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Date Filed</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Leave Type</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Inclusive Dates</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Remarks</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="bg-white divide-y divide-gray-200">
+                                                    <?php
+                                                        function formatDate($date) {
+                                                            // Create a DateTime object from the string
+                                                            $dateTime = new DateTime($date);
+                                                        
+                                                            // Format the date
+                                                            return $dateTime->format('M d, Y');
+                                                        }
+
+                                                        $disputeLeaves = mysqli_query($conn, $payroll->pendingDisputesLeaves());
+                                                        while ($disputeDetails = mysqli_fetch_array($disputeLeaves)) {
+
+                                                            $disputeID = $disputeDetails['disputeID'];
+                                                            $dateFiled = $disputeDetails['dateFiled'];
+                                                            $employeeName = $disputeDetails['firstName'] . " " . $disputeDetails['lastName'];
+                                                            $leaveType = $disputeDetails['leaveType'] ?? '';
+                                                            $inclusiveDates = $disputeDetails['startDate'] . " " . $disputeDetails['endDate'];
+                                                            $remarks = $disputeDetails['remarks'] ?? '';
+                                                            $status = $disputeDetails['disputeStatus'] ?? '';
 
 
-                                                        echo "<tr data-id='" . $deduction_id . "' class='deductionView cursor-pointer'>";
-                                                        echo "<td class = 'whitespace-nowrap'>" . $deduction_id . "</td>";
-                                                        echo "<td class = 'whitespace-nowrap'>" . $deduction_name . "</td>";
-                                                        echo "</td>";
-                                                    }
-                                                ?>
-                                            </tbody>
-                                        </table>
+                                                            echo "<tr data-id='" . $disputeID . "' class='leaveView cursor-pointer'>";
+                                                            echo "<td class ='whitespace-nowrap'>" . formatDate($dateFiled) . "</td>";
+                                                            echo "<td class =' text-left whitespace-nowrap'>" . $employeeName . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $leaveType . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $inclusiveDates . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $remarks . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $status . "</td>";
+                                                            echo "</tr>";
+                                                        }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <!-- LEAVES - APPROVED TABLE  -->
+                                        <div class="tab-pane fade" id="leaves-approved" role="tabpanel" aria-labelledby="leaves-approved-tab">
+                                            <table id="approvedLeavesTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                <thead class="bg-gray-50">
+                                                    <tr>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Date Filed</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Leave Type</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Inclusive Dates</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Remarks</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="bg-white divide-y divide-gray-200">
+                                                    <?php
+                                                        $disputeLeaves = mysqli_query($conn, $payroll->approvedDisputesLeaves());
+                                                        while ($disputeDetails = mysqli_fetch_array($disputeLeaves)) {
+
+                                                            $disputeID = $disputeDetails['disputeID'];
+                                                            $dateFiled = $disputeDetails['dateFiled'];
+                                                            $employeeName = $disputeDetails['firstName'] . " " . $disputeDetails['lastName'];
+                                                            $leaveType = $disputeDetails['leaveType'] ?? '';
+                                                            $inclusiveDates = $disputeDetails['startDate'] . " " . $disputeDetails['endDate'];
+                                                            $remarks = $disputeDetails['remarks'] ?? '';
+                                                            $status = $disputeDetails['disputeStatus'] ?? '';
+
+                                                            echo "<tr data-id='" . $disputeID . "' class='leaveView cursor-pointer'>";
+                                                            echo "<td class ='whitespace-nowrap'>" . formatDate($dateFiled) . "</td>";
+                                                            echo "<td class =' text-left whitespace-nowrap'>" . $employeeName . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $leaveType . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $inclusiveDates . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $remarks . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $status . "</td>";
+                                                            echo "</tr>";
+                                                        }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <!-- LEAVES - DISAPPROVED TABLE  -->
+                                        <div class="tab-pane fade" id="leaves-disapproved" role="tabpanel" aria-labelledby="leaves-disapproved-tab">
+                                            <table id="disapprovedLeavesTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                <thead class="bg-gray-50">
+                                                    <tr>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Date Filed</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Leave Type</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Inclusive Dates</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Remarks</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="bg-white divide-y divide-gray-200">
+                                                    <?php
+                                                        $disputeLeaves = mysqli_query($conn, $payroll->disapprovedDisputesLeaves());
+                                                        while ($disputeDetails = mysqli_fetch_array($disputeLeaves)) {
+
+                                                            $disputeID = $disputeDetails['disputeID'];
+                                                            $dateFiled = $disputeDetails['dateFiled'];
+                                                            $employeeName = $disputeDetails['firstName'] . " " . $disputeDetails['lastName'];
+                                                            $leaveType = $disputeDetails['leaveType'] ?? '';
+                                                            $inclusiveDates = $disputeDetails['startDate'] . " " . $disputeDetails['endDate'];
+                                                            $remarks = $disputeDetails['remarks'] ?? '';
+                                                            $status = $disputeDetails['disputeStatus'] ?? '';
+
+                                                            echo "<tr data-id='" . $disputeID . "' class='leaveView cursor-pointer'>";
+                                                            echo "<td class ='whitespace-nowrap'>" . formatDate($dateFiled) . "</td>";
+                                                            echo "<td class =' text-left whitespace-nowrap'>" . $employeeName . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $leaveType . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $inclusiveDates . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $remarks . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $status . "</td>";
+                                                            echo "</tr>";
+                                                        }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             
                             <!-- ------------------------------------------------------------------------------------------------- -->
-                            <!-- ----------------------------------------- REIMBURSEMENTS TAB ------------------------------------ -->
+                            <!-- ----------------------------------------- OVERTIME TAB ------------------------------------ -->
                             <!-- ------------------------------------------------------------------------------------------------- -->
                             <div class="tab-pane fade" id="pills-overtime" role="tabpanel" aria-labelledby="pills-overtime-tab">
                                 <div class="card border-0">
-                                    <div class="tab-content" id="pills-tabContent">
-                                        <table id="reimbursementsTable" class="table table-striped table-bordered min-w-full divide-y divide-gray-200 text-center pt-3">
-                                            <thead class="bg-gray-50">
-                                                <tr>
-                                                    <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                                                    <th class="text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="bg-white divide-y divide-gray-200">
-                                                <?php
-                                                    $reimbursementQuery = mysqli_query($conn, $payroll->viewAllReimbursements());
-                                                    while ($reimbursementDetails = mysqli_fetch_array($reimbursementQuery)) {
+                                    <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <!--PENDING BUTTON-->
+                                            <button class="nav-link active" id="overtime-pending-tab" data-bs-toggle="pill" data-bs-target="#overtime-pending" type="button" role="tab" aria-controls="overtime-pending" aria-selected="true">Pending</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <!--APPROVED BUTTON-->
+                                            <button class="nav-link" id="overtime-approved-tab" data-bs-toggle="pill" data-bs-target="#overtime-approved" type="button" role="tab" aria-controls="overtime-approved" aria-selected="false">Approved</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <!--DISAPPROVED BUTTON-->
+                                            <button class="nav-link" id="overtime-disapproved-tab" data-bs-toggle="pill" data-bs-target="#overtime-disapproved" type="button" role="tab" aria-controls="overtime-disapproved" aria-selected="false">Disapproved</button>
+                                        </li>
+                                    </ul>
 
-                                                        $reimbursement_id = $reimbursementDetails['reimbursementID'];
-                                                        $reimbursement_name = $reimbursementDetails['reimbursementName'];
+                                    <div class="tab-content mt-2" id="pills-tabContent">
+                                        <!-- OVERTIME - PENDING TABLE  -->
+                                        <div class="tab-pane fade show active" id="overtime-pending" role="tabpanel" aria-labelledby="overtime-pending-tab">
+                                            <table id="pendingOvertimeTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                <thead class="bg-gray-50">
+                                                    <tr>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Date Filed</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">OT Date</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Remarks</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="bg-white divide-y divide-gray-200">
+                                                    <?php
+                                                        $disputeOvertime = mysqli_query($conn, $payroll->pendingDisputesOvertime());
+                                                        while ($disputeDetails = mysqli_fetch_array($disputeOvertime)) {
+
+                                                            $disputeID = $disputeDetails['disputeID'];
+                                                            $dateFiled = $disputeDetails['dateFiled'];
+                                                            $otDate = $disputeDetails['otDate'];
+                                                            $employeeName = $disputeDetails['firstName'] . " " . $disputeDetails['lastName'];
+                                                            $otType = $disputeDetails['otType'] ?? '';
+                                                            $remarks = $disputeDetails['remarks'] ?? '';
+                                                            $status = $disputeDetails['status'] ?? '';
 
 
-                                                        echo "<tr data-id='" . $reimbursement_id . "' class='reimbursementView cursor-pointer'>";
-                                                        echo "<td class = 'whitespace-nowrap'>" . $reimbursement_id . "</td>";
-                                                        echo "<td class = 'whitespace-nowrap'>" . $reimbursement_name . "</td>";
-                                                        echo "</td>";
-                                                    }
-                                                ?>
-                                            </tbody>
-                                        </table>
+                                                            echo "<tr data-id='" . $disputeID . "' class='overtimeView cursor-pointer'>";
+                                                            echo "<td class ='whitespace-nowrap'>" . formatDate($dateFiled) . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . formatDate($otDate) . "</td>";
+                                                            echo "<td class =' text-left whitespace-nowrap'>" . $employeeName . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $otType . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $remarks . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $status . "</td>";
+                                                            echo "</tr>";
+                                                        }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <!-- OVERTIME - APPROVED TABLE  -->
+                                        <div class="tab-pane fade" id="overtime-approved" role="tabpanel" aria-labelledby="overtime-approved-tab">
+                                            <table id="approvedOvertimeTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                <thead class="bg-gray-50">
+                                                    <tr>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Date Filed</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">OT Date</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Remarks</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="bg-white divide-y divide-gray-200">
+                                                    <?php
+                                                        $disputeOvertime = mysqli_query($conn, $payroll->approvedDisputesOvertime());
+                                                        while ($disputeDetails = mysqli_fetch_array($disputeOvertime)) {
+
+                                                            $disputeID = $disputeDetails['disputeID'];
+                                                            $dateFiled = $disputeDetails['dateFiled'];
+                                                            $otDate = $disputeDetails['otDate'];
+                                                            $employeeName = $disputeDetails['firstName'] . " " . $disputeDetails['lastName'];
+                                                            $otType = $disputeDetails['otType'] ?? '';
+                                                            $remarks = $disputeDetails['remarks'] ?? '';
+                                                            $status = $disputeDetails['status'] ?? '';
+
+
+                                                            echo "<tr data-id='" . $disputeID . "' class='overtimeView cursor-pointer'>";
+                                                            echo "<td class ='whitespace-nowrap'>" . formatDate($dateFiled) . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . formatDate($otDate) . "</td>";
+                                                            echo "<td class =' text-left whitespace-nowrap'>" . $employeeName . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $otType . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $remarks . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $status . "</td>";
+                                                            echo "</tr>";
+                                                        }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <!-- OVERTIME - DISAPPROVED TABLE  -->
+                                        <div class="tab-pane fade" id="overtime-disapproved" role="tabpanel" aria-labelledby="overtime-disapproved-tab">
+                                            <table id="disapprovedOvertimeTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                <thead class="bg-gray-50">
+                                                    <tr>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Date Filed</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">OT Date</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Remarks</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="bg-white divide-y divide-gray-200">
+                                                    <?php
+                                                        $disputeOvertime = mysqli_query($conn, $payroll->disapprovedDisputesOvertime());
+                                                        while ($disputeDetails = mysqli_fetch_array($disputeOvertime)) {
+
+                                                            $disputeID = $disputeDetails['disputeID'];
+                                                            $dateFiled = $disputeDetails['dateFiled'];
+                                                            $otDate = $disputeDetails['otDate'];
+                                                            $employeeName = $disputeDetails['firstName'] . " " . $disputeDetails['lastName'];
+                                                            $otType = $disputeDetails['otType'] ?? '';
+                                                            $remarks = $disputeDetails['remarks'] ?? '';
+                                                            $status = $disputeDetails['status'] ?? '';
+
+
+                                                            echo "<tr data-id='" . $disputeID . "' class='overtimeView cursor-pointer'>";
+                                                            echo "<td class ='whitespace-nowrap'>" . formatDate($dateFiled) . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . formatDate($otDate) . "</td>";
+                                                            echo "<td class =' text-left whitespace-nowrap'>" . $employeeName . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $otType . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $remarks . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $status . "</td>";
+                                                            echo "</tr>";
+                                                        }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -667,7 +1009,7 @@
             </form>
         </main>
     
-        <script src="../assets/js/admin_adjustments.js?v=<?php echo $version; ?>"></script>
+        <script src="../assets/js/admin_disputes.js?v=<?php echo $version; ?>"></script>
 
         <!-- FOOTER -->
         <?php include('../includes/footer.php'); ?>
