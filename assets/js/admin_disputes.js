@@ -48,29 +48,31 @@ $(document).ready(function() {
     });
 
     // ADD ADJUSTMENT 
-    $('#adjustmentLabel').hide();
-    $('#adjustment').hide();
+    $('.attendanceSection').hide();
+    $('.dateFiledSection').hide();
+    $('.employeeSection').hide();
+    $('.leaveSection').hide();
 
     $('.salaryAdjustment').hide();
 
-    $('#dataType').change(function() {
-        if ($(this).val() == 4) {
-            $('#adjustmentLabel').show();
-            $('#adjustment').show();
-            $(".normalAdjustment").show();
-            $(".salaryAdjustment").hide();
-        }
-        else if ($(this).val() == 5) {
-            $('.salaryAdjustment').show();
-            $(".normalAdjustment").hide();
-        }
-        else {
-            $('#adjustmentLabel').hide();
-            $('#adjustment').hide();
-            $(".normalAdjustment").show();
-            $(".salaryAdjustment").hide();
-        }
-    });
+    // $('#dataType').change(function() {
+    //     if ($(this).val() == 1) {
+    //         $('#attendanceSection').show();
+    //         $('#adjustment').show();
+    //         $(".normalAdjustment").show();
+    //         $(".salaryAdjustment").hide();
+    //     }
+    //     else if ($(this).val() == 2) {
+    //         $('.salaryAdjustment').show();
+    //         $(".normalAdjustment").hide();
+    //     }
+    //     else {
+    //         $('#adjustmentLabel').hide();
+    //         $('#adjustment').hide();
+    //         $(".normalAdjustment").show();
+    //         $(".salaryAdjustment").hide();
+    //     }
+    // });
 
     $("#approveSalaryAdjustment").hide();
     $("#disapproveSalaryAdjustment").hide();
@@ -117,7 +119,7 @@ $(document).ready(function() {
     });
     
     // ADD DATA
-    $("#addDataForm").submit(function (e) {
+    $("#fileDisputForm").submit(function (e) {
 
         e.preventDefault();
 

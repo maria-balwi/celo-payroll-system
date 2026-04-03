@@ -553,7 +553,7 @@
 
         public function pendingDisputesLeaves() {
             $leavesDisputes = "
-                SELECT disputeID, dateFiled, firstName, lastName,
+                SELECT disputeID, disputeLeaves.dateFiled, firstName, lastName,
                 leaveType, startDate, endDate, remarks, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
@@ -568,7 +568,7 @@
 
         public function approvedDisputesLeaves() {
             $pendingDisputes = "
-                SELECT disputeID, dateFiled, firstName, lastName,
+                SELECT disputeID, disputeLeaves.dateFiled, firstName, lastName,
                 leaveType, startDate, endDate, remarks, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
@@ -583,7 +583,7 @@
 
         public function disapprovedDisputesLeaves() {
             $pendingDisputes = "
-                SELECT disputeID, dateFiled, firstName, lastName,
+                SELECT disputeID, disputeLeaves.dateFiled, firstName, lastName,
                 leaveType, startDate, endDate, remarks, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
@@ -598,7 +598,7 @@
 
         public function pendingDisputesOvertime() {
             $overtimeDisputes = "
-                SELECT disputeID, dateFiled, firstName, lastName,
+                SELECT disputeID, disputeOvertime.dateFiled, firstName, lastName,
                 otDate, otType, remarks, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
@@ -611,7 +611,7 @@
 
         public function approvedDisputesOvertime() {
             $overtimeDisputes = "
-                SELECT disputeID, dateFiled, firstName, lastName,
+                SELECT disputeID, disputeOvertime.dateFiled, firstName, lastName,
                 otDate, otType, remarks, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
@@ -624,7 +624,7 @@
 
         public function disapprovedDisputesOvertime() {
             $overtimeDisputes = "
-                SELECT disputeID, dateFiled, firstName, lastName,
+                SELECT disputeID, disputeOvertime.dateFiled, firstName, lastName,
                 otDate, otType, remarks, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
@@ -733,12 +733,12 @@
 
             // TIME IN (logTypeID 1 or 2)
             if ($logTypeID == 1 || $logTypeID == 2) {
-                if ($logTypeID == 1){
-                    $timeIn = new DateTime($attendanceDate . ' ' . $shiftStartTime);
-                } 
-                else {
-                    $timeIn = new DateTime($attendanceDateTime);
-                }
+                // if ($logTypeID == 1){
+                //     $timeIn = new DateTime($attendanceDate . ' ' . $shiftStartTime);
+                // } 
+                // else {
+                //     $timeIn = new DateTime($attendanceDateTime);
+                // }
                 // $timeIn = new DateTime($attendanceDate . ' ' . $shiftStartTime);
                 $date_in = $attendanceDate;
                 $static_lateMins = $lateMins;
@@ -746,13 +746,13 @@
 
             // TIME OUT (logTypeID 3 or 4)
             if ($logTypeID == 3 || $logTypeID == 4) {
-                if ($logTypeID == 4) {
-                    $timeOut = new DateTime($attendanceDate . ' ' . $shiftEndTime);
-                }
-                else {
-                    $timeOut = new DateTime($attendanceDateTime);
-                }
-                // $timeOut = new DateTime($attendanceDate . ' ' . $shiftEndTime);
+                // if ($logTypeID == 4) {
+                //     $timeOut = new DateTime($attendanceDate . ' ' . $shiftEndTime);
+                // }
+                // else {
+                //     $timeOut = new DateTime($attendanceDateTime);
+                // }
+                $timeOut = new DateTime($attendanceDate . ' ' . $shiftEndTime);
             }
 
             // Only compute when BOTH logs are captured
@@ -802,7 +802,7 @@
                     WHERE dateFrom BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'
                 ");
                 while ($h = mysqli_fetch_assoc($res)) {
-                    $holidays[$h['dateFrom']] = $h['type']; // 'Legal' or 'Special'
+                    $holidays[$h['dateFrom']] = $h['type']; // Legal or Special
                 }
             }
 
@@ -872,8 +872,8 @@
             $effectiveEnd   = min($end, $nightEnd);
 
             if ($effectiveStart < $effectiveEnd) {
-                $nd = $effectiveStart->diff($effectiveEnd);
-                $nightHours = $nd->h; // drop minutes
+                $ndInterval = $effectiveStart->diff($effectiveEnd);
+                $nightHours = $ndInterval->h + ($ndInterval->i / 60);
 
                 if (isset($holidays[$attendanceDate])) {
                     if ($holidays[$attendanceDate] === "Legal") {

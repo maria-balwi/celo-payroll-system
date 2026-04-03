@@ -488,7 +488,7 @@
 
                     <!-- CARD FOOTER DATA ENTRY BUTTON -->
                     <div class="card-footer d-grid gap-2 d-md-flex justify-content-md-end">
-                        <button class="btn btn-primary me-md-2" type="button" data-bs-toggle="modal" data-bs-target="#addDataModal">Add Data</button>
+                        <button class="btn btn-primary me-md-2" type="button" data-bs-toggle="modal" data-bs-target="#fileDisputeModal">Add Data</button>
                     </div>
                 </div>
             </div>
@@ -500,84 +500,138 @@
 
             <!--------------------------------------------------------------------------------------------------------------------------------------------->
             <!----------------------------------------------------------------- ADD DATA MODAL ------------------------------------------------------------>
-            <form id="addDataForm">
-                <div class="modal fade" id="addDataModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-none modal-sm modal-dialog-centered">
-                        <div class="modal-content" id="addDataModal">
+            <form id="fileDisputeForm">
+                <div class="modal fade" id="fileDisputeModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-none modal-dialog-centered">
+                        <div class="modal-content" id="fileDisputeModal">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="userFormLabel">New Data</h1>
+                                <h1 class="modal-title fs-5" id="userFormLabel">File Dispute</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="row g-2 mb-1">
-                                    <div class="col-12">
+                                    <div class="col-6">
                                         <label for="dataType">Type:</label>
+                                    </div>
+                                    <div class="col-6 dateFiledSection">
+                                        <label for="dataType">Date Filed:</label>
                                     </div>
                                 </div>
 
                                 <div class="row g-2 mb-2">
-                                    <div class="col-12">
+                                    <div class="col-6">
                                         <select class="form-select" id="dataType" name="dataType">
                                             <option disabled selected>Choose</option>
-                                            <!-- <option value="1">Allowance</option> -->
-                                            <option value="2">Reimbursement</option>
-                                            <!-- <option value="3">Deduction</option> -->
-                                            <option value="4">Adjustment</option>
-                                            <option value="5">Salary Adjustment</option>
+                                            <option value="1">Attendance</option>
+                                            <option value="2">Leave</option>
+                                            <option value="3">Overtime</option>
                                         </select>
                                     </div>
-                                </div>
-
-                                <div class="row g-2 mb-1 normalAdjustment">
-                                    <div class="col-12">
-                                        <label for="name">Name:</label>
+                                    <div class="col-6 dateFiledSection">
+                                        <input type="date" class="form-control" id="dateFiled" name="dateFiled">
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-1 normalAdjustment">
-                                    <div class="col-12">
-                                        <input type="text" class="form-control" id="name" name="name">
-                                    </div>
-                                </div>
-
-                                <div class="row g-2 mb-1 normalAdjustment">
-                                    <div class="col-12">
+                                <div class="row g-2 mb-1 attendanceSection">
+                                    <div class="col-6">
                                         <label for="adjustment" id="adjustmentLabel">Action:</label>
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-1 normalAdjustment">
-                                    <div class="col-12">
-                                        <select class="form-select" id="adjustment" name="adjustment">
+                                <div class="row g-2 mb-1 attendanceSection">
+                                    <div class="col-6">
+                                        <select class="form-select" id="logTypeID" name="logTypeID">
                                             <option disabled selected>Choose</option>
-                                            <option value="Add">Add</option>
-                                            <option value="Deduct">Deduct</option>
+                                            <option value="1">Time In</option>
+                                            <option value="2">Late</option>
+                                            <option value="3">Undertime</option>
+                                            <option value="4">Time Out</option>
                                         </select>
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-1 salaryAdjustment">
-                                    <div class="col-12">
+                                <div class="row g-2 mb-1 attendanceSection">
+                                    <div class="col-6">
+                                        <label for="attendanceDate_timeIn">Time In Attendance - Date:</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="attendanceTime_timeIn">Time:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2 attendanceSection">
+                                    <div class="col-6">
+                                        <input type="date" class="form-control" id="attendanceDate_timeIn" name="attendanceDate_timeIn">
+                                    </div>
+                                     <div class="col-6">
+                                        <input type="time" class="form-control" id="attendanceTime_timeIn" name="attendanceTime_timeIn">
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-1 attendanceSection">
+                                    <div class="col-6">
+                                        <label for="attendanceDate_timeOut">Time Out Attendance - Date:</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="attendanceTime_timeOut">Time:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2 attendanceSection">
+                                    <div class="col-6">
+                                        <input type="date" class="form-control" id="attendanceDate_timeOut" name="attendanceDate_timeOut">
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="time" class="form-control" id="attendanceTime_timeOut" name="attendanceTime_timeOut">
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-1 employeeSection">
+                                    <div class="col-6">
                                         <label for="employeeID">Employee ID:</label>
                                     </div>
-                                </div>
-
-                                <div class="row g-2 mb-2 salaryAdjustment">
-                                    <div class="col-12">
-                                        <input type="text" class="form-control" id="employeeID" name="employeeID">
-                                        <input type="hidden" class="form-control" id="empID" name="empID">
-                                    </div>
-                                </div>
-
-                                <div class="row g-2 mb-1 salaryAdjustment">
-                                    <div class="col-12">
+                                    <div class="col-6">
                                         <label for="employeeName">Employee Name:</label>
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-2 salaryAdjustment">
-                                    <div class="col-12">
+                                <div class="row g-2 mb-2 employeeSection">
+                                    <div class="col-6">
+                                        <input type="text" class="form-control" id="employeeID" name="employeeID">
+                                        <input type="hidden" class="form-control" id="empID" name="empID">
+                                    </div>
+                                    <div class="col-6">
                                         <input type="text" class="form-control" id="employeeName" name="employeeName" disabled readonly>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-1 leaveSection">
+                                    <div class="col-6">
+                                        <label for="leaveStartDate">Start Date</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="leaveEndDate">End Date:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2 leaveSection">
+                                    <div class="col-6">
+                                        <input type="date" class="form-control" id="leaveStartDate" name="leaveStartDate">
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="date" class="form-control" id="leaveEndDate" name="leaveEndDate">
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-1 leaveSection">
+                                    <div class="col-12">
+                                        <label for="remarks">Remarks:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2 leaveSection">
+                                    <div class="col-12">
+                                        <textarea type="text" class="form-control" id="remarks" rows="3"></textarea>
                                     </div>
                                 </div>
 
