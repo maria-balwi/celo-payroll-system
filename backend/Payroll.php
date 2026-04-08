@@ -739,7 +739,7 @@
                 // else {
                 //     $timeIn = new DateTime($attendanceDateTime);
                 // }
-                // $timeIn = new DateTime($attendanceDate . ' ' . $shiftStartTime);
+                $timeIn = new DateTime($attendanceDate . ' ' . $shiftStartTime);
                 $date_in = $attendanceDate;
                 $static_lateMins = $lateMins;
             }
@@ -942,6 +942,7 @@
         //     }
         // }
 
+        
         public function calculateOvertimeND($fromTime, $toTime) {
             $nightStart = new DateTime("22:00");
             $nightEnd = (new DateTime("06:00"))->modify('+1 day'); // Extend to the next day
