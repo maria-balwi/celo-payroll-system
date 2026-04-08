@@ -848,7 +848,7 @@
             // -----------------------------
             if ($clampedEnd > $clampedStart) {
                 $interval = $clampedStart->diff($clampedEnd);
-                $hoursWorked = $interval->h; // minutes removed
+                $hoursWorked = $interval->h + ($interval->i / 60);
 
                 // Holiday Check
                 if (isset($holidays[$attendanceDate])) {
