@@ -528,25 +528,26 @@
                                         </select>
                                     </div>
                                     <div class="col-6 dateFiledSection">
-                                        <input type="date" class="form-control" id="dateFiled" name="dateFiled">
+                                        <input type="text" class="form-control" id="dateFiled" value="<?php echo date("M d, Y") ?>" disabled readonly>
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-1 attendanceSection">
+                                <div class="row g-2 mb-1 employeeSection">
                                     <div class="col-6">
-                                        <label for="adjustment" id="adjustmentLabel">Action:</label>
+                                        <label for="employeeID">Employee ID:</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="employeeName">Employee Name:</label>
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-1 attendanceSection">
+                                <div class="row g-2 mb-2 employeeSection">
                                     <div class="col-6">
-                                        <select class="form-select" id="logTypeID" name="logTypeID">
-                                            <option disabled selected>Choose</option>
-                                            <option value="1">Time In</option>
-                                            <option value="2">Late</option>
-                                            <option value="3">Undertime</option>
-                                            <option value="4">Time Out</option>
-                                        </select>
+                                        <input type="text" class="form-control" id="employeeID" name="employeeID">
+                                        <input type="hidden" class="form-control" id="empID" name="empID">
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" class="form-control" id="employeeName" name="employeeName" disabled readonly>
                                     </div>
                                 </div>
 
@@ -577,6 +578,28 @@
                                     </div>
                                 </div>
 
+                                <div class="row g-2 mb-1 overtimeSection">
+                                    <div class="col-6">
+                                        <label for="overtimeOTDate">OT Date:</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="otType">Type:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2 overtimeSection">
+                                    <div class="col-6">
+                                        <input type="date" class="form-control" id="overtimeOTDate" name="overtimeOTDate">
+                                    </div>
+                                    <div class="col-6">
+                                        <select name="otType" id="otType" class="form-select">
+                                            <option disabled selected>Choose</option>
+                                            <option value="Regular">Regular</option>
+                                            <option value="Rest Day">Rest Day</option>
+                                        </select>
+                                    </div>
+                                </div>
+
                                 <div class="row g-2 mb-2 attendanceSection">
                                     <div class="col-6">
                                         <input type="date" class="form-control" id="attendanceDate_timeOut" name="attendanceDate_timeOut">
@@ -586,24 +609,70 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-1 employeeSection">
+                                <div class="row g-2 mb-1 leaveSection">
                                     <div class="col-6">
-                                        <label for="employeeID">Employee ID:</label>
-                                    </div>
-                                    <div class="col-6">
-                                        <label for="employeeName">Employee Name:</label>
+                                        <label for="leaveType">Leave Type:</label>
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-2 employeeSection">
-                                    <div class="col-6">
-                                        <input type="text" class="form-control" id="employeeID" name="employeeID">
-                                        <input type="hidden" class="form-control" id="empID" name="empID">
+                                <div class="row g-3 mb-2 leaveSection">
+                                    <div class="col-12">
+                                        <select class="form-select border border-1" id="leaveType" name="leaveType" required>
+                                            <option selected disabled>Choose Leave Type</option>
+                                            <?php
+                                                $leaveQuery = mysqli_query($conn, $employees->viewApprovedSickLeaves($_SESSION['id']));
+                                                $sickLeaves = mysqli_num_rows($leaveQuery);
+                                            
+                                                // Fetch leave points
+                                                $leavePointsQuery = mysqli_query($conn, $employees->viewLeavePoints($_SESSION['id']));
+                                                $details = mysqli_fetch_array($leavePointsQuery);
+                                                $leavePoints = number_format($details['leavePoints'], 2);
+                                                $carryOverVLPoints = number_format($details['carryOverVLPoints'], 2);
+                                                
+                                                if ($sickLeaves >= 5) {
+                                            ?>
+                                                <option value="1" disabled>Sick Leave</option>
+                                            <?php 
+                                                }
+                                                else { ?>
+                                                <option value="1">Sick Leave</option>
+                                            <?php
+                                                }
+                                                if ($leavePoints >= 1.00 || $carryOverVLPoints >= 1.00) { ?>
+                                                <option value="2">Vacation Leave</option>
+                                            <?php } 
+                                                else {?>
+                                                <option value="2" disabled>Vacation Leave</option>
+                                            <?php } 
+                                                $bereavementLeaveQuery = mysqli_query($conn, $employees->viewApprovedBereavementLeaves($_SESSION['id']));
+                                                $bereavementLeaves = mysqli_num_rows($bereavementLeaveQuery);
+                                                if ($bereavementLeaves <= 3) {
+                                            ?>
+                                                <option value="3">Bereavement Leave</option>
+                                            <?php } else { ?>
+                                                <option value="3" disabled>Bereavement Leave</option>
+                                            <?php } ?>
+                                            <?php 
+                                                if ($_SESSION['gender'] == "Female") { ?>
+                                                <option value="4">Maternity Leave</option>
+                                                <option value="5">Maternity Leave (Solo Parent)</option>
+                                                <option value="6">Maternity Leave (Miscarriage)</option>
+                                            <?php } 
+                                                else { 
+                                                    $paternityLeaveQuery = mysqli_query($conn, $employees->viewApprovedPaternityLeaves($_SESSION['id']));
+                                                    $paternityLeaves = mysqli_num_rows($paternityLeaveQuery);
+                                                    if ($paternityLeaves <= 3) {
+                                            ?>
+                                                <option value="7">Paternity Leave</option>
+                                            <?php } else { ?>
+                                                <opt`ion value="7" disabled>Paternity Leave</opt>
+                                            <?php   } ?>
+                                            <?php } ?>
+                                                <option value="8">Solo Parent Leave</option>
+                                                <option value="9">Emergency Leave</option>
+                                        </select>
                                     </div>
-                                    <div class="col-6">
-                                        <input type="text" class="form-control" id="employeeName" name="employeeName" disabled readonly>
-                                    </div>
-                                </div>
+                                </div>  
 
                                 <div class="row g-2 mb-1 leaveSection">
                                     <div class="col-6">
@@ -623,56 +692,33 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-1 leaveSection">
+                                <div class="row g-2 mb-1 overtimeSection">
+                                    <div class="col-6">
+                                        <label for="overtimeFromTime">From:</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="overtimeToTime">To:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2 overtimeSection">
+                                    <div class="col-6">
+                                        <input type="time" class="form-control" id="overtimeFromTime" name="overtimeFromTime">
+                                    </div>
+                                     <div class="col-6">
+                                        <input type="time" class="form-control" id="overtimeToTime" name="overtimeToTime">
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-1 remarksSection">
                                     <div class="col-12">
                                         <label for="remarks">Remarks:</label>
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-2 leaveSection">
+                                <div class="row g-2 mb-2 remarksSection">
                                     <div class="col-12">
                                         <textarea type="text" class="form-control" id="remarks" rows="3"></textarea>
-                                    </div>
-                                </div>
-
-                                <div class="row g-2 mb-1 salaryAdjustment">
-                                    <div class="col-12">
-                                        <label for="currentSalary">Current Salary:</label>
-                                    </div>
-                                </div>
-
-                                <div class="row g-2 mb-2 salaryAdjustment">
-                                    <div class="col-12">
-                                        <input type="text" class="form-control" id="currentSalary" name="currentSalary" disabled readonly>
-                                    </div>
-                                </div>
-
-                                <div class="row g-2 mb-1 salaryAdjustment">
-                                    <div class="col-12">
-                                        <label for="suggestedSalary">Additional:</label>
-                                    </div>
-                                </div>
-
-                                <div class="row g-2 mb-2 salaryAdjustment">
-                                    <div class="col-12">
-                                        <input type="number" class="form-control" id="suggestedSalary" name="suggestedSalary">
-                                    </div>
-                                </div>
-
-                                <div class="row g-2 mb-1 salaryAdjustment">
-                                    <div class="col-12">
-                                        <label for="reason">Reason:</label>
-                                    </div>
-                                </div>
-
-                                <div class="row g-2 mb-2 salaryAdjustment">
-                                    <div class="col-12">
-                                        <select class="form-select" id="reason" name="reason">
-                                            <option disabled selected>Choose</option>
-                                            <option value="6 Months Appraisal">6 Months Appraisal</option>
-                                            <option value="Yearly Appraisal">Yearly Appraisal</option>
-                                            <option value="Promotion">Promotion</option>
-                                        </select>
                                     </div>
                                 </div>
                             </div>
