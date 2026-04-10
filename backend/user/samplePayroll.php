@@ -3,23 +3,39 @@
     session_start();
     $conn = $database->dbConnect();
 
-    function calculateSegmentHours($start, $end, $payrollCycleFrom, $payrollCycleTo, $attendanceDate, $empID, $totalRegularNightHours, $totalRegularHolidayHours, $totalRegularHolidayNightHours, $totalSpecialHolidayHours, $totalSpecialHolidayNightHours, $conn, $nightHours) {
-        $nightDifferential = 0;
-        // -----------------------------
-        // 1. LOAD HOLIDAYS
-        // -----------------------------
+    /**
+     * ============================================
+     * CALCULATE NIGHT DIFFERENTIAL (SHIFT-BASED)
+     * ============================================
+     */
+    function calculateSegmentHours(
+        $attendanceDate,
+        $empID,
+        $payrollCycleFrom,
+        $payrollCycleTo,
+        $conn
+    ) {
+
         static $holidays = null;
-    
+
+        // -----------------------------
+        // LOAD HOLIDAYS (ONCE)
+        // -----------------------------
         if ($holidays === null) {
             $holidays = [];
-            $res = mysqli_query($conn, "SELECT dateFrom, type FROM tbl_holidays WHERE dateFrom BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'");
+            $res = mysqli_query($conn, "
+                SELECT dateFrom, type 
+                FROM tbl_holidays 
+                WHERE dateFrom BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'
+            ");
+
             while ($h = mysqli_fetch_assoc($res)) {
-                $holidays[$h['dateFrom']] = $h['type']; // Legal 
+                $holidays[$h['dateFrom']] = $h['type'];
             }
         }
-    
+
         // -----------------------------
-        // 2. SHIFT SCHEDULE
+        // GET SHIFT SCHEDULE
         // -----------------------------
         $sch = $conn->query("
             SELECT startTime, endTime
@@ -28,207 +44,218 @@
             ON tbl_employee.shiftID = tbl_shiftschedule.shiftID
             WHERE tbl_employee.id = '$empID'
         ")->fetch_assoc();
-    
-        $shiftStartTime = $sch['startTime'];
-        $shiftEndTime   = $sch['endTime']; 
-    
-        // $scheduledStart = new DateTime($attendanceDate . " " . $shiftStartTime);
-        // $scheduledEnd   = new DateTime($attendanceDate . " " . $shiftEndTime);
-    
-        // if ($scheduledEnd <= $scheduledStart) {
-        //     $scheduledEnd->modify("+1 day");
-        // }
-    
-        // -----------------------------
-        // 3. CLAMP TO SHIFT
-        // -----------------------------
-        // $clampedStart = max($start, $scheduledStart);
-        // $clampedEnd   = min($end, $scheduledEnd);
-        $scheduledStart = new DateTime($attendanceDate . " " . $shiftStartTime);
-        $scheduledEnd   = new DateTime($attendanceDate . " " . $shiftEndTime);
 
+        $scheduledStart = new DateTime($attendanceDate . " " . $sch['startTime']);
+        $scheduledEnd   = new DateTime($attendanceDate . " " . $sch['endTime']);
+
+        // Handle overnight shift
         if ($scheduledEnd <= $scheduledStart) {
             $scheduledEnd->modify("+1 day");
         }
-    
+
+        $nightHours = 0;
+        $regularHolidayHours = 0;
+        $regularHolidayNightHours = 0;
+        $specialHolidayHours = 0;
+        $specialHolidayNightHours = 0;
+
         // -----------------------------
-        // 4. REGULAR HOURS
+        // REGULAR HOURS (SHIFT ONLY)
         // -----------------------------
-        if ($scheduledEnd > $scheduledStart) {
-            $interval = $scheduledStart->diff($scheduledEnd);
-            $hoursWorked = $interval->h + ($interval->i / 60);
-    
-            if (isset($holidays[$attendanceDate])) {
-                if ($holidays[$attendanceDate] === "Legal") {
-                    $totalRegularHolidayHours += $hoursWorked;
-                } else {
-                    $totalSpecialHolidayHours += $hoursWorked;
-                }
+        $interval = $scheduledStart->diff($scheduledEnd);
+        $hoursWorked = $interval->h + ($interval->i / 60);
+
+        if (isset($holidays[$attendanceDate])) {
+            if ($holidays[$attendanceDate] === "Legal") {
+                $regularHolidayHours += $hoursWorked;
+            } else {
+                $specialHolidayHours += $hoursWorked;
             }
         }
-    
-        // =====================================================
-        // 5. NIGHT DIFFERENTIAL (FIXED - SPLIT SEGMENTS)
-        // =====================================================
-    
+
+        // -----------------------------
+        // NIGHT DIFFERENTIAL
+        // -----------------------------
         $baseDate = $scheduledStart->format('Y-m-d');
         $nextDate = (new DateTime($baseDate))->modify('+1 day')->format('Y-m-d');
-    
-        // Segment 1: 22:00 → 00:00 (same day)
+
+        // Segment 1: 22:00 → 00:00
         $nightStart1 = new DateTime($attendanceDate . " 22:00");
-        $nightEnd1 = new DateTime($nextDate . " 00:00");
-    
-        // Segment 2: 00:00 → 06:00 (next day)
+        $nightEnd1   = new DateTime($nextDate . " 00:00");
+
+        // Segment 2: 00:00 → 06:00
         $nightStart2 = new DateTime($nextDate . " 00:00");
         $nightEnd2   = new DateTime($nextDate . " 06:00");
-    
-    
-        // ---------- SEGMENT 1 ----------
+
+        // -------- SEGMENT 1 --------
         $seg1Start = max($scheduledStart, $nightStart1);
         $seg1End   = min($scheduledEnd, $nightEnd1);
-    
+
         if ($seg1Start < $seg1End) {
             $interval = $seg1Start->diff($seg1End);
             $hours = $interval->h + ($interval->i / 60);
-            // $hours = floor(($seg1End->getTimestamp() - $seg1Start->getTimestamp()) / 3600);
-    
+
             if (isset($holidays[$attendanceDate])) {
                 if ($holidays[$attendanceDate] === "Legal") {
-                    $totalRegularHolidayNightHours += $hours;
+                    $regularHolidayNightHours += $hours;
                 } else {
-                    $totalSpecialHolidayNightHours += $hours;
+                    $specialHolidayNightHours += $hours;
                 }
             } else {
-                $totalRegularNightHours += $hours;
                 $nightHours += $hours;
             }
         }
-    
-        // ---------- SEGMENT 2 ----------
+
+        // -------- SEGMENT 2 --------
         $seg2Start = max($scheduledStart, $nightStart2);
         $seg2End   = min($scheduledEnd, $nightEnd2);
-    
+
         if ($seg2Start < $seg2End) {
             $interval = $seg2Start->diff($seg2End);
             $hours = $interval->h + ($interval->i / 60);
-            // $hours = floor(($seg2End->getTimestamp() - $seg2Start->getTimestamp()) / 3600);
-    
-            // IMPORTANT: next day holiday check
+
             if (isset($holidays[$nextDate])) {
                 if ($holidays[$nextDate] === "Legal") {
-                    $totalRegularHolidayNightHours += $hours;
+                    $regularHolidayNightHours += $hours;
                 } else {
-                    $totalSpecialHolidayNightHours += $hours;
+                    $specialHolidayNightHours += $hours;
                 }
             } else {
-                $totalRegularNightHours += $hours;
                 $nightHours += $hours;
+            }
+        }
+
+        // =============================
+        // BREAK DEDUCTION (1 HOUR)
+        // =============================
+
+        // Example break: 02:00 → 03:00 (next day)
+        $breakStart = new DateTime($nextDate . " 02:00");
+        $breakEnd   = new DateTime($nextDate . " 03:00");
+
+        // Check overlap with shift
+        $breakOverlapStart = max($scheduledStart, $breakStart);
+        $breakOverlapEnd   = min($scheduledEnd, $breakEnd);
+
+        if ($breakOverlapStart < $breakOverlapEnd) {
+            $interval = $breakOverlapStart->diff($breakOverlapEnd);
+            $breakHours = $interval->h + ($interval->i / 60);
+
+            // Deduct from NIGHT HOURS ONLY
+            $nightHours -= $breakHours;
+
+            if ($nightHours < 0) {
+                $nightHours = 0;
             }
         }
 
         return [
             'nightHours' => $nightHours,
-            'totalRegularNightHours' => $totalRegularNightHours,
-            'totalRegularHolidayHours' => $totalRegularHolidayHours,
-            'totalRegularHolidayNightHours' => $totalRegularHolidayNightHours,
-            'totalSpecialHolidayHours' => $totalSpecialHolidayHours,
-            'totalSpecialHolidayNightHours' => $totalSpecialHolidayNightHours
+            'regularHolidayHours' => $regularHolidayHours,
+            'regularHolidayNightHours' => $regularHolidayNightHours,
+            'specialHolidayHours' => $specialHolidayHours,
+            'specialHolidayNightHours' => $specialHolidayNightHours
         ];
     }
 
-    $payrollFrom = "2026-02-11";
-    $payrollTo = "2026-02-25";
-    $attendanceQuery = mysqli_query($conn, "SELECT * FROM tbl_attendance WHERE empID = 3 AND logTypeID IN (1,2,3,4) AND attendanceDate BETWEEN '$payrollFrom' AND '$payrollTo' ORDER BY attendanceDate ASC, attendanceTime ASC");
-    // $attendanceData = mysqli_fetch_all($attendanceQuery, MYSQLI_ASSOC);
 
-    // echo "<pre>";
-    // print_r($attendanceData);
-    // echo "</pre>";
-    $nightHours = 0;
+    /**
+     * ============================================
+     * MAIN PROCESS
+     * ============================================
+     */
+
+    $payrollFrom = "2026-02-11";
+    $payrollTo   = "2026-02-25";
+    $extendedTo = date('Y-m-d', strtotime($payrollTo . ' +1 day'));
+
+    $query = mysqli_query($conn, "
+        SELECT * FROM tbl_attendance 
+        WHERE empID = 3 
+        AND logTypeID IN (1,2,3,4) 
+        AND attendanceDate BETWEEN '$payrollFrom' AND '$extendedTo'
+        ORDER BY attendanceDate ASC, attendanceTime ASC
+    ");
+
+    $timeIn = null;
+    $dateIn = null;
+
     $totalNightHours = 0;
     $totalRegularHolidayHours = 0;
     $totalRegularHolidayNightHours = 0;
     $totalSpecialHolidayHours = 0;
     $totalSpecialHolidayNightHours = 0;
 
-    while ($attendanceLogs = mysqli_fetch_array($attendanceQuery)) {
-        static $timeIn = null;
-        static $timeOut = null;
-        static $dateIn = null;
+    while ($row = mysqli_fetch_assoc($query)) {
 
-        $attendanceDate = $attendanceLogs['attendanceDate'];
-        $attendanceTime = $attendanceLogs['attendanceTime'];
-        $fullDateTime = $attendanceDate . ' ' . $attendanceTime;
-        $logTypeID = $attendanceLogs['logTypeID'];
-        $lateMins = $attendanceLogs['lateMins'];
+        $attendanceDate = $row['attendanceDate'];
+        $attendanceTime = $row['attendanceTime'];
+        $logTypeID = $row['logTypeID'];
 
+        $currentDateTime = new DateTime($attendanceDate . ' ' . $attendanceTime);
+
+        // -----------------------------
+        // TIME IN
+        // -----------------------------
         if ($logTypeID == 1 || $logTypeID == 2) {
-            $timeIn = new DateTime($attendanceDate . ' ' . $attendanceTime);
+            $timeIn = clone $currentDateTime;
             $dateIn = $attendanceDate;
         }
-        
-        if ($logTypeID == 3 || $logTypeID == 4) {
-            $timeOut = new DateTime($attendanceDate . ' ' . $attendanceTime);
-        }
 
-        if ($timeIn && $timeOut) {
+        // -----------------------------
+        // TIME OUT → PROCESS HERE
+        // -----------------------------
+        if (($logTypeID == 3 || $logTypeID == 4) && $timeIn !== null) {
+
+            $timeOut = clone $currentDateTime;
+
             if ($timeOut < $timeIn) {
                 $timeOut->modify('+1 day');
             }
 
-            $nightDifferential = calculateSegmentHours($timeIn, $timeOut, $payrollFrom, $payrollTo, $dateIn, 3, $totalNightHours, $totalRegularHolidayHours, $totalRegularHolidayNightHours, $totalSpecialHolidayHours, $totalSpecialHolidayNightHours, $conn, $nightHours);
-
-            $nightHours = $nightDifferential['nightHours'];
-            $totalNightHours = $nightDifferential['totalRegularNightHours'];
-            $totalRegularHolidayHours = $nightDifferential['totalRegularHolidayHours'];
-            $totalRegularHolidayNightHours = $nightDifferential['totalRegularHolidayNightHours'];
-            $totalSpecialHolidayHours = $nightDifferential['totalSpecialHolidayHours'];
-            $totalSpecialHolidayNightHours = $nightDifferential['totalSpecialHolidayNightHours'];
-
-            if ($timeIn !== null && $timeOut !== null) {
-                echo "Time In: " . $timeIn->format('Y-m-d H:i:s') . "<br>";
-                echo "Time Out: " . $timeOut->format('Y-m-d H:i:s') . "<br>";
+            // 🔥 FILTER: only count shifts within payroll range
+            if ($dateIn < $payrollFrom || $dateIn > $payrollTo) {
+                $timeIn = null;
+                $dateIn = null;
+                continue;
             }
 
-            echo "Total Night Hours of Shift: " . $nightHours . "<br>";
-            echo "Total Regular Night Hours: " . $totalNightHours . "<br>";
-            echo "Total Regular Holiday Hours: " . $totalRegularHolidayHours . "<br>";
-            echo "Total Regular Holiday Night Hours: " . $totalRegularHolidayNightHours . "<br>";
-            echo "Total Special Holiday Hours: " . $totalSpecialHolidayHours . "<br>";
-            echo "Total Special Holiday Night Hours: " . $totalSpecialHolidayNightHours . "<br><br>";
+            $result = calculateSegmentHours(
+                $dateIn,
+                3,
+                $payrollFrom,
+                $payrollTo,
+                $conn
+            );
 
+            $totalNightHours += $result['nightHours'];
+            $totalRegularHolidayHours += $result['regularHolidayHours'];
+            $totalRegularHolidayNightHours += $result['regularHolidayNightHours'];
+            $totalSpecialHolidayHours += $result['specialHolidayHours'];
+            $totalSpecialHolidayNightHours += $result['specialHolidayNightHours'];
+
+            // DEBUG
+            echo "Time In: " . $timeIn->format('Y-m-d H:i:s') . "<br>";
+            echo "Time Out: " . $timeOut->format('Y-m-d H:i:s') . "<br>";
+            echo "ND Hours (Shift): " . $result['nightHours'] . "<br>";
+            echo "RH Hours (Shift): " . $result['regularHolidayHours'] . "<br>";
+            echo "RHN Hours (Shift): " . $result['regularHolidayNightHours'] . "<br>";
+            echo "SH Hours (Shift): " . $result['specialHolidayHours'] . "<br>";
+            echo "SHN Hours (Shift): " . $result['specialHolidayNightHours'] . "<br><br>";
+
+            // RESET
             $timeIn = null;
-            $timeOut = null;
             $dateIn = null;
         }
-        
-        // // Call the calculateNightDifferential function
-        // $nightDifferential = $payroll->calculateNightDifferential($fullDateTime, $logTypeID, $lateMins, $payrollFrom, $payrollTo, $attendanceDate, 3);
-        
-        // $nightHours = $nightDifferential['totalRegularNightHours'];
-        // $totalNightHours += $nightDifferential['totalRegularNightHours'];
-        // $totalRegularHolidayHours += $nightDifferential['totalRegularHolidayHours'];
-        // $totalRegularHolidayNightHours += $nightDifferential['totalRegularHolidayNightHours'];
-        // $totalSpecialHolidayHours += $nightDifferential['totalSpecialHolidayHours'];
-        // $totalSpecialHolidayNightHours += $nightDifferential['totalSpecialHolidayNightHours'];
-
-        // if ($timeIn !== null && $timeOut !== null) {
-        //     echo "Time In: " . $timeIn->format('Y-m-d H:i:s') . "<br>";
-        //     echo "Time Out: " . $timeOut->format('Y-m-d H:i:s') . "<br>";
-        // }
-
-        // echo "Total Night Hours of Shift: " . $nightHours . "<br>";
-        // echo "Total Regular Night Hours: " . $totalNightHours . "<br>";
-        // echo "Total Regular Holiday Hours: " . $totalRegularHolidayHours . "<br>";
-        // echo "Total Regular Holiday Night Hours: " . $totalRegularHolidayNightHours . "<br>";
-        // echo "Total Special Holiday Hours: " . $totalSpecialHolidayHours . "<br>";
-        // echo "Total Special Holiday Night Hours: " . $totalSpecialHolidayNightHours . "<br><br>";
     }
-    echo "<br>";
+
+    // -----------------------------
+    // FINAL TOTALS
+    // -----------------------------
+    echo "<hr>";
     echo "Total Regular Night Hours: " . $totalNightHours . "<br>";
     echo "Total Regular Holiday Hours: " . $totalRegularHolidayHours . "<br>";
     echo "Total Regular Holiday Night Hours: " . $totalRegularHolidayNightHours . "<br>";
     echo "Total Special Holiday Hours: " . $totalSpecialHolidayHours . "<br>";
     echo "Total Special Holiday Night Hours: " . $totalSpecialHolidayNightHours . "<br>";
-
 ?>
