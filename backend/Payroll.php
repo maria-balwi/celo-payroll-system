@@ -801,48 +801,33 @@
             $totalRegularHolidayNightHours = 0;
             $totalSpecialHolidayHours = 0;
             $totalSpecialHolidayNightHours = 0;
-        
-            $sch = $this->dbConnect()->query("
-                SELECT startTime, endTime
-                FROM tbl_employee 
-                INNER JOIN tbl_shiftschedule
-                ON tbl_employee.shiftID = tbl_shiftschedule.shiftID
-                WHERE tbl_employee.id = '$empID'
-            ")->fetch_assoc();
-        
-            $shiftStartTime = $sch['startTime'];
-            $shiftEndTime   = $sch['endTime']; 
+
+            $attendance = new DateTime($attendanceDateTime);
         
             // TIME IN
             if ($logTypeID == 1 || $logTypeID == 2) {
-                $timeIn = new DateTime($attendanceDate . ' ' . $shiftStartTime);
+                $timeIn = clone $attendance;
                 $date_in = $attendanceDate;
                 $static_lateMins = $lateMins;
             }
         
             // TIME OUT
-            if ($logTypeID == 3 || $logTypeID == 4) {
-                $timeOut = new DateTime($attendanceDate . ' ' . $shiftEndTime);
-            }
-        
-            // Compute only if both exist
-            if ($timeIn && $timeOut) {
-        
+            if (($logTypeID == 3 || $logTypeID == 4) && $timeIn !== null) {
+                $timeOut = clone $attendance;
+
                 // Overnight fix
                 if ($timeOut < $timeIn) {
                     $timeOut->modify('+1 day');
                 }
-        
-                // Deduct late
-                $adjustedTimeIn = clone $timeIn;
-                if ($static_lateMins > 0) {
-                    $adjustedTimeIn->modify("+{$static_lateMins} minutes");
+
+                // FILTER:  ONLY COUNT SHIFTS WITHIN PAYROLL RANGE
+                if ($date_in < $payrollCycleFrom || $date_in > $payrollCycleTo) {
+                    $timeIn = null;
+                    $date_in = null;
                 }
         
                 // Compute segments
                 $this->calculateSegmentHours(
-                    clone $adjustedTimeIn,
-                    clone $timeOut,
                     $payrollCycleFrom,
                     $payrollCycleTo,
                     $date_in,
@@ -859,8 +844,7 @@
                 $timeOut = null;
                 $date_in = null;
                 $static_lateMins = null;
-            }
-        
+            }    
             return [
                 'totalRegularNightHours' => $totalRegularNightHours,
                 'totalRegularHolidayHours' => $totalRegularHolidayHours,
@@ -971,7 +955,7 @@
         // }
 
         // NEW CODE
-        private function calculateSegmentHours($start, $end, $payrollCycleFrom, $payrollCycleTo, $attendanceDate, $empID, &$totalRegularNightHours, &$totalRegularHolidayHours, &$totalRegularHolidayNightHours, &$totalSpecialHolidayHours, &$totalSpecialHolidayNightHours) {
+        private function calculateSegmentHours($payrollCycleFrom, $payrollCycleTo, $attendanceDate, $empID, &$totalRegularNightHours, &$totalRegularHolidayHours, &$totalRegularHolidayNightHours, &$totalSpecialHolidayHours, &$totalSpecialHolidayNightHours) {
             // -----------------------------
             // 1. LOAD HOLIDAYS
             // -----------------------------
@@ -985,7 +969,7 @@
                     WHERE dateFrom BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'
                 ");
                 while ($h = mysqli_fetch_assoc($res)) {
-                    $holidays[$h['dateFrom']] = $h['type']; // Legal / Special
+                    $holidays[$h['dateFrom']] = $h['type']; // Legal 
                 }
             }
         
@@ -1003,57 +987,81 @@
             $shiftStartTime = $sch['startTime'];
             $shiftEndTime   = $sch['endTime']; 
         
-            $scheduledStart = new DateTime($attendanceDate . " " . $shiftStartTime);
-            $scheduledEnd   = new DateTime($attendanceDate . " " . $shiftEndTime);
-        
+            $scheduledStart = new DateTime($attendanceDate . " " . $sch['startTime']);
+            $scheduledEnd   = new DateTime($attendanceDate . " " . $sch['endTime']);
+
             if ($scheduledEnd <= $scheduledStart) {
                 $scheduledEnd->modify("+1 day");
             }
         
             // -----------------------------
-            // 3. CLAMP TO SHIFT
+            // 3.  DAY HOURS (06:00 → 22:00)
             // -----------------------------
-            $clampedStart = max($start, $scheduledStart);
-            $clampedEnd   = min($end, $scheduledEnd);
-        
-            // -----------------------------
-            // 4. REGULAR HOURS
-            // -----------------------------
-            if ($clampedEnd > $clampedStart) {
-                $interval = $clampedStart->diff($clampedEnd);
-                $hoursWorked = $interval->h + ($interval->i / 60);
-        
+            $dayStart = new DateTime($attendanceDate . " 06:00");
+            $dayEnd   = new DateTime($attendanceDate . " 22:00");
+
+            $daySegStart = max($scheduledStart, $dayStart);
+            $daySegEnd   = min($scheduledEnd, $dayEnd);
+
+            if ($daySegStart < $daySegEnd) {
+                $interval = $daySegStart->diff($daySegEnd);
+                $hours = $interval->h + ($interval->i / 60);
+
                 if (isset($holidays[$attendanceDate])) {
                     if ($holidays[$attendanceDate] === "Legal") {
-                        $totalRegularHolidayHours += $hoursWorked;
+                        $totalRegularHolidayHours += $hours;
                     } else {
-                        $totalSpecialHolidayHours += $hoursWorked;
+                        $totalSpecialHolidayHours += $hours;
                     }
                 }
             }
         
             // =====================================================
+            // 4. NEXT DAY (REGULAR HOURS)
+            // =====================================================
+            $nextDate = (new DateTime($attendanceDate))->modify('+1 day')->format('Y-m-d');
+
+            $nextDayStart = new DateTime($nextDate . " 06:00");
+            $nextDayEnd   = new DateTime($nextDate . " 22:00");
+
+            $nextSegStart = max($scheduledStart, $nextDayStart);
+            $nextSegEnd   = min($scheduledEnd, $nextDayEnd);
+
+            if ($nextSegStart < $nextSegEnd) {
+                $interval = $nextSegStart->diff($nextSegEnd);
+                $hours = $interval->h + ($interval->i / 60);
+
+                if (isset($holidays[$nextDate])) {
+                    if ($holidays[$nextDate] === "Legal") {
+                        $totalRegularHolidayHours += $hours;
+                    } else {
+                        $totalSpecialHolidayHours += $hours;
+                    }
+                }
+            }
+
+            // =====================================================
             // 5. NIGHT DIFFERENTIAL (FIXED - SPLIT SEGMENTS)
             // =====================================================
-        
-            // Segment 1: 22:00 → 00:00 (same day)
-            $nightStart1 = new DateTime($attendanceDate . " 22:00");
+            // $baseDate = $scheduledStart->format('Y-m-d');
             $nextDate = (new DateTime($attendanceDate))->modify('+1 day')->format('Y-m-d');
-            $nightEnd1 = new DateTime($nextDate . " 00:00");
-        
-            // Segment 2: 00:00 → 06:00 (next day)
+
+            // Segment 1: 22:00 → 00:00
+            $nightStart1 = new DateTime($attendanceDate . " 22:00");
+            $nightEnd1   = new DateTime($nextDate . " 00:00");
+
+            // Segment 2: 00:00 → 06:00
             $nightStart2 = new DateTime($nextDate . " 00:00");
             $nightEnd2   = new DateTime($nextDate . " 06:00");
-        
-        
-            // ---------- SEGMENT 1 ----------
-            $seg1Start = max($start, $nightStart1);
-            $seg1End   = min($end, $nightEnd1);
-        
+
+            // -------- SEGMENT 1 --------
+            $seg1Start = max($scheduledStart, $nightStart1);
+            $seg1End   = min($scheduledEnd, $nightEnd1);
+
             if ($seg1Start < $seg1End) {
                 $interval = $seg1Start->diff($seg1End);
                 $hours = $interval->h + ($interval->i / 60);
-        
+
                 if (isset($holidays[$attendanceDate])) {
                     if ($holidays[$attendanceDate] === "Legal") {
                         $totalRegularHolidayNightHours += $hours;
@@ -1064,16 +1072,32 @@
                     $totalRegularNightHours += $hours;
                 }
             }
-        
-            // ---------- SEGMENT 2 ----------
-            $seg2Start = max($start, $nightStart2);
-            $seg2End   = min($end, $nightEnd2);
-        
+
+            // -------- SEGMENT 2 --------
+            $seg2Start = max($scheduledStart, $nightStart2);
+            $seg2End   = min($scheduledEnd, $nightEnd2);
+
             if ($seg2Start < $seg2End) {
                 $interval = $seg2Start->diff($seg2End);
                 $hours = $interval->h + ($interval->i / 60);
-        
-                // IMPORTANT: next day holiday check
+                $hours -= 1; // Subtract 1 hour for break
+
+                // $breakStart = new DateTime($nextDate . " 02:00");
+                // $breakEnd   = new DateTime($nextDate . " 03:00");
+
+                // $breakOverlapStart = max($seg2Start, $breakStart);
+                // $breakOverlapEnd   = min($seg2End, $breakEnd);
+
+                // if ($breakOverlapStart < $breakOverlapEnd) {
+                //     $intervalBreak = $breakOverlapStart->diff($breakOverlapEnd);
+                //     $breakHours = $intervalBreak->h + ($intervalBreak->i / 60);
+                //     $hours -= $breakHours;
+                // }
+
+                // if ($hours < 0) {
+                //     $hours = 0;
+                // }
+
                 if (isset($holidays[$nextDate])) {
                     if ($holidays[$nextDate] === "Legal") {
                         $totalRegularHolidayNightHours += $hours;
@@ -1342,15 +1366,24 @@
                 $netPay = 0;
 
                 // NEW CODE
+                // $attendanceQuery = $this->dbConnect()->query("
+                //     SELECT *
+                //     FROM tbl_attendance
+                //     WHERE empID = {$employeeDetails['id']}
+                //     AND logTypeID IN (1,2,3,4)
+                //     AND attendanceDate BETWEEN 
+                //         DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom')))
+                //         AND
+                //         DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleT')))
+                //     ORDER BY attendanceDate ASC, attendanceTime ASC
+                // ");
+                $extendedTo = date('Y-m-d', strtotime($payrollCycleTo . ' +1 day'));
                 $attendanceQuery = $this->dbConnect()->query("
                     SELECT *
                     FROM tbl_attendance
                     WHERE empID = {$employeeDetails['id']}
                     AND logTypeID IN (1,2,3,4)
-                    AND attendanceDate BETWEEN 
-                        DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom')))
-                        AND
-                        DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleTo')))
+                    AND attendanceDate BETWEEN '$payrollCycleFrom' AND '$extendedTo'
                     ORDER BY attendanceDate ASC, attendanceTime ASC
                 ");
                 while ($attendanceLogs = mysqli_fetch_array($attendanceQuery)) {
@@ -1374,9 +1407,9 @@
                     );
 
                     $totalNightHours += $result['totalRegularNightHours'];
-                    $totalRegularHolidayHours += $result['totalRegularHolidayHours'] == 0 ? 0 : $result['totalRegularHolidayHours'] - 1;
+                    $totalRegularHolidayHours += $result['totalRegularHolidayHours'];
                     $totalRegularHolidayNDHours += $result['totalRegularHolidayNightHours'];
-                    $totalSpecialHolidayHours += $result['totalSpecialHolidayHours'] == 0 ? 0 : $result['totalSpecialHolidayHours'] - 1;
+                    $totalSpecialHolidayHours += $result['totalSpecialHolidayHours'];
                     $totalSpecialHolidayNDHours += $result['totalSpecialHolidayNightHours'];
                 }
 
@@ -1919,15 +1952,24 @@
                 $netPay = 0;
 
                 // NEW CODE
+                // $attendanceQuery = $this->dbConnect()->query("
+                //     SELECT *
+                //     FROM tbl_attendance
+                //     WHERE empID = {$employeeDetails['id']}
+                //     AND logTypeID IN (1,2,3,4)
+                //     AND attendanceDate BETWEEN 
+                //         DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom')))
+                //         AND
+                //         DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleT')))
+                //     ORDER BY attendanceDate ASC, attendanceTime ASC
+                // ");
+                $extendedTo = date('Y-m-d', strtotime($payrollCycleTo . ' +1 day'));
                 $attendanceQuery = $this->dbConnect()->query("
                     SELECT *
                     FROM tbl_attendance
                     WHERE empID = {$employeeDetails['id']}
                     AND logTypeID IN (1,2,3,4)
-                    AND attendanceDate BETWEEN 
-                        DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom')))
-                        AND
-                        DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleTo')))
+                    AND attendanceDate BETWEEN '$payrollCycleFrom' AND '$extendedTo'
                     ORDER BY attendanceDate ASC, attendanceTime ASC
                 ");
                 while ($attendanceLogs = mysqli_fetch_array($attendanceQuery)) {
@@ -1951,9 +1993,9 @@
                     );
 
                     $totalNightHours += $result['totalRegularNightHours'];
-                    $totalRegularHolidayHours += $result['totalRegularHolidayHours'] == 0 ? 0 : $result['totalRegularHolidayHours'] - 1;
+                    $totalRegularHolidayHours += $result['totalRegularHolidayHours'];
                     $totalRegularHolidayNDHours += $result['totalRegularHolidayNightHours'];
-                    $totalSpecialHolidayHours += $result['totalSpecialHolidayHours'] == 0 ? 0 : $result['totalSpecialHolidayHours'] - 1;
+                    $totalSpecialHolidayHours += $result['totalSpecialHolidayHours'];
                     $totalSpecialHolidayNDHours += $result['totalSpecialHolidayNightHours'];
                 }
 
@@ -2155,6 +2197,7 @@
                 }
 
                 // COMPUTATION FOR LEAVES
+                // $leaveQuery = $this->dbConnect()->query("SELECT empID, lt.leaveTypeID, effectivityStartDate, effectivityEndDate FROM tbl_leaveapplications AS la INNER JOIN tbl_leavetype AS lt ON la.leaveTypeID = lt.leaveTypeID WHERE effectivityStartDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND effectivityEndDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND status = 'Approved' AND empID=$employee_id");
                 $sql = $this->getLeavesForPayroll($employee_id, $payrollCycleFrom, $payrollCycleTo);
                 $leaveQuery = $this->dbConnect()->query($sql);
                 while ($leaveDetails = mysqli_fetch_array($leaveQuery)) {
@@ -2179,24 +2222,6 @@
                 $vacationLeavePay = round($totalVacationLeaves * $employee_dailyRate, 2);
 
                 // COMPUTATION FOR REFERRAL INCENTIVE
-                // RESET 3-MONTH STATUS
-                $this->dbConnect()->query("
-                    UPDATE tbl_referral 
-                    SET threeMonths_status = 0 
-                    WHERE referrer_empID = $employee_id 
-                    AND threeMonths BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'
-                    AND threeMonths_status = 1
-                ");
-
-                // RESET 6-MONTH STATUS
-                $this->dbConnect()->query("
-                    UPDATE tbl_referral 
-                    SET sixMonths_status = 0 
-                    WHERE referrer_empID = $employee_id 
-                    AND sixMonths BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'
-                    AND sixMonths_status = 1
-                ");
-
                 $referralQuery = $this->dbConnect()->query("SELECT * FROM tbl_referral WHERE referrer_empID = $employee_id AND ((threeMonths BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND threeMonths_status = 0) OR (sixMonths BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND sixMonths_status = 0))");
                 while ($referralDetails = mysqli_fetch_array($referralQuery)) {
                     $referralCount++;

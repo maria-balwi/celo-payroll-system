@@ -60,16 +60,49 @@
         $specialHolidayNightHours = 0;
 
         // -----------------------------
-        // REGULAR HOURS (SHIFT ONLY)
+        // DAY HOURS (06:00 → 22:00)
         // -----------------------------
-        $interval = $scheduledStart->diff($scheduledEnd);
-        $hoursWorked = $interval->h + ($interval->i / 60);
+        $dayStart = new DateTime($attendanceDate . " 06:00");
+        $dayEnd   = new DateTime($attendanceDate . " 22:00");
 
-        if (isset($holidays[$attendanceDate])) {
-            if ($holidays[$attendanceDate] === "Legal") {
-                $regularHolidayHours += $hoursWorked;
-            } else {
-                $specialHolidayHours += $hoursWorked;
+        $daySegStart = max($scheduledStart, $dayStart);
+        $daySegEnd   = min($scheduledEnd, $dayEnd);
+
+        if ($daySegStart < $daySegEnd) {
+            $interval = $daySegStart->diff($daySegEnd);
+            $hours = $interval->h + ($interval->i / 60);
+
+            if (isset($holidays[$attendanceDate])) {
+                if ($holidays[$attendanceDate] === "Legal") {
+                    $regularHolidayHours += $hours;
+                } else {
+                    $specialHolidayHours += $hours;
+                }
+            }
+        }
+
+        // =====================================================
+        // 🔥🔥🔥 NEW: NEXT DAY DAY HOURS (IMPORTANT FIX)
+        // =====================================================
+        $nextDate = (new DateTime($attendanceDate))->modify('+1 day')->format('Y-m-d');
+
+        $nextDayStart = new DateTime($nextDate . " 06:00");
+        $nextDayEnd   = new DateTime($nextDate . " 22:00");
+
+        $nextSegStart = max($scheduledStart, $nextDayStart);
+        $nextSegEnd   = min($scheduledEnd, $nextDayEnd);
+
+        if ($nextSegStart < $nextSegEnd) {
+            $interval = $nextSegStart->diff($nextSegEnd);
+            $hours = $interval->h + ($interval->i / 60);
+
+            // 👉 THIS IS THE CRITICAL FIX
+            if (isset($holidays[$nextDate])) {
+                if ($holidays[$nextDate] === "Legal") {
+                    $regularHolidayHours += $hours;
+                } else {
+                    $specialHolidayHours += $hours;
+                }
             }
         }
 
@@ -113,6 +146,7 @@
         if ($seg2Start < $seg2End) {
             $interval = $seg2Start->diff($seg2End);
             $hours = $interval->h + ($interval->i / 60);
+            $hours -= 1; // Subtract 1 hour for break
 
             if (isset($holidays[$nextDate])) {
                 if ($holidays[$nextDate] === "Legal") {
@@ -130,24 +164,26 @@
         // =============================
 
         // Example break: 02:00 → 03:00 (next day)
-        $breakStart = new DateTime($nextDate . " 02:00");
-        $breakEnd   = new DateTime($nextDate . " 03:00");
+        // $breakStart = new DateTime($nextDate . " 02:00");
+        // $breakEnd   = new DateTime($nextDate . " 03:00");
 
-        // Check overlap with shift
-        $breakOverlapStart = max($scheduledStart, $breakStart);
-        $breakOverlapEnd   = min($scheduledEnd, $breakEnd);
+        // // Check overlap with shift
+        // $breakOverlapStart = max($scheduledStart, $breakStart);
+        // $breakOverlapEnd   = min($scheduledEnd, $breakEnd);
 
-        if ($breakOverlapStart < $breakOverlapEnd) {
-            $interval = $breakOverlapStart->diff($breakOverlapEnd);
-            $breakHours = $interval->h + ($interval->i / 60);
+        // if ($breakOverlapStart < $breakOverlapEnd) {
+        //     $interval = $breakOverlapStart->diff($breakOverlapEnd);
+        //     $breakHours = $interval->h + ($interval->i / 60);
 
-            // Deduct from NIGHT HOURS ONLY
-            $nightHours -= $breakHours;
+        //     // Deduct from NIGHT HOURS ONLY
+        //     $nightHours -= $breakHours;
 
-            if ($nightHours < 0) {
-                $nightHours = 0;
-            }
-        }
+        //     if ($nightHours < 0) {
+        //         $nightHours = 0;
+        //     }
+        // }
+
+        
 
         return [
             'nightHours' => $nightHours,
