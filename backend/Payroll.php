@@ -1007,6 +1007,22 @@
                 $interval = $daySegStart->diff($daySegEnd);
                 $hours = $interval->h + ($interval->i / 60);
 
+                $breakStart = new DateTime($attendanceDate . " 12:00");
+                $breakEnd = new DateTime($attendanceDate . " 13:00");
+
+                $breakOverlapStart = max($daySegStart, $breakStart);
+                $breakOverlapEnd = min($daySegEnd, $breakEnd);
+
+                if ($breakOverlapStart < $breakOverlapEnd) {
+                    $intervalBreak = $breakOverlapStart->diff($breakOverlapEnd);
+                    $breakHours = $intervalBreak->h + ($intervalBreak->i / 60);
+                    $hours -= $breakHours;
+                }
+
+                if ($hours < 0) {
+                    $hours = 0;
+                }
+
                 if (isset($holidays[$attendanceDate])) {
                     if ($holidays[$attendanceDate] === "Legal") {
                         $totalRegularHolidayHours += $hours;

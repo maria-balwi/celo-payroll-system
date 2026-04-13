@@ -15,7 +15,7 @@
 
     $query = mysqli_query($conn, "
         SELECT * FROM tbl_attendance 
-        WHERE empID = 3 
+        WHERE empID = 75 
         AND logTypeID IN (1,2,3,4) 
         AND attendanceDate BETWEEN '$payrollCycleFrom' AND '$extendedTo'
         ORDER BY attendanceDate ASC, attendanceTime ASC
@@ -55,6 +55,22 @@
             $timeIn = $attendance;
             $dateIn = $attendanceDate;
         }
+
+        $breakStart = new DateTime($attendanceDate . " 12:00");
+                $breakEnd = new DateTime($attendanceDate . " 13:00");
+
+                $breakOverlapStart = max($daySegStart, $breakStart);
+                $breakOverlapEnd = min($daySegEnd, $breakEnd);
+
+                if ($breakOverlapStart < $breakOverlapEnd) {
+                    $intervalBreak = $breakOverlapStart->diff($breakOverlapEnd);
+                    $breakHours = $intervalBreak->h + ($intervalBreak->i / 60);
+                    $hours -= $breakHours;
+                }
+
+                if ($hours < 0) {
+                    $hours = 0;
+                }
 
         // -----------------------------
         // TIME OUT → PROCESS HERE
