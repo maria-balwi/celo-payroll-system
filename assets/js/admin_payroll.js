@@ -5,7 +5,7 @@ $(document).ready(function() {
     // });
     $('#payrollTable').DataTable();
     var payrollListTable = $('#payrollListTable').DataTable();
-    payrollListTable.order([[0, "asc"]]).draw();
+    payrollListTable.order([[2, "asc"]]).draw();
 
     function showPayrollSpinner() {
         $("#payrollSpinner").removeClass("hidden");
