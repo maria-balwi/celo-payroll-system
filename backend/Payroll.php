@@ -960,7 +960,7 @@
             // 1. LOAD HOLIDAYS
             // -----------------------------
             static $holidays = null;
-        
+
             if ($holidays === null) {
                 $holidays = [];
                 $res = $this->dbConnect()->query("
@@ -969,10 +969,10 @@
                     WHERE dateFrom BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'
                 ");
                 while ($h = mysqli_fetch_assoc($res)) {
-                    $holidays[$h['dateFrom']] = $h['type']; // Legal 
+                    $holidays[$h['dateFrom']] = $h['type'];
                 }
             }
-        
+
             // -----------------------------
             // 2. SHIFT SCHEDULE
             // -----------------------------
@@ -983,22 +983,24 @@
                 ON tbl_employee.shiftID = tbl_shiftschedule.shiftID
                 WHERE tbl_employee.id = '$empID'
             ")->fetch_assoc();
-        
-            $shiftStartTime = $sch['startTime'];
-            $shiftEndTime   = $sch['endTime']; 
-        
+
             $scheduledStart = new DateTime($attendanceDate . " " . $sch['startTime']);
             $scheduledEnd   = new DateTime($attendanceDate . " " . $sch['endTime']);
 
+            // Handle overnight shift
             if ($scheduledEnd <= $scheduledStart) {
                 $scheduledEnd->modify("+1 day");
             }
-        
+
+            // Base + next date (BASED ON SHIFT, NOT attendanceDate blindly)
+            $baseDate = $scheduledStart->format('Y-m-d');
+            $nextDate = (clone $scheduledStart)->modify('+1 day')->format('Y-m-d');
+
             // -----------------------------
-            // 3.  DAY HOURS (06:00 → 22:00)
+            // 3. DAY HOURS (06:00 → 22:00)
             // -----------------------------
-            $dayStart = new DateTime($attendanceDate . " 06:00");
-            $dayEnd   = new DateTime($attendanceDate . " 22:00");
+            $dayStart = new DateTime($baseDate . " 06:00");
+            $dayEnd   = new DateTime($baseDate . " 22:00");
 
             $daySegStart = max($scheduledStart, $dayStart);
             $daySegEnd   = min($scheduledEnd, $dayEnd);
@@ -1007,11 +1009,12 @@
                 $interval = $daySegStart->diff($daySegEnd);
                 $hours = $interval->h + ($interval->i / 60);
 
-                $breakStart = new DateTime($attendanceDate . " 12:00");
-                $breakEnd = new DateTime($attendanceDate . " 13:00");
+                // Break (12–1)
+                $breakStart = new DateTime($baseDate . " 12:00");
+                $breakEnd   = new DateTime($baseDate . " 13:00");
 
                 $breakOverlapStart = max($daySegStart, $breakStart);
-                $breakOverlapEnd = min($daySegEnd, $breakEnd);
+                $breakOverlapEnd   = min($daySegEnd, $breakEnd);
 
                 if ($breakOverlapStart < $breakOverlapEnd) {
                     $intervalBreak = $breakOverlapStart->diff($breakOverlapEnd);
@@ -1023,32 +1026,8 @@
                     $hours = 0;
                 }
 
-                if (isset($holidays[$attendanceDate])) {
-                    if ($holidays[$attendanceDate] === "Legal") {
-                        $totalRegularHolidayHours += $hours;
-                    } else {
-                        $totalSpecialHolidayHours += $hours;
-                    }
-                }
-            }
-        
-            // =====================================================
-            // 4. NEXT DAY (REGULAR HOURS)
-            // =====================================================
-            $nextDate = (new DateTime($attendanceDate))->modify('+1 day')->format('Y-m-d');
-
-            $nextDayStart = new DateTime($nextDate . " 06:00");
-            $nextDayEnd   = new DateTime($nextDate . " 22:00");
-
-            $nextSegStart = max($scheduledStart, $nextDayStart);
-            $nextSegEnd   = min($scheduledEnd, $nextDayEnd);
-
-            if ($nextSegStart < $nextSegEnd) {
-                $interval = $nextSegStart->diff($nextSegEnd);
-                $hours = $interval->h + ($interval->i / 60);
-
-                if (isset($holidays[$nextDate])) {
-                    if ($holidays[$nextDate] === "Legal") {
+                if (isset($holidays[$baseDate])) {
+                    if ($holidays[$baseDate] === "Legal") {
                         $totalRegularHolidayHours += $hours;
                     } else {
                         $totalSpecialHolidayHours += $hours;
@@ -1056,21 +1035,37 @@
                 }
             }
 
-            // =====================================================
-            // 5. NIGHT DIFFERENTIAL (FIXED - SPLIT SEGMENTS)
-            // =====================================================
-            // $baseDate = $scheduledStart->format('Y-m-d');
-            $nextDate = (new DateTime($attendanceDate))->modify('+1 day')->format('Y-m-d');
+            // -----------------------------
+            // 4. NEXT DAY DAY HOURS (if overnight)
+            // -----------------------------
+            if ($scheduledEnd->format('Y-m-d') !== $baseDate) {
+                $nextDayStart = new DateTime($nextDate . " 06:00");
+                $nextDayEnd   = new DateTime($nextDate . " 22:00");
 
-            // Segment 1: 22:00 → 00:00
-            $nightStart1 = new DateTime($attendanceDate . " 22:00");
+                $nextSegStart = max($scheduledStart, $nextDayStart);
+                $nextSegEnd   = min($scheduledEnd, $nextDayEnd);
+
+                if ($nextSegStart < $nextSegEnd) {
+                    $interval = $nextSegStart->diff($nextSegEnd);
+                    $hours = $interval->h + ($interval->i / 60);
+
+                    if (isset($holidays[$nextDate])) {
+                        if ($holidays[$nextDate] === "Legal") {
+                            $totalRegularHolidayHours += $hours;
+                        } else {
+                            $totalSpecialHolidayHours += $hours;
+                        }
+                    }
+                }
+            }
+
+            // =====================================================
+            // 5. NIGHT DIFFERENTIAL
+            // =====================================================
+            // Segment 1: 22:00 → 00:00 (always base date)
+            $nightStart1 = new DateTime($baseDate . " 22:00");
             $nightEnd1   = new DateTime($nextDate . " 00:00");
 
-            // Segment 2: 00:00 → 06:00
-            $nightStart2 = new DateTime($nextDate . " 00:00");
-            $nightEnd2   = new DateTime($nextDate . " 06:00");
-
-            // -------- SEGMENT 1 --------
             $seg1Start = max($scheduledStart, $nightStart1);
             $seg1End   = min($scheduledEnd, $nightEnd1);
 
@@ -1078,8 +1073,8 @@
                 $interval = $seg1Start->diff($seg1End);
                 $hours = $interval->h + ($interval->i / 60);
 
-                if (isset($holidays[$attendanceDate])) {
-                    if ($holidays[$attendanceDate] === "Legal") {
+                if (isset($holidays[$baseDate])) {
+                    if ($holidays[$baseDate] === "Legal") {
                         $totalRegularHolidayNightHours += $hours;
                     } else {
                         $totalSpecialHolidayNightHours += $hours;
@@ -1089,33 +1084,36 @@
                 }
             }
 
-            // -------- SEGMENT 2 --------
+            // Segment 2: 00:00 → 06:00 (DYNAMIC DATE FIX)
+            $isBreak = false;
+            if ($scheduledEnd->format('Y-m-d') !== $baseDate) {
+                // Overnight shift → next day
+                $nightStart2 = new DateTime($nextDate . " 00:00");
+                $nightEnd2   = new DateTime($nextDate . " 06:00");
+                $isBreak = true;
+                $holidayCheckDate = $nextDate;
+            } else {
+                // Same-day shift (e.g., 5AM–2PM)
+                $nightStart2 = new DateTime($baseDate . " 00:00");
+                $nightEnd2   = new DateTime($baseDate . " 06:00");
+                $holidayCheckDate = $baseDate;
+                $isBreak = false;
+            }
+
             $seg2Start = max($scheduledStart, $nightStart2);
             $seg2End   = min($scheduledEnd, $nightEnd2);
 
             if ($seg2Start < $seg2End) {
                 $interval = $seg2Start->diff($seg2End);
                 $hours = $interval->h + ($interval->i / 60);
-                $hours -= 1; // Subtract 1 hour for break
 
-                // $breakStart = new DateTime($nextDate . " 02:00");
-                // $breakEnd   = new DateTime($nextDate . " 03:00");
+                // Safe break deduction
+                if ($isBreak) {
+                    $hours = max(0, $hours - 1);
+                }
 
-                // $breakOverlapStart = max($seg2Start, $breakStart);
-                // $breakOverlapEnd   = min($seg2End, $breakEnd);
-
-                // if ($breakOverlapStart < $breakOverlapEnd) {
-                //     $intervalBreak = $breakOverlapStart->diff($breakOverlapEnd);
-                //     $breakHours = $intervalBreak->h + ($intervalBreak->i / 60);
-                //     $hours -= $breakHours;
-                // }
-
-                // if ($hours < 0) {
-                //     $hours = 0;
-                // }
-
-                if (isset($holidays[$nextDate])) {
-                    if ($holidays[$nextDate] === "Legal") {
+                if (isset($holidays[$holidayCheckDate])) {
+                    if ($holidays[$holidayCheckDate] === "Legal") {
                         $totalRegularHolidayNightHours += $hours;
                     } else {
                         $totalSpecialHolidayNightHours += $hours;
