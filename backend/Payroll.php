@@ -635,6 +635,66 @@
             return $overtimeDisputes;
         }
 
+        public function fileAttendanceDispute($empID, $attendanceDate_timeIn, $attendanceTime_timeIn, $attendanceDate_timeOut, $attendanceTime_timeOut) {
+            $fileAttendanceDispute = "
+                INSERT INTO ".$this->disputeAttendance." (empID, dateFiled, attendanceDate_timeIn, attendanceTime_timeIn, attendanceDate_timeOut, attendanceTime_timeOut) 
+                VALUES ('$empID', CURRENT_DATE(), '$attendanceDate_timeIn', '$attendanceTime_timeIn', '$attendanceDate_timeOut', '$attendanceTime_timeOut')";
+            return $fileAttendanceDispute;
+        }
+
+        public function fileLeaveDispute($empID, $leaveTypeID, $startDate, $endDate, $attachment) {
+            $fileLeaveDispute = "
+                INSERT INTO ".$this->disputeLeaves." (empID, dateFiled, leaveTypeID, startDate, endDate, attachment) 
+                VALUES ('$empID', CURRENT_DATE(), '$leaveTypeID', '$startDate', '$endDate', '$attachment')";
+            return $fileLeaveDispute;
+        }
+
+        public function fileOvertimeDispute($empID, $otDate, $otType, $fromTime, $toTime) {
+            $fileOvertimeDispute = "
+                INSERT INTO ".$this->disputeOvertime." (empID, dateFiled, otDate, otType, fromTime, toTime) 
+                VALUES ('$empID', CURRENT_DATE(), '$otDate', '$otType', '$fromTime', '$toTime')";
+            return $fileOvertimeDispute;
+        }
+
+        public function viewLastDisputeAttendance() {
+            $lastID = "
+                SELECT * FROM ".$this->disputeAttendance." ORDER BY attendanceID DESC LIMIT 1";
+            return $lastID;
+        }
+
+        public function viewLastDisputeLeave() {
+            $lastID = "
+                SELECT * FROM ".$this->disputeLeaves." ORDER BY leaveID DESC LIMIT 1";
+            return $lastID;
+        }
+
+        public function viewLastDisputeOvertime() {
+            $lastID = "
+                SELECT * FROM ".$this->disputeOvertime." ORDER BY overtimeID DESC LIMIT 1";
+            return $lastID;
+        }
+
+        public function addDispute_attendance($attendanceID, $remarks) {
+            $fileDisputeAttendance = "
+                INSERT INTO ".$this->disputes." (attendanceID, remarks, status)
+                VALUES ('$attendanceID', '$remarks', 'Pending')";
+            return $fileDisputeAttendance;
+        }
+
+        public function addDispute_leave($leaveID, $remarks) {
+            $fileDisputeLeave = "
+                INSERT INTO ".$this->disputes." (leaveID, remarks, status)
+                VALUES ('$leaveID', '$remarks', 'Pending')";
+            return $fileDisputeLeave;
+        }
+
+        public function addDispute_overtime($overtimeID, $remarks) {
+            $fileDisputeOvertime = "
+                INSERT INTO ".$this->disputes." (overtimeID, remarks, status)
+                VALUES ('$overtimeID', '$remarks', 'Pending')";
+            return $fileDisputeOvertime;
+        }
+
         public function getCashAdvanceInfo($requestID) {
             $cashAdvance = "
                 SELECT requestID, employees.employeeID, employees.firstName AS firstName, employees.lastName AS lastName, 

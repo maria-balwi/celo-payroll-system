@@ -75,6 +75,7 @@ $(document).ready(function() {
         else {
             $('.overtimeSection').show();
             $('.dateFiledSection').show();
+            $('.employeeSection').show();
             $('.attendanceSection').hide();
             $('.leaveSection').hide();
             $('.remarksSection').show();
@@ -124,17 +125,53 @@ $(document).ready(function() {
     
     // ADD DATA
     $("#fileDisputeForm").submit(function (e) {
-
         e.preventDefault();
 
+        let fileDispute = new FormData(this);
         var dataType = $("#dataType").val(); 
+        var empID = $("#empID").val();
+        var action = "fileDispute";
+
+        var attendanceDate_timeIn = $("#attendanceDate_timeIn").val();
+        var attendanceTime_timeIn = $("#attendanceTime_timeIn").val();
+        var attendanceDate_timeOut = $("#attendanceDate_timeOut").val();
+        var attendanceTime_timeOut = $("#attendanceTime_timeOut").val();
+
+        var leaveType = $("#leaveType").val();
+        var leaveStartDate = $("#leaveStartDate").val();
+        var leaveEndDate = $("#leaveEndDate").val();
+        var withAttachment = $("#withAttachment").val();
+        var withoutAttachment = $("#withoutAttachment").val();
+
+        var overtimeOTDate = $("#overtimeOTDate").val();
+        var otType = $("#otType").val();
+        var overtimeFromTime = $("#overtimeFromTime").val();
+        var overtimeToTime = $("#overtimeToTime").val();
+
+        var remarks = $("#remarks").val();
 
         if (dataType == '') {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Required Information',
-                text: 'Please fill up all the required Information',
-            })
+            if (dataType == 1 && empID && (attendanceDate_timeIn == '' || attendanceTime_timeIn == '' || attendanceDate_timeOut == '' || attendanceTime_timeOut == '' || remarks == '')) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Required Information',
+                    text: 'Please fill up all the required Information',
+                })
+            }
+            else if (dataType == 2 && empID && (leaveType == '' || leaveStartDate == '' || leaveEndDate == '' || withAttachment == '' || withoutAttachment == '' || remarks == '')) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Required Information',
+                    text: 'Please fill up all the required Information',
+                })
+            }
+            else if (dataType == 3 && empID && (overtimeOTDate == '' || otType == '' || overtimeFromTime == '' || overtimeToTime == '' || remarks == '')) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Required Information',
+                    text: 'Please fill up all the required Information',
+                })
+            }
         } else {
             Swal.fire({
                 icon: 'question',
@@ -146,31 +183,43 @@ $(document).ready(function() {
                 confirmButtonText: 'Yes',
             }).then((result) => {
                 if (result.isConfirmed) {
+                    fileDispute.append('dataType', dataType);
+                    fileDispute.append('empID', empID);
+                    fileDispute.append('remarks', remarks);
+                    fileDispute.append('action', action);
+
+                    fileDispute.append('attendanceDate_timeIn', attendanceDate_timeIn);
+                    fileDispute.append('attendanceTime_timeIn', attendanceTime_timeIn);
+                    fileDispute.append('attendanceDate_timeOut', attendanceDate_timeOut);
+                    fileDispute.append('attendanceTime_timeOut', attendanceTime_timeOut);
+
+                    fileDispute.append('leaveType', leaveType);
+                    fileDispute.append('leaveStartDate', leaveStartDate);
+                    fileDispute.append('leaveEndDate', leaveEndDate);
+                    fileDispute.append('withAttachment', withAttachment);
+                    fileDispute.append('withoutAttachment', withoutAttachment);
+
+                    fileDispute.append('overtimeOTDate', overtimeOTDate);
+                    fileDispute.append('otType', otType);
+                    fileDispute.append('overtimeFromTime', overtimeFromTime);
+                    fileDispute.append('overtimeToTime', overtimeToTime);
 
                     $.ajax({
                         type: "POST",
                         url: "../backend/admin/disputeAction.php",
-                        data: $(this).serialize(),
-                        cache: false,
+                        data: fileDispute,
+                        contentType: false,
+                        processData: false,
                         success: function (res) {
                             const data = JSON.parse(res);
                             var message = data.em;
                             if (data.error == 0) {
                                 var id = data.id;
                                 if (dataType == 1) {
-                                    loadAllowanceData(id);
+                                    
                                 }
                                 else if (dataType == 2) {
-                                    loadReimbursementData(id);
-                                }
-                                else if (dataType == 3) {
-                                    loadDeductionData(id);
-                                }
-                                else if (dataType == 4) {
-                                    loadAdjustmentData(id);
-                                }
-                                else if (dataType == 5) {
-                                    loadSalaryAdjustmentData(id);
+                                    
                                 }
                                 Swal.fire({
                                     icon: 'success',
@@ -185,15 +234,6 @@ $(document).ready(function() {
                                     }
                                     else if (dataType == 2) {
                                         $('#viewReimbursementModal').modal('show');
-                                    }
-                                    else if (dataType == 3) {
-                                        $('#viewDeductionModal').modal('show');
-                                    }
-                                    else if (dataType == 4) {
-                                        $('#viewAdjustmentModal').modal('show');
-                                    }
-                                    else if (dataType == 5) {
-                                        $('#viewSalaryAdjustmentModal').modal('show');
                                     }
                                 })
                             } else {
@@ -210,20 +250,17 @@ $(document).ready(function() {
         }
     });
 
-    $('#btnAllowanceUpdate').hide();
-    $('#btnAllowanceDelete').hide();
-
-    // VIEW AND UPDATE ALLOWANCE
+    // VIEW AND UPDATE ATTENDANCE DISPUTE
     var array = [];
-    $(document).on('click', '.allowanceView', function() {
-        var allowance_id = $(this).data('id');
-        array.push(allowance_id);
-        var id_allowance = array[array.length - 1];
+    $(document).on('click', '.attendanceView', function() {
+        var attendance_id = $(this).data('id');
+        array.push(attendance_id);
+        var id_attendance = array[array.length - 1];
 
         // VIEW ALLOWANCE
         $.ajax({
             type: "GET",
-            url: "../backend/admin/adjustmentModal.php?allowance_id=" + id_allowance,
+            url: "../backend/admin/adjustmentModal.php?allowance_id=" + id_attendance,
             success: function(response) {
 
                 var res = jQuery.parseJSON(response);
