@@ -695,6 +695,12 @@
             return $fileDisputeOvertime;
         }
 
+        public function getDisputeInfo($disputeID) {
+            $dispute = "
+                SELECT * FROM ".$this->disputes." WHERE disputeID = '$disputeID'";
+            return $dispute;
+        }
+
         public function getCashAdvanceInfo($requestID) {
             $cashAdvance = "
                 SELECT requestID, employees.employeeID, employees.firstName AS firstName, employees.lastName AS lastName, 
