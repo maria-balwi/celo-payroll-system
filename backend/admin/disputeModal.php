@@ -4,8 +4,8 @@
     session_start();
     $conn = $database->dbConnect();
 
-    if (isset($_GET['disputeID'])) {
-        $dispute_id = mysqli_real_escape_string($conn, $_GET['disputeID']);
+    if (isset($_GET['dispute_id'])) {
+        $dispute_id = mysqli_real_escape_string($conn, $_GET['dispute_id']);
         $getDisputeQuery = $payroll->getDisputeInfo($dispute_id);
         $getDisputeResult = mysqli_query($conn, $getDisputeQuery);
 
@@ -30,68 +30,91 @@
                 $attendance = mysqli_fetch_array($getAttendanceResult);
                 $res = [
                     'status' => 200,
-                    'message' => 'Attendance found',
+                    'message' => 'Attendance ID found',
                     'data' => $attendance
+                ];
+                echo json_encode($res);
+                exit;
+            }
+            else
+            {
+                $res = [
+                    'status' => 404,
+                    'message' => 'Attendance ID not found' 
                 ];
                 echo json_encode($res);
                 exit;
             }
         }
         else if ($dispute['leaveID']) {
-            
+            $getLeaveQuery = $payroll->getLeaveInfo($dispute['leaveID']);
+            $getLeaveResult = mysqli_query($conn, $getLeaveQuery);
+
+            if ($getLeaveResult === false) {
+                echo json_encode([
+                    'status' => 404, 
+                    'message' => 'Query failed',
+                    'sql_error' => mysqli_error($conn),
+                    'sql' => $getLeaveQuery
+                ]);
+                exit;
+            }
+
+            if (mysqli_num_rows($getLeaveResult) == 1) 
+            {
+                $leave = mysqli_fetch_array($getLeaveResult);
+                $res = [
+                    'status' => 200, 
+                    'message' => 'Leave ID found', 
+                    'data' => $leave
+                ];
+                echo json_encode($res);
+                exit;
+            }
+            else 
+            {
+                $res = [
+                    'status' => 404,
+                    'message' => 'Leave ID not found' 
+                ];
+                echo json_encode($res);
+                exit;
+            }
         }
         else if ($dispute['overtimeID']) {
-            
+            $getOvertimeQuery = $payroll->getOvertimeInfo($dispute['overtimeID']);
+            $getOvertimeResult = mysqli_query($conn, $getOvertimeQuery);
+
+            if ($getOvertimeResult === false) {
+                echo json_encode([
+                    'status' => 404, 
+                    'message' => 'Query failed',
+                    'sql_error' => mysqli_error($conn),
+                    'sql' => $getOvertimeQuery
+                ]);
+                exit;
+            }
+
+            if (mysqli_num_rows($getOvertimeResult) == 1) 
+            {
+                $overtime = mysqli_fetch_array($getOvertimeResult);
+                $res = [
+                    'status' => 200, 
+                    'message' => 'Overtime ID found', 
+                    'data' => $overtime
+                ];
+                echo json_encode($res);
+                exit;
+            }
+            else 
+            {
+                $res = [
+                    'status' => 404,
+                    'message' => 'Overtime ID not found' 
+                ];
+                echo json_encode($res);
+                exit;
+            }
         }
-        
-        if (mysqli_num_rows($getCashAdvanceResult) == 1)
-        {
-            $payrollCutoffStart = $cashAdvance['payrollCutoffStart'];
-            $payrollCutoffEnd = $cashAdvance['payrollCutoffEnd'];
-            $caBreakdown = [];
-
-            if ($payrollCutoffStart > $payrollCutoffEnd) {
-                $maxCycle = 24;
-                $minCycle = 1;
-
-                $caBreakdownQuery = mysqli_query($conn, $payroll->viewCABreakdown($payrollCutoffStart, $maxCycle));
-                while ($caBreakdownResult = mysqli_fetch_array($caBreakdownQuery)) {
-                    $caBreakdown[] = $caBreakdownResult;
-                }
-                $caBreakdownQuery = mysqli_query($conn, $payroll->viewCABreakdown($minCycle, $payrollCutoffEnd));
-            }
-            else {
-                $caBreakdownQuery = mysqli_query($conn, $payroll->viewCABreakdown($payrollCutoffStart, $payrollCutoffEnd));
-            }
-            while ($caBreakdownResult = mysqli_fetch_array($caBreakdownQuery)) {
-                $caBreakdown[] = $caBreakdownResult;
-            }
-
-            $caPaymentHistory = [];
-            $caPaymentHistoryQuery = mysqli_query($conn, $payroll->viewCAPaymentHistory($request_id));
-            while ($caPaymentHistoryResult = mysqli_fetch_array($caPaymentHistoryQuery)) {
-                $caPaymentHistory[] = $caPaymentHistoryResult;
-            }
-            
-            $res = [
-                'status' => 200,
-                'message' => 'Cash Advance Fetch Successfully by id',
-                'data' => $cashAdvance,
-                'caBreakdown' => $caBreakdown, 
-                'caPaymentHistory' => $caPaymentHistory
-            ];
-
-            echo json_encode($res);
-            return;
-        }
-        else
-        {
-            $res = [
-                'status' => 404,
-                'message' => 'Cash Advance id not found'
-            ];
-            echo json_encode($res);
-            return;
-        } 
     }
 ?>

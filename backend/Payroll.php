@@ -701,6 +701,56 @@
             return $dispute;
         }
 
+        public function getAttendanceInfo($attendanceID) {
+            $attendanceInfo = "
+                SELECT disputeID, employeeID, firstName, lastName,
+                DATE_FORMAT(dateFiled, '%M %d, %Y') AS dateFiled,
+                DATE_FORMAT(attendanceDate_timeIn, '%M %d, %Y') AS attendanceDate_timeIn,
+                DATE_FORMAT(attendanceDate_timeOut, '%M %d, %Y') AS attendanceDate_timeOut,
+                attendanceTime_timeIn, attendanceTime_timeOut,
+                remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
+                ON dispute.attendanceID = disputeAttendance.attendanceID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeAttendance.empID = employee.id
+                WHERE dispute.attendanceID = '$attendanceID'";
+            return $attendanceInfo;
+        }
+
+        public function getLeaveInfo($leaveID) {
+            $leaveDispute = "
+                SELECT disputeID, employeeID, firstName, lastName,
+                DATE_FORMAT(dateFiled, '%M %d, %Y') AS dateFiled,
+                DATE_FORMAT(startDate, '%M %d, %Y') AS startDate,
+                DATE_FORMAT(endDate, '%M %d, %Y') AS endDate,
+                attachment, leaveType, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
+                ON dispute.leaveID = disputeLeaves.leaveID
+                INNER JOIN tbl_leavetype AS leaves
+                ON disputeLeaves.leaveTypeID = leaves.leaveTypeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeLeaves.empID = employee.id
+                WHERE dispute.leaveID = '$leaveID'";
+            return $leaveDispute;
+        }
+
+        public function getOvertimeInfo($overtimeID) {
+            $overtimeDispute = "
+                SELECT disputeID, employeeID, firstName, lastName,
+                DATE_FORMAT(dateFiled, '%M %d, %Y') AS dateFiled,
+                DATE_FORMAT(otDate, '%M %d, %Y') AS otDate,
+                otType, fromTime, toTime, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
+                ON dispute.overtimeID = disputeOvertime.overtimeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeOvertime.empID = employee.id
+                WHERE dispute.overtimeID = '$overtimeID'";
+            return $overtimeDispute;
+        }
+
         public function getCashAdvanceInfo($requestID) {
             $cashAdvance = "
                 SELECT requestID, employees.employeeID, employees.firstName AS firstName, employees.lastName AS lastName, 

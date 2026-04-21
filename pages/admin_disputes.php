@@ -107,7 +107,7 @@
                                                             $attendanceDateTime_in = formatDateTime($timeInDate, $timeInTime);
                                                             $attendanceDateTime_out = formatDateTime($timeOutDate, $timeOutTime);
 
-                                                            echo "<tr data-id='" . $disputeID . "' class='disputeView cursor-pointer'>";
+                                                            echo "<tr data-id='" . $disputeID . "' class='attendanceView cursor-pointer'>";
                                                             echo "<td class ='whitespace-nowrap'>" . $employeeID . "</td>";
                                                             echo "<td class =' text-left whitespace-nowrap'>" . $employeeName . "</td>";
                                                             echo "<td class ='whitespace-nowrap'>" . $attendanceDateTime_in . "</td>";
@@ -153,7 +153,7 @@
                                                             $attendanceDateTime_in = formatDateTime($timeInDate, $timeInTime);
                                                             $attendanceDateTime_out = formatDateTime($timeOutDate, $timeOutTime);
 
-                                                            echo "<tr data-id='" . $disputeID . "' class='disputeView cursor-pointer'>";
+                                                            echo "<tr data-id='" . $disputeID . "' class='attendanceView cursor-pointer'>";
                                                             echo "<td class ='whitespace-nowrap'>" . $employeeID . "</td>";
                                                             echo "<td class =' text-left whitespace-nowrap'>" . $employeeName . "</td>";
                                                             echo "<td class ='whitespace-nowrap'>" . $attendanceDateTime_in . "</td>";
@@ -199,7 +199,7 @@
                                                             $attendanceDateTime_in = formatDateTime($timeInDate, $timeInTime);
                                                             $attendanceDateTime_out = formatDateTime($timeOutDate, $timeOutTime);
 
-                                                            echo "<tr data-id='" . $disputeID . "' class='disputeView cursor-pointer'>";
+                                                            echo "<tr data-id='" . $disputeID . "' class='attendanceView cursor-pointer'>";
                                                             echo "<td class ='whitespace-nowrap'>" . $employeeID . "</td>";
                                                             echo "<td class =' text-left whitespace-nowrap'>" . $employeeName . "</td>";
                                                             echo "<td class ='whitespace-nowrap'>" . $attendanceDateTime_in . "</td>";
@@ -279,7 +279,7 @@
                                                                 $leave_days = $leave_days . " days";
                                                             }
 
-                                                            echo "<tr data-id='" . $disputeID . "' class='disputeView cursor-pointer'>";
+                                                            echo "<tr data-id='" . $disputeID . "' class='leaveView cursor-pointer'>";
                                                             echo "<td class ='whitespace-nowrap'>" . formatDate($dateFiled) . "</td>";
                                                             echo "<td class =' text-left whitespace-nowrap'>" . $employeeName . "</td>";
                                                             echo "<td class ='whitespace-nowrap'>" . $leaveType . "</td>";
@@ -343,7 +343,7 @@
                                                                 $leave_days = $leave_days . " days";
                                                             }
 
-                                                            echo "<tr data-id='" . $disputeID . "' class='disputeView cursor-pointer'>";
+                                                            echo "<tr data-id='" . $disputeID . "' class='leaveView cursor-pointer'>";
                                                             echo "<td class ='whitespace-nowrap'>" . formatDate($dateFiled) . "</td>";
                                                             echo "<td class =' text-left whitespace-nowrap'>" . $employeeName . "</td>";
                                                             echo "<td class ='whitespace-nowrap'>" . $leaveType . "</td>";
@@ -407,7 +407,7 @@
                                                                 $leave_days = $leave_days . " days";
                                                             }
 
-                                                            echo "<tr data-id='" . $disputeID . "' class='disputeView cursor-pointer'>";
+                                                            echo "<tr data-id='" . $disputeID . "' class='leaveView cursor-pointer'>";
                                                             echo "<td class ='whitespace-nowrap'>" . formatDate($dateFiled) . "</td>";
                                                             echo "<td class =' text-left whitespace-nowrap'>" . $employeeName . "</td>";
                                                             echo "<td class ='whitespace-nowrap'>" . $leaveType . "</td>";
@@ -480,7 +480,7 @@
                                                             $status = $disputeDetails['status'] ?? '';
 
 
-                                                            echo "<tr data-id='" . $disputeID . "' class='disputeView cursor-pointer'>";
+                                                            echo "<tr data-id='" . $disputeID . "' class='overtimeView cursor-pointer'>";
                                                             echo "<td class ='whitespace-nowrap'>" . formatDate($dateFiled) . "</td>";
                                                             echo "<td class ='whitespace-nowrap'>" . formatDate($otDate) . "</td>";
                                                             echo "<td class =' text-left whitespace-nowrap'>" . $employeeName . "</td>";
@@ -521,7 +521,7 @@
                                                             $status = $disputeDetails['status'] ?? '';
 
 
-                                                            echo "<tr data-id='" . $disputeID . "' class='disputeView cursor-pointer'>";
+                                                            echo "<tr data-id='" . $disputeID . "' class='overtimeView cursor-pointer'>";
                                                             echo "<td class ='whitespace-nowrap'>" . formatDate($dateFiled) . "</td>";
                                                             echo "<td class ='whitespace-nowrap'>" . formatDate($otDate) . "</td>";
                                                             echo "<td class =' text-left whitespace-nowrap'>" . $employeeName . "</td>";
@@ -562,7 +562,7 @@
                                                             $status = $disputeDetails['status'] ?? '';
 
 
-                                                            echo "<tr data-id='" . $disputeID . "' class='disputeView cursor-pointer'>";
+                                                            echo "<tr data-id='" . $disputeID . "' class='overtimeView cursor-pointer'>";
                                                             echo "<td class ='whitespace-nowrap'>" . formatDate($dateFiled) . "</td>";
                                                             echo "<td class ='whitespace-nowrap'>" . formatDate($otDate) . "</td>";
                                                             echo "<td class =' text-left whitespace-nowrap'>" . $employeeName . "</td>";
@@ -843,29 +843,36 @@
             <!--------------------------------------------------------------------------------------------------------------------------------------------->
             <!------------------------------------------------------------ VIEW DATA MODAL ----------------------------------------------------------->
             <div class="modal fade" id="viewModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
-                <div class="modal-dialog modal-none modal-sm modal-dialog-centered">
+                <div class="modal-dialog modal-none modal-dialog-centered">
                     <div class="modal-content" id="viewModal">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="userFormLabel">View Data</h1>
-                            <!-- <input type="hidden" id="viewDataID"> -->
+                            <input type="hidden" id="viewDisputeID">
+                            <input type="hidden" id="userDept" value="<?php echo $_SESSION['departmentID']; ?>">
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="row g-2 mb-1">
-                                <div class="col-6">
+                                <div class="col-4">
                                     <label for="viewDataType">Type:</label>
                                 </div>
-                                <div class="col-6 dateFiledSection">
+                                <div class="col-5 dateFiledSection">
                                     <label for="viewDateFiled">Date Filed:</label>
+                                </div>
+                                <div class="col-3">
+                                    <label for="viewStatus">Status:</label>
                                 </div>
                             </div>
 
                             <div class="row g-2 mb-2">
-                                <div class="col-6">
-                                    <input type="text" class="form-control" id="viewStatus" disabled readonly>
+                                <div class="col-4">
+                                    <input type="text" class="form-control" id="viewDataType" disabled readonly>
                                 </div>
-                                <div class="col-6 dateFiledSection">
+                                <div class="col-5 dateFiledSection">
                                     <input type="text" class="form-control" id="viewDateFiled" disabled readonly>
+                                </div>
+                                <div class="col-3">
+                                    <input type="text" class="form-control" id="viewStatus" disabled readonly>
                                 </div>
                             </div>
 
@@ -898,7 +905,7 @@
 
                             <div class="row g-2 mb-2 attendanceSection">
                                 <div class="col-6">
-                                    <input type="date" class="form-control" id="viewAttendanceDate_timeIn" disabled readonly>
+                                    <input type="text" class="form-control" id="viewAttendanceDate_timeIn" disabled readonly>
                                 </div>
                                 <div class="col-6">
                                     <input type="time" class="form-control" id="viewAttendanceTime_timeIn" disabled readonly>
@@ -925,7 +932,7 @@
 
                             <div class="row g-2 mb-2 overtimeSection">
                                 <div class="col-6">
-                                    <input type="date" class="form-control" id="viewOvertimeOTDate" disabled readonly>
+                                    <input type="text" class="form-control" id="viewOvertimeOTDate" disabled readonly>
                                 </div>
                                 <div class="col-6">
                                     <input type="text" class="form-control" id="viewOtType" disabled readonly>
@@ -934,7 +941,7 @@
 
                             <div class="row g-2 mb-2 attendanceSection">
                                 <div class="col-6">
-                                    <input type="date" class="form-control" id="viewAttendanceDate_timeOut" disabled readonly>
+                                    <input type="text" class="form-control" id="viewAttendanceDate_timeOut" disabled readonly>
                                 </div>
                                 <div class="col-6">
                                     <input type="time" class="form-control" id="viewAttendanceTime_timeOut" disabled readonly>
@@ -964,10 +971,10 @@
 
                             <div class="row g-2 mb-2 leaveSection">
                                 <div class="col-6">
-                                    <input type="date" class="form-control" id="viewLeaveStartDate" disabled readonly>
+                                    <input type="text" class="form-control" id="viewLeaveStartDate" disabled readonly>
                                 </div>
                                 <div class="col-6">
-                                    <input type="date" class="form-control" id="viewLeaveEndDate" disabled readonly>
+                                    <input type="text" class="form-control" id="viewLeaveEndDate" disabled readonly>
                                 </div>
                             </div>
 
@@ -989,16 +996,14 @@
                                 </div>
                             </div>
 
-                            <div class="row g-3 mb-2 leaveSection">
+                            <div class="row g-2" id="viewWithAttachmentRow">
                                 <div class="col-12">
-                                    <div class="form-check form-check-inline">
-                                        <input type="text" class="form-control" id="viewWithAttachment" disabled readonly>
-                                        <label class="form-check-label" for="viewWithAttachment">With Attachment</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input type="text" class="form-control" id="viewWithoutAttachment" disabled readonly>
-                                        <label class="form-check-label" for="viewWithoutAttachment">Without Attachment</label>
-                                    </div>
+                                    <label class="text-blue-500">With Attachment</label>
+                                </div>
+                            </div>
+                            <div class="row g-2" id="viewWithoutAttachmentRow">
+                                <div class="col-12">
+                                    <label class="text-blue-500">Without Attachment</label>
                                 </div>
                             </div>
 
@@ -1015,6 +1020,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
+                            <button type="button" class="btn btn-success approveDispute" id="approveDispute">Approve</button>
+                            <button type="button" class="btn btn-danger disapproveDispute" id="disapproveDispute">Disapprove</button>
                             <!-- <button type="button" class="btn btn-primary allowanceUpdate" id="btnAllowanceUpdate">Update</button>
                             <button type="button" class="btn btn-danger allowanceDelete" id="btnAllowanceDelete">Delete</button> -->
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnClose_allowance">Close</button>
