@@ -338,36 +338,13 @@ $(document).ready(function() {
             }
         });
 
-        // UPDATE ATTENDANCE
-        $(document).on('click', '.allowanceUpdate', function() {
-            $('#viewAllowanceModal').modal('hide');
-            var id_allowance = array[array.length - 1];
+        // APPROVE LEAVE APPPLICATION
+        $(document).on('click', '.approveDispute', function() {
+            var id_dispute = array[array.length - 1];
 
             $.ajax({
                 type: "GET",
-                url: "../backend/admin/adjustmentModal.php?allowance_id=" + id_allowance,
-                success: function(response) {
-
-                    var res = jQuery.parseJSON(response);
-                    if (res.status == 404) {
-                        alert(res.message);
-                    } 
-                    else if (res.status == 200) {
-                        $('#updateAllowanceID').val(res.data.allowanceID);
-                        $('#updateAllowanceName').val(res.data.allowanceName);
-                        $('#updateAllowanceModal').modal('show');
-                    }
-                }
-            });
-        })
-
-        // DELETE ATTENDANCE
-        $(document).on('click', '.allowanceDelete', function() {
-            var id_allowance = array[array.length - 1];
-
-            $.ajax({
-                type: "GET",
-                url: "../backend/admin/adjustmentModal.php?allowance_id=" + id_allowance,
+                url: "../backend/admin/disputeModal.php?dispute_id=" + id_dispute,
                 success: function(response) {
 
                     var res = jQuery.parseJSON(response);
@@ -377,32 +354,35 @@ $(document).ready(function() {
 
                         Swal.fire({
                             icon: 'question',
-                            title: 'Delete Allowance',
-                            text: 'Are you sure you want to delete this allowance?',
+                            title: 'Approve Attendance Dispute',
+                            text: 'Are you sure you want to approve this attendance dispute?',
                             showCancelButton: true,
-                            cancelButtonColor: '#6c757d',
+
                             confirmButtonColor: '#28a745',
+                            cancelButtonColor: '#6c757d',
                             confirmButtonText: 'Yes',
+                            cancelButtonText: 'Cancel',
 
                         }).then((result) => {
                             if (result.isConfirmed) {
-
                                 $.ajax({
-                                    url: "../backend/admin/deleteAdjustment.php",
+                                    url: "../backend/admin/disputeAction.php",
                                     type: 'POST',
                                     data: {
-                                        id_allowance: id_allowance
+                                        id_dispute: id_dispute,
+                                        type: 'attendance',
+                                        action: 'approve'
                                     },
                                     cache: false,
                                     success: function(data) {
                                         Swal.fire({
                                             icon: 'success',
                                             title: 'Success',
-                                            text: 'Allowance Deleted Successfully',
+                                            text: 'Attendance dispute has been approved!',
                                             timer: 2000,
                                             showConfirmButton: false,
                                         }).then(() => {
-                                            window.location.reload();
+                                            loadAttendanceDispute(id_dispute);
                                         })
                                     }
                                 })
@@ -412,6 +392,134 @@ $(document).ready(function() {
                 }
             });
         })
+
+        // DISAPPROVE LEAVE APPPLICATION
+        $(document).on('click', '.disapproveDispute', function() {
+            var id_dispute = array[array.length - 1];
+
+            $.ajax({
+                type: "GET",
+                url: "../backend/admin/disputeModal.php?dispute_id=" + id_dispute,
+                success: function(response) {
+
+                    var res = jQuery.parseJSON(response);
+                    if (res.status == 404) {
+                        alert(res.message);
+                    } else if (res.status == 200) {
+
+                        Swal.fire({
+                            icon: 'question',
+                            title: 'Disapprove Attendance Dispute',
+                            text: 'Are you sure you want to disapprove this attendance dispute?',
+                            showCancelButton: true,
+                            cancelButtonColor: '#6c757d',
+                            confirmButtonColor: '#28a745',
+                            confirmButtonText: 'Yes',
+
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $.ajax({
+                                    url: "../backend/admin/disputeAction.php",
+                                    type: 'POST',
+                                    data: {
+                                        id_dispute: id_dispute,
+                                        type: 'attendance',
+                                        action: 'disapprove'
+                                    },
+                                    cache: false,
+                                    success: function(data) {
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Success',
+                                            text: 'Attendance Dispute has been disapproved!',
+                                            timer: 2000,
+                                            showConfirmButton: false,
+                                        }).then(() => {
+                                            loadAttendanceDispute(id_dispute);
+                                        })
+                                    }
+                                })
+                            }
+                        })
+                    }
+                }
+            });
+        })
+
+        // // UPDATE ATTENDANCE
+        // $(document).on('click', '.allowanceUpdate', function() {
+        //     $('#viewAllowanceModal').modal('hide');
+        //     var id_allowance = array[array.length - 1];
+
+        //     $.ajax({
+        //         type: "GET",
+        //         url: "../backend/admin/adjustmentModal.php?allowance_id=" + id_allowance,
+        //         success: function(response) {
+
+        //             var res = jQuery.parseJSON(response);
+        //             if (res.status == 404) {
+        //                 alert(res.message);
+        //             } 
+        //             else if (res.status == 200) {
+        //                 $('#updateAllowanceID').val(res.data.allowanceID);
+        //                 $('#updateAllowanceName').val(res.data.allowanceName);
+        //                 $('#updateAllowanceModal').modal('show');
+        //             }
+        //         }
+        //     });
+        // })
+
+        // // DELETE ATTENDANCE
+        // $(document).on('click', '.allowanceDelete', function() {
+        //     var id_allowance = array[array.length - 1];
+
+        //     $.ajax({
+        //         type: "GET",
+        //         url: "../backend/admin/adjustmentModal.php?allowance_id=" + id_allowance,
+        //         success: function(response) {
+
+        //             var res = jQuery.parseJSON(response);
+        //             if (res.status == 404) {
+        //                 alert(res.message);
+        //             } else if (res.status == 200) {
+
+        //                 Swal.fire({
+        //                     icon: 'question',
+        //                     title: 'Delete Allowance',
+        //                     text: 'Are you sure you want to delete this allowance?',
+        //                     showCancelButton: true,
+        //                     cancelButtonColor: '#6c757d',
+        //                     confirmButtonColor: '#28a745',
+        //                     confirmButtonText: 'Yes',
+
+        //                 }).then((result) => {
+        //                     if (result.isConfirmed) {
+
+        //                         $.ajax({
+        //                             url: "../backend/admin/deleteAdjustment.php",
+        //                             type: 'POST',
+        //                             data: {
+        //                                 id_allowance: id_allowance
+        //                             },
+        //                             cache: false,
+        //                             success: function(data) {
+        //                                 Swal.fire({
+        //                                     icon: 'success',
+        //                                     title: 'Success',
+        //                                     text: 'Allowance Deleted Successfully',
+        //                                     timer: 2000,
+        //                                     showConfirmButton: false,
+        //                                 }).then(() => {
+        //                                     window.location.reload();
+        //                                 })
+        //                             }
+        //                         })
+        //                     }
+        //                 })
+        //             }
+        //         }
+        //     });
+        // })
     });
 
     // VIEW AND UPDATE LEAVE DISPUTE
@@ -528,36 +636,13 @@ $(document).ready(function() {
             }
         });
 
-        // UPDATE LEAVE
-        $(document).on('click', '.allowanceUpdate', function() {
-            $('#viewAllowanceModal').modal('hide');
-            var id_allowance = array[array.length - 1];
+        // APPROVE LEAVE DISPUTE
+        $(document).on('click', '.approveDispute', function() {
+            var id_dispute = array[array.length - 1];
 
             $.ajax({
                 type: "GET",
-                url: "../backend/admin/adjustmentModal.php?allowance_id=" + id_allowance,
-                success: function(response) {
-
-                    var res = jQuery.parseJSON(response);
-                    if (res.status == 404) {
-                        alert(res.message);
-                    } 
-                    else if (res.status == 200) {
-                        $('#updateAllowanceID').val(res.data.allowanceID);
-                        $('#updateAllowanceName').val(res.data.allowanceName);
-                        $('#updateAllowanceModal').modal('show');
-                    }
-                }
-            });
-        })
-
-        // DELETE LEAVE
-        $(document).on('click', '.allowanceDelete', function() {
-            var id_allowance = array[array.length - 1];
-
-            $.ajax({
-                type: "GET",
-                url: "../backend/admin/adjustmentModal.php?allowance_id=" + id_allowance,
+                url: "../backend/admin/disputeModal.php?dispute_id=" + id_dispute,
                 success: function(response) {
 
                     var res = jQuery.parseJSON(response);
@@ -567,32 +652,61 @@ $(document).ready(function() {
 
                         Swal.fire({
                             icon: 'question',
-                            title: 'Delete Allowance',
-                            text: 'Are you sure you want to delete this allowance?',
+                            title: 'Approve Attendance Dispute',
+                            text: 'Are you sure you want to approve this attendance dispute?',
+                            showDenyButton: true,
                             showCancelButton: true,
-                            cancelButtonColor: '#6c757d',
+
                             confirmButtonColor: '#28a745',
-                            confirmButtonText: 'Yes',
+                            denyButtonColor: '#d4ba24',
+                            cancelButtonColor: '#6c757d',
+                            confirmButtonText: 'Yes - Paid Attendance',
+                            denyButtonText: 'Yes - Unpaid Leave',
+                            cancelButtonText: 'Cancel',
 
                         }).then((result) => {
                             if (result.isConfirmed) {
-
                                 $.ajax({
-                                    url: "../backend/admin/deleteAdjustment.php",
+                                    url: "../backend/admin/disputeAction.php",
                                     type: 'POST',
                                     data: {
-                                        id_allowance: id_allowance
+                                        id_dispute: id_dispute,
+                                        action: 'approve', 
+                                        isPaid: 1
                                     },
                                     cache: false,
                                     success: function(data) {
                                         Swal.fire({
                                             icon: 'success',
                                             title: 'Success',
-                                            text: 'Allowance Deleted Successfully',
+                                            text: 'Leave application has been approved!',
                                             timer: 2000,
                                             showConfirmButton: false,
                                         }).then(() => {
-                                            window.location.reload();
+                                            loadAttendanceDispute(id_dispute);
+                                        })
+                                    }
+                                })
+                            }
+                            else if (result.isDenied) {
+                                $.ajax({
+                                    url: "../backend/admin/disputeAction.php",
+                                    type: 'POST',
+                                    data: {
+                                        id_leave: id_leave,
+                                        action: 'approve',
+                                        isPaid: 0
+                                    },
+                                    cache: false,
+                                    success: function(data) {
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Success',
+                                            text: 'Leave application has been approved!',
+                                            timer: 2000,
+                                            showConfirmButton: false,
+                                        }).then(() => {
+                                            loadAttendanceDispute(id_dispute);
                                         })
                                     }
                                 })
@@ -602,6 +716,134 @@ $(document).ready(function() {
                 }
             });
         })
+
+        // DISAPPROVE LEAVE DISPUTE
+        $(document).on('click', '.disapproveDispute', function() {
+            var id_leave = array[array.length - 1];
+
+            $.ajax({
+                type: "GET",
+                url: "../backend/admin/leaveModal.php?leave_id=" + id_leave,
+                success: function(response) {
+
+                    var res = jQuery.parseJSON(response);
+                    if (res.status == 404) {
+                        alert(res.message);
+                    } else if (res.status == 200) {
+
+                        Swal.fire({
+                            icon: 'question',
+                            title: 'Disapprove Leave Application',
+                            text: 'Are you sure you want to disapprove this leave application?',
+                            showCancelButton: true,
+                            cancelButtonColor: '#6c757d',
+                            confirmButtonColor: '#28a745',
+                            confirmButtonText: 'Yes',
+
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $.ajax({
+                                    url: "../backend/admin/leaveAction.php",
+                                    type: 'POST',
+                                    data: {
+                                        id_leave: id_leave,
+                                        action: 'disapprove'
+                                    },
+                                    cache: false,
+                                    success: function(data) {
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Success',
+                                            text: 'Leave application has been disapproved!',
+                                            timer: 2000,
+                                            showConfirmButton: false,
+                                        }).then(() => {
+                                            // window.location.reload();
+                                            updateLeaveModal(id_leave);
+                                        })
+                                    }
+                                })
+                            }
+                        })
+                    }
+                }
+            });
+        })
+
+        // // UPDATE LEAVE
+        // $(document).on('click', '.allowanceUpdate', function() {
+        //     $('#viewAllowanceModal').modal('hide');
+        //     var id_allowance = array[array.length - 1];
+
+        //     $.ajax({
+        //         type: "GET",
+        //         url: "../backend/admin/adjustmentModal.php?allowance_id=" + id_allowance,
+        //         success: function(response) {
+
+        //             var res = jQuery.parseJSON(response);
+        //             if (res.status == 404) {
+        //                 alert(res.message);
+        //             } 
+        //             else if (res.status == 200) {
+        //                 $('#updateAllowanceID').val(res.data.allowanceID);
+        //                 $('#updateAllowanceName').val(res.data.allowanceName);
+        //                 $('#updateAllowanceModal').modal('show');
+        //             }
+        //         }
+        //     });
+        // })
+
+        // // DELETE LEAVE
+        // $(document).on('click', '.allowanceDelete', function() {
+        //     var id_allowance = array[array.length - 1];
+
+        //     $.ajax({
+        //         type: "GET",
+        //         url: "../backend/admin/adjustmentModal.php?allowance_id=" + id_allowance,
+        //         success: function(response) {
+
+        //             var res = jQuery.parseJSON(response);
+        //             if (res.status == 404) {
+        //                 alert(res.message);
+        //             } else if (res.status == 200) {
+
+        //                 Swal.fire({
+        //                     icon: 'question',
+        //                     title: 'Delete Allowance',
+        //                     text: 'Are you sure you want to delete this allowance?',
+        //                     showCancelButton: true,
+        //                     cancelButtonColor: '#6c757d',
+        //                     confirmButtonColor: '#28a745',
+        //                     confirmButtonText: 'Yes',
+
+        //                 }).then((result) => {
+        //                     if (result.isConfirmed) {
+
+        //                         $.ajax({
+        //                             url: "../backend/admin/deleteAdjustment.php",
+        //                             type: 'POST',
+        //                             data: {
+        //                                 id_allowance: id_allowance
+        //                             },
+        //                             cache: false,
+        //                             success: function(data) {
+        //                                 Swal.fire({
+        //                                     icon: 'success',
+        //                                     title: 'Success',
+        //                                     text: 'Allowance Deleted Successfully',
+        //                                     timer: 2000,
+        //                                     showConfirmButton: false,
+        //                                 }).then(() => {
+        //                                     window.location.reload();
+        //                                 })
+        //                             }
+        //                         })
+        //                     }
+        //                 })
+        //             }
+        //         }
+        //     });
+        // })
     });
 
     // VIEW AND UPDATE OVERTIME DISPUTE
@@ -633,7 +875,6 @@ $(document).ready(function() {
                     $('#viewDisputeID').val(res.data.disputeID);
                     $('#viewDataType').val("Overtime");
                     $('#viewDateFiled').val(res.data.dateFiled);
-                    $('#viewStatus').val(res.data.status);
                     $('#viewEmployeeID').val(res.data.employeeID);
                     $('#viewEmployeeName').val(res.data.firstName + " " + res.data.lastName);
                     $('#viewOvertimeOTDate').val(res.data.otDate);
@@ -641,12 +882,12 @@ $(document).ready(function() {
                     $('#viewOvertimeFromTime').val(res.data.fromTime);
                     $('#viewOvertimeToTime').val(res.data.toTime);
                     $('#viewRemarks').val(res.data.remarks);
-                    // if (res.data.isPaid == 1 && res.data.status == "Approved") {
-                    //     $('#viewStatus').val(res.data.status + ' (Paid)');
-                    // }
-                    // else if (res.data.isPaid == 0 && res.data.status == "Approved") {
-                    //     $('#viewStatus').val(res.data.status + ' (Unpaid)');
-                    // }
+                    if (res.data.isPaid == 1 && res.data.status == 1) {
+                        $('#viewStatus').val('Approved (Paid)');
+                    }
+                    else if (res.data.isPaid == 0 && res.data.status == 1) {
+                        $('#viewStatus').val('Approved (Unpaid)');
+                    }
 
                     $('#approveDispute').hide();
                     $('#disapproveDispute').hide();
@@ -665,12 +906,6 @@ $(document).ready(function() {
                     $('#viewOvertimeFromTime').val(res.data.fromTime);
                     $('#viewOvertimeToTime').val(res.data.toTime);
                     $('#viewRemarks').val(res.data.remarks);
-                    // if (res.data.isPaid == 1 && res.data.status == "Approved") {
-                    //     $('#viewStatus').val(res.data.status + ' (Paid)');
-                    // }
-                    // else if (res.data.isPaid == 0 && res.data.status == "Approved") {
-                    //     $('#viewStatus').val(res.data.status + ' (Unpaid)');
-                    // }
                     
                     $('#approveDispute').show();
                     $('#disapproveDispute').show();
@@ -689,12 +924,6 @@ $(document).ready(function() {
                     $('#viewOvertimeFromTime').val(res.data.fromTime);
                     $('#viewOvertimeToTime').val(res.data.toTime);
                     $('#viewRemarks').val(res.data.remarks);
-                    // if (res.data.isPaid == 1 && res.data.status == "Approved") {
-                    //     $('#viewStatus').val(res.data.status + ' (Paid)');
-                    // }
-                    // else if (res.data.isPaid == 0 && res.data.status == "Approved") {
-                    //     $('#viewStatus').val(res.data.status + ' (Unpaid)');
-                    // }
                     
                     $('#approveDispute').show();
                     $('#disapproveDispute').show();
@@ -704,36 +933,13 @@ $(document).ready(function() {
             }
         });
 
-        // UPDATE OVERTIME
-        $(document).on('click', '.allowanceUpdate', function() {
-            $('#viewAllowanceModal').modal('hide');
-            var id_allowance = array[array.length - 1];
+        // APPROVE OVERTIME DISPUTE
+        $(document).on('click', '.approveDispute', function() {
+            var id_dispute = array[array.length - 1];
 
             $.ajax({
                 type: "GET",
-                url: "../backend/admin/adjustmentModal.php?allowance_id=" + id_allowance,
-                success: function(response) {
-
-                    var res = jQuery.parseJSON(response);
-                    if (res.status == 404) {
-                        alert(res.message);
-                    } 
-                    else if (res.status == 200) {
-                        $('#updateAllowanceID').val(res.data.allowanceID);
-                        $('#updateAllowanceName').val(res.data.allowanceName);
-                        $('#updateAllowanceModal').modal('show');
-                    }
-                }
-            });
-        })
-
-        // DELETE OVERTIME
-        $(document).on('click', '.allowanceDelete', function() {
-            var id_allowance = array[array.length - 1];
-
-            $.ajax({
-                type: "GET",
-                url: "../backend/admin/adjustmentModal.php?allowance_id=" + id_allowance,
+                url: "../backend/admin/disputeModal.php?dispute_id=" + id_dispute,
                 success: function(response) {
 
                     var res = jQuery.parseJSON(response);
@@ -743,32 +949,61 @@ $(document).ready(function() {
 
                         Swal.fire({
                             icon: 'question',
-                            title: 'Delete Allowance',
-                            text: 'Are you sure you want to delete this allowance?',
+                            title: 'Approve Attendance Dispute',
+                            text: 'Are you sure you want to approve this attendance dispute?',
+                            showDenyButton: true,
                             showCancelButton: true,
-                            cancelButtonColor: '#6c757d',
+
                             confirmButtonColor: '#28a745',
-                            confirmButtonText: 'Yes',
+                            denyButtonColor: '#d4ba24',
+                            cancelButtonColor: '#6c757d',
+                            confirmButtonText: 'Yes - Paid Attendance',
+                            denyButtonText: 'Yes - Unpaid Leave',
+                            cancelButtonText: 'Cancel',
 
                         }).then((result) => {
                             if (result.isConfirmed) {
-
                                 $.ajax({
-                                    url: "../backend/admin/deleteAdjustment.php",
+                                    url: "../backend/admin/disputeAction.php",
                                     type: 'POST',
                                     data: {
-                                        id_allowance: id_allowance
+                                        id_dispute: id_dispute,
+                                        action: 'approve', 
+                                        isPaid: 1
                                     },
                                     cache: false,
                                     success: function(data) {
                                         Swal.fire({
                                             icon: 'success',
                                             title: 'Success',
-                                            text: 'Allowance Deleted Successfully',
+                                            text: 'Leave application has been approved!',
                                             timer: 2000,
                                             showConfirmButton: false,
                                         }).then(() => {
-                                            window.location.reload();
+                                            loadAttendanceDispute(id_dispute);
+                                        })
+                                    }
+                                })
+                            }
+                            else if (result.isDenied) {
+                                $.ajax({
+                                    url: "../backend/admin/disputeAction.php",
+                                    type: 'POST',
+                                    data: {
+                                        id_leave: id_leave,
+                                        action: 'approve',
+                                        isPaid: 0
+                                    },
+                                    cache: false,
+                                    success: function(data) {
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Success',
+                                            text: 'Leave application has been approved!',
+                                            timer: 2000,
+                                            showConfirmButton: false,
+                                        }).then(() => {
+                                            loadAttendanceDispute(id_dispute);
                                         })
                                     }
                                 })
@@ -778,6 +1013,134 @@ $(document).ready(function() {
                 }
             });
         })
+
+        // DISAPPROVE OVERTIME DISPUTE
+        $(document).on('click', '.disapproveDispute', function() {
+            var id_leave = array[array.length - 1];
+
+            $.ajax({
+                type: "GET",
+                url: "../backend/admin/leaveModal.php?leave_id=" + id_leave,
+                success: function(response) {
+
+                    var res = jQuery.parseJSON(response);
+                    if (res.status == 404) {
+                        alert(res.message);
+                    } else if (res.status == 200) {
+
+                        Swal.fire({
+                            icon: 'question',
+                            title: 'Disapprove Leave Application',
+                            text: 'Are you sure you want to disapprove this leave application?',
+                            showCancelButton: true,
+                            cancelButtonColor: '#6c757d',
+                            confirmButtonColor: '#28a745',
+                            confirmButtonText: 'Yes',
+
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $.ajax({
+                                    url: "../backend/admin/leaveAction.php",
+                                    type: 'POST',
+                                    data: {
+                                        id_leave: id_leave,
+                                        action: 'disapprove'
+                                    },
+                                    cache: false,
+                                    success: function(data) {
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Success',
+                                            text: 'Leave application has been disapproved!',
+                                            timer: 2000,
+                                            showConfirmButton: false,
+                                        }).then(() => {
+                                            // window.location.reload();
+                                            updateLeaveModal(id_leave);
+                                        })
+                                    }
+                                })
+                            }
+                        })
+                    }
+                }
+            });
+        })
+
+        // // UPDATE OVERTIME
+        // $(document).on('click', '.allowanceUpdate', function() {
+        //     $('#viewAllowanceModal').modal('hide');
+        //     var id_allowance = array[array.length - 1];
+
+        //     $.ajax({
+        //         type: "GET",
+        //         url: "../backend/admin/adjustmentModal.php?allowance_id=" + id_allowance,
+        //         success: function(response) {
+
+        //             var res = jQuery.parseJSON(response);
+        //             if (res.status == 404) {
+        //                 alert(res.message);
+        //             } 
+        //             else if (res.status == 200) {
+        //                 $('#updateAllowanceID').val(res.data.allowanceID);
+        //                 $('#updateAllowanceName').val(res.data.allowanceName);
+        //                 $('#updateAllowanceModal').modal('show');
+        //             }
+        //         }
+        //     });
+        // })
+
+        // // DELETE OVERTIME
+        // $(document).on('click', '.allowanceDelete', function() {
+        //     var id_allowance = array[array.length - 1];
+
+        //     $.ajax({
+        //         type: "GET",
+        //         url: "../backend/admin/adjustmentModal.php?allowance_id=" + id_allowance,
+        //         success: function(response) {
+
+        //             var res = jQuery.parseJSON(response);
+        //             if (res.status == 404) {
+        //                 alert(res.message);
+        //             } else if (res.status == 200) {
+
+        //                 Swal.fire({
+        //                     icon: 'question',
+        //                     title: 'Delete Allowance',
+        //                     text: 'Are you sure you want to delete this allowance?',
+        //                     showCancelButton: true,
+        //                     cancelButtonColor: '#6c757d',
+        //                     confirmButtonColor: '#28a745',
+        //                     confirmButtonText: 'Yes',
+
+        //                 }).then((result) => {
+        //                     if (result.isConfirmed) {
+
+        //                         $.ajax({
+        //                             url: "../backend/admin/deleteAdjustment.php",
+        //                             type: 'POST',
+        //                             data: {
+        //                                 id_allowance: id_allowance
+        //                             },
+        //                             cache: false,
+        //                             success: function(data) {
+        //                                 Swal.fire({
+        //                                     icon: 'success',
+        //                                     title: 'Success',
+        //                                     text: 'Allowance Deleted Successfully',
+        //                                     timer: 2000,
+        //                                     showConfirmButton: false,
+        //                                 }).then(() => {
+        //                                     window.location.reload();
+        //                                 })
+        //                             }
+        //                         })
+        //                     }
+        //                 })
+        //             }
+        //         }
+        //     });
+        // })
     });
 
     // UPDATE ALLOWANCE
@@ -846,27 +1209,263 @@ $(document).ready(function() {
 
     });
 
-
-    function loadAllowanceData(id_allowance) {
+    function loadAttendanceDispute(id_dispute) {
         $.ajax({
             type: "GET",
-            url: "../backend/admin/adjustmentModal.php?allowance_id=" + id_allowance,
+            url: "../backend/admin/disputeModal.php?dispute_id=" + id_dispute,
             success: function(response) {
-
                 var res = jQuery.parseJSON(response);
+                var userDept = $('#userDept').val();
+
+                $('.attendanceSection').show();
+                $('.dateFiledSection').show();
+                $('.employeeSection').show();
+                $('.leaveSection').hide();
+                $('.overtimeSection').hide();
+                $('.remarksSection').show();
 
                 if (res.status == 404) {
                     alert(res.message);
                 } 
-                else if (res.status == 200 && (res.data.allowanceName != "Transportation" || res.data.allowanceName != "Communication")) {
-                    $('#btnAllowanceUpdate').show();
-                    $('#btnAllowanceDelete').show();
-                    $('#viewAllowanceID').val(res.data.allowanceID);
-                    $('#viewAllowanceName').val(res.data.allowanceName);
+                else if (res.status == 200 && (res.data.status == "Approved" || res.data.status == "Disapproved")) {
+                    $('#viewDisputeID').val(res.data.disputeID);
+                    $('#viewDataType').val("Attendance");
+                    $('#viewDateFiled').val(res.data.dateFiled);
+                    $('#viewStatus').val(res.data.status);
+                    $('#viewEmployeeID').val(res.data.employeeID);
+                    $('#viewEmployeeName').val(res.data.firstName + " " + res.data.lastName);
+                    $('#viewAttendanceDate_timeIn').val(res.data.attendanceDate_timeIn);
+                    $('#viewAttendanceTime_timeIn').val(res.data.attendanceTime_timeIn);
+                    $('#viewAttendanceDate_timeOut').val(res.data.attendanceDate_timeOut);
+                    $('#viewAttendanceTime_timeOut').val(res.data.attendanceTime_timeOut);
+                    $('#viewRemarks').val(res.data.remarks);
+                    
+                    $('#approveDispute').hide();
+                    $('#disapproveDispute').hide();
                 }
-                else {
-                    $('#viewAllowanceID').val(res.data.allowanceID);
-                    $('#viewAllowanceName').val(res.data.allowanceName);
+                else if (res.status == 200 && (userDept == 3 && res.data.status == "Pending")) {
+                    $('#viewDisputeID').val(res.data.disputeID);
+                    $('#viewDataType').val("Attendance");
+                    $('#viewDateFiled').val(res.data.dateFiled);
+                    $('#viewStatus').val(res.data.status);
+                    $('#viewEmployeeID').val(res.data.employeeID);
+                    $('#viewEmployeeName').val(res.data.firstName + " " + res.data.lastName);
+                    $('#viewAttendanceDate_timeIn').val(res.data.attendanceDate_timeIn);
+                    $('#viewAttendanceTime_timeIn').val(res.data.attendanceTime_timeIn);
+                    $('#viewAttendanceDate_timeOut').val(res.data.attendanceDate_timeOut);
+                    $('#viewAttendanceTime_timeOut').val(res.data.attendanceTime_timeOut);
+                    $('#viewRemarks').val(res.data.remarks);
+                    
+                    $('#approveDispute').show();
+                    $('#disapproveDispute').show();
+                }
+                else if (res.status == 200 && (userDept == 5 && res.data.status == "Pending")) {
+                    $('#viewDisputeID').val(res.data.disputeID);
+                    $('#viewDataType').val("Attendance");
+                    $('#viewDateFiled').val(res.data.dateFiled);
+                    $('#viewStatus').val(res.data.status);
+                    $('#viewEmployeeID').val(res.data.employeeID);
+                    $('#viewEmployeeName').val(res.data.firstName + " " + res.data.lastName);
+                    $('#viewAttendanceDate_timeIn').val(res.data.attendanceDate_timeIn);
+                    $('#viewAttendanceTime_timeIn').val(res.data.attendanceTime_timeIn);
+                    $('#viewAttendanceDate_timeOut').val(res.data.attendanceDate_timeOut);
+                    $('#viewAttendanceTime_timeOut').val(res.data.attendanceTime_timeOut);
+                    $('#viewRemarks').val(res.data.remarks);
+                    
+                    $('#approveDispute').show();
+                    $('#disapproveDispute').show();
+                }
+            }
+        });
+    }
+
+    function loadLeaveDispute(id_dispute) {
+        $.ajax({
+            type: "GET",
+            url: "../backend/admin/disputeModal.php?dispute_id=" + id_dispute,
+            success: function(response) {
+                var res = jQuery.parseJSON(response);
+                var userDept = $('#userDept').val();
+
+                $('.leaveSection').show();
+                $('.dateFiledSection').show();
+                $('.employeeSection').show();
+                $('.attendanceSection').hide();
+                $('.overtimeSection').hide();
+                $('.remarksSection').show();
+
+                if (res.status == 404) {
+                    alert(res.message);
+                } 
+                else if (res.status == 200 && (res.data.status == "Approved" || res.data.status == "Disapproved")) {
+                    $('#viewDisputeID').val(res.data.disputeID);
+                    $('#viewDataType').val("Leave");
+                    $('#viewDateFiled').val(res.data.dateFiled);
+                    $('#viewEmployeeID').val(res.data.employeeID);
+                    $('#viewEmployeeName').val(res.data.firstName + " " + res.data.lastName);
+                    $('#viewLeaveType').val(res.data.leaveType);
+                    $('#viewLeaveStartDate').val(res.data.startDate);
+                    $('#viewLeaveEndDate').val(res.data.endDate);
+                    $('#viewRemarks').val(res.data.remarks);
+                    if (res.data.isPaid == 1 && res.data.status == "Approved") {
+                        $('#viewStatus').val(res.data.status + ' (Paid)');
+                    }
+                    else if (res.data.isPaid == 0 && res.data.status == "Approved") {
+                        $('#viewStatus').val(res.data.status + ' (Unpaid)');
+                    }
+                    
+                    $('#approveDispute').hide();
+                    $('#disapproveDispute').hide();
+
+                    if (res.data.attachment == 1) {
+                        $("#viewWithAttachmentRow").show();
+                        $("#viewWithoutAttachmentRow").hide();
+                    } else if (res.data.attachment == 0) {
+                        $("#viewWithAttachment").hide();
+                        $("#viewWithoutAttachment").show();
+                    } else {
+                        $("#viewWithAttachment").hide();
+                        $("#viewWithoutAttachment").hide();
+                    }
+                }
+                else if (res.status == 200 && (userDept == 3 && res.data.status == "Pending")) {
+                    $('#viewDisputeID').val(res.data.disputeID);
+                    $('#viewDataType').val("Leave");
+                    $('#viewDateFiled').val(res.data.dateFiled);
+                    $('#viewStatus').val(res.data.status);
+                    $('#viewEmployeeID').val(res.data.employeeID);
+                    $('#viewEmployeeName').val(res.data.firstName + " " + res.data.lastName);
+                    $('#viewLeaveType').val(res.data.leaveType);
+                    $('#viewLeaveStartDate').val(res.data.startDate);
+                    $('#viewLeaveEndDate').val(res.data.endDate);
+                    $('#viewRemarks').val(res.data.remarks);
+
+                    $('#approveDispute').show();
+                    $('#disapproveDispute').show();
+                    
+                    if (res.data.attachment == 1) {
+                        $("#viewWithAttachmentRow").show();
+                        $("#viewWithoutAttachmentRow").hide();
+                    } else if (res.data.attachment == 0) {
+                        $("#viewWithAttachmentRow").hide();
+                        $("#viewWithoutAttachmentRow").show();
+                    } else {
+                        $("#viewWithAttachmentRow").hide();
+                        $("#viewWithoutAttachmentRow").hide();
+                    }
+                }
+                else if (res.status == 200 && (userDept == 5 && res.data.status == "Pending")) {
+                    $('#viewDisputeID').val(res.data.disputeID);
+                    $('#viewDataType').val("Leave");
+                    $('#viewDateFiled').val(res.data.dateFiled);
+                    $('#viewStatus').val(res.data.status);
+                    $('#viewEmployeeID').val(res.data.employeeID);
+                    $('#viewEmployeeName').val(res.data.firstName + " " + res.data.lastName);
+                    $('#viewLeaveType').val(res.data.leaveType);
+                    $('#viewLeaveStartDate').val(res.data.startDate);
+                    $('#viewLeaveEndDate').val(res.data.endDate);
+                    $('#viewRemarks').val(res.data.remarks);
+
+                    $('#approveDispute').show();
+                    $('#disapproveDispute').show();
+                    
+                    if (res.data.attachment == 1) {
+                        $("#viewWithAttachmentRow").show();
+                        $("#viewWithoutAttachmentRow").hide();
+                    } else if (res.data.attachment == 0) {
+                        $("#viewWithAttachment").hide();
+                        $("#viewWithoutAttachment").show();
+                    } else {
+                        $("#viewWithAttachment").hide();
+                        $("#viewWithoutAttachment").hide();
+                    }
+                }
+            }
+        });
+    }
+
+    function loadOvertimeDispute(id_dispute) {
+        $.ajax({
+            type: "GET",
+            url: "../backend/admin/disputeModal.php?dispute_id=" + id_dispute,
+            success: function(response) {
+                var res = jQuery.parseJSON(response);
+                var userDept = $('#userDept').val();
+
+                $('.overtimeSection').show();
+                $('.dateFiledSection').show();
+                $('.employeeSection').show();
+                $('.attendanceSection').hide();
+                $('.leaveSection').hide();
+                $('.remarksSection').show();
+
+                if (res.status == 404) {
+                    alert(res.message);
+                } 
+                else if (res.status == 200 && (res.data.status == "Approved" || res.data.status == "Disapproved")) {
+                    $('#viewDisputeID').val(res.data.disputeID);
+                    $('#viewDataType').val("Overtime");
+                    $('#viewDateFiled').val(res.data.dateFiled);
+                    $('#viewEmployeeID').val(res.data.employeeID);
+                    $('#viewEmployeeName').val(res.data.firstName + " " + res.data.lastName);
+                    $('#viewOvertimeOTDate').val(res.data.otDate);
+                    $('#viewOtType').val(res.data.otType);
+                    $('#viewOvertimeFromTime').val(res.data.fromTime);
+                    $('#viewOvertimeToTime').val(res.data.toTime);
+                    $('#viewRemarks').val(res.data.remarks);
+                    if (res.data.isPaid == 1 && res.data.status == 1) {
+                        $('#viewStatus').val('Approved (Paid)');
+                    }
+                    else if (res.data.isPaid == 0 && res.data.status == 1) {
+                        $('#viewStatus').val('Approved (Unpaid)');
+                    }
+
+                    $('#approveDispute').hide();
+                    $('#disapproveDispute').hide();
+                }
+                else if (res.status == 200 && (userDept == 3 && res.data.status == "Pending")) {
+                    $('#viewDisputeID').val(res.data.disputeID);
+                    $('#viewDataType').val("Overtime");
+                    $('#viewDateFiled').val(res.data.dateFiled);
+                    $('#viewStatus').val(res.data.status);
+                    $('#viewEmployeeID').val(res.data.employeeID);
+                    $('#viewEmployeeName').val(res.data.firstName + " " + res.data.lastName);
+                    $('#viewOvertimeOTDate').val(res.data.otDate);
+                    $('#viewOtType').val(res.data.otType);
+                    $('#viewOvertimeFromTime').val(res.data.fromTime);
+                    $('#viewOvertimeToTime').val(res.data.toTime);
+                    $('#viewRemarks').val(res.data.remarks);
+                    // if (res.data.isPaid == 1 && res.data.status == "Approved") {
+                    //     $('#viewStatus').val(res.data.status + ' (Paid)');
+                    // }
+                    // else if (res.data.isPaid == 0 && res.data.status == "Approved") {
+                    //     $('#viewStatus').val(res.data.status + ' (Unpaid)');
+                    // }
+                    
+                    $('#approveDispute').show();
+                    $('#disapproveDispute').show();
+                }
+                else if (res.status == 200 && (userDept == 5 && res.data.status == "Pending")) {
+                    $('#viewDisputeID').val(res.data.disputeID);
+                    $('#viewDataType').val("Overtime");
+                    $('#viewDateFiled').val(res.data.dateFiled);
+                    $('#viewStatus').val(res.data.status);
+                    $('#viewEmployeeID').val(res.data.employeeID);
+                    $('#viewEmployeeName').val(res.data.firstName + " " + res.data.lastName);
+                    $('#viewOvertimeOTDate').val(res.data.otDate);
+                    $('#viewOtType').val(res.data.otType);
+                    $('#viewOvertimeFromTime').val(res.data.fromTime);
+                    $('#viewOvertimeToTime').val(res.data.toTime);
+                    $('#viewRemarks').val(res.data.remarks);
+                    // if (res.data.isPaid == 1 && res.data.status == "Approved") {
+                    //     $('#viewStatus').val(res.data.status + ' (Paid)');
+                    // }
+                    // else if (res.data.isPaid == 0 && res.data.status == "Approved") {
+                    //     $('#viewStatus').val(res.data.status + ' (Unpaid)');
+                    // }
+                    
+                    $('#approveDispute').show();
+                    $('#disapproveDispute').show();
                 }
             }
         });

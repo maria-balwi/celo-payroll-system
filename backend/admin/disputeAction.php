@@ -5,6 +5,7 @@
     session_start();
 
     $action = $_POST['action'];
+    $type = $_POST['type'];
 
     if ($action == "fileDispute") {
         $dataType = $_POST['dataType'];
@@ -108,7 +109,25 @@
         }
     }
     else if ($action == "approve") {
-        $request_id = $_POST['id_request'];
+        $disputeID = $_POST['id_dispute'];
+        $getDisputeQuery = $payroll->getDisputeInfo($disputeID);
+        $getDisputeResult = mysqli_query($conn, $getDisputeQuery);
+        $dispute = mysqli_fetch_array($getDisputeResult);
+
+        if ($type == "attendance") {
+            $getAttendanceQuery = $payroll->getAttendanceInfo($dispute['attendanceID']);
+            $getAttendanceResult = mysqli_query($conn, $getAttendanceQuery);
+
+            $attendance = mysqli_fetch_array($getAttendanceResult);
+            $
+        }
+        else if ($type == "leave") {
+        
+        }
+        else if ($type == "overtime") {
+        
+        }
+        
 
         mysqli_query($conn, $employees->approveCashAdvance($request_id));
 
@@ -130,6 +149,15 @@
     }
 
     else if ($action == "disapprove") {
+        if ($type == "attendance") {
+
+        }
+        else if ($type == "leave") {
+        
+        }
+        else if ($type == "overtime") {
+        
+        }
         mysqli_query($conn, $employees->disapproveCashAdvance($request_id));
         
         // GET AFFECTED USER
