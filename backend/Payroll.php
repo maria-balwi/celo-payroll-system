@@ -727,11 +727,12 @@
 
         public function getLeaveInfo($leaveID) {
             $leaveDispute = "
-                SELECT disputeID, employeeID, firstName, lastName,
+                SELECT disputeID, empID, employeeID, firstName, lastName,
                 DATE_FORMAT(dateFiled, '%M %d, %Y') AS dateFiled,
                 DATE_FORMAT(startDate, '%M %d, %Y') AS startDate,
                 DATE_FORMAT(endDate, '%M %d, %Y') AS endDate,
-                attachment, leaveType, remarks, dispute.status
+                attachment, leaveType, disputeLeaves.leaveTypeID, remarks, 
+                dispute.status, startDate AS effectivityStartDate, endDate AS effectivityEndDate
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
                 ON dispute.leaveID = disputeLeaves.leaveID
@@ -765,9 +766,28 @@
             return $fileOT;
         }
 
+        public function fileLeaveWithAttachment($employeeID, $leaveTypeID, $effectivityStartDate, $effectivityEndDate, $remarks, $status, $attachment, $isPaid) {
+            $fileLeave = "
+                INSERT INTO ".$this->leaves." (empID, dateFiled, leaveTypeID, effectivityStartDate, effectivityEndDate, remarks, status, attachment)
+                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$leaveTypeID', '$effectivityStartDate', '$effectivityEndDate', '$remarks', '$status', '$attachment')";
+            return $fileLeave;
+        }
+
+        public function fileLeave($employeeID, $leaveTypeID, $effectivityStartDate, $effectivityEndDate, $remarks, $status, $isPaid) {
+            $fileLeave = "
+                INSERT INTO ".$this->leaves." (empID, dateFiled, leaveTypeID, effectivityStartDate, effectivityEndDate, remarks, status, attachment, isPaid)
+                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$leaveTypeID', '$effectivityStartDate', '$effectivityEndDate', '$remarks', '$status', NULL, '$isPaid')";
+            return $fileLeave;
+        }
+
         public function updateDisputeStatus($disputeID, $status) {
             $updateDisputeStatus = "UPDATE ".$this->disputes." SET status = '$status' WHERE disputeID = '$disputeID'";
             return $updateDisputeStatus;
+        }
+
+        public function updateLeaveStatus($leaveID, $isPaid) {
+            $updateLeaveStatus = "UPDATE ".$this->disputeLeaves." SET isPaid = '$isPaid' WHERE leaveID = '$leaveID'";
+            return $updateLeaveStatus;
         }
 
         public function getCashAdvanceInfo($requestID) {

@@ -167,24 +167,47 @@
         else if ($type == "leave") {
             $getLeaveQuery = $payroll->getLeaveInfo($dispute['leaveID']);
             $getLeaveResult = mysqli_query($conn, $getLeaveQuery);
+            $isPaid = $_POST['isPaid'];
 
             $leave = mysqli_fetch_array($getLeaveResult);
             $empID = $leave['empID'];
             $dateFiled = $leave['dateFiled'];
             $leaveType = $leave['leaveTypeID'];
-            $startDate = $leave['startDate'];
-            $endDate = $leave['endDate'];
+            $startDate = $leave['effectivityStartDate'];
+            $endDate = $leave['effectivityEndDate'];
             $attachment = $leave['attachment'];
             $remarks = $leave['remarks'];
             $status = "Approved";
+
             
             // INSERT INTO LEAVE APPLICATIONS TABLE
             if ($leaveType == 1 || $leaveType == 3 || $leaveType == 4 || $leaveType == 5 || $leaveType == 6 || $leaveType == 7 || $leaveType == 8) {
-                mysqli_query($conn, $employees->fileLeaveWithAttachment($empID, $leaveType, $startDate, $endDate, $remarks, $status, $attachment));
+                mysqli_query($conn, $payroll->fileLeaveWithAttachment($empID, $leaveType, $startDate, $endDate, $remarks, $status, $attachment, $isPaid));
+                
+                if ($isPaid == 1) {
+                    if ($leaveType == 1) {
+                        mysqli_query($conn, $employees->deductSickLeave($empID));
+                    }
+                    else if ($leaveType == 2 || $leaveType == 6) {
+                        mysqli_query($conn, $employees->deductVacationLeave($empID));
+                    }
+                }
             }
             else {
-                mysqli_query($conn, $employees->fileLeave($empID, $leaveType, $startDate, $endDate, $remarks, $status));
+                mysqli_query($conn, $payroll->fileLeave($empID, $leaveType, $startDate, $endDate, $remarks, $status, $isPaid));
+
+                if ($isPaid == 1) {
+                    if ($leaveType == 1) {
+                        mysqli_query($conn, $employees->deductSickLeave($empID));
+                    }
+                    else if ($leaveType == 2 || $leaveType == 6) {
+                        mysqli_query($conn, $employees->deductVacationLeave($empID));
+                    }
+                }
             }
+
+            // UPDATE ISPAID
+            mysqli_query($conn, $payroll->updateLeaveStatus($dispute['leaveID'], $isPaid));
 
             // UPDATE DISPUTE STATUS
             mysqli_query($conn, $payroll->updateDisputeStatus($disputeID, "Approved"));

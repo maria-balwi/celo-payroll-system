@@ -647,7 +647,7 @@ $(document).ready(function() {
         });
 
         // APPROVE LEAVE DISPUTE
-        $(document).on('click', '.asa', function() {
+        $(document).on('click', '.approveDispute', function() {
             var id_dispute = array[array.length - 1];
 
             $.ajax({
@@ -681,6 +681,7 @@ $(document).ready(function() {
                                     type: 'POST',
                                     data: {
                                         id_dispute: id_dispute,
+                                        type: 'leave',
                                         action: 'approve', 
                                         isPaid: 1
                                     },
@@ -693,7 +694,7 @@ $(document).ready(function() {
                                             timer: 2000,
                                             showConfirmButton: false,
                                         }).then(() => {
-                                            loadAttendanceDispute(id_dispute);
+                                            loadLeaveDispute(id_dispute);
                                         })
                                     }
                                 })
@@ -703,7 +704,8 @@ $(document).ready(function() {
                                     url: "../backend/admin/disputeAction.php",
                                     type: 'POST',
                                     data: {
-                                        id_leave: id_leave,
+                                        id_dispute: id_dispute,
+                                        type: 'leave',
                                         action: 'approve',
                                         isPaid: 0
                                     },
