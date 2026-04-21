@@ -131,7 +131,7 @@ $(document).ready(function() {
                                             timer: 2000,
                                             showConfirmButton: false,
                                         }).then(() => {
-                                            updateOTModal(id_ot);
+                                            loadOTModal(id_ot);
                                         })
                                     }
                                 })
@@ -154,7 +154,7 @@ $(document).ready(function() {
                                             timer: 2000,
                                             showConfirmButton: false,
                                         }).then(() => {
-                                            updateOTModal(id_ot);
+                                            loadOTModal(id_ot);
                                         })
                                     }
                                 })
@@ -206,8 +206,7 @@ $(document).ready(function() {
                                             timer: 2000,
                                             showConfirmButton: false,
                                         }).then(() => {
-                                            // window.location.reload();
-                                            updateOTModal(id_ot);
+                                            loadOTModal(id_ot);
                                         })
                                     }
                                 })
@@ -220,13 +219,14 @@ $(document).ready(function() {
     });
 
     // LOAD FILED OT MODAL 
-    function loadOTModal(id_ot, userDeptFileOT) {
+    function loadOTModal(id_ot) {
         $.ajax({
             type: "GET",
             url: "../backend/admin/filedOTModal.php?ot_id=" + id_ot,
             success: function(response) {
 
                 var res = jQuery.parseJSON(response);
+                var userDept = $('#userDept').val();
 
                 if (res.status == 404) {
                     alert(res.message);
@@ -240,11 +240,17 @@ $(document).ready(function() {
                     $('#viewFromTime').val(res.data.fromTime);
                     $('#viewToTime').val(res.data.toTime);
                     $('#viewPurpose').val(res.data.remarks);
-                    $('#viewStatus').val(res.data.status == 1 ? 'Approved' : 'Disapproved');
+                    // $('#viewStatus').val(res.data.status == 1 ? 'Approved' : 'Disapproved');
+                    if (res.data.isPaid == 1 && res.data.status == 1) {
+                        $('#viewStatus').val('Approved (Paid)');
+                    }
+                    else if (res.data.isPaid == 0 && res.data.status == 1) {
+                        $('#viewStatus').val('Approved (Unpaid)');
+                    }
                     $('#approveOT').hide();
                     $('#disapproveOT').hide();
                 }
-                else if (res.status == 200 && (userDeptFileOT == 3 && res.data.status == null)) {
+                else if (res.status == 200 && (userDept == 3 && res.data.status == null)) {
                     $('#viewFiledOTID').val(res.data.requestID);
                     $('#viewOTDate').val(res.data.otDate);
                     $('#viewOTType').val(res.data.otType);
@@ -260,7 +266,7 @@ $(document).ready(function() {
                         $('#disapproveOT').show();
                     }
                 }
-                else if (res.status == 200 && (userDeptFileOT == 5 && res.data.status == null)) {
+                else if (res.status == 200 && (userDept == 5 && res.data.status == null)) {
                     $('#viewFiledOTID').val(res.data.requestID);
                     $('#viewOTDate').val(res.data.otDate);
                     $('#viewOTType').val(res.data.otType);
