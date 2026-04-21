@@ -709,11 +709,12 @@
 
         public function getAttendanceInfo($attendanceID) {
             $attendanceInfo = "
-                SELECT disputeID, employeeID, firstName, lastName,
+                SELECT disputeID, empID, employeeID, firstName, lastName,
                 DATE_FORMAT(dateFiled, '%M %d, %Y') AS dateFiled,
+                attendanceDate_timeIn AS date_timeIn, attendanceDate_timeOut AS date_timeOut,
                 DATE_FORMAT(attendanceDate_timeIn, '%M %d, %Y') AS attendanceDate_timeIn,
                 DATE_FORMAT(attendanceDate_timeOut, '%M %d, %Y') AS attendanceDate_timeOut,
-                attendanceTime_timeIn, attendanceTime_timeOut,
+                attendanceTime_timeIn, attendanceTime_timeOut, lateMins, undertimeMins,
                 logTypeID_timeIn, logTypeID_timeOut, remarks, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeAttendance." AS disputeAttendance

@@ -1056,7 +1056,7 @@
                             <button type="button" class="btn btn-danger disapproveDispute" id="disapproveDispute">Disapprove</button>
                             <!-- <button type="button" class="btn btn-primary allowanceUpdate" id="btnAllowanceUpdate">Update</button>
                             <button type="button" class="btn btn-danger allowanceDelete" id="btnAllowanceDelete">Delete</button> -->
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnClose_allowance">Close</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnClose">Close</button>
                         </div>
                     </div>
                 </div>

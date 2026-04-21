@@ -126,12 +126,14 @@
 
             $attendance = mysqli_fetch_array($getAttendanceResult);
             $empID = $attendance['empID'];
-            $attendanceDate_timeIn = $attendance['attendanceDate_timeIn'];
+            $attendanceDate_timeIn = $attendance['date_timeIn'];
             $attendanceTime_timeIn = $attendance['attendanceTime_timeIn'];
             $logType_timeIn = $attendance['logTypeID_timeIn'];
-            $attendanceDate_timeOut = $attendance['attendanceDate_timeOut'];
+            $attendanceDate_timeOut = $attendance['date_timeOut'];
             $attendanceTime_timeOut = $attendance['attendanceTime_timeOut'];
             $logType_timeOut = $attendance['logTypeID_timeOut'];
+            $lateMins = $attendance['lateMins'];
+            $undertimeMins = $attendance['undertimeMins'];
 
             // INSERT INTO DTR TABLE
             if ($logType_timeIn == 2) { // LATE
@@ -142,7 +144,7 @@
             }
             
             if ($logType_timeOut == 3) { // UNDERTIME
-                mysqli_query($conn, $users->saveDTRUndertime($empID, $logType_timeOut, $attendanceDate_timeOut, $attendanceTime_timeOut, 0));
+                mysqli_query($conn, $users->saveDTRUndertime($empID, $logType_timeOut, $attendanceDate_timeOut, $attendanceTime_timeOut, $undertimeMins));
             }
             else {
                 mysqli_query($conn, $users->saveDTR($empID, $logType_timeOut, $attendanceDate_timeOut, $attendanceTime_timeOut));

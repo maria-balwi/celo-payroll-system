@@ -347,7 +347,7 @@ $(document).ready(function() {
             }
         });
 
-        // APPROVE LEAVE APPPLICATION
+        // APPROVE ATTENDANCE DISPUTE
         $(document).on('click', '.approveDispute', function() {
             var id_dispute = array[array.length - 1];
 
@@ -403,7 +403,7 @@ $(document).ready(function() {
             });
         })
 
-        // DISAPPROVE LEAVE APPPLICATION
+        // DISAPPROVE ATTENDANCE DISPUTE
         $(document).on('click', '.disapproveDispute', function() {
             var id_dispute = array[array.length - 1];
 
@@ -647,7 +647,7 @@ $(document).ready(function() {
         });
 
         // APPROVE LEAVE DISPUTE
-        $(document).on('click', '.approveDispute', function() {
+        $(document).on('click', '.asa', function() {
             var id_dispute = array[array.length - 1];
 
             $.ajax({
@@ -728,7 +728,7 @@ $(document).ready(function() {
         })
 
         // DISAPPROVE LEAVE DISPUTE
-        $(document).on('click', '.disapproveDispute', function() {
+        $(document).on('click', '.sfd', function() {
             var id_leave = array[array.length - 1];
 
             $.ajax({
@@ -779,81 +779,6 @@ $(document).ready(function() {
                 }
             });
         })
-
-        // // UPDATE LEAVE
-        // $(document).on('click', '.allowanceUpdate', function() {
-        //     $('#viewAllowanceModal').modal('hide');
-        //     var id_allowance = array[array.length - 1];
-
-        //     $.ajax({
-        //         type: "GET",
-        //         url: "../backend/admin/adjustmentModal.php?allowance_id=" + id_allowance,
-        //         success: function(response) {
-
-        //             var res = jQuery.parseJSON(response);
-        //             if (res.status == 404) {
-        //                 alert(res.message);
-        //             } 
-        //             else if (res.status == 200) {
-        //                 $('#updateAllowanceID').val(res.data.allowanceID);
-        //                 $('#updateAllowanceName').val(res.data.allowanceName);
-        //                 $('#updateAllowanceModal').modal('show');
-        //             }
-        //         }
-        //     });
-        // })
-
-        // // DELETE LEAVE
-        // $(document).on('click', '.allowanceDelete', function() {
-        //     var id_allowance = array[array.length - 1];
-
-        //     $.ajax({
-        //         type: "GET",
-        //         url: "../backend/admin/adjustmentModal.php?allowance_id=" + id_allowance,
-        //         success: function(response) {
-
-        //             var res = jQuery.parseJSON(response);
-        //             if (res.status == 404) {
-        //                 alert(res.message);
-        //             } else if (res.status == 200) {
-
-        //                 Swal.fire({
-        //                     icon: 'question',
-        //                     title: 'Delete Allowance',
-        //                     text: 'Are you sure you want to delete this allowance?',
-        //                     showCancelButton: true,
-        //                     cancelButtonColor: '#6c757d',
-        //                     confirmButtonColor: '#28a745',
-        //                     confirmButtonText: 'Yes',
-
-        //                 }).then((result) => {
-        //                     if (result.isConfirmed) {
-
-        //                         $.ajax({
-        //                             url: "../backend/admin/deleteAdjustment.php",
-        //                             type: 'POST',
-        //                             data: {
-        //                                 id_allowance: id_allowance
-        //                             },
-        //                             cache: false,
-        //                             success: function(data) {
-        //                                 Swal.fire({
-        //                                     icon: 'success',
-        //                                     title: 'Success',
-        //                                     text: 'Allowance Deleted Successfully',
-        //                                     timer: 2000,
-        //                                     showConfirmButton: false,
-        //                                 }).then(() => {
-        //                                     window.location.reload();
-        //                                 })
-        //                             }
-        //                         })
-        //                     }
-        //                 })
-        //             }
-        //         }
-        //     });
-        // })
     });
 
     // VIEW AND UPDATE OVERTIME DISPUTE
@@ -944,7 +869,7 @@ $(document).ready(function() {
         });
 
         // APPROVE OVERTIME DISPUTE
-        $(document).on('click', '.approveDispute', function() {
+        $(document).on('click', '.dsa', function() {
             var id_dispute = array[array.length - 1];
 
             $.ajax({
@@ -1025,7 +950,7 @@ $(document).ready(function() {
         })
 
         // DISAPPROVE OVERTIME DISPUTE
-        $(document).on('click', '.disapproveDispute', function() {
+        $(document).on('click', '.fa', function() {
             var id_leave = array[array.length - 1];
 
             $.ajax({
@@ -1076,81 +1001,6 @@ $(document).ready(function() {
                 }
             });
         })
-
-        // // UPDATE OVERTIME
-        // $(document).on('click', '.allowanceUpdate', function() {
-        //     $('#viewAllowanceModal').modal('hide');
-        //     var id_allowance = array[array.length - 1];
-
-        //     $.ajax({
-        //         type: "GET",
-        //         url: "../backend/admin/adjustmentModal.php?allowance_id=" + id_allowance,
-        //         success: function(response) {
-
-        //             var res = jQuery.parseJSON(response);
-        //             if (res.status == 404) {
-        //                 alert(res.message);
-        //             } 
-        //             else if (res.status == 200) {
-        //                 $('#updateAllowanceID').val(res.data.allowanceID);
-        //                 $('#updateAllowanceName').val(res.data.allowanceName);
-        //                 $('#updateAllowanceModal').modal('show');
-        //             }
-        //         }
-        //     });
-        // })
-
-        // // DELETE OVERTIME
-        // $(document).on('click', '.allowanceDelete', function() {
-        //     var id_allowance = array[array.length - 1];
-
-        //     $.ajax({
-        //         type: "GET",
-        //         url: "../backend/admin/adjustmentModal.php?allowance_id=" + id_allowance,
-        //         success: function(response) {
-
-        //             var res = jQuery.parseJSON(response);
-        //             if (res.status == 404) {
-        //                 alert(res.message);
-        //             } else if (res.status == 200) {
-
-        //                 Swal.fire({
-        //                     icon: 'question',
-        //                     title: 'Delete Allowance',
-        //                     text: 'Are you sure you want to delete this allowance?',
-        //                     showCancelButton: true,
-        //                     cancelButtonColor: '#6c757d',
-        //                     confirmButtonColor: '#28a745',
-        //                     confirmButtonText: 'Yes',
-
-        //                 }).then((result) => {
-        //                     if (result.isConfirmed) {
-
-        //                         $.ajax({
-        //                             url: "../backend/admin/deleteAdjustment.php",
-        //                             type: 'POST',
-        //                             data: {
-        //                                 id_allowance: id_allowance
-        //                             },
-        //                             cache: false,
-        //                             success: function(data) {
-        //                                 Swal.fire({
-        //                                     icon: 'success',
-        //                                     title: 'Success',
-        //                                     text: 'Allowance Deleted Successfully',
-        //                                     timer: 2000,
-        //                                     showConfirmButton: false,
-        //                                 }).then(() => {
-        //                                     window.location.reload();
-        //                                 })
-        //                             }
-        //                         })
-        //                     }
-        //                 })
-        //             }
-        //         }
-        //     });
-        // })
     });
 
     // UPDATE ALLOWANCE
@@ -1481,7 +1331,7 @@ $(document).ready(function() {
         });
     }
 
-    $('#btnClose_allowance').on('click', function() {
+    $('#btnClose').on('click', function() {
         window.location.reload();
     });
 });
