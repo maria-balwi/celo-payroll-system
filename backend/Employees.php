@@ -380,9 +380,9 @@
             return $request;
         }
 
-        public function approveFiledOT($requestID) {
+        public function approveFiledOT($requestID, $isPaid) {
             $request = "
-                UPDATE ".$this->filedOT." SET status = 1
+                UPDATE ".$this->filedOT." SET status = 1, isPaid = $isPaid
                 WHERE requestID = '$requestID'";
             return $request;
         }
@@ -1203,7 +1203,7 @@
             $request = "
                 SELECT requestID, employeeID, remarks, status, otType, designationID,
                 DATE_FORMAT(fromTime, '%h:%i %p') AS fromTime,
-                DATE_FORMAT(toTime, '%h:%i %p') AS toTime,
+                DATE_FORMAT(toTime, '%h:%i %p') AS toTime, isPaid,
                 CONCAT(firstName, ' ', lastName) AS employeeName,
                 DATE_FORMAT(dateFiled, '%M %d, %Y') AS dateFiled, 
                 DATE_FORMAT(otDate, '%M %d, %Y') AS otDate
