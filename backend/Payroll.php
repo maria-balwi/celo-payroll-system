@@ -635,10 +635,10 @@
             return $overtimeDisputes;
         }
 
-        public function fileAttendanceDispute($empID, $attendanceDate_timeIn, $attendanceTime_timeIn, $attendanceDate_timeOut, $attendanceTime_timeOut) {
+        public function fileAttendanceDispute($empID, $attendanceDate_timeIn, $attendanceTime_timeIn, $logTypeID_timeIn, $attendanceDate_timeOut, $attendanceTime_timeOut, $logTypeID_timeOut, $remarks) {
             $fileAttendanceDispute = "
-                INSERT INTO ".$this->disputeAttendance." (empID, dateFiled, attendanceDate_timeIn, attendanceTime_timeIn, attendanceDate_timeOut, attendanceTime_timeOut) 
-                VALUES ('$empID', CURRENT_DATE(), '$attendanceDate_timeIn', '$attendanceTime_timeIn', '$attendanceDate_timeOut', '$attendanceTime_timeOut')";
+                INSERT INTO ".$this->disputeAttendance." (empID, dateFiled, attendanceDate_timeIn, attendanceTime_timeIn, logTypeID_timeIn, attendanceDate_timeOut, attendanceTime_timeOut, logTypeID_timeOut, remarks) 
+                VALUES ('$empID', CURRENT_DATE(), '$attendanceDate_timeIn', '$attendanceTime_timeIn', '$logTypeID_timeIn', '$attendanceDate_timeOut', '$attendanceTime_timeOut', '$logTypeID_timeOut', '$remarks')";
             return $fileAttendanceDispute;
         }
 
@@ -654,6 +654,12 @@
                 INSERT INTO ".$this->disputeOvertime." (empID, dateFiled, otDate, otType, fromTime, toTime) 
                 VALUES ('$empID', CURRENT_DATE(), '$otDate', '$otType', '$fromTime', '$toTime')";
             return $fileOvertimeDispute;
+        }
+
+        public function viewLastDisputeID() {
+            $lastID = "
+                SELECT * FROM ".$this->disputes." ORDER BY disputeID DESC LIMIT 1";
+            return $lastID;
         }
 
         public function viewLastDisputeAttendance() {
@@ -708,7 +714,7 @@
                 DATE_FORMAT(attendanceDate_timeIn, '%M %d, %Y') AS attendanceDate_timeIn,
                 DATE_FORMAT(attendanceDate_timeOut, '%M %d, %Y') AS attendanceDate_timeOut,
                 attendanceTime_timeIn, attendanceTime_timeOut,
-                remarks, dispute.status
+                logTypeID_timeIn, logTypeID_timeOut, remarks, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
                 ON dispute.attendanceID = disputeAttendance.attendanceID
@@ -749,6 +755,18 @@
                 ON disputeOvertime.empID = employee.id
                 WHERE dispute.overtimeID = '$overtimeID'";
             return $overtimeDispute;
+        }
+
+        public function fileOT($employeeID, $otDate, $otType, $fromTime, $toTime, $remarks, $status) {
+            $fileOT = "
+                INSERT INTO ".$this->filedOT." (empID, dateFiled, otDate, otType, fromTime, toTime, remarks, status)
+                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$otDate', '$otType', '$fromTime', '$toTime', '$remarks', '$status')";
+            return $fileOT;
+        }
+
+        public function updateDisputeStatus($disputeID, $status) {
+            $updateDisputeStatus = "UPDATE ".$this->disputes." SET status = '$status' WHERE disputeID = '$disputeID'";
+            return $updateDisputeStatus;
         }
 
         public function getCashAdvanceInfo($requestID) {

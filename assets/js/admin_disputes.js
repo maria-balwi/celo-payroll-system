@@ -142,6 +142,8 @@ $(document).ready(function() {
         var attendanceTime_timeIn = $("#attendanceTime_timeIn").val();
         var attendanceDate_timeOut = $("#attendanceDate_timeOut").val();
         var attendanceTime_timeOut = $("#attendanceTime_timeOut").val();
+        var logTypeID_timeIn = $("#attendanceLogType_timeIn").val();
+        var logTypeID_timeOut = $("#attendanceLogType_timeOut").val();
 
         var leaveType = $("#leaveType").val();
         var leaveStartDate = $("#leaveStartDate").val();
@@ -157,7 +159,7 @@ $(document).ready(function() {
         var remarks = $("#remarks").val();
 
         if (dataType == '') {
-            if (dataType == 1 && empID && (attendanceDate_timeIn == '' || attendanceTime_timeIn == '' || attendanceDate_timeOut == '' || attendanceTime_timeOut == '' || remarks == '')) {
+            if (dataType == 1 && empID && (attendanceDate_timeIn == '' || attendanceTime_timeIn == '' || logTypeID_timeIn == '' || attendanceDate_timeOut == '' || attendanceTime_timeOut == '' || logTypeID_timeOut == '' || remarks == '')) {
                 Swal.fire({
                     icon: 'warning',
                     title: 'Required Information',
@@ -196,8 +198,10 @@ $(document).ready(function() {
 
                     fileDispute.append('attendanceDate_timeIn', attendanceDate_timeIn);
                     fileDispute.append('attendanceTime_timeIn', attendanceTime_timeIn);
+                    fileDispute.append('logTypeID_timeIn', logTypeID_timeIn);
                     fileDispute.append('attendanceDate_timeOut', attendanceDate_timeOut);
                     fileDispute.append('attendanceTime_timeOut', attendanceTime_timeOut);
+                    fileDispute.append('logTypeID_timeOut', logTypeID_timeOut);
 
                     fileDispute.append('leaveType', leaveType);
                     fileDispute.append('leaveStartDate', leaveStartDate);
@@ -222,10 +226,13 @@ $(document).ready(function() {
                             if (data.error == 0) {
                                 var id = data.id;
                                 if (dataType == 1) {
-                                    
+                                    loadAttendanceDispute(id);
                                 }
                                 else if (dataType == 2) {
-                                    
+                                    loadLeaveDispute(id);
+                                }
+                                else if (dataType == 3) {
+                                    loadOvertimeDispute(id);
                                 }
                                 Swal.fire({
                                     icon: 'success',
@@ -234,13 +241,9 @@ $(document).ready(function() {
                                     timer: 2000,
                                     showConfirmButton: false
                                 }).then(() => {
-                                    $('#addDataModal').modal('hide');
-                                    if (dataType == 1) {
-                                        $('#viewAllowanceModal').modal('show');
-                                    }
-                                    else if (dataType == 2) {
-                                        $('#viewReimbursementModal').modal('show');
-                                    }
+                                    $('#fileDisputeModal').modal('hide');
+                                    $('#viewModal').modal('show');
+                                    
                                 })
                             } else {
                                 Swal.fire({
@@ -290,8 +293,10 @@ $(document).ready(function() {
                     $('#viewEmployeeName').val(res.data.firstName + " " + res.data.lastName);
                     $('#viewAttendanceDate_timeIn').val(res.data.attendanceDate_timeIn);
                     $('#viewAttendanceTime_timeIn').val(res.data.attendanceTime_timeIn);
+                    $('#viewAttendanceLogType_timeIn').val(res.data.logTypeID_timeIn == 1 ? 'Time In' : 'Late');
                     $('#viewAttendanceDate_timeOut').val(res.data.attendanceDate_timeOut);
                     $('#viewAttendanceTime_timeOut').val(res.data.attendanceTime_timeOut);
+                    $('#viewAttendanceLogType_timeOut').val(res.data.logTypeID_timeOut == 3 ? 'Undertime' : 'Time Out');
                     $('#viewRemarks').val(res.data.remarks);
                     
                     $('#approveDispute').hide();
@@ -308,8 +313,10 @@ $(document).ready(function() {
                     $('#viewEmployeeName').val(res.data.firstName + " " + res.data.lastName);
                     $('#viewAttendanceDate_timeIn').val(res.data.attendanceDate_timeIn);
                     $('#viewAttendanceTime_timeIn').val(res.data.attendanceTime_timeIn);
+                    $('#viewAttendanceLogType_timeIn').val(res.data.logTypeID_timeIn == 1 ? 'Time In' : 'Late');
                     $('#viewAttendanceDate_timeOut').val(res.data.attendanceDate_timeOut);
                     $('#viewAttendanceTime_timeOut').val(res.data.attendanceTime_timeOut);
+                    $('#viewAttendanceLogType_timeOut').val(res.data.logTypeID_timeOut == 3 ? 'Undertime' : 'Time Out');
                     $('#viewRemarks').val(res.data.remarks);
                     
                     $('#approveDispute').show();
@@ -326,12 +333,14 @@ $(document).ready(function() {
                     $('#viewEmployeeName').val(res.data.firstName + " " + res.data.lastName);
                     $('#viewAttendanceDate_timeIn').val(res.data.attendanceDate_timeIn);
                     $('#viewAttendanceTime_timeIn').val(res.data.attendanceTime_timeIn);
+                    $('#viewAttendanceLogType_timeIn').val(res.data.logTypeID_timeIn == 1 ? 'Time In' : 'Late');
                     $('#viewAttendanceDate_timeOut').val(res.data.attendanceDate_timeOut);
                     $('#viewAttendanceTime_timeOut').val(res.data.attendanceTime_timeOut);
+                    $('#viewAttendanceLogType_timeOut').val(res.data.logTypeID_timeOut == 3 ? 'Undertime' : 'Time Out');
                     $('#viewRemarks').val(res.data.remarks);
                     
-                    $('#approveLeave').show();
-                    $('#disapproveLeave').show();
+                    $('#approveDispute').show();
+                    $('#disapproveDispute').show();
 
                     $("#viewModal").modal("show");
                 }
@@ -383,6 +392,7 @@ $(document).ready(function() {
                                             showConfirmButton: false,
                                         }).then(() => {
                                             loadAttendanceDispute(id_dispute);
+                                            $("#viewModal").modal("show");
                                         })
                                     }
                                 })

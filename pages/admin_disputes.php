@@ -648,28 +648,41 @@
 
                                 <div class="row g-2 mb-1 attendanceSection">
                                     <div class="col-6">
-                                        <label for="attendanceDate_timeIn">Time In Attendance - Date:</label>
+                                        <label for="attendanceDate_timeIn">Time In - Date:</label>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-3">
                                         <label for="attendanceTime_timeIn">Time:</label>
+                                    </div>
+                                    <div class="col-3">
+                                        <label for="attendanceLogType_timeIn">Log Type:</label>
                                     </div>
                                 </div>
 
                                 <div class="row g-2 mb-2 attendanceSection">
-                                    <div class="col-6">
+                                    <div class="col-5">
                                         <input type="date" class="form-control" id="attendanceDate_timeIn" name="attendanceDate_timeIn">
                                     </div>
-                                     <div class="col-6">
+                                     <div class="col-4">
                                         <input type="time" class="form-control" id="attendanceTime_timeIn" name="attendanceTime_timeIn">
+                                    </div>
+                                    <div class="col-3">
+                                        <select class="form-select" id="attendanceLogType_timeIn" name="attendanceLogType_timeIn">
+                                            <option disabled selected>Choose</option>
+                                            <option value="1">Time In</option>
+                                            <option value="2">Late</option>
+                                        </select>
                                     </div>
                                 </div>
 
                                 <div class="row g-2 mb-1 attendanceSection">
-                                    <div class="col-6">
-                                        <label for="attendanceDate_timeOut">Time Out Attendance - Date:</label>
+                                    <div class="col-5">
+                                        <label for="attendanceDate_timeOut">Time Out - Date:</label>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-4">
                                         <label for="attendanceTime_timeOut">Time:</label>
+                                    </div>
+                                    <div class="col-3">
+                                        <label for="attendanceLogType_timeOut">Log Type:</label>
                                     </div>
                                 </div>
 
@@ -696,11 +709,18 @@
                                 </div>
 
                                 <div class="row g-2 mb-2 attendanceSection">
-                                    <div class="col-6">
+                                    <div class="col-5">
                                         <input type="date" class="form-control" id="attendanceDate_timeOut" name="attendanceDate_timeOut">
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-4">
                                         <input type="time" class="form-control" id="attendanceTime_timeOut" name="attendanceTime_timeOut">
+                                    </div>
+                                    <div class="col-3">
+                                        <select class="form-select" id="attendanceLogType_timeOut" name="attendanceLogType_timeOut">
+                                            <option disabled selected>Choose</option>
+                                            <option value="3">Undertime</option>
+                                            <option value="4">Time Out</option>
+                                        </select>
                                     </div>
                                 </div>
 
@@ -895,29 +915,38 @@
                             </div>
 
                             <div class="row g-2 mb-1 attendanceSection">
-                                <div class="col-6">
-                                    <label for="viewAttendanceDate_timeIn">Time In Attendance - Date:</label>
+                                <div class="col-5">
+                                    <label for="viewAttendanceDate_timeIn">Time In - Date:</label>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-4">
                                     <label for="viewAttendanceTime_timeIn">Time:</label>
+                                </div>
+                                <div class="col-3">
+                                    <label for="viewAttendanceLogType_timeIn">Log Type:</label>
                                 </div>
                             </div>
 
                             <div class="row g-2 mb-2 attendanceSection">
-                                <div class="col-6">
+                                <div class="col-5">
                                     <input type="text" class="form-control" id="viewAttendanceDate_timeIn" disabled readonly>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-4">
                                     <input type="time" class="form-control" id="viewAttendanceTime_timeIn" disabled readonly>
+                                </div>
+                                <div class="col-3">
+                                    <input type="text" class="form-control" id="viewAttendanceLogType_timeIn" disabled readonly>
                                 </div>
                             </div>
 
                             <div class="row g-2 mb-1 attendanceSection">
-                                <div class="col-6">
-                                    <label for="viewAttendanceDate_timeOut">Time Out Attendance - Date:</label>
+                                <div class="col-5">
+                                    <label for="viewAttendanceDate_timeOut">Time Out - Date:</label>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-4">
                                     <label for="viewAttendanceTime_timeOut">Time:</label>
+                                </div>
+                                <div class="col-3">
+                                    <label for="viewAttendanceLogType_timeOut">Log Type:</label>
                                 </div>
                             </div>
 
@@ -940,11 +969,14 @@
                             </div>
 
                             <div class="row g-2 mb-2 attendanceSection">
-                                <div class="col-6">
+                                <div class="col-5">
                                     <input type="text" class="form-control" id="viewAttendanceDate_timeOut" disabled readonly>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-4">
                                     <input type="time" class="form-control" id="viewAttendanceTime_timeOut" disabled readonly>
+                                </div>
+                                <div class="col-3">
+                                    <input type="text" class="form-control" id="viewAttendanceLogType_timeOut" disabled readonly>
                                 </div>
                             </div>
 
