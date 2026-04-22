@@ -128,6 +128,19 @@ $(document).ready(function() {
 
     $('#approveDispute').hide();
     $('#disapproveDispute').hide();
+
+    $("input.attachment[type='checkbox']").on("change", function () {
+        const $checkboxes = $("input.attachment[type='checkbox']");
+        const checkedCount = $checkboxes.filter(":checked").length;
+
+        if (checkedCount >= 1) {
+            // Disable all unchecked boxes
+            $checkboxes.not(":checked").prop("disabled", true);
+        } else {
+            // Re-enable all boxes
+            $checkboxes.prop("disabled", false);
+        }
+    });
     
     // ADD DATA
     $("#fileDisputeForm").submit(function (e) {
