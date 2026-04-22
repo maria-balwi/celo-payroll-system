@@ -1240,7 +1240,7 @@
 
                     <!-- CARD FOOTER DATA ENTRY BUTTON -->
                     <div class="card-footer d-grid gap-2 d-md-flex justify-content-md-end">
-                        <button class="btn btn-primary me-md-2" type="button" data-bs-toggle="modal" data-bs-target="#fileDisputeModal">Add Data</button>
+                        <button class="btn btn-primary me-md-2" type="button" data-bs-toggle="modal" data-bs-target="#fileDisputeModal">File Dispute</button>
                     </div>
                 </div>
             </div>

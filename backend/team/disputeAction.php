@@ -73,6 +73,11 @@
             // INSERT INTO DISPUTES TABLE
             mysqli_query($conn, $payroll->addDispute_leave($lastDisputeID, $remarks));
 
+            // GET LAST DISPUTE ID
+            $lastIDQuery = mysqli_query($conn, $payroll->viewLastDisputeID());
+            $lastIDDetails = mysqli_fetch_array($lastIDQuery);
+            $lastID = $lastIDDetails['disputeID'];
+
             // AUDIT TRAIL
             $at_empID = $_SESSION['id'];
             $at_module = "Admin - Dispute";
@@ -82,7 +87,7 @@
             // ERROR MESSAGE
             $em = "Leave Dispute Filed Successfully";
             // RESPONSE ARRAY
-            $error = array('error' => 0, 'em' => $em);
+            $error = array('error' => 0, 'id' => $lastID, 'em' => $em);
         }
         else if ($dataType == 3) {
             $overtimeOTDate = $_POST['overtimeOTDate'];
@@ -101,6 +106,11 @@
             // INSERT INTO DISPUTES TABLE
             mysqli_query($conn, $payroll->addDispute_overtime($lastDisputeID, $remarks));
 
+            // GET LAST DISPUTE ID
+            $lastIDQuery = mysqli_query($conn, $payroll->viewLastDisputeID());
+            $lastIDDetails = mysqli_fetch_array($lastIDQuery);
+            $lastID = $lastIDDetails['disputeID'];
+
             // AUDIT TRAIL
             $at_empID = $_SESSION['id'];
             $at_module = "Admin - Dispute";
@@ -110,7 +120,7 @@
             // ERROR MESSAGE
             $em = "Overtime Dispute Filed Successfully";
             // RESPONSE ARRAY
-            $error = array('error' => 0, 'em' => $em);
+            $error = array('error' => 0, 'id' => $lastID, 'em' => $em);
         }
     }
     else if ($action == "approve") {
@@ -259,7 +269,6 @@
             $error = array('error' => 0, 'id' => $disputeID, 'em' => $em);
         }
     }
-
     else if ($action == "disapprove") {
         $disputeID = $_POST['id_dispute'];
         $getDisputeQuery = $payroll->getDisputeInfo($disputeID);
