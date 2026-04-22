@@ -72,9 +72,6 @@
                     else if ($userDetails['levelID'] == 4 || $userDetails['levelID'] == 5) {
                         $_SESSION['expire'] = $_SESSION['start'] + (60 * 30); // HR & ADMIN STAFF , HR GENERALIST LEVEL
                     }
-                    else if ($userDetails['levelID'] == 6) {
-                        $_SESSION['expire'] = $_SESSION['start'] + (60  * 15); // IT LEVEL
-                    }
 
                     // RETURN VALUES
                     $result[0] = '1';
