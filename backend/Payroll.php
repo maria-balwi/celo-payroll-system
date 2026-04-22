@@ -22,6 +22,7 @@
         private $attendance = 'tbl_attendance';
         private $weekOff = 'tbl_empweekoff';
         private $leaves = 'tbl_leaveapplications';
+        private $filedOT = 'tbl_filedot';
         private $cashAdvance = 'tbl_cashadvance';
         private $referral = 'tbl_referral';
         private $salaryadj = 'tbl_salaryadj';
@@ -746,10 +747,11 @@
 
         public function getOvertimeInfo($overtimeID) {
             $overtimeDispute = "
-                SELECT disputeID, employeeID, firstName, lastName,
+                SELECT disputeID, empID, employeeID, firstName, lastName,
                 DATE_FORMAT(dateFiled, '%M %d, %Y') AS dateFiled,
                 DATE_FORMAT(otDate, '%M %d, %Y') AS otDate,
-                otType, fromTime, toTime, remarks, dispute.status
+                otType, fromTime, toTime, remarks, dispute.status, 
+                otDate AS overtimeDate, dateFiled AS filedDate
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
                 ON dispute.overtimeID = disputeOvertime.overtimeID
@@ -759,17 +761,17 @@
             return $overtimeDispute;
         }
 
-        public function fileOT($employeeID, $otDate, $otType, $fromTime, $toTime, $remarks, $status) {
+        public function fileOT($employeeID, $dateFiled, $otDate, $otType, $fromTime, $toTime, $remarks, $status, $isPaid) {
             $fileOT = "
-                INSERT INTO ".$this->filedOT." (empID, dateFiled, otDate, otType, fromTime, toTime, remarks, status)
-                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$otDate', '$otType', '$fromTime', '$toTime', '$remarks', '$status')";
+                INSERT INTO ".$this->filedOT." (empID, dateFiled, otDate, otType, fromTime, toTime, remarks, status, isPaid)
+                VALUES ('$employeeID', '$dateFiled', '$otDate', '$otType', '$fromTime', '$toTime', '$remarks', '$status', '$isPaid')";
             return $fileOT;
         }
 
         public function fileLeaveWithAttachment($employeeID, $leaveTypeID, $effectivityStartDate, $effectivityEndDate, $remarks, $status, $attachment, $isPaid) {
             $fileLeave = "
-                INSERT INTO ".$this->leaves." (empID, dateFiled, leaveTypeID, effectivityStartDate, effectivityEndDate, remarks, status, attachment)
-                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$leaveTypeID', '$effectivityStartDate', '$effectivityEndDate', '$remarks', '$status', '$attachment')";
+                INSERT INTO ".$this->leaves." (empID, dateFiled, leaveTypeID, effectivityStartDate, effectivityEndDate, remarks, status, attachment, isPaid)
+                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$leaveTypeID', '$effectivityStartDate', '$effectivityEndDate', '$remarks', '$status', '$attachment', '$isPaid')";
             return $fileLeave;
         }
 
@@ -788,6 +790,11 @@
         public function updateLeaveStatus($leaveID, $isPaid) {
             $updateLeaveStatus = "UPDATE ".$this->disputeLeaves." SET isPaid = '$isPaid' WHERE leaveID = '$leaveID'";
             return $updateLeaveStatus;
+        }
+
+        public function updateOvertimeStatus($overtimeID, $isPaid) {
+            $updateOvertimeStatus = "UPDATE ".$this->disputeOvertime." SET isPaid = '$isPaid' WHERE overtimeID = '$overtimeID'";
+            return $updateOvertimeStatus;
         }
 
         public function getCashAdvanceInfo($requestID) {

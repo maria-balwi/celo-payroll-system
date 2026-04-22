@@ -176,7 +176,7 @@
             $startDate = $leave['effectivityStartDate'];
             $endDate = $leave['effectivityEndDate'];
             $attachment = $leave['attachment'];
-            $remarks = $leave['remarks'];
+            $remarks = $leave['remarks'] . " - (From Disputes)";
             $status = "Approved";
 
             
@@ -226,19 +226,23 @@
         else if ($type == "overtime") {
             $getOvertimeQuery = $payroll->getOvertimeInfo($dispute['overtimeID']);
             $getOvertimeResult = mysqli_query($conn, $getOvertimeQuery);
+            $isPaid = $_POST['isPaid'];
 
             $overtime = mysqli_fetch_array($getOvertimeResult);
             $empID = $overtime['empID'];
-            $dateFiled = $overtime['dateFiled'];
-            $otDate = $overtime['otDate'];
+            $dateFiled = $overtime['filedDate'];
+            $otDate = $overtime['overtimeDate'];
             $otType = $overtime['otType'];
             $fromTime = $overtime['fromTime'];
             $toTime = $overtime['toTime'];
-            $remarks = $overtime['remarks'];
-            $status = "Approved";
+            $remarks = $overtime['remarks'] . " - (From Disputes)";
+            $status = 1;
             
-            // INSERT INTO OVERTIME APPLICATIONS TABLE
-            mysqli_query($conn, $payroll->fileOT($empID, $otDate, $fromTime, $toTime, $remarks, $status));
+            // INSERT INTO OVERTIME TABLE
+            mysqli_query($conn, $payroll->fileOT($empID, $dateFiled, $otDate, $otType, $fromTime, $toTime, $remarks, $status, $isPaid));
+
+            // UPDATE ISPAID
+            mysqli_query($conn, $payroll->updateOvertimeStatus($dispute['overtimeID'], $isPaid));
             
             // UPDATE DISPUTE STATUS
             mysqli_query($conn, $payroll->updateDisputeStatus($disputeID, "Approved"));

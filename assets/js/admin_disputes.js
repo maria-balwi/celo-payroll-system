@@ -567,12 +567,7 @@ $(document).ready(function() {
                     $('#viewLeaveStartDate').val(res.data.startDate);
                     $('#viewLeaveEndDate').val(res.data.endDate);
                     $('#viewRemarks').val(res.data.remarks);
-                    if (res.data.isPaid == 1 && res.data.status == "Approved") {
-                        $('#viewStatus').val(res.data.status + ' (Paid)');
-                    }
-                    else if (res.data.isPaid == 0 && res.data.status == "Approved") {
-                        $('#viewStatus').val(res.data.status + ' (Unpaid)');
-                    }
+                    $('#viewStatus').val(res.data.status);
                     
                     $('#approveDispute').hide();
                     $('#disapproveDispute').hide();
@@ -670,7 +665,7 @@ $(document).ready(function() {
                             confirmButtonColor: '#28a745',
                             denyButtonColor: '#d4ba24',
                             cancelButtonColor: '#6c757d',
-                            confirmButtonText: 'Yes - Paid Attendance',
+                            confirmButtonText: 'Yes - Paid Leave',
                             denyButtonText: 'Yes - Unpaid Leave',
                             cancelButtonText: 'Cancel',
 
@@ -695,6 +690,7 @@ $(document).ready(function() {
                                             showConfirmButton: false,
                                         }).then(() => {
                                             loadLeaveDispute(id_dispute);
+                                            $("#viewModal").modal("show");
                                         })
                                     }
                                 })
@@ -718,7 +714,8 @@ $(document).ready(function() {
                                             timer: 2000,
                                             showConfirmButton: false,
                                         }).then(() => {
-                                            loadAttendanceDispute(id_dispute);
+                                            loadLeaveDispute(id_dispute);
+                                            $("#viewModal").modal("show");
                                         })
                                     }
                                 })
@@ -730,12 +727,12 @@ $(document).ready(function() {
         })
 
         // DISAPPROVE LEAVE DISPUTE
-        $(document).on('click', '.sfd', function() {
-            var id_leave = array[array.length - 1];
+        $(document).on('click', '.disapproveDispute', function() {
+            var id_dispute = array[array.length - 1];
 
             $.ajax({
                 type: "GET",
-                url: "../backend/admin/leaveModal.php?leave_id=" + id_leave,
+                url: "../backend/admin/disputeModal.php?dispute_id=" + id_dispute,
                 success: function(response) {
 
                     var res = jQuery.parseJSON(response);
@@ -745,8 +742,8 @@ $(document).ready(function() {
 
                         Swal.fire({
                             icon: 'question',
-                            title: 'Disapprove Leave Application',
-                            text: 'Are you sure you want to disapprove this leave application?',
+                            title: 'Disapprove Leave Dispute',
+                            text: 'Are you sure you want to disapprove this leave dispute?',
                             showCancelButton: true,
                             cancelButtonColor: '#6c757d',
                             confirmButtonColor: '#28a745',
@@ -758,7 +755,7 @@ $(document).ready(function() {
                                     url: "../backend/admin/leaveAction.php",
                                     type: 'POST',
                                     data: {
-                                        id_leave: id_leave,
+                                        id_dispute: id_dispute,
                                         action: 'disapprove'
                                     },
                                     cache: false,
@@ -766,12 +763,11 @@ $(document).ready(function() {
                                         Swal.fire({
                                             icon: 'success',
                                             title: 'Success',
-                                            text: 'Leave application has been disapproved!',
+                                            text: 'Leave dispute has been disapproved!',
                                             timer: 2000,
                                             showConfirmButton: false,
                                         }).then(() => {
-                                            // window.location.reload();
-                                            updateLeaveModal(id_leave);
+                                            loadLeaveDispute(id_dispute);
                                         })
                                     }
                                 })
@@ -819,12 +815,7 @@ $(document).ready(function() {
                     $('#viewOvertimeFromTime').val(res.data.fromTime);
                     $('#viewOvertimeToTime').val(res.data.toTime);
                     $('#viewRemarks').val(res.data.remarks);
-                    if (res.data.isPaid == 1 && res.data.status == 1) {
-                        $('#viewStatus').val('Approved (Paid)');
-                    }
-                    else if (res.data.isPaid == 0 && res.data.status == 1) {
-                        $('#viewStatus').val('Approved (Unpaid)');
-                    }
+                    $('#viewStatus').val(res.data.status);
 
                     $('#approveDispute').hide();
                     $('#disapproveDispute').hide();
@@ -871,7 +862,7 @@ $(document).ready(function() {
         });
 
         // APPROVE OVERTIME DISPUTE
-        $(document).on('click', '.dsa', function() {
+        $(document).on('click', '.approveDispute', function() {
             var id_dispute = array[array.length - 1];
 
             $.ajax({
@@ -886,16 +877,16 @@ $(document).ready(function() {
 
                         Swal.fire({
                             icon: 'question',
-                            title: 'Approve Attendance Dispute',
-                            text: 'Are you sure you want to approve this attendance dispute?',
+                            title: 'Approve Overtime Dispute',
+                            text: 'Are you sure you want to approve this overtime dispute?',
                             showDenyButton: true,
                             showCancelButton: true,
 
                             confirmButtonColor: '#28a745',
                             denyButtonColor: '#d4ba24',
                             cancelButtonColor: '#6c757d',
-                            confirmButtonText: 'Yes - Paid Attendance',
-                            denyButtonText: 'Yes - Unpaid Leave',
+                            confirmButtonText: 'Yes - Paid Overtime',
+                            denyButtonText: 'Yes - Unpaid Overtime',
                             cancelButtonText: 'Cancel',
 
                         }).then((result) => {
@@ -905,6 +896,7 @@ $(document).ready(function() {
                                     type: 'POST',
                                     data: {
                                         id_dispute: id_dispute,
+                                        type: 'overtime',
                                         action: 'approve', 
                                         isPaid: 1
                                     },
@@ -913,11 +905,12 @@ $(document).ready(function() {
                                         Swal.fire({
                                             icon: 'success',
                                             title: 'Success',
-                                            text: 'Leave application has been approved!',
+                                            text: 'Overtime dispute has been approved!',
                                             timer: 2000,
                                             showConfirmButton: false,
                                         }).then(() => {
-                                            loadAttendanceDispute(id_dispute);
+                                            loadOvertimeDispute(id_dispute);
+                                            $("#viewModal").modal("show");
                                         })
                                     }
                                 })
@@ -927,8 +920,9 @@ $(document).ready(function() {
                                     url: "../backend/admin/disputeAction.php",
                                     type: 'POST',
                                     data: {
-                                        id_leave: id_leave,
-                                        action: 'approve',
+                                        id_dispute: id_dispute,
+                                        type: 'overtime',
+                                        action: 'approve', 
                                         isPaid: 0
                                     },
                                     cache: false,
@@ -936,11 +930,12 @@ $(document).ready(function() {
                                         Swal.fire({
                                             icon: 'success',
                                             title: 'Success',
-                                            text: 'Leave application has been approved!',
+                                            text: 'Overtime dispute has been approved!',
                                             timer: 2000,
                                             showConfirmButton: false,
                                         }).then(() => {
-                                            loadAttendanceDispute(id_dispute);
+                                            loadOvertimeDispute(id_dispute);
+                                            $("#viewModal").modal("show");
                                         })
                                     }
                                 })
@@ -952,7 +947,7 @@ $(document).ready(function() {
         })
 
         // DISAPPROVE OVERTIME DISPUTE
-        $(document).on('click', '.fa', function() {
+        $(document).on('click', '.disapproveDispute', function() {
             var id_leave = array[array.length - 1];
 
             $.ajax({
@@ -1098,8 +1093,10 @@ $(document).ready(function() {
                     $('#viewEmployeeName').val(res.data.firstName + " " + res.data.lastName);
                     $('#viewAttendanceDate_timeIn').val(res.data.attendanceDate_timeIn);
                     $('#viewAttendanceTime_timeIn').val(res.data.attendanceTime_timeIn);
+                    $('#viewAttendanceLogType_timeIn').val(res.data.logTypeID_timeIn == 1 ? 'Time In' : 'Late');
                     $('#viewAttendanceDate_timeOut').val(res.data.attendanceDate_timeOut);
                     $('#viewAttendanceTime_timeOut').val(res.data.attendanceTime_timeOut);
+                    $('#viewAttendanceLogType_timeOut').val(res.data.logTypeID_timeOut == 3 ? 'Undertime' : 'Time Out');
                     $('#viewRemarks').val(res.data.remarks);
                     
                     $('#approveDispute').hide();
@@ -1114,8 +1111,10 @@ $(document).ready(function() {
                     $('#viewEmployeeName').val(res.data.firstName + " " + res.data.lastName);
                     $('#viewAttendanceDate_timeIn').val(res.data.attendanceDate_timeIn);
                     $('#viewAttendanceTime_timeIn').val(res.data.attendanceTime_timeIn);
+                    $('#viewAttendanceLogType_timeIn').val(res.data.logTypeID_timeIn == 1 ? 'Time In' : 'Late');
                     $('#viewAttendanceDate_timeOut').val(res.data.attendanceDate_timeOut);
                     $('#viewAttendanceTime_timeOut').val(res.data.attendanceTime_timeOut);
+                    $('#viewAttendanceLogType_timeOut').val(res.data.logTypeID_timeOut == 3 ? 'Undertime' : 'Time Out');
                     $('#viewRemarks').val(res.data.remarks);
                     
                     $('#approveDispute').show();
@@ -1130,8 +1129,10 @@ $(document).ready(function() {
                     $('#viewEmployeeName').val(res.data.firstName + " " + res.data.lastName);
                     $('#viewAttendanceDate_timeIn').val(res.data.attendanceDate_timeIn);
                     $('#viewAttendanceTime_timeIn').val(res.data.attendanceTime_timeIn);
+                    $('#viewAttendanceLogType_timeIn').val(res.data.logTypeID_timeIn == 1 ? 'Time In' : 'Late');
                     $('#viewAttendanceDate_timeOut').val(res.data.attendanceDate_timeOut);
                     $('#viewAttendanceTime_timeOut').val(res.data.attendanceTime_timeOut);
+                    $('#viewAttendanceLogType_timeOut').val(res.data.logTypeID_timeOut == 3 ? 'Undertime' : 'Time Out');
                     $('#viewRemarks').val(res.data.remarks);
                     
                     $('#approveDispute').show();
@@ -1169,12 +1170,7 @@ $(document).ready(function() {
                     $('#viewLeaveStartDate').val(res.data.startDate);
                     $('#viewLeaveEndDate').val(res.data.endDate);
                     $('#viewRemarks').val(res.data.remarks);
-                    if (res.data.isPaid == 1 && res.data.status == "Approved") {
-                        $('#viewStatus').val(res.data.status + ' (Paid)');
-                    }
-                    else if (res.data.isPaid == 0 && res.data.status == "Approved") {
-                        $('#viewStatus').val(res.data.status + ' (Unpaid)');
-                    }
+                    $('#viewStatus').val(res.data.status);
                     
                     $('#approveDispute').hide();
                     $('#disapproveDispute').hide();
@@ -1275,12 +1271,7 @@ $(document).ready(function() {
                     $('#viewOvertimeFromTime').val(res.data.fromTime);
                     $('#viewOvertimeToTime').val(res.data.toTime);
                     $('#viewRemarks').val(res.data.remarks);
-                    if (res.data.isPaid == 1 && res.data.status == 1) {
-                        $('#viewStatus').val('Approved (Paid)');
-                    }
-                    else if (res.data.isPaid == 0 && res.data.status == 1) {
-                        $('#viewStatus').val('Approved (Unpaid)');
-                    }
+                    $('#viewStatus').val(res.data.status);
 
                     $('#approveDispute').hide();
                     $('#disapproveDispute').hide();
@@ -1297,12 +1288,6 @@ $(document).ready(function() {
                     $('#viewOvertimeFromTime').val(res.data.fromTime);
                     $('#viewOvertimeToTime').val(res.data.toTime);
                     $('#viewRemarks').val(res.data.remarks);
-                    // if (res.data.isPaid == 1 && res.data.status == "Approved") {
-                    //     $('#viewStatus').val(res.data.status + ' (Paid)');
-                    // }
-                    // else if (res.data.isPaid == 0 && res.data.status == "Approved") {
-                    //     $('#viewStatus').val(res.data.status + ' (Unpaid)');
-                    // }
                     
                     $('#approveDispute').show();
                     $('#disapproveDispute').show();
@@ -1319,12 +1304,6 @@ $(document).ready(function() {
                     $('#viewOvertimeFromTime').val(res.data.fromTime);
                     $('#viewOvertimeToTime').val(res.data.toTime);
                     $('#viewRemarks').val(res.data.remarks);
-                    // if (res.data.isPaid == 1 && res.data.status == "Approved") {
-                    //     $('#viewStatus').val(res.data.status + ' (Paid)');
-                    // }
-                    // else if (res.data.isPaid == 0 && res.data.status == "Approved") {
-                    //     $('#viewStatus').val(res.data.status + ' (Unpaid)');
-                    // }
                     
                     $('#approveDispute').show();
                     $('#disapproveDispute').show();
