@@ -873,25 +873,25 @@
                         </div>
                         <div class="modal-body">
                             <div class="row g-2 mb-1">
-                                <div class="col-4">
+                                <div class="col-3">
                                     <label for="viewDataType">Type:</label>
                                 </div>
                                 <div class="col-5 dateFiledSection">
                                     <label for="viewDateFiled">Date Filed:</label>
                                 </div>
-                                <div class="col-3">
+                                <div class="col-4">
                                     <label for="viewStatus">Status:</label>
                                 </div>
                             </div>
 
                             <div class="row g-2 mb-2">
-                                <div class="col-4">
+                                <div class="col-3">
                                     <input type="text" class="form-control" id="viewDataType" disabled readonly>
                                 </div>
                                 <div class="col-5 dateFiledSection">
                                     <input type="text" class="form-control" id="viewDateFiled" disabled readonly>
                                 </div>
-                                <div class="col-3">
+                                <div class="col-4">
                                     <input type="text" class="form-control" id="viewStatus" disabled readonly>
                                 </div>
                             </div>

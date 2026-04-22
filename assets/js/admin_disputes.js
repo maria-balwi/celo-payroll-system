@@ -446,6 +446,7 @@ $(document).ready(function() {
                                             showConfirmButton: false,
                                         }).then(() => {
                                             loadAttendanceDispute(id_dispute);
+                                            $("#viewModal").modal("show");
                                         })
                                     }
                                 })
@@ -752,10 +753,11 @@ $(document).ready(function() {
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 $.ajax({
-                                    url: "../backend/admin/leaveAction.php",
+                                    url: "../backend/admin/disputeAction.php",
                                     type: 'POST',
                                     data: {
                                         id_dispute: id_dispute,
+                                        type: 'leave',
                                         action: 'disapprove'
                                     },
                                     cache: false,
@@ -768,6 +770,7 @@ $(document).ready(function() {
                                             showConfirmButton: false,
                                         }).then(() => {
                                             loadLeaveDispute(id_dispute);
+                                            $("#viewModal").modal("show");
                                         })
                                     }
                                 })
@@ -948,11 +951,11 @@ $(document).ready(function() {
 
         // DISAPPROVE OVERTIME DISPUTE
         $(document).on('click', '.disapproveDispute', function() {
-            var id_leave = array[array.length - 1];
+            var id_dispute = array[array.length - 1];
 
             $.ajax({
                 type: "GET",
-                url: "../backend/admin/leaveModal.php?leave_id=" + id_leave,
+                url: "../backend/admin/disputeModal.php?dispute_id=" + id_dispute,
                 success: function(response) {
 
                     var res = jQuery.parseJSON(response);
@@ -962,8 +965,8 @@ $(document).ready(function() {
 
                         Swal.fire({
                             icon: 'question',
-                            title: 'Disapprove Leave Application',
-                            text: 'Are you sure you want to disapprove this leave application?',
+                            title: 'Disapprove Overtime Dispute',
+                            text: 'Are you sure you want to disapprove this overtime dispute?',
                             showCancelButton: true,
                             cancelButtonColor: '#6c757d',
                             confirmButtonColor: '#28a745',
@@ -972,10 +975,11 @@ $(document).ready(function() {
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 $.ajax({
-                                    url: "../backend/admin/leaveAction.php",
+                                    url: "../backend/admin/disputeAction.php",
                                     type: 'POST',
                                     data: {
-                                        id_leave: id_leave,
+                                        id_dispute: id_dispute,
+                                        type: 'overtime',
                                         action: 'disapprove'
                                     },
                                     cache: false,
@@ -983,12 +987,12 @@ $(document).ready(function() {
                                         Swal.fire({
                                             icon: 'success',
                                             title: 'Success',
-                                            text: 'Leave application has been disapproved!',
+                                            text: 'Overtime dispute has been disapproved!',
                                             timer: 2000,
                                             showConfirmButton: false,
                                         }).then(() => {
-                                            // window.location.reload();
-                                            updateLeaveModal(id_leave);
+                                            loadOvertimeDispute(id_dispute);
+                                            $("#viewModal").modal("show");
                                         })
                                     }
                                 })

@@ -261,32 +261,75 @@
     }
 
     else if ($action == "disapprove") {
-        if ($type == "attendance") {
+        $disputeID = $_POST['id_dispute'];
+        $getDisputeQuery = $payroll->getDisputeInfo($disputeID);
+        $getDisputeResult = mysqli_query($conn, $getDisputeQuery);
+        $dispute = mysqli_fetch_array($getDisputeResult);
+        $type = $_POST['type'];
 
+        if ($type == "attendance") {
+            $getAttendanceQuery = $payroll->getAttendanceInfo($dispute['attendanceID']);
+            $getAttendanceResult = mysqli_query($conn, $getAttendanceQuery);
+
+            $attendance = mysqli_fetch_array($getAttendanceResult);
+            $empID = $attendance['empID'];
+
+            // UPDATE DISPUTE STATUS
+            mysqli_query($conn, $payroll->updateDisputeStatus($disputeID, "Disapproved"));
+
+            // AUDIT TRAIL
+            $at_empID = $_SESSION['id'];
+            $at_module = "Admin - Dispute";
+            $at_action = "Disapproved Attendance Dispute";
+            mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $empID));
+
+            // ERROR MESSAGE
+            $em = "Attendance Dispute Disapproved Successfully";
+            // RESPONSE ARRAY
+            $error = array('error' => 0, 'id' => $disputeID, 'em' => $em);
         }
         else if ($type == "leave") {
-        
+            $getLeaveQuery = $payroll->getLeaveInfo($dispute['leaveID']);
+            $getLeaveResult = mysqli_query($conn, $getLeaveQuery);
+
+            $leave = mysqli_fetch_array($getLeaveResult);
+            $empID = $leave['empID'];
+
+            // UPDATE DISPUTE STATUS
+            mysqli_query($conn, $payroll->updateDisputeStatus($disputeID, "Disapproved"));
+
+            // AUDIT TRAIL
+            $at_empID = $_SESSION['id'];
+            $at_module = "Admin - Dispute";
+            $at_action = "Disapproved Leave Dispute";
+            mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $empID));
+
+            // ERROR MESSAGE
+            $em = "Leave Dispute Disapproved Successfully";
+            // RESPONSE ARRAY
+            $error = array('error' => 0, 'id' => $disputeID, 'em' => $em);
         }
         else if ($type == "overtime") {
-        
-        }
-        mysqli_query($conn, $employees->disapproveCashAdvance($request_id));
-        
-        // GET AFFECTED USER
-        $query = mysqli_query($conn, $employees->viewCashAdvanceInfo($request_id));
-        $queryDetails = mysqli_fetch_array($query);
-        $at_affectedEmpID = $queryDetails['empID'];
+            $getOvertimeQuery = $payroll->getOvertimeInfo($dispute['overtimeID']);
+            $getOvertimeResult = mysqli_query($conn, $getOvertimeQuery);
 
-        // AUDIT TRAIL
-        $at_empID = $_SESSION['id'];
-        $at_module = "Admin - Cash Advance Application";
-        $at_action = "Disapproved Application";
-        mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $at_affectedEmpID));
-        
-        // ERROR MESSAGE
-        $em = "Cash Advance Application Disapproved Successfully";
-        // RESPONSE ARRAY
-        $error = array('error' => 0, 'em' => $em);
+            $overtime = mysqli_fetch_array($getOvertimeResult);
+            $empID = $overtime['empID'];
+
+            // UPDATE DISPUTE STATUS
+            mysqli_query($conn, $payroll->updateDisputeStatus($disputeID, "Disapproved"));
+
+            // AUDIT TRAIL
+            $at_empID = $_SESSION['id'];
+            $at_module = "Admin - Dispute";
+            $at_action = "Disapproved Overtime Dispute";
+            mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $empID));
+
+            // ERROR MESSAGE
+            $em = "Overtime Dispute Disapproved Successfully";
+            // RESPONSE ARRAY
+            $error = array('error' => 0, 'id' => $disputeID, 'em' => $em);
+        }
     }
     
     echo json_encode($error);
