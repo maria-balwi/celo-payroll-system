@@ -734,57 +734,15 @@
                                     <div class="col-12">
                                         <select class="form-select border border-1" id="leaveType" name="leaveType" required>
                                             <option selected disabled>Choose Leave Type</option>
-                                            <?php
-                                                $leaveQuery = mysqli_query($conn, $employees->viewApprovedSickLeaves($_SESSION['id']));
-                                                $sickLeaves = mysqli_num_rows($leaveQuery);
-                                            
-                                                // Fetch leave points
-                                                $leavePointsQuery = mysqli_query($conn, $employees->viewLeavePoints($_SESSION['id']));
-                                                $details = mysqli_fetch_array($leavePointsQuery);
-                                                $leavePoints = number_format($details['leavePoints'], 2);
-                                                $carryOverVLPoints = number_format($details['carryOverVLPoints'], 2);
-                                                
-                                                if ($sickLeaves >= 5) {
-                                            ?>
-                                                <option value="1" disabled>Sick Leave</option>
-                                            <?php 
-                                                }
-                                                else { ?>
-                                                <option value="1">Sick Leave</option>
-                                            <?php
-                                                }
-                                                if ($leavePoints >= 1.00 || $carryOverVLPoints >= 1.00) { ?>
-                                                <option value="2">Vacation Leave</option>
-                                            <?php } 
-                                                else {?>
-                                                <option value="2" disabled>Vacation Leave</option>
-                                            <?php } 
-                                                $bereavementLeaveQuery = mysqli_query($conn, $employees->viewApprovedBereavementLeaves($_SESSION['id']));
-                                                $bereavementLeaves = mysqli_num_rows($bereavementLeaveQuery);
-                                                if ($bereavementLeaves <= 3) {
-                                            ?>
-                                                <option value="3">Bereavement Leave</option>
-                                            <?php } else { ?>
-                                                <option value="3" disabled>Bereavement Leave</option>
-                                            <?php } ?>
-                                            <?php 
-                                                if ($_SESSION['gender'] == "Female") { ?>
-                                                <option value="4">Maternity Leave</option>
-                                                <option value="5">Maternity Leave (Solo Parent)</option>
-                                                <option value="6">Maternity Leave (Miscarriage)</option>
-                                            <?php } 
-                                                else { 
-                                                    $paternityLeaveQuery = mysqli_query($conn, $employees->viewApprovedPaternityLeaves($_SESSION['id']));
-                                                    $paternityLeaves = mysqli_num_rows($paternityLeaveQuery);
-                                                    if ($paternityLeaves <= 3) {
-                                            ?>
-                                                <option value="7">Paternity Leave</option>
-                                            <?php } else { ?>
-                                                <opt`ion value="7" disabled>Paternity Leave</opt>
-                                            <?php   } ?>
-                                            <?php } ?>
-                                                <option value="8">Solo Parent Leave</option>
-                                                <option value="9">Emergency Leave</option>
+                                            <option value="1" disabled>Sick Leave</option>
+                                            <option value="2">Vacation Leave</option>
+                                            <option value="3">Bereavement Leave</option>
+                                            <option value="4">Maternity Leave</option>
+                                            <option value="5">Maternity Leave (Solo Parent)</option>
+                                            <option value="6">Maternity Leave (Miscarriage)</option>
+                                            <option value="7">Paternity Leave</option>
+                                            <option value="8">Solo Parent Leave</option>
+                                            <option value="9">Emergency Leave</option>
                                         </select>
                                     </div>
                                 </div>  
