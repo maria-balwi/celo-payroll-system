@@ -37,6 +37,9 @@ $(document).ready(function() {
     var adjustmentsTable = $("#adjustmentsTable").DataTable();
     adjustmentsTable.order([[0, "desc"]]).draw();
 
+    var disputesTable = $("#disputesTable").DataTable();
+    disputesTable.order([[0, "desc"]]).draw();
+
     var usersTable = $("#usersTable").DataTable();
     usersTable.order([[0, "desc"]]).draw();
 
@@ -45,6 +48,12 @@ $(document).ready(function() {
     
     var passwordResetTable = $("#passwordResetTable").DataTable();
     passwordResetTable.order([[0, "desc"]]).draw();
+
+    var payslipTable = $("#payslipTable").DataTable();
+    payslipTable.order([[0, "desc"]]).draw();
+
+    var logsTable = $("#logsTable").DataTable();
+    logsTable.order([[0, "desc"]]).draw();
 	
     // VIEW AND UPDATE SALARY ADJUSTMENTS
     var array = [];

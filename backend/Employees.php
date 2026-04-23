@@ -26,6 +26,7 @@
         private $salaryAdj = "tbl_salaryadj";
         private $auditTrail = 'tbl_audittrail';
         private $dbConnect = false;
+        private $disputes = "tbl_disputes";
         public function __construct() {
             $this->dbConnect = $this->dbConnect();
         }
@@ -1792,12 +1793,40 @@
             return $adjustments;
         }
 
-        public function viewAuditTrailUsers() {
-            $users = "
-                SELECT auditTrailID, date, employees.firstName, employees.lastName, module, action, affected_empID FROM ".$this->auditTrail." AS auditTrail
+        public function viewAuditTrailDisputes() {
+            $disputes = "
+                SELECT auditTrailID, date, employees.firstName, 
+                employees.lastName, module, action, affected_empID 
+                FROM ".$this->auditTrail." AS auditTrail
                 INNER JOIN ".$this->employees." AS employees
                 ON auditTrail.empID = employees.id
-                WHERE module LIKE '%User%'
+                INNER JOIN ".$this->employees." AS emp
+                ON auditTrail.affected_empID = emp.id
+                WHERE module LIKE '%Dispute%'
+                ORDER BY auditTrail.auditTrailID DESC";
+            return $disputes;
+        }
+
+        public function viewAuditTrailUsers() {
+            $users = "
+                SELECT auditTrailID, date, employees.firstName, 
+                employees.lastName, module, action, affected_empID 
+                FROM ".$this->auditTrail." AS auditTrail
+                INNER JOIN ".$this->employees." AS employees
+                ON auditTrail.empID = employees.id
+                WHERE module LIKE '%User%' AND action NOT LIKE '%Payslip%'
+                ORDER BY auditTrail.auditTrailID DESC";
+            return $users;
+        }
+
+        public function viewAuditTraiLPayslip() {
+            $users = "
+                SELECT auditTrailID, date, employees.firstName, 
+                employees.lastName, module, action, affected_empID 
+                FROM ".$this->auditTrail." AS auditTrail
+                INNER JOIN ".$this->employees." AS employees
+                ON auditTrail.empID = employees.id
+                WHERE action LIKE '%Payslip%'
                 ORDER BY auditTrail.auditTrailID DESC";
             return $users;
         }

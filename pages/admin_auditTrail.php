@@ -24,10 +24,6 @@
                                 <button class="nav-link active uncheck" id="pills-employee-tab" data-bs-toggle="pill" data-bs-target="#pills-employee" type="button" role="tab" aria-controls="pills-employee" aria-selected="true">Employee</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <!--PAYROLL BUTTON-->
-                                <button class="nav-link uncheck" id="pills-payroll-tab" data-bs-toggle="pill" data-bs-target="#pills-payroll" type="button" role="tab" aria-controls="pills-payroll" aria-selected="false">Payroll</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
                                 <!--LEAVE BUTTON-->
                                 <button class="nav-link uncheck" id="pills-leave-tab" data-bs-toggle="pill" data-bs-target="#pills-leave" type="button" role="tab" aria-controls="pills-leave" aria-selected="false">Leave</button>
                             </li>
@@ -40,8 +36,16 @@
                                 <button class="nav-link uncheck" id="pills-overtime-tab" data-bs-toggle="pill" data-bs-target="#pills-overtime" type="button" role="tab" aria-controls="pills-overtime" aria-selected="false">Overtime</button>
                             </li>
                             <li class="nav-item" role="presentation">
+                                <!--PAYROLL BUTTON-->
+                                <button class="nav-link uncheck" id="pills-payroll-tab" data-bs-toggle="pill" data-bs-target="#pills-payroll" type="button" role="tab" aria-controls="pills-payroll" aria-selected="false">Payroll</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
                                 <!--ADJUSTMENTS BUTTON-->
                                 <button class="nav-link uncheck" id="pills-adjustments-tab" data-bs-toggle="pill" data-bs-target="#pills-adjustments" type="button" role="tab" aria-controls="pills-adjustments" aria-selected="false">Salary Adjustments</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <!--DISPUTES BUTTON-->
+                                <button class="nav-link uncheck" id="pills-disputes-tab" data-bs-toggle="pill" data-bs-target="#pills-disputes" type="button" role="tab" aria-controls="pills-disputes" aria-selected="false">Disputes</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <!--USERS BUTTON-->
@@ -54,6 +58,14 @@
                             <li class="nav-item" role="presentation">
                                 <!--PASSWORD BUTTON-->
                                 <button class="nav-link uncheck" id="pills-password-tab" data-bs-toggle="pill" data-bs-target="#pills-password" type="button" role="tab" aria-controls="pills-password" aria-selected="false">Password Reset</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <!--PAYSLIP BUTTON-->
+                                <button class="nav-link uncheck" id="pills-payslip-tab" data-bs-toggle="pill" data-bs-target="#pills-payslip" type="button" role="tab" aria-controls="pills-payslip" aria-selected="false">Payslip</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <!--LOGIN/LOGOUT BUTTON-->
+                                <button class="nav-link uncheck" id="pills-logs-tab" data-bs-toggle="pill" data-bs-target="#pills-logs" type="button" role="tab" aria-controls="pills-logs" aria-selected="false">Login/Logout</button>
                             </li>
                         </ul>
                     </div>
@@ -129,52 +141,6 @@
                                         </table>
                                     </div>
                                 </div>
-                            </div>
-
-                            <!-- ------------------------------------------------------------------------------------------------- -->
-                            <!-- ------------------------------------------ PAYROLL TAB ------------------------------------------ -->
-                            <!-- ------------------------------------------------------------------------------------------------- -->
-                            <div class="tab-pane fade" id="pills-payroll" role="tabpanel" aria-labelledby="pills-payroll-tab">
-                                <div class="card border-0">
-                                    <div class="tab-content" id="pills-tabContent">
-                                        <table id="payrollTable" class="table table-striped table-bordered table-auto min-w-full divide-y divide-gray-200 text-center pt-3">
-                                            <thead class="bg-gray-50">
-                                                <tr>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Module</th>
-                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="bg-white divide-y divide-gray-200">
-                                                <?php
-                                                    $query = mysqli_query($conn, $employees->viewAuditTrailPayroll());
-                                                    while ($auditTrailDetails = mysqli_fetch_array($query)) {
-
-                                                        $payrollATID = $auditTrailDetails['auditTrailID'];
-                                                        $payrollDate = $auditTrailDetails['date'];
-                                                        $payrollEmployee = $auditTrailDetails['firstName'] . " " . $auditTrailDetails['lastName'];
-                                                        $payrollModule = $auditTrailDetails['module'];
-                                                        $payrollAction = $auditTrailDetails['action'];
-                                                        $datePayroll = formatDate($payrollDate);
-                                                        $timePayroll = formatTime($payrollDate);
-
-                                                        echo "<tr>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $payrollATID . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $datePayroll . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $timePayroll . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $payrollEmployee . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $payrollModule . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $payrollAction . "</td>";
-                                                        echo "</tr>";
-                                                    }
-                                                ?>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div> 
                             </div>
 
                             <!-- ------------------------------------------------------------------------------------------------- -->
@@ -345,7 +311,53 @@
                             </div>
 
                             <!-- ------------------------------------------------------------------------------------------------- -->
-                            <!-- ----------------------------------------- ADJUSTMENTS TAB --------------------------------------- -->
+                            <!-- ------------------------------------------ PAYROLL TAB ------------------------------------------ -->
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <div class="tab-pane fade" id="pills-payroll" role="tabpanel" aria-labelledby="pills-payroll-tab">
+                                <div class="card border-0">
+                                    <div class="tab-content" id="pills-tabContent">
+                                        <table id="payrollTable" class="table table-striped table-bordered table-auto min-w-full divide-y divide-gray-200 text-center pt-3">
+                                            <thead class="bg-gray-50">
+                                                <tr>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Module</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="bg-white divide-y divide-gray-200">
+                                                <?php
+                                                    $query = mysqli_query($conn, $employees->viewAuditTrailPayroll());
+                                                    while ($auditTrailDetails = mysqli_fetch_array($query)) {
+
+                                                        $payrollATID = $auditTrailDetails['auditTrailID'];
+                                                        $payrollDate = $auditTrailDetails['date'];
+                                                        $payrollEmployee = $auditTrailDetails['firstName'] . " " . $auditTrailDetails['lastName'];
+                                                        $payrollModule = $auditTrailDetails['module'];
+                                                        $payrollAction = $auditTrailDetails['action'];
+                                                        $datePayroll = formatDate($payrollDate);
+                                                        $timePayroll = formatTime($payrollDate);
+
+                                                        echo "<tr>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $payrollATID . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $datePayroll . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $timePayroll . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $payrollEmployee . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $payrollModule . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $payrollAction . "</td>";
+                                                        echo "</tr>";
+                                                    }
+                                                ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div> 
+                            </div>
+
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <!-- -------------------------------------- SALARY ADJUSTMENTS TAB ----------------------------------- -->
                             <!-- ------------------------------------------------------------------------------------------------- -->
                             <div class="tab-pane fade" id="pills-adjustments" role="tabpanel" aria-labelledby="pills-adjustments-tab">
                                 <div class="card border-0">
@@ -353,7 +365,7 @@
                                         <table id="adjustmentsTable" class="table table-striped table-bordered table-auto min-w-full divide-y divide-gray-200 text-center pt-3">
                                             <thead class="bg-gray-50">
                                                 <tr>
-                                                    <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th> -->
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
                                                     <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
                                                     <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
                                                     <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
@@ -384,6 +396,63 @@
                                                         $timeAdjustments = formatTime($adjustmentsDate);
 
                                                         echo "<tr data-id='{$adjustmentsATID}' class='salaryAdjustmentView cursor-pointer'>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $adjustmentsATID . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $dateAdjustments . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $timeAdjustments . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $adjustmentsEmployee . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $adjustmentsModule . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $adjustmentsAction . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $affected_user . "</td>";
+                                                        echo "</tr>";
+                                                    }
+                                                ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div> 
+                            </div>
+
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <!-- ------------------------------------------- DISPUTES TAB ---------------------------------------- -->
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <div class="tab-pane fade" id="pills-disputes" role="tabpanel" aria-labelledby="pills-disputes-tab">
+                                <div class="card border-0">
+                                    <div class="tab-content" id="pills-tabContent">
+                                        <table id="disputesTable" class="table table-striped table-bordered table-auto min-w-full divide-y divide-gray-200 text-center pt-3">
+                                            <thead class="bg-gray-50">
+                                                <tr>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Module</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Affected Employe</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="bg-white divide-y divide-gray-200">
+                                                <?php
+                                                    $query = mysqli_query($conn, $employees->viewAuditTrailDisputes());
+                                                    while ($auditTrailDetails = mysqli_fetch_array($query)) {
+
+                                                        $adjustmentsATID = $auditTrailDetails['auditTrailID'];
+                                                        $adjustmentsDate = $auditTrailDetails['date'];
+                                                        $adjustmentsEmployee = $auditTrailDetails['firstName'] . " " . $auditTrailDetails['lastName'];
+                                                        $adjustmentsModule = $auditTrailDetails['module'];
+                                                        $adjustmentsAction = $auditTrailDetails['action'];
+                                                        // $affected_user = $auditTrailDetails['affectedFirstName'] . " " . $auditTrailDetails['affectedLastName'];
+                                                        if ($auditTrailDetails['affected_empID'] === null) {
+                                                            $affected_user = "-";
+                                                        } else {
+                                                            $affectedUserQuery = mysqli_query($conn, $employees->viewAffectedUser($auditTrailDetails['affected_empID']));
+                                                            $affectedUserDetails = mysqli_fetch_array($affectedUserQuery);
+                                                            $affected_user = $affectedUserDetails['affectedFirstName'] . " " . $affectedUserDetails['affectedLastName'];
+                                                        }
+                                                        $dateAdjustments = formatDate($adjustmentsDate);
+                                                        $timeAdjustments = formatTime($adjustmentsDate);
+
+                                                        echo "<tr>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $adjustmentsATID . "</td>";
                                                         echo "<td class ='whitespace-nowrap'>" . $dateAdjustments . "</td>";
                                                         echo "<td class ='whitespace-nowrap'>" . $timeAdjustments . "</td>";
                                                         echo "<td class ='whitespace-nowrap'>" . $adjustmentsEmployee . "</td>";
@@ -511,6 +580,98 @@
                                 <div class="card border-0">
                                     <div class="tab-content" id="pills-tabContent">
                                         <table id="passwordResetTable" class="table table-striped table-bordered table-auto min-w-full divide-y divide-gray-200 text-center pt-3">
+                                            <thead class="bg-gray-50">
+                                                <tr>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Module</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="bg-white divide-y divide-gray-200">
+                                                <?php
+                                                    $query = mysqli_query($conn, $employees->viewAuditTrailPasswordReset());
+                                                    while ($auditTrailDetails = mysqli_fetch_array($query)) {
+
+                                                        $passwordATID = $auditTrailDetails['auditTrailID'];
+                                                        $passwordDate = $auditTrailDetails['date'];
+                                                        $passwordEmployee = $auditTrailDetails['firstName'] . " " . $auditTrailDetails['lastName'];
+                                                        $passwordModule = $auditTrailDetails['module'];
+                                                        $passwordAction = $auditTrailDetails['action'];
+                                                        $datePassword = formatDate($passwordDate);
+                                                        $timePassword = formatTime($passwordDate);
+
+                                                        echo "<tr>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $passwordATID . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $datePassword . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $timePassword . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $passwordEmployee . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $passwordModule . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $passwordAction . "</td>";
+                                                        echo "</tr>";
+                                                    }
+                                                ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div> 
+                            </div>
+
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <!-- ------------------------------------------ PAYSLIP TAB ------------------------------------------ -->
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <div class="tab-pane fade" id="pills-payslip" role="tabpanel" aria-labelledby="pills-payslip-tab">
+                                <div class="card border-0">
+                                    <div class="tab-content" id="pills-tabContent">
+                                        <table id="payslipTable" class="table table-striped table-bordered table-auto min-w-full divide-y divide-gray-200 text-center pt-3">
+                                            <thead class="bg-gray-50">
+                                                <tr>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Module</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="bg-white divide-y divide-gray-200">
+                                                <?php
+                                                    $query = mysqli_query($conn, $employees->viewAuditTraiLPayslip());
+                                                    while ($auditTrailDetails = mysqli_fetch_array($query)) {
+
+                                                        $passwordATID = $auditTrailDetails['auditTrailID'];
+                                                        $passwordDate = $auditTrailDetails['date'];
+                                                        $passwordEmployee = $auditTrailDetails['firstName'] . " " . $auditTrailDetails['lastName'];
+                                                        $passwordModule = $auditTrailDetails['module'];
+                                                        $passwordAction = $auditTrailDetails['action'];
+                                                        $datePassword = formatDate($passwordDate);
+                                                        $timePassword = formatTime($passwordDate);
+
+                                                        echo "<tr>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $passwordATID . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $datePassword . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $timePassword . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $passwordEmployee . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $passwordModule . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $passwordAction . "</td>";
+                                                        echo "</tr>";
+                                                    }
+                                                ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div> 
+                            </div>
+
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <!-- ---------------------------------------- LOGIN/LOGOUT TAB --------------------------------------- -->
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <div class="tab-pane fade" id="pills-logs" role="tabpanel" aria-labelledby="pills-logs-tab">
+                                <div class="card border-0">
+                                    <div class="tab-content" id="pills-tabContent">
+                                        <table id="logsTable" class="table table-striped table-bordered table-auto min-w-full divide-y divide-gray-200 text-center pt-3">
                                             <thead class="bg-gray-50">
                                                 <tr>
                                                     <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
