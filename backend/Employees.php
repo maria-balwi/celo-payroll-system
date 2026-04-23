@@ -1850,7 +1850,19 @@
                 FROM ".$this->auditTrail." AS auditTrail
                 INNER JOIN ".$this->employees." AS employees
                 ON auditTrail.empID = employees.id
-                WHERE module LIKE '%Login%'
+                WHERE action LIKE '%OTP%'
+                ORDER BY auditTrail.auditTrailID DESC";
+            return $passwordReset;
+        }
+
+        public function viewAuditTrailLoginLogout() {
+            $passwordReset = "
+                SELECT auditTrailID, date, employees.firstName, 
+                employees.lastName, module, action 
+                FROM ".$this->auditTrail." AS auditTrail
+                INNER JOIN ".$this->employees." AS employees
+                ON auditTrail.empID = employees.id
+                WHERE action LIKE '%logged%'
                 ORDER BY auditTrail.auditTrailID DESC";
             return $passwordReset;
         }
@@ -1884,6 +1896,13 @@
         }
 
         public function auditTrailPasswordReset($empID, $module, $action) {
+            $auditTrail = "
+                INSERT INTO ".$this->auditTrail." (date, empID, module, action)
+                VALUES (CURRENT_TIMESTAMP, '$empID', '$module', '$action')";
+            return $auditTrail;
+        }
+
+        public function auditTrailLoginLogout($empID, $module, $action) {
             $auditTrail = "
                 INSERT INTO ".$this->auditTrail." (date, empID, module, action)
                 VALUES (CURRENT_TIMESTAMP, '$empID', '$module', '$action')";

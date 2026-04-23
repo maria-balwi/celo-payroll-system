@@ -435,12 +435,11 @@
                                                     $query = mysqli_query($conn, $employees->viewAuditTrailDisputes());
                                                     while ($auditTrailDetails = mysqli_fetch_array($query)) {
 
-                                                        $adjustmentsATID = $auditTrailDetails['auditTrailID'];
-                                                        $adjustmentsDate = $auditTrailDetails['date'];
-                                                        $adjustmentsEmployee = $auditTrailDetails['firstName'] . " " . $auditTrailDetails['lastName'];
-                                                        $adjustmentsModule = $auditTrailDetails['module'];
-                                                        $adjustmentsAction = $auditTrailDetails['action'];
-                                                        // $affected_user = $auditTrailDetails['affectedFirstName'] . " " . $auditTrailDetails['affectedLastName'];
+                                                        $disputesATID = $auditTrailDetails['auditTrailID'];
+                                                        $disputesDate = $auditTrailDetails['date'];
+                                                        $disputesEmployee = $auditTrailDetails['firstName'] . " " . $auditTrailDetails['lastName'];
+                                                        $disputesModule = $auditTrailDetails['module'];
+                                                        $disputesAction = $auditTrailDetails['action'];
                                                         if ($auditTrailDetails['affected_empID'] === null) {
                                                             $affected_user = "-";
                                                         } else {
@@ -448,16 +447,16 @@
                                                             $affectedUserDetails = mysqli_fetch_array($affectedUserQuery);
                                                             $affected_user = $affectedUserDetails['affectedFirstName'] . " " . $affectedUserDetails['affectedLastName'];
                                                         }
-                                                        $dateAdjustments = formatDate($adjustmentsDate);
-                                                        $timeAdjustments = formatTime($adjustmentsDate);
+                                                        $dateDisputes = formatDate($disputesDate);
+                                                        $timeDisputes = formatTime($disputesDate);
 
                                                         echo "<tr>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $adjustmentsATID . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $dateAdjustments . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $timeAdjustments . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $adjustmentsEmployee . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $adjustmentsModule . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $adjustmentsAction . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $disputesATID . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $dateDisputes . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $timeDisputes . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $disputesEmployee . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $disputesModule . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $disputesAction . "</td>";
                                                         echo "<td class ='whitespace-nowrap'>" . $affected_user . "</td>";
                                                         echo "</tr>";
                                                     }
@@ -641,21 +640,21 @@
                                                     $query = mysqli_query($conn, $employees->viewAuditTraiLPayslip());
                                                     while ($auditTrailDetails = mysqli_fetch_array($query)) {
 
-                                                        $passwordATID = $auditTrailDetails['auditTrailID'];
-                                                        $passwordDate = $auditTrailDetails['date'];
-                                                        $passwordEmployee = $auditTrailDetails['firstName'] . " " . $auditTrailDetails['lastName'];
-                                                        $passwordModule = $auditTrailDetails['module'];
-                                                        $passwordAction = $auditTrailDetails['action'];
-                                                        $datePassword = formatDate($passwordDate);
-                                                        $timePassword = formatTime($passwordDate);
+                                                        $payslipATID = $auditTrailDetails['auditTrailID'];
+                                                        $payslipDate = $auditTrailDetails['date'];
+                                                        $payslipEmployee = $auditTrailDetails['firstName'] . " " . $auditTrailDetails['lastName'];
+                                                        $payslipModule = $auditTrailDetails['module'];
+                                                        $payslipAction = $auditTrailDetails['action'];
+                                                        $datePayslip = formatDate($payslipDate);
+                                                        $timePayslip = formatTime($payslipDate);
 
                                                         echo "<tr>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $passwordATID . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $datePassword . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $timePassword . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $passwordEmployee . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $passwordModule . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $passwordAction . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $payslipATID . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $datePayslip . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $timePayslip . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $payslipEmployee . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $payslipModule . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $payslipAction . "</td>";
                                                         echo "</tr>";
                                                     }
                                                 ?>
@@ -684,24 +683,24 @@
                                             </thead>
                                             <tbody class="bg-white divide-y divide-gray-200">
                                                 <?php
-                                                    $query = mysqli_query($conn, $employees->viewAuditTrailPasswordReset());
+                                                    $query = mysqli_query($conn, $employees->viewAuditTrailLoginLogout());
                                                     while ($auditTrailDetails = mysqli_fetch_array($query)) {
 
-                                                        $passwordATID = $auditTrailDetails['auditTrailID'];
-                                                        $passwordDate = $auditTrailDetails['date'];
-                                                        $passwordEmployee = $auditTrailDetails['firstName'] . " " . $auditTrailDetails['lastName'];
-                                                        $passwordModule = $auditTrailDetails['module'];
-                                                        $passwordAction = $auditTrailDetails['action'];
-                                                        $datePassword = formatDate($passwordDate);
-                                                        $timePassword = formatTime($passwordDate);
+                                                        $logATID = $auditTrailDetails['auditTrailID'];
+                                                        $logDate = $auditTrailDetails['date'];
+                                                        $logEmployee = $auditTrailDetails['firstName'] . " " . $auditTrailDetails['lastName'];
+                                                        $logModule = $auditTrailDetails['module'];
+                                                        $logAction = $auditTrailDetails['action'];
+                                                        $dateLog = formatDate($logDate);
+                                                        $timeLog = formatTime($logDate);
 
                                                         echo "<tr>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $passwordATID . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $datePassword . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $timePassword . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $passwordEmployee . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $passwordModule . "</td>";
-                                                        echo "<td class ='whitespace-nowrap'>" . $passwordAction . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $logATID . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $dateLog . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $timeLog . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $logEmployee . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $logModule . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $logAction . "</td>";
                                                         echo "</tr>";
                                                     }
                                                 ?>
