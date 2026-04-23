@@ -728,6 +728,7 @@
                                                 <select id="civilStatus" name="civilStatus" class="form-select">
                                                     <option selected disabled>Choose</option>
                                                     <option value="Single">Single</option>
+                                                    <option value="Common Law">Common Law</option>
                                                     <option value="Married">Married</option>
                                                     <option value="Separated">Separated</option>
                                                     <option value="Divorced">Divorced</option>
@@ -1683,6 +1684,7 @@
                                                 <select id="updateCivilStatus" name="updateCivilStatus" class="form-select">
                                                     <option selected disabled>Choose</option>
                                                     <option value="Single">Single</option>
+                                                    <option value="Common Law">Common Law</option>
                                                     <option value="Married">Married</option>
                                                     <option value="Separated">Separated</option>
                                                     <option value="Divorced">Divorced</option>
