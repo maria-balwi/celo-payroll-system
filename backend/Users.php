@@ -94,8 +94,6 @@
         }
 
         public function logout() {
-            session_start();
-
             // REMOVE ALL SESSION VARIABLES
             session_unset();
 

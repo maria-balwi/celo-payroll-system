@@ -68,14 +68,20 @@ $(document).ready(function() {
             confirmButtonText: 'Yes',
         }).then((result) => {
             if (result.isConfirmed) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    text: 'Logged out Successfully',
-                    timer: 2000,
-                    showConfirmButton: false,
-                }).then(() => {
-                    window.location.href = "../index.php"
+                $.ajax({
+                    url: "../backend/session/logout.php",
+                    type: 'POST',
+                    success: function(data) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Logged out Successfully',
+                            timer: 2000,
+                            showConfirmButton: false,
+                        }).then(() => {
+                            window.location.href = "../index.php"
+                        })
+                    }
                 })
             }
         })
