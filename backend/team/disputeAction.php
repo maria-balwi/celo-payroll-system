@@ -36,7 +36,7 @@
 
             // AUDIT TRAIL
             $at_empID = $_SESSION['id'];
-            $at_module = "Admin - Dispute";
+            $at_module = "Team - Dispute";
             $at_action = "Filed Attendance Dispute";
             mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $empID));
 
@@ -80,7 +80,7 @@
 
             // AUDIT TRAIL
             $at_empID = $_SESSION['id'];
-            $at_module = "Admin - Dispute";
+            $at_module = "Team - Dispute";
             $at_action = "Filed Leave Dispute";
             mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $empID));
 
@@ -113,7 +113,7 @@
 
             // AUDIT TRAIL
             $at_empID = $_SESSION['id'];
-            $at_module = "Admin - Dispute";
+            $at_module = "Team - Dispute";
             $at_action = "Filed Overtime Dispute";
             mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $empID));
 
@@ -165,7 +165,7 @@
 
             // AUDIT TRAIL
             $at_empID = $_SESSION['id'];
-            $at_module = "Admin - Dispute";
+            $at_module = "Team - Dispute";
             $at_action = "Approved Attendance Dispute";
             mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $empID));
 
@@ -224,7 +224,7 @@
 
             // AUDIT TRAIL
             $at_empID = $_SESSION['id'];
-            $at_module = "Admin - Dispute";
+            $at_module = "Team - Dispute";
             $at_action = "Approved Leave Dispute";
             mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $empID));
 
@@ -259,7 +259,7 @@
             
             // AUDIT TRAIL
             $at_empID = $_SESSION['id'];
-            $at_module = "Admin - Dispute";
+            $at_module = "Team - Dispute";
             $at_action = "Approved Overtime Dispute";
             mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $empID));
             
@@ -288,7 +288,7 @@
 
             // AUDIT TRAIL
             $at_empID = $_SESSION['id'];
-            $at_module = "Admin - Dispute";
+            $at_module = "Team - Dispute";
             $at_action = "Disapproved Attendance Dispute";
             mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $empID));
 
@@ -309,7 +309,7 @@
 
             // AUDIT TRAIL
             $at_empID = $_SESSION['id'];
-            $at_module = "Admin - Dispute";
+            $at_module = "Team - Dispute";
             $at_action = "Disapproved Leave Dispute";
             mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $empID));
 
@@ -330,7 +330,7 @@
 
             // AUDIT TRAIL
             $at_empID = $_SESSION['id'];
-            $at_module = "Admin - Dispute";
+            $at_module = "Team - Dispute";
             $at_action = "Disapproved Overtime Dispute";
             mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $empID));
 
