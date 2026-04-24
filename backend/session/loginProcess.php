@@ -22,6 +22,10 @@
             $error = array('error' => 2, 'em' => $em);
             echo json_encode($error);
         }
+        else if ($loginResult[0] == '3') {
+            $error = array('level' => $loginResult[1], 'activated' => $_SESSION['activated']);
+            echo json_encode($error);
+        }
         else {
             $error = array('level' => $loginResult[1], 'activated' => $_SESSION['activated']);
             echo json_encode($error);

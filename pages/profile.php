@@ -79,17 +79,34 @@
                                         <h2 class="text-sm text-gray-400"><?php echo $userDetails['civilStatus'] ?></h2>
                                     </div>
                                     <div class="flex gap-2 py-1">
-                                        <!-- <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 text-sm font-medium bg-blue-500 text-white" data-bs-target="#changePasswordModal" data-bs-toggle="modal">
-                                            Change Password
-                                        </button> -->
-                                            <?php if ($_SESSION['activated'] == 0) 
-                                            { ?>
+                                        <?php if ($_SESSION['updateEmpInfo'] == 1) {
+                                            if ($_SESSION['activated'] == 0) { ?>
+                                                <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 text-sm font-medium bg-gray-300 text-gray-500" disabled>Update Password</button>
+                                            <?php }
+                                            else { ?>
+                                                <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 text-sm font-medium bg-gray-300 text-gray-500" disabled>Change Password</button>
+                                            <?php }
+                                        } 
+                                        else { 
+                                            if ($_SESSION['activated'] == 0) { ?>
                                                 <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 text-sm font-medium bg-blue-500 text-white" data-bs-toggle="modal" data-bs-target="#updatePasswordModal">Update Password</button>
                                             <?php }
                                             else 
                                             { ?>
                                                 <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 text-sm font-medium bg-blue-500 text-white" data-bs-toggle="modal" data-bs-target="#changePasswordModal">Change Password</button>
-                                            <?php } ?>
+                                            <?php }
+                                         } ?>
+                                    </div>
+                                    <div class="flex gap-2 py-1">
+                                        <?php if ($_SESSION['updateEmpInfo'] == 1) { ?>
+                                            <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 text-sm font-medium bg-yellow-500 text-white" data-bs-toggle="modal" data-bs-target="#updateVitalInfoModal">Update Vital Information</button>
+                                        <?php } 
+                                        else if ($_SESSION['updateEmpInfo'] == 0 && $_SESSION['activated'] == 0) { ?>
+                                            <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 text-sm font-medium bg-gray-300 text-gray-500" disabled>Update Vital Information</button>
+                                        <?php } 
+                                        else { ?>
+                                            <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 text-sm font-medium bg-yellow-500 text-white" data-bs-toggle="modal" data-bs-target="#updateVitalInfoModal">Update Vital Information</button>
+                                        <?php } ?>
                                     </div>
                                 </div>
                             </div>
@@ -158,7 +175,8 @@
                                         <div class="flex gap-2 py-1">
                                             <h2 class="text-sm text-gray-500">Available Sick Leaves:</h2>
                                             <h2 class="text-sm text-gray-400"><?php echo $userDetails['availableSL']?></h2>
-                                        </div>                                        
+                                        </div>          
+                                        <?php if ($userDetails['employmentStatus'] == "Regular") { ?>                              
                                         <div class="flex gap-2 py-1">
                                             <h2 class="text-sm text-gray-500">Available Vacation Leaves:</h2>
                                             <h2 class="text-sm text-gray-400"><?php echo $userDetails['availableVL'] ?></h2>
@@ -167,6 +185,7 @@
                                             <h2 class="text-sm text-gray-500">Accumulated Leave Points:</h2>
                                             <h2 class="text-sm text-gray-400"><?php echo $userDetails['leavePoints'] ?></h2>
                                         </div>
+                                        <?php } ?>
                                     </div>
                                 </div>
 
@@ -424,6 +443,71 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-success">Save</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <!---------------------------------------------------------------------------------------------------------------------------------------------------------->
+            <!------------------------------------------------------------ UPDATE VITAL INFORMATION FORM --------------------------------------------------------------->
+            <form id="updateVitalInfoForm">
+                <div class="modal fade" id="updateVitalInfoModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="resetPassLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-none modal-dialog-centered">
+                        <div class="modal-content" id="updateVitalInfoModal">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="resetPassLabel">Update Password</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row g-2 mb-2" id="updateNameIfMarriedLabel">
+                                    <div class="col-6">
+                                        <label for="lastName">Last Name:</label>
+                                        <input type="text" class="form-control" id="lastName" name="lastName">
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="firstName">First Name:</label>
+                                        <input type="text" class="form-control" id="firstName" name="firstName">
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <div class="col-4">
+                                        <label for="gender">Gender:</label>
+                                        <select id="gender" name="gender" class="form-select">
+                                            <option value="" selected disabled>Choose</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-4">
+                                        <label for="civilStatus">Civil Status:</label>
+                                        <select id="civilStatus" name="civilStatus" class="form-select">
+                                            <option selected disabled>Choose</option>
+                                            <option value="Single">Single</option>
+                                            <option value="Common Law">Common Law</option>
+                                            <option value="Married">Married</option>
+                                            <option value="Separated">Separated</option>
+                                            <option value="Divorced">Divorced</option>
+                                            <option value="Widowed">Widowed</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-4">
+                                        <label for="mobileNumber">Mobile Number:</label>
+                                        <input type="text" class="form-control" id="mobileNumber" name="mobileNumber">
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <div class="col-12">
+                                        <label for="address">Address:</label>
+                                        <textarea class="form-control" id="address" name="address" rows="3"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">Update</button>
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             </div>
                         </div>

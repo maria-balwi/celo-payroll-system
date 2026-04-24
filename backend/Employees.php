@@ -27,6 +27,7 @@
         private $auditTrail = 'tbl_audittrail';
         private $dbConnect = false;
         private $disputes = "tbl_disputes";
+        private $updateEmpInfo = "tbl_updateempinfo";
         public function __construct() {
             $this->dbConnect = $this->dbConnect();
         }
@@ -1693,17 +1694,45 @@
             return $activeAgents;
         }
 
-        // OLD CODE
-        // public function viewAuditTrail() {
-        //     $auditTrail = "
-        //         SELECT auditTrailID, date, employees.firstName, employees.lastName, module, action, affected.firstName AS affectedFirstName, affected.lastName AS affectedLastName FROM ".$this->auditTrail ." AS auditTrail
-        //         INNER JOIN ".$this->employees." AS employees
-        //         ON auditTrail.empID = employees.id
-        //         INNER JOIN ".$this->employees." AS affected
-        //         ON auditTrail.affected_empID = affected.id
-        //         ORDER BY auditTrail.auditTrailID DESC";
-        //     return $auditTrail;
-        // }
+        public function updateMarriedEmpInfo($id, $firstName, $lastName, $gender, $civilStatus, $mobileNumber, $address) {
+            $updateEmpInfo = "
+                UPDATE ".$this->employees." SET 
+                firstName = '$firstName', 
+                lastName = '$lastName', 
+                gender = '$gender', 
+                civilStatus = '$civilStatus', 
+                mobileNumber = '$mobileNumber', 
+                address = '$address' 
+                WHERE id = '$id'";
+            return $updateEmpInfo;
+        }
+
+        public function updateEmpInfo($id, $gender, $civilStatus, $mobileNumber, $address) {
+            $updateEmpInfo = "
+                UPDATE ".$this->employees." SET 
+                gender = '$gender', 
+                civilStatus = '$civilStatus', 
+                mobileNumber = '$mobileNumber', 
+                address = '$address' 
+                WHERE id = '$id'";
+            return $updateEmpInfo;
+        }
+
+        public function getScheduledChange($id) {
+            $scheduledChange = "
+                SELECT * FROM ".$this->updateEmpInfo." WHERE empID = '$id'";
+            return $scheduledChange;
+        }
+
+        public function updateEmpInfoSchedule($id, $status, $nextChangeDate) {
+            $updateEmpInfoSchedule = "
+                UPDATE ".$this->updateEmpInfo." SET 
+                status = '$status',
+                nextChangeDate = DATE_ADD('$nextChangeDate', INTERVAL 3 MONTH),
+                lastUpdateDate = CURDATE()
+                WHERE empID = '$id'";
+            return $updateEmpInfoSchedule;
+        }
 
         // NEW CODE
         public function viewAuditTrail() {
