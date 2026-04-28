@@ -162,9 +162,9 @@
                 <a href="../pages/user_dashboard.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Dashboard
                 </a>
-                <a href="../pages/user_dtr.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
+                <!-- <a href="../pages/user_dtr.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Daily Time Record
-                </a>
+                </a> -->
                 <a href="../pages/dtr.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Calendar DTR
                 </a>
