@@ -12,7 +12,7 @@
 
     // USER LEVEL
     if (isset($loginResult[0])) {
-        if ($loginResult[0] == 0) {
+        if ($loginResult[0] == '0') {
             $em = "Incorrect email address or password.";
             $error = array('error' => 1, 'em' => $em);
             echo json_encode($error);
@@ -25,18 +25,23 @@
         else if ($loginResult[0] == '3') {
             $error = array('level' => $loginResult[1], 'activated' => $_SESSION['activated']);
             echo json_encode($error);
+
+            // AUDIT TRAIL
+            $at_empID = $_SESSION['id'];
+            $at_module = "Login Page";
+            $at_action = "User logged in";
+            mysqli_query($conn, $employees->auditTrailLoginLogout($at_empID, $at_module, $at_action));
         }
         else {
             $error = array('level' => $loginResult[1], 'activated' => $_SESSION['activated']);
             echo json_encode($error);
+
+            // AUDIT TRAIL
+            $at_empID = $_SESSION['id'];
+            $at_module = "Login Page";
+            $at_action = "User logged in";
+            mysqli_query($conn, $employees->auditTrailLoginLogout($at_empID, $at_module, $at_action));
         }
-
-        // AUDIT TRAIL
-        $at_empID = $_SESSION['id'];
-        $at_module = "Login Page";
-        $at_action = "User logged in";
-        mysqli_query($conn, $employees->auditTrailLoginLogout($at_empID, $at_module, $at_action));
-
         exit;
     }
 
