@@ -124,7 +124,7 @@ $(document).ready(function () {
     });
 
 
-    // LOAN AMOUNT, TOTAL AMOUNT TO BE PAID, REMAINING AMOUNT TO BE PAID, MONTHLY AMMORTIZATION
+    // LOAN AMOUNT, TOTAL AMOUNT TO BE PAID, REMAINING AMOUNT TO BE PAID, MONTHLY Amortization
     $("input[id='amount']").on("input", function () {
         let amount = parseFloat($(this).val().replace(/,/g, ""));
 
@@ -139,9 +139,9 @@ $(document).ready(function () {
         var term = $("#monthsToPay").val() * 2;
         if (term) {
             if (term == 1) {
-            var monthlyAmmortization = (amount / term).toFixed(2);
+                var monthlyAmmortization = (amount / term).toFixed(2);
                 $("#monthlyAmmortization").val(monthlyAmmortization).trigger("input");
-            } 
+            }
             else if (term == 2) {
                 var monthlyAmmortization = (amount / term).toFixed(2);
                 $("#monthlyAmmortization").val(monthlyAmmortization).trigger("input");
@@ -164,7 +164,7 @@ $(document).ready(function () {
         if (term == 1) {
             var monthlyAmmortization = (amount / term).toFixed(2);
             $("#monthlyAmmortization").val(monthlyAmmortization).trigger("input");
-        } 
+        }
         else if (term == 2) {
             var monthlyAmmortization = (amount / term).toFixed(2);
             $("#monthlyAmmortization").val(monthlyAmmortization).trigger("input");
@@ -274,9 +274,9 @@ $(document).ready(function () {
                     $("#viewTotalAmount").val('₱ ' + formatNumberWithCommas(res.data.amount));
                     $("#viewRemainingAmount").val('₱ ' + formatNumberWithCommas(res.data.remainingAmount));
                     $("#viewMonthsToPay").val(
-                      res.data.monthsToPay <= 1
-                        ? res.data.monthsToPay + " month"
-                        : res.data.monthsToPay + " months"
+                        res.data.monthsToPay <= 1
+                            ? res.data.monthsToPay + " month"
+                            : res.data.monthsToPay + " months"
                     );
                     $("#viewMonthlyAmmortization").val('₱ ' + formatNumberWithCommas(res.data.monthlyAmmortization));
                     $("#viewCutoffStart").val(res.data.cutoffStart);
@@ -288,10 +288,10 @@ $(document).ready(function () {
                         let currentYear = new Date().getFullYear();
                         let previousCycle = null;
                         let previousYear = currentYear;
-                        var caBreakdownHTML = "";    
+                        var caBreakdownHTML = "";
                         let amount = res.data.amount;
                         let monthlyAmmortization = res.data.monthlyAmmortization;
-                        
+
                         const paidCycleIDs = new Set();
 
                         // Collect ALL paid cycle IDs
@@ -312,7 +312,7 @@ $(document).ready(function () {
 
                                     caBreakdownHTML += `
                                             <tr>
-                                                <td>${formatDate(cabreakdown.payrollCycleFrom,previousYear)} - ${formatDate(cabreakdown.payrollCycleTo,currentYear)}</td>
+                                                <td>${formatDate(cabreakdown.payrollCycleFrom, previousYear)} - ${formatDate(cabreakdown.payrollCycleTo, currentYear)}</td>
                                                 <td>${formatNumberWithCommas(amount)}</td>
                                                 <td>${formatNumberWithCommas(monthlyAmmortization)}</td>
                                                 <td>${isPaid ? `<p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Paid</p>` : ""}</td>
@@ -321,7 +321,7 @@ $(document).ready(function () {
                                 } else {
                                     caBreakdownHTML += `
                                             <tr>
-                                                <td>${formatDate(cabreakdown.payrollCycleFrom,currentYear)} - ${formatDate(cabreakdown.payrollCycleTo,currentYear)}</td>
+                                                <td>${formatDate(cabreakdown.payrollCycleFrom, currentYear)} - ${formatDate(cabreakdown.payrollCycleTo, currentYear)}</td>
                                                 <td>${formatNumberWithCommas(amount)}</td>
                                                 <td>${formatNumberWithCommas(monthlyAmmortization)}</td>
                                                 <td>${isPaid ? `<p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Paid</p>` : ""}</td>
@@ -346,7 +346,7 @@ $(document).ready(function () {
                         $("#approveCashAdvance").hide();
                         $("#disapproveCashAdvance").hide();
                     }
-                    
+
                     // Show the modal
                     $("#viewCashAdvanceModal").modal("show");
                 }
@@ -354,13 +354,13 @@ $(document).ready(function () {
         });
 
         // APPROVE CASH ADVANCE REQUEST
-        $(document).on('click', '.approveCashAdvance', function() {
+        $(document).on('click', '.approveCashAdvance', function () {
             var id_request = array[array.length - 1];
 
             $.ajax({
                 type: "GET",
                 url: "../backend/admin/cashAdvanceModal.php?requestID=" + id_request,
-                success: function(response) {
+                success: function (response) {
 
                     var res = jQuery.parseJSON(response);
                     if (res.status == 404) {
@@ -386,7 +386,7 @@ $(document).ready(function () {
                                         action: 'approve'
                                     },
                                     cache: false,
-                                    success: function(data) {
+                                    success: function (data) {
                                         Swal.fire({
                                             icon: 'success',
                                             title: 'Success',
@@ -406,13 +406,13 @@ $(document).ready(function () {
         })
 
         // DISAPPROVE CASH ADVANCE REQUEST
-        $(document).on('click', '.disapproveCashAdvance', function() {
+        $(document).on('click', '.disapproveCashAdvance', function () {
             var id_request = array[array.length - 1];
 
             $.ajax({
                 type: "GET",
                 url: "../backend/admin/cashAdvanceModal.php?requestID=" + id_request,
-                success: function(response) {
+                success: function (response) {
 
                     var res = jQuery.parseJSON(response);
                     if (res.status == 404) {
@@ -438,7 +438,7 @@ $(document).ready(function () {
                                         action: 'disapprove'
                                     },
                                     cache: false,
-                                    success: function(data) {
+                                    success: function (data) {
                                         Swal.fire({
                                             icon: 'success',
                                             title: 'Success',
@@ -477,9 +477,9 @@ $(document).ready(function () {
                     $("#viewTotalAmount").val('₱ ' + formatNumberWithCommas(res.data.amount));
                     $("#viewRemainingAmount").val('₱ ' + formatNumberWithCommas(res.data.remainingAmount));
                     $("#viewMonthsToPay").val(
-                      res.data.monthsToPay <= 1
-                        ? res.data.monthsToPay + " month"
-                        : res.data.monthsToPay + " months"
+                        res.data.monthsToPay <= 1
+                            ? res.data.monthsToPay + " month"
+                            : res.data.monthsToPay + " months"
                     );
                     $("#viewMonthlyAmmortization").val('₱ ' + formatNumberWithCommas(res.data.monthlyAmmortization));
                     $("#viewCutoffStart").val(res.data.cutoffStart);
@@ -491,10 +491,10 @@ $(document).ready(function () {
                         let currentYear = new Date().getFullYear();
                         let previousCycle = null;
                         let previousYear = currentYear;
-                        var caBreakdownHTML = "";    
+                        var caBreakdownHTML = "";
                         let amount = res.data.amount;
                         let monthlyAmmortization = res.data.monthlyAmmortization;
-                        
+
                         const paidCycleIDs = new Set();
 
                         // Collect ALL paid cycle IDs
@@ -515,7 +515,7 @@ $(document).ready(function () {
 
                                     caBreakdownHTML += `
                                             <tr>
-                                                <td>${formatDate(cabreakdown.payrollCycleFrom,previousYear)} - ${formatDate(cabreakdown.payrollCycleTo,currentYear)}</td>
+                                                <td>${formatDate(cabreakdown.payrollCycleFrom, previousYear)} - ${formatDate(cabreakdown.payrollCycleTo, currentYear)}</td>
                                                 <td>${formatNumberWithCommas(amount)}</td>
                                                 <td>${formatNumberWithCommas(monthlyAmmortization)}</td>
                                                 <td>${isPaid ? `<p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Paid</p>` : ""}</td>
@@ -524,7 +524,7 @@ $(document).ready(function () {
                                 } else {
                                     caBreakdownHTML += `
                                             <tr>
-                                                <td>${formatDate(cabreakdown.payrollCycleFrom,currentYear)} - ${formatDate(cabreakdown.payrollCycleTo,currentYear)}</td>
+                                                <td>${formatDate(cabreakdown.payrollCycleFrom, currentYear)} - ${formatDate(cabreakdown.payrollCycleTo, currentYear)}</td>
                                                 <td>${formatNumberWithCommas(amount)}</td>
                                                 <td>${formatNumberWithCommas(monthlyAmmortization)}</td>
                                                 <td>${isPaid ? `<p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Paid</p>` : ""}</td>
