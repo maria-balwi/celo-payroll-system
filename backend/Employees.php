@@ -181,6 +181,7 @@
                     CONCAT(DATE_FORMAT(shift.startTime, '%h:%i %p'), ' - ', DATE_FORMAT(shift.endTime, '%h:%i %p')) AS shift,
                     COALESCE(id, '-') AS id, 
                     COALESCE(attendance.logTypeID, '-') AS logTypeID, 
+                    COALESCE(attendance.attendanceSource, '-') AS attendanceSource,
                     COALESCE(logtype.logType, '-') AS logType, 
                     COALESCE(attendance.lateMins, '-') AS lateMins, 
                     COALESCE(attendance.undertimeMins, '-') AS undertimeMins, 
