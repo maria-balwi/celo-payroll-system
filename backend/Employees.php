@@ -781,7 +781,7 @@
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
                 ON employees.id = users.empID
-                WHERE users.status = 'Inactive'";
+                WHERE users.status = 'Inactive' AND designationID = 1";
             return $inactivePersonnel;
         }
 
@@ -901,7 +901,10 @@
 
         public function deactivateUserbyID($id) {
             $deactivate = "
-                UPDATE {$this->users} SET status = 'Inactive' WHERE empID = {$id}";
+                UPDATE {$this->users} SET 
+                status = 'Inactive', 
+                activated = 0 
+                WHERE empID = {$id}";
             return $deactivate;
         }
 
@@ -1665,7 +1668,7 @@
                 INNER JOIN {$this->department} AS department
                 ON employees.departmentID = department.departmentID
                 WHERE designationID != 12 AND 
-                department.departmentID = 4 AND 
+                department.departmentID = 3 AND 
                 designationID = 8 AND
                 employees.e_status = 'Inactive'";
             return $activeAgents;
