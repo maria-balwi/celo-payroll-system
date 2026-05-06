@@ -11,6 +11,7 @@
         private $shift = 'tbl_shiftschedule';
         private $requirements = 'tbl_requirements';
         private $settings = 'settings';
+        private $updateEmpInfo = 'tbl_updateempinfo';
         private $dbConnect = false;
 
         public function __construct() {
@@ -55,7 +56,7 @@
                     $_SESSION['employeeID'] = $userDetails['employeeID'];
                     $_SESSION['hashedPassword'] = $userDetails['password'];
                     $_SESSION['password'] = $pass_word;
-                    $_SESSION['activated'] = $userDetails['activated']; 
+                    // $_SESSION['activated'] = $userDetails['activated']; 
                     $_SESSION['gender'] = $userDetails['gender'];
 
                     // SESSION TIMEOUT 
@@ -72,14 +73,34 @@
                     else if ($userDetails['levelID'] == 4 || $userDetails['levelID'] == 5) {
                         $_SESSION['expire'] = $_SESSION['start'] + (60 * 30); // HR & ADMIN STAFF , HR GENERALIST LEVEL
                     }
-                    else if ($userDetails['levelID'] == 6) {
-                        $_SESSION['expire'] = $_SESSION['start'] + (60  * 15); // IT LEVEL
+
+                    // CHECK SCHEDULED CHANGE FOR VITAL INFORMATION
+                    $updateEmpInfo = mysqli_query($this->dbConnect(), "SELECT * FROM ".$this->updateEmpInfo." WHERE empID = ".$userDetails['id']);
+                    $updateEmpInfoCount = mysqli_num_rows($updateEmpInfo);
+                    $updateEmpInfoDetails = mysqli_fetch_array($updateEmpInfo);
+
+                    if ($updateEmpInfoDetails['status'] == "Scheduled") {
+                        // RETURN VALUES
+                        $result[0] = '3';
+                        $result[1] = $userDetails['levelID'];
+                        $result[2] = $userDetails['e_status'];
+                        $_SESSION['activated'] = 0; 
+                        $_SESSION['updateEmpInfo'] = 1;
+                    }
+                    else {
+                        // RETURN VALUES
+                        $result[0] = '1';
+                        $result[1] = $userDetails['levelID'];
+                        $result[2] = $userDetails['e_status'];
+                        $_SESSION['activated'] = $userDetails['activated']; 
+                        $_SESSION['updateEmpInfo'] = 0;
                     }
 
-                    // RETURN VALUES
-                    $result[0] = '1';
-                    $result[1] = $userDetails['levelID'];
-                    $result[2] = $userDetails['e_status'];
+                    // // RETURN VALUES
+                    // $result[0] = '1';
+                    // $result[1] = $userDetails['levelID'];
+                    // $result[2] = $userDetails['e_status'];
+                    
                     return $result;
                 }
                 else {
@@ -97,8 +118,6 @@
         }
 
         public function logout() {
-            session_start();
-
             // REMOVE ALL SESSION VARIABLES
             session_unset();
 
@@ -130,6 +149,14 @@
                 password = '$newPass', 
                 activated = 0
                 WHERE userID = ".$userID."";
+            return $resetPassword;
+        }
+
+        public function userResetPassword($userID, $newPassword) { 
+            $resetPassword = "
+                UPDATE ".$this->users." SET
+                password = '$newPassword'
+                WHERE userID = '$userID'";
             return $resetPassword;
         }
 

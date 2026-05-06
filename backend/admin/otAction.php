@@ -6,9 +6,10 @@
 
     $ot_id = $_POST['id_ot'];
     $action = $_POST['action'];
+    $isPaid = $_POST['isPaid'];
 
     if ($action == "approve") {
-        mysqli_query($conn, $employees->approveFiledOT($ot_id));
+        mysqli_query($conn, $employees->approveFiledOT($ot_id, $isPaid));
 
         // GET AFFECTED USER
         $query = mysqli_query($conn, $employees->viewOTInfo($ot_id));

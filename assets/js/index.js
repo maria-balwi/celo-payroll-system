@@ -24,6 +24,39 @@ $(document).ready(function() {
         }
     }
 
+    // SEND OTP BUTTON COOLDOWN - FOR 60 SECONDS
+    let otpTimer;
+    let timeLeft = 60;
+
+    let otpRequestCount = 0;
+    const maxOTPRequests = 3; // 1 send + 2 resends
+
+    function startOTPCooldown() {
+        timeLeft = 60;
+
+        otpTimer = setInterval(function () {
+
+            $('#btnSendOTP').text('Resend in ' + timeLeft + 's');
+            $('#otpTimerText').text('You can resend OTP in ' + timeLeft + ' seconds');
+
+            timeLeft--;
+
+            if (timeLeft < 0) {
+                clearInterval(otpTimer);
+
+                // Only enable if NOT exceeded limit
+                if (otpRequestCount < maxOTPRequests) {
+                    $('#btnSendOTP')
+                        .prop('disabled', false)
+                        .text('Resend OTP');
+
+                    $('#otpTimerText').text('');
+                }
+            }
+
+        }, 1000);
+    }
+
     // Run on page load
     disableLoginOnMobile();
 
@@ -166,6 +199,235 @@ $(document).ready(function() {
                                 })
                                 $("#email").val('');
                                 $("#password").val('');
+                            }
+                        }
+                    });
+                }
+            });
+        }
+    });
+
+    // RESET OTP TIMER WHEN MODAL IS CLOSED
+    $('#forgotPasswordModal').on('hidden.bs.modal', function () {
+
+        clearInterval(otpTimer);
+
+        otpRequestCount = 0; // ✅ RESET COUNT
+
+        $('#forgot_email').val('').prop('readonly', false);
+        $('#forgot_otp').val('');
+
+        $('#otpContainer').hide();
+
+        $('#btnSendOTP')
+            .prop('disabled', false)
+            .text('Send OTP');
+
+        $('#otpTimerText').text('');
+    });
+
+    // SEND OTP THRU EMAIL
+    $('#btnSendOTP').click(function (e) {
+        e.preventDefault();
+
+        let email = $('#forgot_email').val();
+
+        if (email === '') {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Required',
+                text: 'Please enter your email',
+                confirmButtonColor: '#1975ff'
+            });
+            return;
+        }
+
+        // LIMIT TO 3 REQUESTS OF OTP
+        if (otpRequestCount >= maxOTPRequests) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Limit Reached',
+                text: 'You have reached the maximum number of OTP requests.',
+                confirmButtonColor: '#1975ff'
+            });
+            return;
+        }
+
+        $('#btnSendOTP').prop('disabled', true).text('Sending...');
+
+        $.ajax({
+            url: 'backend/session/sendForgotOTP.php',
+            type: 'POST',
+            data: { forgot_email: email },
+            dataType: 'json',
+            success: function (res) {
+                if (res.status == 1) {
+                    $('#btnSendOTP').prop('disabled', false).text('Send OTP');
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: res.title,
+                        text: res.message,
+                        confirmButtonColor: '#1975ff'
+                    });
+
+                } else if (res.status == 0) {
+
+                    // INCREMENT COUNT
+                    otpRequestCount++;
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'OTP Sent!',
+                        text: 'Check your email for the OTP.',
+                        confirmButtonColor: '#1975ff'
+                    });
+
+                    $('#otpContainer').fadeIn();
+                    $('#forgot_email').prop('readonly', true);
+                    $('#forgot_otp').val('');
+                    $('#forgot_otp').focus();
+
+                    // START OTP COOLDOWN
+                    startOTPCooldown();
+
+                    // IF MAX REQUEST REACHED, DISABLE BUTTON PERMANENTLY
+                    if (otpRequestCount >= maxOTPRequests) {
+                        $('#btnSendOTP')
+                            .prop('disabled', true)
+                            .text('Max OTP Requests Reached');
+
+                        $('#otpTimerText').text('You cannot request another OTP.');
+                    }
+                }
+            },
+            error: function () {
+                $('#btnSendOTP').prop('disabled', false).text('Send OTP');
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to send OTP.',
+                    confirmButtonColor: '#1975ff'
+                });
+            }
+        });
+    });
+
+    // VERIFY OTP
+    $('#btnVerifyOTP').click(function (e) {
+        e.preventDefault();
+
+        let email = $('#forgot_email').val();
+        let otp = $('#forgot_otp').val();
+
+        if (otp === '') {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Required',
+                text: 'Please enter OTP',
+                confirmButtonColor: '#1975ff'
+            });
+            return;
+        }
+
+        $.ajax({
+            url: 'backend/session/verifyOTP.php',
+            type: 'POST',
+            data: { 
+                forgot_email: email, 
+                forgot_otp: otp 
+            },
+            dataType: 'json',
+            success: function (res) {
+
+                if (res.status == 0) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: res.title,
+                        text: res.message,
+                        confirmButtonColor: '#1975ff'
+                    }).then(() => {
+                        // SHOW RESET PASSWORD MODAL
+                        $('#forgotPasswordModal').modal('hide');
+                        $('#resetPasswordModal').modal('show');
+                        $('#userID').val(res.userID);
+                    });
+
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: res.title,
+                        text: res.message,
+                        confirmButtonColor: '#1975ff'
+                    });
+                }
+            }
+        });
+    });
+
+    // RESET PASSWORD FORM
+    $('#resetPasswordForm').on('submit', function(e) {
+        e.preventDefault();
+        
+        var newPassword = $('#newPassword').val();
+        var retypePassword = $('#retypePassword').val();
+        var userID = $('#userID').val();
+
+        if (newPassword == '' || retypePassword == '') {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Required Information',
+                text: 'Please fill up all the required Information',
+            })
+            return;
+        }
+        else if (newPassword != retypePassword) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Required Information',
+                text: 'Passwords do not match',
+            })
+            return;
+        }
+        else {
+            Swal.fire({
+                icon: 'question',
+                title: 'Reset Password',
+                text: 'Are you sure you want to reset your password?',
+                showCancelButton: true,
+                cancelButtonColor: '#6c757d',
+                confirmButtonColor: '#28a745',
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: 'backend/session/resetPassword.php',
+                        type: 'POST',
+                        data: $(this).serialize(),
+                        dataType: 'json',
+                        success: function(res) {
+                            var message = res.message;
+                            var title = res.title;
+                            if (res.status == 1) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: title,
+                                    text: message
+                                })
+                                $('#newPassword').val('');
+                                $('#retypePassword').val('');
+                            }
+                            else {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: message, 
+                                    timer: 2000, 
+                                    showConfirmButton: false
+                                }).then(() => {
+                                    window.location.reload();
+                                });
                             }
                         }
                     });

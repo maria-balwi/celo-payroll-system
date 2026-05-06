@@ -445,19 +445,19 @@
                                                 </thead>
                                                 <tbody>
                                                     <?php
-                                                        $inactiveFinance = mysqli_query($conn, $employees->viewInactiveFinance());
-                                                        while ($inactiveFinanceDetails = mysqli_fetch_array($inactiveFinance)) {
+                                                        $finance = mysqli_query($conn, $employees->viewInactiveFinance());
+                                                        while ($financeDetails = mysqli_fetch_array($finance)) {
                                                             
-                                                            $userID = $inactiveFinanceDetails['userID'];
-                                                            $employeeID = $inactiveFinanceDetails['employeeID'];
-                                                            $inactiveFinance = $inactiveFinanceDetails['firstName'] . " " . $inactiveFinanceDetails['lastName'];
-                                                            $inactiveFinanceEmailAdd = $inactiveFinanceDetails['emailAddress'];
+                                                            $userID = $financeDetails['userID'];
+                                                            $employeeID = $financeDetails['employeeID'];
+                                                            $financestaffName = $financeDetails['firstName'] . " " . $financeDetails['lastName'];
+                                                            $emailAdd = $financeDetails['emailAddress'];
                                                 
 
                                                             echo "<tr data-id='".$userID."' class='inactiveUserView cursor-pointer'>";
                                                             echo "<td>".$employeeID."</td>";
-                                                            echo "<td>".$inactiveFinance."</td>";
-                                                            echo "<td>".$inactiveFinanceEmailAdd."</td>";
+                                                            echo "<td>".$financestaffName."</td>";
+                                                            echo "<td>".$emailAdd."</td>";
                                                             echo "</td>";
 
                                                         }
@@ -608,7 +608,7 @@
                                                     <th>Email Address</th>
                                                 </thead>
                                                 <tbody>
-                                                    <?php
+                                                    < ?php
                                                         $inactiveDirector = mysqli_query($conn, $employees->viewInactiveDirectors());
                                                         while ($inactiveDirectorDetails = mysqli_fetch_array($inactiveDirector)) {
                                                             

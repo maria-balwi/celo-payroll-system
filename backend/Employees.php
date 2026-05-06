@@ -26,6 +26,8 @@
         private $salaryAdj = "tbl_salaryadj";
         private $auditTrail = 'tbl_audittrail';
         private $dbConnect = false;
+        private $disputes = "tbl_disputes";
+        private $updateEmpInfo = "tbl_updateempinfo";
         public function __construct() {
             $this->dbConnect = $this->dbConnect();
         }
@@ -138,85 +140,36 @@
             return $team;
         }
 
-        // OLD CODE
-        // public function viewDTR($id, $yearMonth) {
-        //     $dtr = "
-        //         SELECT 
-        //             DATE_FORMAT(all_dates.attendanceDate, '%m/%d/%Y') AS attendanceDate,
-        //             DATE_FORMAT(all_dates.attendanceDate, '%Y.%m.%d') AS filterDate,
-        //             DATE_FORMAT(all_dates.attendanceDate, '%a') AS dayOfWeek,
-        //             CONCAT(DATE_FORMAT(shift.startTime, '%h:%i %p'), ' - ', DATE_FORMAT(shift.endTime, '%h:%i %p')) AS shift,
-        //             COALESCE(id, '-') AS id, 
-        //             COALESCE(attendance.logTypeID, '-') AS logTypeID, 
-        //             COALESCE(logtype.logType, '-') AS logType, 
-        //             COALESCE(attendance.lateMins, '-') AS lateMins, 
-        //             COALESCE(attendance.undertimeMins, '-') AS undertimeMins, 
-        //             COALESCE(DATE_FORMAT(attendance.attendanceTime, '%h:%i %p'), '-') AS attendanceTime
-        //         FROM 
-        //             (
-        //                 SELECT DATE('$yearMonth-01') + INTERVAL (a.a + (10 * b.a)) DAY AS attendanceDate
-        //                 FROM (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS a
-        //                 CROSS JOIN (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2) AS b
-        //                 LIMIT 31
-        //             ) AS all_dates
-        //         LEFT JOIN 
-        //             ".$this->employees." AS employees ON employees.id = '$id'
-        //         LEFT JOIN 
-        //             ".$this->shift." AS shift ON employees.shiftID = shift.shiftID
-        //         LEFT JOIN 
-        //             ".$this->attendance." AS attendance 
-        //         ON all_dates.attendanceDate = attendance.attendanceDate AND attendance.empID = '$id'
-                
-        //         LEFT JOIN 
-        //             ".$this->logtype." AS logtype ON attendance.logTypeID = logtype.logTypeID 
-        //         ORDER BY 
-        //             all_dates.attendanceDate, attendance.attendanceTime
-        //         ";
-        //     return $dtr;
-        // }
+        public function searchEmail($email) {
+            $email = "
+                SELECT userID, empID, reset_otp_hash, 
+                reset_otp_expires, reset_otp_attempts, 
+                reset_otp_used, reset_otp_last_sent
+                FROM ".$this->employees." AS employees
+                INNER JOIN {$this->users} AS users
+                ON employees.id = users.empID
+                WHERE employees.emailAddress = '$email'";
+            return $email;
+        }
 
-        // NEW CODE - currently working
-        // public function viewDTR($id, $yearMonth) {
-        //     $dtr = "
-        //         SELECT 
-        //             DATE_FORMAT(all_dates.attendanceDate, '%m/%d/%Y') AS attendanceDate,
-        //             DATE_FORMAT(all_dates.attendanceDate, '%Y.%m.%d') AS filterDate,
-        //             DATE_FORMAT(all_dates.attendanceDate, '%a') AS dayOfWeek,
-        //             CONCAT(DATE_FORMAT(shift.startTime, '%h:%i %p'), ' - ', DATE_FORMAT(shift.endTime, '%h:%i %p')) AS shift,
-        //             COALESCE(id, '-') AS id, 
-        //             COALESCE(attendance.logTypeID, '-') AS logTypeID, 
-        //             COALESCE(logtype.logType, '-') AS logType, 
-        //             COALESCE(attendance.lateMins, '-') AS lateMins, 
-        //             COALESCE(attendance.undertimeMins, '-') AS undertimeMins, 
-        //             COALESCE(DATE_FORMAT(attendance.attendanceTime, '%h:%i %p'), '-') AS attendanceTime
-        //         FROM 
-        //             (
-        //                 SELECT DATE('$yearMonth-01') + INTERVAL (a.a + (10 * b.a)) DAY AS attendanceDate
-        //                 FROM 
-        //                     (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL 
-        //                             SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL 
-        //                             SELECT 8 UNION ALL SELECT 9) AS a
-        //                 CROSS JOIN 
-        //                     (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3) AS b
-        //                 WHERE 
-        //                     DATE('$yearMonth-01') + INTERVAL (a.a + (10 * b.a)) DAY 
-        //                     <= LAST_DAY('$yearMonth-01')
-        //             ) AS all_dates
-        //         LEFT JOIN 
-        //             ".$this->employees." AS employees ON employees.id = '$id'
-        //         LEFT JOIN 
-        //             ".$this->shift." AS shift ON employees.shiftID = shift.shiftID
-        //         LEFT JOIN 
-        //             ".$this->attendance." AS attendance 
-        //         ON all_dates.attendanceDate = attendance.attendanceDate AND attendance.empID = '$id'
-                
-        //         LEFT JOIN 
-        //             ".$this->logtype." AS logtype ON attendance.logTypeID = logtype.logTypeID 
-        //         ORDER BY 
-        //             all_dates.attendanceDate, attendance.attendanceTime
-        //         ";
-        //     return $dtr;
-        // }
+        public function sendOTP($userID, $hashedOTP, $otpExpiry) {
+            $otp = "
+                UPDATE {$this->users} 
+                SET 
+                    reset_otp_hash = '$hashedOTP',
+                    reset_otp_expires = '$otpExpiry'
+                WHERE userID = '$userID'";
+            return $otp;
+        }
+
+        public function updateResetOTPAttempts($userID, $attempts) {
+            $otp = "
+                UPDATE {$this->users} 
+                SET 
+                    reset_otp_attempts = $attempts
+                WHERE userID = '$userID'";
+            return $otp;
+        }
 
         // TESTING NEW CODE
         public function viewDTR($id, $yearMonth) {
@@ -228,6 +181,7 @@
                     CONCAT(DATE_FORMAT(shift.startTime, '%h:%i %p'), ' - ', DATE_FORMAT(shift.endTime, '%h:%i %p')) AS shift,
                     COALESCE(id, '-') AS id, 
                     COALESCE(attendance.logTypeID, '-') AS logTypeID, 
+                    COALESCE(attendance.attendanceSource, '-') AS attendanceSource,
                     COALESCE(logtype.logType, '-') AS logType, 
                     COALESCE(attendance.lateMins, '-') AS lateMins, 
                     COALESCE(attendance.undertimeMins, '-') AS undertimeMins, 
@@ -429,9 +383,9 @@
             return $request;
         }
 
-        public function approveFiledOT($requestID) {
+        public function approveFiledOT($requestID, $isPaid) {
             $request = "
-                UPDATE ".$this->filedOT." SET status = 1
+                UPDATE ".$this->filedOT." SET status = 1, isPaid = $isPaid
                 WHERE requestID = '$requestID'";
             return $request;
         }
@@ -827,7 +781,7 @@
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
                 ON employees.id = users.empID
-                WHERE users.status = 'Inactive'";
+                WHERE users.status = 'Inactive' AND designationID = 1";
             return $inactivePersonnel;
         }
 
@@ -947,7 +901,10 @@
 
         public function deactivateUserbyID($id) {
             $deactivate = "
-                UPDATE {$this->users} SET status = 'Inactive' WHERE empID = {$id}";
+                UPDATE {$this->users} SET 
+                status = 'Inactive', 
+                activated = 0 
+                WHERE empID = {$id}";
             return $deactivate;
         }
 
@@ -1215,7 +1172,7 @@
             $request = "
                 SELECT requestID, employeeID, leaves.leaveTypeID,
                 leaveType, remarks, status, attachment, designationID,
-                CONCAT(firstName, ' ', lastName) AS employeeName,
+                CONCAT(firstName, ' ', lastName) AS employeeName, isPaid,
                 DATE_FORMAT(dateFiled, '%M %d, %Y') AS dateFiled,
                 DATE_FORMAT(effectivityStartDate, '%M %d, %Y') AS effectivityStartDate,
                 DATE_FORMAT(effectivityEndDate, '%M %d, %Y') AS effectivityEndDate
@@ -1252,7 +1209,7 @@
             $request = "
                 SELECT requestID, employeeID, remarks, status, otType, designationID,
                 DATE_FORMAT(fromTime, '%h:%i %p') AS fromTime,
-                DATE_FORMAT(toTime, '%h:%i %p') AS toTime,
+                DATE_FORMAT(toTime, '%h:%i %p') AS toTime, isPaid,
                 CONCAT(firstName, ' ', lastName) AS employeeName,
                 DATE_FORMAT(dateFiled, '%M %d, %Y') AS dateFiled, 
                 DATE_FORMAT(otDate, '%M %d, %Y') AS otDate
@@ -1330,7 +1287,14 @@
             return $request;
         }
 
-        public function approveLeave($requestID) {
+        public function approvePaidLeave($requestID) {
+            $approveRequest = "
+                UPDATE ".$this->leaves." SET status = 'Approved', isPaid = 1
+                WHERE requestID = '$requestID'";
+            return $approveRequest;
+        }
+
+        public function approveUnpaidLeave($requestID) {
             $approveRequest = "
                 UPDATE ".$this->leaves." SET status = 'Approved'
                 WHERE requestID = '$requestID'";
@@ -1704,7 +1668,7 @@
                 INNER JOIN {$this->department} AS department
                 ON employees.departmentID = department.departmentID
                 WHERE designationID != 12 AND 
-                department.departmentID = 4 AND 
+                department.departmentID = 3 AND 
                 designationID = 8 AND
                 employees.e_status = 'Inactive'";
             return $activeAgents;
@@ -1734,17 +1698,45 @@
             return $activeAgents;
         }
 
-        // OLD CODE
-        // public function viewAuditTrail() {
-        //     $auditTrail = "
-        //         SELECT auditTrailID, date, employees.firstName, employees.lastName, module, action, affected.firstName AS affectedFirstName, affected.lastName AS affectedLastName FROM ".$this->auditTrail ." AS auditTrail
-        //         INNER JOIN ".$this->employees." AS employees
-        //         ON auditTrail.empID = employees.id
-        //         INNER JOIN ".$this->employees." AS affected
-        //         ON auditTrail.affected_empID = affected.id
-        //         ORDER BY auditTrail.auditTrailID DESC";
-        //     return $auditTrail;
-        // }
+        public function updateMarriedEmpInfo($id, $firstName, $lastName, $gender, $civilStatus, $mobileNumber, $address) {
+            $updateEmpInfo = "
+                UPDATE ".$this->employees." SET 
+                firstName = '$firstName', 
+                lastName = '$lastName', 
+                gender = '$gender', 
+                civilStatus = '$civilStatus', 
+                mobileNumber = '$mobileNumber', 
+                address = '$address' 
+                WHERE id = '$id'";
+            return $updateEmpInfo;
+        }
+
+        public function updateEmpInfo($id, $gender, $civilStatus, $mobileNumber, $address) {
+            $updateEmpInfo = "
+                UPDATE ".$this->employees." SET 
+                gender = '$gender', 
+                civilStatus = '$civilStatus', 
+                mobileNumber = '$mobileNumber', 
+                address = '$address' 
+                WHERE id = '$id'";
+            return $updateEmpInfo;
+        }
+
+        public function getScheduledChange($id) {
+            $scheduledChange = "
+                SELECT * FROM ".$this->updateEmpInfo." WHERE empID = '$id'";
+            return $scheduledChange;
+        }
+
+        public function updateEmpInfoSchedule($id, $status, $nextChangeDate) {
+            $updateEmpInfoSchedule = "
+                UPDATE ".$this->updateEmpInfo." SET 
+                status = '$status',
+                nextChangeDate = DATE_ADD('$nextChangeDate', INTERVAL 3 MONTH),
+                lastUpdateDate = CURDATE()
+                WHERE empID = '$id'";
+            return $updateEmpInfoSchedule;
+        }
 
         // NEW CODE
         public function viewAuditTrail() {
@@ -1834,12 +1826,40 @@
             return $adjustments;
         }
 
-        public function viewAuditTrailUsers() {
-            $users = "
-                SELECT auditTrailID, date, employees.firstName, employees.lastName, module, action, affected_empID FROM ".$this->auditTrail." AS auditTrail
+        public function viewAuditTrailDisputes() {
+            $disputes = "
+                SELECT auditTrailID, date, employees.firstName, 
+                employees.lastName, module, action, affected_empID 
+                FROM ".$this->auditTrail." AS auditTrail
                 INNER JOIN ".$this->employees." AS employees
                 ON auditTrail.empID = employees.id
-                WHERE module LIKE '%User%'
+                INNER JOIN ".$this->employees." AS emp
+                ON auditTrail.affected_empID = emp.id
+                WHERE module LIKE '%Dispute%'
+                ORDER BY auditTrail.auditTrailID DESC";
+            return $disputes;
+        }
+
+        public function viewAuditTrailUsers() {
+            $users = "
+                SELECT auditTrailID, date, employees.firstName, 
+                employees.lastName, module, action, affected_empID 
+                FROM ".$this->auditTrail." AS auditTrail
+                INNER JOIN ".$this->employees." AS employees
+                ON auditTrail.empID = employees.id
+                WHERE module LIKE '%User%' AND action NOT LIKE '%Payslip%'
+                ORDER BY auditTrail.auditTrailID DESC";
+            return $users;
+        }
+
+        public function viewAuditTraiLPayslip() {
+            $users = "
+                SELECT auditTrailID, date, employees.firstName, 
+                employees.lastName, module, action, affected_empID 
+                FROM ".$this->auditTrail." AS auditTrail
+                INNER JOIN ".$this->employees." AS employees
+                ON auditTrail.empID = employees.id
+                WHERE action LIKE '%Payslip%'
                 ORDER BY auditTrail.auditTrailID DESC";
             return $users;
         }
@@ -1854,6 +1874,30 @@
                 WHERE module LIKE '%Memo%'
                 ORDER BY auditTrail.auditTrailID DESC";
             return $notification;
+        }
+
+        public function viewAuditTrailPasswordReset() {
+            $passwordReset = "
+                SELECT auditTrailID, date, employees.firstName, 
+                employees.lastName, module, action 
+                FROM ".$this->auditTrail." AS auditTrail
+                INNER JOIN ".$this->employees." AS employees
+                ON auditTrail.empID = employees.id
+                WHERE action LIKE '%OTP%'
+                ORDER BY auditTrail.auditTrailID DESC";
+            return $passwordReset;
+        }
+
+        public function viewAuditTrailLoginLogout() {
+            $passwordReset = "
+                SELECT auditTrailID, date, employees.firstName, 
+                employees.lastName, module, action 
+                FROM ".$this->auditTrail." AS auditTrail
+                INNER JOIN ".$this->employees." AS employees
+                ON auditTrail.empID = employees.id
+                WHERE action LIKE '%logged%'
+                ORDER BY auditTrail.auditTrailID DESC";
+            return $passwordReset;
         }
         
         public function auditTrail($empID, $module, $action, $affected_empID) {
@@ -1881,6 +1925,20 @@
             $auditTrail = "
                 INSERT INTO ".$this->auditTrail." (date, empID, module, action, notificationID)
                 VALUES (CURRENT_TIMESTAMP, '$empID', '$module', '$action', '$notificationID')";
+            return $auditTrail;
+        }
+
+        public function auditTrailPasswordReset($empID, $module, $action) {
+            $auditTrail = "
+                INSERT INTO ".$this->auditTrail." (date, empID, module, action)
+                VALUES (CURRENT_TIMESTAMP, '$empID', '$module', '$action')";
+            return $auditTrail;
+        }
+
+        public function auditTrailLoginLogout($empID, $module, $action) {
+            $auditTrail = "
+                INSERT INTO ".$this->auditTrail." (date, empID, module, action)
+                VALUES (CURRENT_TIMESTAMP, '$empID', '$module', '$action')";
             return $auditTrail;
         }
     }

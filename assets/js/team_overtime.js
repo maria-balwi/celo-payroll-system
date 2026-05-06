@@ -32,7 +32,13 @@ $(document).ready(function() {
                     $('#viewFromTime').val(res.data.fromTime);
                     $('#viewToTime').val(res.data.toTime);
                     $('#viewPurpose').val(res.data.remarks);
-                    $('#viewStatus').val(res.data.status == 1 ? 'Approved' : 'Disapproved');
+                    // $('#viewStatus').val(res.data.status == 1 ? 'Approved' : 'Disapproved');
+                    if (res.data.isPaid == 1 && res.data.status == 1) {
+                        $('#viewStatus').val('Approved (Paid)');
+                    }
+                    else if (res.data.isPaid == 0 && res.data.status == 1) {
+                        $('#viewStatus').val('Approved (Unpaid)');
+                    }
                     $('#approveOT').hide();
                     $('#disapproveOT').hide();
                     $('#viewFiledOTModal').modal('show');
@@ -49,66 +55,6 @@ $(document).ready(function() {
                     $('#viewStatus').val('Pending');
                     $('#viewFiledOTModal').modal('show');
                 }
-                // else if (res.status == 200 && res.data.status == null) {
-                //     $('#viewFiledOTID').val(res.data.requestID);
-                //     $('#viewOTDate').val(res.data.otDate);
-                //     $('#viewOTType').val(res.data.otType);
-                //     $('#viewDateFiled').val(res.data.dateFiled);
-                //     $('#viewName').val(res.data.employeeName);
-                //     $('#viewFromTime').val(res.data.fromTime);
-                //     $('#viewToTime').val(res.data.toTime);
-                //     $('#viewPurpose').val(res.data.remarks);
-                //     $('#viewStatus').val('Pending for 1st Approval');
-                //     $('#approvedLabelRow').hide();
-                //     $('#approvedInputRow').hide();
-                //     $('#viewFiledOTModal').modal('show');
-                // }
-                // else if (res.status == 200 && res.data.status == 1) {
-                //     $('#viewFiledOTID').val(res.data.requestID);
-                //     $('#viewOTDate').val(res.data.otDate);
-                //     $('#viewOTType').val(res.data.otType);
-                //     $('#viewDateFiled').val(res.data.dateFiled);
-                //     $('#viewName').val(res.data.employeeName);
-                //     $('#viewFromTime').val(res.data.fromTime);
-                //     $('#viewToTime').val(res.data.toTime);
-                //     $('#viewPurpose').val(res.data.remarks);
-                //     $('#viewStatus').val('Pending for 2nd Approval');
-                //     $('#approvedLabelRow').hide();
-                //     $('#approvedInputRow').hide();
-                //     $('#approveOT').hide();
-                //     $('#disapproveOT').hide();
-                //     $('#viewFiledOTModal').modal('show');
-                // }
-                // else if (res.status == 200 && res.data.status == 0) {
-                //     $('#viewFiledOTID').val(res.data.requestID);
-                //     $('#viewOTDate').val(res.data.otDate);
-                //     $('#viewOTType').val(res.data.otType);
-                //     $('#viewDateFiled').val(res.data.dateFiled);
-                //     $('#viewName').val(res.data.employeeName);
-                //     $('#viewFromTime').val(res.data.fromTime);
-                //     $('#viewToTime').val(res.data.toTime);
-                //     $('#viewPurpose').val(res.data.remarks);
-                //     $('#viewStatus').val('Disapproved');
-                //     $('#approvedLabelRow').hide();
-                //     $('#approvedInputRow').hide();
-                //     $('#approveOT').hide();
-                //     $('#disapproveOT').hide();
-                //     $('#viewFiledOTModal').modal('show');
-                // }
-                // else if (res.status == 200 && res.data.status == 2) {
-                //     $('#viewFiledOTID').val(res.data.requestID);
-                //     $('#viewOTDate').val(res.data.otDate);
-                //     $('#viewOTType').val(res.data.otType);
-                //     $('#viewDateFiled').val(res.data.dateFiled);
-                //     $('#viewName').val(res.data.employeeName);
-                //     $('#viewFromTime').val(res.data.fromTime);
-                //     $('#viewToTime').val(res.data.toTime);
-                //     $('#viewPurpose').val(res.data.remarks);
-                //     $('#viewStatus').val('Approved');
-                //     $('#approveOT').hide();
-                //     $('#disapproveOT').hide();
-                //     $('#viewFiledOTModal').modal('show');
-                // }
             }
         });
 
@@ -130,10 +76,15 @@ $(document).ready(function() {
                             icon: 'question',
                             title: 'Approve OT Form',
                             text: 'Are you sure you want to approve this OT form?',
+                            showDenyButton: true,
                             showCancelButton: true,
-                            cancelButtonColor: '#6c757d',
+
                             confirmButtonColor: '#28a745',
-                            confirmButtonText: 'Yes',
+                            denyButtonColor: '#d4ba24',
+                            cancelButtonColor: '#6c757d',
+                            confirmButtonText: 'Yes - Paid OT',
+                            denyButtonText: 'Yes - Unpaid OT',
+                            cancelButtonText: 'Cancel',
 
                         }).then((result) => {
                             if (result.isConfirmed) {
@@ -142,7 +93,8 @@ $(document).ready(function() {
                                     type: 'POST',
                                     data: {
                                         id_ot: id_ot,
-                                        action: 'approve'
+                                        action: 'approve', 
+                                        isPaid: 1
                                     },
                                     cache: false,
                                     success: function(data) {
@@ -153,7 +105,29 @@ $(document).ready(function() {
                                             timer: 2000,
                                             showConfirmButton: false,
                                         }).then(() => {
-                                            // window.location.reload();
+                                            loadOTModal(id_ot);
+                                        })
+                                    }
+                                })
+                            }
+                            else if (result.isDenied) {
+                                $.ajax({
+                                    url: "../backend/team/otAction.php",
+                                    type: 'POST',
+                                    data: {
+                                        id_ot: id_ot,
+                                        action: 'approve', 
+                                        isPaid: 0
+                                    },
+                                    cache: false,
+                                    success: function(data) {
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Success',
+                                            text: 'OT Form has been approved!',
+                                            timer: 2000,
+                                            showConfirmButton: false,
+                                        }).then(() => {
                                             loadOTModal(id_ot);
                                         })
                                     }
@@ -206,7 +180,6 @@ $(document).ready(function() {
                                             timer: 2000,
                                             showConfirmButton: false,
                                         }).then(() => {
-                                            // window.location.reload();
                                             loadOTModal(id_ot);
                                         })
                                     }
@@ -241,7 +214,13 @@ $(document).ready(function() {
                     $('#viewFromTime').val(res.data.fromTime);
                     $('#viewToTime').val(res.data.toTime);
                     $('#viewPurpose').val(res.data.remarks);
-                    $('#viewStatus').val(res.data.status == 1 ? 'Approved' : 'Disapproved');
+                    // $('#viewStatus').val(res.data.status == 1 ? 'Approved' : 'Disapproved');
+                    if (res.data.isPaid == 1 && res.data.status == 1) {
+                        $('#viewStatus').val('Approved (Paid)');
+                    }
+                    else if (res.data.isPaid == 0 && res.data.status == 1) {
+                        $('#viewStatus').val('Approved (Unpaid)');
+                    }
                     $('#approveOT').hide();
                     $('#disapproveOT').hide();
                 }

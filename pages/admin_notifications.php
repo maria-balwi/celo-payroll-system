@@ -80,7 +80,7 @@
             <!--------------------------------------------------------------------------------------------------------------------------------------------->
             <!--------------------------------------------------------- ADD NOTIFICATION MODAL ------------------------------------------------------------>
             <form id="addNotificationForm" enctype="multipart/form-data">
-                <div class="modal fade" id="addNotificationModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
+                <div class="modal fade" id="addNotificationModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="userFormLabel" aria-hidden="true">
                     <div class="modal-dialog modal-none modal-sm modal-dialog-centered">
                         <div class="modal-content" id="addNotificationModal">
                             <div class="modal-header">
@@ -122,7 +122,7 @@
 
             <!--------------------------------------------------------------------------------------------------------------------------------------------->
             <!----------------------------------------------------------- VIEW NOTIFICATION MODAL --------------------------------------------------------->
-            <div class="modal fade" id="viewNotificationModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
+            <div class="modal fade" id="viewNotificationModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="userFormLabel" aria-hidden="true">
                 <div class="modal-dialog modal-none modal-lg modal-dialog-centered">
                     <div class="modal-content" id="viewNotificationModal">
                         <div class="modal-header">
@@ -196,7 +196,7 @@
             <!--------------------------------------------------------------------------------------------------------------------------------------------->
             <!------------------------------------------------------ UPDATE NOTIFICATION MODAL ------------------------------------------------------------>
             <form id="updateNotificationForm">
-                <div class="modal fade" id="updateNotificationModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
+                <div class="modal fade" id="updateNotificationModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="userFormLabel" aria-hidden="true">
                     <div class="modal-dialog modal-none modal-lg modal-dialog-centered">
                         <div class="modal-content" id="updateNotificationModal">
                             <div class="modal-header">
@@ -275,7 +275,7 @@
 
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-success">Save</button>
-                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#viewHolidayModal">Cancel</button>
+                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#viewNotificationModal">Cancel</button>
                             </div>
                         </div>
                     </div>

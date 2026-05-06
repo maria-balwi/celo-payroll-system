@@ -22,11 +22,16 @@
         private $attendance = 'tbl_attendance';
         private $weekOff = 'tbl_empweekoff';
         private $leaves = 'tbl_leaveapplications';
+        private $filedOT = 'tbl_filedot';
         private $cashAdvance = 'tbl_cashadvance';
         private $referral = 'tbl_referral';
         private $salaryadj = 'tbl_salaryadj';
         private $auditTrail = 'tbl_audittrail';
         private $caPaymentHistory = 'tbl_caPaymentHistory';
+        private $disputes = 'tbl_disputes';
+        private $disputeAttendance = 'tbl_disputeattendance';
+        private $disputeLeaves = 'tbl_disputeleaves';
+        private $disputeOvertime = 'tbl_disputeovertime';
 
         private $dbConnect = false;
         public function __construct() {
@@ -502,6 +507,848 @@
             return $deleteHoliday;
         }
 
+        public function pendingDisputesAttendance() {
+            $attendanceDisputes = "
+                SELECT disputeID, employeeID, firstName, lastName,
+                attendanceDate_timeIn, attendanceTime_timeIn,
+                attendanceDate_timeOut, attendanceTime_timeOut, 
+                remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
+                ON dispute.attendanceID = disputeAttendance.attendanceID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeAttendance.empID = employee.id
+                WHERE dispute.status = 'Pending'";
+            return $attendanceDisputes;
+        }
+
+        public function pendingDisputesAttendanceUser($id) {
+            $attendanceDisputes = "
+                SELECT disputeID, employeeID, firstName, lastName,
+                attendanceDate_timeIn, attendanceTime_timeIn,
+                attendanceDate_timeOut, attendanceTime_timeOut, 
+                remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
+                ON dispute.attendanceID = disputeAttendance.attendanceID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeAttendance.empID = employee.id
+                WHERE dispute.status = 'Pending' AND
+                empID = '$id'";
+            return $attendanceDisputes;
+        }
+
+        public function pendingDisputesAttendanceOpsManager() {
+            $attendanceDisputes = "
+                SELECT disputeID, employeeID, firstName, lastName,
+                attendanceDate_timeIn, attendanceTime_timeIn,
+                attendanceDate_timeOut, attendanceTime_timeOut, 
+                remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
+                ON dispute.attendanceID = disputeAttendance.attendanceID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeAttendance.empID = employee.id
+                WHERE dispute.status = 'Pending' AND
+                employee.designationID IN (1,2,3,4,11,14)";
+            return $attendanceDisputes;
+        }
+
+        public function pendingDisputesAttendanceOpsTL() {
+            $attendanceDisputes = "
+                SELECT disputeID, employeeID, firstName, lastName,
+                attendanceDate_timeIn, attendanceTime_timeIn,
+                attendanceDate_timeOut, attendanceTime_timeOut, 
+                remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
+                ON dispute.attendanceID = disputeAttendance.attendanceID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeAttendance.empID = employee.id
+                WHERE dispute.status = 'Pending' AND
+                employee.departmentID = 1 AND employee.designationID IN (1,2,3,14)";
+            return $attendanceDisputes;
+        }
+
+        public function pendingDisputesAttendanceIT() {
+            $attendanceDisputes = "
+                SELECT disputeID, employeeID, firstName, lastName,
+                attendanceDate_timeIn, attendanceTime_timeIn,
+                attendanceDate_timeOut, attendanceTime_timeOut, 
+                remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
+                ON dispute.attendanceID = disputeAttendance.attendanceID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeAttendance.empID = employee.id
+                WHERE dispute.status = 'Pending' AND
+                employee.departmentID = 4 AND employee.designationID IN (10, 13, 19)";
+            return $attendanceDisputes;
+        }
+
+        public function approvedDisputesAttendance() {
+            $attendanceDisputes = "
+                SELECT disputeID, employeeID, firstName, lastName,
+                attendanceDate_timeIn, attendanceTime_timeIn,
+                attendanceDate_timeOut, attendanceTime_timeOut, 
+                remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
+                ON dispute.attendanceID = disputeAttendance.attendanceID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeAttendance.empID = employee.id
+                WHERE dispute.status = 'Approved'";
+            return $attendanceDisputes;
+        }
+
+        public function approvedDisputesAttendanceUser($id) {
+            $attendanceDisputes = "
+                SELECT disputeID, employeeID, firstName, lastName,
+                attendanceDate_timeIn, attendanceTime_timeIn,
+                attendanceDate_timeOut, attendanceTime_timeOut, 
+                remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
+                ON dispute.attendanceID = disputeAttendance.attendanceID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeAttendance.empID = employee.id
+                WHERE dispute.status = 'Approved' AND
+                empID = '$id'";
+            return $attendanceDisputes;
+        }
+
+        public function approvedDisputesAttendanceOpsManager() {
+            $attendanceDisputes = "
+                SELECT disputeID, employeeID, firstName, lastName,
+                attendanceDate_timeIn, attendanceTime_timeIn,
+                attendanceDate_timeOut, attendanceTime_timeOut, 
+                remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
+                ON dispute.attendanceID = disputeAttendance.attendanceID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeAttendance.empID = employee.id
+                WHERE dispute.status = 'Approved' AND 
+                employee.designationID IN (1,2,3,4,11,14)";
+            return $attendanceDisputes;
+        }
+
+        public function approvedDisputesAttendanceOpsTL() {
+            $attendanceDisputes = "
+                SELECT disputeID, employeeID, firstName, lastName,
+                attendanceDate_timeIn, attendanceTime_timeIn,
+                attendanceDate_timeOut, attendanceTime_timeOut, 
+                remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
+                ON dispute.attendanceID = disputeAttendance.attendanceID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeAttendance.empID = employee.id
+                WHERE dispute.status = 'Approved' AND 
+                employee.departmentID = 1 AND employee.designationID IN (1,2,3,14)";
+            return $attendanceDisputes;
+        }
+
+        public function approvedDisputesAttendanceIT() {
+            $attendanceDisputes = "
+                SELECT disputeID, employeeID, firstName, lastName,
+                attendanceDate_timeIn, attendanceTime_timeIn,
+                attendanceDate_timeOut, attendanceTime_timeOut, 
+                remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
+                ON dispute.attendanceID = disputeAttendance.attendanceID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeAttendance.empID = employee.id
+                WHERE dispute.status = 'Approved' AND 
+                employee.departmentID = 4 AND employee.designationID IN (10, 13, 19)";
+            return $attendanceDisputes;
+        }
+
+        public function disapprovedDisputesAttendance() {
+            $attendanceDisputes = "
+                SELECT disputeID, employeeID, firstName, lastName,
+                attendanceDate_timeIn, attendanceTime_timeIn,
+                attendanceDate_timeOut, attendanceTime_timeOut, 
+                remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
+                ON dispute.attendanceID = disputeAttendance.attendanceID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeAttendance.empID = employee.id
+                WHERE dispute.status = 'Disapproved'";
+            return $attendanceDisputes;
+        }
+
+        public function disapprovedDisputesAttendanceUser($id) {
+            $attendanceDisputes = "
+                SELECT disputeID, employeeID, firstName, lastName,
+                attendanceDate_timeIn, attendanceTime_timeIn,
+                attendanceDate_timeOut, attendanceTime_timeOut, 
+                remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
+                ON dispute.attendanceID = disputeAttendance.attendanceID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeAttendance.empID = employee.id
+                WHERE dispute.status = 'Disapproved' AND
+                empID = '$id'";
+            return $attendanceDisputes;
+        }
+
+        public function disapprovedDisputesAttendanceOpsManager() {
+            $attendanceDisputes = "
+                SELECT disputeID, employeeID, firstName, lastName,
+                attendanceDate_timeIn, attendanceTime_timeIn,
+                attendanceDate_timeOut, attendanceTime_timeOut, 
+                remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
+                ON dispute.attendanceID = disputeAttendance.attendanceID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeAttendance.empID = employee.id
+                WHERE dispute.status = 'Disapproved' AND
+                employee.designationID IN (1,2,3,4,11,14)";
+            return $attendanceDisputes;
+        }
+
+        public function disapprovedDisputesAttendanceOpsTL() {
+            $attendanceDisputes = "
+                SELECT disputeID, employeeID, firstName, lastName,
+                attendanceDate_timeIn, attendanceTime_timeIn,
+                attendanceDate_timeOut, attendanceTime_timeOut, 
+                remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
+                ON dispute.attendanceID = disputeAttendance.attendanceID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeAttendance.empID = employee.id
+                WHERE dispute.status = 'Disapproved' AND
+                employee.departmentID = 1 AND employee.designationID IN (1,2,3,14)";
+            return $attendanceDisputes;
+        }
+
+        public function disapprovedDisputesAttendanceIT() {
+            $attendanceDisputes = "
+                SELECT disputeID, employeeID, firstName, lastName,
+                attendanceDate_timeIn, attendanceTime_timeIn,
+                attendanceDate_timeOut, attendanceTime_timeOut, 
+                remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
+                ON dispute.attendanceID = disputeAttendance.attendanceID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeAttendance.empID = employee.id
+                WHERE dispute.status = 'Disapproved' AND
+                employee.departmentID = 4 AND employee.designationID IN (10, 13, 19)";
+            return $attendanceDisputes;
+        }
+
+        public function pendingDisputesLeaves() {
+            $leavesDisputes = "
+                SELECT disputeID, disputeLeaves.dateFiled, firstName, lastName,
+                leaveType, startDate, endDate, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
+                ON dispute.leaveID = disputeLeaves.leaveID
+                INNER JOIN tbl_leavetype AS leaves
+                ON disputeLeaves.leaveTypeID = leaves.leaveTypeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeLeaves.empID = employee.id
+                WHERE dispute.status = 'Pending'";
+            return $leavesDisputes;
+        }
+
+        public function pendingDisputesLeavesUser($id) {
+            $leavesDisputes = "
+                SELECT disputeID, disputeLeaves.dateFiled, firstName, lastName,
+                leaveType, startDate, endDate, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
+                ON dispute.leaveID = disputeLeaves.leaveID
+                INNER JOIN tbl_leavetype AS leaves
+                ON disputeLeaves.leaveTypeID = leaves.leaveTypeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeLeaves.empID = employee.id
+                WHERE dispute.status = 'Pending' AND
+                empID = '$id'";
+            return $leavesDisputes;
+        }
+
+        public function pendingDisputesLeavesOpsManager() {
+            $leavesDisputes = "
+                SELECT disputeID, disputeLeaves.dateFiled, firstName, lastName,
+                leaveType, startDate, endDate, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
+                ON dispute.leaveID = disputeLeaves.leaveID
+                INNER JOIN tbl_leavetype AS leaves
+                ON disputeLeaves.leaveTypeID = leaves.leaveTypeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeLeaves.empID = employee.id
+                WHERE dispute.status = 'Pending' AND
+                employee.designationID IN (1,2,3,4,11,14)";
+            return $leavesDisputes;
+        }
+
+        public function pendingDisputesLeavesOpsTL() {
+            $leavesDisputes = "
+                SELECT disputeID, disputeLeaves.dateFiled, firstName, lastName,
+                leaveType, startDate, endDate, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
+                ON dispute.leaveID = disputeLeaves.leaveID
+                INNER JOIN tbl_leavetype AS leaves
+                ON disputeLeaves.leaveTypeID = leaves.leaveTypeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeLeaves.empID = employee.id
+                WHERE dispute.status = 'Pending' AND 
+                employee.departmentID = 1 AND employee.designationID IN (1,2,3,14)";
+            return $leavesDisputes;
+        }
+
+        public function pendingDisputesLeavesIT() {
+            $leavesDisputes = "
+                SELECT disputeID, disputeLeaves.dateFiled, firstName, lastName,
+                leaveType, startDate, endDate, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
+                ON dispute.leaveID = disputeLeaves.leaveID
+                INNER JOIN tbl_leavetype AS leaves
+                ON disputeLeaves.leaveTypeID = leaves.leaveTypeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeLeaves.empID = employee.id
+                WHERE dispute.status = 'Pending' AND 
+                employee.departmentID = 4 AND employee.designationID IN (10, 13, 19)";
+            return $leavesDisputes;
+        }
+
+        public function approvedDisputesLeaves() {
+            $pendingDisputes = "
+                SELECT disputeID, disputeLeaves.dateFiled, firstName, lastName,
+                leaveType, startDate, endDate, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
+                ON dispute.leaveID = disputeLeaves.leaveID
+                INNER JOIN tbl_leavetype AS leaves
+                ON disputeLeaves.leaveTypeID = leaves.leaveTypeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeLeaves.empID = employee.id
+                WHERE dispute.status = 'Approved'";
+            return $pendingDisputes;
+        }
+
+        public function approvedDisputesLeavesUser($id) {
+            $pendingDisputes = "
+                SELECT disputeID, disputeLeaves.dateFiled, firstName, lastName,
+                leaveType, startDate, endDate, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
+                ON dispute.leaveID = disputeLeaves.leaveID
+                INNER JOIN tbl_leavetype AS leaves
+                ON disputeLeaves.leaveTypeID = leaves.leaveTypeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeLeaves.empID = employee.id
+                WHERE dispute.status = 'Approved' AND
+                empID = '$id'";
+            return $pendingDisputes;
+        }
+
+        public function approvedDisputesLeavesOpsManager() {
+            $pendingDisputes = "
+                SELECT disputeID, disputeLeaves.dateFiled, firstName, lastName,
+                leaveType, startDate, endDate, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
+                ON dispute.leaveID = disputeLeaves.leaveID
+                INNER JOIN tbl_leavetype AS leaves
+                ON disputeLeaves.leaveTypeID = leaves.leaveTypeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeLeaves.empID = employee.id
+                WHERE dispute.status = 'Approved' AND
+                employee.designationID IN (1,2,3,4,11,14)";
+            return $pendingDisputes;
+        }
+
+        public function approvedDisputesLeavesOpsTL() {
+            $pendingDisputes = "
+                SELECT disputeID, disputeLeaves.dateFiled, firstName, lastName,
+                leaveType, startDate, endDate, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
+                ON dispute.leaveID = disputeLeaves.leaveID
+                INNER JOIN tbl_leavetype AS leaves
+                ON disputeLeaves.leaveTypeID = leaves.leaveTypeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeLeaves.empID = employee.id
+                WHERE dispute.status = 'Approved' AND 
+                employee.departmentID = 1 AND employee.designationID IN (1,2,3,14)";
+            return $pendingDisputes;
+        }
+
+        public function approvedDisputesLeavesIT() {
+            $pendingDisputes = "
+                SELECT disputeID, disputeLeaves.dateFiled, firstName, lastName,
+                leaveType, startDate, endDate, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
+                ON dispute.leaveID = disputeLeaves.leaveID
+                INNER JOIN tbl_leavetype AS leaves
+                ON disputeLeaves.leaveTypeID = leaves.leaveTypeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeLeaves.empID = employee.id
+                WHERE dispute.status = 'Approved' AND 
+                employee.departmentID = 4 AND employee.designationID IN (10, 13, 19)";
+            return $pendingDisputes;
+        }
+
+        public function disapprovedDisputesLeaves() {
+            $pendingDisputes = "
+                SELECT disputeID, disputeLeaves.dateFiled, firstName, lastName,
+                leaveType, startDate, endDate, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
+                ON dispute.leaveID = disputeLeaves.leaveID
+                INNER JOIN tbl_leavetype AS leaves
+                ON disputeLeaves.leaveTypeID = leaves.leaveTypeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeLeaves.empID = employee.id
+                WHERE dispute.status = 'Disapproved'";
+            return $pendingDisputes;
+        }
+
+        public function disapprovedDisputesLeavesUser($id) {
+            $pendingDisputes = "
+                SELECT disputeID, disputeLeaves.dateFiled, firstName, lastName,
+                leaveType, startDate, endDate, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
+                ON dispute.leaveID = disputeLeaves.leaveID
+                INNER JOIN tbl_leavetype AS leaves
+                ON disputeLeaves.leaveTypeID = leaves.leaveTypeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeLeaves.empID = employee.id
+                WHERE dispute.status = 'Disapproved' AND
+                empID = '$id'";
+            return $pendingDisputes;
+        }
+
+        public function disapprovedDisputesLeavesOpsManager() {
+            $pendingDisputes = "
+                SELECT disputeID, disputeLeaves.dateFiled, firstName, lastName,
+                leaveType, startDate, endDate, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
+                ON dispute.leaveID = disputeLeaves.leaveID
+                INNER JOIN tbl_leavetype AS leaves
+                ON disputeLeaves.leaveTypeID = leaves.leaveTypeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeLeaves.empID = employee.id
+                WHERE dispute.status = 'Disapproved' AND
+                employee.designationID IN (1,2,3,4,11,14)";
+            return $pendingDisputes;
+        }
+
+        public function disapprovedDisputesLeavesOpsTL() {
+            $pendingDisputes = "
+                SELECT disputeID, disputeLeaves.dateFiled, firstName, lastName,
+                leaveType, startDate, endDate, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
+                ON dispute.leaveID = disputeLeaves.leaveID
+                INNER JOIN tbl_leavetype AS leaves
+                ON disputeLeaves.leaveTypeID = leaves.leaveTypeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeLeaves.empID = employee.id
+                WHERE dispute.status = 'Disapproved' AND 
+                employee.departmentID = 1 AND employee.designationID IN (1,2,3,14)";
+            return $pendingDisputes;
+        }
+
+        public function disapprovedDisputesLeavesIT() {
+            $pendingDisputes = "
+                SELECT disputeID, disputeLeaves.dateFiled, firstName, lastName,
+                leaveType, startDate, endDate, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
+                ON dispute.leaveID = disputeLeaves.leaveID
+                INNER JOIN tbl_leavetype AS leaves
+                ON disputeLeaves.leaveTypeID = leaves.leaveTypeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeLeaves.empID = employee.id
+                WHERE dispute.status = 'Disapproved' AND 
+                employee.departmentID = 4 AND employee.designationID IN (10, 13, 19)";
+            return $pendingDisputes;
+        }
+
+        public function pendingDisputesOvertime() {
+            $overtimeDisputes = "
+                SELECT disputeID, disputeOvertime.dateFiled, firstName, lastName,
+                otDate, otType, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
+                ON dispute.overtimeID = disputeOvertime.overtimeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeOvertime.empID = employee.id
+                WHERE dispute.status = 'Pending'";
+            return $overtimeDisputes;
+        }
+
+        public function pendingDisputesOvertimeUser($id) {
+            $overtimeDisputes = "
+                SELECT disputeID, disputeOvertime.dateFiled, firstName, lastName,
+                otDate, otType, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
+                ON dispute.overtimeID = disputeOvertime.overtimeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeOvertime.empID = employee.id
+                WHERE dispute.status = 'Pending' AND
+                empID = '$id'";
+            return $overtimeDisputes;
+        }
+
+        public function pendingDisputesOvertimeOpsManager() {
+            $overtimeDisputes = "
+                SELECT disputeID, disputeOvertime.dateFiled, firstName, lastName,
+                otDate, otType, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
+                ON dispute.overtimeID = disputeOvertime.overtimeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeOvertime.empID = employee.id
+                WHERE dispute.status = 'Pending' AND 
+                employee.designationID IN (1,2,3,4,11,14)";
+            return $overtimeDisputes;
+        }
+
+        public function pendingDisputesOvertimeOpsTL() {
+            $overtimeDisputes = "
+                SELECT disputeID, disputeOvertime.dateFiled, firstName, lastName,
+                otDate, otType, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
+                ON dispute.overtimeID = disputeOvertime.overtimeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeOvertime.empID = employee.id
+                WHERE dispute.status = 'Pending' AND 
+                employee.departmentID = 1 AND employee.designationID IN (1,2,3,14)";
+            return $overtimeDisputes;
+        }
+
+        public function pendingDisputesOvertimeIT() {
+            $overtimeDisputes = "
+                SELECT disputeID, disputeOvertime.dateFiled, firstName, lastName,
+                otDate, otType, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
+                ON dispute.overtimeID = disputeOvertime.overtimeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeOvertime.empID = employee.id
+                WHERE dispute.status = 'Pending' AND 
+                employee.departmentID = 4 AND employee.designationID IN (10, 13, 19)";
+            return $overtimeDisputes;
+        }
+
+        public function approvedDisputesOvertime() {
+            $overtimeDisputes = "
+                SELECT disputeID, disputeOvertime.dateFiled, firstName, lastName,
+                otDate, otType, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
+                ON dispute.overtimeID = disputeOvertime.overtimeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeOvertime.empID = employee.id
+                WHERE dispute.status = 'Approved'";
+            return $overtimeDisputes;
+        }
+
+        public function approvedDisputesOvertimeUser($id) {
+            $overtimeDisputes = "
+                SELECT disputeID, disputeOvertime.dateFiled, firstName, lastName,
+                otDate, otType, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
+                ON dispute.overtimeID = disputeOvertime.overtimeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeOvertime.empID = employee.id
+                WHERE dispute.status = 'Approved' AND
+                empID = '$id'";
+            return $overtimeDisputes;
+        }
+
+        public function approvedDisputesOvertimeOpsManager() {
+            $overtimeDisputes = "
+                SELECT disputeID, disputeOvertime.dateFiled, firstName, lastName,
+                otDate, otType, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
+                ON dispute.overtimeID = disputeOvertime.overtimeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeOvertime.empID = employee.id
+                WHERE dispute.status = 'Approved' AND 
+                employee.designationID IN (1,2,3,4,11,14)";
+            return $overtimeDisputes;
+        }
+
+        public function approvedDisputesOvertimeOpsTL() {
+            $overtimeDisputes = "
+                SELECT disputeID, disputeOvertime.dateFiled, firstName, lastName,
+                otDate, otType, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
+                ON dispute.overtimeID = disputeOvertime.overtimeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeOvertime.empID = employee.id
+                WHERE dispute.status = 'Approved' AND 
+                employee.departmentID = 1 AND employee.designationID IN (1,2,3,14)";
+            return $overtimeDisputes;
+        }
+
+        public function approvedDisputesOvertimeIT() {
+            $overtimeDisputes = "
+                SELECT disputeID, disputeOvertime.dateFiled, firstName, lastName,
+                otDate, otType, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
+                ON dispute.overtimeID = disputeOvertime.overtimeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeOvertime.empID = employee.id
+                WHERE dispute.status = 'Approved' AND 
+                employee.departmentID = 4 AND employee.designationID IN (10, 13, 19)";
+            return $overtimeDisputes;
+        }
+
+        public function disapprovedDisputesOvertime() {
+            $overtimeDisputes = "
+                SELECT disputeID, disputeOvertime.dateFiled, firstName, lastName,
+                otDate, otType, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
+                ON dispute.overtimeID = disputeOvertime.overtimeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeOvertime.empID = employee.id
+                WHERE dispute.status = 'Disapproved'";
+            return $overtimeDisputes;
+        }
+
+        public function disapprovedDisputesOvertimeUser($id) {
+            $overtimeDisputes = "
+                SELECT disputeID, disputeOvertime.dateFiled, firstName, lastName,
+                otDate, otType, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
+                ON dispute.overtimeID = disputeOvertime.overtimeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeOvertime.empID = employee.id
+                WHERE dispute.status = 'Disapproved' AND
+                empID = '$id'";
+            return $overtimeDisputes;
+        }
+
+        public function disapprovedDisputesOvertimeOpsManager() {
+            $overtimeDisputes = "
+                SELECT disputeID, disputeOvertime.dateFiled, firstName, lastName,
+                otDate, otType, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
+                ON dispute.overtimeID = disputeOvertime.overtimeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeOvertime.empID = employee.id
+                WHERE dispute.status = 'Disapproved' AND
+                employee.designationID IN (1,2,3,4,11,14)";
+            return $overtimeDisputes;
+        }
+
+        public function disapprovedDisputesOvertimeOpsTL() {
+            $overtimeDisputes = "
+                SELECT disputeID, disputeOvertime.dateFiled, firstName, lastName,
+                otDate, otType, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
+                ON dispute.overtimeID = disputeOvertime.overtimeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeOvertime.empID = employee.id
+                WHERE dispute.status = 'Disapproved' AND 
+                employee.departmentID = 1 AND employee.designationID IN (1,2,3,14)";
+            return $overtimeDisputes;
+        }
+
+        public function disapprovedDisputesOvertimeIT() {
+            $overtimeDisputes = "
+                SELECT disputeID, disputeOvertime.dateFiled, firstName, lastName,
+                otDate, otType, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
+                ON dispute.overtimeID = disputeOvertime.overtimeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeOvertime.empID = employee.id
+                WHERE dispute.status = 'Disapproved' AND 
+                employee.departmentID = 4 AND employee.designationID IN (10, 13, 19)";
+            return $overtimeDisputes;
+        }
+
+        public function fileAttendanceDispute($empID, $attendanceDate_timeIn, $attendanceTime_timeIn, $logTypeID_timeIn, $attendanceDate_timeOut, $attendanceTime_timeOut, $logTypeID_timeOut) {
+            $fileAttendanceDispute = "
+                INSERT INTO ".$this->disputeAttendance." (empID, dateFiled, attendanceDate_timeIn, attendanceTime_timeIn, logTypeID_timeIn, attendanceDate_timeOut, attendanceTime_timeOut, logTypeID_timeOut) 
+                VALUES ('$empID', CURRENT_DATE(), '$attendanceDate_timeIn', '$attendanceTime_timeIn', '$logTypeID_timeIn', '$attendanceDate_timeOut', '$attendanceTime_timeOut', '$logTypeID_timeOut')";
+            return $fileAttendanceDispute;
+        }
+
+        public function fileLeaveDispute($empID, $leaveTypeID, $startDate, $endDate, $attachment) {
+            $fileLeaveDispute = "
+                INSERT INTO ".$this->disputeLeaves." (empID, dateFiled, leaveTypeID, startDate, endDate, attachment) 
+                VALUES ('$empID', CURRENT_DATE(), '$leaveTypeID', '$startDate', '$endDate', '$attachment')";
+            return $fileLeaveDispute;
+        }
+
+        public function fileOvertimeDispute($empID, $otDate, $otType, $fromTime, $toTime) {
+            $fileOvertimeDispute = "
+                INSERT INTO ".$this->disputeOvertime." (empID, dateFiled, otDate, otType, fromTime, toTime) 
+                VALUES ('$empID', CURRENT_DATE(), '$otDate', '$otType', '$fromTime', '$toTime')";
+            return $fileOvertimeDispute;
+        }
+
+        public function viewLastDisputeID() {
+            $lastID = "
+                SELECT * FROM ".$this->disputes." ORDER BY disputeID DESC LIMIT 1";
+            return $lastID;
+        }
+
+        public function viewLastDisputeAttendance() {
+            $lastID = "
+                SELECT * FROM ".$this->disputeAttendance." ORDER BY attendanceID DESC LIMIT 1";
+            return $lastID;
+        }
+
+        public function viewLastDisputeLeave() {
+            $lastID = "
+                SELECT * FROM ".$this->disputeLeaves." ORDER BY leaveID DESC LIMIT 1";
+            return $lastID;
+        }
+
+        public function viewLastDisputeOvertime() {
+            $lastID = "
+                SELECT * FROM ".$this->disputeOvertime." ORDER BY overtimeID DESC LIMIT 1";
+            return $lastID;
+        }
+
+        public function addDispute_attendance($attendanceID, $remarks) {
+            $fileDisputeAttendance = "
+                INSERT INTO ".$this->disputes." (attendanceID, remarks, status)
+                VALUES ('$attendanceID', '$remarks', 'Pending')";
+            return $fileDisputeAttendance;
+        }
+
+        public function addDispute_leave($leaveID, $remarks) {
+            $fileDisputeLeave = "
+                INSERT INTO ".$this->disputes." (leaveID, remarks, status)
+                VALUES ('$leaveID', '$remarks', 'Pending')";
+            return $fileDisputeLeave;
+        }
+
+        public function addDispute_overtime($overtimeID, $remarks) {
+            $fileDisputeOvertime = "
+                INSERT INTO ".$this->disputes." (overtimeID, remarks, status)
+                VALUES ('$overtimeID', '$remarks', 'Pending')";
+            return $fileDisputeOvertime;
+        }
+
+        public function getDisputeInfo($disputeID) {
+            $dispute = "
+                SELECT * FROM ".$this->disputes." WHERE disputeID = '$disputeID'";
+            return $dispute;
+        }
+
+        public function getAttendanceInfo($attendanceID) {
+            $attendanceInfo = "
+                SELECT disputeID, empID, employeeID, firstName, lastName,
+                DATE_FORMAT(dateFiled, '%M %d, %Y') AS dateFiled,
+                attendanceDate_timeIn AS date_timeIn, attendanceDate_timeOut AS date_timeOut,
+                DATE_FORMAT(attendanceDate_timeIn, '%M %d, %Y') AS attendanceDate_timeIn,
+                DATE_FORMAT(attendanceDate_timeOut, '%M %d, %Y') AS attendanceDate_timeOut,
+                attendanceTime_timeIn, attendanceTime_timeOut, lateMins, undertimeMins,
+                logTypeID_timeIn, logTypeID_timeOut, remarks, dispute.status
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
+                ON dispute.attendanceID = disputeAttendance.attendanceID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeAttendance.empID = employee.id
+                WHERE dispute.attendanceID = '$attendanceID'";
+            return $attendanceInfo;
+        }
+
+        public function getLeaveInfo($leaveID) {
+            $leaveDispute = "
+                SELECT disputeID, empID, employeeID, firstName, lastName,
+                DATE_FORMAT(dateFiled, '%M %d, %Y') AS dateFiled,
+                DATE_FORMAT(startDate, '%M %d, %Y') AS startDate,
+                DATE_FORMAT(endDate, '%M %d, %Y') AS endDate,
+                attachment, leaveType, disputeLeaves.leaveTypeID, remarks, 
+                dispute.status, startDate AS effectivityStartDate, endDate AS effectivityEndDate
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
+                ON dispute.leaveID = disputeLeaves.leaveID
+                INNER JOIN tbl_leavetype AS leaves
+                ON disputeLeaves.leaveTypeID = leaves.leaveTypeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeLeaves.empID = employee.id
+                WHERE dispute.leaveID = '$leaveID'";
+            return $leaveDispute;
+        }
+
+        public function getOvertimeInfo($overtimeID) {
+            $overtimeDispute = "
+                SELECT disputeID, empID, employeeID, firstName, lastName,
+                DATE_FORMAT(dateFiled, '%M %d, %Y') AS dateFiled,
+                DATE_FORMAT(otDate, '%M %d, %Y') AS otDate,
+                otType, fromTime, toTime, remarks, dispute.status, 
+                otDate AS overtimeDate, dateFiled AS filedDate
+                FROM ".$this->disputes." AS dispute
+                INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
+                ON dispute.overtimeID = disputeOvertime.overtimeID
+                INNER JOIN ".$this->employees." AS employee
+                ON disputeOvertime.empID = employee.id
+                WHERE dispute.overtimeID = '$overtimeID'";
+            return $overtimeDispute;
+        }
+
+        public function fileOT($employeeID, $dateFiled, $otDate, $otType, $fromTime, $toTime, $remarks, $status, $isPaid) {
+            $fileOT = "
+                INSERT INTO ".$this->filedOT." (empID, dateFiled, otDate, otType, fromTime, toTime, remarks, status, isPaid)
+                VALUES ('$employeeID', '$dateFiled', '$otDate', '$otType', '$fromTime', '$toTime', '$remarks', '$status', '$isPaid')";
+            return $fileOT;
+        }
+
+        public function fileLeaveWithAttachment($employeeID, $leaveTypeID, $effectivityStartDate, $effectivityEndDate, $remarks, $status, $attachment, $isPaid) {
+            $fileLeave = "
+                INSERT INTO ".$this->leaves." (empID, dateFiled, leaveTypeID, effectivityStartDate, effectivityEndDate, remarks, status, attachment, isPaid)
+                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$leaveTypeID', '$effectivityStartDate', '$effectivityEndDate', '$remarks', '$status', '$attachment', '$isPaid')";
+            return $fileLeave;
+        }
+
+        public function fileLeave($employeeID, $leaveTypeID, $effectivityStartDate, $effectivityEndDate, $remarks, $status, $isPaid) {
+            $fileLeave = "
+                INSERT INTO ".$this->leaves." (empID, dateFiled, leaveTypeID, effectivityStartDate, effectivityEndDate, remarks, status, attachment, isPaid)
+                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$leaveTypeID', '$effectivityStartDate', '$effectivityEndDate', '$remarks', '$status', NULL, '$isPaid')";
+            return $fileLeave;
+        }
+
+        public function updateDisputeStatus($disputeID, $status) {
+            $updateDisputeStatus = "UPDATE ".$this->disputes." SET status = '$status' WHERE disputeID = '$disputeID'";
+            return $updateDisputeStatus;
+        }
+
+        public function updateLeaveStatus($leaveID, $isPaid) {
+            $updateLeaveStatus = "UPDATE ".$this->disputeLeaves." SET isPaid = '$isPaid' WHERE leaveID = '$leaveID'";
+            return $updateLeaveStatus;
+        }
+
+        public function updateOvertimeStatus($overtimeID, $isPaid) {
+            $updateOvertimeStatus = "UPDATE ".$this->disputeOvertime." SET isPaid = '$isPaid' WHERE overtimeID = '$overtimeID'";
+            return $updateOvertimeStatus;
+        }
+
         public function getCashAdvanceInfo($requestID) {
             $cashAdvance = "
                 SELECT requestID, employees.employeeID, employees.firstName AS firstName, employees.lastName AS lastName, 
@@ -576,12 +1423,11 @@
             return $viewPayrollCycle;
         }
 
-        // NEW CODE
-        // public function calculateNightDifferential($attendanceTime, $logTypeID, $lateMins, $payrollCycleFrom, $payrollCycleTo, $attendanceDate) {
+        // OLD CODE
+        // public function calculateNightDifferential($attendanceDateTime, $logTypeID, $lateMins, $payrollCycleFrom, $payrollCycleTo, $attendanceDate, $empID) {
         //     static $timeIn = null;
         //     static $timeOut = null;
         //     static $date_in = null;
-        //     static $date_out = null;
         //     static $static_lateMins = null;
 
         //     $totalRegularNightHours = 0;
@@ -590,19 +1436,41 @@
         //     $totalSpecialHolidayHours = 0;
         //     $totalSpecialHolidayNightHours = 0;
 
-        //     // Capture time in
+        //     $sch = $this->dbConnect()->query("
+        //         SELECT startTime, endTime
+        //         FROM tbl_employee INNER JOIN tbl_shiftschedule
+        //         ON tbl_employee.shiftID = tbl_shiftschedule.shiftID
+        //         WHERE tbl_employee.id = '$empID'
+        //     ")->fetch_assoc();
+
+        //     $shiftStartTime = $sch['startTime'];
+        //     $shiftEndTime   = $sch['endTime']; 
+
+        //     // TIME IN (logTypeID 1 or 2)
         //     if ($logTypeID == 1 || $logTypeID == 2) {
-        //         $timeIn = new DateTime($attendanceTime);
+        //         // if ($logTypeID == 1){
+        //         //     $timeIn = new DateTime($attendanceDate . ' ' . $shiftStartTime);
+        //         // } 
+        //         // else {
+        //         //     $timeIn = new DateTime($attendanceDateTime);
+        //         // }
+        //         $timeIn = new DateTime($attendanceDate . ' ' . $shiftStartTime);
         //         $date_in = $attendanceDate;
         //         $static_lateMins = $lateMins;
         //     }
-        //     // Capture time out
-        //     elseif ($logTypeID == 3 || $logTypeID == 4) {
-        //         $timeOut = new DateTime($attendanceTime);
-        //         $date_out = $attendanceDate;
+
+        //     // TIME OUT (logTypeID 3 or 4)
+        //     if ($logTypeID == 3 || $logTypeID == 4) {
+        //         // if ($logTypeID == 4) {
+        //         //     $timeOut = new DateTime($attendanceDate . ' ' . $shiftEndTime);
+        //         // }
+        //         // else {
+        //         //     $timeOut = new DateTime($attendanceDateTime);
+        //         // }
+        //         $timeOut = new DateTime($attendanceDate . ' ' . $shiftEndTime);
         //     }
 
-        //     // Process only when both IN and OUT exist
+        //     // Only compute when BOTH logs are captured
         //     if ($timeIn && $timeOut) {
 
         //         // Overnight adjustment
@@ -610,30 +1478,19 @@
         //             $timeOut->modify('+1 day');
         //         }
 
-        //         // Apply late deduction
+        //         // Deduct late
+        //         $adjustedTimeIn = clone $timeIn;
         //         if ($static_lateMins > 0) {
-        //             $timeIn = (clone $timeIn)->modify("+{$static_lateMins} minutes");
+        //             $adjustedTimeIn->modify("+{$static_lateMins} minutes");
         //         }
 
-        //         // Now compute the entire worked segment
-        //         $this->calculateSegmentHours(
-        //             clone $timeIn, 
-        //             clone $timeOut,
-        //             $payrollCycleFrom,
-        //             $payrollCycleTo,
-        //             $date_in, // Use IN date for the holiday reference
-        //             $totalRegularNightHours,
-        //             $totalRegularHolidayHours,
-        //             $totalRegularHolidayNightHours,
-        //             $totalSpecialHolidayHours,
-        //             $totalSpecialHolidayNightHours
-        //         );
+        //         // Do ND computation
+        //         $this->calculateSegmentHours(clone $adjustedTimeIn, clone $timeOut, $payrollCycleFrom, $payrollCycleTo, $date_in, $empID, $totalRegularNightHours, $totalRegularHolidayHours, $totalRegularHolidayNightHours, $totalSpecialHolidayHours, $totalSpecialHolidayNightHours);
 
-        //         // reset static values
+        //         // reset static variables for next IN/OUT pair
         //         $timeIn = null;
         //         $timeOut = null;
         //         $date_in = null;
-        //         $date_out = null;
         //         $static_lateMins = null;
         //     }
 
@@ -646,54 +1503,62 @@
         //     ];
         // }
 
+        // NEW CODE
         public function calculateNightDifferential($attendanceDateTime, $logTypeID, $lateMins, $payrollCycleFrom, $payrollCycleTo, $attendanceDate, $empID) {
             static $timeIn = null;
             static $timeOut = null;
             static $date_in = null;
             static $static_lateMins = null;
-
+        
             $totalRegularNightHours = 0;
             $totalRegularHolidayHours = 0;
             $totalRegularHolidayNightHours = 0;
             $totalSpecialHolidayHours = 0;
             $totalSpecialHolidayNightHours = 0;
 
-            // TIME IN (logTypeID 1 or 2)
+            $attendance = new DateTime($attendanceDateTime);
+        
+            // TIME IN
             if ($logTypeID == 1 || $logTypeID == 2) {
-                $timeIn = new DateTime($attendanceDateTime);
+                $timeIn = clone $attendance;
                 $date_in = $attendanceDate;
                 $static_lateMins = $lateMins;
             }
+        
+            // TIME OUT
+            if (($logTypeID == 3 || $logTypeID == 4) && $timeIn !== null) {
+                $timeOut = clone $attendance;
 
-            // TIME OUT (logTypeID 3 or 4)
-            if ($logTypeID == 3 || $logTypeID == 4) {
-                $timeOut = new DateTime($attendanceDateTime);
-            }
-
-            // Only compute when BOTH logs are captured
-            if ($timeIn && $timeOut) {
-
-                // Overnight adjustment
+                // Overnight fix
                 if ($timeOut < $timeIn) {
                     $timeOut->modify('+1 day');
                 }
 
-                // Deduct late
-                $adjustedTimeIn = clone $timeIn;
-                if ($static_lateMins > 0) {
-                    $adjustedTimeIn->modify("+{$static_lateMins} minutes");
+                // FILTER:  ONLY COUNT SHIFTS WITHIN PAYROLL RANGE
+                if ($date_in < $payrollCycleFrom || $date_in > $payrollCycleTo) {
+                    $timeIn = null;
+                    $date_in = null;
                 }
-
-                // Do ND computation
-                $this->calculateSegmentHours(clone $adjustedTimeIn, clone $timeOut, $payrollCycleFrom, $payrollCycleTo, $date_in, $empID, $totalRegularNightHours, $totalRegularHolidayHours, $totalRegularHolidayNightHours, $totalSpecialHolidayHours, $totalSpecialHolidayNightHours);
-
-                // reset static variables for next IN/OUT pair
+        
+                // Compute segments
+                $this->calculateSegmentHours(
+                    $payrollCycleFrom,
+                    $payrollCycleTo,
+                    $date_in,
+                    $empID,
+                    $totalRegularNightHours,
+                    $totalRegularHolidayHours,
+                    $totalRegularHolidayNightHours,
+                    $totalSpecialHolidayHours,
+                    $totalSpecialHolidayNightHours
+                );
+        
+                // Reset
                 $timeIn = null;
                 $timeOut = null;
                 $date_in = null;
                 $static_lateMins = null;
-            }
-
+            }    
             return [
                 'totalRegularNightHours' => $totalRegularNightHours,
                 'totalRegularHolidayHours' => $totalRegularHolidayHours,
@@ -703,9 +1568,110 @@
             ];
         }
 
-        private function calculateSegmentHours($start, $end, $payrollCycleFrom, $payrollCycleTo, $attendanceDate, $empID, &$totalRegularNightHours, &$totalRegularHolidayHours, &$totalRegularHolidayNightHours, &$totalSpecialHolidayHours, &$totalSpecialHolidayNightHours) {
+        // OLD CODE
+        // private function calculateSegmentHours($start, $end, $payrollCycleFrom, $payrollCycleTo, $attendanceDate, $empID, &$totalRegularNightHours, &$totalRegularHolidayHours, &$totalRegularHolidayNightHours, &$totalSpecialHolidayHours, &$totalSpecialHolidayNightHours) {
+        //     // -----------------------------
+        //     // 1. LOAD HOLIDAYS (cached)
+        //     // -----------------------------
+        //     static $holidays = null;
+
+        //     if ($holidays === null) {
+        //         $holidays = [];
+        //         $res = $this->dbConnect()->query("
+        //             SELECT dateFrom, type 
+        //             FROM tbl_holidays
+        //             WHERE dateFrom BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'
+        //         ");
+        //         while ($h = mysqli_fetch_assoc($res)) {
+        //             $holidays[$h['dateFrom']] = $h['type']; // Legal or Special
+        //         }
+        //     }
+
+        //     // -----------------------------
+        //     // 2. GET SHIFT SCHEDULE
+        //     // -----------------------------
+        //     $sch = $this->dbConnect()->query("
+        //         SELECT startTime, endTime
+        //         FROM tbl_employee INNER JOIN tbl_shiftschedule
+        //         ON tbl_employee.shiftID = tbl_shiftschedule.shiftID
+        //         WHERE tbl_employee.id = '$empID'
+        //     ")->fetch_assoc();
+
+        //     $shiftStartTime = $sch['startTime'];
+        //     $shiftEndTime   = $sch['endTime']; 
+
+        //     // -----------------------------
+        //     // 3. CREATE SHIFT BOUNDARIES
+        //     // -----------------------------
+        //     $scheduledStart = new DateTime($attendanceDate . " " . $shiftStartTime);
+        //     $scheduledEnd   = new DateTime($attendanceDate . " " . $shiftEndTime);
+
+        //     // Handle overnight shifts (example: 22:00 → 06:00 next day)
+        //     if ($scheduledEnd <= $scheduledStart) {
+        //         $scheduledEnd->modify("+1 day");
+        //     }
+
+        //     // -----------------------------
+        //     // 4. CLAMP ACTUAL IN/OUT TO SHIFT
+        //     // -----------------------------
+        //     $clampedStart = max($start, $scheduledStart);
+        //     $clampedEnd   = min($end, $scheduledEnd);
+
+        //     // if ($clampedStart < $scheduledStart) {
+        //     //     $clampedStart = clone $scheduledStart;
+        //     // }
+        //     // if ($clampedEnd > $scheduledEnd) {
+        //     //     $clampedEnd = clone $scheduledEnd;
+        //     // }
+
+        //     // -----------------------------
+        //     // 5. COMPUTE REGULAR HOURS (DROP MINUTES)
+        //     // -----------------------------
+        //     if ($clampedEnd > $clampedStart) {
+        //         $interval = $clampedStart->diff($clampedEnd);
+        //         $hoursWorked = $interval->h + ($interval->i / 60);
+
+        //         // Holiday Check
+        //         if (isset($holidays[$attendanceDate])) {
+        //             if ($holidays[$attendanceDate] === "Legal") {
+        //                 $totalRegularHolidayHours += $hoursWorked;
+        //             } else {
+        //                 $totalSpecialHolidayHours += $hoursWorked;
+        //             }
+        //         }
+        //     }
+
+        //     // ---------------------------------------------------
+        //     // 6. NIGHT DIFFERENTIAL (22:00 → 06:00 actual values)
+        //     // ---------------------------------------------------
+        //     $nightStart = new DateTime($attendanceDate . " 22:00");
+        //     $nightEnd   = new DateTime($attendanceDate . " 06:00");
+        //     $nightEnd->modify("+1 day");
+
+        //     // Compute overlap with ORIGINAL actual start/end (not clamped!)
+        //     $effectiveStart = max($start, $nightStart);
+        //     $effectiveEnd   = min($end, $nightEnd);
+
+        //     if ($effectiveStart < $effectiveEnd) {
+        //         $ndInterval = $effectiveStart->diff($effectiveEnd);
+        //         $nightHours = $ndInterval->h + ($ndInterval->i / 60);
+
+        //         if (isset($holidays[$attendanceDate])) {
+        //             if ($holidays[$attendanceDate] === "Legal") {
+        //                 $totalRegularHolidayNightHours += $nightHours;
+        //             } else {
+        //                 $totalSpecialHolidayNightHours += $nightHours;
+        //             }
+        //         } else {
+        //             $totalRegularNightHours += $nightHours;
+        //         }
+        //     }
+        // }
+
+        // NEW CODE
+        private function calculateSegmentHours($payrollCycleFrom, $payrollCycleTo, $attendanceDate, $empID, &$totalRegularNightHours, &$totalRegularHolidayHours, &$totalRegularHolidayNightHours, &$totalSpecialHolidayHours, &$totalSpecialHolidayNightHours) {
             // -----------------------------
-            // 1. LOAD HOLIDAYS (cached)
+            // 1. LOAD HOLIDAYS
             // -----------------------------
             static $holidays = null;
 
@@ -717,144 +1683,161 @@
                     WHERE dateFrom BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'
                 ");
                 while ($h = mysqli_fetch_assoc($res)) {
-                    $holidays[$h['dateFrom']] = $h['type']; // 'Legal' or 'Special'
+                    $holidays[$h['dateFrom']] = $h['type'];
                 }
             }
 
             // -----------------------------
-            // 2. GET SHIFT SCHEDULE
+            // 2. SHIFT SCHEDULE
             // -----------------------------
             $sch = $this->dbConnect()->query("
                 SELECT startTime, endTime
-                FROM tbl_employee INNER JOIN tbl_shiftschedule
+                FROM tbl_employee 
+                INNER JOIN tbl_shiftschedule
                 ON tbl_employee.shiftID = tbl_shiftschedule.shiftID
                 WHERE tbl_employee.id = '$empID'
             ")->fetch_assoc();
 
-            $shiftStartTime = $sch['startTime']; // example: "08:00"
-            $shiftEndTime   = $sch['endTime'];   // example: "17:00"
+            $scheduledStart = new DateTime($attendanceDate . " " . $sch['startTime']);
+            $scheduledEnd   = new DateTime($attendanceDate . " " . $sch['endTime']);
 
-            // -----------------------------
-            // 3. CREATE SHIFT BOUNDARIES
-            // -----------------------------
-            $scheduledStart = new DateTime($attendanceDate . " " . $shiftStartTime);
-            $scheduledEnd   = new DateTime($attendanceDate . " " . $shiftEndTime);
-
-            // Handle overnight shifts (example: 22:00 → 06:00 next day)
+            // Handle overnight shift
             if ($scheduledEnd <= $scheduledStart) {
                 $scheduledEnd->modify("+1 day");
             }
 
-            // -----------------------------
-            // 4. CLAMP ACTUAL IN/OUT TO SHIFT
-            // -----------------------------
-            $clampedStart = clone $start;
-            $clampedEnd   = clone $end;
-
-            if ($clampedStart < $scheduledStart) {
-                $clampedStart = clone $scheduledStart;
-            }
-            if ($clampedEnd > $scheduledEnd) {
-                $clampedEnd = clone $scheduledEnd;
-            }
+            // Base + next date (BASED ON SHIFT, NOT attendanceDate blindly)
+            $baseDate = $scheduledStart->format('Y-m-d');
+            $nextDate = (clone $scheduledStart)->modify('+1 day')->format('Y-m-d');
 
             // -----------------------------
-            // 5. COMPUTE REGULAR HOURS (DROP MINUTES)
+            // 3. DAY HOURS (06:00 → 22:00)
             // -----------------------------
-            if ($clampedEnd > $clampedStart) {
-                $interval = $clampedStart->diff($clampedEnd);
-                $hoursWorked = $interval->h; // minutes removed
+            $dayStart = new DateTime($baseDate . " 06:00");
+            $dayEnd   = new DateTime($baseDate . " 22:00");
 
-                // Holiday?
-                if (isset($holidays[$attendanceDate])) {
-                    if ($holidays[$attendanceDate] === "Legal") {
-                        $totalRegularHolidayHours += $hoursWorked;
+            $daySegStart = max($scheduledStart, $dayStart);
+            $daySegEnd   = min($scheduledEnd, $dayEnd);
+
+            if ($daySegStart < $daySegEnd) {
+                $interval = $daySegStart->diff($daySegEnd);
+                $hours = $interval->h + ($interval->i / 60);
+
+                // Break (12–1)
+                $breakStart = new DateTime($baseDate . " 12:00");
+                $breakEnd   = new DateTime($baseDate . " 13:00");
+
+                $breakOverlapStart = max($daySegStart, $breakStart);
+                $breakOverlapEnd   = min($daySegEnd, $breakEnd);
+
+                if ($breakOverlapStart < $breakOverlapEnd) {
+                    $intervalBreak = $breakOverlapStart->diff($breakOverlapEnd);
+                    $breakHours = $intervalBreak->h + ($intervalBreak->i / 60);
+                    $hours -= $breakHours;
+                }
+
+                if ($hours < 0) {
+                    $hours = 0;
+                }
+
+                if (isset($holidays[$baseDate])) {
+                    if ($holidays[$baseDate] === "Legal") {
+                        $totalRegularHolidayHours += $hours;
                     } else {
-                        $totalSpecialHolidayHours += $hoursWorked;
+                        $totalSpecialHolidayHours += $hours;
                     }
                 }
             }
 
-            // ---------------------------------------------------
-            // 6. NIGHT DIFFERENTIAL (22:00 → 06:00 actual values)
-            // ---------------------------------------------------
-            $nightStart = new DateTime($attendanceDate . " 22:00");
-            $nightEnd   = new DateTime($attendanceDate . " 06:00");
-            $nightEnd->modify("+1 day");
+            // -----------------------------
+            // 4. NEXT DAY DAY HOURS (if overnight)
+            // -----------------------------
+            if ($scheduledEnd->format('Y-m-d') !== $baseDate) {
+                $nextDayStart = new DateTime($nextDate . " 06:00");
+                $nextDayEnd   = new DateTime($nextDate . " 22:00");
 
-            // Compute overlap with ORIGINAL actual start/end (not clamped!)
-            $effectiveStart = max($start, $nightStart);
-            $effectiveEnd   = min($end, $nightEnd);
+                $nextSegStart = max($scheduledStart, $nextDayStart);
+                $nextSegEnd   = min($scheduledEnd, $nextDayEnd);
 
-            if ($effectiveStart < $effectiveEnd) {
-                $nd = $effectiveStart->diff($effectiveEnd);
-                $nightHours = $nd->h; // drop minutes
+                if ($nextSegStart < $nextSegEnd) {
+                    $interval = $nextSegStart->diff($nextSegEnd);
+                    $hours = $interval->h + ($interval->i / 60);
 
-                if (isset($holidays[$attendanceDate])) {
-                    if ($holidays[$attendanceDate] === "Legal") {
-                        $totalRegularHolidayNightHours += $nightHours;
+                    if (isset($holidays[$nextDate])) {
+                        if ($holidays[$nextDate] === "Legal") {
+                            $totalRegularHolidayHours += $hours;
+                        } else {
+                            $totalSpecialHolidayHours += $hours;
+                        }
+                    }
+                }
+            }
+
+            // =====================================================
+            // 5. NIGHT DIFFERENTIAL
+            // =====================================================
+            // Segment 1: 22:00 → 00:00 (always base date)
+            $nightStart1 = new DateTime($baseDate . " 22:00");
+            $nightEnd1   = new DateTime($nextDate . " 00:00");
+
+            $seg1Start = max($scheduledStart, $nightStart1);
+            $seg1End   = min($scheduledEnd, $nightEnd1);
+
+            if ($seg1Start < $seg1End) {
+                $interval = $seg1Start->diff($seg1End);
+                $hours = $interval->h + ($interval->i / 60);
+
+                if (isset($holidays[$baseDate])) {
+                    if ($holidays[$baseDate] === "Legal") {
+                        $totalRegularHolidayNightHours += $hours;
                     } else {
-                        $totalSpecialHolidayNightHours += $nightHours;
+                        $totalSpecialHolidayNightHours += $hours;
                     }
                 } else {
-                    $totalRegularNightHours += $nightHours;
+                    $totalRegularNightHours += $hours;
+                }
+            }
+
+            // Segment 2: 00:00 → 06:00 (DYNAMIC DATE FIX)
+            $isBreak = false;
+            if ($scheduledEnd->format('Y-m-d') !== $baseDate) {
+                // Overnight shift → next day
+                $nightStart2 = new DateTime($nextDate . " 00:00");
+                $nightEnd2   = new DateTime($nextDate . " 06:00");
+                $isBreak = true;
+                $holidayCheckDate = $nextDate;
+            } else {
+                // Same-day shift (e.g., 5AM–2PM)
+                $nightStart2 = new DateTime($baseDate . " 00:00");
+                $nightEnd2   = new DateTime($baseDate . " 06:00");
+                $holidayCheckDate = $baseDate;
+                $isBreak = false;
+            }
+
+            $seg2Start = max($scheduledStart, $nightStart2);
+            $seg2End   = min($scheduledEnd, $nightEnd2);
+
+            if ($seg2Start < $seg2End) {
+                $interval = $seg2Start->diff($seg2End);
+                $hours = $interval->h + ($interval->i / 60);
+
+                // Safe break deduction
+                if ($isBreak) {
+                    $hours = max(0, $hours - 1);
+                }
+
+                if (isset($holidays[$holidayCheckDate])) {
+                    if ($holidays[$holidayCheckDate] === "Legal") {
+                        $totalRegularHolidayNightHours += $hours;
+                    } else {
+                        $totalSpecialHolidayNightHours += $hours;
+                    }
+                } else {
+                    $totalRegularNightHours += $hours;
                 }
             }
         }
-
-        // private function calculateSegmentHours($start, $end, $payrollCycleFrom, $payrollCycleTo, $attendanceDate, &$totalRegularNightHours, &$totalRegularHolidayHours, &$totalRegularHolidayNightHours, &$totalSpecialHolidayHours, &$totalSpecialHolidayNightHours) {
-        //     // Load holidays once
-        //     static $holidays = null;
-
-        //     if ($holidays === null) {
-        //         $holidays = [];
-        //         $res = $this->dbConnect()->query("
-        //             SELECT * FROM tbl_holidays
-        //             WHERE dateFrom BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'
-        //         ");
-        //         while ($h = mysqli_fetch_array($res)) {
-        //             $holidays[$h['dateFrom']] = $h['type'];
-        //         }
-        //     }
-
-        //     // Compute hours worked
-        //     $interval = $start->diff($end);
-        //     $hoursWorked = $interval->h + ($interval->i > 0 ? 1 : 0);
-
-        //     // Holiday check
-        //     if (isset($holidays[$attendanceDate])) {
-        //         if ($holidays[$attendanceDate] == "Legal") {
-        //             $totalRegularHolidayHours += $hoursWorked;
-        //         } else {
-        //             $totalSpecialHolidayHours += $hoursWorked;
-        //         }
-        //     }
-
-        //     // NIGHT DIFF WINDOW (22:00 → 06:00 next day)
-        //     $nightStart = new DateTime($attendanceDate . " 22:00");
-        //     $nightEnd = new DateTime($attendanceDate . " 06:00");
-        //     $nightEnd->modify("+1 day");
-
-        //     // Overlap calculation
-        //     $effectiveStart = max($start, $nightStart);
-        //     $effectiveEnd   = min($end, $nightEnd);
-
-        //     if ($effectiveStart < $effectiveEnd) {
-        //         $nd = $effectiveStart->diff($effectiveEnd);
-        //         $nightHours = $nd->h + ($nd->i > 0 ? 1 : 0);
-
-        //         if (isset($holidays[$attendanceDate])) {
-        //             if ($holidays[$attendanceDate] == "Legal") {
-        //                 $totalRegularHolidayNightHours += $nightHours;
-        //             } else {
-        //                 $totalSpecialHolidayNightHours += $nightHours;
-        //             }
-        //         } else {
-        //             $totalRegularNightHours += $nightHours;
-        //         }
-        //     }
-        // }
-
+        
         public function calculateOvertimeND($fromTime, $toTime) {
             $nightStart = new DateTime("22:00");
             $nightEnd = (new DateTime("06:00"))->modify('+1 day'); // Extend to the next day
@@ -1111,15 +2094,24 @@
                 $netPay = 0;
 
                 // NEW CODE
+                // $attendanceQuery = $this->dbConnect()->query("
+                //     SELECT *
+                //     FROM tbl_attendance
+                //     WHERE empID = {$employeeDetails['id']}
+                //     AND logTypeID IN (1,2,3,4)
+                //     AND attendanceDate BETWEEN 
+                //         DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom')))
+                //         AND
+                //         DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleT')))
+                //     ORDER BY attendanceDate ASC, attendanceTime ASC
+                // ");
+                $extendedTo = date('Y-m-d', strtotime($payrollCycleTo . ' +1 day'));
                 $attendanceQuery = $this->dbConnect()->query("
                     SELECT *
                     FROM tbl_attendance
                     WHERE empID = {$employeeDetails['id']}
                     AND logTypeID IN (1,2,3,4)
-                    AND attendanceDate BETWEEN 
-                        DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom')))
-                        AND
-                        DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleTo')))
+                    AND attendanceDate BETWEEN '$payrollCycleFrom' AND '$extendedTo'
                     ORDER BY attendanceDate ASC, attendanceTime ASC
                 ");
                 while ($attendanceLogs = mysqli_fetch_array($attendanceQuery)) {
@@ -1143,9 +2135,9 @@
                     );
 
                     $totalNightHours += $result['totalRegularNightHours'];
-                    $totalRegularHolidayHours += $result['totalRegularHolidayHours'] == 0 ? 0 : $result['totalRegularHolidayHours'] - 1;
+                    $totalRegularHolidayHours += $result['totalRegularHolidayHours'];
                     $totalRegularHolidayNDHours += $result['totalRegularHolidayNightHours'];
-                    $totalSpecialHolidayHours += $result['totalSpecialHolidayHours'] == 0 ? 0 : $result['totalSpecialHolidayHours'] - 1;
+                    $totalSpecialHolidayHours += $result['totalSpecialHolidayHours'];
                     $totalSpecialHolidayNDHours += $result['totalSpecialHolidayNightHours'];
                 }
 
@@ -1688,15 +2680,24 @@
                 $netPay = 0;
 
                 // NEW CODE
+                // $attendanceQuery = $this->dbConnect()->query("
+                //     SELECT *
+                //     FROM tbl_attendance
+                //     WHERE empID = {$employeeDetails['id']}
+                //     AND logTypeID IN (1,2,3,4)
+                //     AND attendanceDate BETWEEN 
+                //         DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom')))
+                //         AND
+                //         DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleT')))
+                //     ORDER BY attendanceDate ASC, attendanceTime ASC
+                // ");
+                $extendedTo = date('Y-m-d', strtotime($payrollCycleTo . ' +1 day'));
                 $attendanceQuery = $this->dbConnect()->query("
                     SELECT *
                     FROM tbl_attendance
                     WHERE empID = {$employeeDetails['id']}
                     AND logTypeID IN (1,2,3,4)
-                    AND attendanceDate BETWEEN 
-                        DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom')))
-                        AND
-                        DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleTo')))
+                    AND attendanceDate BETWEEN '$payrollCycleFrom' AND '$extendedTo'
                     ORDER BY attendanceDate ASC, attendanceTime ASC
                 ");
                 while ($attendanceLogs = mysqli_fetch_array($attendanceQuery)) {
@@ -1720,9 +2721,9 @@
                     );
 
                     $totalNightHours += $result['totalRegularNightHours'];
-                    $totalRegularHolidayHours += $result['totalRegularHolidayHours'] == 0 ? 0 : $result['totalRegularHolidayHours'] - 1;
+                    $totalRegularHolidayHours += $result['totalRegularHolidayHours'];
                     $totalRegularHolidayNDHours += $result['totalRegularHolidayNightHours'];
-                    $totalSpecialHolidayHours += $result['totalSpecialHolidayHours'] == 0 ? 0 : $result['totalSpecialHolidayHours'] - 1;
+                    $totalSpecialHolidayHours += $result['totalSpecialHolidayHours'];
                     $totalSpecialHolidayNDHours += $result['totalSpecialHolidayNightHours'];
                 }
 
@@ -1924,6 +2925,7 @@
                 }
 
                 // COMPUTATION FOR LEAVES
+                // $leaveQuery = $this->dbConnect()->query("SELECT empID, lt.leaveTypeID, effectivityStartDate, effectivityEndDate FROM tbl_leaveapplications AS la INNER JOIN tbl_leavetype AS lt ON la.leaveTypeID = lt.leaveTypeID WHERE effectivityStartDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND effectivityEndDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND status = 'Approved' AND empID=$employee_id");
                 $sql = $this->getLeavesForPayroll($employee_id, $payrollCycleFrom, $payrollCycleTo);
                 $leaveQuery = $this->dbConnect()->query($sql);
                 while ($leaveDetails = mysqli_fetch_array($leaveQuery)) {
@@ -1948,24 +2950,6 @@
                 $vacationLeavePay = round($totalVacationLeaves * $employee_dailyRate, 2);
 
                 // COMPUTATION FOR REFERRAL INCENTIVE
-                // RESET 3-MONTH STATUS
-                $this->dbConnect()->query("
-                    UPDATE tbl_referral 
-                    SET threeMonths_status = 0 
-                    WHERE referrer_empID = $employee_id 
-                    AND threeMonths BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'
-                    AND threeMonths_status = 1
-                ");
-
-                // RESET 6-MONTH STATUS
-                $this->dbConnect()->query("
-                    UPDATE tbl_referral 
-                    SET sixMonths_status = 0 
-                    WHERE referrer_empID = $employee_id 
-                    AND sixMonths BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'
-                    AND sixMonths_status = 1
-                ");
-
                 $referralQuery = $this->dbConnect()->query("SELECT * FROM tbl_referral WHERE referrer_empID = $employee_id AND ((threeMonths BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND threeMonths_status = 0) OR (sixMonths BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND sixMonths_status = 0))");
                 while ($referralDetails = mysqli_fetch_array($referralQuery)) {
                     $referralCount++;

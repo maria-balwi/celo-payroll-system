@@ -13,6 +13,21 @@ $(document).ready(function() {
         }
     });
 
+    $("#updateNameIfMarriedLabel").hide();
+
+    $("#mobileNumber").inputmask("0999-999-9999", {
+        placeholder: "XXXX-XXX-XXXX",
+    });
+
+    // UPDATE NAME IF CIVIL STATUS - MARRIED
+    $("select[id='civilStatus']").on("change", function () {
+        if ($(this).val() == "Married") {
+            $("#updateNameIfMarriedLabel").show();
+        } else {
+            $("#updateNameIfMarriedLabel").hide();
+        }
+    });
+
     // UPDATE PASSWORD
     $("#updatePasswordForm").submit(function (e) {
         
@@ -23,17 +38,12 @@ $(document).ready(function() {
         var newPassword = $("#newPassword").val();
         var retypePassword = $("#retypePassword").val();
 
-        console.log({userID});
-        console.log({newPassword});
-        console.log({retypePassword});
-
         if (newPassword == '' || retypePassword == '') {
 
             Swal.fire({
                 icon: 'warning',
                 title: 'Required Information',
                 text: 'Please fill up all the required Information',
-
             })
 
         } else {
@@ -172,6 +182,93 @@ $(document).ready(function() {
             })
         }         
 
+    });
+
+    // UPDATE VITAL INFORMATION 
+    $("#updateVitalInfoForm").submit(function (e) {
+        e.preventDefault();
+
+        let updateEmpInfo = new FormData();
+        var lastName = $("#lastName").val();
+        var firstName = $("#firstName").val();
+        var gender = $("#gender").val();
+        var civilStatus = $("#civilStatus").val();
+        var mobileNumber = $("#mobileNumber").val();
+        var address = $("#address").val();
+
+        if (civilStatus == "Married" && (lastName == '' || firstName == '' || gender == '' || mobileNumber == '' || address == '')) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Required Information',
+                text: 'Please fill up all the required Information',
+            })
+            return;
+        } 
+        else if (civilStatus != "Married" && (gender == '' || mobileNumber == '' || address == '')) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Required Information',
+                text: 'Please fill up all the required Information',
+            })
+            return;
+        }    
+        else {
+            Swal.fire({
+                icon: 'question',
+                title: 'Update Vital Information',
+                text: 'Are you sure you want to update your personal information?',
+                showCancelButton: true,
+                cancelButtonColor: '#6c757d',
+                confirmButtonColor: '#28a745',
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                if (result.isConfirmed)
+                {
+                    updateEmpInfo.append("lastName", lastName);
+                    updateEmpInfo.append("firstName", firstName);
+                    updateEmpInfo.append("gender", gender);
+                    updateEmpInfo.append("civilStatus", civilStatus);
+                    updateEmpInfo.append("mobileNumber", mobileNumber);
+                    updateEmpInfo.append("address", address);
+
+                    $.ajax({
+                        url: '../backend/profile/updateEmpInfo.php',
+                        type: 'POST',
+                        data: updateEmpInfo,
+                        contentType: false,
+                        processData: false,
+                        success: function(res) {
+                            const data = JSON.parse(res);
+                            var message = data.em;
+                            if (data.error == 1) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Warning',
+                                    text: message,
+                                })
+                                $("#lastName").val('');
+                                $("#firstName").val('');
+                                $("#gender").val('');
+                                $("#civilStatus").val('');
+                                $("#mobileNumber").val('');
+                                $("#address").val('');
+                            }
+                            else {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: message,
+                                    timer: 2000,
+                                    showConfirmButton: false,
+                                }).then(() => {
+                                    window.location.reload();
+                                })
+                            }
+                        }
+                    })
+                }
+            })
+        }         
     });
 
 });

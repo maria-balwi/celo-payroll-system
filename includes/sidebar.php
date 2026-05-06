@@ -31,9 +31,15 @@
                 <a href="../pages/admin_employees.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Employee List
                 </a>
+                <?php
+                    if ($_SESSION['designationID'] != '8') { // ONLY FOR FINANCE STAFF
+                ?>
                 <a href="../pages/admin_users.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     User List
                 </a>
+                <?php
+                    }
+                ?>
                 <a href="../pages/admin_leaves.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Leave Application
                 </a>
@@ -51,6 +57,9 @@
                 </a>
                 <a href="../pages/admin_adjustments.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Adjustments
+                </a>
+                <a href="../pages/admin_disputes.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
+                    Disputes
                 </a>
                 <a href="../pages/admin_payroll.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Payroll
@@ -104,6 +113,9 @@
                 <a href="../pages/admin_overtime.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Overtime
                 </a>
+                <a href="../pages/admin_disputes.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
+                    Disputes
+                </a>
                 <?php }
                     if ($_SESSION['levelID'] == '2' && $_SESSION['activated'] == 1) { // TEAM LEAD & IT SUPERVISOR & MANAGER LEVEL
                 ?>
@@ -131,18 +143,14 @@
                 <a href="../pages/team_cashAdvance.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Cash Advance
                 </a>
+                <a href="../pages/team_disputes.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
+                    Disputes
+                </a>
+                <?php if ($_SESSION['departmentID'] == '4') { ?>
                 <a href="../pages/admin_users.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     User List
                 </a>
-                <?php }
-                    if ($_SESSION['levelID'] == '6' && $_SESSION['activated'] == 1) { // IT LEVEL
-                ?>
-                <div class="menu-section">
-                    <h4 class="text-sm font-bold text-gray-500 uppercase pt-2 pb-2">Team's Portal</h4>
-                </div>
-                <a href="../pages/admin_users.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
-                    User List
-                </a>
+                <?php } ?>
                 <?php 
                     }
                     // ALL USERS
@@ -154,8 +162,11 @@
                 <a href="../pages/user_dashboard.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Dashboard
                 </a>
-                <a href="../pages/user_dtr.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
+                <!-- <a href="../pages/user_dtr.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Daily Time Record
+                </a> -->
+                <a href="../pages/dtr.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
+                    Calendar DTR
                 </a>
                 <a href="../pages/user_payslip.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Payslip
@@ -171,6 +182,9 @@
                 </a>
                 <a href="../pages/user_cashAdvance.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Cash Advance
+                </a>
+                <a href="../pages/user_disputes.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
+                    Disputes
                 </a>
                 <?php } ?>
             </nav>

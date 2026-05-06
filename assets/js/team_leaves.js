@@ -23,7 +23,6 @@ $(document).ready(function() {
     $(document).on('click', '.leaveView', function() {
         var leave_id = $(this).data('id');
         var designationID = $(this).data('designation');
-        console.log({designationID});
         array.push(leave_id);
         var id_leave = array[array.length - 1];
 
@@ -45,93 +44,30 @@ $(document).ready(function() {
                     $('#viewDateFiled').val(res.data.dateFiled);
                     $('#viewName').val(res.data.employeeName);
                     $('#viewLeaveType').val(res.data.leaveType);
+                    // $('#viewInclusiveDates').val(res.data.effectivityStartDate+' - '+res.data.effectivityEndDate);
                     $('#viewStartDate').val(res.data.effectivityStartDate);
                     $('#viewEndDate').val(res.data.effectivityEndDate);
                     $('#viewPurpose').val(res.data.remarks);
-                    $('#viewStatus').val(res.data.status);
+                    if (res.data.isPaid == 1 && res.data.status == "Approved") {
+                        $('#viewStatus').val(res.data.status + ' (Paid)');
+                    }
+                    else if (res.data.isPaid == 0 && res.data.status == "Approved") {
+                        $('#viewStatus').val(res.data.status + ' (Unpaid)');
+                    }
                     $('#approveLeave').hide();
                     $('#disapproveLeave').hide();
-                    $('#viewLeaveModal').modal('show');
 
-                    if (res.data.leaveTypeID == "1") {
-                        
-                        if (res.data.photoUpload == null) {
-                            $('#viewPhotoRow').hide();
-                        }
-                        else {
-                            $('#viewPhotoRow').show();
-                        }
-
-                        $('#viewPhoto').click(function(event) {
-                            event.preventDefault();
-                            
-                            const imagePath = '../assets/images/medicalCertificates/' + res.data.photoUpload; // Set your directory path here
-
-                            // VIEW MEDICAL CERTIFICATE IN NEW TAB
-                            window.open(imagePath, '_blank');
-                            
-                        });
+                    if (res.data.attachment == 1) {
+                        $("#viewWithAttachmentRow").show();
+                        $("#viewWithoutAttachmentRow").hide();
+                    } else if (res.data.attachment == 0) {
+                        $("#viewWithAttachmentRow").hide();
+                        $("#viewWithoutAttachmentRow").show();
+                    } else {
+                        $("#viewWithAttachmentRow").hide();
+                        $("#viewWithoutAttachmentRow").hide();
                     }
-                    else if (res.data.leaveTypeID == "3") {
-                        
-                        if (res.data.medCert == null) {
-                            $('#viewPhotoRow').hide();
-                        }
-                        else {
-                            $('#viewPhotoRow').show();
-                        }
-
-                        $('#viewPhoto').click(function(event) {
-                            event.preventDefault();
-                            
-                            const imagePath = '../assets/images/bereavementLeaves/' + res.data.photoUpload; // Set your directory path here
-
-                            // VIEW MEDICAL CERTIFICATE IN NEW TAB
-                            window.open(imagePath, '_blank');
-                            
-                        });
-                    }
-                    else if (res.data.leaveTypeID == "4") {
-                        
-                        if (res.data.medCert == null) {
-                            $('#viewPhotoRow').hide();
-                        }
-                        else {
-                            $('#viewPhotoRow').show();
-                        }
-
-                        $('#viewPhoto').click(function(event) {
-                            event.preventDefault();
-                            
-                            const imagePath = '../assets/images/maternityLeaves/' + res.data.photoUpload; // Set your directory path here
-
-                            // VIEW MEDICAL CERTIFICATE IN NEW TAB
-                            window.open(imagePath, '_blank');
-                            
-                        });
-                    }
-                    else if (res.data.leaveTypeID == "5") {
-                        
-                        if (res.data.medCert == null) {
-                            $('#viewPhotoRow').hide();
-                        }
-                        else {
-                            $('#viewPhotoRow').show();
-                        }
-
-                        $('#viewPhoto').click(function(event) {
-                            event.preventDefault();
-                            
-                            const imagePath = '../assets/images/paternityLeaves/' + res.data.photoUpload; // Set your directory path here
-
-                            // VIEW MEDICAL CERTIFICATE IN NEW TAB
-                            window.open(imagePath, '_blank');
-                            
-                        });
-                    }
-                    else {
-                        $('#viewPhotoRow').hide();
-                    }
+                    $("#viewLeaveModal").modal("show");
                 }
                 else if (res.status == 200 && res.data.status == "Pending") {
                     $('#viewLeaveID').val(res.data.requestID);
@@ -139,93 +75,25 @@ $(document).ready(function() {
                     $('#viewDateFiled').val(res.data.dateFiled);
                     $('#viewName').val(res.data.employeeName);
                     $('#viewLeaveType').val(res.data.leaveType);
+                    // $('#viewInclusiveDates').val(res.data.effectivityStartDate+' - '+res.data.effectivityEndDate);
                     $('#viewStartDate').val(res.data.effectivityStartDate);
                     $('#viewEndDate').val(res.data.effectivityEndDate);
                     $('#viewPurpose').val(res.data.remarks);
                     $('#viewStatus').val(res.data.status);
                     $('#approveLeave').show();
                     $('#disapproveLeave').show();
-                    $('#viewLeaveModal').modal('show');
-                    
-                    if (res.data.leaveTypeID == "1") {
-                        
-                        if (res.data.photoUpload == null) {
-                            $('#viewPhotoRow').hide();
-                        }
-                        else {
-                            $('#viewPhotoRow').show();
-                        }
 
-                        $('#viewPhoto').click(function(event) {
-                            event.preventDefault();
-                            
-                            const imagePath = '../assets/images/medicalCertificates/' + res.data.photoUpload; // Set your directory path here
-
-                            // VIEW MEDICAL CERTIFICATE IN NEW TAB
-                            window.open(imagePath, '_blank');
-                            
-                        });
+                    if (res.data.attachment == 1) {
+                        $("#viewWithAttachmentRow").show();
+                        $("#viewWithoutAttachmentRow").hide();
+                    } else if (res.data.attachment == 0) {
+                        $("#viewWithAttachmentRow").hide();
+                        $("#viewWithoutAttachmentRow").show();
+                    } else {
+                        $("#viewWithAttachmentRow").hide();
+                        $("#viewWithoutAttachmentRow").hide();
                     }
-                    else if (res.data.leaveTypeID == "3") {
-                        
-                        if (res.data.photoUpload == null) {
-                            $('#viewPhotoRow').hide();
-                        }
-                        else {
-                            $('#viewPhotoRow').show();
-                        }
-
-                        $('#viewPhoto').click(function(event) {
-                            event.preventDefault();
-                            
-                            const imagePath = '../assets/images/bereavementLeaves/' + res.data.photoUpload; // Set your directory path here
-
-                            // VIEW MEDICAL CERTIFICATE IN NEW TAB
-                            window.open(imagePath, '_blank');
-                            
-                        });
-                    }
-                    else if (res.data.leaveTypeID == "4") {
-                        
-                        if (res.data.photoUpload == null) {
-                            $('#viewPhotoRow').hide();
-                        }
-                        else {
-                            $('#viewPhotoRow').show();
-                        }
-
-                        $('#viewPhoto').click(function(event) {
-                            event.preventDefault();
-                            
-                            const imagePath = '../assets/images/maternityLeaves/' + res.data.photoUpload; // Set your directory path here
-
-                            // VIEW MEDICAL CERTIFICATE IN NEW TAB
-                            window.open(imagePath, '_blank');
-                            
-                        });
-                    }
-                    else if (res.data.leaveTypeID == "5") {
-                        
-                        if (res.data.photoUpload == null) {
-                            $('#viewPhotoRow').hide();
-                        }
-                        else {
-                            $('#viewPhotoRow').show();
-                        }
-
-                        $('#viewPhoto').click(function(event) {
-                            event.preventDefault();
-                            
-                            const imagePath = '../assets/images/paternityLeaves/' + res.data.photoUpload; // Set your directory path here
-
-                            // VIEW MEDICAL CERTIFICATE IN NEW TAB
-                            window.open(imagePath, '_blank');
-                            
-                        });
-                    }
-                    else {
-                        $('#viewPhotoRow').hide();
-                    }
+                    $("#viewLeaveModal").modal("show");
                 }
             }
         });
@@ -248,10 +116,15 @@ $(document).ready(function() {
                             icon: 'question',
                             title: 'Approve Leave Application',
                             text: 'Are you sure you want to approve this leave application?',
+                            showDenyButton: true,
                             showCancelButton: true,
-                            cancelButtonColor: '#6c757d',
+
                             confirmButtonColor: '#28a745',
-                            confirmButtonText: 'Yes',
+                            denyButtonColor: '#d4ba24',
+                            cancelButtonColor: '#6c757d',
+                            confirmButtonText: 'Yes - Paid Leave',
+                            denyButtonText: 'Yes - Unpaid Leave',
+                            cancelButtonText: 'Cancel',
 
                         }).then((result) => {
                             if (result.isConfirmed) {
@@ -260,7 +133,8 @@ $(document).ready(function() {
                                     type: 'POST',
                                     data: {
                                         id_leave: id_leave,
-                                        action: 'approve'
+                                        action: 'approve', 
+                                        isPaid: 1
                                     },
                                     cache: false,
                                     success: function(data) {
@@ -272,6 +146,29 @@ $(document).ready(function() {
                                             showConfirmButton: false,
                                         }).then(() => {
                                             updateLeaveModal(id_leave);
+                                        })
+                                    }
+                                })
+                            }
+                            else if (result.isDenied) {
+                                $.ajax({
+                                    url: "../backend/team/leaveAction.php",
+                                    type: 'POST',
+                                    data: {
+                                        id_leave: id_leave,
+                                        action: 'approve',
+                                        isPaid: 0
+                                    },
+                                    cache: false,
+                                    success: function(data) {
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Success',
+                                            text: 'Leave application has been approved!',
+                                            timer: 2000,
+                                            showConfirmButton: false,
+                                        }).then(() => {
+                                            updateLeaveModal(id_leave, designationID);
                                         })
                                     }
                                 })
@@ -323,7 +220,7 @@ $(document).ready(function() {
                                             timer: 2000,
                                             showConfirmButton: false,
                                         }).then(() => {
-                                            updateLeaveModal(id_leave);
+                                            updateLeaveModal(id_leave, designationID);
                                         })
                                     }
                                 })
@@ -335,10 +232,10 @@ $(document).ready(function() {
         })
     });
     
-    function updateLeaveModal(id_leave) {
+    function updateLeaveModal(id_leave, designationID) {
         $.ajax({
             type: "GET",
-            url: "../backend/team/leaveModal.php?leave_id=" + id_leave,
+            url: "../backend/team/leaveModal.php?leave_id=" + id_leave + "&designationID=" + designationID,
             success: function(response) {
 
                 var res = jQuery.parseJSON(response);
@@ -353,91 +250,28 @@ $(document).ready(function() {
                     $('#viewDateFiled').val(res.data.dateFiled);
                     $('#viewName').val(res.data.employeeName);
                     $('#viewLeaveType').val(res.data.leaveType);
+                    // $('#viewInclusiveDates').val(res.data.effectivityStartDate+' - '+res.data.effectivityEndDate);
                     $('#viewStartDate').val(res.data.effectivityStartDate);
                     $('#viewEndDate').val(res.data.effectivityEndDate);
                     $('#viewPurpose').val(res.data.remarks);
-                    $('#viewStatus').val(res.data.status);
+                    if (res.data.isPaid == 1 && res.data.status == "Approved") {
+                        $('#viewStatus').val(res.data.status + ' (Paid)');
+                    }
+                    else if (res.data.isPaid == 0 && res.data.status == "Approved") {
+                        $('#viewStatus').val(res.data.status + ' (Unpaid)');
+                    }
                     $('#approveLeave').hide();
                     $('#disapproveLeave').hide();
 
-                    if (res.data.leaveTypeID == "1") {
-                        
-                        if (res.data.photoUpload == null) {
-                            $('#viewPhotoRow').hide();
-                        }
-                        else {
-                            $('#viewPhotoRow').show();
-                        }
-
-                        $('#viewPhoto').click(function(event) {
-                            event.preventDefault();
-                            
-                            const imagePath = '../assets/images/medicalCertificates/' + res.data.photoUpload; // Set your directory path here
-
-                            // VIEW MEDICAL CERTIFICATE IN NEW TAB
-                            window.open(imagePath, '_blank');
-                            
-                        });
-                    }
-                    else if (res.data.leaveTypeID == "3") {
-                        
-                        if (res.data.photoUpload == null) {
-                            $('#viewPhotoRow').hide();
-                        }
-                        else {
-                            $('#viewPhotoRow').show();
-                        }
-
-                        $('#viewPhoto').click(function(event) {
-                            event.preventDefault();
-                            
-                            const imagePath = '../assets/images/bereavementLeaves/' + res.data.photoUpload; // Set your directory path here
-
-                            // VIEW MEDICAL CERTIFICATE IN NEW TAB
-                            window.open(imagePath, '_blank');
-                            
-                        });
-                    }
-                    else if (res.data.leaveTypeID == "4") {
-                        
-                        if (res.data.photoUpload == null) {
-                            $('#viewPhotoRow').hide();
-                        }
-                        else {
-                            $('#viewPhotoRow').show();
-                        }
-
-                        $('#viewPhoto').click(function(event) {
-                            event.preventDefault();
-                            
-                            const imagePath = '../assets/images/maternityLeaves/' + res.data.photoUpload; // Set your directory path here
-
-                            // VIEW MEDICAL CERTIFICATE IN NEW TAB
-                            window.open(imagePath, '_blank');
-                            
-                        });
-                    }
-                    else if (res.data.leaveTypeID == "5") {
-                        
-                        if (res.data.photoUpload == null) {
-                            $('#viewPhotoRow').hide();
-                        }
-                        else {
-                            $('#viewPhotoRow').show();
-                        }
-
-                        $('#viewPhoto').click(function(event) {
-                            event.preventDefault();
-                            
-                            const imagePath = '../assets/images/paternityLeaves/' + res.data.photoUpload; // Set your directory path here
-
-                            // VIEW MEDICAL CERTIFICATE IN NEW TAB
-                            window.open(imagePath, '_blank');
-                            
-                        });
-                    }
-                    else {
-                        $('#viewPhotoRow').hide();
+                    if (res.data.attachment == 1) {
+                        $("#viewWithAttachmentRow").show();
+                        $("#viewWithoutAttachmentRow").hide();
+                    } else if (res.data.attachment == 0) {
+                        $("#viewWithAttachmentRow").hide();
+                        $("#viewWithoutAttachmentRow").show();
+                    } else {
+                        $("#viewWithAttachmentRow").hide();
+                        $("#viewWithoutAttachmentRow").hide();
                     }
                 }
                 else if (res.status == 200 && res.data.status == "Pending") {
@@ -446,6 +280,7 @@ $(document).ready(function() {
                     $('#viewDateFiled').val(res.data.dateFiled);
                     $('#viewName').val(res.data.employeeName);
                     $('#viewLeaveType').val(res.data.leaveType);
+                    // $('#viewInclusiveDates').val(res.data.effectivityStartDate+' - '+res.data.effectivityEndDate);
                     $('#viewStartDate').val(res.data.effectivityStartDate);
                     $('#viewEndDate').val(res.data.effectivityEndDate);
                     $('#viewPurpose').val(res.data.remarks);
@@ -453,84 +288,15 @@ $(document).ready(function() {
                     $('#approveLeave').show();
                     $('#disapproveLeave').show();
 
-                    if (res.data.leaveTypeID == "1") {
-                        
-                        if (res.data.photoUpload == null) {
-                            $('#viewPhotoRow').hide();
-                        }
-                        else {
-                            $('#viewPhotoRow').show();
-                        }
-
-                        $('#viewPhoto').click(function(event) {
-                            event.preventDefault();
-                            
-                            const imagePath = '../assets/images/medicalCertificates/' + res.data.photoUpload; // Set your directory path here
-
-                            // VIEW MEDICAL CERTIFICATE IN NEW TAB
-                            window.open(imagePath, '_blank');
-                            
-                        });
-                    }
-                    else if (res.data.leaveTypeID == "3") {
-                        
-                        if (res.data.photoUpload == null) {
-                            $('#viewPhotoRow').hide();
-                        }
-                        else {
-                            $('#viewPhotoRow').show();
-                        }
-
-                        $('#viewPhoto').click(function(event) {
-                            event.preventDefault();
-                            
-                            const imagePath = '../assets/images/bereavementLeaves/' + res.data.photoUpload; // Set your directory path here
-
-                            // VIEW MEDICAL CERTIFICATE IN NEW TAB
-                            window.open(imagePath, '_blank');
-                            
-                        });
-                    }
-                    else if (res.data.leaveTypeID == "4") {
-                        
-                        if (res.data.photoUpload == null) {
-                            $('#viewPhotoRow').hide();
-                        }
-                        else {
-                            $('#viewPhotoRow').show();
-                        }
-
-                        $('#viewPhoto').click(function(event) {
-                            event.preventDefault();
-                            
-                            const imagePath = '../assets/images/maternityLeaves/' + res.data.photoUpload; // Set your directory path here
-
-                            // VIEW MEDICAL CERTIFICATE IN NEW TAB
-                            window.open(imagePath, '_blank');
-                            
-                        });
-                    }
-                    else if (res.data.leaveTypeID == "5") {
-                        
-                        if (res.data.photoUpload == null) {
-                            $('#viewPhotoRow').hide();
-                        }
-                        else {
-                            $('#viewPhotoRow').show();
-                        }
-
-                        $('#viewPhoto').click(function(event) {
-                            event.preventDefault();
-                            
-                            const imagePath = '../assets/images/paternityLeaves/' + res.data.photoUpload; // Set your directory path here
-
-                            // VIEW MEDICAL CERTIFICATE IN NEW TAB
-                            window.open(imagePath, '_blank');
-                            
-                        });
-                    }
-                    else {
-                        $('#viewPhotoRow').hide();
+                    if (res.data.attachment == 1) {
+                        $("#viewWithAttachmentRow").show();
+                        $("#viewWithoutAttachmentRow").hide();
+                    } else if (res.data.attachment == 0) {
+                        $("#viewWithAttachmentRow").hide();
+                        $("#viewWithoutAttachmentRow").show();
+                    } else {
+                        $("#viewWithAttachmentRow").hide();
+                        $("#viewWithoutAttachmentRow").hide();
                     }
                 }
             }

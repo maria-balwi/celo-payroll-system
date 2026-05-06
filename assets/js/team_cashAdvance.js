@@ -30,37 +30,37 @@ $(document).ready(function () {
     $("#employeeID").on("input", function () {
         clearTimeout(employeeTypingTimer);
 
-    let employeeID = $(this).val().trim();
+        let employeeID = $(this).val().trim();
 
-    if (employeeID === "") {
-        $("#employeeLastName").val("");
-        $("#employeeFirstName").val("");
-        return;
-    }
+        if (employeeID === "") {
+            $("#employeeLastName").val("");
+            $("#employeeFirstName").val("");
+            return;
+        }
 
-    employeeTypingTimer = setTimeout(function () {
-        $.ajax({
-            type: "GET",
-            url: "../backend/team/fetchEmployees.php",
-            data: { employeeID: employeeID },
-            success: function (response) {
-                var res = jQuery.parseJSON(response);
+        employeeTypingTimer = setTimeout(function () {
+            $.ajax({
+                type: "GET",
+                url: "../backend/team/fetchEmployees.php",
+                data: { employeeID: employeeID },
+                success: function (response) {
+                    var res = jQuery.parseJSON(response);
 
-                if (res.status == 200) {
-                    $("#employeeLastName").val(res.data.lastName);
-                    $("#employeeFirstName").val(res.data.firstName);
-                    $("#id").val(res.data.id);
-                } else {
-                    $("#employeeLastName").val("");
-                    $("#employeeFirstName").val("");
-                    $("#id").val("");
-                }
-            },
-        });
+                    if (res.status == 200) {
+                        $("#employeeLastName").val(res.data.lastName);
+                        $("#employeeFirstName").val(res.data.firstName);
+                        $("#id").val(res.data.id);
+                    } else {
+                        $("#employeeLastName").val("");
+                        $("#employeeFirstName").val("");
+                        $("#id").val("");
+                    }
+                },
+            });
         }, debounceDelay);
-  });
+    });
 
-  // LOAN AMOUNT, TOTAL AMOUNT TO BE PAID, REMAINING AMOUNT TO BE PAID, MONTHLY AMMORTIZATION
+    // LOAN AMOUNT, TOTAL AMOUNT TO BE PAID, REMAINING AMOUNT TO BE PAID, MONTHLY Amortization
     $("input[id='amount']").on("input", function () {
         let amount = parseFloat($(this).val().replace(/,/g, ""));
 
@@ -74,19 +74,19 @@ $(document).ready(function () {
 
         var term = $("#monthsToPay").val() * 2;
         if (term) {
-        if (term == 1) {
-            var monthlyAmmortization = (amount / term).toFixed(2);
-            $("#monthlyAmmortization").val(monthlyAmmortization).trigger("input");
-        } else if (term == 2) {
-            var monthlyAmmortization = (amount / term).toFixed(2);
-            $("#monthlyAmmortization").val(monthlyAmmortization).trigger("input");
-        } else if (term == 3) {
-            var monthlyAmmortization = (amount / term).toFixed(2);
-            $("#monthlyAmmortization").val(monthlyAmmortization).trigger("input");
-        } else {
-            var monthlyAmmortization = (amount / term).toFixed(2);
-            $("#monthlyAmmortization").val(monthlyAmmortization).trigger("input");
-        }
+            if (term == 1) {
+                var monthlyAmmortization = (amount / term).toFixed(2);
+                $("#monthlyAmmortization").val(monthlyAmmortization).trigger("input");
+            } else if (term == 2) {
+                var monthlyAmmortization = (amount / term).toFixed(2);
+                $("#monthlyAmmortization").val(monthlyAmmortization).trigger("input");
+            } else if (term == 3) {
+                var monthlyAmmortization = (amount / term).toFixed(2);
+                $("#monthlyAmmortization").val(monthlyAmmortization).trigger("input");
+            } else {
+                var monthlyAmmortization = (amount / term).toFixed(2);
+                $("#monthlyAmmortization").val(monthlyAmmortization).trigger("input");
+            }
         }
     });
 
@@ -204,8 +204,8 @@ $(document).ready(function () {
                     $("#viewRemainingAmount").val("₱ " + formatNumberWithCommas(res.data.remainingAmount));
                     $("#viewMonthsToPay").val(
                         res.data.monthsToPay <= 1
-                        ? res.data.monthsToPay + " month"
-                        : res.data.monthsToPay + " months"
+                            ? res.data.monthsToPay + " month"
+                            : res.data.monthsToPay + " months"
                     );
                     $("#viewMonthlyAmmortization").val("₱ " + formatNumberWithCommas(res.data.monthlyAmmortization));
                     $("#viewCutoffStart").val(res.data.cutoffStart);
@@ -217,10 +217,10 @@ $(document).ready(function () {
                         let currentYear = new Date().getFullYear();
                         let previousCycle = null;
                         let previousYear = currentYear;
-                        var caBreakdownHTML = "";    
+                        var caBreakdownHTML = "";
                         let amount = res.data.amount;
                         let monthlyAmmortization = res.data.monthlyAmmortization;
-                        
+
                         const paidCycleIDs = new Set();
 
                         // Collect ALL paid cycle IDs
@@ -241,7 +241,7 @@ $(document).ready(function () {
 
                                     caBreakdownHTML += `
                                             <tr>
-                                                <td>${formatDate(cabreakdown.payrollCycleFrom,previousYear)} - ${formatDate(cabreakdown.payrollCycleTo,currentYear)}</td>
+                                                <td>${formatDate(cabreakdown.payrollCycleFrom, previousYear)} - ${formatDate(cabreakdown.payrollCycleTo, currentYear)}</td>
                                                 <td>${formatNumberWithCommas(amount)}</td>
                                                 <td>${formatNumberWithCommas(monthlyAmmortization)}</td>
                                                 <td>${isPaid ? `<p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Paid</p>` : ""}</td>
@@ -250,7 +250,7 @@ $(document).ready(function () {
                                 } else {
                                     caBreakdownHTML += `
                                             <tr>
-                                                <td>${formatDate(cabreakdown.payrollCycleFrom,currentYear)} - ${formatDate(cabreakdown.payrollCycleTo,currentYear)}</td>
+                                                <td>${formatDate(cabreakdown.payrollCycleFrom, currentYear)} - ${formatDate(cabreakdown.payrollCycleTo, currentYear)}</td>
                                                 <td>${formatNumberWithCommas(amount)}</td>
                                                 <td>${formatNumberWithCommas(monthlyAmmortization)}</td>
                                                 <td>${isPaid ? `<p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Paid</p>` : ""}</td>
@@ -303,8 +303,8 @@ $(document).ready(function () {
                     );
                     $("#viewMonthsToPay").val(
                         res.data.monthsToPay <= 1
-                        ? res.data.monthsToPay + " month"
-                        : res.data.monthsToPay + " months"
+                            ? res.data.monthsToPay + " month"
+                            : res.data.monthsToPay + " months"
                     );
                     $("#viewMonthlyAmmortization").val(
                         "₱ " + formatNumberWithCommas(res.data.monthlyAmmortization)
@@ -318,10 +318,10 @@ $(document).ready(function () {
                         let currentYear = new Date().getFullYear();
                         let previousCycle = null;
                         let previousYear = currentYear;
-                        var caBreakdownHTML = "";    
+                        var caBreakdownHTML = "";
                         let amount = res.data.amount;
                         let monthlyAmmortization = res.data.monthlyAmmortization;
-                        
+
                         const paidCycleIDs = new Set();
 
                         // Collect ALL paid cycle IDs
@@ -342,7 +342,7 @@ $(document).ready(function () {
 
                                     caBreakdownHTML += `
                                             <tr>
-                                                <td>${formatDate(cabreakdown.payrollCycleFrom,previousYear)} - ${formatDate(cabreakdown.payrollCycleTo,currentYear)}</td>
+                                                <td>${formatDate(cabreakdown.payrollCycleFrom, previousYear)} - ${formatDate(cabreakdown.payrollCycleTo, currentYear)}</td>
                                                 <td>${formatNumberWithCommas(amount)}</td>
                                                 <td>${formatNumberWithCommas(monthlyAmmortization)}</td>
                                                 <td>${isPaid ? `<p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Paid</p>` : ""}</td>
@@ -351,7 +351,7 @@ $(document).ready(function () {
                                 } else {
                                     caBreakdownHTML += `
                                             <tr>
-                                                <td>${formatDate(cabreakdown.payrollCycleFrom,currentYear)} - ${formatDate(cabreakdown.payrollCycleTo,currentYear)}</td>
+                                                <td>${formatDate(cabreakdown.payrollCycleFrom, currentYear)} - ${formatDate(cabreakdown.payrollCycleTo, currentYear)}</td>
                                                 <td>${formatNumberWithCommas(amount)}</td>
                                                 <td>${formatNumberWithCommas(monthlyAmmortization)}</td>
                                                 <td>${isPaid ? `<p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Paid</p>` : ""}</td>

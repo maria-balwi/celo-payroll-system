@@ -242,7 +242,7 @@
                                         <input type="number" class="form-control" id="remainingAmount" name="remainingAmount" placeholder="1.0" step="0.01" readonly>
                                     </div>
                                     <div class="col-3">
-                                        <label for="monthlyAmmortization">Monthly Ammortization:</label>
+                                        <label for="monthlyAmmortization">Monthly Amortization:</label>
                                         <input type="number" class="form-control" id="monthlyAmmortization" name="monthlyAmmortization" placeholder="1.0" step="0.01" readonly>
                                     </div>
                                 </div>
@@ -375,7 +375,7 @@
                                     <input type="text" class="form-control" id="viewRemainingAmount" disabled readonly>
                                 </div>
                                 <div class="col-3">
-                                    <label for="viewMonthlyAmmortization">Monthly Ammortization:</label>
+                                    <label for="viewMonthlyAmmortization">Monthly Amortization:</label>
                                     <input type="text" class="form-control" id="viewMonthlyAmmortization" disabled readonly>
                                 </div>
                             </div>
@@ -407,7 +407,7 @@
                                             <tr>
                                                 <th class="text-xs font-medium text-yellow-500 uppercase tracking-tight">Payroll Cut Off</th>
                                                 <th class="text-xs font-medium text-yellow-500 uppercase tracking-tight">Principal Balance</th>
-                                                <th class="text-xs font-medium text-gray-500 uppercase tracking-tight">Monthly Ammortization</th>
+                                                <th class="text-xs font-medium text-gray-500 uppercase tracking-tight">Monthly Amortization</th>
                                                 <th class="text-xs font-medium text-gray-500 uppercase tracking-tight">Status</th>
                                             </tr>
                                         </thead>

@@ -15,6 +15,10 @@
         private $weekOff = 'tbl_empweekoff';
         private $cashAdvance = 'tbl_cashAdvance';
         private $sentry = 'tbl_sentry_sync_tracker';
+        private $disputes = "tbl_disputes";
+        private $disputeAttendance = "tbl_disputeattendance";
+        private $disputeLeaves = "tbl_disputeleaves";
+        private $disputeOvertime = "tbl_disputeovertime";
         private $dbConnect = false;
         public function __construct() {
             $this->dbConnect = $this->dbConnect();
@@ -264,6 +268,39 @@
             return $pendingCashAdvance;
         }
 
+        public function getAllPendingDisputesAttendance() {
+            $getPendingDisputeAttendance = "
+                SELECT * FROM {$this->disputes} AS disputes
+                INNER JOIN {$this->disputeAttendance} AS disputeAttendance
+                ON disputes.attendanceID = disputeAttendance.attendanceID
+                INNER JOIN {$this->employees} AS employees
+                ON disputeAttendance.empID = employees.id
+                WHERE disputes.status = 'Pending'";
+            return $getPendingDisputeAttendance;
+        }
+
+        public function getAllPendingDisputesLeaves() {
+            $getPendingDisputeLeave = "
+                SELECT * FROM {$this->disputes} AS disputes
+                INNER JOIN {$this->disputeLeaves} AS disputeLeaves
+                ON disputes.leaveID = disputeLeaves.leaveID
+                INNER JOIN {$this->employees} AS employees
+                ON disputeLeaves.empID = employees.id
+                WHERE disputes.status = 'Pending'";
+            return $getPendingDisputeLeave;
+        }
+
+        public function getAllPendingDisputesOvertime() {
+            $getPendingDisputeOvertime = "
+                SELECT * FROM {$this->disputes} AS disputes
+                INNER JOIN {$this->disputeOvertime} AS disputeOvertime
+                ON disputes.overtimeID = disputeOvertime.overtimeID
+                INNER JOIN {$this->employees} AS employees
+                ON disputeOvertime.empID = employees.id
+                WHERE disputes.status = 'Pending'";
+            return $getPendingDisputeOvertime;
+        }
+
         public function getDirectorPendingLeaves() {
             $pendingLeaves = "
                 SELECT * FROM ".$this->leaves." AS leaves
@@ -280,6 +317,39 @@
                 ON cashAdvance.empID = employees.id
                 WHERE cashAdvance.request_status = 'Pending' AND employees.designationID IN (5,8,9)";
             return $pendingCashAdvance;
+        }
+        
+        public function getDirectorPendingDisputesAttendance() {
+            $pendingDisputes = "
+                SELECT * FROM ".$this->disputes." AS disputes
+                INNER JOIN {$this->disputeAttendance} AS disputeAttendance
+                ON disputes.attendanceID = disputeAttendance.attendanceID
+                INNER JOIN {$this->employees} AS employees
+                ON disputeAttendance.empID = employees.id
+                WHERE disputes.status = 'Pending' AND employees.designationID IN (5,8,9)";
+            return $pendingDisputes;
+        }
+
+        public function getDirectorPendingDisputesLeaves() {
+            $pendingDisputes = "
+                SELECT * FROM ".$this->disputes." AS disputes
+                INNER JOIN {$this->disputeLeaves} AS disputeLeaves
+                ON disputes.leaveID = disputeLeaves.leaveID
+                INNER JOIN {$this->employees} AS employees
+                ON disputeLeaves.empID = employees.id
+                WHERE disputes.status = 'Pending' AND employees.designationID IN (5,8,9)";
+            return $pendingDisputes;
+        }
+
+        public function getDirectorPendingDisputesOvertime() {
+            $pendingDisputes = "
+                SELECT * FROM ".$this->disputes." AS disputes
+                INNER JOIN {$this->disputeOvertime} AS disputeOvertime
+                ON disputes.overtimeID = disputeOvertime.overtimeID
+                INNER JOIN {$this->employees} AS employees
+                ON disputeOvertime.empID = employees.id
+                WHERE disputes.status = 'Pending' AND employees.designationID IN (5,8,9)";
+            return $pendingDisputes;
         }
 
         public function getAdminPendingLeaves() {
@@ -352,6 +422,39 @@
                 ON cashAdvance.empID = employees.id
                 WHERE cashAdvance.request_status = 'Pending'";
             return $pendingCashAdvance;
+        }
+
+        public function getAdminPendingDisputesAttendance() {
+            $pendingDisputes = "
+                SELECT * FROM {$this->disputes} AS disputes
+                INNER JOIN {$this->disputeAttendance} AS disputeAttendance
+                ON disputes.attendanceID = disputeAttendance.attendanceID
+                INNER JOIN {$this->employees} AS employees
+                ON disputeAttendance.empID = employees.id
+                WHERE disputes.status = 'Pending'";
+            return $pendingDisputes;
+        }
+
+        public function getAdminPendingDisputesLeaves() {
+            $pendingDisputes = "
+                SELECT * FROM {$this->disputes} AS disputes
+                INNER JOIN {$this->disputeLeaves} AS disputeLeaves
+                ON disputes.leaveID = disputeLeaves.leaveID
+                INNER JOIN {$this->employees} AS employees
+                ON disputeLeaves.empID = employees.id
+                WHERE disputes.status = 'Pending'";
+            return $pendingDisputes;
+        }
+
+        public function getAdminPendingDisputeOvertime() {
+            $pendingDisputes = "
+                SELECT * FROM {$this->disputes} AS disputes
+                INNER JOIN {$this->disputeOvertime} AS disputeOvertime
+                ON disputes.overtimeID = disputeOvertime.overtimeID
+                INNER JOIN {$this->employees} AS employees
+                ON disputeOvertime.empID = employees.id
+                WHERE disputes.status = 'Pending'";
+            return $pendingDisputes;
         }
 
         public function getPendingITLeaves() {
@@ -444,6 +547,39 @@
             return $getPendingCashAdvance;
         }
 
+        public function getPendingOperationsDisputeAttendanceManager() {
+            $getPendingDisputeAttendance = "
+                SELECT * FROM {$this->disputes} AS disputes
+                INNER JOIN {$this->disputeAttendance} AS disputeAttendance
+                ON disputes.attendanceID = disputeAttendance.attendanceID
+                INNER JOIN {$this->employees} AS employees
+                ON disputeAttendance.empID = employees.id
+                WHERE employees.designationID IN (4,11) AND disputes.status = 'Pending'";
+            return $getPendingDisputeAttendance;
+        }
+
+        public function getPendingOperationsDisputeLeavesManager() {
+            $getPendingDisputeLeave = "
+                SELECT * FROM {$this->disputes} AS disputes
+                INNER JOIN {$this->disputeLeaves} AS disputeLeaves
+                ON disputes.leaveID = disputeLeaves.leaveID
+                INNER JOIN {$this->employees} AS employees
+                ON disputeLeaves.empID = employees.id
+                WHERE employees.designationID IN (4,11) AND disputes.status = 'Pending'";
+            return $getPendingDisputeLeave;
+        }
+
+        public function getPendingOperationsDisputeOvertimeManager() {
+            $getPendingDisputeOvertime = "
+                SELECT * FROM {$this->disputes} AS disputes
+                INNER JOIN {$this->disputeOvertime} AS disputeOvertime
+                ON disputes.overtimeID = disputeOvertime.overtimeID
+                INNER JOIN {$this->employees} AS employees
+                ON disputeOvertime.empID = employees.id
+                WHERE employees.designationID IN (4,11) AND disputes.status = 'Pending'";
+            return $getPendingDisputeOvertime;
+        }
+
         public function getPendingOperationsCashAdvanceTL() {
             $getPendingCashAdvance = "
                 SELECT * FROM {$this->cashAdvance} AS ca 
@@ -455,6 +591,39 @@
             return $getPendingCashAdvance;
         }
 
+        public function getPendingOperationsDisputeAttendanceTL() {
+            $getPendingDisputeAttendance = "
+                SELECT * FROM {$this->disputes} AS disputes
+                INNER JOIN {$this->disputeAttendance} AS disputeAttendance
+                ON disputes.attendanceID = disputeAttendance.attendanceID
+                INNER JOIN {$this->employees} AS employees
+                ON disputeAttendance.empID = employees.id
+                WHERE employees.designationID IN (1,2,3,14) AND disputes.status = 'Pending'";
+            return $getPendingDisputeAttendance;
+        }
+
+        public function getPendingOperationsDisputeLeavesTL() {
+            $getPendingDisputeLeave = "
+                SELECT * FROM {$this->disputes} AS disputes
+                INNER JOIN {$this->disputeLeaves} AS disputeLeaves
+                ON disputes.leaveID = disputeLeaves.leaveID
+                INNER JOIN {$this->employees} AS employees
+                ON disputeLeaves.empID = employees.id
+                WHERE employees.designationID IN (1,2,3,14) AND disputes.status = 'Pending'";
+            return $getPendingDisputeLeave;
+        }
+
+        public function getPendingOperationsDisputeOvertimeTL() {
+            $getPendingDisputeOvertime = "
+                SELECT * FROM {$this->disputes} AS disputes
+                INNER JOIN {$this->disputeOvertime} AS disputeOvertime
+                ON disputes.overtimeID = disputeOvertime.overtimeID
+                INNER JOIN {$this->employees} AS employees
+                ON disputeOvertime.empID = employees.id
+                WHERE employees.designationID IN (1,2,3,14) AND disputes.status = 'Pending'";
+            return $getPendingDisputeOvertime;
+        }
+
         public function getPendingITCashAdvance() {
             $getPendingCashAdvance = "
                 SELECT * FROM {$this->cashAdvance} AS ca 
@@ -464,6 +633,39 @@
                 ON employees.departmentID = department.departmentID
                 WHERE employees.designationID IN (10, 13, 19) AND request_status = 'Pending'";
             return $getPendingCashAdvance;
+        }
+
+        public function getPendingITDisputeAttendance() {
+            $getPendingDisputeAttendance = "
+                SELECT * FROM {$this->disputes} AS disputes
+                INNER JOIN {$this->disputeAttendance} AS disputeAttendance
+                ON disputes.attendanceID = disputeAttendance.attendanceID
+                INNER JOIN {$this->employees} AS employees
+                ON disputeAttendance.empID = employees.id
+                WHERE employees.designationID IN (10, 13, 19) AND disputes.status = 'Pending'";
+            return $getPendingDisputeAttendance;
+        }
+
+        public function getPendingITDisputeLeaves() {
+            $getPendingDisputeLeave = "
+                SELECT * FROM {$this->disputes} AS disputes
+                INNER JOIN {$this->disputeLeaves} AS disputeLeaves
+                ON disputes.leaveID = disputeLeaves.leaveID
+                INNER JOIN {$this->employees} AS employees
+                ON disputeLeaves.empID = employees.id
+                WHERE employees.designationID IN (10, 13, 19) AND disputes.status = 'Pending'";
+            return $getPendingDisputeLeave;
+        }
+
+        public function getPendingITDisputeOvertime() {
+            $getPendingDisputeOvertime = "
+                SELECT * FROM {$this->disputes} AS disputes
+                INNER JOIN {$this->disputeOvertime} AS disputeOvertime
+                ON disputes.overtimeID = disputeOvertime.overtimeID
+                INNER JOIN {$this->employees} AS employees
+                ON disputeOvertime.empID = employees.id
+                WHERE employees.designationID IN (10, 13, 19) AND disputes.status = 'Pending'";
+            return $getPendingDisputeOvertime;
         }
 
         public function viewITTeam() {
