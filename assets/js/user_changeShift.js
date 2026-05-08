@@ -4,6 +4,18 @@ $(document).ready(function() {
         order: [] // Disable default sorting
     });
 
+    $(".inclusiveDatesRow").hide();
+
+    $("input.permanent[type='checkbox']").on("change", function () {
+        const permanent = $("input.permanent[type='checkbox']");
+
+        if ($('#permanent').prop('checked')) {
+            $(".inclusiveDatesRow").show();
+        } else {
+            $(".inclusiveDatesRow").hide();
+        }
+    });
+
     // FILE REQUEST BUTTON
     $("#fileRequestForm").submit(function (e) {
 
@@ -51,7 +63,6 @@ $(document).ready(function() {
                                     timer: 2000,
                                     showConfirmButton: false,
                                 }).then(() => {
-                                    // window.location.reload();
                                     $('#fileRequestModal').modal('hide');
                                     $('#viewRequestModal').modal('show');
                                 })
@@ -95,6 +106,8 @@ $(document).ready(function() {
                     $('#viewDateFiled').val(res.data.dateFiled);
                     $('#viewName').val(res.data.employeeName);
                     $('#viewRequestedShift').val(res.data.requestedShift);
+                    $('#viewStartDate').val(res.data.effectivityStartDate);
+                    $('#viewEndDate').val(res.data.effectivityEndDate);
                     $('#viewPurpose').val(res.data.remarks);
                     $('#viewStatus').val(res.data.status);
                     $('#viewRequestModal').modal('show');

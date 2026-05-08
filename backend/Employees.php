@@ -1271,10 +1271,10 @@
             return $request;
         }
 
-        public function fileRequest($employeeID, $newshift, $remarks, $status) {
+        public function fileRequest($employeeID, $newshift, $startDate, $endDate, $remarks, $status) {
             $fileRequest = "
-                INSERT INTO ".$this->changeShift." (empID, dateFiled, requestedShift, remarks, status)
-                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$newshift', '$remarks', '$status')";
+                INSERT INTO ".$this->changeShift." (empID, dateFiled, requestedShift, effectivityStartDate, effectivityEndDate, remarks, status)
+                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$newshift', '$startDate', '$endDate', '$remarks', '$status')";
             return $fileRequest;
         }
 

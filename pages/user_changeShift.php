@@ -119,7 +119,6 @@
                                                 <option value="<?php echo $shiftResult['shiftID']; ?>">
                                                     <?php echo $shiftResult['startTime'] . ' - ' . $shiftResult['endTime']; ?>
                                                 </option>
-                                                
                                             <?php        
                                                 }
                                             ?>
@@ -127,29 +126,36 @@
                                     </div>
                                 </div>   
                                 
-                                <!-- <div class="row g-3 mb-2">
+                                <div class="row g-3 mb-2">
+                                    <div class="col-12">
+                                        <input class="form-check-input permanent" type="checkbox" id="permanent" name="permanent">
+                                        <label class="form-check-label" for="permanent">Specific Schedule</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mb-2 inclusiveDatesRow">
                                     <div class="col-12">
                                         <label for="effectivityStartDate">Start Date</label>
                                     </div>
                                 </div>
 
-                                <div class="row g-3 mb-2">
+                                <div class="row g-3 mb-2 inclusiveDatesRow">
                                     <div class="col-12">
                                         <input type="date" class="form-control" id="effectivityStartDate" name="effectivityStartDate">
                                     </div>
                                 </div>
 
-                                <div class="row g-3 mb-2">
+                                <div class="row g-3 mb-2 inclusiveDatesRow">
                                     <div class="col-12">
                                         <label for="effectivityEndDate">End Date</label>
                                     </div>
                                 </div>
 
-                                <div class="row g-3 mb-2">
+                                <div class="row g-3 mb-2 inclusiveDatesRow">
                                     <div class="col-12">
                                         <input type="date" class="form-control" id="effectivityEndDate" name="effectivityEndDate">
                                     </div>
-                                </div> -->
+                                </div>
                                 
                                 <div class="row g-3 mb-2">
                                     <div class="col-12">
@@ -219,19 +225,7 @@
                                     </div>
                                 </div>
 
-                                <!-- <div class="row g-2 mb-2">
-                                    <div class="col-12">
-                                        <label for="viewRequestedShift">Requested Shift</label>
-                                    </div>
-                                </div>
-
                                 <div class="row g-2 mb-2">
-                                    <div class="col-12">
-                                        <input type="text" class="form-control" id="viewRequestedShift" disabled>
-                                    </div>
-                                </div> -->
-
-                                <!-- <div class="row g-2 mb-2">
                                     <div class="col-3">
                                         <label for="viewStartDate">Inclusive Dates</label>
                                     </div>
@@ -244,7 +238,7 @@
                                     <div class="col-6">
                                         <input type="text" class="form-control" id="viewEndDate" disabled>
                                     </div>
-                                </div> -->
+                                </div>
 
                                 <div class="row g-2 mb-2">
                                     <div class="col-3">
