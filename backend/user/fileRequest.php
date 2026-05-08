@@ -5,8 +5,12 @@
 
     $employeeID = $_SESSION['id'];
     $newShift = $_POST['newShift'];
-    $startDate = $_POST['effectivityStartDate'];
-    $endDate = $_POST['effectivityEndDate'];
+    $dates = FALSE;
+    if ($_POST['effectivityStartDate'] && $_POST['effectivityEndDate']) {
+        $startDate = $_POST['effectivityStartDate'];
+        $endDate = $_POST['effectivityEndDate'];
+        $dates = TRUE;
+    }
     $purpose = $_POST['purpose'];
 
     // DEFAULT VALUES
@@ -22,7 +26,12 @@
         exit();
     }
     else {
-        mysqli_query($conn, $employees->fileRequest($employeeID, $newShift, $startDate, $endDate, $purpose, $status));
+        if ($dates) {
+            mysqli_query($conn, $employees->fileRequestWithDate($employeeID, $newShift, $startDate, $endDate, $purpose, $status));
+        }
+        else {
+            mysqli_query($conn, $employees->fileRequest($employeeID, $newShift, $purpose, $status));
+        }
 
         $lastIDQuery = mysqli_query($conn, $employees->viewLastRequest());
         $lastIDResult = mysqli_fetch_array($lastIDQuery);

@@ -106,8 +106,14 @@ $(document).ready(function() {
                     $('#viewDateFiled').val(res.data.dateFiled);
                     $('#viewName').val(res.data.employeeName);
                     $('#viewRequestedShift').val(res.data.requestedShift);
-                    $('#viewStartDate').val(res.data.effectivityStartDate);
-                    $('#viewEndDate').val(res.data.effectivityEndDate);
+                    if (res.data.effectivityStartDate && res.data.effectivityEndDate) {
+                        $(".inclusiveDatesRow").show();
+                        $('#viewStartDate').val(res.data.effectivityStartDate);
+                        $('#viewEndDate').val(res.data.effectivityEndDate);
+                    }
+                    else {
+                        $(".inclusiveDatesRow").hide();
+                    }
                     $('#viewPurpose').val(res.data.remarks);
                     $('#viewStatus').val(res.data.status);
                     $('#viewRequestModal').modal('show');
@@ -119,7 +125,7 @@ $(document).ready(function() {
     function loadEmployeeData(changeshift_id) {
         $.ajax({
             type: "GET",
-            url: "../backend/user/changeShiftModal.php?changeshift_id=" + changeshift_id,
+            url: "../backend/user/changeShiftModal.php?changeshift_id=" + id_changeshift,
             success: function(response) {
 
                 var res = jQuery.parseJSON(response);
@@ -133,14 +139,22 @@ $(document).ready(function() {
                     $('#viewDateFiled').val(res.data.dateFiled);
                     $('#viewName').val(res.data.employeeName);
                     $('#viewRequestedShift').val(res.data.requestedShift);
+                    if (res.data.effectivityStartDate && res.data.effectivityEndDate) {
+                        $(".inclusiveDatesRow").show();
+                        $('#viewStartDate').val(res.data.effectivityStartDate);
+                        $('#viewEndDate').val(res.data.effectivityEndDate);
+                    }
+                    else {
+                        $(".inclusiveDatesRow").hide();
+                    }
                     $('#viewPurpose').val(res.data.remarks);
                     $('#viewStatus').val(res.data.status);
                 }
             }
         });
-
-        $('#btnClose').on('click', function() {
-            window.location.reload();
-        });
     }
+
+    $('#btnClose').on('click', function() {
+        window.location.reload();
+    });
 });
