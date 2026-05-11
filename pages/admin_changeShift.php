@@ -233,23 +233,23 @@
                                     </div>
                                 </div>
 
-                                <!-- <div class="row g-2 mb-1">
+                                <div class="row g-2 mb-1 inclusiveDates">
                                     <div class="col-3">
                                         <label for="viewStartDate">Inclusive Dates</label>
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-2">
+                                <div class="row g-2 mb-2 inclusiveDates">
                                     <div class="col-6">
                                         <input type="text" class="form-control" id="viewStartDate" disabled>
                                     </div>
                                     <div class="col-6">
                                         <input type="text" class="form-control" id="viewEndDate" disabled>
                                     </div>
-                                </div> -->
+                                </div>
 
                                 <div class="row g-2 mb-1">
-                                    <div class="col-3">
+                                    <div class="col-6">
                                         <label for="viewPurpose">Reason / Remarks:</label>
                                     </div>
                                 </div>
