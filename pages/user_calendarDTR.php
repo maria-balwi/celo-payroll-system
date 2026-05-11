@@ -133,6 +133,7 @@
             .el { background: #DC2626; }    /* Emergency Leave */
             .off { background: #7f8c8d; }   /* Week Off */
             .ot { background: #FACC15; }    /* Overtime */
+            .trans { background: #3df8e8; }    /* Transition */
         </style>
  
             <!-- MAIN CONTENT -->
@@ -175,6 +176,7 @@
                                 <span><i class="box late"></i> Late</span>
                                 <span><i class="box undertime"></i> Undertime</span>
                                 <span><i class="box ot"></i> Overtime</span>
+                                <span><i class="box trans"></i> Transition</span>
                             </div>
                         </div>
 
