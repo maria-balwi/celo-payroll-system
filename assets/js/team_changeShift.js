@@ -15,6 +15,8 @@ $(document).ready(function() {
         }
     });
 
+    $('.inclusiveDates').hide();
+
     // VIEW CHANGE SHIFT REQUEST
     var array = [];
     $(document).on('click', '.changeshiftView', function() {
@@ -42,8 +44,15 @@ $(document).ready(function() {
                     $('#viewCurrentShift').val(res.data.currentShift);
                     $('#viewRequestedShift').val(res.data.requestedShift);
                     $('#viewLeaveType').val(res.data.leaveType);
-                    // $('#viewStartDate').val(res.data.effectivityStartDate);
-                    // $('#viewEndDate').val(res.data.effectivityEndDate);
+                    
+                    if (res.data.effectivityStartDate == null && res.data.effectivityEndDate == null) {
+                        $('.inclusiveDates').hide();
+                    } else {
+                        $('.inclusiveDates').show();
+                        $('#viewStartDate').val(res.data.effectivityStartDate);
+                        $('#viewEndDate').val(res.data.effectivityEndDate);
+                    }
+
                     $('#viewPurpose').val(res.data.remarks);
                     $('#viewStatus').val(res.data.status);
                     $('#approveChangeShift').hide();
@@ -58,8 +67,15 @@ $(document).ready(function() {
                     $('#viewCurrentShift').val(res.data.currentShift);
                     $('#viewRequestedShift').val(res.data.requestedShift);
                     $('#viewLeaveType').val(res.data.leaveType);
-                    // $('#viewStartDate').val(res.data.effectivityStartDate);
-                    // $('#viewEndDate').val(res.data.effectivityEndDate);
+                    
+                    if (res.data.effectivityStartDate == null && res.data.effectivityEndDate == null) {
+                        $('.inclusiveDates').hide();
+                    } else {
+                        $('.inclusiveDates').show();
+                        $('#viewStartDate').val(res.data.effectivityStartDate);
+                        $('#viewEndDate').val(res.data.effectivityEndDate);
+                    }
+
                     $('#viewPurpose').val(res.data.remarks);
                     $('#viewStatus').val(res.data.status);
                     $('#approveChangeShift').show();
@@ -194,8 +210,15 @@ $(document).ready(function() {
                     $('#viewCurrentShift').val(res.data.currentShift);
                     $('#viewRequestedShift').val(res.data.requestedShift);
                     $('#viewLeaveType').val(res.data.leaveType);
-                    // $('#viewStartDate').val(res.data.effectivityStartDate);
-                    // $('#viewEndDate').val(res.data.effectivityEndDate);
+                    
+                    if (res.data.effectivityStartDate == null && res.data.effectivityEndDate == null) {
+                        $('.inclusiveDates').hide();
+                    } else {
+                        $('.inclusiveDates').show();
+                        $('#viewStartDate').val(res.data.effectivityStartDate);
+                        $('#viewEndDate').val(res.data.effectivityEndDate);
+                    }
+
                     $('#viewPurpose').val(res.data.remarks);
                     $('#viewStatus').val(res.data.status);
                     $('#approveChangeShift').hide();
@@ -209,8 +232,15 @@ $(document).ready(function() {
                     $('#viewCurrentShift').val(res.data.currentShift);
                     $('#viewRequestedShift').val(res.data.requestedShift);
                     $('#viewLeaveType').val(res.data.leaveType);
-                    // $('#viewStartDate').val(res.data.effectivityStartDate);
-                    // $('#viewEndDate').val(res.data.effectivityEndDate);
+                    
+                    if (res.data.effectivityStartDate == null && res.data.effectivityEndDate == null) {
+                        $('.inclusiveDates').hide();
+                    } else {
+                        $('.inclusiveDates').show();
+                        $('#viewStartDate').val(res.data.effectivityStartDate);
+                        $('#viewEndDate').val(res.data.effectivityEndDate);
+                    }
+                    
                     $('#viewPurpose').val(res.data.remarks);
                     $('#viewStatus').val(res.data.status);
                     $('#approveChangeShift').show();
