@@ -1367,7 +1367,8 @@
 
         public function viewChangeShiftInfo($requestID) {
             $request = "
-                SELECT requestID, empID, requestedShift
+                SELECT requestID, empID, requestedShift, 
+                effectivityStartDate, effectivityEndDate
                 FROM ".$this->changeShift." AS changeShift
                 INNER JOIN ".$this->employees." AS employees
                 ON changeShift.empID = employees.id

@@ -1,5 +1,4 @@
 <?php 
-
     include '../../init.php';
     $conn = $database->dbConnect();
     session_start();
@@ -15,8 +14,11 @@
         $changeShiftResult = mysqli_fetch_array($getChangeshiftQuery);
         $id = $changeShiftResult['empID'];
         $requestedShift = $changeShiftResult['requestedShift'];
-        mysqli_query($conn, $employees->updateShift($id, $requestedShift));
-
+        
+        if ($changeShiftResult['effectivityStartDate'] == '' && $changeShiftResult['effectivityEndDate'] == '') {
+            mysqli_query($conn, $employees->updateShift($id, $requestedShift));
+        }
+        
         // AUDIT TRAIL
         $at_empID = $_SESSION['id'];
         $at_module = "Admin - Change Shift Request";
@@ -50,8 +52,7 @@
         // RESPONSE ARRAY
         $error = array('error' => 0, 'em' => $em);
     }
-    
+
     echo json_encode($error);
     exit();
-
 ?>
