@@ -19,6 +19,7 @@
         private $disputeAttendance = "tbl_disputeattendance";
         private $disputeLeaves = "tbl_disputeleaves";
         private $disputeOvertime = "tbl_disputeovertime";
+        private $transition = "tbl_shiftadjustments";
         private $dbConnect = false;
         public function __construct() {
             $this->dbConnect = $this->dbConnect();
@@ -906,21 +907,67 @@
             return $checkDTR;
         }
 
-        public function getWorkingDaysInMonth($year, $month) {
+        public function getWorkingDaysInMonth($empID, $year, $month, $conn) {
             $start_date = date("$year-$month-01");
             $end_date = date("Y-m-t", strtotime($start_date)); // last day of the month
             
+            // GET EMPLOYEE WEEK OFF
+            $query = mysqli_query($conn, "SELECT * FROM ".$this->weekOff." WHERE empID = '$empID'");
+
+            $weekOff = mysqli_fetch_assoc($query);
+
             $work_days = 0;
             $day_counter = $start_date;
             
             while (strtotime($day_counter) <= strtotime($end_date)) {
-                if (date('N', strtotime($day_counter)) < 6) { // 1 (for Monday) through 5 (for Friday)
+                // GET DAY NAME
+                $dayName = strtolower(date('D', strtotime($day_counter)));
+
+                // MATCH DATABASE COLUMN
+                switch($dayName) {
+                    case 'mon':
+                        $isWeekOff = $weekOff['wo_mon'];
+                        break;
+                    case 'tue':
+                        $isWeekOff = $weekOff['wo_tue'];
+                        break;
+                    case 'wed':
+                        $isWeekOff = $weekOff['wo_wed'];
+                        break;
+                    case 'thu':
+                        $isWeekOff = $weekOff['wo_thu'];
+                        break;
+                    case 'fri':
+                        $isWeekOff = $weekOff['wo_fri'];
+                        break;
+                    case 'sat':
+                        $isWeekOff = $weekOff['wo_sat'];
+                        break;
+                    case 'sun':
+                        $isWeekOff = $weekOff['wo_sun'];
+                        break;
+                    default:
+                        $isWeekOff = 0;
+                }
+
+                // COUNT ONLY WORKING DAYS
+                if ($isWeekOff == 0) {
                     $work_days++;
                 }
-                $day_counter = date("Y-m-d", strtotime($day_counter . ' +1 day'));
+
+                $day_counter = date('Y-m-d', strtotime($day_counter . " +1 day"));
             }
             
             return $work_days;
+        }
+
+        public function getTransitionDays($empID, $year, $month) {
+            $transitionDays = "
+                SELECT * FROM ".$this->transition."
+                WHERE empID = $empID AND
+                YEAR(transitionDate) = '$year' AND
+                MONTH(transitionDate) = '$month'";
+            return $transitionDays;
         }
 
         public function getITAttendance($id, $date) {
