@@ -28,6 +28,7 @@
         private $dbConnect = false;
         private $disputes = "tbl_disputes";
         private $updateEmpInfo = "tbl_updateempinfo";
+        private $transition = "tbl_shiftadjustments";
         public function __construct() {
             $this->dbConnect = $this->dbConnect();
         }
@@ -1368,7 +1369,7 @@
         public function viewChangeShiftInfo($requestID) {
             $request = "
                 SELECT requestID, empID, requestedShift, 
-                effectivityStartDate, effectivityEndDate
+                effectivityStartDate, effectivityEndDate, dateFiled
                 FROM ".$this->changeShift." AS changeShift
                 INNER JOIN ".$this->employees." AS employees
                 ON changeShift.empID = employees.id
@@ -1441,6 +1442,13 @@
                 UPDATE ".$this->employees." SET shiftID = '$shiftID'
                 WHERE id = '$empID'";
             return $updateShift;
+        }
+
+        public function insertTransitionDay($empID, $transitionDate) {
+            $insertTransitionDay = "
+                INSERT INTO ".$this->transition." (empID, transitionDate, type)
+                VALUES ('$empID', '$transitionDate', 'ADJ')";
+            return $insertTransitionDay;
         }
 
         public function disapproveChangeShift($requestID) {

@@ -156,9 +156,25 @@
     $res = mysqli_query($conn, $q4);
     $weekOff = mysqli_fetch_assoc($res);
 
+    /* =========================
+    TRANSITION
+    ========================= */
+    $q5 = "
+    SELECT transitionDate, type
+    FROM tbl_shiftadjustments
+    WHERE empID = '$employeeID'
+    AND DATE_FORMAT(transitionDate, '%Y-%m') = '$month'
+    ";
+
+    $res = mysqli_query($conn, $q5);
+
+    while ($row = mysqli_fetch_assoc($res)) {
+        $date = $row['transitionDate'];
+        $calendar[$date]['transition'] = $row['type'];
+    }
 
     echo json_encode([
         'calendar' => $calendar,
-        'weekOff' => $weekOff
+        'weekOff' => $weekOff, 
     ]);
 ?>
