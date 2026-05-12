@@ -114,8 +114,11 @@
                                     // $attendance_daysWorked = round($monthlyAttendanceQuery->num_rows / 2);
 
                                     // GET ABSENTS
-                                    $workingDays = $attendance->getWorkingDaysInMonth($year, $month);
-                                    $attendance_absences = $workingDays - $attendance_daysWorked;
+                                    $workingDays = $attendance->getWorkingDaysInMonth($attendance_id, $year, $month, $conn);
+                                    // GET TRANSITION DAYS IF AVAILABLE
+                                    $transitionDaysQuery = mysqli_query($conn, $attendance->getTransitionDays($attendance_id, $year, $month));
+                                    $transitionDays = mysqli_num_rows($transitionDaysQuery);
+                                    $attendance_absences = $workingDays - $attendance_daysWorked - $transitionDays;
 
                                     // GET LATES
                                     $monthlyLatesQuery = mysqli_query($conn, $attendance->getMonthlyLates($attendance_id, $year, $month));

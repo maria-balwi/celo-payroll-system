@@ -114,8 +114,11 @@
                                         $monthlyAttendance = mysqli_num_rows($monthlyAttendanceQuery);
 
                                         // GET MONTHLY ABSENCES
-                                        $workingDays = $attendance->getWorkingDaysInMonth($year, $month);
-                                        $monthlyAbsences = $workingDays - $monthlyAttendance;
+                                        $workingDays = $attendance->getWorkingDaysInMonth($teamOperations_id, $year, $month, $conn);
+                                        // GET TRANSITION DAYS IF AVAILABLE
+                                        $transitionDaysQuery = mysqli_query($conn, $attendance->getTransitionDays($attendance_id, $filterYear, $filterMonth));
+                                        $transitionDays = mysqli_num_rows($transitionDaysQuery);
+                                        $monthlyAbsences = $workingDays - $monthlyAttendance - $transitionDays;
 
                                         // GET MONTHLY LATES
                                         $monthlyLatesQuery = mysqli_query($conn, $attendance->getMonthlyLates($teamOperations_id, $year, $month));
@@ -158,8 +161,11 @@
                                         $monthlyAttendance = mysqli_num_rows($monthlyAttendanceQuery);
 
                                         // GET MONTHLY ABSENCES
-                                        $workingDays = $attendance->getWorkingDaysInMonth($year, $month);
-                                        $monthlyAbsences = $workingDays - $monthlyAttendance;
+                                        $workingDays = $attendance->getWorkingDaysInMonth($teamOperations_id, $year, $month, $conn);
+                                        // GET TRANSITION DAYS IF AVAILABLE
+                                        $transitionDaysQuery = mysqli_query($conn, $attendance->getTransitionDays($attendance_id, $filterYear, $filterMonth));
+                                        $transitionDays = mysqli_num_rows($transitionDaysQuery);
+                                        $monthlyAbsences = $workingDays - $monthlyAttendance - $transitionDays;
 
                                         // GET MONTHLY LATES
                                         $monthlyLatesQuery = mysqli_query($conn, $attendance->getMonthlyLates($teamOperations_id, $year, $month));
@@ -205,8 +211,11 @@
                                     $monthlyAttendance = mysqli_num_rows($monthlyAttendanceQuery);
 
                                     // GET MONTHLY ABSENCES
-                                    $workingDays = $attendance->getWorkingDaysInMonth($year, $month);
-                                    $monthlyAbsences = $workingDays - $monthlyAttendance;
+                                    $workingDays = $attendance->getWorkingDaysInMonth($teamIT_id, $year, $month, $conn);
+                                    // GET TRANSITION DAYS IF AVAILABLE
+                                    $transitionDaysQuery = mysqli_query($conn, $attendance->getTransitionDays($attendance_id, $filterYear, $filterMonth));
+                                    $transitionDays = mysqli_num_rows($transitionDaysQuery);
+                                    $monthlyAbsences = $workingDays - $monthlyAttendance - $transitionDays;
 
                                     // GET MONTHLY LATES
                                     $monthlyLatesQuery = mysqli_query($conn, $attendance->getMonthlyLates($teamIT_id, $year, $month));
