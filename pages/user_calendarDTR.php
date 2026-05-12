@@ -212,7 +212,7 @@
             
         </div>
     
-        <script src="../assets/js/dtr.js?v=<?php echo $version; ?>"></script>
+        <script src="../assets/js/user_calendarDTR.js?v=<?php echo $version; ?>"></script>
 
         <!-- FOOTER -->
         <?php include('../includes/footer.php'); ?>

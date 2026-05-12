@@ -122,18 +122,7 @@ function renderCalendar(month, data, weekOff) {
             let isLate = attendance && attendance.late;
             let isUndertime = attendance && attendance.undertime;
 
-            // // CHECK ATTENDANCE
-            // if (data[fullDate] && data[fullDate].attendance) {
-            //     hasAttendance = true;
-
-            //     data[fullDate].attendance.forEach(type => {
-            //         if (type == 'late') isLate = true;
-            //         if (type == 'undertime') isUndertime = true;
-            //     });
-            // }
-
-            // LEAVES
-            // let hasLeave = data[fullDate] && data[fullDate].leaves;
+            let transition = dayData.transition;
 
             // PRIORITY DISPLAY
             // 1. LEAVE (HIGHEST PRIORITY)
@@ -143,21 +132,17 @@ function renderCalendar(month, data, weekOff) {
                 });
             }
 
-            // 2. WEEK OFF
+            // TRANSITION
+            else if (transition) {
+                html += `<span class="label trans">TRANSITION</span>`;
+            }
+
+            // 3. WEEK OFF
             else if (isOff) {
                 html += `<span class="label off">OFF</span>`;
             }
 
-            // 3. ATTENDANCE
-            // else if (hasAttendance) {
-            //     if (isLate) {
-            //         html += `<span class="label late">LATE</span>`;
-            //     }
-
-            //     if (isUndertime) {
-            //         html += `<span class="label undertime">UNDERTIME</span>`;
-            //     }
-            // }
+            // 4. ATTENDANCE
             else if (attendance) {
                 let timeIn = attendance.time_in;
                 let timeOut = attendance.time_out;
@@ -189,17 +174,18 @@ function renderCalendar(month, data, weekOff) {
                 }
             }
 
-            // 4. ABSENT
+            // 5. ABSENT
             else {
                 html += `<span class="label absent">ABSENT</span>`;
             }
 
-            // 5. OVERTIME (CAN EXIST WITH OTHERS)
+            // 6. OVERTIME (CAN EXIST WITH OTHERS)
             if (data[fullDate] && data[fullDate].overtime) {
                 let hours = data[fullDate].overtime[0];
                 html += `<span class="label ot">OT (${hours}h)</span>`;
             }
         }
+        console.log(data);
 
         html += `</td>`;
 
