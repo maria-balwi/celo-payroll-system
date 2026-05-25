@@ -115,6 +115,20 @@
                                 continue;
                             }
 
+                            // CHECK EXISTING EMPLOYEE
+                            $employeeID = $rowData['employeeID'];
+
+                            $checkStmt = mysqli_prepare($conn, "SELECT employeeID FROM tbl_employee WHERE employeeID = ?");
+                            mysqli_stmt_bind_param($checkStmt, "s", $employeeID);
+                            mysqli_stmt_execute($checkStmt);
+
+                            $checkResult = mysqli_stmt_get_result($checkStmt);
+
+                            if (mysqli_num_rows($checkResult) > 0) {
+                                $errors[] = "Row $rowIndex: employee ID '$employeeID' already exists";
+                                continue;
+                            }
+
                             // DEPARTMENT NAME TO ID
                             $deptKey = strtolower(trim($rowData['departmentID']));
                             if (!isset($departmentMap[$deptKey])) {
@@ -300,23 +314,15 @@
                         }
 
                         fclose($handle);
-                        if (!empty($errors)) {
-                            mysqli_rollback($conn);
-                            
-                            echo json_encode([
-                                'error' => 1,
-                                'em' => implode("\n", $errors)
-                            ]);
-                            exit;
-                        }
 
-                        // SUCCESS
                         mysqli_commit($conn);
-
+                        
                         echo json_encode([
                             'error' => 0,
-                            'em' => "Inserted $inserted rows successfuly"
+                            'em' => "Inserted $inserted rows successfully",
+                            'warnings' => $errors
                         ]);
+
                         exit;
 
                     } catch(Exception $e){
