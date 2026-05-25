@@ -166,8 +166,10 @@
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="3">NightDiff. LegalHol. Restday OT Amt</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="3">Absences Hrs</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="3">Absences Amt</th>
-                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="3">Late/UT Hrs</th>
-                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="3">Late/UT Amt</th> 
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="3">Late Mins</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="3">Late Amt</th> 
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="3">Undertime Mins</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="3">Undertime Amt</th> 
                                         <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" colspan="9">Additions/Adjustments</th>  -->
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" colspan="7">Additions/Adjustments</th> 
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle whitespace-nowrap" rowspan="3">Gross Pay</th> 
@@ -302,6 +304,8 @@
                                             $payslip_absencesAmt = $payslipDetails['payslip_absences'];
                                             $payslip_lateMins = $payslipDetails['totalLateMins'];
                                             $payslip_lateMinsAmt = $payslipDetails['payslip_lateMins'];
+                                            $payslip_undertimeMins = $payslipDetails['totalUndertimeMins'];
+                                            $payslip_undertimeMinsAmt = $payslipDetails['payslip_undertimeMins'];
                                             $payslip_cashAdvanceDeduction = $payslipDetails['payslip_cashAdvanceDeduction'];
                                             // $payslip_cashAdvanceBalance = $payslipDetails['payslip_cashAdvanceBalance'];
                                             // $payslip_caPettyCash = $payslipDetails['payslip_caPettyCash'];
@@ -527,7 +531,7 @@
                                             //     $payslip_caPettyCash = "-";
                                             // }
 
-                                            // ABSENCES AND LATE MINUTES
+                                            // ABSENCES, LATE MINUTES, UNDERTIME MINUTES
                                             if ($payslip_absences != 0) {
                                                 $payslip_absencesAmt = number_format($payslip_absencesAmt, 2);
                                             }
@@ -541,6 +545,13 @@
                                             else {
                                                 $payslip_lateMins = "-";
                                                 $payslip_lateMinsAmt = "-";
+                                            }
+                                            if ($payslip_undertimeMins != 0) {
+                                                $payslip_undertimeMinsAmt = number_format($payslip_undertimeMinsAmt, 2);
+                                            }
+                                            else {
+                                                $payslip_undertimeMins = "-";
+                                                $payslip_undertimeMinsAmt = "-";
                                             }
 
                                             // GROSS, TOTAL GROSS, AND NET PAYS
@@ -619,6 +630,8 @@
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_absencesAmt . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_lateMins . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_lateMinsAmt . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_undertimeMins . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_undertimeMinsAmt . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_allowances . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_communication . "</td>";
                                             // echo "<td class ='whitespace-nowrap'>-</td>";
