@@ -2414,7 +2414,7 @@
                 else {
                     $basePay = round($employee_dailyRate * $employee_daysWorked, 2);
                 }
-                $grossPay = round($basePay + $totalAllowances + $communication + $totalReimbursements + $totalAdjustments + $nightDiffPay +$overtimePay + $overtimeNDPay + $RDOTPay + $RDOTNDPay + $RDOTOTPay + $RDOTOTNDPay + $specialHolidayPay + $specialHolidayOTPay + $specialHolidayRDOTPay + $specialHolidayRDOTOTPay + $specialHolidayNDPay + $specialHolidayOTNDPay + $specialHolidayRDOTNDPay + $specialHolidayRDOTOTNDPay + $regularHolidayPay + $regularHolidayOTPay + $regularHolidayRDOTPay + $regularHolidayRDOTOTPay + $regularHolidayNDPay + $regularHolidayOTNDPay + $regularHolidayRDOTNDPay + $regularHolidayRDOTOTNDPay + $sickLeavePay + $vacationLeavePay + $referralIncentivePay - $absencesAmt - $lateMinsAmt - $undertimeMins, 2);
+                $grossPay = round($basePay + $totalAllowances + $communication + $totalReimbursements + $totalAdjustments + $nightDiffPay +$overtimePay + $overtimeNDPay + $RDOTPay + $RDOTNDPay + $RDOTOTPay + $RDOTOTNDPay + $specialHolidayPay + $specialHolidayOTPay + $specialHolidayRDOTPay + $specialHolidayRDOTOTPay + $specialHolidayNDPay + $specialHolidayOTNDPay + $specialHolidayRDOTNDPay + $specialHolidayRDOTOTNDPay + $regularHolidayPay + $regularHolidayOTPay + $regularHolidayRDOTPay + $regularHolidayRDOTOTPay + $regularHolidayNDPay + $regularHolidayOTNDPay + $regularHolidayRDOTNDPay + $regularHolidayRDOTOTNDPay + $sickLeavePay + $vacationLeavePay + $referralIncentivePay - $absencesAmt - $lateMinsAmt - $undertimeMinsAmt, 2);
                 
                 // COMPUTATION FOR WTAX
                 $deductedGrossPay = round($grossPay - $sss - $sssmpf - $phic - $hdmf, 2);
@@ -2993,7 +2993,7 @@
                 else {
                     $basePay = round($employee_dailyRate * $employee_daysWorked, 2);
                 }
-                $grossPay = round($basePay + $totalAllowances + $communication + $totalReimbursements + $totalAdjustments + $nightDiffPay +$overtimePay + $overtimeNDPay + $RDOTPay + $RDOTNDPay + $RDOTOTPay + $RDOTOTNDPay + $specialHolidayPay + $specialHolidayOTPay + $specialHolidayRDOTPay + $specialHolidayRDOTOTPay + $specialHolidayNDPay + $specialHolidayOTNDPay + $specialHolidayRDOTNDPay + $specialHolidayRDOTOTNDPay + $regularHolidayPay + $regularHolidayOTPay + $regularHolidayRDOTPay + $regularHolidayRDOTOTPay + $regularHolidayNDPay + $regularHolidayOTNDPay + $regularHolidayRDOTNDPay + $regularHolidayRDOTOTNDPay + $sickLeavePay + $vacationLeavePay + $referralIncentivePay - $absencesAmt - $lateMinsAmt - $undertimeMins, 2);
+                $grossPay = round($basePay + $totalAllowances + $communication + $totalReimbursements + $totalAdjustments + $nightDiffPay +$overtimePay + $overtimeNDPay + $RDOTPay + $RDOTNDPay + $RDOTOTPay + $RDOTOTNDPay + $specialHolidayPay + $specialHolidayOTPay + $specialHolidayRDOTPay + $specialHolidayRDOTOTPay + $specialHolidayNDPay + $specialHolidayOTNDPay + $specialHolidayRDOTNDPay + $specialHolidayRDOTOTNDPay + $regularHolidayPay + $regularHolidayOTPay + $regularHolidayRDOTPay + $regularHolidayRDOTOTPay + $regularHolidayNDPay + $regularHolidayOTNDPay + $regularHolidayRDOTNDPay + $regularHolidayRDOTOTNDPay + $sickLeavePay + $vacationLeavePay + $referralIncentivePay - $absencesAmt - $lateMinsAmt - $undertimeMinsAmt, 2);
                 
                 // COMPUTATION FOR WTAX
                 $deductedGrossPay = round($grossPay - $sss - $sssmpf - $phic - $hdmf, 2);
