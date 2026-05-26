@@ -170,12 +170,10 @@
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="3">Late Amt</th> 
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="3">Undertime Mins</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="3">Undertime Amt</th> 
-                                        <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" colspan="9">Additions/Adjustments</th>  -->
-                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" colspan="7">Additions/Adjustments</th> 
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" colspan="8">Additions/Adjustments</th> 
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle whitespace-nowrap" rowspan="3">Gross Pay</th> 
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" colspan="5">Government Deductions</th> 
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" colspan="3">Loans</th> 
-                                        <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" colspan="2">Other Deductions</th>  -->
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">Other Deductions</th> 
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle whitespace-nowrap" rowspan="3">Net Pay</th>
                                     </tr>
@@ -183,16 +181,14 @@
                                     <tr>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">Daily</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">Hour</th>
-                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">Allowance</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">Basic Allowances</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">Communication</th> 
-                                        <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">Regular OT</th> 
-                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">HDMF Loan</th>  -->
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">Other Allowances</th> 
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">Sick Leave</th> 
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">Sick Leave Pay</th> 
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">Vacation Leave</th> 
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">Vacation Leave Pay</th> 
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">Referral Incentive</th> 
-                                        <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">Late</th>  -->
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">SSS</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">SSS MPF</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="2">PhilHealth</th>
@@ -201,24 +197,18 @@
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">SSS Salary Loan</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">Cash Advances</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">HDMF Salary Loan</th>
-                                        <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">Cash Advance (PETTY CASH)</th> -->
-                                        <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider uppercase align-middle">Night Diff OT</th> -->
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider uppercase align-middle">Smart Communication</th>
                                     </tr>
                                     <tr>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">(ADD)</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">(ADD)</th>
-                                        <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">(ADJ)</th>
-                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">(ADJ)</th> -->
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">(ADD)</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" colspan="2">(ADJ)</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" colspan="2">(ADJ)</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">(ADD)</th>
-                                        <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">(ADJ)</th> -->
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">(SSS)</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">(Other Loan)</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">(HDMF)</th>
-                                        <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">(Other Loan)</th> -->
-                                        <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">(ADJ)</th> -->
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle">(DED)</th>
                                     </tr>
                                 </thead>
@@ -284,6 +274,7 @@
                                             
                                             $payslip_allowances = $payslipDetails['payslip_allowances'];
                                             $payslip_communication = $payslipDetails['payslip_communication'];
+                                            $payslip_otherAllowances = $payslipDetails['payslip_otherAllowances'];
                                             $payslip_grossPay = $payslipDetails['grossPay'];
                                             $payslip_sss = $payslipDetails['payslip_sss'];
                                             $payslip_sssMPF = $payslipDetails['payslip_sssMPF'];
@@ -409,7 +400,7 @@
                                                 $payslip_regularHolidayRDOTOTNDPay = "-";
                                             }
 
-                                            // ALLOWANCES 
+                                            // ALLOWANCES
                                             if ($payslip_allowances != 0) {
                                                 $payslip_allowances = number_format($payslip_allowances, 2);
                                             }
@@ -421,6 +412,12 @@
                                             }
                                             else {
                                                 $payslip_communication = "-";
+                                            }
+                                            if ($payslip_otherAllowances != 0) {
+                                                $payslip_otherAllowances = number_format($payslip_otherAllowances, 2);
+                                            }
+                                            else {
+                                                $payslip_otherAllowances = "-";
                                             }
 
                                             // DEDUCTIONS
@@ -634,6 +631,7 @@
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_undertimeMinsAmt . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_allowances . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_communication . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $payslip_otherAllowances . "</td>";
                                             // echo "<td class ='whitespace-nowrap'>-</td>";
                                             // echo "<td class ='whitespace-nowrap'>" . $payslip_hdmfLoan . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $payslip_sickLeaveCount . "</td>";
