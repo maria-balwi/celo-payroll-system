@@ -1423,87 +1423,6 @@
             return $viewPayrollCycle;
         }
 
-        // OLD CODE
-        // public function calculateNightDifferential($attendanceDateTime, $logTypeID, $lateMins, $payrollCycleFrom, $payrollCycleTo, $attendanceDate, $empID) {
-        //     static $timeIn = null;
-        //     static $timeOut = null;
-        //     static $date_in = null;
-        //     static $static_lateMins = null;
-
-        //     $totalRegularNightHours = 0;
-        //     $totalRegularHolidayHours = 0;
-        //     $totalRegularHolidayNightHours = 0;
-        //     $totalSpecialHolidayHours = 0;
-        //     $totalSpecialHolidayNightHours = 0;
-
-        //     $sch = $this->dbConnect()->query("
-        //         SELECT startTime, endTime
-        //         FROM tbl_employee INNER JOIN tbl_shiftschedule
-        //         ON tbl_employee.shiftID = tbl_shiftschedule.shiftID
-        //         WHERE tbl_employee.id = '$empID'
-        //     ")->fetch_assoc();
-
-        //     $shiftStartTime = $sch['startTime'];
-        //     $shiftEndTime   = $sch['endTime']; 
-
-        //     // TIME IN (logTypeID 1 or 2)
-        //     if ($logTypeID == 1 || $logTypeID == 2) {
-        //         // if ($logTypeID == 1){
-        //         //     $timeIn = new DateTime($attendanceDate . ' ' . $shiftStartTime);
-        //         // } 
-        //         // else {
-        //         //     $timeIn = new DateTime($attendanceDateTime);
-        //         // }
-        //         $timeIn = new DateTime($attendanceDate . ' ' . $shiftStartTime);
-        //         $date_in = $attendanceDate;
-        //         $static_lateMins = $lateMins;
-        //     }
-
-        //     // TIME OUT (logTypeID 3 or 4)
-        //     if ($logTypeID == 3 || $logTypeID == 4) {
-        //         // if ($logTypeID == 4) {
-        //         //     $timeOut = new DateTime($attendanceDate . ' ' . $shiftEndTime);
-        //         // }
-        //         // else {
-        //         //     $timeOut = new DateTime($attendanceDateTime);
-        //         // }
-        //         $timeOut = new DateTime($attendanceDate . ' ' . $shiftEndTime);
-        //     }
-
-        //     // Only compute when BOTH logs are captured
-        //     if ($timeIn && $timeOut) {
-
-        //         // Overnight adjustment
-        //         if ($timeOut < $timeIn) {
-        //             $timeOut->modify('+1 day');
-        //         }
-
-        //         // Deduct late
-        //         $adjustedTimeIn = clone $timeIn;
-        //         if ($static_lateMins > 0) {
-        //             $adjustedTimeIn->modify("+{$static_lateMins} minutes");
-        //         }
-
-        //         // Do ND computation
-        //         $this->calculateSegmentHours(clone $adjustedTimeIn, clone $timeOut, $payrollCycleFrom, $payrollCycleTo, $date_in, $empID, $totalRegularNightHours, $totalRegularHolidayHours, $totalRegularHolidayNightHours, $totalSpecialHolidayHours, $totalSpecialHolidayNightHours);
-
-        //         // reset static variables for next IN/OUT pair
-        //         $timeIn = null;
-        //         $timeOut = null;
-        //         $date_in = null;
-        //         $static_lateMins = null;
-        //     }
-
-        //     return [
-        //         'totalRegularNightHours' => $totalRegularNightHours,
-        //         'totalRegularHolidayHours' => $totalRegularHolidayHours,
-        //         'totalRegularHolidayNightHours' => $totalRegularHolidayNightHours,
-        //         'totalSpecialHolidayHours' => $totalSpecialHolidayHours,
-        //         'totalSpecialHolidayNightHours' => $totalSpecialHolidayNightHours
-        //     ];
-        // }
-
-        // NEW CODE
         public function calculateNightDifferential($attendanceDateTime, $logTypeID, $lateMins, $payrollCycleFrom, $payrollCycleTo, $attendanceDate, $empID) {
             static $timeIn = null;
             static $timeOut = null;
@@ -1568,107 +1487,6 @@
             ];
         }
 
-        // OLD CODE
-        // private function calculateSegmentHours($start, $end, $payrollCycleFrom, $payrollCycleTo, $attendanceDate, $empID, &$totalRegularNightHours, &$totalRegularHolidayHours, &$totalRegularHolidayNightHours, &$totalSpecialHolidayHours, &$totalSpecialHolidayNightHours) {
-        //     // -----------------------------
-        //     // 1. LOAD HOLIDAYS (cached)
-        //     // -----------------------------
-        //     static $holidays = null;
-
-        //     if ($holidays === null) {
-        //         $holidays = [];
-        //         $res = $this->dbConnect()->query("
-        //             SELECT dateFrom, type 
-        //             FROM tbl_holidays
-        //             WHERE dateFrom BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'
-        //         ");
-        //         while ($h = mysqli_fetch_assoc($res)) {
-        //             $holidays[$h['dateFrom']] = $h['type']; // Legal or Special
-        //         }
-        //     }
-
-        //     // -----------------------------
-        //     // 2. GET SHIFT SCHEDULE
-        //     // -----------------------------
-        //     $sch = $this->dbConnect()->query("
-        //         SELECT startTime, endTime
-        //         FROM tbl_employee INNER JOIN tbl_shiftschedule
-        //         ON tbl_employee.shiftID = tbl_shiftschedule.shiftID
-        //         WHERE tbl_employee.id = '$empID'
-        //     ")->fetch_assoc();
-
-        //     $shiftStartTime = $sch['startTime'];
-        //     $shiftEndTime   = $sch['endTime']; 
-
-        //     // -----------------------------
-        //     // 3. CREATE SHIFT BOUNDARIES
-        //     // -----------------------------
-        //     $scheduledStart = new DateTime($attendanceDate . " " . $shiftStartTime);
-        //     $scheduledEnd   = new DateTime($attendanceDate . " " . $shiftEndTime);
-
-        //     // Handle overnight shifts (example: 22:00 → 06:00 next day)
-        //     if ($scheduledEnd <= $scheduledStart) {
-        //         $scheduledEnd->modify("+1 day");
-        //     }
-
-        //     // -----------------------------
-        //     // 4. CLAMP ACTUAL IN/OUT TO SHIFT
-        //     // -----------------------------
-        //     $clampedStart = max($start, $scheduledStart);
-        //     $clampedEnd   = min($end, $scheduledEnd);
-
-        //     // if ($clampedStart < $scheduledStart) {
-        //     //     $clampedStart = clone $scheduledStart;
-        //     // }
-        //     // if ($clampedEnd > $scheduledEnd) {
-        //     //     $clampedEnd = clone $scheduledEnd;
-        //     // }
-
-        //     // -----------------------------
-        //     // 5. COMPUTE REGULAR HOURS (DROP MINUTES)
-        //     // -----------------------------
-        //     if ($clampedEnd > $clampedStart) {
-        //         $interval = $clampedStart->diff($clampedEnd);
-        //         $hoursWorked = $interval->h + ($interval->i / 60);
-
-        //         // Holiday Check
-        //         if (isset($holidays[$attendanceDate])) {
-        //             if ($holidays[$attendanceDate] === "Legal") {
-        //                 $totalRegularHolidayHours += $hoursWorked;
-        //             } else {
-        //                 $totalSpecialHolidayHours += $hoursWorked;
-        //             }
-        //         }
-        //     }
-
-        //     // ---------------------------------------------------
-        //     // 6. NIGHT DIFFERENTIAL (22:00 → 06:00 actual values)
-        //     // ---------------------------------------------------
-        //     $nightStart = new DateTime($attendanceDate . " 22:00");
-        //     $nightEnd   = new DateTime($attendanceDate . " 06:00");
-        //     $nightEnd->modify("+1 day");
-
-        //     // Compute overlap with ORIGINAL actual start/end (not clamped!)
-        //     $effectiveStart = max($start, $nightStart);
-        //     $effectiveEnd   = min($end, $nightEnd);
-
-        //     if ($effectiveStart < $effectiveEnd) {
-        //         $ndInterval = $effectiveStart->diff($effectiveEnd);
-        //         $nightHours = $ndInterval->h + ($ndInterval->i / 60);
-
-        //         if (isset($holidays[$attendanceDate])) {
-        //             if ($holidays[$attendanceDate] === "Legal") {
-        //                 $totalRegularHolidayNightHours += $nightHours;
-        //             } else {
-        //                 $totalSpecialHolidayNightHours += $nightHours;
-        //             }
-        //         } else {
-        //             $totalRegularNightHours += $nightHours;
-        //         }
-        //     }
-        // }
-
-        // NEW CODE
         private function calculateSegmentHours($payrollCycleFrom, $payrollCycleTo, $attendanceDate, $empID, &$totalRegularNightHours, &$totalRegularHolidayHours, &$totalRegularHolidayNightHours, &$totalSpecialHolidayHours, &$totalSpecialHolidayNightHours) {
             // -----------------------------
             // 1. LOAD HOLIDAYS
@@ -3182,6 +3000,14 @@
                 ON employee.departmentID = department.departmentID
                 WHERE payrollID = $payrollID AND payslip.empID = $empID";
             return $viewPayslip;
+        }
+
+        public function viewAvailablePayslips() {
+            $availablePayslips = "
+                SELECT * FROM ".$this->payroll." 
+                WHERE YEAR(dateCreated) = YEAR(CURRENT_DATE())
+                ORDER BY payrollCycleID ";
+            return $availablePayslips;
         }
 
         public function updateEmploymentStatus($id, $dateRegularized) {

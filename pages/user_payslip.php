@@ -59,32 +59,55 @@
                 <!-- PAYSLIP CYCLYE RANGE FROM DROPDOWN MENU -->
                 <div class="static inline-block text-right">
                     <select id="payrollCycleID" class="form-select inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-3 bg-white text-sm font-medium text-gray-700">
-                        <!-- <option disabled selected>Select Payroll Cycle FROM</option> -->
                         <option disabled selected>Select Payroll Cycle</option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="1">Dec 26, <?php echo date('Y') - 1; ?> to Jan 10, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="2">Jan 11, <?php echo date('Y'); ?> to Jan 25, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="3">Jan 26, <?php echo date('Y'); ?> to Feb 10, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="4">Feb 11, <?php echo date('Y'); ?> to Feb 25, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="5">Feb 26, <?php echo date('Y'); ?> to Mar 10, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="6">Mar 11, <?php echo date('Y'); ?> to Mar 25, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="7">Mar 26, <?php echo date('Y'); ?> to Apr 10, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="8">Apr 11, <?php echo date('Y'); ?> to Apr 25, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="9">Apr 26, <?php echo date('Y'); ?> to May 10, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="10">May 11, <?php echo date('Y'); ?> to May 25, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="11">May 26, <?php echo date('Y'); ?> to Jun 10, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="12">Jun 11, <?php echo date('Y'); ?> to Jun 25, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="13">Jun 26, <?php echo date('Y'); ?> to Jul 10, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="14">Jul 11, <?php echo date('Y'); ?> to Jul 25, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="15">Jul 26, <?php echo date('Y'); ?> to Aug 10, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="16">Aug 11, <?php echo date('Y'); ?> to Aug 25, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="17">Aug 26, <?php echo date('Y'); ?> to Sep 10, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="18">Sep 11, <?php echo date('Y'); ?> to Sep 25, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="19">Sep 26, <?php echo date('Y'); ?> to Oct 10, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="20">Oct 11, <?php echo date('Y'); ?> to Oct 25, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="21">Oct 26, <?php echo date('Y'); ?> to Nov 10, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="22">Nov 11, <?php echo date('Y'); ?> to Nov 25, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="23">Nov 26, <?php echo date('Y'); ?> to Dec 10, <?php echo date('Y'); ?></option>
-                        <option class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" value="24">Dec 11, <?php echo date('Y'); ?> to Dec 25, <?php echo date('Y'); ?></option>
+                        <?php
+                            function formatDate($date) {
+                                // GET CURRENT YEAR
+                                $currentYear = date('Y');
+
+                                // APPEND THE CURRENT YEAR TO THE INPUT DATE
+                                $dateWithYear = $date . '-' . $currentYear;
+
+                                // CREATE DATETIME OBJECT FROM THE STRING AND RETURN THE FORMATTED DATE
+                                $dateTime = DateTime::createFromFormat('m-d-Y', $dateWithYear);
+
+                                return $dateTime->format('Y-m-d');
+                            }
+
+                            function formatPayrollCycleDate($conn, $payroll, $payrollCycleID) {
+                                $payrollCycleQuery = mysqli_query($conn, $payroll->viewPayrollCycle($payrollCycleID));
+                                while ($payrollCycleDetails = mysqli_fetch_array($payrollCycleQuery)) {
+                                    $from = $payrollCycleDetails['payrollCycleFrom'];
+                                    $to = $payrollCycleDetails['payrollCycleTo'];
+                                    
+                                    // GET CURRENT YEAR
+                                    $year = date('Y');
+                                    if ($payrollCycleID == 1) {
+                                        $year = date('Y') - 1;
+                                    }
+
+                                    $fromDate = $from . '-' . $year;
+                                    $toDate = $to . '-' . $year;
+                                    
+                                    // SET THE YEAR FOR BOTH DATES
+                                    $fromDate = DateTime::createFromFormat('m-d-Y', $fromDate);
+                                    $toDate = DateTime::createFromFormat('m-d-Y', $toDate);
+                                }
+                            
+                                // Format the date
+                                return $fromDate->format('M d, Y') . ' to ' . $toDate->format('M d, Y');
+                            }
+
+                            $availablePayslips = mysqli_query($conn, $payroll->viewAvailablePayslips());
+                            while ($payslipResult = mysqli_fetch_array($availablePayslips)) {
+                            ?>
+                            <option value="<?php echo $payslipResult['payrollCycleID']; ?>">
+                                <?php echo formatPayrollCycleDate($conn, $payroll, $payslipResult['payrollCycleID']); ?>
+                            </option>
+                            
+                        <?php        
+                            }
+                        ?>
                     </select>
                 </div>
 
