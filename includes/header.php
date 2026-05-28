@@ -92,19 +92,12 @@
                             $_SESSION['dtr'] = 'forTimeOut';
                         }
                         else {
-                            // $assumedTimeIn = $attendanceDate . " " . $shiftStart;
-                            // $assumedTimeIn = new DateTime($assumedTimeIn);
+                            // $newAttendanceDT = clone $shiftStartDT;
+                            // $newAttendanceDT->modify('+9 hours');
+                            // $newAttendanceDate = $newAttendanceDT->format('Y-m-d');
 
-                            // $endOfShiftInterval = new DateInterval('PT9H');
-                            // $assumedTimeIn->add($endOfShiftInterval);
-
-                            // $newAttendanceDate = $assumedTimeIn->format('Y-m-d');
-
-                            $newAttendanceDT = clone $shiftStartDT;
-                            $newAttendanceDT->modify('+9 hours');
-                            $newAttendanceDate = $newAttendanceDT->format('Y-m-d');
-
-                            mysqli_query($conn, $attendance->addEmployeeTimeOut($_SESSION['id'], $newAttendanceDate, $shiftEnd));
+                            // mysqli_query($conn, $attendance->addEmployeeTimeOut($_SESSION['id'], $newAttendanceDate, $shiftEnd));
+                            $_SESSION['dtr'] = 'forTimeIn';
                         }
                     }
                     else if ($logType == "Time Out" || $logType == "Undertime")
