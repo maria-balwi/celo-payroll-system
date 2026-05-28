@@ -193,10 +193,13 @@ $(document).ready(function() {
                         var lateMins = $employeedtr.lateMins;
                         var undertimeMins = $employeedtr.undertimeMins;
                         var attendanceSource = $employeedtr.attendanceSource;
+                        var transitionType = $employeedtr.type;
+
+                        console.log({transitionType});
 
                         // Initialize the date entry if it doesn't exist
                         if (!dtrGroupedByDate[date]) {
-                            dtrGroupedByDate[date] = { timeIn: null, timeOut: null, dayOfWeek: dayOfWeek, timeInDate: null, timeOutDate: null, lateMins: lateMins, undertimeMins: undertimeMins, timeInSource: null, timeOutSource: null };
+                            dtrGroupedByDate[date] = { timeIn: null, timeOut: null, dayOfWeek: dayOfWeek, timeInDate: null, timeOutDate: null, lateMins: lateMins, undertimeMins: undertimeMins, timeInSource: null, timeOutSource: null, transitionType: transitionType };
                         }
 
                         // Handle Time In (LogTypeID 1 or 2)
@@ -251,6 +254,9 @@ $(document).ready(function() {
                         var wo_sat = res.employeeDTR[0].wo_sat;
                         var wo_sun = res.employeeDTR[0].wo_sun;
 
+                        // GET TRANSITION DAY
+                        var transitionType = dtrGroupedByDate[date].transitionType;
+
                         // Determine if this day is a week off
                         var isWeekOff = false;
                         switch (dayOfWeek) {
@@ -270,6 +276,18 @@ $(document).ready(function() {
                                     <td>${date}</td>
                                     <td>${dayOfWeek}</td>
                                     <td colspan="4" class="text-primary font-semibold">WEEK OFF</td>
+                                </tr>
+                            `;
+                            continue;
+                        }
+
+                        if (transitionType == 'ADJ') {
+                            employeedtrHTML += `
+                                <tr class="bg-gray-100 text-center text-gray-500">
+                                    <td></td>
+                                    <td>${date}</td>
+                                    <td>${dayOfWeek}</td>
+                                    <td colspan="4" class="text-info font-semibold">TRANSITION DAY</td>
                                 </tr>
                             `;
                             continue;
