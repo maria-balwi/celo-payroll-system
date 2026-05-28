@@ -195,8 +195,6 @@ $(document).ready(function() {
                         var attendanceSource = $employeedtr.attendanceSource;
                         var transitionType = $employeedtr.type;
 
-                        console.log({transitionType});
-
                         // Initialize the date entry if it doesn't exist
                         if (!dtrGroupedByDate[date]) {
                             dtrGroupedByDate[date] = { timeIn: null, timeOut: null, dayOfWeek: dayOfWeek, timeInDate: null, timeOutDate: null, lateMins: lateMins, undertimeMins: undertimeMins, timeInSource: null, timeOutSource: null, transitionType: transitionType };
