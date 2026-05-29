@@ -251,8 +251,6 @@ $(document).ready(function() {
         var recal_payrollID = $(this).data('id');
         var recal_cycleID = $(this).data('cycle');
         
-        console.log({recal_payrollID, recal_cycleID});
-        
         Swal.fire({
             icon: 'question',
             title: 'Re-Calculate Payroll',

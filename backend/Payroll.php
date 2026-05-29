@@ -1425,65 +1425,121 @@
 
         public function calculateNightDifferential($attendanceDateTime, $logTypeID, $lateMins, $payrollCycleFrom, $payrollCycleTo, $attendanceDate, $empID) {
             static $timeIn = null;
-            static $timeOut = null;
             static $date_in = null;
             static $static_lateMins = null;
-        
+
             $totalRegularNightHours = 0;
             $totalRegularHolidayHours = 0;
             $totalRegularHolidayNightHours = 0;
             $totalSpecialHolidayHours = 0;
             $totalSpecialHolidayNightHours = 0;
 
+            $incompleteAttendance = 0;
+
+            // =====================================================
+            // FINAL CHECK AFTER LOOP
+            // =====================================================
+            if ($attendanceDateTime === null) {
+
+                if ($timeIn !== null) {
+
+                    // Remaining TIME IN without TIME OUT
+                    $incompleteAttendance++;
+
+                    // Reset
+                    $timeIn = null;
+                    $date_in = null;
+                    $static_lateMins = null;
+                }
+
+                return [
+                    'totalRegularNightHours' => 0,
+                    'totalRegularHolidayHours' => 0,
+                    'totalRegularHolidayNightHours' => 0,
+                    'totalSpecialHolidayHours' => 0,
+                    'totalSpecialHolidayNightHours' => 0,
+                    'incompleteAttendance' => $incompleteAttendance
+                ];
+            }
+
             $attendance = new DateTime($attendanceDateTime);
-        
+
+            // =====================================================
             // TIME IN
+            // =====================================================
             if ($logTypeID == 1 || $logTypeID == 2) {
+
+                // Previous TIME IN has no TIME OUT
+                if ($timeIn !== null) {
+
+                    $incompleteAttendance++;
+
+                    // Reset previous incomplete attendance
+                    $timeIn = null;
+                    $date_in = null;
+                    $static_lateMins = null;
+                }
+
+                // Store new TIME IN
                 $timeIn = clone $attendance;
                 $date_in = $attendanceDate;
                 $static_lateMins = $lateMins;
             }
-        
+
+            // =====================================================
             // TIME OUT
-            if (($logTypeID == 3 || $logTypeID == 4) && $timeIn !== null) {
-                $timeOut = clone $attendance;
+            // =====================================================
+            else if ($logTypeID == 3 || $logTypeID == 4) {
 
-                // Overnight fix
-                if ($timeOut < $timeIn) {
-                    $timeOut->modify('+1 day');
+                // TIME OUT without TIME IN
+                if ($timeIn === null) {
+
+                    $incompleteAttendance++;
                 }
+                else {
 
-                // FILTER:  ONLY COUNT SHIFTS WITHIN PAYROLL RANGE
-                if ($date_in < $payrollCycleFrom || $date_in > $payrollCycleTo) {
+                    $timeOut = clone $attendance;
+
+                    // Overnight shift fix
+                    if ($timeOut < $timeIn) {
+                        $timeOut->modify('+1 day');
+                    }
+
+                    // =====================================================
+                    // ONLY COMPUTE COMPLETE ATTENDANCE
+                    // =====================================================
+                    if (
+                        $date_in >= $payrollCycleFrom &&
+                        $date_in <= $payrollCycleTo
+                    ) {
+
+                        $this->calculateSegmentHours(
+                            $payrollCycleFrom,
+                            $payrollCycleTo,
+                            $date_in,
+                            $empID,
+                            $totalRegularNightHours,
+                            $totalRegularHolidayHours,
+                            $totalRegularHolidayNightHours,
+                            $totalSpecialHolidayHours,
+                            $totalSpecialHolidayNightHours
+                        );
+                    }
+
+                    // Reset after successful pair
                     $timeIn = null;
                     $date_in = null;
+                    $static_lateMins = null;
                 }
-        
-                // Compute segments
-                $this->calculateSegmentHours(
-                    $payrollCycleFrom,
-                    $payrollCycleTo,
-                    $date_in,
-                    $empID,
-                    $totalRegularNightHours,
-                    $totalRegularHolidayHours,
-                    $totalRegularHolidayNightHours,
-                    $totalSpecialHolidayHours,
-                    $totalSpecialHolidayNightHours
-                );
-        
-                // Reset
-                $timeIn = null;
-                $timeOut = null;
-                $date_in = null;
-                $static_lateMins = null;
-            }    
+            }
+
             return [
                 'totalRegularNightHours' => $totalRegularNightHours,
                 'totalRegularHolidayHours' => $totalRegularHolidayHours,
                 'totalRegularHolidayNightHours' => $totalRegularHolidayNightHours,
                 'totalSpecialHolidayHours' => $totalSpecialHolidayHours,
-                'totalSpecialHolidayNightHours' => $totalSpecialHolidayNightHours
+                'totalSpecialHolidayNightHours' => $totalSpecialHolidayNightHours,
+                'incompleteAttendance' => $incompleteAttendance
             ];
         }
 
@@ -1875,7 +1931,6 @@
                 
                 $salaryLoan = 0;
                 $hdmfSalaryLoan = 0;
-                // $hdmfLoan = 0;
                 $smart = 0;
 
                 // CASH ADVANCE
@@ -1901,7 +1956,8 @@
                 $referralCount = 0;
                 $referralIncentivePay = 0;
 
-                // INITIALIZE VARIABLES FOR LATE MINS, UNDERTIME MINS, AND ABSENCES COMPUTATION
+                // INITIALIZE VARIABLES FOR LATE MINS, UNDERTIME MINS, AND ABSENCES COMPUTATION, INCOMPLETE ATTENDANCE
+                $incompleteAttendance = 0;
                 $totalAbsences = 0;
                 $absencesAmt = 0;
                 $totalLateMins = 0;
@@ -1950,6 +2006,7 @@
                     $totalRegularHolidayNDHours += $result['totalRegularHolidayNightHours'];
                     $totalSpecialHolidayHours += $result['totalSpecialHolidayHours'];
                     $totalSpecialHolidayNDHours += $result['totalSpecialHolidayNightHours'];
+                    $incompleteAttendance += $result['incompleteAttendance'];
                 }
 
 
@@ -2236,11 +2293,12 @@
                 if ($employeee_department == 3 || $employeee_department == 4) {
                     $absencesQuery = $this->dbConnect()->query($this->getCutOffAbsences($employee_id, $payrollCycleFrom, $payrollCycleTo));
                     $absencesDetails = mysqli_fetch_array($absencesQuery);
-                    $totalAbsences = (int)$absencesDetails['total_absences'];
+                    $totalAbsences = (int)$absencesDetails['total_absences'] + $incompleteAttendance;
                     $absencesAmt = round($employee_dailyRate * $totalAbsences, 2);
                     $basePay = round($employee_basicPay / 2, 2);
                 }
                 else {
+                    $employee_daysWorked -= $incompleteAttendance;
                     $basePay = round($employee_dailyRate * $employee_daysWorked, 2);
                 }
                 $grossPay = round($basePay + $basicAllowances + $communication + $otherAllowances + $totalReimbursements + $totalAdjustments + $nightDiffPay +$overtimePay + $overtimeNDPay + $RDOTPay + $RDOTNDPay + $RDOTOTPay + $RDOTOTNDPay + $specialHolidayPay + $specialHolidayOTPay + $specialHolidayRDOTPay + $specialHolidayRDOTOTPay + $specialHolidayNDPay + $specialHolidayOTNDPay + $specialHolidayRDOTNDPay + $specialHolidayRDOTOTNDPay + $regularHolidayPay + $regularHolidayOTPay + $regularHolidayRDOTPay + $regularHolidayRDOTOTPay + $regularHolidayNDPay + $regularHolidayOTNDPay + $regularHolidayRDOTNDPay + $regularHolidayRDOTOTNDPay + $sickLeavePay + $vacationLeavePay + $referralIncentivePay - $absencesAmt - $lateMinsAmt - $undertimeMinsAmt, 2);
@@ -2465,7 +2523,6 @@
                 
                 $salaryLoan = 0;
                 $hdmfSalaryLoan = 0;
-                // $hdmfLoan = 0;
                 $smart = 0;
 
                 // CASH ADVANCE
@@ -2491,7 +2548,8 @@
                 $referralCount = 0;
                 $referralIncentivePay = 0;
 
-                // INITIALIZE VARIABLES FOR LATE MINS, UNDERTIME MINS, AND ABSENCES COMPUTATION
+                // INITIALIZE VARIABLES FOR LATE MINS, UNDERTIME MINS, AND ABSENCES COMPUTATION, INCOMPLETE ATTENDANCE
+                $incompleteAttendance = 0;
                 $totalAbsences = 0;
                 $absencesAmt = 0;
                 $totalLateMins = 0;
@@ -2540,6 +2598,7 @@
                     $totalRegularHolidayNDHours += $result['totalRegularHolidayNightHours'];
                     $totalSpecialHolidayHours += $result['totalSpecialHolidayHours'];
                     $totalSpecialHolidayNDHours += $result['totalSpecialHolidayNightHours'];
+                    $incompleteAttendance += $result['incompleteAttendance'];
                 }
 
 
@@ -2823,10 +2882,11 @@
                 $lateMinsAmt = round(($employee_hourlyRate / 60) * $totalLateMins, 2);
                 $undertimeMinsAmt = round(($employee_hourlyRate / 60) * $totalUndertimeMins, 2);
 
+                $employee_daysWorked -= $incompleteAttendance;
                 if ($employeee_department == 3 || $employeee_department == 4) {
                     $absencesQuery = $this->dbConnect()->query($this->getCutOffAbsences($employee_id, $payrollCycleFrom, $payrollCycleTo));
                     $absencesDetails = mysqli_fetch_array($absencesQuery);
-                    $totalAbsences = (int)$absencesDetails['total_absences'];
+                    $totalAbsences = (int)$absencesDetails['total_absences'] + $incompleteAttendance;
                     $absencesAmt = round($employee_dailyRate * $totalAbsences, 2);
                     $basePay = round($employee_basicPay / 2, 2);
                 }
