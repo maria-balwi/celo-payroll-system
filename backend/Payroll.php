@@ -2290,6 +2290,7 @@
                 $lateMinsAmt = round(($employee_hourlyRate / 60) * $totalLateMins, 2);
                 $undertimeMinsAmt = round(($employee_hourlyRate / 60) * $totalUndertimeMins, 2);
 
+                $employee_daysWorked -= $incompleteAttendance;
                 if ($employeee_department == 3 || $employeee_department == 4) {
                     $absencesQuery = $this->dbConnect()->query($this->getCutOffAbsences($employee_id, $payrollCycleFrom, $payrollCycleTo));
                     $absencesDetails = mysqli_fetch_array($absencesQuery);
@@ -2298,7 +2299,6 @@
                     $basePay = round($employee_basicPay / 2, 2);
                 }
                 else {
-                    $employee_daysWorked -= $incompleteAttendance;
                     $basePay = round($employee_dailyRate * $employee_daysWorked, 2);
                 }
                 $grossPay = round($basePay + $basicAllowances + $communication + $otherAllowances + $totalReimbursements + $totalAdjustments + $nightDiffPay +$overtimePay + $overtimeNDPay + $RDOTPay + $RDOTNDPay + $RDOTOTPay + $RDOTOTNDPay + $specialHolidayPay + $specialHolidayOTPay + $specialHolidayRDOTPay + $specialHolidayRDOTOTPay + $specialHolidayNDPay + $specialHolidayOTNDPay + $specialHolidayRDOTNDPay + $specialHolidayRDOTOTNDPay + $regularHolidayPay + $regularHolidayOTPay + $regularHolidayRDOTPay + $regularHolidayRDOTOTPay + $regularHolidayNDPay + $regularHolidayOTNDPay + $regularHolidayRDOTNDPay + $regularHolidayRDOTOTNDPay + $sickLeavePay + $vacationLeavePay + $referralIncentivePay - $absencesAmt - $lateMinsAmt - $undertimeMinsAmt, 2);
@@ -2882,11 +2882,11 @@
                 $lateMinsAmt = round(($employee_hourlyRate / 60) * $totalLateMins, 2);
                 $undertimeMinsAmt = round(($employee_hourlyRate / 60) * $totalUndertimeMins, 2);
 
-                $employee_daysWorked -= $incompleteAttendance;
+                // $employee_daysWorked -= $incompleteAttendance;
                 if ($employeee_department == 3 || $employeee_department == 4) {
                     $absencesQuery = $this->dbConnect()->query($this->getCutOffAbsences($employee_id, $payrollCycleFrom, $payrollCycleTo));
                     $absencesDetails = mysqli_fetch_array($absencesQuery);
-                    $totalAbsences = (int)$absencesDetails['total_absences'] + $incompleteAttendance;
+                    $totalAbsences = (int)$absencesDetails['total_absences'];
                     $absencesAmt = round($employee_dailyRate * $totalAbsences, 2);
                     $basePay = round($employee_basicPay / 2, 2);
                 }
