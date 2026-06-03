@@ -9,7 +9,7 @@
 
     // // API Keys
     // // SENTRY API CONFIGURATION
-    // define('SENTRY_BASE_URL', 'https://gusty-overfoolish-aydan.ngrok-free.dev/api/Integration');
+    // define('SENTRY_BASE_URL', 'https://avid-snowsuit-hastily.ngrok-free.dev');
     // define('SENTRY_API_USERNAME', '1010');
     // define('SENTRY_API_PASSWORD', 'C3l0p@ssw0rd@65');
 ?>  
@@ -23,7 +23,7 @@
 
     // API Keys
     // SENTRY API CONFIGURATION
-    define('SENTRY_BASE_URL', 'https://nonfimbriated-norris-first.ngrok-free.dev/api/Integration');
+    define('SENTRY_BASE_URL', 'https://avid-snowsuit-hastily.ngrok-free.dev');
     define('SENTRY_API_USERNAME', '1010');
     define('SENTRY_API_PASSWORD', 'C3l0p@ssw0rd@65');
 ?>  
