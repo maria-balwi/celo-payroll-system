@@ -1,15 +1,27 @@
 <?php
-    // CLI only (PREVENTS FROM RUNNING IN WEB BROWSER))
-    if (php_sapi_name() !== 'cli') exit("CLI only\n");
+    file_put_contents(
+        __DIR__ . '/leave_management_cron.log',
+        date('Y-m-d H:i:s') . " Script started\n",
+        FILE_APPEND
+    );
 
-    // PREVENTS OVERLAP IF IT RUNS LONG
     $lock = fopen(__DIR__ . '/leave_management.lock', 'c');
-    if (!flock($lock, LOCK_EX | LOCK_NB)) exit("Already running\n");
+    if (!flock($lock, LOCK_EX | LOCK_NB)) {
+        file_put_contents(
+            __DIR__ . '/leave_management_cron.log',
+            date('Y-m-d H:i:s') . " Already running\n",
+            FILE_APPEND
+        );
+        exit;
+    }
 
-    // LOAD YOUR SYSTEM BOOTSTRAP
     require_once __DIR__ . '/../init.php';
 
-    // Instantiate and run
     $payroll->runLeaveManagement();
 
-    echo "Done\n";
+    file_put_contents(
+        __DIR__ . '/leave_management_cron.log',
+        date('Y-m-d H:i:s') . " Done\n",
+        FILE_APPEND
+    );
+?>

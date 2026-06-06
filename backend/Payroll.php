@@ -3116,11 +3116,6 @@
                 // BEGINNING OF THE YEAR
                 $newYear = date('Y-01-01');
 
-                // END OF THE MONTH DATES
-                // $febMonth = date('Y-02-28');
-                // $febMonthLY = date('Y-02-29');
-                // $thirtyDays = date('Y-m-30');
-                // $thirtyOneDays = date('Y-m-02');
                 $isLastDayOfMonth = (date('Y-m-d') === date('Y-m-t'));
 
                 $employeesQuery = $this->dbConnect()->query("SELECT * FROM ".$this->employees." WHERE designationID != 12 AND e_status = 'Active'");
@@ -3141,8 +3136,7 @@
                         $this->dbConnect()->query($resetQuery);
                     }
                     // LEAVE POINTS ACCUMULATION
-                    // elseif (($currentDate == $febMonth || $currentDate == $febMonthLY || $currentDate == $thirtyDays || $currentDate == $thirtyOneDays) && $employmentStatus == "Regular") {
-                    elseif ($isLastDayOfMonth && $employmentStatus === "Regular") {
+                    else if ($isLastDayOfMonth && $employmentStatus === "Regular") {
                         $vl = $employeeDetails['availableVL'];
                         $addLeavePoints = ($vl == 10) ? 0.83 : 1.25;
                         $addLeavePointsQuery = $this->addLeavePoints($id, $addLeavePoints);
