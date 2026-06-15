@@ -164,7 +164,7 @@
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="3">NightDiff. LegalHol. Restday Amt</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="3">NightDiff. LegalHol. Restday OT Hrs</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="3">NightDiff. LegalHol. Restday OT Amt</th>
-                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="3">Absences Hrs</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="3">Absences</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="3">Absences Amt</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="3">Late Mins</th>
                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 tracking-wider align-middle" rowspan="3">Late Amt</th> 
