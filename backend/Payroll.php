@@ -1890,9 +1890,23 @@
                 $employee_hourlyRate = $employeeDetails['hourlyRate'];
                 $employeee_department = $employeeDetails['departmentID'];
 
-                // COMPUTE DAYS WORKED
-                $daysWorkedQuery = $this->dbConnect()->query("SELECT * FROM tbl_attendance WHERE empID = $employeeDetails[id] AND (logTypeID IN (1, 2, 3, 4)) AND attendanceDate BETWEEN DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom'))) AND DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleTo')))");
-                $employee_daysWorked = floor(mysqli_num_rows($daysWorkedQuery) / 2);
+                // // COMPUTE DAYS WORKED
+                // $daysWorkedQuery = $this->dbConnect()->query("SELECT * FROM tbl_attendance WHERE empID = $employeeDetails[id] AND (logTypeID IN (1, 2, 3, 4)) AND attendanceDate BETWEEN DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom'))) AND DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleTo')))");
+                // $employee_daysWorked = floor(mysqli_num_rows($daysWorkedQuery) / 2);
+
+                $daysWorkedQuery = $this->dbConnect()->query("
+                    SELECT attendanceDate
+                    FROM tbl_attendance
+                    WHERE empID = {$employeeDetails['id']}
+                    AND attendanceDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'
+                    GROUP BY attendanceDate
+                    HAVING
+                        SUM(CASE WHEN logTypeID IN (1,2) THEN 1 ELSE 0 END) > 0
+                        AND
+                        SUM(CASE WHEN logTypeID IN (3,4) THEN 1 ELSE 0 END) > 0
+                ");
+
+                $employee_daysWorked = mysqli_num_rows($daysWorkedQuery);
 
                 // // COMPUTE DAYS WORKED
                 // $daysWorkedQuery = $this->dbConnect()->query("SELECT * FROM tbl_attendance WHERE empID = $employeeDetails[id] AND (logTypeID IN (1, 2)) AND attendanceDate BETWEEN DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom'))) AND DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleTo')))");
@@ -2481,9 +2495,23 @@
                 $employee_hourlyRate = $employeeDetails['hourlyRate'];
                 $employeee_department = $employeeDetails['departmentID'];
 
-                // COMPUTE DAYS WORKED
-                $daysWorkedQuery = $this->dbConnect()->query("SELECT * FROM tbl_attendance WHERE empID = $employeeDetails[id] AND (logTypeID IN (1, 2, 3, 4)) AND attendanceDate BETWEEN DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom'))) AND DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleTo')))");
-                $employee_daysWorked = floor(mysqli_num_rows($daysWorkedQuery) / 2);
+                // // COMPUTE DAYS WORKED
+                // $daysWorkedQuery = $this->dbConnect()->query("SELECT * FROM tbl_attendance WHERE empID = $employeeDetails[id] AND (logTypeID IN (1, 2, 3, 4)) AND attendanceDate BETWEEN DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom'))) AND DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleTo')))");
+                // $employee_daysWorked = floor(mysqli_num_rows($daysWorkedQuery) / 2);
+
+                $daysWorkedQuery = $this->dbConnect()->query("
+                    SELECT attendanceDate
+                    FROM tbl_attendance
+                    WHERE empID = {$employeeDetails['id']}
+                    AND attendanceDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'
+                    GROUP BY attendanceDate
+                    HAVING
+                        SUM(CASE WHEN logTypeID IN (1,2) THEN 1 ELSE 0 END) > 0
+                        AND
+                        SUM(CASE WHEN logTypeID IN (3,4) THEN 1 ELSE 0 END) > 0
+                ");
+
+                $employee_daysWorked = mysqli_num_rows($daysWorkedQuery);
 
                 // // COMPUTE DAYS WORKED
                 // $daysWorkedQuery = $this->dbConnect()->query("SELECT * FROM tbl_attendance WHERE empID = $employeeDetails[id] AND (logTypeID IN (1, 2)) AND attendanceDate BETWEEN DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom'))) AND DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleTo')))");
