@@ -1434,52 +1434,12 @@
             $totalSpecialHolidayHours = 0;
             $totalSpecialHolidayNightHours = 0;
 
-            $incompleteAttendance = 0;
-
-            // =====================================================
-            // FINAL CHECK AFTER LOOP
-            // =====================================================
-            if ($attendanceDateTime === null) {
-
-                if ($timeIn !== null) {
-
-                    // Remaining TIME IN without TIME OUT
-                    $incompleteAttendance++;
-
-                    // Reset
-                    $timeIn = null;
-                    $date_in = null;
-                    $static_lateMins = null;
-                }
-
-                return [
-                    'totalRegularNightHours' => 0,
-                    'totalRegularHolidayHours' => 0,
-                    'totalRegularHolidayNightHours' => 0,
-                    'totalSpecialHolidayHours' => 0,
-                    'totalSpecialHolidayNightHours' => 0,
-                    'incompleteAttendance' => $incompleteAttendance
-                ];
-            }
-
             $attendance = new DateTime($attendanceDateTime);
 
             // =====================================================
             // TIME IN
             // =====================================================
             if ($logTypeID == 1 || $logTypeID == 2) {
-
-                // Previous TIME IN has no TIME OUT
-                if ($timeIn !== null) {
-
-                    $incompleteAttendance++;
-
-                    // Reset previous incomplete attendance
-                    $timeIn = null;
-                    $date_in = null;
-                    $static_lateMins = null;
-                }
-
                 // Store new TIME IN
                 $timeIn = clone $attendance;
                 $date_in = $attendanceDate;
@@ -1490,47 +1450,36 @@
             // TIME OUT
             // =====================================================
             else if ($logTypeID == 3 || $logTypeID == 4) {
+                $timeOut = clone $attendance;
 
-                // TIME OUT without TIME IN
-                if ($timeIn === null) {
-
-                    $incompleteAttendance++;
+                // Overnight shift fix
+                if ($timeOut < $timeIn) {
+                    $timeOut->modify('+1 day');
                 }
-                else {
 
-                    $timeOut = clone $attendance;
+                // =====================================================
+                // ONLY COMPUTE COMPLETE ATTENDANCE
+                // =====================================================
+                if ($date_in >= $payrollCycleFrom && $date_in <= $payrollCycleTo) {
 
-                    // Overnight shift fix
-                    if ($timeOut < $timeIn) {
-                        $timeOut->modify('+1 day');
-                    }
-
-                    // =====================================================
-                    // ONLY COMPUTE COMPLETE ATTENDANCE
-                    // =====================================================
-                    if (
-                        $date_in >= $payrollCycleFrom &&
-                        $date_in <= $payrollCycleTo
-                    ) {
-
-                        $this->calculateSegmentHours(
-                            $payrollCycleFrom,
-                            $payrollCycleTo,
-                            $date_in,
-                            $empID,
-                            $totalRegularNightHours,
-                            $totalRegularHolidayHours,
-                            $totalRegularHolidayNightHours,
-                            $totalSpecialHolidayHours,
-                            $totalSpecialHolidayNightHours
-                        );
-                    }
-
-                    // Reset after successful pair
-                    $timeIn = null;
-                    $date_in = null;
-                    $static_lateMins = null;
+                    $this->calculateSegmentHours(
+                        $payrollCycleFrom,
+                        $payrollCycleTo,
+                        $date_in,
+                        $empID,
+                        $totalRegularNightHours,
+                        $totalRegularHolidayHours,
+                        $totalRegularHolidayNightHours,
+                        $totalSpecialHolidayHours,
+                        $totalSpecialHolidayNightHours
+                    );
                 }
+
+                // Reset after successful pair
+                $timeIn = null;
+                $date_in = null;
+                $static_lateMins = null;
+                $timeOut = null;
             }
 
             return [
@@ -1538,8 +1487,7 @@
                 'totalRegularHolidayHours' => $totalRegularHolidayHours,
                 'totalRegularHolidayNightHours' => $totalRegularHolidayNightHours,
                 'totalSpecialHolidayHours' => $totalSpecialHolidayHours,
-                'totalSpecialHolidayNightHours' => $totalSpecialHolidayNightHours,
-                'incompleteAttendance' => $incompleteAttendance
+                'totalSpecialHolidayNightHours' => $totalSpecialHolidayNightHours
             ];
         }
 
@@ -1740,11 +1688,57 @@
             ];
         }
 
+        // public function getCutOffAbsences($id, $cutOffStart, $cutOffEnd) {
+        //     $cutOffAbsences = "
+        //         WITH RECURSIVE calendar_days AS (
+        //             SELECT DATE('$cutOffStart') AS date_day
+        //             UNION ALL
+        //             SELECT DATE_ADD(date_day, INTERVAL 1 DAY)
+        //             FROM calendar_days
+        //             WHERE date_day < DATE('$cutOffEnd')
+        //         )
+
+        //         SELECT COUNT(*) AS total_absences
+        //         FROM calendar_days cd
+
+        //         LEFT JOIN {$this->attendance} AS att
+        //             ON att.empID = $id
+        //             AND att.attendanceDate = cd.date_day
+        //             AND att.logTypeID IN (1, 2)   -- Time In or Late
+
+        //         LEFT JOIN {$this->leaves} AS leaves
+        //             ON leaves.empID = $id
+        //             AND leaves.status = 'Approved'
+        //             AND cd.date_day BETWEEN leaves.effectivityStartDate AND leaves.effectivityEndDate
+
+        //         LEFT JOIN {$this->weekOff} AS weekoff
+        //             ON weekoff.empID = $id
+
+        //         WHERE 
+        //             att.empID IS NULL             -- No attendance = absent
+        //             AND leaves.empID IS NULL      -- Not on approved leave
+        //             AND (
+        //                 CASE DAYNAME(cd.date_day)
+        //                     WHEN 'Monday' THEN weekoff.wo_mon
+        //                     WHEN 'Tuesday' THEN weekoff.wo_tue
+        //                     WHEN 'Wednesday' THEN weekoff.wo_wed
+        //                     WHEN 'Thursday' THEN weekoff.wo_thu
+        //                     WHEN 'Friday' THEN weekoff.wo_fri
+        //                     WHEN 'Saturday' THEN weekoff.wo_sat
+        //                     WHEN 'Sunday' THEN weekoff.wo_sun
+        //                 END
+        //             ) = 0                          -- Not a week-off
+        //     ";
+        //     return $cutOffAbsences;
+        // }
+
         public function getCutOffAbsences($id, $cutOffStart, $cutOffEnd) {
             $cutOffAbsences = "
                 WITH RECURSIVE calendar_days AS (
                     SELECT DATE('$cutOffStart') AS date_day
+
                     UNION ALL
+
                     SELECT DATE_ADD(date_day, INTERVAL 1 DAY)
                     FROM calendar_days
                     WHERE date_day < DATE('$cutOffEnd')
@@ -1753,22 +1747,53 @@
                 SELECT COUNT(*) AS total_absences
                 FROM calendar_days cd
 
-                LEFT JOIN {$this->attendance} AS att
-                    ON att.empID = $id
-                    AND att.attendanceDate = cd.date_day
-                    AND att.logTypeID IN (1, 2)   -- Time In or Late
+                LEFT JOIN (
+                    SELECT
+                        attendanceDate,
 
-                LEFT JOIN {$this->leaves} AS leaves
+                        SUM(
+                            CASE
+                                WHEN logTypeID IN (1,2) THEN 1
+                                ELSE 0
+                            END
+                        ) AS total_in,
+
+                        SUM(
+                            CASE
+                                WHEN logTypeID IN (3,4) THEN 1
+                                ELSE 0
+                            END
+                        ) AS total_out
+
+                    FROM {$this->attendance}
+
+                    WHERE empID = $id
+
+                    GROUP BY attendanceDate
+                ) att
+                    ON att.attendanceDate = cd.date_day
+
+                LEFT JOIN {$this->leaves} leaves
                     ON leaves.empID = $id
                     AND leaves.status = 'Approved'
-                    AND cd.date_day BETWEEN leaves.effectivityStartDate AND leaves.effectivityEndDate
+                    AND cd.date_day BETWEEN leaves.effectivityStartDate
+                                        AND leaves.effectivityEndDate
 
-                LEFT JOIN {$this->weekOff} AS weekoff
+                LEFT JOIN {$this->weekOff} weekoff
                     ON weekoff.empID = $id
 
-                WHERE 
-                    att.empID IS NULL             -- No attendance = absent
-                    AND leaves.empID IS NULL      -- Not on approved leave
+                WHERE
+
+                    (
+                        att.attendanceDate IS NULL
+
+                        OR att.total_in = 0
+
+                        OR att.total_out = 0
+                    )
+
+                    AND leaves.empID IS NULL
+
                     AND (
                         CASE DAYNAME(cd.date_day)
                             WHEN 'Monday' THEN weekoff.wo_mon
@@ -1779,9 +1804,29 @@
                             WHEN 'Saturday' THEN weekoff.wo_sat
                             WHEN 'Sunday' THEN weekoff.wo_sun
                         END
-                    ) = 0                          -- Not a week-off
+                    ) = 0
             ";
+
             return $cutOffAbsences;
+        }
+
+        public function getIncompleteAtendance($id, $cutOffStart, $cutOffEnd) {
+            $incompleteAttendance = "
+                SELECT COUNT(*) AS total_incomplete
+                FROM (
+                    SELECT attendanceDate
+                    FROM tbl_attendance
+                    WHERE empID = $id
+                    AND attendanceDate BETWEEN '$cutOffStart' AND '$cutOffEnd'
+                    AND logTypeID IN (1,2,3,4)
+                    GROUP BY attendanceDate
+                    HAVING
+                        SUM(CASE WHEN logTypeID IN (1,2) THEN 1 ELSE 0 END) = 0
+                        OR
+                        SUM(CASE WHEN logTypeID IN (3,4) THEN 1 ELSE 0 END) = 0
+                ) AS incomplete_records
+            ";
+            return $incompleteAttendance;
         }
 
         public function getLeavesForPayroll($empID, $from, $to): string {
@@ -1846,8 +1891,12 @@
                 $employeee_department = $employeeDetails['departmentID'];
 
                 // COMPUTE DAYS WORKED
-                $daysWorkedQuery = $this->dbConnect()->query("SELECT * FROM tbl_attendance WHERE empID = $employeeDetails[id] AND (logTypeID IN (1, 2)) AND attendanceDate BETWEEN DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom'))) AND DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleTo')))");
-                $employee_daysWorked = mysqli_num_rows($daysWorkedQuery);
+                $daysWorkedQuery = $this->dbConnect()->query("SELECT * FROM tbl_attendance WHERE empID = $employeeDetails[id] AND (logTypeID IN (1, 2, 3, 4)) AND attendanceDate BETWEEN DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom'))) AND DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleTo')))");
+                $employee_daysWorked = floor(mysqli_num_rows($daysWorkedQuery) / 2);
+
+                // // COMPUTE DAYS WORKED
+                // $daysWorkedQuery = $this->dbConnect()->query("SELECT * FROM tbl_attendance WHERE empID = $employeeDetails[id] AND (logTypeID IN (1, 2)) AND attendanceDate BETWEEN DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom'))) AND DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleTo')))");
+                // $employee_daysWorked = mysqli_num_rows($daysWorkedQuery);
 
                 // CHECK FOR HOLIDAYS
                 $holidaysQuery = $this->dbConnect()->query("SELECT * FROM tbl_holidays WHERE dateFrom BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'");
@@ -1957,7 +2006,6 @@
                 $referralIncentivePay = 0;
 
                 // INITIALIZE VARIABLES FOR LATE MINS, UNDERTIME MINS, AND ABSENCES COMPUTATION, INCOMPLETE ATTENDANCE
-                $incompleteAttendance = 0;
                 $totalAbsences = 0;
                 $absencesAmt = 0;
                 $totalLateMins = 0;
@@ -2006,9 +2054,7 @@
                     $totalRegularHolidayNDHours += $result['totalRegularHolidayNightHours'];
                     $totalSpecialHolidayHours += $result['totalSpecialHolidayHours'];
                     $totalSpecialHolidayNDHours += $result['totalSpecialHolidayNightHours'];
-                    $incompleteAttendance += $result['incompleteAttendance'];
                 }
-
 
                 // COMPUTE OVERTIME HOURS
                 $overtimeQuery = $this->dbConnect()->query(("SELECT * FROM tbl_filedot WHERE empID = $employee_id AND (otDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo') AND status = '1'"));
@@ -2217,7 +2263,6 @@
                 }
 
                 // COMPUTATION FOR LEAVES
-                // $leaveQuery = $this->dbConnect()->query("SELECT empID, lt.leaveTypeID, effectivityStartDate, effectivityEndDate FROM tbl_leaveapplications AS la INNER JOIN tbl_leavetype AS lt ON la.leaveTypeID = lt.leaveTypeID WHERE effectivityStartDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND effectivityEndDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND status = 'Approved' AND empID=$employee_id");
                 $sql = $this->getLeavesForPayroll($employee_id, $payrollCycleFrom, $payrollCycleTo);
                 $leaveQuery = $this->dbConnect()->query($sql);
                 while ($leaveDetails = mysqli_fetch_array($leaveQuery)) {
@@ -2290,11 +2335,10 @@
                 $lateMinsAmt = round(($employee_hourlyRate / 60) * $totalLateMins, 2);
                 $undertimeMinsAmt = round(($employee_hourlyRate / 60) * $totalUndertimeMins, 2);
 
-                $employee_daysWorked -= $incompleteAttendance;
                 if ($employeee_department == 3 || $employeee_department == 4) {
                     $absencesQuery = $this->dbConnect()->query($this->getCutOffAbsences($employee_id, $payrollCycleFrom, $payrollCycleTo));
                     $absencesDetails = mysqli_fetch_array($absencesQuery);
-                    $totalAbsences = (int)$absencesDetails['total_absences'] + $incompleteAttendance;
+                    $totalAbsences = $absencesDetails['total_absences'];
                     $absencesAmt = round($employee_dailyRate * $totalAbsences, 2);
                     $basePay = round($employee_basicPay / 2, 2);
                 }
@@ -2438,8 +2482,12 @@
                 $employeee_department = $employeeDetails['departmentID'];
 
                 // COMPUTE DAYS WORKED
-                $daysWorkedQuery = $this->dbConnect()->query("SELECT * FROM tbl_attendance WHERE empID = $employeeDetails[id] AND (logTypeID IN (1, 2)) AND attendanceDate BETWEEN DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom'))) AND DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleTo')))");
-                $employee_daysWorked = mysqli_num_rows($daysWorkedQuery);
+                $daysWorkedQuery = $this->dbConnect()->query("SELECT * FROM tbl_attendance WHERE empID = $employeeDetails[id] AND (logTypeID IN (1, 2, 3, 4)) AND attendanceDate BETWEEN DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom'))) AND DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleTo')))");
+                $employee_daysWorked = floor(mysqli_num_rows($daysWorkedQuery) / 2);
+
+                // // COMPUTE DAYS WORKED
+                // $daysWorkedQuery = $this->dbConnect()->query("SELECT * FROM tbl_attendance WHERE empID = $employeeDetails[id] AND (logTypeID IN (1, 2)) AND attendanceDate BETWEEN DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom'))) AND DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleTo')))");
+                // $employee_daysWorked = mysqli_num_rows($daysWorkedQuery);
 
                 // CHECK FOR HOLIDAYS
                 $holidaysQuery = $this->dbConnect()->query("SELECT * FROM tbl_holidays WHERE dateFrom BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'");
@@ -2549,7 +2597,6 @@
                 $referralIncentivePay = 0;
 
                 // INITIALIZE VARIABLES FOR LATE MINS, UNDERTIME MINS, AND ABSENCES COMPUTATION, INCOMPLETE ATTENDANCE
-                $incompleteAttendance = 0;
                 $totalAbsences = 0;
                 $absencesAmt = 0;
                 $totalLateMins = 0;
@@ -2598,9 +2645,7 @@
                     $totalRegularHolidayNDHours += $result['totalRegularHolidayNightHours'];
                     $totalSpecialHolidayHours += $result['totalSpecialHolidayHours'];
                     $totalSpecialHolidayNDHours += $result['totalSpecialHolidayNightHours'];
-                    $incompleteAttendance += $result['incompleteAttendance'];
                 }
-
 
                 // COMPUTE OVERTIME HOURS
                 $overtimeQuery = $this->dbConnect()->query(("SELECT * FROM tbl_filedot WHERE empID = $employee_id AND (otDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo') AND status = '1'"));
@@ -2809,7 +2854,6 @@
                 }
 
                 // COMPUTATION FOR LEAVES
-                // $leaveQuery = $this->dbConnect()->query("SELECT empID, lt.leaveTypeID, effectivityStartDate, effectivityEndDate FROM tbl_leaveapplications AS la INNER JOIN tbl_leavetype AS lt ON la.leaveTypeID = lt.leaveTypeID WHERE effectivityStartDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND effectivityEndDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND status = 'Approved' AND empID=$employee_id");
                 $sql = $this->getLeavesForPayroll($employee_id, $payrollCycleFrom, $payrollCycleTo);
                 $leaveQuery = $this->dbConnect()->query($sql);
                 while ($leaveDetails = mysqli_fetch_array($leaveQuery)) {
@@ -2882,11 +2926,10 @@
                 $lateMinsAmt = round(($employee_hourlyRate / 60) * $totalLateMins, 2);
                 $undertimeMinsAmt = round(($employee_hourlyRate / 60) * $totalUndertimeMins, 2);
 
-                // $employee_daysWorked -= $incompleteAttendance;
                 if ($employeee_department == 3 || $employeee_department == 4) {
                     $absencesQuery = $this->dbConnect()->query($this->getCutOffAbsences($employee_id, $payrollCycleFrom, $payrollCycleTo));
                     $absencesDetails = mysqli_fetch_array($absencesQuery);
-                    $totalAbsences = (int)$absencesDetails['total_absences'];
+                    $totalAbsences = $absencesDetails['total_absences'];
                     $absencesAmt = round($employee_dailyRate * $totalAbsences, 2);
                     $basePay = round($employee_basicPay / 2, 2);
                 }
