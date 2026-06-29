@@ -23,24 +23,28 @@
                     <div class="card-header">
                         <ul class="nav nav-pills" id="pills-tab" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <!--AGENTS BUTTON-->
-                                <button class="nav-link active uncheck" id="pills-agents-tab" data-bs-toggle="pill" data-bs-target="#pills-agents" type="button" role="tab" aria-controls="pills-agents" aria-selected="true">Agents</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <!--TL/QA BUTTON-->
-                                <button class="nav-link uncheck" id="pills-tlqa-tab" data-bs-toggle="pill" data-bs-target="#pills-tlqa" type="button" role="tab" aria-controls="pills-tlqa" aria-selected="false">TL/QA</button>
+                                <!--OPERATIONS BUTTON-->
+                                <button class="nav-link active uncheck" id="pills-operations-tab" data-bs-toggle="pill" data-bs-target="#pills-operations" type="button" role="tab" aria-controls="pills-operations" aria-selected="true">Operations</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <!--RECRUITMENT BUTTON-->
                                 <button class="nav-link uncheck" id="pills-recruitment-tab" data-bs-toggle="pill" data-bs-target="#pills-recruitment" type="button" role="tab" aria-controls="pills-recruitment" aria-selected="false">Recruitment</button>
                             </li>
                             <li class="nav-item" role="presentation">
+                                <!--BUSINESS DEV BUTTON-->
+                                <button class="nav-link uncheck" id="pills-business-tab" data-bs-toggle="pill" data-bs-target="#pills-business" type="button" role="tab" aria-controls="pills-business" aria-selected="false">Business Development</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <!--FACILITIES BUTTON-->
+                                <button class="nav-link uncheck" id="pills-facilities-tab" data-bs-toggle="pill" data-bs-target="#pills-facilities" type="button" role="tab" aria-controls="pills-facilities" aria-selected="false">Facilities</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
                                 <!--IT BUTTON-->
                                 <button class="nav-link uncheck" id="pills-it-tab" data-bs-toggle="pill" data-bs-target="#pills-it" type="button" role="tab" aria-controls="pills-it" aria-selected="false">IT</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                    <!--FINANCE BUTTON-->
-                                    <button class="nav-link uncheck" id="pills-finance-tab" data-bs-toggle="pill" data-bs-target="#pills-finance" type="button" role="tab" aria-controls="pills-finance" aria-selected="false">Finance</button>
+                                <!--FINANCE BUTTON-->
+                                <button class="nav-link uncheck" id="pills-finance-tab" data-bs-toggle="pill" data-bs-target="#pills-finance" type="button" role="tab" aria-controls="pills-finance" aria-selected="false">Finance</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <!--HR BUTTON-->
@@ -53,192 +57,502 @@
                         <div class="tab-content" id="pills-tabContent">
 
                             <!-- ------------------------------------------------------------------------------------------------- -->
-                            <!-- -------------------------------------------- AGENTS TAB ----------------------------------------- -->
+                            <!-- ---------------------------------------- OPERATIONS TAB ----------------------------------------- -->
                             <!-- ------------------------------------------------------------------------------------------------- -->
-                            <div class="tab-pane fade show active" id="pills-agents" role="tabpanel" aria-labelledby="pills-agents-tab">
+                            <div class="tab-pane fade show active" id="pills-operations" role="tabpanel" aria-labelledby="pills-operations-tab">
                                 <div class="card border-0">
                                     <ul class="nav nav-pills" id="pills-tab" role="tablist">
                                         <li class="nav-item" role="presentation">
-                                            <!--ACTIVE BUTTON-->
-                                            <button class="nav-link active" id="agents-active-tab" data-bs-toggle="pill" data-bs-target="#agents-active" type="button" role="tab" aria-controls="agents-active" aria-selected="true">Active</button>
+                                            <!--AGENTS BUTTON-->
+                                            <button class="nav-link active" id="operations-agents-tab" data-bs-toggle="pill" data-bs-target="#operations-agents" type="button" role="tab" aria-controls="operations-agents" aria-selected="true">Agents</button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <!--RESIGNED BUTTON-->
-                                            <button class="nav-link" id="agents-inactive-tab" data-bs-toggle="pill" data-bs-target="#agents-inactive" type="button" role="tab" aria-controls="agents-inactive" aria-selected="false">Resigned</button>
+                                            <!--TRAINER BUTTON-->
+                                            <button class="nav-link" id="operations-trainer-tab" data-bs-toggle="pill" data-bs-target="#operations-trainer" type="button" role="tab" aria-controls="operations-trainer" aria-selected="false">Trainer</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <!--SME BUTTON-->
+                                            <button class="nav-link" id="operations-sme-tab" data-bs-toggle="pill" data-bs-target="#operations-sme" type="button" role="tab" aria-controls="operations-sme" aria-selected="false">SME</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <!--QA BUTTON-->
+                                            <button class="nav-link" id="operations-qa-tab" data-bs-toggle="pill" data-bs-target="#operations-qa" type="button" role="tab" aria-controls="operations-qa" aria-selected="false">QA</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <!--TL/MANAGER BUTTON-->
+                                            <button class="nav-link" id="operations-tlman-tab" data-bs-toggle="pill" data-bs-target="#operations-tlman" type="button" role="tab" aria-controls="operations-tlman" aria-selected="false">TL/Manager</button>
                                         </li>
                                     </ul>
 
-                                    <div class="tab-content mt-2" id="pills-tabContent">
-                                        <!-- ACTIVE AGENTS TABLE  -->
-                                        <div class="tab-pane fade show active" id="agents-active" role="tabpanel" aria-labelledby="agents-active-tab">
-                                            <table id="activeAgentsTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
-                                                <thead class="bg-gray-50">
-                                                    <tr>
-                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
-                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
-                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody class="bg-white divide-y divide-gray-200">
-                                                    <?php
-                                                        $employeeQuery = mysqli_query($conn, $employees->viewActiveAgents());
-                                                        while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+                                    <div class="tab-content mt-3" id="pills-tabContent">
+                                        <!-- --------------- AGENTS --------------- -->
+                                        <div class="tab-pane fade show active" id="operations-agents" role="tabpanel" aria-labelledby="operations-operations-tab">
+                                            <div class="card border-0">
+                                                <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                                                    <li class="nav-item" role="presentation">
+                                                        <!--ACTIVE BUTTON-->
+                                                        <button class="nav-link active" id="agents-active-tab" data-bs-toggle="pill" data-bs-target="#agents-active" type="button" role="tab" aria-controls="agents-active" aria-selected="true">Active</button>
+                                                    </li>
+                                                    <li class="nav-item" role="presentation">
+                                                        <!--INACTIVE BUTTON-->
+                                                        <button class="nav-link" id="agents-inactive-tab" data-bs-toggle="pill" data-bs-target="#agents-inactive" type="button" role="tab" aria-controls="agents-inactive" aria-selected="false">Inactive</button>
+                                                    </li>
+                                                </ul>
 
-                                                            $employee_id = $employeeDetails['id'];
-                                                            $employee_employeeID = $employeeDetails['employeeID'];
-                                                            $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
-                                                            $employee_emailAddress = $employeeDetails['emailAddress'];
-                                                            $employee_mobileNumber = $employeeDetails['mobileNumber'];
-                                                            $employee_department = $employeeDetails['departmentName'];
+                                                <div class="tab-content mt-2" id="pills-tabContent">
+                                                    <!-- ACTIVE AGENTS TABLE  -->
+                                                    <div class="tab-pane fade show active" id="agents-active" role="tabpanel" aria-labelledby="agents-active-tab">
+                                                        <table id="activeAgentsTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                            <thead class="bg-gray-50">
+                                                                <tr>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody class="bg-white divide-y divide-gray-200">
+                                                                <?php
+                                                                    $employeeQuery = mysqli_query($conn, $employees->viewActiveAgents());
+                                                                    while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+
+                                                                        $employee_id = $employeeDetails['id'];
+                                                                        $employee_employeeID = $employeeDetails['employeeID'];
+                                                                        $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                                        $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                                        $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                                        $employee_department = $employeeDetails['departmentName'];
 
 
-                                                            echo "<tr data-id='" . $employee_id . "' class='employeeView cursor-pointer'>";
-                                                            echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
-                                                            echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
-                                                            echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
-                                                            echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
-                                                            echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
-                                                            echo "</td>";
-                                                        }
-                                                    ?>
-                                                </tbody>
-                                            </table>
+                                                                        echo "<tr data-id='" . $employee_id . "' class='employeeView cursor-pointer'>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                                        echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
+                                                                        echo "</td>";
+                                                                    }
+                                                                ?>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+
+                                                    <!-- INACTIVE AGENTS TABLE  -->
+                                                    <div class="tab-pane fade" id="agents-inactive" role="tabpanel" aria-labelledby="agents-inactive-tab">
+                                                        <table id="inactiveAgentsTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                            <thead class="bg-gray-50">
+                                                                <tr>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody class="bg-white divide-y divide-gray-200">
+                                                                <?php
+                                                                    $employeeQuery = mysqli_query($conn, $employees->viewResignedAgents());
+                                                                    while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+
+                                                                        $employee_id = $employeeDetails['id'];
+                                                                        $employee_employeeID = $employeeDetails['employeeID'];
+                                                                        $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                                        $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                                        $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                                        $employee_department = $employeeDetails['departmentName'];
+
+
+                                                                        echo "<tr data-id='" . $employee_id . "' class='resignedView cursor-pointer'>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                                        echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
+                                                                        echo "</td>";
+                                                                    }
+                                                                ?>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
 
-                                        <!-- ACTIVE AGENTS TABLE  -->
-                                        <div class="tab-pane fade" id="agents-inactive" role="tabpanel" aria-labelledby="agents-inactive-tab">
-                                            <table id="inactiveAgentsTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
-                                                <thead class="bg-gray-50">
-                                                    <tr>
-                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
-                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
-                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody class="bg-white divide-y divide-gray-200">
-                                                    <?php
-                                                        $employeeQuery = mysqli_query($conn, $employees->viewResignedAgents());
-                                                        while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+                                        <!-- -------------- TRAINER --------------- -->
+                                        <div class="tab-pane fade" id="operations-trainer" role="tabpanel" aria-labelledby="operations-trainer-tab">
+                                            <div class="card border-0">
+                                                <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                                                    <li class="nav-item" role="presentation">
+                                                        <!--ACTIVE BUTTON-->
+                                                        <button class="nav-link active" id="trainer-active-tab" data-bs-toggle="pill" data-bs-target="#trainer-active" type="button" role="tab" aria-controls="trainer-active" aria-selected="true">Active</button>
+                                                    </li>
+                                                    <li class="nav-item" role="presentation">
+                                                        <!--RESIGNED BUTTON-->
+                                                        <button class="nav-link" id="trainer-inactive-tab" data-bs-toggle="pill" data-bs-target="#trainer-inactive" type="button" role="tab" aria-controls="trainer-inactive" aria-selected="false">Inactive</button>
+                                                    </li>
+                                                </ul>
 
-                                                            $employee_id = $employeeDetails['id'];
-                                                            $employee_employeeID = $employeeDetails['employeeID'];
-                                                            $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
-                                                            $employee_emailAddress = $employeeDetails['emailAddress'];
-                                                            $employee_mobileNumber = $employeeDetails['mobileNumber'];
-                                                            $employee_department = $employeeDetails['departmentName'];
+                                                <div class="tab-content mt-2" id="pills-tabContent">
+                                                    <!-- ACTIVE TRAINER TABLE  -->
+                                                    <div class="tab-pane fade show active" id="trainer-active" role="tabpanel" aria-labelledby="trainer-active-tab">
+                                                        <table id="activeTrainerTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                            <thead class="bg-gray-50">
+                                                                <tr>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody class="bg-white divide-y divide-gray-200">
+                                                                <?php
+                                                                    $employeeQuery = mysqli_query($conn, $employees->viewActiveTrainer());
+                                                                    while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
 
-
-                                                            echo "<tr data-id='" . $employee_id . "' class='resignedView cursor-pointer'>";
-                                                            echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
-                                                            echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
-                                                            echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
-                                                            echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
-                                                            echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
-                                                            echo "</td>";
-                                                        }
-                                                    ?>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- ------------------------------------------------------------------------------------------------- -->
-                            <!-- --------------------------------------------- TL/QA TAB ----------------------------------------- -->
-                            <!-- ------------------------------------------------------------------------------------------------- -->
-                            <div class="tab-pane fade" id="pills-tlqa" role="tabpanel" aria-labelledby="pills-tlqa-tab">
-                                <div class="card border-0">
-                                    <ul class="nav nav-pills" id="pills-tab" role="tablist">
-                                        <li class="nav-item" role="presentation">
-                                            <!--ACTIVE BUTTON-->
-                                            <button class="nav-link active" id="tlqa-active-tab" data-bs-toggle="pill" data-bs-target="#tlqa-active" type="button" role="tab" aria-controls="tlqa-active" aria-selected="true">Active</button>
-                                        </li>
-                                        <li class="nav-item" role="presentation">
-                                            <!--RESIGNED BUTTON-->
-                                            <button class="nav-link" id="tlqa-inactive-tab" data-bs-toggle="pill" data-bs-target="#tlqa-inactive" type="button" role="tab" aria-controls="tlqa-inactive" aria-selected="false">Resigned</button>
-                                        </li>
-                                    </ul>
-
-                                    <div class="tab-content mt-2" id="pills-tabContent">
-                                        <!-- ACTIVE TLQA TABLE  -->
-                                        <div class="tab-pane fade show active" id="tlqa-active" role="tabpanel" aria-labelledby="tlqa-active-tab">
-                                            <table id="activeTLQATable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
-                                                <thead class="bg-gray-50">
-                                                    <tr>
-                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
-                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
-                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody class="bg-white divide-y divide-gray-200">
-                                                    <?php
-                                                        $employeeQuery = mysqli_query($conn, $employees->viewActiveTLQA());
-                                                        while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
-
-                                                            $employee_id = $employeeDetails['id'];
-                                                            $employee_employeeID = $employeeDetails['employeeID'];
-                                                            $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
-                                                            $employee_emailAddress = $employeeDetails['emailAddress'];
-                                                            $employee_mobileNumber = $employeeDetails['mobileNumber'];
-                                                            $employee_department = $employeeDetails['departmentName'];
+                                                                        $employee_id = $employeeDetails['id'];
+                                                                        $employee_employeeID = $employeeDetails['employeeID'];
+                                                                        $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                                        $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                                        $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                                        $employee_department = $employeeDetails['departmentName'];
 
 
-                                                            echo "<tr data-id='" . $employee_id . "' class='employeeView cursor-pointer'>";
-                                                            echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
-                                                            echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
-                                                            echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
-                                                            echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
-                                                            echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
-                                                            echo "</td>";
-                                                        }
-                                                    ?>
-                                                </tbody>
-                                            </table>
+                                                                        echo "<tr data-id='" . $employee_id . "' class='employeeView cursor-pointer'>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                                        echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
+                                                                        echo "</td>";
+                                                                    }
+                                                                ?>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+
+                                                    <!-- RESIGNED TRAINER TABLE  -->
+                                                    <div class="tab-pane fade" id="trainer-inactive" role="tabpanel" aria-labelledby="trainer-inactive-tab">
+                                                        <table id="inactiveTrainerTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                            <thead class="bg-gray-50">
+                                                                <tr>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody class="bg-white divide-y divide-gray-200">
+                                                                <?php
+                                                                    $employeeQuery = mysqli_query($conn, $employees->viewResignedTrainer());
+                                                                    while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+
+                                                                        $employee_id = $employeeDetails['id'];
+                                                                        $employee_employeeID = $employeeDetails['employeeID'];
+                                                                        $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                                        $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                                        $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                                        $employee_department = $employeeDetails['departmentName'];
+
+
+                                                                        echo "<tr data-id='" . $employee_id . "' class='resignedView cursor-pointer'>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                                        echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
+                                                                        echo "</td>";
+                                                                    }
+                                                                ?>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
 
-                                        <!-- ACTIVE TLQA TABLE  -->
-                                        <div class="tab-pane fade" id="tlqa-inactive" role="tabpanel" aria-labelledby="tlqa-inactive-tab">
-                                            <table id="inactiveTLQATable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
-                                                <thead class="bg-gray-50">
-                                                    <tr>
-                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
-                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
-                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody class="bg-white divide-y divide-gray-200">
-                                                    <?php
-                                                        $employeeQuery = mysqli_query($conn, $employees->viewResignedTLQA());
-                                                        while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+                                        <!-- ---------------- SME ----------------- -->
+                                        <div class="tab-pane fade" id="operations-sme" role="tabpanel" aria-labelledby="operations-sme-tab">
+                                            <div class="card border-0">
+                                                <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                                                    <li class="nav-item" role="presentation">
+                                                        <!--ACTIVE BUTTON-->
+                                                        <button class="nav-link active" id="sme-active-tab" data-bs-toggle="pill" data-bs-target="#sme-active" type="button" role="tab" aria-controls="sme-active" aria-selected="true">Active</button>
+                                                    </li>
+                                                    <li class="nav-item" role="presentation">
+                                                        <!--INACTIVE BUTTON-->
+                                                        <button class="nav-link" id="sme-inactive-tab" data-bs-toggle="pill" data-bs-target="#sme-inactive" type="button" role="tab" aria-controls="sme-inactive" aria-selected="false">Inactive</button>
+                                                    </li>
+                                                </ul>
 
-                                                            $employee_id = $employeeDetails['id'];
-                                                            $employee_employeeID = $employeeDetails['employeeID'];
-                                                            $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
-                                                            $employee_emailAddress = $employeeDetails['emailAddress'];
-                                                            $employee_mobileNumber = $employeeDetails['mobileNumber'];
-                                                            $employee_department = $employeeDetails['departmentName'];
+                                                <div class="tab-content mt-2" id="pills-tabContent">
+                                                    <!-- ACTIVE SME TABLE  -->
+                                                    <div class="tab-pane fade show active" id="sme-active" role="tabpanel" aria-labelledby="sme-active-tab">
+                                                        <table id="activesSMETable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                            <thead class="bg-gray-50">
+                                                                <tr>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody class="bg-white divide-y divide-gray-200">
+                                                                <?php
+                                                                    $employeeQuery = mysqli_query($conn, $employees->viewActiveSME());
+                                                                    while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+
+                                                                        $employee_id = $employeeDetails['id'];
+                                                                        $employee_employeeID = $employeeDetails['employeeID'];
+                                                                        $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                                        $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                                        $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                                        $employee_department = $employeeDetails['departmentName'];
 
 
-                                                            echo "<tr data-id='" . $employee_id . "' class='resignedView cursor-pointer'>";
-                                                            echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
-                                                            echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
-                                                            echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
-                                                            echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
-                                                            echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
-                                                            echo "</td>";
-                                                        }
-                                                    ?>
-                                                </tbody>
-                                            </table>
+                                                                        echo "<tr data-id='" . $employee_id . "' class='employeeView cursor-pointer'>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                                        echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
+                                                                        echo "</td>";
+                                                                    }
+                                                                ?>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+
+                                                    <!-- INACTIVE SME TABLE  -->
+                                                    <div class="tab-pane fade" id="sme-inactive" role="tabpanel" aria-labelledby="sme-inactive-tab">
+                                                        <table id="inactiveSMETable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                            <thead class="bg-gray-50">
+                                                                <tr>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody class="bg-white divide-y divide-gray-200">
+                                                                <?php
+                                                                    $employeeQuery = mysqli_query($conn, $employees->viewResignedSME());
+                                                                    while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+
+                                                                        $employee_id = $employeeDetails['id'];
+                                                                        $employee_employeeID = $employeeDetails['employeeID'];
+                                                                        $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                                        $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                                        $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                                        $employee_department = $employeeDetails['departmentName'];
+
+
+                                                                        echo "<tr data-id='" . $employee_id . "' class='resignedView cursor-pointer'>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                                        echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
+                                                                        echo "</td>";
+                                                                    }
+                                                                ?>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- -------------- QA --------------- -->
+                                        <div class="tab-pane fade" id="operations-qa" role="tabpanel" aria-labelledby="operations-qa-tab">
+                                            <div class="card border-0">
+                                                <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                                                    <li class="nav-item" role="presentation">
+                                                        <!--ACTIVE BUTTON-->
+                                                        <button class="nav-link active" id="qa-active-tab" data-bs-toggle="pill" data-bs-target="#qa-active" type="button" role="tab" aria-controls="qa-active" aria-selected="true">Active</button>
+                                                    </li>
+                                                    <li class="nav-item" role="presentation">
+                                                        <!--INACTIVE BUTTON-->
+                                                        <button class="nav-link" id="qa-inactive-tab" data-bs-toggle="pill" data-bs-target="#qa-inactive" type="button" role="tab" aria-controls="qa-inactive" aria-selected="false">Inactive</button>
+                                                    </li>
+                                                </ul>
+
+                                                <div class="tab-content mt-2" id="pills-tabContent">
+                                                    <!-- ACTIVE QA TABLE  -->
+                                                    <div class="tab-pane fade show active" id="qa-active" role="tabpanel" aria-labelledby="qa-active-tab">
+                                                        <table id="activeQATable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                            <thead class="bg-gray-50">
+                                                                <tr>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody class="bg-white divide-y divide-gray-200">
+                                                                <?php
+                                                                    $employeeQuery = mysqli_query($conn, $employees->viewActiveQA());
+                                                                    while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+
+                                                                        $employee_id = $employeeDetails['id'];
+                                                                        $employee_employeeID = $employeeDetails['employeeID'];
+                                                                        $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                                        $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                                        $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                                        $employee_department = $employeeDetails['departmentName'];
+
+
+                                                                        echo "<tr data-id='" . $employee_id . "' class='employeeView cursor-pointer'>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                                        echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
+                                                                        echo "</td>";
+                                                                    }
+                                                                ?>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+
+                                                    <!-- INACTIVE QA TABLE  -->
+                                                    <div class="tab-pane fade" id="qa-inactive" role="tabpanel" aria-labelledby="qa-inactive-tab">
+                                                        <table id="inactiveQATable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                            <thead class="bg-gray-50">
+                                                                <tr>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody class="bg-white divide-y divide-gray-200">
+                                                                <?php
+                                                                    $employeeQuery = mysqli_query($conn, $employees->viewResignedQA());
+                                                                    while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+
+                                                                        $employee_id = $employeeDetails['id'];
+                                                                        $employee_employeeID = $employeeDetails['employeeID'];
+                                                                        $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                                        $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                                        $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                                        $employee_department = $employeeDetails['departmentName'];
+
+
+                                                                        echo "<tr data-id='" . $employee_id . "' class='resignedView cursor-pointer'>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                                        echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
+                                                                        echo "</td>";
+                                                                    }
+                                                                ?>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- ----------- TL/MANAGER ---------- -->
+                                        <div class="tab-pane fade" id="operations-tlman" role="tabpanel" aria-labelledby="operations-tlman-tab">
+                                            <div class="card border-0">
+                                                <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                                                    <li class="nav-item" role="presentation">
+                                                        <!--ACTIVE BUTTON-->
+                                                        <button class="nav-link active" id="tlman-active-tab" data-bs-toggle="pill" data-bs-target="#tlman-active" type="button" role="tab" aria-controls="tlman-active" aria-selected="true">Active</button>
+                                                    </li>
+                                                    <li class="nav-item" role="presentation">
+                                                        <!--INACTIVE BUTTON-->
+                                                        <button class="nav-link" id="tlman-inactive-tab" data-bs-toggle="pill" data-bs-target="#tlman-inactive" type="button" role="tab" aria-controls="tlman-inactive" aria-selected="false">Inactive</button>
+                                                    </li>
+                                                </ul>
+
+                                                <div class="tab-content mt-2" id="pills-tabContent">
+                                                    <!-- ACTIVE QA TABLE  -->
+                                                    <div class="tab-pane fade show active" id="tlman-active" role="tabpanel" aria-labelledby="tlman-active-tab">
+                                                        <table id="activeTLManTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                            <thead class="bg-gray-50">
+                                                                <tr>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody class="bg-white divide-y divide-gray-200">
+                                                                <?php
+                                                                    $employeeQuery = mysqli_query($conn, $employees->viewActiveTLMan());
+                                                                    while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+
+                                                                        $employee_id = $employeeDetails['id'];
+                                                                        $employee_employeeID = $employeeDetails['employeeID'];
+                                                                        $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                                        $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                                        $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                                        $employee_department = $employeeDetails['departmentName'];
+
+
+                                                                        echo "<tr data-id='" . $employee_id . "' class='employeeView cursor-pointer'>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                                        echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
+                                                                        echo "</td>";
+                                                                    }
+                                                                ?>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+
+                                                    <!-- INACTIVE QA TABLE  -->
+                                                    <div class="tab-pane fade" id="tlman-inactive" role="tabpanel" aria-labelledby="tlman-inactive-tab">
+                                                        <table id="inactiveTLManTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                            <thead class="bg-gray-50">
+                                                                <tr>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
+                                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody class="bg-white divide-y divide-gray-200">
+                                                                <?php
+                                                                    $employeeQuery = mysqli_query($conn, $employees->viewResignedTLMan());
+                                                                    while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+
+                                                                        $employee_id = $employeeDetails['id'];
+                                                                        $employee_employeeID = $employeeDetails['employeeID'];
+                                                                        $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                                        $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                                        $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                                        $employee_department = $employeeDetails['departmentName'];
+
+
+                                                                        echo "<tr data-id='" . $employee_id . "' class='resignedView cursor-pointer'>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                                        echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
+                                                                        echo "</td>";
+                                                                    }
+                                                                ?>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -314,6 +628,198 @@
                                                 <tbody class="bg-white divide-y divide-gray-200">
                                                     <?php
                                                         $employeeQuery = mysqli_query($conn, $employees->viewResignedRecruitment());
+                                                        while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+
+                                                            $employee_id = $employeeDetails['id'];
+                                                            $employee_employeeID = $employeeDetails['employeeID'];
+                                                            $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                            $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                            $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                            $employee_department = $employeeDetails['departmentName'];
+
+
+                                                            echo "<tr data-id='" . $employee_id . "' class='resignedView cursor-pointer'>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                            echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
+                                                            echo "</td>";
+                                                        }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <!-- ----------------------------------------- BUSINESS DEV TAB -------------------------------------- -->
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <div class="tab-pane fade" id="pills-business" role="tabpanel" aria-labelledby="pills-business-tab">
+                                <div class="card border-0">
+                                    <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <!--ACTIVE BUTTON-->
+                                            <button class="nav-link active" id="business-active-tab" data-bs-toggle="pill" data-bs-target="#business-active" type="button" role="tab" aria-controls="business-active" aria-selected="true">Active</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <!--RESIGNED BUTTON-->
+                                            <button class="nav-link" id="business-inactive-tab" data-bs-toggle="pill" data-bs-target="#business-inactive" type="button" role="tab" aria-controls="business-inactive" aria-selected="false">Resigned</button>
+                                        </li>
+                                    </ul>
+
+                                    <div class="tab-content mt-2" id="pills-tabContent">
+                                        <!-- ACTIVE BUSINESS DEV TABLE  -->
+                                        <div class="tab-pane fade show active" id="business-active" role="tabpanel" aria-labelledby="business-active-tab">
+                                            <table id="activeBusinessDevTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                <thead class="bg-gray-50">
+                                                    <tr>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="bg-white divide-y divide-gray-200">
+                                                    <?php
+                                                        $employeeQuery = mysqli_query($conn, $employees->viewActiveBusinessDev());
+                                                        while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+
+                                                            $employee_id = $employeeDetails['id'];
+                                                            $employee_employeeID = $employeeDetails['employeeID'];
+                                                            $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                            $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                            $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                            $employee_department = $employeeDetails['departmentName'];
+
+
+                                                            echo "<tr data-id='" . $employee_id . "' class='employeeView cursor-pointer'>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                            echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
+                                                            echo "</td>";
+                                                        }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <!-- ACTIVE BUSINESS DEV TABLE  -->
+                                        <div class="tab-pane fade" id="recruitment-inactive" role="tabpanel" aria-labelledby="recruitment-inactive-tab">
+                                            <table id="inactiveBusinessDevTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                <thead class="bg-gray-50">
+                                                    <tr>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="bg-white divide-y divide-gray-200">
+                                                    <?php
+                                                        $employeeQuery = mysqli_query($conn, $employees->viewResignedBusinessDev());
+                                                        while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+
+                                                            $employee_id = $employeeDetails['id'];
+                                                            $employee_employeeID = $employeeDetails['employeeID'];
+                                                            $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                            $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                            $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                            $employee_department = $employeeDetails['departmentName'];
+
+
+                                                            echo "<tr data-id='" . $employee_id . "' class='resignedView cursor-pointer'>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                            echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
+                                                            echo "</td>";
+                                                        }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <!-- ------------------------------------------ FACILITIES TAB --------------------------------------- -->
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <div class="tab-pane fade" id="pills-facilities" role="tabpanel" aria-labelledby="pills-facilities-tab">
+                                <div class="card border-0">
+                                    <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <!--ACTIVE BUTTON-->
+                                            <button class="nav-link active" id="facilities-active-tab" data-bs-toggle="pill" data-bs-target="#facilities-active" type="button" role="tab" aria-controls="facilities-active" aria-selected="true">Active</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <!--RESIGNED BUTTON-->
+                                            <button class="nav-link" id="facilities-inactive-tab" data-bs-toggle="pill" data-bs-target="#facilities-inactive" type="button" role="tab" aria-controls="facilities-inactive" aria-selected="false">Resigned</button>
+                                        </li>
+                                    </ul>
+
+                                    <div class="tab-content mt-2" id="pills-tabContent">
+                                        <!-- ACTIVE FACILITIES TABLE  -->
+                                        <div class="tab-pane fade show active" id="facilities-active" role="tabpanel" aria-labelledby="facilities-active-tab">
+                                            <table id="activeFacilitiesTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                <thead class="bg-gray-50">
+                                                    <tr>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="bg-white divide-y divide-gray-200">
+                                                    <?php
+                                                        $employeeQuery = mysqli_query($conn, $employees->viewActiveFacilities());
+                                                        while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+
+                                                            $employee_id = $employeeDetails['id'];
+                                                            $employee_employeeID = $employeeDetails['employeeID'];
+                                                            $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                            $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                            $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                            $employee_department = $employeeDetails['departmentName'];
+
+
+                                                            echo "<tr data-id='" . $employee_id . "' class='employeeView cursor-pointer'>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                            echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_mobileNumber . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $employee_department . "</td>";
+                                                            echo "</td>";
+                                                        }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <!-- INACTIVE FACILITIES TABLE  -->
+                                        <div class="tab-pane fade" id="recruitment-inactive" role="tabpanel" aria-labelledby="recruitment-inactive-tab">
+                                            <table id="inactiveFacilitiesTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                <thead class="bg-gray-50">
+                                                    <tr>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="bg-white divide-y divide-gray-200">
+                                                    <?php
+                                                        $employeeQuery = mysqli_query($conn, $employees->viewResignedFacilities());
                                                         while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
 
                                                             $employee_id = $employeeDetails['id'];

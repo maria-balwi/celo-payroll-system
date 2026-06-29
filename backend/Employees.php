@@ -1538,7 +1538,7 @@
                 ON employees.departmentID = department.departmentID
                 WHERE designationID != 12 AND 
                 department.departmentID = 1 AND 
-                designationID IN (1,14) AND
+                designationID = 1 AND
                 employees.e_status = 'Active'";
             return $activeAgents;
         }
@@ -1550,31 +1550,103 @@
                 ON employees.departmentID = department.departmentID
                 WHERE designationID != 12 AND 
                 department.departmentID = 1 AND 
-                designationID IN (1,14) AND
+                designationID = 1 AND
                 employees.e_status = 'Inactive'";
             return $activeAgents;
         }
 
-        public function viewActiveTLQA() {
+        public function viewActiveTrainer() {
             $activeAgents = "
                 SELECT * FROM {$this->employees} AS employees
                 INNER JOIN {$this->department} AS department
                 ON employees.departmentID = department.departmentID
                 WHERE designationID != 12 AND 
                 department.departmentID = 1 AND 
-                designationID IN (2,3,4,5,14) AND
+                designationID = 14 AND
                 employees.e_status = 'Active'";
             return $activeAgents;
         }
 
-        public function viewResignedTLQA() {
+        public function viewResignedTrainer() {
             $activeAgents = "
                 SELECT * FROM {$this->employees} AS employees
                 INNER JOIN {$this->department} AS department
                 ON employees.departmentID = department.departmentID
                 WHERE designationID != 12 AND 
                 department.departmentID = 1 AND 
-                designationID IN (2,3,4,5,14) AND
+                designationID = 14 AND
+                employees.e_status = 'Inactive'";
+            return $activeAgents;
+        }
+
+        public function viewActiveSME() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 1 AND 
+                designationID = 3 AND
+                employees.e_status = 'Active'";
+            return $activeAgents;
+        }
+
+        public function viewResignedSME() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 1 AND 
+                designationID = 3 AND
+                employees.e_status = 'Inactive'";
+            return $activeAgents;
+        }
+
+        public function viewActiveQA() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 1 AND 
+                designationID = 2 AND
+                employees.e_status = 'Active'";
+            return $activeAgents;
+        }
+
+        public function viewResignedQA() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 1 AND 
+                designationID = 2 AND
+                employees.e_status = 'Inactive'";
+            return $activeAgents;
+        }
+
+        public function viewActiveTLMan() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 1 AND 
+                designationID IN (4,5) AND
+                employees.e_status = 'Active'";
+            return $activeAgents;
+        }
+
+        public function viewResignedTLMan() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 1 AND 
+                designationID IN (4,5) AND
                 employees.e_status = 'Inactive'";
             return $activeAgents;
         }
@@ -1592,6 +1664,54 @@
         }
 
         public function viewResignedRecruitment() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 2 AND 
+                designationID IN (6,16,17) AND
+                employees.e_status = 'Inactive'";
+            return $activeAgents;
+        }
+
+        public function viewActiveBusinessDev() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 2 AND 
+                designationID IN (6,16,17) AND
+                employees.e_status = 'Active'";
+            return $activeAgents;
+        }
+
+        public function viewResignedBusinessDev() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 2 AND 
+                designationID IN (6,16,17) AND
+                employees.e_status = 'Inactive'";
+            return $activeAgents;
+        }
+
+        public function viewActiveFacilities() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 2 AND 
+                designationID IN (6,16,17) AND
+                employees.e_status = 'Active'";
+            return $activeAgents;
+        }
+
+        public function viewResignedFacilities() {
             $activeAgents = "
                 SELECT * FROM {$this->employees} AS employees
                 INNER JOIN {$this->department} AS department

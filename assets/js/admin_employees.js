@@ -56,10 +56,20 @@ $(document).ready(function () {
     // iNITIALIZE TABLES
     $("#activeAgentsTable").DataTable();
     $("#inactiveAgentsTable").DataTable();
-    $("#activeTLQATable").DataTable();
-    $("#inactiveTLQATable").DataTable();
+    $("#activeTrainerTable").DataTable();
+    $("#inactiveTrainerTable").DataTable();
+    $("#activesSMETable").DataTable();
+    $("#inactiveSMETable").DataTable();
+    $("#activeQATable").DataTable();
+    $("#inactiveQATable").DataTable();
+    $("#activeTLManTable").DataTable();
+    $("#inactiveTLManTable").DataTable();
     $("#activeRecruitmentTable").DataTable();
     $("#inactiveRecruitmentTable").DataTable();
+    $("#activeBusinessDevTable").DataTable();
+    $("#inactiveBusinessDevTable").DataTable();
+    $("#activeFacilitiesTable").DataTable();
+    $("#inactiveFacilitiesTable").DataTable();
     $("#activeITTable").DataTable();
     $("#inactiveITTable").DataTable();
     $("#activeFinanceTable").DataTable();
