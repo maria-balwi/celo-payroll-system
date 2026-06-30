@@ -747,21 +747,75 @@
             return $inactivePersonnel;
         }
 
-        public function viewTLQA() {
+        public function viewTrainer() {
+            $allPersonnel = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->users." AS users
+                ON employees.id = users.empID
+                WHERE users.status = 'Active' AND designationID = 14";
+            return $allPersonnel;
+        }
+
+        public function viewInactiveTrainer() {
+            $inactivePersonnel = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->users." AS users
+                ON employees.id = users.empID
+                WHERE users.status = 'Inactive' AND designationID = 14";
+            return $inactivePersonnel;
+        }
+
+        public function viewSME() {
+            $allPersonnel = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->users." AS users
+                ON employees.id = users.empID
+                WHERE users.status = 'Active' AND designationID = 3";
+            return $allPersonnel;
+        }
+
+        public function viewInactiveSME() {
+            $inactivePersonnel = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->users." AS users
+                ON employees.id = users.empID
+                WHERE users.status = 'Inactive' AND designationID = 3";
+            return $inactivePersonnel;
+        }
+
+        public function viewQA() {
+            $allPersonnel = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->users." AS users
+                ON employees.id = users.empID
+                WHERE users.status = 'Active' AND designationID = 2";
+            return $allPersonnel;
+        }
+
+        public function viewInactiveQA() {
+            $inactivePersonnel = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->users." AS users
+                ON employees.id = users.empID
+                WHERE users.status = 'Inactive' AND designationID = 2";
+            return $inactivePersonnel;
+        }
+
+        public function viewTLMan() {
             $allTLQA = "
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
                 ON employees.id = users.empID
-                WHERE users.status = 'Active' AND designationID IN (2,3,4,5,14) ";
+                WHERE users.status = 'Active' AND designationID IN (4,5) ";
             return $allTLQA;
         }
 
-        public function viewInactiveTLQA() {
+        public function viewInactiveTLMan() {
             $allTLQA = "
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
                 ON employees.id = users.empID
-                WHERE users.status = 'Inactive' AND designationID IN (2,3,4,5,14)";
+                WHERE users.status = 'Inactive' AND designationID IN (4,5)";
             return $allTLQA;
         }
 
@@ -811,6 +865,42 @@
         }
 
         public function viewInactiveFinance() {
+            $inactiveFinance = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->users." AS users
+                ON employees.id = users.empID
+                WHERE users.status = 'Inactive' AND designationID = 8";
+            return $inactiveFinance;
+        }
+
+        public function viewBusinessDev() {
+            $allFinance = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->users." AS users
+                ON employees.id = users.empID
+                WHERE users.status = 'Active' AND designationID = 8";
+            return $allFinance;
+        }
+
+        public function viewInactiveBusinessDev() {
+            $inactiveFinance = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->users." AS users
+                ON employees.id = users.empID
+                WHERE users.status = 'Inactive' AND designationID = 8";
+            return $inactiveFinance;
+        }
+
+        public function viewFacilities() {
+            $allFinance = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->users." AS users
+                ON employees.id = users.empID
+                WHERE users.status = 'Active' AND designationID = 8";
+            return $allFinance;
+        }
+
+        public function viewInactiveFacilities() {
             $inactiveFinance = "
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users

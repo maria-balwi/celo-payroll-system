@@ -1,12 +1,27 @@
 $(document).ready(function() {
-    $('#personnelTable').DataTable();
-    $('#inactivePersonnelTable').DataTable();
+    $('#agentsTable').DataTable();
+    $('#inactiveAgentsTable').DataTable();
 
-    $('#tlqaTable').DataTable();
-    $('#inactiveTlqaTable').DataTable();
+    $('#trainerTable').DataTable();
+    $('#inactiveTrainerTable').DataTable();
+
+    $('#smeTable').DataTable();
+    $('#inactiveSMETable').DataTable();
+
+    $('#qaTable').DataTable();
+    $('#inactiveQATable').DataTable();
+
+    $('#tlmanTable').DataTable();
+    $('#inactiveTLManTable').DataTable();
 
     $("#recruitmentTable").DataTable();
     $("#inactiveRecruitmentTable").DataTable();
+
+    $("#facilitiesTable").DataTable();
+    $("#inactiveFacilitiesTable").DataTable();
+
+    $("#businessTable").DataTable();
+    $("#inactiveBusinessTable").DataTable();
 
     $('#hrTable').DataTable();
     $('#inactiveHRtable').DataTable();
