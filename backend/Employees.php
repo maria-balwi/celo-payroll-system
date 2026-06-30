@@ -878,7 +878,7 @@
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
                 ON employees.id = users.empID
-                WHERE users.status = 'Active' AND designationID = 8";
+                WHERE users.status = 'Active' AND designationID = 20";
             return $allFinance;
         }
 
@@ -887,7 +887,7 @@
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
                 ON employees.id = users.empID
-                WHERE users.status = 'Inactive' AND designationID = 8";
+                WHERE users.status = 'Inactive' AND designationID = 20";
             return $inactiveFinance;
         }
 
@@ -896,7 +896,7 @@
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
                 ON employees.id = users.empID
-                WHERE users.status = 'Active' AND designationID = 8";
+                WHERE users.status = 'Active' AND designationID IN (21,22,23)";
             return $allFinance;
         }
 
@@ -905,7 +905,7 @@
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
                 ON employees.id = users.empID
-                WHERE users.status = 'Inactive' AND designationID = 8";
+                WHERE users.status = 'Inactive' AND designationID IN (21,22,23)";
             return $inactiveFinance;
         }
 
@@ -1771,8 +1771,8 @@
                 INNER JOIN {$this->department} AS department
                 ON employees.departmentID = department.departmentID
                 WHERE designationID != 12 AND 
-                department.departmentID = 2 AND 
-                designationID IN (6,16,17) AND
+                department.departmentID = 6 AND 
+                designationID = 20 AND
                 employees.e_status = 'Active'";
             return $activeAgents;
         }
@@ -1783,8 +1783,8 @@
                 INNER JOIN {$this->department} AS department
                 ON employees.departmentID = department.departmentID
                 WHERE designationID != 12 AND 
-                department.departmentID = 2 AND 
-                designationID IN (6,16,17) AND
+                department.departmentID = 6 AND 
+                designationID = 20 AND
                 employees.e_status = 'Inactive'";
             return $activeAgents;
         }
@@ -1795,8 +1795,8 @@
                 INNER JOIN {$this->department} AS department
                 ON employees.departmentID = department.departmentID
                 WHERE designationID != 12 AND 
-                department.departmentID = 2 AND 
-                designationID IN (6,16,17) AND
+                department.departmentID = 7 AND 
+                designationID IN (21,22,23) AND
                 employees.e_status = 'Active'";
             return $activeAgents;
         }
@@ -1807,8 +1807,8 @@
                 INNER JOIN {$this->department} AS department
                 ON employees.departmentID = department.departmentID
                 WHERE designationID != 12 AND 
-                department.departmentID = 2 AND 
-                designationID IN (6,16,17) AND
+                department.departmentID = 7 AND 
+                designationID IN (21,22,23) AND
                 employees.e_status = 'Inactive'";
             return $activeAgents;
         }

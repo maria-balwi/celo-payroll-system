@@ -709,8 +709,8 @@
                                             </table>
                                         </div>
 
-                                        <!-- ACTIVE BUSINESS DEV TABLE  -->
-                                        <div class="tab-pane fade" id="recruitment-inactive" role="tabpanel" aria-labelledby="recruitment-inactive-tab">
+                                        <!-- INACTIVE BUSINESS DEV TABLE  -->
+                                        <div class="tab-pane fade" id="business-inactive" role="tabpanel" aria-labelledby="business-inactive-tab">
                                             <table id="inactiveBusinessDevTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
                                                 <thead class="bg-gray-50">
                                                     <tr>
@@ -806,7 +806,7 @@
                                         </div>
 
                                         <!-- INACTIVE FACILITIES TABLE  -->
-                                        <div class="tab-pane fade" id="recruitment-inactive" role="tabpanel" aria-labelledby="recruitment-inactive-tab">
+                                        <div class="tab-pane fade" id="facilities-inactive" role="tabpanel" aria-labelledby="facilities-inactive-tab">
                                             <table id="inactiveFacilitiesTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
                                                 <thead class="bg-gray-50">
                                                     <tr>
