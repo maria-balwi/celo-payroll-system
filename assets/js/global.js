@@ -54,6 +54,11 @@ $(document).ready(function() {
         {Department:'4', Designation:'IT Web Developer'},
         {Department:'4', Designation:'IT Supervisor'},
         {Department:'5', Designation:'Director'},
+        {Department:'6', Designation:'Business Development Staff'},
+        {Department:'7', Designation:'Sanitary Supervisor'},
+        {Department:'7', Designation:'Maintenance & Facility Staff'},
+        {Department:'7', Designation:'Gate Personnel'},
+        {Department:'8', Designation:'Driver'},
         {Department:'Operations', Designation:'Agent'},
         {Department:'Operations', Designation:'Trainer'},
         {Department:'Operations', Designation:'QA'},
@@ -73,7 +78,12 @@ $(document).ready(function() {
         {Department:'IT', Designation:'IT L2'},
         {Department:'IT', Designation:'IT Web Developer'},
         {Department:'IT', Designation:'IT Supervisor'},
-        {Department:'Directors', Designation:'Director'}
+        {Department:'Directors', Designation:'Director'},
+        {Department:'Business Development', Designation:'Business Development Staff'},
+        {Department:'Maintenance & Facility', Designation:'Sanitary Supervisor'},
+        {Department:'Maintenance & Facility', Designation:'Maintenance & Facility Staff'},
+        {Department:'Maintenance & Facility', Designation:'Gate Personnel'},
+        {Department:'Logistics', Designation:'Driver'},
     ];
 
     // DROPDOWN FOR DESIGNATION ADDING USER - DROPDOWN WILL APPEAR WITH SPECIFIED OPTIONS ONLY WHEN DEPARTMENT IS CHOSEN
