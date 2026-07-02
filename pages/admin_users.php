@@ -41,6 +41,10 @@
                                 <button class="nav-link uncheck" id="pills-facilities-tab" data-bs-toggle="pill" data-bs-target="#pills-facilities" type="button" role="tab" aria-controls="pills-facilities" aria-selected="false">Facilities</button>
                             </li>
                             <li class="nav-item" role="presentation">
+                                <!--LOGISTICS BUTTON-->
+                                <button class="nav-link uncheck" id="pills-logistics-tab" data-bs-toggle="pill" data-bs-target="#pills-logistics" type="button" role="tab" aria-controls="pills-logistics" aria-selected="false">Logistics</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
                                 <!--IT BUTTON-->
                                 <button class="nav-link uncheck" id="pills-it-tab" data-bs-toggle="pill" data-bs-target="#pills-it" type="button" role="tab" aria-controls="pills-it" aria-selected="false">IT</button>
                             </li>
@@ -723,6 +727,87 @@
                                                 <tbody>
                                                     <?php
                                                         $inactiveFacilities = mysqli_query($conn, $employees->viewInactiveFacilities());
+                                                        while ($inactiveFacilitiesDetails = mysqli_fetch_array($inactiveFacilities)) {
+                                                            
+                                                            $userID = $inactiveFacilitiesDetails['userID'];
+                                                            $employeeID = $inactiveFacilitiesDetails['employeeID'];
+                                                            $inactiveFacilitiesName = $inactiveFacilitiesDetails['firstName'] . " " . $inactiveFacilitiesDetails['lastName'];
+                                                            $inactiveFacilitiesEmailAdd = $inactiveFacilitiesDetails['emailAddress'];
+                                                
+
+                                                            echo "<tr data-id='".$userID."' class='inactiveUserView cursor-pointer'>";
+                                                            echo "<td>".$employeeID."</td>";
+                                                            echo "<td>".$inactiveFacilitiesName."</td>";
+                                                            echo "<td>".$inactiveFacilitiesEmailAdd."</td>";
+                                                            echo "</td>";
+
+                                                        }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <!-- ------------------------------------------- LOGISTICS TAB --------------------------------------- -->
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <div class="tab-pane fade" id="pills-logistics" role="tabpanel" aria-labelledby="pills-logistics-tab">
+                                <div class="card border-0">
+                                    <ul class="nav nav-pills mt-0 mb-3" id="pills-tab-inactive" role="tablist">
+                                        <!-- ACTIVE BUTTON -->
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link active" id="logistics-active-tab" data-bs-toggle="pill" data-bs-target="#logistics-active" type="button" role="tab" aria-controls="logistics-active" aria-selected="true">Active</button>
+                                        </li>
+                                        <!-- INACTIVE BUTTON -->
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="logistics-inactive-tab" data-bs-toggle="pill" data-bs-target="#logistics-inactive" type="button" role="tab" aria-controls="logistics-inactive" aria-selected="false">Inactive</button>
+                                        </li>
+                                    </ul>
+
+                                    <div class="tab-content" id="pills-tabContent">
+                                        <!-- ACTIVE LOGISTICS TABLE  -->
+                                        <div class="tab-pane fade show active" id="logistics-active" role="tabpanel" aria-labelledby="logistics-active-tab">
+                                            <table class="table table-striped table-bordered pt-2" id="logisticsTable">
+                                                <thead class="table-light">
+                                                    <th>Employee ID</th>
+                                                    <th>Name</th>
+                                                    <th>Email Address</th>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                        $facilities = mysqli_query($conn, $employees->viewLogistics());
+                                                        while ($facilitiesDetails = mysqli_fetch_array($facilities)) {
+                                                            
+                                                            $userID = $facilitiesDetails['userID'];
+                                                            $employeeID = $facilitiesDetails['employeeID'];
+                                                            $facilitiesName = $facilitiesDetails['firstName'] . " " . $facilitiesDetails['lastName'];
+                                                            $emailAdd = $facilitiesDetails['emailAddress'];
+                                                
+
+                                                            echo "<tr data-id='".$userID."' class='userView cursor-pointer'>";
+                                                            echo "<td>".$employeeID."</td>";
+                                                            echo "<td>".$facilitiesName."</td>";
+                                                            echo "<td>".$emailAdd."</td>";
+                                                            echo "</td>";
+
+                                                        }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <!-- INACTIVE LOGISTICS TABLE  -->
+                                        <div class="tab-pane fade" id="logistics-inactive" role="tabpanel" aria-labelledby="logistics-inactive-tab">
+                                            <table class="table table-striped table-bordered pt-2" id="inactiveLogisticsTable">
+                                                <thead class="table-light">
+                                                    <th>Employee ID</th>
+                                                    <th>Name</th>
+                                                    <th>Email Address</th>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                        $inactiveFacilities = mysqli_query($conn, $employees->viewInactiveLogistics());
                                                         while ($inactiveFacilitiesDetails = mysqli_fetch_array($inactiveFacilities)) {
                                                             
                                                             $userID = $inactiveFacilitiesDetails['userID'];

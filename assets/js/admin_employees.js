@@ -70,6 +70,8 @@ $(document).ready(function () {
     $("#inactiveBusinessDevTable").DataTable();
     $("#activeFacilitiesTable").DataTable();
     $("#inactiveFacilitiesTable").DataTable();
+    $("#activeLogisticsTable").DataTable();
+    $("#inactiveLogisticsTable").DataTable();
     $("#activeITTable").DataTable();
     $("#inactiveITTable").DataTable();
     $("#activeFinanceTable").DataTable();

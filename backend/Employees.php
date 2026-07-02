@@ -909,6 +909,24 @@
             return $inactiveFinance;
         }
 
+        public function viewLogistics() {
+            $allFinance = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->users." AS users
+                ON employees.id = users.empID
+                WHERE users.status = 'Active' AND designationID = 24";
+            return $allFinance;
+        }
+
+        public function viewInactiveLogistics() {
+            $inactiveFinance = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->users." AS users
+                ON employees.id = users.empID
+                WHERE users.status = 'Inactive' AND designationID = 24";
+            return $inactiveFinance;
+        }
+
         public function viewIT() {
             $allAdmin = "
                 SELECT * FROM ".$this->employees." AS employees
@@ -1809,6 +1827,30 @@
                 WHERE designationID != 12 AND 
                 department.departmentID = 7 AND 
                 designationID IN (21,22,23) AND
+                employees.e_status = 'Inactive'";
+            return $activeAgents;
+        }
+
+         public function viewActiveLogistics() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 8 AND 
+                designationID = 24 AND
+                employees.e_status = 'Active'";
+            return $activeAgents;
+        }
+
+        public function viewResignedLogistics() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 8 AND 
+                designationID = 24 AND
                 employees.e_status = 'Inactive'";
             return $activeAgents;
         }

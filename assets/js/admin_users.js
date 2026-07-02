@@ -19,6 +19,9 @@ $(document).ready(function() {
 
     $("#facilitiesTable").DataTable();
     $("#inactiveFacilitiesTable").DataTable();
+    
+    $("#logisticsTable").DataTable();
+    $("#inactiveLogisticsTable").DataTable();
 
     $("#businessTable").DataTable();
     $("#inactiveBusinessTable").DataTable();
