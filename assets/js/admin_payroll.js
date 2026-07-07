@@ -1,8 +1,4 @@
 $(document).ready(function() {
-
-    // $('#payrollTable').DataTable({
-    //     scrollX: true,
-    // });
     $('#payrollTable').DataTable();
     var payrollListTable = $('#payrollListTable').DataTable();
     payrollListTable.order([[2, "asc"]]).draw();
