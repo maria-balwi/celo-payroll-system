@@ -3,6 +3,7 @@
     <head>
         <!-- HEADER -->
         <?php include('../includes/header.php'); ?>
+        <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
 
         <style>
             #payrollListTable th, #payrollListTable td {
