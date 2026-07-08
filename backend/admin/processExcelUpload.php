@@ -17,6 +17,7 @@
     }
 
     $file = $_FILES['csvFile']['tmp_name'];
+    $fileName = $_FILES['csvFile']['name']; // GET THE FILE NAME 
 
     // OPEN CSV FILE 
     if(!file_exists($file) || !is_readable($file)){
@@ -78,6 +79,7 @@
 
     $inserted = 0;
     $errors = [];
+    $totalRows = 0;
 
     if (isset($userPassword) && isset($userRetypePassword)) {
         if ($userPassword == $userRetypePassword) {
@@ -99,6 +101,8 @@
                                 $headers = $row;
                                 continue;
                             }
+
+                            $totalRows++;
 
                             // MAP CSV DATA
                             $rowData = [];
@@ -314,18 +318,38 @@
                         }
 
                         fclose($handle);
-
                         mysqli_commit($conn);
+
+                        // DETERMINE BATCH UPLOAD STATUS
+                        $errorCount = count($errors);
+                        if ($errorCount == 0) {
+                            $batchUploadStatus = 'Completed';
+                        }
+                        else if ($inserted > 0) {
+                            $batchUploadStatus = 'Completed wtih errors';
+                        }
+                        else {
+                            $batchUploadStatus = 'Failed';
+                        }
+
+                        // LOG BATCH UPLOAD
+                        mysqli_query($conn, $payroll->logBatchUpload($fileName, $_SESSION['id'], $inserted, $errorCount, $totalRows, $batchUploadStatus));
                         
                         echo json_encode([
                             'error' => 0,
                             'em' => "Inserted $inserted rows successfully",
+                            'status' => $batchUploadStatus,
                             'warnings' => $errors
                         ]);
 
                         exit;
 
                     } catch(Exception $e){
+                        mysqli_rollback($conn);
+
+                        // LOG BATCH UPLOAD
+                        mysqli_query($conn, $payroll->logBatchUpload($fileName, $_SESSION['id'], 0, count($errors) ? : 1, $totalRows, 'Failed'));
+
                         echo json_encode([
                             'error' => 1,
                             'em' => 'Upload failed: ' . $e->getMessage()

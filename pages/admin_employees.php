@@ -1138,7 +1138,6 @@
                                 </div>
                             </div>
 
-
                             <!-- ------------------------------------------------------------------------------------------------- -->
                             <!-- ---------------------------------------------- HR TAB ------------------------------------------- -->
                             <!-- ------------------------------------------------------------------------------------------------- -->
@@ -3254,6 +3253,85 @@
                 </div>
             </form>
         </main>
+
+        <!--------------------------------------------------------------------------------------------------------------------------------------------->
+        <!-------------------------------------------------------- BATCH UPLOAD HISTORY SECTION ------------------------------------------------------->
+        <div class="flex-1 p-3">
+            <div class="flex flex-1 p-2 text-2xl font-bold justify-between items-center">
+                <div>
+                    Batch Upload History
+                </div>  
+                <input type="hidden" id="adminID" name="adminID" value="<?php echo $_SESSION['designationID']; ?>">  
+            </div>
+
+            <div class="bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
+                <div class="card shadow-sm bInfo relative">
+                    <div class="card-body">
+                        <!-- DATATABLE -->
+                        <div class="mx-auto overflow-auto">
+                            <table id="batchUploadHistory" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Batch ID</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">File Name</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Uploaded On</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Uploaded By</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Approved</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Errors</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Total</th>
+                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <?php
+                                        function formatTimestamp($date) {
+                                            $dateTime = DateTime::createFromFormat('Y-m-d H:i:s', $date);
+
+                                            if (!$dateTime) {
+                                                return $date;
+                                            }
+
+                                            return $dateTime->format('M d, Y H:i:s');
+                                        }
+
+                                        $batchUplaodQuery = mysqli_query($conn, $payroll->fetchAllBatchUploadHistory());
+                                        while ($batchUploadDetails = mysqli_fetch_array($batchUplaodQuery)) {
+                                            $batchID = $batchUploadDetails['batchID'];
+                                            $fileName = $batchUploadDetails['fileName'];
+                                            $timeStamp = $batchUploadDetails['timeStamp'];
+                                            $uploadedBy_empID = $batchUploadDetails['firstName'] . ' ' . $batchUploadDetails['lastName'];
+                                            $approvedRows = $batchUploadDetails['approvedRows'];
+                                            $errors = $batchUploadDetails['errors'];
+                                            $totalRows = $batchUploadDetails['totalRows'];
+                                            $status = $batchUploadDetails['status'];
+
+                                            echo "<tr>";
+                                            echo "<td class ='whitespace-nowrap'>" . $batchID . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $fileName . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . formatTimestamp($timeStamp). "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $uploadedBy_empID . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $approvedRows . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $errors . "</td>";
+                                            echo "<td class ='whitespace-nowrap'>" . $totalRows . "</td>";
+                                            if ($status == "Pending") {
+                                                echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $status . "</p></td>";
+                                            }
+                                            else if ($status == "Completed") {
+                                                echo "<td><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $status . "</p></td>";
+                                            }
+                                            else if ($status == "Failed") {
+                                                echo "<td><p class='inline-block bg-red-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $status . "</p></td>";
+                                            }
+                                            echo "</tr>";
+                                        }
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     
         <script src="../assets/js/admin_employees.js?v=<?php echo $version; ?>"></script>
 

@@ -79,6 +79,10 @@ $(document).ready(function () {
     $("#activeHRTable").DataTable();
     $("#inactiveHRTable").DataTable();
 
+    $('#batchUploadHistory').DataTable();
+    var batchUploadHistory = $('#batchUploadHistory').DataTable();
+    batchUploadHistory.order([[0, "DESC"]]).draw();
+
     // INPUT MASK - ADD EMPLOYEE
     $("#sss").inputmask("99-9999999-9", {
         placeholder: "00-0000000-0",
@@ -2878,6 +2882,28 @@ $(document).ready(function () {
                                     title: "Error",
                                     text: message,
                                 });
+
+                                // let errorHtml = `<p>${data.em}</p>`;
+                                // if (data.errorSummary && data.errorSummary.length > 0) {
+                                //     errorHtml += `<div style="text-align:left; max-height:250px; overflow-y:auto;">`;
+                                //     errorHtml += `<ul style="padding-left:18px;">`;
+                                //     data.errorSummary.forEach(function (group) {
+                                //         errorHtml += `<li><strong>${group.reason}</strong> — ${group.count} row(s): 
+                                //                     <em>${group.rows.join(', ')}</em></li>`;
+                                //     });
+                                //     errorHtml += `</ul></div>`;
+                                // }
+
+                                // Swal.fire({
+                                //     icon: "error",
+                                //     title: data.status === 'Failed' ? "Upload Failed" : "Completed with Errors",
+                                //     html: errorHtml,
+                                //     confirmButtonText: "OK"
+                                // }).then(() => {
+                                //     if (data.status !== 'Failed') {
+                                //         window.location.reload(); // reload if partial success, so inserted rows show up
+                                //     }
+                                // });
                             }
                         },
                     });

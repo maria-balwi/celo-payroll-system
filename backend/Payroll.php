@@ -32,6 +32,7 @@
         private $disputeAttendance = 'tbl_disputeattendance';
         private $disputeLeaves = 'tbl_disputeleaves';
         private $disputeOvertime = 'tbl_disputeovertime';
+        private $batchUpload = 'tbl_batchuploadhistory';
 
         private $dbConnect = false;
         public function __construct() {
@@ -3275,6 +3276,21 @@
                 $logScriptQuery = "INSERT INTO script_logs (run_date) VALUES ('$currentDate')";
                 $this->dbConnect()->query($logScriptQuery);
             } 
+        }
+
+        public function logBatchUpload($fileName, $uploadedBy_empID, $approvedRows, $errors, $totalRows, $status) {
+            $logBatchUpload = "
+                INSERT INTO ".$this->batchUpload." (fileName, timeStamp, uploadedBy_empID, approvedRows, errors, totalRows, status)
+                VALUES ('$fileName', CURRENT_TIMESTAMP(), '$uploadedBy_empID', '$approvedRows', '$errors', '$totalRows', '$status')";
+            return $logBatchUpload;
+        }
+
+        public function fetchAllBatchUploadHistory() {
+            $fetchAllBatchUploadHistory = "
+                SELECT * FROM {$this->batchUpload} AS batchUpload
+                INNER JOIN {$this->employees} AS employees
+                ON batchUpload.uploadedBy_empID = employees.id";
+            return $fetchAllBatchUploadHistory;
         }
     }
 ?>
