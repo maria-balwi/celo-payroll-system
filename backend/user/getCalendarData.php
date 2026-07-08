@@ -44,9 +44,11 @@
         }
         elseif ($logTypeID == 2) {
             $calendar[$date]['attendance']['late'] = true;
+            $calendar[$date]['attendance']['time_in'] = $time;
         }
         elseif ($logTypeID == 3) {
             $calendar[$date]['attendance']['undertime'] = true;
+            $calendar[$date]['attendance']['time_out'] = $time;
         }
     }
 

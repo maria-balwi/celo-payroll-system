@@ -192,7 +192,8 @@
                     weekoff.wo_thu,
                     weekoff.wo_fri,
                     weekoff.wo_sat,
-                    weekoff.wo_sun
+                    weekoff.wo_sun, 
+                    transition.type
                 FROM 
                     (
                         SELECT DATE('$yearMonth-01') + INTERVAL (a.a + (10 * b.a)) DAY AS attendanceDate
@@ -218,53 +219,13 @@
                     {$this->logtype} AS logtype ON attendance.logTypeID = logtype.logTypeID 
                 LEFT JOIN 
                     {$this->weekOff} AS weekoff ON weekoff.empID = employees.id
+                LEFT JOIN 
+                    {$this->transition} AS transition ON transition.empID = employees.id AND transition.transitionDate = all_dates.attendanceDate
                 ORDER BY 
                     all_dates.attendanceDate, attendance.attendanceTime
             ";
             return $dtr;
         }
-
-        // NEW CODE
-        // public function userViewDTR($id, $yearMonth) {
-        //     $dtr = "
-        //         SELECT 
-        //             all_dates.attendanceDate,
-        //             COALESCE(attendance.id, '-') AS id, 
-        //             COALESCE(attendance.logTypeID, '-') AS logTypeID, 
-        //             COALESCE(logtype.logType, '-') AS logType, 
-        //             COALESCE(DATE_FORMAT(attendance.attendanceTime, '%h:%i %p'), '-') AS attendanceTime, 
-        //             COALESCE(DATE_FORMAT(shift.startTime, '%h:%i %p'), '-') AS startTime, 
-        //             COALESCE(DATE_FORMAT(shift.endTime, '%h:%i %p'), '-') AS endTime
-        //         FROM 
-        //             (
-        //                 SELECT 
-        //                     DATE('$yearMonth-01') + INTERVAL n DAY AS attendanceDate
-        //                 FROM (
-        //                     SELECT a.a + (10 * b.a) + (100 * c.a) AS n
-        //                     FROM 
-        //                         (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL 
-        //                                 SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS a
-        //                     CROSS JOIN 
-        //                         (SELECT 0 AS a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3) AS b
-        //                     CROSS JOIN 
-        //                         (SELECT 0 AS a) AS c
-        //                 ) AS days
-        //                 WHERE DATE('$yearMonth-01') + INTERVAL n DAY <= LAST_DAY('$yearMonth-01')
-        //             ) AS all_dates
-        //         LEFT JOIN 
-        //             ".$this->attendance." AS attendance 
-        //             ON all_dates.attendanceDate = attendance.attendanceDate AND attendance.empID = ?
-        //         LEFT JOIN 
-        //             ".$this->employees." AS employees ON attendance.empID = employees.id
-        //         LEFT JOIN 
-        //             ".$this->logtype." AS logtype ON attendance.logTypeID = logtype.logTypeID 
-        //         LEFT JOIN 
-        //             ".$this->shift." AS shift ON employees.shiftID = shift.shiftID
-        //         ORDER BY 
-        //             all_dates.attendanceDate, attendance.attendanceTime;
-        //     ";
-        //     return $dtr;
-        // }
 
         public function viewOT($id) {
             $request = "
@@ -785,21 +746,75 @@
             return $inactivePersonnel;
         }
 
-        public function viewTLQA() {
+        public function viewTrainer() {
+            $allPersonnel = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->users." AS users
+                ON employees.id = users.empID
+                WHERE users.status = 'Active' AND designationID = 14";
+            return $allPersonnel;
+        }
+
+        public function viewInactiveTrainer() {
+            $inactivePersonnel = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->users." AS users
+                ON employees.id = users.empID
+                WHERE users.status = 'Inactive' AND designationID = 14";
+            return $inactivePersonnel;
+        }
+
+        public function viewSME() {
+            $allPersonnel = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->users." AS users
+                ON employees.id = users.empID
+                WHERE users.status = 'Active' AND designationID = 3";
+            return $allPersonnel;
+        }
+
+        public function viewInactiveSME() {
+            $inactivePersonnel = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->users." AS users
+                ON employees.id = users.empID
+                WHERE users.status = 'Inactive' AND designationID = 3";
+            return $inactivePersonnel;
+        }
+
+        public function viewQA() {
+            $allPersonnel = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->users." AS users
+                ON employees.id = users.empID
+                WHERE users.status = 'Active' AND designationID = 2";
+            return $allPersonnel;
+        }
+
+        public function viewInactiveQA() {
+            $inactivePersonnel = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->users." AS users
+                ON employees.id = users.empID
+                WHERE users.status = 'Inactive' AND designationID = 2";
+            return $inactivePersonnel;
+        }
+
+        public function viewTLMan() {
             $allTLQA = "
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
                 ON employees.id = users.empID
-                WHERE users.status = 'Active' AND designationID IN (2,3,4,5,14) ";
+                WHERE users.status = 'Active' AND designationID IN (4,5) ";
             return $allTLQA;
         }
 
-        public function viewInactiveTLQA() {
+        public function viewInactiveTLMan() {
             $allTLQA = "
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
                 ON employees.id = users.empID
-                WHERE users.status = 'Inactive' AND designationID IN (2,3,4,5,14)";
+                WHERE users.status = 'Inactive' AND designationID IN (4,5)";
             return $allTLQA;
         }
 
@@ -854,6 +869,60 @@
                 INNER JOIN ".$this->users." AS users
                 ON employees.id = users.empID
                 WHERE users.status = 'Inactive' AND designationID = 8";
+            return $inactiveFinance;
+        }
+
+        public function viewBusinessDev() {
+            $allFinance = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->users." AS users
+                ON employees.id = users.empID
+                WHERE users.status = 'Active' AND designationID = 20";
+            return $allFinance;
+        }
+
+        public function viewInactiveBusinessDev() {
+            $inactiveFinance = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->users." AS users
+                ON employees.id = users.empID
+                WHERE users.status = 'Inactive' AND designationID = 20";
+            return $inactiveFinance;
+        }
+
+        public function viewFacilities() {
+            $allFinance = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->users." AS users
+                ON employees.id = users.empID
+                WHERE users.status = 'Active' AND designationID IN (21,22,23)";
+            return $allFinance;
+        }
+
+        public function viewInactiveFacilities() {
+            $inactiveFinance = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->users." AS users
+                ON employees.id = users.empID
+                WHERE users.status = 'Inactive' AND designationID IN (21,22,23)";
+            return $inactiveFinance;
+        }
+
+        public function viewLogistics() {
+            $allFinance = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->users." AS users
+                ON employees.id = users.empID
+                WHERE users.status = 'Active' AND designationID = 24";
+            return $allFinance;
+        }
+
+        public function viewInactiveLogistics() {
+            $inactiveFinance = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->users." AS users
+                ON employees.id = users.empID
+                WHERE users.status = 'Inactive' AND designationID = 24";
             return $inactiveFinance;
         }
 
@@ -1561,7 +1630,7 @@
                 ON employees.departmentID = department.departmentID
                 WHERE designationID != 12 AND 
                 department.departmentID = 1 AND 
-                designationID IN (1,14) AND
+                designationID = 1 AND
                 employees.e_status = 'Active'";
             return $activeAgents;
         }
@@ -1573,31 +1642,103 @@
                 ON employees.departmentID = department.departmentID
                 WHERE designationID != 12 AND 
                 department.departmentID = 1 AND 
-                designationID IN (1,14) AND
+                designationID = 1 AND
                 employees.e_status = 'Inactive'";
             return $activeAgents;
         }
 
-        public function viewActiveTLQA() {
+        public function viewActiveTrainer() {
             $activeAgents = "
                 SELECT * FROM {$this->employees} AS employees
                 INNER JOIN {$this->department} AS department
                 ON employees.departmentID = department.departmentID
                 WHERE designationID != 12 AND 
                 department.departmentID = 1 AND 
-                designationID IN (2,3,4,5,14) AND
+                designationID = 14 AND
                 employees.e_status = 'Active'";
             return $activeAgents;
         }
 
-        public function viewResignedTLQA() {
+        public function viewResignedTrainer() {
             $activeAgents = "
                 SELECT * FROM {$this->employees} AS employees
                 INNER JOIN {$this->department} AS department
                 ON employees.departmentID = department.departmentID
                 WHERE designationID != 12 AND 
                 department.departmentID = 1 AND 
-                designationID IN (2,3,4,5,14) AND
+                designationID = 14 AND
+                employees.e_status = 'Inactive'";
+            return $activeAgents;
+        }
+
+        public function viewActiveSME() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 1 AND 
+                designationID = 3 AND
+                employees.e_status = 'Active'";
+            return $activeAgents;
+        }
+
+        public function viewResignedSME() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 1 AND 
+                designationID = 3 AND
+                employees.e_status = 'Inactive'";
+            return $activeAgents;
+        }
+
+        public function viewActiveQA() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 1 AND 
+                designationID = 2 AND
+                employees.e_status = 'Active'";
+            return $activeAgents;
+        }
+
+        public function viewResignedQA() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 1 AND 
+                designationID = 2 AND
+                employees.e_status = 'Inactive'";
+            return $activeAgents;
+        }
+
+        public function viewActiveTLMan() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 1 AND 
+                designationID IN (4,5) AND
+                employees.e_status = 'Active'";
+            return $activeAgents;
+        }
+
+        public function viewResignedTLMan() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 1 AND 
+                designationID IN (4,5) AND
                 employees.e_status = 'Inactive'";
             return $activeAgents;
         }
@@ -1622,6 +1763,78 @@
                 WHERE designationID != 12 AND 
                 department.departmentID = 2 AND 
                 designationID IN (6,16,17) AND
+                employees.e_status = 'Inactive'";
+            return $activeAgents;
+        }
+
+        public function viewActiveBusinessDev() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 6 AND 
+                designationID = 20 AND
+                employees.e_status = 'Active'";
+            return $activeAgents;
+        }
+
+        public function viewResignedBusinessDev() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 6 AND 
+                designationID = 20 AND
+                employees.e_status = 'Inactive'";
+            return $activeAgents;
+        }
+
+        public function viewActiveFacilities() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 7 AND 
+                designationID IN (21,22,23) AND
+                employees.e_status = 'Active'";
+            return $activeAgents;
+        }
+
+        public function viewResignedFacilities() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 7 AND 
+                designationID IN (21,22,23) AND
+                employees.e_status = 'Inactive'";
+            return $activeAgents;
+        }
+
+         public function viewActiveLogistics() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 8 AND 
+                designationID = 24 AND
+                employees.e_status = 'Active'";
+            return $activeAgents;
+        }
+
+        public function viewResignedLogistics() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 8 AND 
+                designationID = 24 AND
                 employees.e_status = 'Inactive'";
             return $activeAgents;
         }

@@ -1,8 +1,4 @@
 $(document).ready(function() {
-
-    // $('#payrollTable').DataTable({
-    //     scrollX: true,
-    // });
     $('#payrollTable').DataTable();
     var payrollListTable = $('#payrollListTable').DataTable();
     payrollListTable.order([[2, "asc"]]).draw();
@@ -251,8 +247,6 @@ $(document).ready(function() {
         var recal_payrollID = $(this).data('id');
         var recal_cycleID = $(this).data('cycle');
         
-        console.log({recal_payrollID, recal_cycleID});
-        
         Swal.fire({
             icon: 'question',
             title: 'Re-Calculate Payroll',
@@ -301,81 +295,49 @@ $(document).ready(function() {
             }
         })
     });
-        
-    // $(".exportPayroll").click(function () {
-    //     let csvContent = "";
-    //     let table = $("#payrollListTable").DataTable(); // Use DataTables API
-
-    //     // Get ALL rows (not just visible ones)
-    //     let allData = table.rows().data();
-
-    //     allData.each(function (rowData) {
-    //         let row = [];
-
-    //         rowData.forEach(function (cell) {
-    //         row.push('"' + cell + '"');
-    //         });
-
-    //         csvContent += row.join(",") + "\n";
-    //     });
-
-    //     // Download CSV
-    //     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-    //     const url = URL.createObjectURL(blob);
-    //     const link = document.createElement("a");
-
-    //     link.href = url;
-    //     link.download = "payroll.csv";
-    //     link.click();
-
-    //     URL.revokeObjectURL(url);
-    // });
 
     $(".exportPayroll").click(function () {
         let table = $("#payrollListTable").DataTable();
         let allData = table.rows().data();
-        let csvContent = "";
 
-        // === TITLE ===
-        const reportTitle = "Payroll Summary Report";
-        csvContent += `"${reportTitle}"\n\n`;
+        // === GET ALL COLUMN HEADERS (to find the ones we need) ===
+        let allHeaders = [];
+        table.columns().header().each(function (th) {
+            allHeaders.push($(th).text().trim());
+        });
 
-        // === COLUMN HEADERS ===
-        let headerRow = [];
-        table
-            .columns()
-            .header()
-            .each(function (th) {
-            headerRow.push('"' + $(th).text().trim() + '"');
-            });
+        const empIdIndex = allHeaders.indexOf("Employee ID");
+        const nameIndex = allHeaders.indexOf("Name");
+        const netPayIndex = allHeaders.indexOf("Net Pay");
 
-        csvContent += headerRow.join(",") + "\n"; // Add to CSV
+        // === BUILD ROWS (array-of-arrays for SheetJS) ===
+        let outputRows = [];
 
-        // === ALL DATA ROWS ===
+        outputRows.push(["Payroll Summary Report"]);
+        outputRows.push([]); 
+
+        // Renamed header: Net Pay -> Salary
+        outputRows.push(["Employee ID", "Name", "Salary"]);
+
         allData.each(function (rowData) {
             // Skip rows containing "DEDUCTIONS"
             if (rowData.includes("DEDUCTIONS")) {
-            return;
+                return;
             }
 
-            let row = [];
-            rowData.forEach(function (cell) {
-            row.push('"' + cell + '"');
-            });
-
-            csvContent += row.join(",") + "\n";
+            outputRows.push([
+                rowData[empIdIndex],
+                rowData[nameIndex],
+                rowData[netPayIndex],
+            ]);
         });
 
-        // === DOWNLOAD CSV ===
-        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
+        // === BUILD WORKBOOK & DOWNLOAD AS .xlsx ===
+        const worksheet = XLSX.utils.aoa_to_sheet(outputRows);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Payroll");
 
-        link.href = url;
-        link.download = "payroll.csv";
-        link.click();
-
-        URL.revokeObjectURL(url);
+        XLSX.writeFile(workbook, "payroll.xlsx");
     });
 
 

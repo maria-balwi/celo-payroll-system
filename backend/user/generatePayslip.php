@@ -127,7 +127,7 @@
 
                 $payslipQuery = mysqli_query($conn, $payroll->viewPayslip($payrollID, $empID));
                 $payslipDetails = mysqli_fetch_array($payslipQuery);
-                $payslip_id = $payslipDetails['payslipID'];
+                $payslip_id = $payslipDetails['id'];
                 $payslip_payrollID = $payslipDetails['payrollID'];
                 $payslip_empID = $payslipDetails['employeeID'];
                 $payslip_position = $payslipDetails['position'];
@@ -199,6 +199,7 @@
                 
                 $payslip_allowances = $payslipDetails['payslip_allowances'] == 0 ? "-" : number_format($payslipDetails['payslip_allowances'], 2);
                 $payslip_communication = $payslipDetails['payslip_communication'] == 0 ? "-" : number_format($payslipDetails['payslip_communication'], 2);
+                $payslip_otherAllowances = $payslipDetails['payslip_otherAllowances'] == 0 ? "-" : number_format($payslipDetails['payslip_otherAllowances'], 2);
                 $payslip_grossPay = $payslipDetails['grossPay'] == 0 ? "-" : number_format($payslipDetails['grossPay'] , 2);
                 $payslip_sss = $payslipDetails['payslip_sss'] == 0 ? "-" : number_format($payslipDetails['payslip_sss'], 2);
                 $payslip_sssMPF = $payslipDetails['payslip_sssMPF'] == 0 ? "-" : number_format($payslipDetails['payslip_sssMPF'], 2);
@@ -216,348 +217,39 @@
                 $payslip_vacationLeavePay = $payslipDetails['pay_vacationLeave'] == 0 ? "-" : number_format($payslipDetails['pay_vacationLeave'], 2);
                 $payslip_absences = $payslipDetails['totalAbsences'] == 0 ? "-" : number_format($payslipDetails['totalAbsences'], 2);
                 $payslip_absencesAmt = $payslipDetails['payslip_absences'] == 0 ? "-" : number_format($payslipDetails['payslip_absences'], 2);
-                $payslip_lateMins = $payslipDetails['totalLateMins'] == 0 ? "-" : number_format($payslipDetails['totalLateMins'], 2);
+                $payslip_lateMins = $payslipDetails['totalLateMins'] == 0 ? "-" : number_format($payslipDetails['totalLateMins'], 0);
                 $payslip_lateMinsAmt = $payslipDetails['payslip_lateMins'] == 0 ? "-" : number_format($payslipDetails['payslip_lateMins'], 2);
+                $payslip_undertimeMins = $payslipDetails['totalUndertimeMins'] == 0 ? "-" : number_format($payslipDetails['totalUndertimeMins'], 0);
+                $payslip_undertimeMinsAmt = $payslipDetails['payslip_undertimeMins'] == 0 ? "-" : number_format($payslipDetails['payslip_undertimeMins'], 2);
                 $payslip_cashAdvanceDeduction = $payslipDetails['payslip_cashAdvanceDeduction'] == 0 ? "-" : number_format($payslipDetails['payslip_cashAdvanceDeduction'], 2);
                 // $payslip_cashAdvanceBalance = $payslipDetails['payslip_cashAdvanceBalance'] == 0 ? "-" : number_format($payslipDetails['payslip_cashAdvanceBalance'], 2);
                 // $payslip_caPettyCash = $payslipDetails['payslip_caPettyCash'] == 0 ? "-" : number_format($payslipDetails['payslip_caPettyCash'], 2);
                 $payslip_netPay = $payslipDetails['netPay'] == 0 ? "-" : number_format($payslipDetails['netPay'], 2);
 
                 $overtimeQuery = mysqli_query($conn, "SELECT * FROM tbl_filedot WHERE empID = $payslip_id AND (otDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo') AND status = 1");
-                $overtimeCount = mysqli_num_rows($overtimeQuery);
-                $isOvertime = $overtimeCount > 0 ? 1 : 0;
- 
+                // $overtimeCount = mysqli_num_rows($overtimeQuery);
+                // $isOvertime = $overtimeCount > 0 ? 1 : 0;
+
+                $isRegularOT = 0;
+                $isRestOT = 0;
+                while ($overtimeDetails = mysqli_fetch_array($overtimeQuery)) {
+                    if ($overtimeDetails['otType'] == "Regular") {
+                        $isRegularOT = 1;
+                    }
+                    else if ($overtimeDetails['otType'] == "Rest Day") {
+                        $isRestOT = 1;
+                    }
+                }
+                $isOvertime = $isRegularOT && $isRestOT ? 1 : 0;
+
                 $payslip = '';
-                if ($isHoliday == 0 && $isOvertime == 0) {
-                    $payslip = '
-                        <div>
-                            <div class="text-center font-bold text-xl bg-green-300 py-2" id="payslipDate">For the Period of '.$date.'</div>
-                            <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS INCORPORATED</div>
-                            <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP #'.$payslipCounter.'</div>
-
-                            <div id="watermark" class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-600 font-bold text-4xl opacity-30 rotate-45 pointer-events-none select-none">
-                                CONFIDENTIAL
-                            </div>
-
-                            <table class="w-full text-sm mb-4">
-                                <tr class="bg-green-300 font-bold">
-                                    <td class="border px-2 py-1">Employee ID</td>
-                                    <td class="border px-2 py-1">Name</td>
-                                    <td class="border px-2 py-1">Position</td>
-                                    <td class="border px-2 py-1">Employment Status</td>
-                                </tr>
-                                <tr>
-                                    <td class="border px-2 py-1">'.$payslip_empID.'</td>
-                                    <td class="border px-2 py-1">'.$payslip_employeeName.'</td>
-                                    <td class="border px-2 py-1">'.$payslip_position.'</td>
-                                    <td class="border px-2 py-1">'.$payslip_employmentStatus.'</td>
-                                </tr>
-                                <tr class="bg-green-300 font-bold">
-                                    <td class="border px-2 py-1">TIN</td>
-                                    <td class="border px-2 py-1">SSS</td>
-                                    <td class="border px-2 py-1">HDMF No.</td>
-                                    <td class="border px-2 py-1">PHIC No.</td>
-                                </tr>
-                                <tr>
-                                    <td class="border px-2 py-1">'.$payslip_tinnum.'</td>
-                                    <td class="border px-2 py-1">'.$payslip_sssnum.'</td>
-                                    <td class="border px-2 py-1">'.$payslip_pagIbignum.'</td>
-                                    <td class="border px-2 py-1">'.$payslip_philhealthnum.'</td>
-                                </tr>
-                                <tr class="bg-green-300 font-bold">
-                                    <td class="border px-2 py-1">Payment Method</td>
-                                    <td class="border px-2 py-1">Monthly Rate</td>
-                                    <td class="border px-2 py-1">Daily Rate</td>
-                                    <td class="border px-2 py-1">Hourly Rate</td>
-                                </tr>
-                                <tr>
-                                    <td class="border px-2 py-1">'.$payslip_paymentMethod.'</td>
-                                    <td class="border px-2 py-1">'.$payslip_basicPay.'</td>
-                                    <td class="border px-2 py-1">'.$payslip_dailyRate.'</td>
-                                    <td class="border px-2 py-1">'.$payslip_hourlyRate.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border px-2 py-1 text-right" colspan="4"></td>
-                                </tr>
-                                <tr class="bg-green-300 font-bold">
-                                    <td class="border px-2 py-1" colspan="2">EARNINGS</td>
-                                    <td class="border px-2 py-1" colspan="2">DEDUCTIONS</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">No. of Hours Worked</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hoursWorked.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">SSS</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sss.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Total Regular Wage</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_basePay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">SSS MPF</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sssMPF.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiff.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">PhilHealth</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_phic.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiffPay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">HDMF</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmf.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Absences</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absences.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">WTAX</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_wtax.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Absences Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absencesAmt.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">SSS Salary Loan</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_salaryLoan.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Late Mins</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMins.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Cash Advances</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_cashAdvanceDeduction.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Late Mins Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMinsAmt.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">HDMF Salary Loan</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmfSalaryLoan.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border px-2 py-1 bg-green-300 font-bold" colspan="2">ADDITIONS/ADJUSTMENTS</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Smart Communication</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Allowance</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_allowances.'</td>
-                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Communication</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_communication.'</td>
-                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeaveCount.'</td>
-                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeavePay.'</td>
-                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Vacation Leave Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeavePay.'</td>
-                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
-                                </tr>
-                                <tr class="bg-green-300 font-bold">
-                                    <td class="border-l-2 border-t-2 text-left px-2 py-1">Gross Pay</td>
-                                    <td class="border-r-2 border-t-2 px-2 py-1 text-right">'.$payslip_grossPay.'</td>
-                                    <td class="border-l-2 border-t-2  text-left px-2 py-1">Net Pay</td>
-                                    <td class="border-r-2 border-t-2 px-2 py-1 text-right">'.$payslip_netPay.'</td>
-                                </tr>
-                            </table>
-                        </div>
-                    ';
-                }
-                else if ($isHoliday == 0 && $isOvertime == 1) {
-                    $payslip = '
-                        <div>
-                            <div class="text-center font-bold text-xl bg-green-300 py-2" id="payslipDate">For the Period of '.$date.'</div>
-                            <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS INCORPORATED</div>
-                            <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP #'.$payslipCounter.'</div>
-
-                            <div id="watermark" class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-600 font-bold text-4xl opacity-30 rotate-45 pointer-events-none select-none">
-                                CONFIDENTIAL
-                            </div>
-
-                            <table class="w-full text-sm mb-4">
-                                <tr class="bg-green-300 font-bold">
-                                    <td class="border px-2 py-1">Employee ID</td>
-                                    <td class="border px-2 py-1">Name</td>
-                                    <td class="border px-2 py-1">Position</td>
-                                    <td class="border px-2 py-1">Employment Status</td>
-                                </tr>
-                                <tr>
-                                    <td class="border px-2 py-1">'.$payslip_empID.'</td>
-                                    <td class="border px-2 py-1">'.$payslip_employeeName.'</td>
-                                    <td class="border px-2 py-1">'.$payslip_position.'</td>
-                                    <td class="border px-2 py-1">'.$payslip_employmentStatus.'</td>
-                                </tr>
-                                <tr class="bg-green-300 font-bold">
-                                    <td class="border px-2 py-1">TIN</td>
-                                    <td class="border px-2 py-1">SSS</td>
-                                    <td class="border px-2 py-1">HDMF No.</td>
-                                    <td class="border px-2 py-1">PHIC No.</td>
-                                </tr>
-                                <tr>
-                                    <td class="border px-2 py-1">'.$payslip_tinnum.'</td>
-                                    <td class="border px-2 py-1">'.$payslip_sssnum.'</td>
-                                    <td class="border px-2 py-1">'.$payslip_pagIbignum.'</td>
-                                    <td class="border px-2 py-1">'.$payslip_philhealthnum.'</td>
-                                </tr>
-                                <tr class="bg-green-300 font-bold">
-                                    <td class="border px-2 py-1">Payment Method</td>
-                                    <td class="border px-2 py-1">Monthly Rate</td>
-                                    <td class="border px-2 py-1">Daily Rate</td>
-                                    <td class="border px-2 py-1">Hourly Rate</td>
-                                </tr>
-                                <tr>
-                                    <td class="border px-2 py-1">'.$payslip_paymentMethod.'</td>
-                                    <td class="border px-2 py-1">'.$payslip_basicPay.'</td>
-                                    <td class="border px-2 py-1">'.$payslip_dailyRate.'</td>
-                                    <td class="border px-2 py-1">'.$payslip_hourlyRate.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border px-2 py-1 text-right" colspan="4"></td>
-                                </tr>
-                                <tr class="bg-green-300 font-bold">
-                                    <td class="border px-2 py-1" colspan="2">EARNINGS</td>
-                                    <td class="border px-2 py-1" colspan="2">ADDITIONS/ADJUSTMENTS</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">No. of Hours Worked</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hoursWorked.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Allowance</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_allowances.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Total Regular Wage</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_basePay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Communication</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_communication.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiff.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeaveCount.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiffPay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeavePay.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Regular OT Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOT.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Vacation Leave</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeaveCount.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Regular OT Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOTPay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Vacation Leave Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeavePay.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff OT Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOTND.'</td>
-                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff OT Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOTNDPay.'</td>
-                                    <td class="border px-2 py-1 bg-green-300 font-bold" colspan="2">DEDUCTIONS</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Restday Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOT.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">SSS</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sss.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Restday Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTPay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">SSS MPF</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sssMPF.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTND.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">PhilHealth</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_phic.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTNDPay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">HDMF</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmf.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Restday OT Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOT.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">WTAX</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_wtax.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Restday OT Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOTPay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">SSS Salary Loan</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_salaryLoan.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday OT Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOTND.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Cash Advances</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_cashAdvanceDeduction.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday OT Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOTND.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">HDMF Salary Loan</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmfSalaryLoan.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Absences</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absences.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Smart Communication</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Absences Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absencesAmt.'</td>
-                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Late Mins</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMins.'</td>
-                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Late Mins Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMinsAmt.'</td>
-                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
-                                </tr>
-                                <tr class="bg-green-300 font-bold">
-                                    <td class="border-l-2 border-t-2 text-left px-2 py-1">Gross Pay</td>
-                                    <td class="border-r-2 border-t-2 px-2 py-1 text-right">'.$payslip_grossPay.'</td>
-                                    <td class="border-l-2 border-t-2  text-left px-2 py-1">Net Pay</td>
-                                    <td class="border-r-2 border-t-2 px-2 py-1 text-right">'.$payslip_netPay.'</td>
-                                </tr>
-                            </table>
-                        </div>
-                    ';
-                }
-                else if ($isSpecial == 1 && $isOvertime == 0) {
+                if ($isHoliday == 1 && $isOvertime == 1) {
                     $payslip = '
                         <div>
                             <div class="text-center font-bold text-xl bg-green-300 py-2">For the Period of '.$date.'
                                 
                             </div>
-                            <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS, INC.</div>
+                            <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS, INCasdasdasd.</div>
                             <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP #'.$payslipCounter.'</div>
 
                             <div id="watermark" class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-600 font-bold text-4xl opacity-30 rotate-45 pointer-events-none select-none">
@@ -600,174 +292,6 @@
                                     <td class="border px-2 py-1">'.$payslip_basicPay.'</td>
                                     <td class="border px-2 py-1">'.$payslip_dailyRate.'</td>
                                     <td class="border px-2 py-1">'.$payslip_hourlyRate.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border px-2 py-1 text-right" colspan="4"></td>
-                                </tr>
-                                <tr class="bg-green-300 font-bold">
-                                    <td class="border px-2 py-1" colspan="2">EARNINGS</td>
-                                    <td class="border px-2 py-1" colspan="2">DEDUCTIONS</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">No. of Hours Worked</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hoursWorked.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">SSS</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sss.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Total Regular Wage</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_basePay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">SSS MPF</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sssMPF.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiff.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">PhilHealth</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_phic.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiffPay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">HDMF</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmf.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHoliday.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">WTAX</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_wtax.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayPay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">SSS Salary Loan</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_salaryLoan.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Special Holiday Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayND.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Cash Advances</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_cashAdvanceDeduction.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Special Holiday Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayNDPay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">HDMF Salary Loan</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmfSalaryLoan.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Absences</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absences.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Smart Communication</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Absences Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absencesAmt.'</td>
-                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Late Mins</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMins.'</td>
-                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Late Mins Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMinsAmt.'</td>
-                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
-                                </tr>
-                                <tr>
-                                    <td class="border px-2 py-1 bg-green-300 font-bold" colspan="2">ADDITIONS/ADJUSTMENTS</td>
-                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Allowance</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_allowances.'</td>
-                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Communication</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_communication.'</td>
-                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeaveCount.'</td>
-                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeavePay.'</td>
-                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Vacation Leave Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeavePay.'</td>
-                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
-                                </tr>
-                                <tr class="bg-green-300 font-bold">
-                                    <td class="border-l-2 border-t-2 text-left px-2 py-1">Gross Pay</td>
-                                    <td class="border-r-2 border-t-2 px-2 py-1 text-right">'.$payslip_grossPay.'</td>
-                                    <td class="border-l-2 border-t-2  text-left px-2 py-1">Net Pay</td>
-                                    <td class="border-r-2 border-t-2 px-2 py-1 text-right">'.$payslip_netPay.'</td>
-                                </tr>
-                            </table>
-                        </div>
-                    ';
-                }
-                else if ($isSpecial == 1 && $isOvertime == 1) {
-                    $payslip = '
-                        <div>
-                            <div class="text-center font-bold text-xl bg-green-300 py-2">For the Period of '.$date.'
-                                
-                            </div>
-                            <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS, INC.</div>
-                            <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP #'.$payslipCounter.'</div>
-
-                            <div id="watermark" class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-600 font-bold text-4xl opacity-30 rotate-45 pointer-events-none select-none">
-                                CONFIDENTIAL
-                            </div>
-
-                            <table class="w-full text-sm mb-4">
-                                <tr class="bg-green-300 font-bold">
-                                    <td class="border px-2 py-1">Employee ID</td>
-                                    <td class="border px-2 py-1">Name</td>
-                                    <td class="border px-2 py-1">Position</td>
-                                    <td class="border px-2 py-1">Employment Status</td>
-                                </tr>
-                                <tr>
-                                    <td class="border px-2 py-1">'.$payslip_empID.'</td>
-                                    <td class="border px-2 py-1">'.$payslip_employeeName.'</td>
-                                    <td class="border px-2 py-1">'.$payslip_position.'</td>
-                                    <td class="border px-2 py-1">'.$payslip_employmentStatus.'</td>
-                                </tr>
-                                <tr class="bg-green-300 font-bold">
-                                    <td class="border px-2 py-1">TIN</td>
-                                    <td class="border px-2 py-1">SSS</td>
-                                    <td class="border px-2 py-1">HDMF No.</td>
-                                    <td class="border px-2 py-1">PHIC No.</td>
-                                </tr>
-                                <tr>
-                                    <td class="border px-2 py-1">'.$payslip_tinnum.'</td>
-                                    <td class="border px-2 py-1">'.$payslip_sssnum.'</td>
-                                    <td class="border px-2 py-1">'.$payslip_pagIbignum.'</td>
-                                    <td class="border px-2 py-1">'.$payslip_philhealthnum.'</td>
-                                </tr>
-                                <tr class="bg-green-300 font-bold">
-                                    <td class="border px-2 py-1">Payment Method</td>
-                                    <td class="border px-2 py-1">Monthly Rate</td>
-                                    <td class="border px-2 py-1">Daily Rate</td>
-                                    <td class="border px-2 py-1">Hourly Rate</td>
-                                </tr>
-                                <tr>
-                                    <td class="border px-2 py-1">'.$payslip_paymentMethod.'</td>
-                                    <td class="border px-2 py-1">'.$payslip_basicPay.'</td>
-                                    <td class="border px-2 py-1">'.$payslip_dailyRate.'</td>
-                                    <td class="border px-2 py-1">'.$payslip_hourlyRate.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border px-2 py-1 text-right" colspan="4"></td>
                                 </tr>
                                 <tr class="bg-green-300 font-bold">
                                     <td class="border px-2 py-1" colspan="4">EARNINGS</td>
@@ -775,26 +299,303 @@
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">No. of Hours Worked</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hoursWorked.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHoliday.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Legal Holiday Restday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayRDOTOT.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Total Regular Wage</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_basePay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayPay.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Legal Holiday Restday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayRDOTOTPay.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Night Diff Hrs</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiff.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Special Holiday Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayND.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Legal Holiday Restday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayRDOTOTND.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Night Diff Amt</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiffPay.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Legal Holiday Restday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayRDOTOTNDPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Regular OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOT.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHoliday.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Regular OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOTPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOTND.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Special Holiday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayND.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOTNDPay.'</td>
                                     <td class="border-l-2 text-left px-2 py-1">Night Diff Special Holiday Amt</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayNDPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Restday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOT.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayOT.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Restday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayOTPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTND.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Special Holiday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayOTND.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTNDPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Special Holiday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayOTNDPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Restday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOT.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday Restday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOT.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Restday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOTPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday Restday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOTND.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Special Holiday Restday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTND.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOTND.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Special Holiday Restday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTNDPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHoliday.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Special Holiday Restday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTOT.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayPay.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Special Holiday Restday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTOTPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Legal Holiday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayND.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Special Holiday Restday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTOTND.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Legal Holiday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayNDPay.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Special Holiday Restday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTOTNDPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayOT.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Absences</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absences.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayOTPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Absences Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absencesAmt.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Legal Holiday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayOTND.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Late Minutes</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMins.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Legal Holiday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayOTNDPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Late Minutes Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMinsAmt.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday Restday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayRDOT.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Undertime Minutes</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_undertimeMins.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday Restday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayRDOTPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Undertime Minutes Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_undertimeMinsAmt.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Legal Holiday Restday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayRDOTND.'</td>
+                                    <td class="border px-2 py-1 bg-green-300 font-bold" colspan="2">DEDUCTIONS</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Legal Holiday Restday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayRDOTNDPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sss.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1 bg-green-300 font-bold" colspan="2">ADDITIONS/ADJUSTMENTS</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS MPF</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sssMPF.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Allowance</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_allowances.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">PhilHealth</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_phic.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Communication</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_communication.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">HDMF</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmf.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Other Allowances</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_otherAllowances.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">WTAX</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_wtax.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeaveCount.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS Salary Loan</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_salaryLoan.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeavePay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">HDMF Salary Loan</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmfSalaryLoan.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Vacation Leave</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeaveCount.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Smart Communication</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Vacation Leave Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeavePay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Cash Advance</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_cashAdvanceDeduction.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border-l-2 border-t-2 text-left px-2 py-1">Gross Pay</td>
+                                    <td class="border-r-2 border-t-2 px-2 py-1 text-right">'.$payslip_grossPay.'</td>
+                                    <td class="border-l-2 border-t-2  text-left px-2 py-1">Net Pay</td>
+                                    <td class="border-r-2 border-t-2 px-2 py-1 text-right">'.$payslip_netPay.'</td>
+                                </tr>
+                            </table>
+                        </div>
+                    ';
+                }
+                else if ($isHoliday == 1 && $isRegularOT == 1) {
+                    $payslip = '
+                        <div>
+                            <div class="text-center font-bold text-xl bg-green-300 py-2">For the Period of '.$date.'
+                                
+                            </div>
+                            <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS, INC.</div>
+                            <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP #'.$payslipCounter.'</div>
+
+                            <div id="watermark" class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-600 font-bold text-4xl opacity-30 rotate-45 pointer-events-none select-none">
+                                CONFIDENTIAL
+                            </div>
+
+                            <table class="w-full text-sm mb-4">
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">Employee ID</td>
+                                    <td class="border px-2 py-1">Name</td>
+                                    <td class="border px-2 py-1">Position</td>
+                                    <td class="border px-2 py-1">Employment Status</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1">'.$payslip_empID.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_employeeName.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_position.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_employmentStatus.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">TIN</td>
+                                    <td class="border px-2 py-1">SSS</td>
+                                    <td class="border px-2 py-1">HDMF No.</td>
+                                    <td class="border px-2 py-1">PHIC No.</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1">'.$payslip_tinnum.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_sssnum.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_pagIbignum.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_philhealthnum.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">Payment Method</td>
+                                    <td class="border px-2 py-1">Monthly Rate</td>
+                                    <td class="border px-2 py-1">Daily Rate</td>
+                                    <td class="border px-2 py-1">Hourly Rate</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1">'.$payslip_paymentMethod.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_basicPay.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_dailyRate.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_hourlyRate.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1" colspan="4">EARNINGS</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">No. of Hours Worked</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hoursWorked.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayOT.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Total Regular Wage</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_basePay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayOTPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiff.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Legal Holiday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayOTND.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiffPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Legal Holiday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayOTNDPay.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Regular OT Hrs</td>
@@ -821,279 +622,98 @@
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayOTNDPay.'</td>
                                 </tr>
                                 <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Restday Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOT.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday Restday Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOT.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Restday Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTPay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday Restday Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTPay.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTND.'</td>
-                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Special Holiday Restday Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTND.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTNDPay.'</td>
-                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Special Holiday Restday Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTNDPay.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Restday OT Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOT.'</td>
-                                    <td class="border-l-2 px-2 py-1 text-left">Special Holiday Restday OT Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTOT.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Restday OT Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOTPay.'</td>
-                                    <td class="border-l-2 px-2 py-1 text-left">Special Holiday Restday OT Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTOTPay.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday OT Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOTND.'</td>
-                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Special Holiday Restday OT Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTOTND.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday OT Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOTND.'</td>
-                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Special Holiday Restday OT Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTOTNDPay.'</td>
-                                </tr>
-                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHoliday.'</td>
                                     <td class="border-l-2 text-left px-2 py-1">Absences</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absences.'</td>
-                                    <td class="border px-2 py-1 bg-green-300 font-bold" colspan="2">DEDUCTIONS</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Absences Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absencesAmt.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">SSS</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sss.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Late Minutes</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMins.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">SSS MPF</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sssMPF.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Late Minutes Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMinsAmt.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">PhilHealth</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_phic.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 px-2 py-1 text-right" colspan="2"></td>
-                                    <td class="border-l-2 text-left px-2 py-1">HDMF</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmf.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border px-2 py-1 bg-green-300 font-bold" colspan="2">ADDITIONS/ADJUSTMENTS</td>
-                                    <td class="border-l-2 text-left px-2 py-1">WTAX</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_wtax.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Allowance</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_allowances.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">SSS Salary Loan</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_salaryLoan.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Communication</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_communication.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Cash Advances</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_cashAdvanceDeduction.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeaveCount.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">HDMF Salary Loan</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmfSalaryLoan.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeavePay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Smart Communication</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Vacation Leave Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeavePay.'</td>
-                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
-                                </tr>
-                                <tr class="bg-green-300 font-bold">
-                                    <td class="border-l-2 border-t-2 text-left px-2 py-1">Gross Pay</td>
-                                    <td class="border-r-2 border-t-2 px-2 py-1 text-right">'.$payslip_grossPay.'</td>
-                                    <td class="border-l-2 border-t-2  text-left px-2 py-1">Net Pay</td>
-                                    <td class="border-r-2 border-t-2 px-2 py-1 text-right">'.$payslip_netPay.'</td>
-                                </tr>
-                            </table>
-                        </div>
-                    ';
-                }
-                else if ($isLegal == 1 && $isOvertime == 0) {
-                    $payslip = '
-                        <div>
-                            <div class="text-center font-bold text-xl bg-green-300 py-2">For the Period of '.$date.'
-                                
-                            </div>
-                            <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS, INC.</div>
-                            <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP #'.$payslipCounter.'</div>
-
-                            <div id="watermark" class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-600 font-bold text-4xl opacity-30 rotate-45 pointer-events-none select-none">
-                                CONFIDENTIAL
-                            </div>
-
-                            <table class="w-full text-sm mb-4">
-                                <tr class="bg-green-300 font-bold">
-                                    <td class="border px-2 py-1">Employee ID</td>
-                                    <td class="border px-2 py-1">Name</td>
-                                    <td class="border px-2 py-1">Position</td>
-                                    <td class="border px-2 py-1">Employment Status</td>
-                                </tr>
-                                <tr>
-                                    <td class="border px-2 py-1">'.$payslip_empID.'</td>
-                                    <td class="border px-2 py-1">'.$payslip_employeeName.'</td>
-                                    <td class="border px-2 py-1">'.$payslip_position.'</td>
-                                    <td class="border px-2 py-1">'.$payslip_employmentStatus.'</td>
-                                </tr>
-                                <tr class="bg-green-300 font-bold">
-                                    <td class="border px-2 py-1">TIN</td>
-                                    <td class="border px-2 py-1">SSS</td>
-                                    <td class="border px-2 py-1">HDMF No.</td>
-                                    <td class="border px-2 py-1">PHIC No.</td>
-                                </tr>
-                                <tr>
-                                    <td class="border px-2 py-1">'.$payslip_tinnum.'</td>
-                                    <td class="border px-2 py-1">'.$payslip_sssnum.'</td>
-                                    <td class="border px-2 py-1">'.$payslip_pagIbignum.'</td>
-                                    <td class="border px-2 py-1">'.$payslip_philhealthnum.'</td>
-                                </tr>
-                                <tr class="bg-green-300 font-bold">
-                                    <td class="border px-2 py-1">Payment Method</td>
-                                    <td class="border px-2 py-1">Monthly Rate</td>
-                                    <td class="border px-2 py-1">Daily Rate</td>
-                                    <td class="border px-2 py-1">Hourly Rate</td>
-                                </tr>
-                                <tr>
-                                    <td class="border px-2 py-1">'.$payslip_paymentMethod.'</td>
-                                    <td class="border px-2 py-1">'.$payslip_basicPay.'</td>
-                                    <td class="border px-2 py-1">'.$payslip_dailyRate.'</td>
-                                    <td class="border px-2 py-1">'.$payslip_hourlyRate.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border px-2 py-1 text-right" colspan="4"></td>
-                                </tr>
-                                <tr class="bg-green-300 font-bold">
-                                    <td class="border px-2 py-1" colspan="2">EARNINGS</td>
-                                    <td class="border px-2 py-1" colspan="2">DEDUCTIONS</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">No. of Hours Worked</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hoursWorked.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">SSS</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sss.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Total Regular Wage</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_basePay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">SSS MPF</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sssMPF.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiff.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">PhilHealth</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_phic.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiffPay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">HDMF</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmf.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHoliday.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">WTAX</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_wtax.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Legal Holiday Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayPay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">SSS Salary Loan</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_salaryLoan.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Absences Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absencesAmt.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Night Diff Legal Holiday Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayND.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Cash Advances</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_cashAdvanceDeduction.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayND.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Late Minutes</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMins.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Night Diff Legal Holiday Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayNDPay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">HDMF Salary Loan</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmfSalaryLoan.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Absences</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absences.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Smart Communication</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Absences Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absencesAmt.'</td>
-                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Late Mins</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMins.'</td>
-                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Late Mins Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayNDPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Late Minutes Amt</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMinsAmt.'</td>
-                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHoliday.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Undertime Minutes</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_undertimeMins.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Undertime Minutes Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_undertimeMinsAmt.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Special Holiday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayND.'</td>
+                                    <td class="border px-2 py-1 bg-green-300 font-bold" colspan="2">DEDUCTIONS</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Special Holiday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayNDPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sss.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border px-2 py-1 bg-green-300 font-bold" colspan="2">ADDITIONS/ADJUSTMENTS</td>
-                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS MPF</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sssMPF.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Allowance</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_allowances.'</td>
-                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                    <td class="border-l-2 text-left px-2 py-1">PhilHealth</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_phic.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Communication</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_communication.'</td>
-                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                    <td class="border-l-2 text-left px-2 py-1">HDMF</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmf.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Other Allowances</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_otherAllowances.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">WTAX</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_wtax.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Sick Leave</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeaveCount.'</td>
-                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS Salary Loan</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_salaryLoan.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Sick Leave Amt</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeavePay.'</td>
-                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                    <td class="border-l-2 text-left px-2 py-1">HDMF Salary Loan</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmfSalaryLoan.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Vacation Leave</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeaveCount.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Smart Communication</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Vacation Leave Amt</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeavePay.'</td>
-                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                    <td class="border-l-2 text-left px-2 py-1">Cash Advance</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_cashAdvanceDeduction.'</td>
                                 </tr>
                                 <tr class="bg-green-300 font-bold">
                                     <td class="border-l-2 border-t-2 text-left px-2 py-1">Gross Pay</td>
@@ -1105,7 +725,7 @@
                         </div>
                     ';
                 }
-                else if ($isLegal == 1 && $isOvertime == 1) {
+                else if ($isHoliday == 1 && $isRestOT == 1) {
                     $payslip = '
                         <div>
                             <div class="text-center font-bold text-xl bg-green-300 py-2">For the Period of '.$date.'
@@ -1154,9 +774,6 @@
                                     <td class="border px-2 py-1">'.$payslip_basicPay.'</td>
                                     <td class="border px-2 py-1">'.$payslip_dailyRate.'</td>
                                     <td class="border px-2 py-1">'.$payslip_hourlyRate.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border px-2 py-1 text-right" colspan="4"></td>
                                 </tr>
                                 <tr class="bg-green-300 font-bold">
                                     <td class="border px-2 py-1" colspan="4">EARNINGS</td>
@@ -1164,160 +781,180 @@
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">No. of Hours Worked</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hoursWorked.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHoliday.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Legal Holiday Restday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayRDOTND.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Total Regular Wage</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_basePay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayPay.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Legal Holiday Restday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayRDOTNDPay.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Night Diff Hrs</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiff.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Legal Holiday Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayND.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Legal Holiday Restday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayRDOTOT.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Night Diff Amt</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiffPay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Legal Holiday Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayNDPay.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Regular OT Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOT.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday OT Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayOT.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Regular OT Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOTPay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday OT Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayOTPay.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff OT Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOTND.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Legal Holiday OT Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayOTND.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff OT Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOTNDPay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Legal Holiday OT Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayOTNDPay.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Legal Holiday Restday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayRDOTOTPay.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Restday Hrs</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOT.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday Restday Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOT.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Legal Holiday Restday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayRDOTOTND.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Restday Amt</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTPay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday Restday Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTPay.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Legal Holiday Restday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayRDOTOTNDPay.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Night Diff Restday Hrs</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTND.'</td>
-                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Legal Holiday Restday Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTND.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday Restday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOT.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Night Diff Restday Amt</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTNDPay.'</td>
-                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Legal Holiday Restday Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTNDPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday Restday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTPay.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Restday OT Hrs</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOT.'</td>
-                                    <td class="border-l-2 px-2 py-1 text-left">Legal Holiday Restday OT Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTOT.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Special Holiday Restday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTND.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Restday OT Amt</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOTPay.'</td>
-                                    <td class="border-l-2 px-2 py-1 text-left">Legal Holiday Restday OT Amt</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Special Holiday Restday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTNDPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOTND.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Special Holiday Restday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTOT.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOTNDPay.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Special Holiday Restday OT Amt</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTOTPay.'</td>
                                 </tr>
                                 <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday OT Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOTND.'</td>
-                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Legal Holiday Restday OT Hrs</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHoliday.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Special Holiday Restday OT Hrs</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTOTND.'</td>
                                 </tr>
                                 <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday OT Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOTND.'</td>
-                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Legal Holiday Restday OT Amt</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayPay.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Special Holiday Restday OT Amt</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTOTNDPay.'</td>
                                 </tr>
                                 <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Legal Holiday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayND.'</td>
                                     <td class="border-l-2 text-left px-2 py-1">Absences</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absences.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Legal Holiday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayNDPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Absences Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absencesAmt.'</td>
+                                </tr>
+                                 <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHoliday.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Late Minutes</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMins.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Late Minutes Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMinsAmt.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Special Holiday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayND.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Undertime Minutes</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_undertimeMins.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Special Holiday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayNDPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Undertime Minutes Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_undertimeMinsAmt.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday Restday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayRDOT.'</td>
                                     <td class="border px-2 py-1 bg-green-300 font-bold" colspan="2">DEDUCTIONS</td>
                                 </tr>
                                 <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Absences Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absencesAmt.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday Restday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayRDOTPay.'</td>
                                     <td class="border-l-2 text-left px-2 py-1">SSS</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sss.'</td>
                                 </tr>
                                 <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Late Minutes</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMins.'</td>
+                                    <td class="border px-2 py-1 bg-green-300 font-bold" colspan="2">ADDITIONS/ADJUSTMENTS</td>
                                     <td class="border-l-2 text-left px-2 py-1">SSS MPF</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sssMPF.'</td>
                                 </tr>
                                 <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Late Minutes Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMinsAmt.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Allowance</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_allowances.'</td>
                                     <td class="border-l-2 text-left px-2 py-1">PhilHealth</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_phic.'</td>
                                 </tr>
                                 <tr>
-                                    <td class="border-l-2 px-2 py-1 text-right" colspan="2"></td>
+                                    <td class="border-l-2 text-left px-2 py-1">Communication</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_communication.'</td>
                                     <td class="border-l-2 text-left px-2 py-1">HDMF</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmf.'</td>
                                 </tr>
                                 <tr>
-                                    <td class="border px-2 py-1 bg-green-300 font-bold" colspan="2">ADDITIONS/ADJUSTMENTS</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Other Allowances</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_otherAllowances.'</td>
                                     <td class="border-l-2 text-left px-2 py-1">WTAX</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_wtax.'</td>
                                 </tr>
                                 <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Allowance</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_allowances.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeaveCount.'</td>
                                     <td class="border-l-2 text-left px-2 py-1">SSS Salary Loan</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_salaryLoan.'</td>
                                 </tr>
                                 <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Communication</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_communication.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Cash Advances</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_cashAdvanceDeduction.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeaveCount.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeavePay.'</td>
                                     <td class="border-l-2 text-left px-2 py-1">HDMF Salary Loan</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmfSalaryLoan.'</td>
                                 </tr>
                                 <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeavePay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Vacation Leave</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeaveCount.'</td>
                                     <td class="border-l-2 text-left px-2 py-1">Smart Communication</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Vacation Leave Amt</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeavePay.'</td>
-                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                    <td class="border-l-2 text-left px-2 py-1">Cash Advance</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_cashAdvanceDeduction.'</td>
                                 </tr>
                                 <tr class="bg-green-300 font-bold">
                                     <td class="border-l-2 border-t-2 text-left px-2 py-1">Gross Pay</td>
@@ -1379,9 +1016,6 @@
                                     <td class="border px-2 py-1">'.$payslip_dailyRate.'</td>
                                     <td class="border px-2 py-1">'.$payslip_hourlyRate.'</td>
                                 </tr>
-                                <tr>
-                                    <td class="border px-2 py-1 text-right" colspan="4"></td>
-                                </tr>
                                 <tr class="bg-green-300 font-bold">
                                     <td class="border px-2 py-1" colspan="2">EARNINGS</td>
                                     <td class="border px-2 py-1" colspan="2">DEDUCTIONS</td>
@@ -1425,7 +1059,7 @@
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Night Diff Special Holiday Hrs</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayND.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Cash Advances</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Cash Advance</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_cashAdvanceDeduction.'</td>
                                 </tr>
                                 <tr>
@@ -1447,12 +1081,12 @@
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Night Diff Legal Holiday Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayND.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayND.'</td>
                                     <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Night Diff Legal Holiday Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayNDPay.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayNDPay.'</td>
                                     <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
                                 </tr>
                                 <tr>
@@ -1463,7 +1097,7 @@
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Absences Amt</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absencesAmt.'</td>
-                                    
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Late Mins</td>
@@ -1473,6 +1107,16 @@
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Late Mins Amt</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMinsAmt.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Undertime Mins</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_undertimeMins.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Undertime Mins Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_undertimeMinsAmt.'</td>
                                     <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
                                 </tr>
                                 <tr>
@@ -1490,6 +1134,11 @@
                                     <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
                                 </tr>
                                 <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Other Allowances</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_otherAllowances.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Sick Leave</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeaveCount.'</td>
                                     <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
@@ -1497,6 +1146,11 @@
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Sick Leave Amt</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeavePay.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Vacation Leave</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeaveCount.'</td>
                                     <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
                                 </tr>
                                 <tr>
@@ -1514,7 +1168,8 @@
                         </div>
                     ';
                 }
-                else {
+
+                else if ($isSpecial == 1 && $isOvertime == 1) {
                     $payslip = '
                         <div>
                             <div class="text-center font-bold text-xl bg-green-300 py-2">For the Period of '.$date.'
@@ -1564,8 +1219,242 @@
                                     <td class="border px-2 py-1">'.$payslip_dailyRate.'</td>
                                     <td class="border px-2 py-1">'.$payslip_hourlyRate.'</td>
                                 </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1" colspan="4">EARNINGS</td>
+                                </tr>
                                 <tr>
-                                    <td class="border px-2 py-1 text-right" colspan="4"></td>
+                                    <td class="border-l-2 text-left px-2 py-1">No. of Hours Worked</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hoursWorked.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHoliday.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Total Regular Wage</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_basePay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiff.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Special Holiday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayND.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiffPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Special Holiday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayNDPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Regular OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOT.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayOT.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Regular OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOTPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayOTPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOTND.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Special Holiday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayOTND.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOTNDPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Special Holiday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayOTNDPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Restday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOT.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday Restday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOT.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Restday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday Restday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTND.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Special Holiday Restday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTND.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTNDPay.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Special Holiday Restday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTNDPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Restday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOT.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Special Holiday Restday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTOT.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Restday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOTPay.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Special Holiday Restday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTOTPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOTND.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Special Holiday Restday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTOTND.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOTND.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Special Holiday Restday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTOTNDPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Absences</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absences.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Absences Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absencesAmt.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Late Minutes</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMins.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Late Minutes Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMinsAmt.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Undertime Minutes</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_undertimeMins.'</td>
+                                    <td class="border px-2 py-1 bg-green-300 font-bold" colspan="2">DEDUCTIONS</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Undertime Minutes Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_undertimeMinsAmt.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sss.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1 bg-green-300 font-bold" colspan="2">ADDITIONS/ADJUSTMENTS</td>
+                                    <td class="border-l-2 text-left px-2 py-1">HDMF</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmf.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Allowance</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_allowances.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS MPF</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sssMPF.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Communication</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_communication.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">PhilHealth</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_phic.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Other Allowances</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_otherAllowances.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">WTAX</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_wtax.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeaveCount.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS Salary Loan</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_salaryLoan.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeavePay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">HDMF Salary Loan</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmfSalaryLoan.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Vacation Leave</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeaveCount.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Smart Communication</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Vacation Leave Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeavePay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Cash Advance</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_cashAdvanceDeduction.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border-l-2 border-t-2 text-left px-2 py-1">Gross Pay</td>
+                                    <td class="border-r-2 border-t-2 px-2 py-1 text-right">'.$payslip_grossPay.'</td>
+                                    <td class="border-l-2 border-t-2  text-left px-2 py-1">Net Pay</td>
+                                    <td class="border-r-2 border-t-2 px-2 py-1 text-right">'.$payslip_netPay.'</td>
+                                </tr>
+                            </table>
+                        </div>
+                    ';
+                }
+                else if ($isSpecial == 1 && $isRegularOT == 1) {
+                    $payslip = '
+                        <div>
+                            <div class="text-center font-bold text-xl bg-green-300 py-2">For the Period of '.$date.'
+                                
+                            </div>
+                            <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS, INC.</div>
+                            <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP #'.$payslipCounter.'</div>
+
+                            <div id="watermark" class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-600 font-bold text-4xl opacity-30 rotate-45 pointer-events-none select-none">
+                                CONFIDENTIAL
+                            </div>
+
+                            <table class="w-full text-sm mb-4">
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">Employee ID</td>
+                                    <td class="border px-2 py-1">Name</td>
+                                    <td class="border px-2 py-1">Position</td>
+                                    <td class="border px-2 py-1">Employment Status</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1">'.$payslip_empID.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_employeeName.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_position.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_employmentStatus.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">TIN</td>
+                                    <td class="border px-2 py-1">SSS</td>
+                                    <td class="border px-2 py-1">HDMF No.</td>
+                                    <td class="border px-2 py-1">PHIC No.</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1">'.$payslip_tinnum.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_sssnum.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_pagIbignum.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_philhealthnum.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">Payment Method</td>
+                                    <td class="border px-2 py-1">Monthly Rate</td>
+                                    <td class="border px-2 py-1">Daily Rate</td>
+                                    <td class="border px-2 py-1">Hourly Rate</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1">'.$payslip_paymentMethod.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_basicPay.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_dailyRate.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_hourlyRate.'</td>
                                 </tr>
                                 <tr class="bg-green-300 font-bold">
                                     <td class="border px-2 py-1" colspan="4">EARNINGS</td>
@@ -1573,209 +1462,518 @@
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">No. of Hours Worked</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hoursWorked.'</td>
-                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Special Holiday Restday OT Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTOTND.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHoliday.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Total Regular Wage</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_basePay.'</td>
-                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Special Holiday Restday OT Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTOTNDPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayPay.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Night Diff Hrs</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiff.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHoliday.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Special Holiday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayND.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Night Diff Amt</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiffPay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Special Holiday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayNDPay.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Regular OT Hrs</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOT.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Legal Holiday Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayND.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayOT.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Regular OT Amt</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOTPay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Legal Holiday Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayNDPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayOTPay.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Night Diff OT Hrs</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOTND.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday OT Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayOT.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Special Holiday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayOTND.'</td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Night Diff OT Amt</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOTNDPay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday OT Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayOTPay.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Restday Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOT.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Legal Holiday OT Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayOTND.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Restday Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTPay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Legal Holiday OT Amt</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Special Holiday OT Amt</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayOTNDPay.'</td>
                                 </tr>
                                 <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTND.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday Restday Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOT.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTNDPay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday Restday Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTPay.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Restday OT Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOT.'</td>
-                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Legal Holiday Restday Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTND.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Restday OT Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOTPay.'</td>
-                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Legal Holiday Restday Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTNDPay.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday OT Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOTND.'</td>
-                                    <td class="border-l-2 px-2 py-1 text-left">Legal Holiday Restday OT Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTOT.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday OT Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOTND.'</td>
-                                    <td class="border-l-2 px-2 py-1 text-left">Legal Holiday Restday OT Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTOTPay.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHoliday.'</td>
-                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Legal Holiday Restday OT Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTOTND.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayPay.'</td>
-                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Legal Holiday Restday OT Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTOTNDPay.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Special Holiday Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayND.'</td>
-                                    <td class="border-l-2 px-2 py-1 text-left">Special Holiday Restday OT Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTOT.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Special Holiday Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayNDPay.'</td>
-                                    <td class="border-l-2 px-2 py-1 text-left">Special Holiday Restday OT Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTOTPay.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday OT Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayOT.'</td>
                                     <td class="border-l-2 text-left px-2 py-1">Absences</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absences.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday OT Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayOTPay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Absences Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absencesAmt.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Special Holiday OT Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayOTND.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Late Minutes</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMins.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday OT Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayOTPay.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Late Minutes Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMinsAmt.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Special Holiday OT Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayOTND.'</td>
                                     <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
                                 </tr>
                                 <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Special Holiday OT Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayOTNDPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Absences Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absencesAmt.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Late Minutes</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMins.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Late Minutes Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMinsAmt.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Undertime Minutes</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_undertimeMins.'</td>
                                     <td class="border px-2 py-1 bg-green-300 font-bold" colspan="2">DEDUCTIONS</td>
                                 </tr>
                                 <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday Restday Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOT.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Undertime Minutes Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_undertimeMinsAmt.'</td>
                                     <td class="border-l-2 text-left px-2 py-1">SSS</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sss.'</td>
                                 </tr>
                                 <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday Restday Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTPay.'</td>
+                                    <td class="border px-2 py-1 bg-green-300 font-bold" colspan="2">ADDITIONS/ADJUSTMENTS</td>
                                     <td class="border-l-2 text-left px-2 py-1">SSS MPF</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sssMPF.'</td>
                                 </tr>
                                 <tr>
-                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Special Holiday Restday Hrs</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTND.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Allowance</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_allowances.'</td>
                                     <td class="border-l-2 text-left px-2 py-1">PhilHealth</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_phic.'</td>
                                 </tr>
                                 <tr>
-                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Special Holiday Restday Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTNDPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Communication</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_communication.'</td>
                                     <td class="border-l-2 text-left px-2 py-1">HDMF</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmf.'</td>
                                 </tr>
                                 <tr>
-                                    <td class="border px-2 py-1 bg-green-300 font-bold" colspan="2">ADDITIONS/ADJUSTMENTS</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Other Allowances</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_otherAllowances.'</td>
                                     <td class="border-l-2 text-left px-2 py-1">WTAX</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_wtax.'</td>
                                 </tr>
                                 <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Allowance</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_allowances.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeaveCount.'</td>
                                     <td class="border-l-2 text-left px-2 py-1">SSS Salary Loan</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_salaryLoan.'</td>
                                 </tr>
                                 <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Communication</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_communication.'</td>
-                                    <td class="border-l-2 text-left px-2 py-1">Cash Advances</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_cashAdvanceDeduction.'</td>
-                                </tr>
-                                <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeaveCount.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeavePay.'</td>
                                     <td class="border-l-2 text-left px-2 py-1">HDMF Salary Loan</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmfSalaryLoan.'</td>
                                 </tr>
                                 <tr>
-                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave Amt</td>
-                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeavePay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Vacation Leave</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeaveCount.'</td>
                                     <td class="border-l-2 text-left px-2 py-1">Smart Communication</td>
                                     <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Vacation Leave Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeavePay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Cash Advance</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_cashAdvanceDeduction.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border-l-2 border-t-2 text-left px-2 py-1">Gross Pay</td>
+                                    <td class="border-r-2 border-t-2 px-2 py-1 text-right">'.$payslip_grossPay.'</td>
+                                    <td class="border-l-2 border-t-2  text-left px-2 py-1">Net Pay</td>
+                                    <td class="border-r-2 border-t-2 px-2 py-1 text-right">'.$payslip_netPay.'</td>
+                                </tr>
+                            </table>
+                        </div>
+                    ';
+                }
+                else if ($isSpecial == 1 && $isRestOT == 1) {
+                    $payslip = '
+                        <div>
+                            <div class="text-center font-bold text-xl bg-green-300 py-2">For the Period of '.$date.'
+                                
+                            </div>
+                            <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS, INC.</div>
+                            <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP #'.$payslipCounter.'</div>
+
+                            <div id="watermark" class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-600 font-bold text-4xl opacity-30 rotate-45 pointer-events-none select-none">
+                                CONFIDENTIAL
+                            </div>
+
+                            <table class="w-full text-sm mb-4">
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">Employee ID</td>
+                                    <td class="border px-2 py-1">Name</td>
+                                    <td class="border px-2 py-1">Position</td>
+                                    <td class="border px-2 py-1">Employment Status</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1">'.$payslip_empID.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_employeeName.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_position.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_employmentStatus.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">TIN</td>
+                                    <td class="border px-2 py-1">SSS</td>
+                                    <td class="border px-2 py-1">HDMF No.</td>
+                                    <td class="border px-2 py-1">PHIC No.</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1">'.$payslip_tinnum.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_sssnum.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_pagIbignum.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_philhealthnum.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">Payment Method</td>
+                                    <td class="border px-2 py-1">Monthly Rate</td>
+                                    <td class="border px-2 py-1">Daily Rate</td>
+                                    <td class="border px-2 py-1">Hourly Rate</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1">'.$payslip_paymentMethod.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_basicPay.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_dailyRate.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_hourlyRate.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1" colspan="4">EARNINGS</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">No. of Hours Worked</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hoursWorked.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHoliday.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Total Regular Wage</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_basePay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiff.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Special Holiday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayND.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiffPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Special Holiday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayNDPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Restday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOT.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday Restday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOT.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Restday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday Restday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTND.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Special Holiday Restday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTND.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTNDPay.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Special Holiday Restday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTNDPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Restday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOT.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Special Holiday Restday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTOT.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Restday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOTPay.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Special Holiday Restday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTOTPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOTND.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Special Holiday Restday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTOTND.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOTNDPay.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Special Holiday Restday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayRDOTOTNDPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Absences</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absences.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Absences Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absencesAmt.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Late Minutes</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMins.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Late Minutes Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMinsAmt.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Undertime Minutes</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_undertimeMins.'</td>
+                                    <td class="border px-2 py-1 bg-green-300 font-bold" colspan="2">DEDUCTIONS</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Undertime Minutes Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_undertimeMinsAmt.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sss.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1 bg-green-300 font-bold" colspan="2">ADDITIONS/ADJUSTMENTS</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS MPF</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sssMPF.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Allowance</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_allowances.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">PhilHealth</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_phic.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Communication</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_communication.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">HDMF</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmf.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Other Allowances</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_otherAllowances.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">WTAX</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_wtax.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeaveCount.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS Salary Loan</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_salaryLoan.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeavePay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">HDMF Salary Loan</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmfSalaryLoan.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Vacation Leave</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeaveCount.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Smart Communication</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Vacation Leave Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeavePay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Cash Advance</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_cashAdvanceDeduction.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border-l-2 border-t-2 text-left px-2 py-1">Gross Pay</td>
+                                    <td class="border-r-2 border-t-2 px-2 py-1 text-right">'.$payslip_grossPay.'</td>
+                                    <td class="border-l-2 border-t-2  text-left px-2 py-1">Net Pay</td>
+                                    <td class="border-r-2 border-t-2 px-2 py-1 text-right">'.$payslip_netPay.'</td>
+                                </tr>
+                            </table>
+                        </div>
+                    ';
+                }
+                else if ($isSpecial == 1 && $isOvertime == 0) {
+                    $payslip = '
+                        <div>
+                            <div class="text-center font-bold text-xl bg-green-300 py-2">For the Period of '.$date.'
+                                
+                            </div>
+                            <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS, INC.</div>
+                            <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP #'.$payslipCounter.'</div>
+
+                            <div id="watermark" class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-600 font-bold text-4xl opacity-30 rotate-45 pointer-events-none select-none">
+                                CONFIDENTIAL
+                            </div>
+
+                            <table class="w-full text-sm mb-4">
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">Employee ID</td>
+                                    <td class="border px-2 py-1">Name</td>
+                                    <td class="border px-2 py-1">Position</td>
+                                    <td class="border px-2 py-1">Employment Status</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1">'.$payslip_empID.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_employeeName.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_position.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_employmentStatus.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">TIN</td>
+                                    <td class="border px-2 py-1">SSS</td>
+                                    <td class="border px-2 py-1">HDMF No.</td>
+                                    <td class="border px-2 py-1">PHIC No.</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1">'.$payslip_tinnum.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_sssnum.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_pagIbignum.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_philhealthnum.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">Payment Method</td>
+                                    <td class="border px-2 py-1">Monthly Rate</td>
+                                    <td class="border px-2 py-1">Daily Rate</td>
+                                    <td class="border px-2 py-1">Hourly Rate</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1">'.$payslip_paymentMethod.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_basicPay.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_dailyRate.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_hourlyRate.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1" colspan="2">EARNINGS</td>
+                                    <td class="border px-2 py-1" colspan="2">DEDUCTIONS</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">No. of Hours Worked</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hoursWorked.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sss.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Total Regular Wage</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_basePay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS MPF</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sssMPF.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiff.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">PhilHealth</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_phic.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiffPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">HDMF</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmf.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHoliday.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">WTAX</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_wtax.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Special Holiday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS Salary Loan</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_salaryLoan.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Special Holiday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayND.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">HDMF Salary Loan</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmfSalaryLoan.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Special Holiday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_specialHolidayNDPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Smart Communication</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Absences</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absences.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Cash Advance</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_cashAdvanceDeduction.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Absences Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absencesAmt.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Late Minutes</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMins.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Late Minutes Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMinsAmt.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Undertime Minutes</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_undertimeMins.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Undertime Minutes Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_undertimeMinsAmt.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1 bg-green-300 font-bold" colspan="2">ADDITIONS/ADJUSTMENTS</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Allowance</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_allowances.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Communication</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_communication.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Other Allowances</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_otherAllowances.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeaveCount.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeavePay.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Vacation Leave</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeaveCount.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
                                 </tr>
                                 <tr>
                                     <td class="border-l-2 text-left px-2 py-1">Vacation Leave Amt</td>
@@ -1793,11 +1991,1540 @@
                     ';
                 }
 
-                // $payslip += '
-                // <div id="watermark" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-500 font-bold text-4xl opacity-20 rotate-45 pointer-events-none">
-                //     <p>Confidential</p>
-                // </div>
-                // ';
+                else if ($isLegal == 1 && $isOvertime == 1) {
+                    $payslip = '
+                        <div>
+                            <div class="text-center font-bold text-xl bg-green-300 py-2">For the Period of '.$date.'
+                                
+                            </div>
+                            <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS, INC.</div>
+                            <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP #'.$payslipCounter.'</div>
+
+                            <div id="watermark" class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-600 font-bold text-4xl opacity-30 rotate-45 pointer-events-none select-none">
+                                CONFIDENTIAL
+                            </div>
+
+                            <table class="w-full text-sm mb-4">
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">Employee ID</td>
+                                    <td class="border px-2 py-1">Name</td>
+                                    <td class="border px-2 py-1">Position</td>
+                                    <td class="border px-2 py-1">Employment Status</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1">'.$payslip_empID.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_employeeName.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_position.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_employmentStatus.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">TIN</td>
+                                    <td class="border px-2 py-1">SSS</td>
+                                    <td class="border px-2 py-1">HDMF No.</td>
+                                    <td class="border px-2 py-1">PHIC No.</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1">'.$payslip_tinnum.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_sssnum.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_pagIbignum.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_philhealthnum.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">Payment Method</td>
+                                    <td class="border px-2 py-1">Monthly Rate</td>
+                                    <td class="border px-2 py-1">Daily Rate</td>
+                                    <td class="border px-2 py-1">Hourly Rate</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1">'.$payslip_paymentMethod.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_basicPay.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_dailyRate.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_hourlyRate.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1" colspan="4">EARNINGS</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">No. of Hours Worked</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hoursWorked.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHoliday.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Total Regular Wage</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_basePay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiff.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Legal Holiday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayND.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiffPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Legal Holiday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayNDPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Regular OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOT.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayOT.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Regular OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOTPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayOTPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOTND.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Legal Holiday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayOTND.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOTNDPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Legal Holiday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayOTNDPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Restday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOT.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday Restday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayRDOT.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Restday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday Restday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayRDOTPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTND.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Legal Holiday Restday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayRDOTND.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTNDPay.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Legal Holiday Restday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayRDOTNDPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Restday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOT.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Legal Holiday Restday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayRDOTOT.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Restday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOTPay.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Legal Holiday Restday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayRDOTOTPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOTND.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Legal Holiday Restday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayRDOTOTND.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOTND.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Legal Holiday Restday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayRDOTOTNDPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Absences</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absences.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Absences Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absencesAmt.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Late Minutes</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMins.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Late Minutes Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMinsAmt.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Undertime Minutes</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_undertimeMins.'</td>
+                                    <td class="border px-2 py-1 bg-green-300 font-bold" colspan="2">DEDUCTIONS</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Undertime Minutes Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_undertimeMinsAmt.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sss.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1 bg-green-300 font-bold" colspan="2">ADDITIONS/ADJUSTMENTS</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS MPF</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sssMPF.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Allowance</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_allowances.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">PhilHealth</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_phic.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Communication</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_communication.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">HDMF</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmf.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Other Allowances</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_otherAllowances.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">WTAX</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_wtax.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeaveCount.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS Salary Loan</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_salaryLoan.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeavePay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">HDMF Salary Loan</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmfSalaryLoan.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Vacation Leave</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeaveCount.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Smart Communication</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Vacation Leave Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeavePay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Cash Advance</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_cashAdvanceDeduction.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border-l-2 border-t-2 text-left px-2 py-1">Gross Pay</td>
+                                    <td class="border-r-2 border-t-2 px-2 py-1 text-right">'.$payslip_grossPay.'</td>
+                                    <td class="border-l-2 border-t-2  text-left px-2 py-1">Net Pay</td>
+                                    <td class="border-r-2 border-t-2 px-2 py-1 text-right">'.$payslip_netPay.'</td>
+                                </tr>
+                            </table>
+                        </div>
+                    ';
+                }
+                else if ($isLegal == 1 && $isRegularOT == 1) {
+                    $payslip = '
+                        <div>
+                            <div class="text-center font-bold text-xl bg-green-300 py-2">For the Period of '.$date.'
+                                
+                            </div>
+                            <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS, INC.</div>
+                            <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP #'.$payslipCounter.'</div>
+
+                            <div id="watermark" class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-600 font-bold text-4xl opacity-30 rotate-45 pointer-events-none select-none">
+                                CONFIDENTIAL
+                            </div>
+
+                            <table class="w-full text-sm mb-4">
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">Employee ID</td>
+                                    <td class="border px-2 py-1">Name</td>
+                                    <td class="border px-2 py-1">Position</td>
+                                    <td class="border px-2 py-1">Employment Status</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1">'.$payslip_empID.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_employeeName.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_position.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_employmentStatus.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">TIN</td>
+                                    <td class="border px-2 py-1">SSS</td>
+                                    <td class="border px-2 py-1">HDMF No.</td>
+                                    <td class="border px-2 py-1">PHIC No.</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1">'.$payslip_tinnum.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_sssnum.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_pagIbignum.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_philhealthnum.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">Payment Method</td>
+                                    <td class="border px-2 py-1">Monthly Rate</td>
+                                    <td class="border px-2 py-1">Daily Rate</td>
+                                    <td class="border px-2 py-1">Hourly Rate</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1">'.$payslip_paymentMethod.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_basicPay.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_dailyRate.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_hourlyRate.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1" colspan="4">EARNINGS</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">No. of Hours Worked</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hoursWorked.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHoliday.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Total Regular Wage</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_basePay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiff.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Legal Holiday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayND.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiffPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Legal Holiday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayNDPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Regular OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOT.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayOT.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Regular OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOTPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayOTPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOTND.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Legal Holiday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayOTND.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOTNDPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Legal Holiday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayOTNDPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Absences</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absences.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Absences Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absencesAmt.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Late Minutes</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMins.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Late Minutes Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMinsAmt.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Undertime Minutes</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_undertimeMins.'</td>
+                                    <td class="border px-2 py-1 bg-green-300 font-bold" colspan="2">DEDUCTIONS</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Undertime Minutes Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_undertimeMinsAmt.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sss.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1 bg-green-300 font-bold" colspan="2">ADDITIONS/ADJUSTMENTS</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS MPF</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sssMPF.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Allowance</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_allowances.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">PhilHealth</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_phic.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Communication</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_communication.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">HDMF</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmf.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Other Allowances</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_otherAllowances.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">WTAX</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_wtax.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeaveCount.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS Salary Loan</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_salaryLoan.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeavePay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">HDMF Salary Loan</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmfSalaryLoan.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Vacation Leave</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeaveCount.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Smart Communication</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Vacation Leave Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeavePay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Cash Advance</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_cashAdvanceDeduction.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border-l-2 border-t-2 text-left px-2 py-1">Gross Pay</td>
+                                    <td class="border-r-2 border-t-2 px-2 py-1 text-right">'.$payslip_grossPay.'</td>
+                                    <td class="border-l-2 border-t-2  text-left px-2 py-1">Net Pay</td>
+                                    <td class="border-r-2 border-t-2 px-2 py-1 text-right">'.$payslip_netPay.'</td>
+                                </tr>
+                            </table>
+                        </div>
+                    ';
+                }
+                else if ($isLegal == 1 && $isRestOT == 1) {
+                    $payslip = '
+                        <div>
+                            <div class="text-center font-bold text-xl bg-green-300 py-2">For the Period of '.$date.'
+                                
+                            </div>
+                            <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS, INC.</div>
+                            <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP #'.$payslipCounter.'</div>
+
+                            <div id="watermark" class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-600 font-bold text-4xl opacity-30 rotate-45 pointer-events-none select-none">
+                                CONFIDENTIAL
+                            </div>
+
+                            <table class="w-full text-sm mb-4">
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">Employee ID</td>
+                                    <td class="border px-2 py-1">Name</td>
+                                    <td class="border px-2 py-1">Position</td>
+                                    <td class="border px-2 py-1">Employment Status</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1">'.$payslip_empID.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_employeeName.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_position.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_employmentStatus.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">TIN</td>
+                                    <td class="border px-2 py-1">SSS</td>
+                                    <td class="border px-2 py-1">HDMF No.</td>
+                                    <td class="border px-2 py-1">PHIC No.</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1">'.$payslip_tinnum.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_sssnum.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_pagIbignum.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_philhealthnum.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">Payment Method</td>
+                                    <td class="border px-2 py-1">Monthly Rate</td>
+                                    <td class="border px-2 py-1">Daily Rate</td>
+                                    <td class="border px-2 py-1">Hourly Rate</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1">'.$payslip_paymentMethod.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_basicPay.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_dailyRate.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_hourlyRate.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1" colspan="4">EARNINGS</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">No. of Hours Worked</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hoursWorked.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHoliday.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Total Regular Wage</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_basePay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiff.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Legal Holiday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayND.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiffPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Legal Holiday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayNDPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Restday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOT.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday Restday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayRDOT.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Restday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday Restday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayRDOTPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTND.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Legal Holiday Restday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayRDOTND.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTNDPay.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Legal Holiday Restday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayRDOTNDPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Restday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOT.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Legal Holiday Restday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayRDOTOT.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Restday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOTPay.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Legal Holiday Restday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayRDOTOTPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOTND.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Legal Holiday Restday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayRDOTOTND.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOTND.'</td>
+                                    <td class="border-l-2 px-2 py-1 text-left">Night Diff Legal Holiday Restday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayRDOTOTNDPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Absences</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absences.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Absences Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absencesAmt.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Late Minutes</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMins.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Late Minutes Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMinsAmt.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Undertime Minutes</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_undertimeMins.'</td>
+                                    <td class="border px-2 py-1 bg-green-300 font-bold" colspan="2">DEDUCTIONS</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Undertime Minutes Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_undertimeMinsAmt.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sss.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1 bg-green-300 font-bold" colspan="2">ADDITIONS/ADJUSTMENTS</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS MPF</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sssMPF.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Allowance</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_allowances.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">PhilHealth</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_phic.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Communication</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_communication.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">HDMF</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmf.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Other Allowances</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_otherAllowances.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">WTAX</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_wtax.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeaveCount.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS Salary Loan</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_salaryLoan.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeavePay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">HDMF Salary Loan</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmfSalaryLoan.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Vacation Leave</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeaveCount.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Smart Communication</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Vacation Leave Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeavePay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Cash Advance</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_cashAdvanceDeduction.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border-l-2 border-t-2 text-left px-2 py-1">Gross Pay</td>
+                                    <td class="border-r-2 border-t-2 px-2 py-1 text-right">'.$payslip_grossPay.'</td>
+                                    <td class="border-l-2 border-t-2  text-left px-2 py-1">Net Pay</td>
+                                    <td class="border-r-2 border-t-2 px-2 py-1 text-right">'.$payslip_netPay.'</td>
+                                </tr>
+                            </table>
+                        </div>
+                    ';
+                }
+                else if ($isLegal == 1 && $isOvertime == 0) {
+                    $payslip = '
+                        <div>
+                            <div class="text-center font-bold text-xl bg-green-300 py-2">For the Period of '.$date.'
+                                
+                            </div>
+                            <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS, INC.</div>
+                            <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP #'.$payslipCounter.'</div>
+
+                            <div id="watermark" class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-600 font-bold text-4xl opacity-30 rotate-45 pointer-events-none select-none">
+                                CONFIDENTIAL
+                            </div>
+
+                            <table class="w-full text-sm mb-4">
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">Employee ID</td>
+                                    <td class="border px-2 py-1">Name</td>
+                                    <td class="border px-2 py-1">Position</td>
+                                    <td class="border px-2 py-1">Employment Status</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1">'.$payslip_empID.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_employeeName.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_position.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_employmentStatus.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">TIN</td>
+                                    <td class="border px-2 py-1">SSS</td>
+                                    <td class="border px-2 py-1">HDMF No.</td>
+                                    <td class="border px-2 py-1">PHIC No.</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1">'.$payslip_tinnum.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_sssnum.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_pagIbignum.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_philhealthnum.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">Payment Method</td>
+                                    <td class="border px-2 py-1">Monthly Rate</td>
+                                    <td class="border px-2 py-1">Daily Rate</td>
+                                    <td class="border px-2 py-1">Hourly Rate</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1">'.$payslip_paymentMethod.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_basicPay.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_dailyRate.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_hourlyRate.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1" colspan="2">EARNINGS</td>
+                                    <td class="border px-2 py-1" colspan="2">DEDUCTIONS</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">No. of Hours Worked</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hoursWorked.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sss.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Total Regular Wage</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_basePay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS MPF</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sssMPF.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiff.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">PhilHealth</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_phic.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiffPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">HDMF</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmf.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHoliday.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">WTAX</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_wtax.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Legal Holiday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS Salary Loan</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_salaryLoan.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Legal Holiday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayND.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">HDMF Salary Loan</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmfSalaryLoan.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Legal Holiday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularHolidayNDPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Smart Communication</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Absences</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absences.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Cash Advance</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_cashAdvanceDeduction.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Absences Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absencesAmt.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Late Minutes</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMins.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Late Minutes Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMinsAmt.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Undertime Minutes</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_undertimeMins.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Undertime Minutes Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_undertimeMinsAmt.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1 bg-green-300 font-bold" colspan="2">ADDITIONS/ADJUSTMENTS</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Allowance</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_allowances.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Communication</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_communication.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Other Allowances</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_otherAllowances.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeaveCount.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeavePay.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Vacation Leave</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeaveCount.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Vacation Leave Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeavePay.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border-l-2 border-t-2 text-left px-2 py-1">Gross Pay</td>
+                                    <td class="border-r-2 border-t-2 px-2 py-1 text-right">'.$payslip_grossPay.'</td>
+                                    <td class="border-l-2 border-t-2  text-left px-2 py-1">Net Pay</td>
+                                    <td class="border-r-2 border-t-2 px-2 py-1 text-right">'.$payslip_netPay.'</td>
+                                </tr>
+                            </table>
+                        </div>
+                    ';
+                }
+
+                else if ($isHoliday == 0 && $isOvertime == 1) {
+                    $payslip = '
+                        <div>
+                            <div class="text-center font-bold text-xl bg-green-300 py-2">For the Period of '.$date.'
+                                
+                            </div>
+                            <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS, INC.</div>
+                            <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP #'.$payslipCounter.'</div>
+
+                            <div id="watermark" class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-600 font-bold text-4xl opacity-30 rotate-45 pointer-events-none select-none">
+                                CONFIDENTIAL
+                            </div>
+
+                            <table class="w-full text-sm mb-4">
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">Employee ID</td>
+                                    <td class="border px-2 py-1">Name</td>
+                                    <td class="border px-2 py-1">Position</td>
+                                    <td class="border px-2 py-1">Employment Status</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1">'.$payslip_empID.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_employeeName.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_position.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_employmentStatus.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">TIN</td>
+                                    <td class="border px-2 py-1">SSS</td>
+                                    <td class="border px-2 py-1">HDMF No.</td>
+                                    <td class="border px-2 py-1">PHIC No.</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1">'.$payslip_tinnum.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_sssnum.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_pagIbignum.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_philhealthnum.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">Payment Method</td>
+                                    <td class="border px-2 py-1">Monthly Rate</td>
+                                    <td class="border px-2 py-1">Daily Rate</td>
+                                    <td class="border px-2 py-1">Hourly Rate</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1">'.$payslip_paymentMethod.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_basicPay.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_dailyRate.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_hourlyRate.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1" colspan="4">EARNINGS</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">No. of Hours Worked</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hoursWorked.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Restday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOT.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Total Regular Wage</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_basePay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Restday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiff.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTND.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiffPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTNDPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Regular OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOT.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Restday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOT.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Regular OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOTPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Restday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOTPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOTND.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOTND.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOTNDPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOTNDPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Absences</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absences.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Absences Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absencesAmt.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Late Minutes</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMins.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Late Minutes Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMinsAmt.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Undertime Minutes</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_undertimeMins.'</td>
+                                    <td class="border px-2 py-1 bg-green-300 font-bold" colspan="2">DEDUCTIONS</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Undertime Minutes Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_undertimeMinsAmt.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sss.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1 bg-green-300 font-bold" colspan="2">ADDITIONS/ADJUSTMENTS</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS MPF</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sssMPF.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Allowance</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_allowances.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">PhilHealth</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_phic.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Communication</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_communication.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">HDMF</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmf.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Other Allowances</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_otherAllowances.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">WTAX</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_wtax.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeaveCount.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS Salary Loan</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_salaryLoan.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeavePay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">HDMF Salary Loan</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmfSalaryLoan.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Vacation Leave</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeaveCount.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Smart Communication</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Vacation Leave Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeavePay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Cash Advance</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_cashAdvanceDeduction.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border-l-2 border-t-2 text-left px-2 py-1">Gross Pay</td>
+                                    <td class="border-r-2 border-t-2 px-2 py-1 text-right">'.$payslip_grossPay.'</td>
+                                    <td class="border-l-2 border-t-2  text-left px-2 py-1">Net Pay</td>
+                                    <td class="border-r-2 border-t-2 px-2 py-1 text-right">'.$payslip_netPay.'</td>
+                                </tr>
+                            </table>
+                        </div>
+                    ';
+                }
+                else if ($isHoliday == 0 && $isRegularOT == 1) {
+                    $payslip = '
+                        <div>
+                            <div class="text-center font-bold text-xl bg-green-300 py-2">For the Period of '.$date.'
+                                
+                            </div>
+                            <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS, INC.</div>
+                            <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP #'.$payslipCounter.'</div>
+
+                            <div id="watermark" class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-600 font-bold text-4xl opacity-30 rotate-45 pointer-events-none select-none">
+                                CONFIDENTIAL
+                            </div>
+
+                            <table class="w-full text-sm mb-4">
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">Employee ID</td>
+                                    <td class="border px-2 py-1">Name</td>
+                                    <td class="border px-2 py-1">Position</td>
+                                    <td class="border px-2 py-1">Employment Status</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1">'.$payslip_empID.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_employeeName.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_position.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_employmentStatus.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">TIN</td>
+                                    <td class="border px-2 py-1">SSS</td>
+                                    <td class="border px-2 py-1">HDMF No.</td>
+                                    <td class="border px-2 py-1">PHIC No.</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1">'.$payslip_tinnum.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_sssnum.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_pagIbignum.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_philhealthnum.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">Payment Method</td>
+                                    <td class="border px-2 py-1">Monthly Rate</td>
+                                    <td class="border px-2 py-1">Daily Rate</td>
+                                    <td class="border px-2 py-1">Hourly Rate</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1">'.$payslip_paymentMethod.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_basicPay.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_dailyRate.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_hourlyRate.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1" colspan="2">EARNINGS</td>
+                                    <td class="border px-2 py-1 bg-green-300 font-bold" colspan="2">DEDUCTIONS</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">No. of Hours Worked</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hoursWorked.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sss.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Total Regular Wage</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_basePay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS MPF</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sssMPF.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiff.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">PhilHealth</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_phic.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiffPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">HDMF</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmf.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Regular OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOT.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">WTAX</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_wtax.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Regular OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOTPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS Salary Loan</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_salaryLoan.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOTND.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">HDMF Salary Loan</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmfSalaryLoan.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regularOTNDPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Smart Communication</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Absences</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absences.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Cash Advance</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_cashAdvanceDeduction.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Absences Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absencesAmt.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Late Minutes</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMins.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Late Minutes Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMinsAmt.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Undertime Minutes</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_undertimeMins.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Undertime Minutes Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_undertimeMinsAmt.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1 bg-green-300 font-bold" colspan="2">ADDITIONS/ADJUSTMENTS</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Allowance</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_allowances.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Communication</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_communication.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Other Allowances</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_otherAllowances.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeaveCount.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeavePay.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Vacation Leave</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeaveCount.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Vacation Leave Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeavePay.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border-l-2 border-t-2 text-left px-2 py-1">Gross Pay</td>
+                                    <td class="border-r-2 border-t-2 px-2 py-1 text-right">'.$payslip_grossPay.'</td>
+                                    <td class="border-l-2 border-t-2  text-left px-2 py-1">Net Pay</td>
+                                    <td class="border-r-2 border-t-2 px-2 py-1 text-right">'.$payslip_netPay.'</td>
+                                </tr>
+                            </table>
+                        </div>
+                    ';
+                }
+                else if ($isHoliday == 0 && $isRestOT == 1) {
+                    $payslip = '
+                        <div>
+                            <div class="text-center font-bold text-xl bg-green-300 py-2">For the Period of '.$date.'
+                                
+                            </div>
+                            <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS, INC.</div>
+                            <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP #'.$payslipCounter.'</div>
+
+                            <div id="watermark" class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-600 font-bold text-4xl opacity-30 rotate-45 pointer-events-none select-none">
+                                CONFIDENTIAL
+                            </div>
+
+                            <table class="w-full text-sm mb-4">
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">Employee ID</td>
+                                    <td class="border px-2 py-1">Name</td>
+                                    <td class="border px-2 py-1">Position</td>
+                                    <td class="border px-2 py-1">Employment Status</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1">'.$payslip_empID.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_employeeName.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_position.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_employmentStatus.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">TIN</td>
+                                    <td class="border px-2 py-1">SSS</td>
+                                    <td class="border px-2 py-1">HDMF No.</td>
+                                    <td class="border px-2 py-1">PHIC No.</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1">'.$payslip_tinnum.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_sssnum.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_pagIbignum.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_philhealthnum.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">Payment Method</td>
+                                    <td class="border px-2 py-1">Monthly Rate</td>
+                                    <td class="border px-2 py-1">Daily Rate</td>
+                                    <td class="border px-2 py-1">Hourly Rate</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1">'.$payslip_paymentMethod.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_basicPay.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_dailyRate.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_hourlyRate.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1" colspan="4">EARNINGS</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">No. of Hours Worked</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hoursWorked.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTND.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Total Regular Wage</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_basePay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTNDPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiff.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Restday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOT.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiffPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Restday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOTPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Restday Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOT.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Restday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOT.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Restday Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Restday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOTPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Absences</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absences.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday OT Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOTND.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Absences Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absencesAmt.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Restday OT Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regRDOTOTNDPay.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Late Minutes</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMins.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Late Minutes Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMinsAmt.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Undertime Minutes</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_undertimeMins.'</td>
+                                    <td class="border px-2 py-1 bg-green-300 font-bold" colspan="2">DEDUCTIONS</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Undertime Minutes Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_undertimeMinsAmt.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sss.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1 bg-green-300 font-bold" colspan="2">ADDITIONS/ADJUSTMENTS</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS MPF</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sssMPF.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Allowance</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_allowances.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">PhilHealth</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_phic.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Communication</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_communication.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">HDMF</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmf.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Other Allowances</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_otherAllowances.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">WTAX</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_wtax.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeaveCount.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS Salary Loan</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_salaryLoan.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeavePay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">HDMF Salary Loan</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmfSalaryLoan.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Vacation Leave</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeaveCount.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Smart Communication</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Vacation Leave Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeavePay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Cash Advance</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_cashAdvanceDeduction.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border-l-2 border-t-2 text-left px-2 py-1">Gross Pay</td>
+                                    <td class="border-r-2 border-t-2 px-2 py-1 text-right">'.$payslip_grossPay.'</td>
+                                    <td class="border-l-2 border-t-2  text-left px-2 py-1">Net Pay</td>
+                                    <td class="border-r-2 border-t-2 px-2 py-1 text-right">'.$payslip_netPay.'</td>
+                                </tr>
+                            </table>
+                        </div>
+                    ';
+                }
+
+                // NO HOLIDAYS OR OVERTIMES
+                else {
+                    $payslip = '
+                        <div>
+                            <div class="text-center font-bold text-xl bg-green-300 py-2" id="payslipDate">For the Period of '.$date.'</div>
+                            <div class="text-center font-bold text-lg">CELO BUSINESS SOLUTIONS INCORPORATED</div>
+                            <div class="text-center font-bold text-md mb-4 bg-green-300">PAYSLIP #'.$payslipCounter.'</div>
+
+                            <div id="watermark" class="absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-600 font-bold text-4xl opacity-30 rotate-45 pointer-events-none select-none">
+                                CONFIDENTIAL
+                            </div>
+
+                            <table class="w-full text-sm mb-4">
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">Employee ID</td>
+                                    <td class="border px-2 py-1">Name</td>
+                                    <td class="border px-2 py-1">Position</td>
+                                    <td class="border px-2 py-1">Employment Status</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1">'.$payslip_empID.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_employeeName.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_position.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_employmentStatus.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">TIN</td>
+                                    <td class="border px-2 py-1">SSS</td>
+                                    <td class="border px-2 py-1">HDMF No.</td>
+                                    <td class="border px-2 py-1">PHIC No.</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1">'.$payslip_tinnum.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_sssnum.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_pagIbignum.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_philhealthnum.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1">Payment Method</td>
+                                    <td class="border px-2 py-1">Monthly Rate</td>
+                                    <td class="border px-2 py-1">Daily Rate</td>
+                                    <td class="border px-2 py-1">Hourly Rate</td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1">'.$payslip_paymentMethod.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_basicPay.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_dailyRate.'</td>
+                                    <td class="border px-2 py-1">'.$payslip_hourlyRate.'</td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border px-2 py-1" colspan="2">EARNINGS</td>
+                                    <td class="border px-2 py-1" colspan="2">DEDUCTIONS</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">No. of Hours Worked</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hoursWorked.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sss.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Total Regular Wage</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_basePay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS MPF</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sssMPF.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Hrs</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiff.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">PhilHealth</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_phic.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Night Diff Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_regNightDiffPay.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">HDMF</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmf.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Absences</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absences.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">WTAX</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_wtax.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Absences Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_absencesAmt.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">SSS Salary Loan</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_salaryLoan.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Late Mins</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMins.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">HDMF Salary Loan</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_hdmfSalaryLoan.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Late Mins Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_lateMinsAmt.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Smart Communication</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_smart.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Undertime Mins</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_undertimeMins.'</td>
+                                    <td class="border-l-2 text-left px-2 py-1">Cash Advance</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_cashAdvanceDeduction.'</td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Undertime Mins Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_undertimeMinsAmt.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-2 py-1 bg-green-300 font-bold" colspan="2">ADDITIONS/ADJUSTMENTS</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Allowance</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_allowances.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Communication</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_communication.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Other Allowances</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_otherAllowances.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeaveCount.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Sick Leave Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_sickLeavePay.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Vacation Leave</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeaveCount.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-l-2 text-left px-2 py-1">Vacation Leave Amt</td>
+                                    <td class="border-r-2 px-2 py-1 text-right">'.$payslip_vacationLeavePay.'</td>
+                                    <td class="border-r-2 px-2 py-1 text-right" colspan="2"></td>
+                                </tr>
+                                <tr class="bg-green-300 font-bold">
+                                    <td class="border-l-2 border-t-2 text-left px-2 py-1">Gross Pay</td>
+                                    <td class="border-r-2 border-t-2 px-2 py-1 text-right">'.$payslip_grossPay.'</td>
+                                    <td class="border-l-2 border-t-2  text-left px-2 py-1">Net Pay</td>
+                                    <td class="border-r-2 border-t-2 px-2 py-1 text-right">'.$payslip_netPay.'</td>
+                                </tr>
+                            </table>
+                        </div>
+                    ';
+                }
 
                 echo $payslip; 
 

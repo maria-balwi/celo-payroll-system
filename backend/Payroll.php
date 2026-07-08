@@ -32,6 +32,7 @@
         private $disputeAttendance = 'tbl_disputeattendance';
         private $disputeLeaves = 'tbl_disputeleaves';
         private $disputeOvertime = 'tbl_disputeovertime';
+        private $batchUpload = 'tbl_batchuploadhistory';
 
         private $dbConnect = false;
         public function __construct() {
@@ -1423,93 +1424,11 @@
             return $viewPayrollCycle;
         }
 
-        // OLD CODE
-        // public function calculateNightDifferential($attendanceDateTime, $logTypeID, $lateMins, $payrollCycleFrom, $payrollCycleTo, $attendanceDate, $empID) {
-        //     static $timeIn = null;
-        //     static $timeOut = null;
-        //     static $date_in = null;
-        //     static $static_lateMins = null;
-
-        //     $totalRegularNightHours = 0;
-        //     $totalRegularHolidayHours = 0;
-        //     $totalRegularHolidayNightHours = 0;
-        //     $totalSpecialHolidayHours = 0;
-        //     $totalSpecialHolidayNightHours = 0;
-
-        //     $sch = $this->dbConnect()->query("
-        //         SELECT startTime, endTime
-        //         FROM tbl_employee INNER JOIN tbl_shiftschedule
-        //         ON tbl_employee.shiftID = tbl_shiftschedule.shiftID
-        //         WHERE tbl_employee.id = '$empID'
-        //     ")->fetch_assoc();
-
-        //     $shiftStartTime = $sch['startTime'];
-        //     $shiftEndTime   = $sch['endTime']; 
-
-        //     // TIME IN (logTypeID 1 or 2)
-        //     if ($logTypeID == 1 || $logTypeID == 2) {
-        //         // if ($logTypeID == 1){
-        //         //     $timeIn = new DateTime($attendanceDate . ' ' . $shiftStartTime);
-        //         // } 
-        //         // else {
-        //         //     $timeIn = new DateTime($attendanceDateTime);
-        //         // }
-        //         $timeIn = new DateTime($attendanceDate . ' ' . $shiftStartTime);
-        //         $date_in = $attendanceDate;
-        //         $static_lateMins = $lateMins;
-        //     }
-
-        //     // TIME OUT (logTypeID 3 or 4)
-        //     if ($logTypeID == 3 || $logTypeID == 4) {
-        //         // if ($logTypeID == 4) {
-        //         //     $timeOut = new DateTime($attendanceDate . ' ' . $shiftEndTime);
-        //         // }
-        //         // else {
-        //         //     $timeOut = new DateTime($attendanceDateTime);
-        //         // }
-        //         $timeOut = new DateTime($attendanceDate . ' ' . $shiftEndTime);
-        //     }
-
-        //     // Only compute when BOTH logs are captured
-        //     if ($timeIn && $timeOut) {
-
-        //         // Overnight adjustment
-        //         if ($timeOut < $timeIn) {
-        //             $timeOut->modify('+1 day');
-        //         }
-
-        //         // Deduct late
-        //         $adjustedTimeIn = clone $timeIn;
-        //         if ($static_lateMins > 0) {
-        //             $adjustedTimeIn->modify("+{$static_lateMins} minutes");
-        //         }
-
-        //         // Do ND computation
-        //         $this->calculateSegmentHours(clone $adjustedTimeIn, clone $timeOut, $payrollCycleFrom, $payrollCycleTo, $date_in, $empID, $totalRegularNightHours, $totalRegularHolidayHours, $totalRegularHolidayNightHours, $totalSpecialHolidayHours, $totalSpecialHolidayNightHours);
-
-        //         // reset static variables for next IN/OUT pair
-        //         $timeIn = null;
-        //         $timeOut = null;
-        //         $date_in = null;
-        //         $static_lateMins = null;
-        //     }
-
-        //     return [
-        //         'totalRegularNightHours' => $totalRegularNightHours,
-        //         'totalRegularHolidayHours' => $totalRegularHolidayHours,
-        //         'totalRegularHolidayNightHours' => $totalRegularHolidayNightHours,
-        //         'totalSpecialHolidayHours' => $totalSpecialHolidayHours,
-        //         'totalSpecialHolidayNightHours' => $totalSpecialHolidayNightHours
-        //     ];
-        // }
-
-        // NEW CODE
         public function calculateNightDifferential($attendanceDateTime, $logTypeID, $lateMins, $payrollCycleFrom, $payrollCycleTo, $attendanceDate, $empID) {
             static $timeIn = null;
-            static $timeOut = null;
             static $date_in = null;
             static $static_lateMins = null;
-        
+
             $totalRegularNightHours = 0;
             $totalRegularHolidayHours = 0;
             $totalRegularHolidayNightHours = 0;
@@ -1517,48 +1436,53 @@
             $totalSpecialHolidayNightHours = 0;
 
             $attendance = new DateTime($attendanceDateTime);
-        
+
+            // =====================================================
             // TIME IN
+            // =====================================================
             if ($logTypeID == 1 || $logTypeID == 2) {
+                // Store new TIME IN
                 $timeIn = clone $attendance;
                 $date_in = $attendanceDate;
                 $static_lateMins = $lateMins;
             }
-        
+
+            // =====================================================
             // TIME OUT
-            if (($logTypeID == 3 || $logTypeID == 4) && $timeIn !== null) {
+            // =====================================================
+            else if ($logTypeID == 3 || $logTypeID == 4) {
                 $timeOut = clone $attendance;
 
-                // Overnight fix
+                // Overnight shift fix
                 if ($timeOut < $timeIn) {
                     $timeOut->modify('+1 day');
                 }
 
-                // FILTER:  ONLY COUNT SHIFTS WITHIN PAYROLL RANGE
-                if ($date_in < $payrollCycleFrom || $date_in > $payrollCycleTo) {
-                    $timeIn = null;
-                    $date_in = null;
+                // =====================================================
+                // ONLY COMPUTE COMPLETE ATTENDANCE
+                // =====================================================
+                if ($date_in >= $payrollCycleFrom && $date_in <= $payrollCycleTo) {
+
+                    $this->calculateSegmentHours(
+                        $payrollCycleFrom,
+                        $payrollCycleTo,
+                        $date_in,
+                        $empID,
+                        $totalRegularNightHours,
+                        $totalRegularHolidayHours,
+                        $totalRegularHolidayNightHours,
+                        $totalSpecialHolidayHours,
+                        $totalSpecialHolidayNightHours
+                    );
                 }
-        
-                // Compute segments
-                $this->calculateSegmentHours(
-                    $payrollCycleFrom,
-                    $payrollCycleTo,
-                    $date_in,
-                    $empID,
-                    $totalRegularNightHours,
-                    $totalRegularHolidayHours,
-                    $totalRegularHolidayNightHours,
-                    $totalSpecialHolidayHours,
-                    $totalSpecialHolidayNightHours
-                );
-        
-                // Reset
+
+                // Reset after successful pair
                 $timeIn = null;
-                $timeOut = null;
                 $date_in = null;
                 $static_lateMins = null;
-            }    
+                $timeOut = null;
+            }
+
             return [
                 'totalRegularNightHours' => $totalRegularNightHours,
                 'totalRegularHolidayHours' => $totalRegularHolidayHours,
@@ -1568,107 +1492,6 @@
             ];
         }
 
-        // OLD CODE
-        // private function calculateSegmentHours($start, $end, $payrollCycleFrom, $payrollCycleTo, $attendanceDate, $empID, &$totalRegularNightHours, &$totalRegularHolidayHours, &$totalRegularHolidayNightHours, &$totalSpecialHolidayHours, &$totalSpecialHolidayNightHours) {
-        //     // -----------------------------
-        //     // 1. LOAD HOLIDAYS (cached)
-        //     // -----------------------------
-        //     static $holidays = null;
-
-        //     if ($holidays === null) {
-        //         $holidays = [];
-        //         $res = $this->dbConnect()->query("
-        //             SELECT dateFrom, type 
-        //             FROM tbl_holidays
-        //             WHERE dateFrom BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'
-        //         ");
-        //         while ($h = mysqli_fetch_assoc($res)) {
-        //             $holidays[$h['dateFrom']] = $h['type']; // Legal or Special
-        //         }
-        //     }
-
-        //     // -----------------------------
-        //     // 2. GET SHIFT SCHEDULE
-        //     // -----------------------------
-        //     $sch = $this->dbConnect()->query("
-        //         SELECT startTime, endTime
-        //         FROM tbl_employee INNER JOIN tbl_shiftschedule
-        //         ON tbl_employee.shiftID = tbl_shiftschedule.shiftID
-        //         WHERE tbl_employee.id = '$empID'
-        //     ")->fetch_assoc();
-
-        //     $shiftStartTime = $sch['startTime'];
-        //     $shiftEndTime   = $sch['endTime']; 
-
-        //     // -----------------------------
-        //     // 3. CREATE SHIFT BOUNDARIES
-        //     // -----------------------------
-        //     $scheduledStart = new DateTime($attendanceDate . " " . $shiftStartTime);
-        //     $scheduledEnd   = new DateTime($attendanceDate . " " . $shiftEndTime);
-
-        //     // Handle overnight shifts (example: 22:00 → 06:00 next day)
-        //     if ($scheduledEnd <= $scheduledStart) {
-        //         $scheduledEnd->modify("+1 day");
-        //     }
-
-        //     // -----------------------------
-        //     // 4. CLAMP ACTUAL IN/OUT TO SHIFT
-        //     // -----------------------------
-        //     $clampedStart = max($start, $scheduledStart);
-        //     $clampedEnd   = min($end, $scheduledEnd);
-
-        //     // if ($clampedStart < $scheduledStart) {
-        //     //     $clampedStart = clone $scheduledStart;
-        //     // }
-        //     // if ($clampedEnd > $scheduledEnd) {
-        //     //     $clampedEnd = clone $scheduledEnd;
-        //     // }
-
-        //     // -----------------------------
-        //     // 5. COMPUTE REGULAR HOURS (DROP MINUTES)
-        //     // -----------------------------
-        //     if ($clampedEnd > $clampedStart) {
-        //         $interval = $clampedStart->diff($clampedEnd);
-        //         $hoursWorked = $interval->h + ($interval->i / 60);
-
-        //         // Holiday Check
-        //         if (isset($holidays[$attendanceDate])) {
-        //             if ($holidays[$attendanceDate] === "Legal") {
-        //                 $totalRegularHolidayHours += $hoursWorked;
-        //             } else {
-        //                 $totalSpecialHolidayHours += $hoursWorked;
-        //             }
-        //         }
-        //     }
-
-        //     // ---------------------------------------------------
-        //     // 6. NIGHT DIFFERENTIAL (22:00 → 06:00 actual values)
-        //     // ---------------------------------------------------
-        //     $nightStart = new DateTime($attendanceDate . " 22:00");
-        //     $nightEnd   = new DateTime($attendanceDate . " 06:00");
-        //     $nightEnd->modify("+1 day");
-
-        //     // Compute overlap with ORIGINAL actual start/end (not clamped!)
-        //     $effectiveStart = max($start, $nightStart);
-        //     $effectiveEnd   = min($end, $nightEnd);
-
-        //     if ($effectiveStart < $effectiveEnd) {
-        //         $ndInterval = $effectiveStart->diff($effectiveEnd);
-        //         $nightHours = $ndInterval->h + ($ndInterval->i / 60);
-
-        //         if (isset($holidays[$attendanceDate])) {
-        //             if ($holidays[$attendanceDate] === "Legal") {
-        //                 $totalRegularHolidayNightHours += $nightHours;
-        //             } else {
-        //                 $totalSpecialHolidayNightHours += $nightHours;
-        //             }
-        //         } else {
-        //             $totalRegularNightHours += $nightHours;
-        //         }
-        //     }
-        // }
-
-        // NEW CODE
         private function calculateSegmentHours($payrollCycleFrom, $payrollCycleTo, $attendanceDate, $empID, &$totalRegularNightHours, &$totalRegularHolidayHours, &$totalRegularHolidayNightHours, &$totalSpecialHolidayHours, &$totalSpecialHolidayNightHours) {
             // -----------------------------
             // 1. LOAD HOLIDAYS
@@ -1870,7 +1693,9 @@
             $cutOffAbsences = "
                 WITH RECURSIVE calendar_days AS (
                     SELECT DATE('$cutOffStart') AS date_day
+
                     UNION ALL
+
                     SELECT DATE_ADD(date_day, INTERVAL 1 DAY)
                     FROM calendar_days
                     WHERE date_day < DATE('$cutOffEnd')
@@ -1879,22 +1704,53 @@
                 SELECT COUNT(*) AS total_absences
                 FROM calendar_days cd
 
-                LEFT JOIN {$this->attendance} AS att
-                    ON att.empID = $id
-                    AND att.attendanceDate = cd.date_day
-                    AND att.logTypeID IN (1, 2)   -- Time In or Late
+                LEFT JOIN (
+                    SELECT
+                        attendanceDate,
 
-                LEFT JOIN {$this->leaves} AS leaves
+                        SUM(
+                            CASE
+                                WHEN logTypeID IN (1,2) THEN 1
+                                ELSE 0
+                            END
+                        ) AS total_in,
+
+                        SUM(
+                            CASE
+                                WHEN logTypeID IN (3,4) THEN 1
+                                ELSE 0
+                            END
+                        ) AS total_out
+
+                    FROM {$this->attendance}
+
+                    WHERE empID = $id
+
+                    GROUP BY attendanceDate
+                ) att
+                    ON att.attendanceDate = cd.date_day
+
+                LEFT JOIN {$this->leaves} leaves
                     ON leaves.empID = $id
                     AND leaves.status = 'Approved'
-                    AND cd.date_day BETWEEN leaves.effectivityStartDate AND leaves.effectivityEndDate
+                    AND cd.date_day BETWEEN leaves.effectivityStartDate
+                                        AND leaves.effectivityEndDate
 
-                LEFT JOIN {$this->weekOff} AS weekoff
+                LEFT JOIN {$this->weekOff} weekoff
                     ON weekoff.empID = $id
 
-                WHERE 
-                    att.empID IS NULL             -- No attendance = absent
-                    AND leaves.empID IS NULL      -- Not on approved leave
+                WHERE
+
+                    (
+                        att.attendanceDate IS NULL
+
+                        OR att.total_in = 0
+
+                        OR att.total_out = 0
+                    )
+
+                    AND leaves.empID IS NULL
+
                     AND (
                         CASE DAYNAME(cd.date_day)
                             WHEN 'Monday' THEN weekoff.wo_mon
@@ -1905,9 +1761,29 @@
                             WHEN 'Saturday' THEN weekoff.wo_sat
                             WHEN 'Sunday' THEN weekoff.wo_sun
                         END
-                    ) = 0                          -- Not a week-off
+                    ) = 0
             ";
+
             return $cutOffAbsences;
+        }
+
+        public function getIncompleteAtendance($id, $cutOffStart, $cutOffEnd) {
+            $incompleteAttendance = "
+                SELECT COUNT(*) AS total_incomplete
+                FROM (
+                    SELECT attendanceDate
+                    FROM tbl_attendance
+                    WHERE empID = $id
+                    AND attendanceDate BETWEEN '$cutOffStart' AND '$cutOffEnd'
+                    AND logTypeID IN (1,2,3,4)
+                    GROUP BY attendanceDate
+                    HAVING
+                        SUM(CASE WHEN logTypeID IN (1,2) THEN 1 ELSE 0 END) = 0
+                        OR
+                        SUM(CASE WHEN logTypeID IN (3,4) THEN 1 ELSE 0 END) = 0
+                ) AS incomplete_records
+            ";
+            return $incompleteAttendance;
         }
 
         public function getLeavesForPayroll($empID, $from, $to): string {
@@ -1936,8 +1812,97 @@
                 AND la.status = 'Approved'
                 AND la.effectivityStartDate < '$from'
                 AND la.dateFiled BETWEEN '$from' AND '$to';
-
             ";
+        }
+
+        public function isEmployeePresent($id, $date) {
+            $query = $this->dbConnect()->query(
+                "SELECT attendanceID FROM tbl_attendance 
+                WHERE empID = $id 
+                AND attendanceDate = '$date' 
+                LIMIT 1"
+            );
+
+            return mysqli_num_rows($query) > 0;
+        }
+
+        public function isRestDay($id, $date) {
+            $dayColumnMap = [
+                'Monday'    => 'wo_mon',
+                'Tuesday'   => 'wo_tue',
+                'Wednesday' => 'wo_wed',
+                'Thursday'  => 'wo_thu',
+                'Friday'    => 'wo_fri',
+                'Saturday'  => 'wo_sat',
+                'Sunday'    => 'wo_sun',
+            ];
+
+            $dayName = date('l', strtotime($date));
+            $column = $dayColumnMap[$dayName];
+
+            $query = $this->dbConnect()->query(
+                "SELECT $column FROM tbl_empweekoff WHERE empID = $id LIMIT 1"
+            );
+            $row = mysqli_fetch_array($query);
+
+            if (!$row) {
+                return false; 
+            }
+
+            return (int)$row[$column] === 1;
+        }
+
+        public function getLegalHolidayAbsences($id, $payrollCycleFrom, $payrollCycleTo) {
+            $legalHolidayAbsences = 0;
+
+            $holidaysQuery = $this->dbConnect()->query(
+                "SELECT * FROM tbl_holidays 
+                WHERE type = 'Legal' 
+                AND dateFrom BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'"
+            );
+
+            // Already filtered to approved AND paid leaves only
+            $leavesQuery = $this->dbConnect()->query(
+                "SELECT * FROM tbl_leaveapplications 
+                WHERE empID = $id AND status = 'Approved' AND isPaid = 1"
+            );
+            $leaves = [];
+            while ($leave = mysqli_fetch_array($leavesQuery)) {
+                $leaves[] = $leave;
+            }
+
+            while ($holiday = mysqli_fetch_array($holidaysQuery)) {
+                $holidayDate = $holiday['dateFrom'];
+
+                if ($this->isEmployeePresent($id, $holidayDate)) {
+                    continue;
+                }
+
+                $checkDate = date('Y-m-d', strtotime($holidayDate . ' -1 day'));
+                while ($this->isRestDay($id, $checkDate)) {
+                    $checkDate = date('Y-m-d', strtotime($checkDate . ' -1 day'));
+                }
+
+                $qualifies = false;
+
+                if ($this->isEmployeePresent($id, $checkDate)) {
+                    $qualifies = true; // Example 6
+                } else {
+                    // Since $leaves only contains paid leaves, any date match qualifies
+                    foreach ($leaves as $leave) {
+                        if ($checkDate >= $leave['effectivityStartDate'] && $checkDate <= $leave['effectivityEndDate']) {
+                            $qualifies = true; // Example 5
+                            break;
+                        }
+                    }
+                }
+
+                if ($qualifies) {
+                    $legalHolidayAbsences++;
+                }
+            }
+
+            return $legalHolidayAbsences;
         }
 
         public function calculatePayroll($payrollID, $payrollCycleID) {
@@ -1970,9 +1935,21 @@
                 $employee_dailyRate = $employeeDetails['dailyRate'];
                 $employee_hourlyRate = $employeeDetails['hourlyRate'];
                 $employeee_department = $employeeDetails['departmentID'];
+                $employee_employmentStatus = $employeeDetails['e_status'];
 
                 // COMPUTE DAYS WORKED
-                $daysWorkedQuery = $this->dbConnect()->query("SELECT * FROM tbl_attendance WHERE empID = $employeeDetails[id] AND (logTypeID IN (1, 2)) AND attendanceDate BETWEEN DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom'))) AND DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleTo')))");
+                $daysWorkedQuery = $this->dbConnect()->query("
+                    SELECT attendanceDate
+                    FROM tbl_attendance
+                    WHERE empID = {$employeeDetails['id']}
+                    AND attendanceDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'
+                    GROUP BY attendanceDate
+                    HAVING
+                        SUM(CASE WHEN logTypeID IN (1,2) THEN 1 ELSE 0 END) > 0
+                        AND
+                        SUM(CASE WHEN logTypeID IN (3,4) THEN 1 ELSE 0 END) > 0
+                ");
+
                 $employee_daysWorked = mysqli_num_rows($daysWorkedQuery);
 
                 // CHECK FOR HOLIDAYS
@@ -2057,7 +2034,6 @@
                 
                 $salaryLoan = 0;
                 $hdmfSalaryLoan = 0;
-                // $hdmfLoan = 0;
                 $smart = 0;
 
                 // CASH ADVANCE
@@ -2067,8 +2043,9 @@
                 $remainingBalance = 0;
                 $ca_status = "";
 
-                $totalAllowances = 0;
+                $basicAllowances = 0;
                 $communication = 0;
+                $otherAllowances = 0;
                 $totalReimbursements = 0;
                 $totalAdjustments = 0;
 
@@ -2082,29 +2059,20 @@
                 $referralCount = 0;
                 $referralIncentivePay = 0;
 
-                // INITIALIZE VARIABLES FOR LATE MINS AND ABSENCES COMPUTATION
+                // INITIALIZE VARIABLES FOR LATE MINS, UNDERTIME MINS, AND ABSENCES COMPUTATION, INCOMPLETE ATTENDANCE
                 $totalAbsences = 0;
                 $absencesAmt = 0;
+                $legalHolidayAbsences = 0;
                 $totalLateMins = 0;
                 $lateMinsAmt = 0;
+                $totalUndertimeMins = 0;
+                $undertimeMinsAmt = 0;
 
                 // INITIALIZE VARIABLES FOR PAYROLL COMPUTATION
                 $basePay = 0;
                 $grossPay = 0;
                 $netPay = 0;
 
-                // NEW CODE
-                // $attendanceQuery = $this->dbConnect()->query("
-                //     SELECT *
-                //     FROM tbl_attendance
-                //     WHERE empID = {$employeeDetails['id']}
-                //     AND logTypeID IN (1,2,3,4)
-                //     AND attendanceDate BETWEEN 
-                //         DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom')))
-                //         AND
-                //         DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleT')))
-                //     ORDER BY attendanceDate ASC, attendanceTime ASC
-                // ");
                 $extendedTo = date('Y-m-d', strtotime($payrollCycleTo . ' +1 day'));
                 $attendanceQuery = $this->dbConnect()->query("
                     SELECT *
@@ -2122,7 +2090,9 @@
 
                     $logTypeID = $attendanceLogs['logTypeID'];
                     $lateMins = $attendanceLogs['lateMins'];
+                    $undertimeMins = $attendanceLogs['undertimeMins'];
                     $totalLateMins += $lateMins;
+                    $totalUndertimeMins += $undertimeMins;
 
                     $result = $this->calculateNightDifferential(
                         $fullDateTime,
@@ -2140,7 +2110,6 @@
                     $totalSpecialHolidayHours += $result['totalSpecialHolidayHours'];
                     $totalSpecialHolidayNDHours += $result['totalSpecialHolidayNightHours'];
                 }
-
 
                 // COMPUTE OVERTIME HOURS
                 $overtimeQuery = $this->dbConnect()->query(("SELECT * FROM tbl_filedot WHERE empID = $employee_id AND (otDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo') AND status = '1'"));
@@ -2242,12 +2211,12 @@
                 }
 
                 // COMPUTATION FOR ALLOWANCES
-                $allowancesQuery = $this->dbConnect()->query("SELECT amount, type FROM tbl_empallowances INNER JOIN tbl_allowances ON tbl_empallowances.allowanceID = tbl_allowances.allowanceID WHERE empID = $employee_id AND allowanceName NOT IN ('Communication', 'Communication Allowance')");
+                $allowancesQuery = $this->dbConnect()->query("SELECT amount, type FROM tbl_empallowances INNER JOIN tbl_allowances ON tbl_empallowances.allowanceID = tbl_allowances.allowanceID WHERE empID = $employee_id AND allowanceName NOT IN ('Communication', 'Communication Allowance', 'Other Allowances')");
                 while ($allowanceDetails = mysqli_fetch_array($allowancesQuery)) {
                     if ($allowanceDetails['type'] == 1 && $payrollCycleID % 2 == 0) { // MONTHLY
-                        $totalAllowances += $allowanceDetails['amount'];
+                        $basicAllowances += $allowanceDetails['amount'];
                     } elseif ($allowanceDetails['type'] == 2) { // SEMI-MONTHLY
-                        $totalAllowances += ($allowanceDetails['amount'] / 2);
+                        $basicAllowances += ($allowanceDetails['amount'] / 2);
                     }
                 }
 
@@ -2258,6 +2227,16 @@
                         $communication += $allowanceDetails['amount'];
                     } elseif ($allowanceDetails['type'] == 2) { // SEMI-MONTHLY
                         $communication += ($allowanceDetails['amount'] / 2);
+                    }
+                }
+
+                // COMPUTATION FOR OTHERS ALLOWANCE
+                $allowancesQuery = $this->dbConnect()->query("SELECT amount, type FROM tbl_empallowances INNER JOIN tbl_allowances ON tbl_empallowances.allowanceID = tbl_allowances.allowanceID WHERE empID = $employee_id AND allowanceName = 'Other Allowances'");
+                while ($allowanceDetails = mysqli_fetch_array($allowancesQuery)) {
+                    if ($allowanceDetails['type'] == 1 && $payrollCycleID % 2 == 0) { // MONTHLY
+                        $otherAllowances += $allowanceDetails['amount'];
+                    } elseif ($allowanceDetails['type'] == 2) { // SEMI-MONTHLY
+                        $otherAllowances += ($allowanceDetails['amount'] / 2);
                     }
                 }
 
@@ -2339,7 +2318,6 @@
                 }
 
                 // COMPUTATION FOR LEAVES
-                // $leaveQuery = $this->dbConnect()->query("SELECT empID, lt.leaveTypeID, effectivityStartDate, effectivityEndDate FROM tbl_leaveapplications AS la INNER JOIN tbl_leavetype AS lt ON la.leaveTypeID = lt.leaveTypeID WHERE effectivityStartDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND effectivityEndDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND status = 'Approved' AND empID=$employee_id");
                 $sql = $this->getLeavesForPayroll($employee_id, $payrollCycleFrom, $payrollCycleTo);
                 $leaveQuery = $this->dbConnect()->query($sql);
                 while ($leaveDetails = mysqli_fetch_array($leaveQuery)) {
@@ -2369,6 +2347,11 @@
                     $referralCount++;
                 }
                 $referralIncentivePay = round($referralCount * 2500, 2);
+
+
+                // COMPUTATION FOR LEGAL HOLIDAY ABSENCES
+                $legalHolidayAbsences = $this->getLegalHolidayAbsences($employee_id, $payrollCycleFrom, $payrollCycleTo);
+                $employee_daysWorked += $legalHolidayAbsences;
 
                 //COMPUTATION FOR NIGHT DIFFERENTIAL PAY
                 $totalNightHours = round($totalNightHours, 0);
@@ -2408,40 +2391,42 @@
                 $regularHolidayRDOTNDPay = round(($employee_hourlyRate * 1.99) * $totalRegularHolidayRDOTNDHours, 2);
                 $regularHolidayRDOTOTNDPay = round(($employee_hourlyRate * 2.887) * $totalRegularHolidayRDOTOTNDHours, 2);
 
-                // COMPUTATION FOR LATE MINUTES
+                // COMPUTATION FOR LATE AND UNDERTIME MINUTES
                 $lateMinsAmt = round(($employee_hourlyRate / 60) * $totalLateMins, 2);
+                $undertimeMinsAmt = round(($employee_hourlyRate / 60) * $totalUndertimeMins, 2);
 
+                // FIXED COMPUTATION FOR HR AND IT DEPARTMENTS
                 if ($employeee_department == 3 || $employeee_department == 4) {
                     $absencesQuery = $this->dbConnect()->query($this->getCutOffAbsences($employee_id, $payrollCycleFrom, $payrollCycleTo));
                     $absencesDetails = mysqli_fetch_array($absencesQuery);
-                    $totalAbsences = (int)$absencesDetails['total_absences'];
+                    $totalAbsences = $absencesDetails['total_absences'];
                     $absencesAmt = round($employee_dailyRate * $totalAbsences, 2);
                     $basePay = round($employee_basicPay / 2, 2);
                 }
                 else {
                     $basePay = round($employee_dailyRate * $employee_daysWorked, 2);
                 }
-                $grossPay = round($basePay + $totalAllowances + $communication + $totalReimbursements + $totalAdjustments + $nightDiffPay +$overtimePay + $overtimeNDPay + $RDOTPay + $RDOTNDPay + $RDOTOTPay + $RDOTOTNDPay + $specialHolidayPay + $specialHolidayOTPay + $specialHolidayRDOTPay + $specialHolidayRDOTOTPay + $specialHolidayNDPay + $specialHolidayOTNDPay + $specialHolidayRDOTNDPay + $specialHolidayRDOTOTNDPay + $regularHolidayPay + $regularHolidayOTPay + $regularHolidayRDOTPay + $regularHolidayRDOTOTPay + $regularHolidayNDPay + $regularHolidayOTNDPay + $regularHolidayRDOTNDPay + $regularHolidayRDOTOTNDPay + $sickLeavePay + $vacationLeavePay + $referralIncentivePay - $absencesAmt - $lateMinsAmt, 2);
+                $grossPay = round($basePay + $basicAllowances + $communication + $otherAllowances + $totalReimbursements + $totalAdjustments + $nightDiffPay +$overtimePay + $overtimeNDPay + $RDOTPay + $RDOTNDPay + $RDOTOTPay + $RDOTOTNDPay + $specialHolidayPay + $specialHolidayOTPay + $specialHolidayRDOTPay + $specialHolidayRDOTOTPay + $specialHolidayNDPay + $specialHolidayOTNDPay + $specialHolidayRDOTNDPay + $specialHolidayRDOTOTNDPay + $regularHolidayPay + $regularHolidayOTPay + $regularHolidayRDOTPay + $regularHolidayRDOTOTPay + $regularHolidayNDPay + $regularHolidayOTNDPay + $regularHolidayRDOTNDPay + $regularHolidayRDOTOTNDPay + $sickLeavePay + $vacationLeavePay + $referralIncentivePay - $absencesAmt - $lateMinsAmt - $undertimeMinsAmt, 2);
                 
                 // COMPUTATION FOR WTAX
-                $deductedGrossPay = round($grossPay - $sss - $sssmpf - $phic - $hdmf, 2);
-                if ($deductedGrossPay <= 10417) {
+                $wtaxGrossPay = round($grossPay - $basicAllowances - $communication - $otherAllowances - $sss - $sssmpf - $phic - $hdmf, 2);
+                if ($wtaxGrossPay <= 10417) {
                     $wtax = 0;
                 }
-                else if (($deductedGrossPay > 10417) && $deductedGrossPay <= 16666) {
-                    $wtax = ($deductedGrossPay - 10417) * .15;
+                else if (($wtaxGrossPay > 10417) && $wtaxGrossPay <= 16666) {
+                    $wtax = ($wtaxGrossPay - 10417) * .15;
                 }
-                else if (($deductedGrossPay > 16667) && $deductedGrossPay <= 33332) {
-                    $wtax = (($deductedGrossPay - 16667) * .2) + 937.5;
+                else if (($wtaxGrossPay > 16667) && $wtaxGrossPay <= 33332) {
+                    $wtax = (($wtaxGrossPay - 16667) * .2) + 937.5;
                 }
-                else if (($deductedGrossPay > 33333) && $deductedGrossPay <= 83332) {
-                    $wtax = (($deductedGrossPay - 33333) * .25) + 4270.70;
+                else if (($wtaxGrossPay > 33333) && $wtaxGrossPay <= 83332) {
+                    $wtax = (($wtaxGrossPay - 33333) * .25) + 4270.70;
                 }
-                else if (($deductedGrossPay > 83333) && $deductedGrossPay <= 333332) {
-                    $wtax = (($deductedGrossPay - 83333) * .3) + 16770.70;
+                else if (($wtaxGrossPay > 83333) && $wtaxGrossPay <= 333332) {
+                    $wtax = (($wtaxGrossPay - 83333) * .3) + 16770.70;
                 }
-                else if ($deductedGrossPay > 333333) {
-                    $wtax = (($deductedGrossPay - 333333) * .35) + 91770.70;
+                else if ($wtaxGrossPay > 333333) {
+                    $wtax = (($wtaxGrossPay - 333333) * .35) + 91770.70;
                 }
 
                 // COMPUTE NET PAY
@@ -2451,7 +2436,7 @@
                 $counter++;
                 
                 // ADD ALL PAYROLL DATA TO PAYSLIP TABLE
-                $this->dbConnect()->query("INSERT INTO $this->payslip (payrollID, counter, empID, daysWorked, basePay, regNightDiff, pay_regNightDiff, regOT, pay_regOT, regOTND, pay_regOTND, regRDOT, pay_regRDOT, regRDOTND, pay_regRDOTND, regRDOTOT, pay_regRDOTOT, regRDOTOTND, pay_regRDOTOTND, specialHoliday, pay_specialHoliday, specialHolidayND, pay_specialHolidayND, specialHolidayOT, pay_specialHolidayOT, specialHolidayOTND, pay_specialHolidayOTND, specialHolidayRDOT, pay_specialHolidayRDOT, specialHolidayRDOTND, pay_specialHolidayRDOTND, specialHolidayRDOTOT, pay_specialHolidayRDOTOT, specialHolidayRDOTOTND, pay_specialHolidayRDOTOTND, regularHoliday, pay_regularHoliday, regularHolidayND, pay_regularHolidayND, regularHolidayOT, pay_regularHolidayOT, regularHolidayOTND, pay_regularHolidayOTND, regularHolidayRDOT, pay_regularHolidayRDOT, regularHolidayRDOTND, pay_regularHolidayRDOTND, regularHolidayRDOTOT, pay_regularHolidayRDOTOT, regularHolidayRDOTOTND, pay_regularHolidayRDOTOTND, payslip_allowances, payslip_communication, grossPay, payslip_sss, payslip_sssMPF, payslip_phic, payslip_hdmf, payslip_wtax, payslip_salaryLoan, payslip_hdmfSalaryLoan, payslip_smart, payslip_reimbursements, payslip_adjustments, sickLeaveCount, pay_sickLeave, vacationLeaveCount, pay_vacationLeave, pay_referralIncentive, totalAbsences, payslip_absences, totalLateMins, payslip_lateMins, payslip_cashAdvanceDeduction, netPay) VALUES ($payrollID, $counter, $employee_id, $employee_daysWorked, $basePay, $totalNightHours, $nightDiffPay, $totalOvertimeHours, $overtimePay, $totalOvertimeNDHours, $overtimeNDPay, $totalRDOTHours, $RDOTPay, $totalRDOTNDhours, $RDOTNDPay, $totalRDOTOTHours, $RDOTOTPay, $totalRDOTOTNDHours, $RDOTOTNDPay, $totalSpecialHolidayHours, $specialHolidayPay, $totalSpecialHolidayNDHours, $specialHolidayNDPay, $totalSpecialHolidayOTHours, $specialHolidayOTPay, $totalSpecialHolidayOTNDHours, $specialHolidayOTNDPay, $totalSpecialHolidayRDOTHours, $specialHolidayRDOTPay, $totalSpecialHolidayRDOTNDHours, $specialHolidayRDOTNDPay, $totalSpecialHolidayRDOTOTHours, $specialHolidayRDOTOTPay, $totalSpecialHolidayRDOTOTNDHours, $specialHolidayRDOTOTNDPay, $totalRegularHolidayHours, $regularHolidayPay, $totalRegularHolidayNDHours, $regularHolidayNDPay, $totalRegularHolidayOTHours, $regularHolidayOTPay, $totalRegularHolidayOTNDHours, $regularHolidayOTNDPay, $totalRegularHolidayRDOTHours, $regularHolidayRDOTPay, $totalRegularHolidayRDOTNDHours, $regularHolidayRDOTNDPay, $totalRegularHolidayRDOTOTHours, $regularHolidayRDOTOTPay, $totalRegularHolidayRDOTOTNDHours, $regularHolidayRDOTOTNDPay, $totalAllowances, $communication, $grossPay, $sss, $sssmpf, $phic, $hdmf, $wtax, $salaryLoan, $hdmfSalaryLoan, $smart, $totalReimbursements, $totalAdjustments, $totalSickLeaves, $sickLeavePay, $totalVacationLeaves, $vacationLeavePay, $referralIncentivePay, $totalAbsences, $absencesAmt, $totalLateMins, $lateMinsAmt, $cashAdvance, $netPay)");
+                $this->dbConnect()->query("INSERT INTO $this->payslip (payrollID, counter, empID, daysWorked, basePay, regNightDiff, pay_regNightDiff, regOT, pay_regOT, regOTND, pay_regOTND, regRDOT, pay_regRDOT, regRDOTND, pay_regRDOTND, regRDOTOT, pay_regRDOTOT, regRDOTOTND, pay_regRDOTOTND, specialHoliday, pay_specialHoliday, specialHolidayND, pay_specialHolidayND, specialHolidayOT, pay_specialHolidayOT, specialHolidayOTND, pay_specialHolidayOTND, specialHolidayRDOT, pay_specialHolidayRDOT, specialHolidayRDOTND, pay_specialHolidayRDOTND, specialHolidayRDOTOT, pay_specialHolidayRDOTOT, specialHolidayRDOTOTND, pay_specialHolidayRDOTOTND, regularHoliday, pay_regularHoliday, regularHolidayND, pay_regularHolidayND, regularHolidayOT, pay_regularHolidayOT, regularHolidayOTND, pay_regularHolidayOTND, regularHolidayRDOT, pay_regularHolidayRDOT, regularHolidayRDOTND, pay_regularHolidayRDOTND, regularHolidayRDOTOT, pay_regularHolidayRDOTOT, regularHolidayRDOTOTND, pay_regularHolidayRDOTOTND, payslip_allowances, payslip_communication, payslip_otherAllowances, grossPay, payslip_sss, payslip_sssMPF, payslip_phic, payslip_hdmf, payslip_wtax, payslip_salaryLoan, payslip_hdmfSalaryLoan, payslip_smart, payslip_reimbursements, payslip_adjustments, sickLeaveCount, pay_sickLeave, vacationLeaveCount, pay_vacationLeave, pay_referralIncentive, totalAbsences, payslip_absences, totalLateMins, payslip_lateMins, totalUndertimeMins, payslip_undertimeMins, payslip_cashAdvanceDeduction, netPay) VALUES ($payrollID, $counter, $employee_id, $employee_daysWorked, $basePay, $totalNightHours, $nightDiffPay, $totalOvertimeHours, $overtimePay, $totalOvertimeNDHours, $overtimeNDPay, $totalRDOTHours, $RDOTPay, $totalRDOTNDhours, $RDOTNDPay, $totalRDOTOTHours, $RDOTOTPay, $totalRDOTOTNDHours, $RDOTOTNDPay, $totalSpecialHolidayHours, $specialHolidayPay, $totalSpecialHolidayNDHours, $specialHolidayNDPay, $totalSpecialHolidayOTHours, $specialHolidayOTPay, $totalSpecialHolidayOTNDHours, $specialHolidayOTNDPay, $totalSpecialHolidayRDOTHours, $specialHolidayRDOTPay, $totalSpecialHolidayRDOTNDHours, $specialHolidayRDOTNDPay, $totalSpecialHolidayRDOTOTHours, $specialHolidayRDOTOTPay, $totalSpecialHolidayRDOTOTNDHours, $specialHolidayRDOTOTNDPay, $totalRegularHolidayHours, $regularHolidayPay, $totalRegularHolidayNDHours, $regularHolidayNDPay, $totalRegularHolidayOTHours, $regularHolidayOTPay, $totalRegularHolidayOTNDHours, $regularHolidayOTNDPay, $totalRegularHolidayRDOTHours, $regularHolidayRDOTPay, $totalRegularHolidayRDOTNDHours, $regularHolidayRDOTNDPay, $totalRegularHolidayRDOTOTHours, $regularHolidayRDOTOTPay, $totalRegularHolidayRDOTOTNDHours, $regularHolidayRDOTOTNDPay, $basicAllowances, $communication, $otherAllowances, $grossPay, $sss, $sssmpf, $phic, $hdmf, $wtax, $salaryLoan, $hdmfSalaryLoan, $smart, $totalReimbursements, $totalAdjustments, $totalSickLeaves, $sickLeavePay, $totalVacationLeaves, $vacationLeavePay, $referralIncentivePay, $totalAbsences, $absencesAmt, $totalLateMins, $lateMinsAmt, $totalUndertimeMins, $undertimeMinsAmt, $cashAdvance, $netPay)");
 
                 // UPDATE CASH ADVANCE PAYMENT HISTORY
                 if ($remainingBalance > 0) {
@@ -2556,9 +2541,21 @@
                 $employee_dailyRate = $employeeDetails['dailyRate'];
                 $employee_hourlyRate = $employeeDetails['hourlyRate'];
                 $employeee_department = $employeeDetails['departmentID'];
+                $employee_employmentStatus = $employeeDetails['e_status'];
 
                 // COMPUTE DAYS WORKED
-                $daysWorkedQuery = $this->dbConnect()->query("SELECT * FROM tbl_attendance WHERE empID = $employeeDetails[id] AND (logTypeID IN (1, 2)) AND attendanceDate BETWEEN DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom'))) AND DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleTo')))");
+                $daysWorkedQuery = $this->dbConnect()->query("
+                    SELECT attendanceDate
+                    FROM tbl_attendance
+                    WHERE empID = {$employeeDetails['id']}
+                    AND attendanceDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'
+                    GROUP BY attendanceDate
+                    HAVING
+                        SUM(CASE WHEN logTypeID IN (1,2) THEN 1 ELSE 0 END) > 0
+                        AND
+                        SUM(CASE WHEN logTypeID IN (3,4) THEN 1 ELSE 0 END) > 0
+                ");
+
                 $employee_daysWorked = mysqli_num_rows($daysWorkedQuery);
 
                 // CHECK FOR HOLIDAYS
@@ -2643,7 +2640,6 @@
                 
                 $salaryLoan = 0;
                 $hdmfSalaryLoan = 0;
-                // $hdmfLoan = 0;
                 $smart = 0;
 
                 // CASH ADVANCE
@@ -2653,8 +2649,9 @@
                 $remainingBalance = 0;
                 $ca_status = "";
 
-                $totalAllowances = 0;
+                $basicAllowances = 0;
                 $communication = 0;
+                $otherAllowances = 0;
                 $totalReimbursements = 0;
                 $totalAdjustments = 0;
 
@@ -2668,29 +2665,20 @@
                 $referralCount = 0;
                 $referralIncentivePay = 0;
 
-                // INITIALIZE VARIABLES FOR LATE MINS AND ABSENCES COMPUTATION
+                // INITIALIZE VARIABLES FOR LATE MINS, UNDERTIME MINS, AND ABSENCES COMPUTATION, INCOMPLETE ATTENDANCE
                 $totalAbsences = 0;
                 $absencesAmt = 0;
+                $legalHolidayAbsences = 0;
                 $totalLateMins = 0;
                 $lateMinsAmt = 0;
+                $totalUndertimeMins = 0;
+                $undertimeMinsAmt = 0;
 
                 // INITIALIZE VARIABLES FOR PAYROLL COMPUTATION
                 $basePay = 0;
                 $grossPay = 0;
                 $netPay = 0;
 
-                // NEW CODE
-                // $attendanceQuery = $this->dbConnect()->query("
-                //     SELECT *
-                //     FROM tbl_attendance
-                //     WHERE empID = {$employeeDetails['id']}
-                //     AND logTypeID IN (1,2,3,4)
-                //     AND attendanceDate BETWEEN 
-                //         DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleFrom'), '-', DAY('$payrollCycleFrom')))
-                //         AND
-                //         DATE(CONCAT(YEAR(CURDATE()), '-', MONTH('$payrollCycleTo'), '-', DAY('$payrollCycleT')))
-                //     ORDER BY attendanceDate ASC, attendanceTime ASC
-                // ");
                 $extendedTo = date('Y-m-d', strtotime($payrollCycleTo . ' +1 day'));
                 $attendanceQuery = $this->dbConnect()->query("
                     SELECT *
@@ -2708,7 +2696,9 @@
 
                     $logTypeID = $attendanceLogs['logTypeID'];
                     $lateMins = $attendanceLogs['lateMins'];
+                    $undertimeMins = $attendanceLogs['undertimeMins'];
                     $totalLateMins += $lateMins;
+                    $totalUndertimeMins += $undertimeMins;
 
                     $result = $this->calculateNightDifferential(
                         $fullDateTime,
@@ -2726,7 +2716,6 @@
                     $totalSpecialHolidayHours += $result['totalSpecialHolidayHours'];
                     $totalSpecialHolidayNDHours += $result['totalSpecialHolidayNightHours'];
                 }
-
 
                 // COMPUTE OVERTIME HOURS
                 $overtimeQuery = $this->dbConnect()->query(("SELECT * FROM tbl_filedot WHERE empID = $employee_id AND (otDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo') AND status = '1'"));
@@ -2828,12 +2817,12 @@
                 }
 
                 // COMPUTATION FOR ALLOWANCES
-                $allowancesQuery = $this->dbConnect()->query("SELECT amount, type FROM tbl_empallowances INNER JOIN tbl_allowances ON tbl_empallowances.allowanceID = tbl_allowances.allowanceID WHERE empID = $employee_id AND allowanceName NOT IN ('Communication', 'Communication Allowance')");
+                $allowancesQuery = $this->dbConnect()->query("SELECT amount, type FROM tbl_empallowances INNER JOIN tbl_allowances ON tbl_empallowances.allowanceID = tbl_allowances.allowanceID WHERE empID = $employee_id AND allowanceName NOT IN ('Communication', 'Communication Allowance', 'Other Allowances')");
                 while ($allowanceDetails = mysqli_fetch_array($allowancesQuery)) {
                     if ($allowanceDetails['type'] == 1 && $payrollCycleID % 2 == 0) { // MONTHLY
-                        $totalAllowances += $allowanceDetails['amount'];
+                        $basicAllowances += $allowanceDetails['amount'];
                     } elseif ($allowanceDetails['type'] == 2) { // SEMI-MONTHLY
-                        $totalAllowances += ($allowanceDetails['amount'] / 2);
+                        $basicAllowances += ($allowanceDetails['amount'] / 2);
                     }
                 }
 
@@ -2844,6 +2833,16 @@
                         $communication += $allowanceDetails['amount'];
                     } elseif ($allowanceDetails['type'] == 2) { // SEMI-MONTHLY
                         $communication += ($allowanceDetails['amount'] / 2);
+                    }
+                }
+
+                // COMPUTATION FOR OTHERS ALLOWANCE
+                $allowancesQuery = $this->dbConnect()->query("SELECT amount, type FROM tbl_empallowances INNER JOIN tbl_allowances ON tbl_empallowances.allowanceID = tbl_allowances.allowanceID WHERE empID = $employee_id AND allowanceName = 'Other Allowances'");
+                while ($allowanceDetails = mysqli_fetch_array($allowancesQuery)) {
+                    if ($allowanceDetails['type'] == 1 && $payrollCycleID % 2 == 0) { // MONTHLY
+                        $otherAllowances += $allowanceDetails['amount'];
+                    } elseif ($allowanceDetails['type'] == 2) { // SEMI-MONTHLY
+                        $otherAllowances += ($allowanceDetails['amount'] / 2);
                     }
                 }
 
@@ -2925,7 +2924,6 @@
                 }
 
                 // COMPUTATION FOR LEAVES
-                // $leaveQuery = $this->dbConnect()->query("SELECT empID, lt.leaveTypeID, effectivityStartDate, effectivityEndDate FROM tbl_leaveapplications AS la INNER JOIN tbl_leavetype AS lt ON la.leaveTypeID = lt.leaveTypeID WHERE effectivityStartDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND effectivityEndDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo' AND status = 'Approved' AND empID=$employee_id");
                 $sql = $this->getLeavesForPayroll($employee_id, $payrollCycleFrom, $payrollCycleTo);
                 $leaveQuery = $this->dbConnect()->query($sql);
                 while ($leaveDetails = mysqli_fetch_array($leaveQuery)) {
@@ -2955,6 +2953,11 @@
                     $referralCount++;
                 }
                 $referralIncentivePay = round($referralCount * 2500, 2);
+
+
+                // COMPUTATION FOR LEGAL HOLIDAY ABSENCES
+                $legalHolidayAbsences = $this->getLegalHolidayAbsences($employee_id, $payrollCycleFrom, $payrollCycleTo);
+                $employee_daysWorked += $legalHolidayAbsences;
 
                 //COMPUTATION FOR NIGHT DIFFERENTIAL PAY
                 $totalNightHours = round($totalNightHours, 0);
@@ -2994,40 +2997,42 @@
                 $regularHolidayRDOTNDPay = round(($employee_hourlyRate * 1.99) * $totalRegularHolidayRDOTNDHours, 2);
                 $regularHolidayRDOTOTNDPay = round(($employee_hourlyRate * 2.887) * $totalRegularHolidayRDOTOTNDHours, 2);
 
-                // COMPUTATION FOR LATE MINUTES
+                // COMPUTATION FOR LATE AND UNDERTIME MINUTES
                 $lateMinsAmt = round(($employee_hourlyRate / 60) * $totalLateMins, 2);
+                $undertimeMinsAmt = round(($employee_hourlyRate / 60) * $totalUndertimeMins, 2);
 
+                // FIXED COMPUTATION FOR HR AND IT DEPARTMENTS
                 if ($employeee_department == 3 || $employeee_department == 4) {
                     $absencesQuery = $this->dbConnect()->query($this->getCutOffAbsences($employee_id, $payrollCycleFrom, $payrollCycleTo));
                     $absencesDetails = mysqli_fetch_array($absencesQuery);
-                    $totalAbsences = (int)$absencesDetails['total_absences'];
+                    $totalAbsences = $absencesDetails['total_absences'];
                     $absencesAmt = round($employee_dailyRate * $totalAbsences, 2);
                     $basePay = round($employee_basicPay / 2, 2);
                 }
                 else {
                     $basePay = round($employee_dailyRate * $employee_daysWorked, 2);
                 }
-                $grossPay = round($basePay + $totalAllowances + $communication + $totalReimbursements + $totalAdjustments + $nightDiffPay +$overtimePay + $overtimeNDPay + $RDOTPay + $RDOTNDPay + $RDOTOTPay + $RDOTOTNDPay + $specialHolidayPay + $specialHolidayOTPay + $specialHolidayRDOTPay + $specialHolidayRDOTOTPay + $specialHolidayNDPay + $specialHolidayOTNDPay + $specialHolidayRDOTNDPay + $specialHolidayRDOTOTNDPay + $regularHolidayPay + $regularHolidayOTPay + $regularHolidayRDOTPay + $regularHolidayRDOTOTPay + $regularHolidayNDPay + $regularHolidayOTNDPay + $regularHolidayRDOTNDPay + $regularHolidayRDOTOTNDPay + $sickLeavePay + $vacationLeavePay + $referralIncentivePay - $absencesAmt - $lateMinsAmt, 2);
+                $grossPay = round($basePay + $basicAllowances + $communication + $otherAllowances + $totalReimbursements + $totalAdjustments + $nightDiffPay +$overtimePay + $overtimeNDPay + $RDOTPay + $RDOTNDPay + $RDOTOTPay + $RDOTOTNDPay + $specialHolidayPay + $specialHolidayOTPay + $specialHolidayRDOTPay + $specialHolidayRDOTOTPay + $specialHolidayNDPay + $specialHolidayOTNDPay + $specialHolidayRDOTNDPay + $specialHolidayRDOTOTNDPay + $regularHolidayPay + $regularHolidayOTPay + $regularHolidayRDOTPay + $regularHolidayRDOTOTPay + $regularHolidayNDPay + $regularHolidayOTNDPay + $regularHolidayRDOTNDPay + $regularHolidayRDOTOTNDPay + $sickLeavePay + $vacationLeavePay + $referralIncentivePay - $absencesAmt - $lateMinsAmt - $undertimeMinsAmt, 2);
                 
                 // COMPUTATION FOR WTAX
-                $deductedGrossPay = round($grossPay - $sss - $sssmpf - $phic - $hdmf, 2);
-                if ($deductedGrossPay <= 10417) {
+                $wtaxGrossPay = round($grossPay - $basicAllowances - $communication - $otherAllowances - $sss - $sssmpf - $phic - $hdmf, 2);
+                if ($wtaxGrossPay <= 10417) {
                     $wtax = 0;
                 }
-                else if (($deductedGrossPay > 10417) && $deductedGrossPay <= 16666) {
-                    $wtax = ($deductedGrossPay - 10417) * .15;
+                else if (($wtaxGrossPay > 10417) && $wtaxGrossPay <= 16666) {
+                    $wtax = ($wtaxGrossPay - 10417) * .15;
                 }
-                else if (($deductedGrossPay > 16667) && $deductedGrossPay <= 33332) {
-                    $wtax = (($deductedGrossPay - 16667) * .2) + 937.5;
+                else if (($wtaxGrossPay > 16667) && $wtaxGrossPay <= 33332) {
+                    $wtax = (($wtaxGrossPay - 16667) * .2) + 937.5;
                 }
-                else if (($deductedGrossPay > 33333) && $deductedGrossPay <= 83332) {
-                    $wtax = (($deductedGrossPay - 33333) * .25) + 4270.70;
+                else if (($wtaxGrossPay > 33333) && $wtaxGrossPay <= 83332) {
+                    $wtax = (($wtaxGrossPay - 33333) * .25) + 4270.70;
                 }
-                else if (($deductedGrossPay > 83333) && $deductedGrossPay <= 333332) {
-                    $wtax = (($deductedGrossPay - 83333) * .3) + 16770.70;
+                else if (($wtaxGrossPay > 83333) && $wtaxGrossPay <= 333332) {
+                    $wtax = (($wtaxGrossPay - 83333) * .3) + 16770.70;
                 }
-                else if ($deductedGrossPay > 333333) {
-                    $wtax = (($deductedGrossPay - 333333) * .35) + 91770.70;
+                else if ($wtaxGrossPay > 333333) {
+                    $wtax = (($wtaxGrossPay - 333333) * .35) + 91770.70;
                 }
 
                 // COMPUTE NET PAY
@@ -3037,7 +3042,7 @@
                 $counter++;
                 
                 // ADD ALL PAYROLL DATA TO PAYSLIP TABLE
-                $this->dbConnect()->query("INSERT INTO $this->payslip (payrollID, counter, empID, daysWorked, basePay, regNightDiff, pay_regNightDiff, regOT, pay_regOT, regOTND, pay_regOTND, regRDOT, pay_regRDOT, regRDOTND, pay_regRDOTND, regRDOTOT, pay_regRDOTOT, regRDOTOTND, pay_regRDOTOTND, specialHoliday, pay_specialHoliday, specialHolidayND, pay_specialHolidayND, specialHolidayOT, pay_specialHolidayOT, specialHolidayOTND, pay_specialHolidayOTND, specialHolidayRDOT, pay_specialHolidayRDOT, specialHolidayRDOTND, pay_specialHolidayRDOTND, specialHolidayRDOTOT, pay_specialHolidayRDOTOT, specialHolidayRDOTOTND, pay_specialHolidayRDOTOTND, regularHoliday, pay_regularHoliday, regularHolidayND, pay_regularHolidayND, regularHolidayOT, pay_regularHolidayOT, regularHolidayOTND, pay_regularHolidayOTND, regularHolidayRDOT, pay_regularHolidayRDOT, regularHolidayRDOTND, pay_regularHolidayRDOTND, regularHolidayRDOTOT, pay_regularHolidayRDOTOT, regularHolidayRDOTOTND, pay_regularHolidayRDOTOTND, payslip_allowances, payslip_communication, grossPay, payslip_sss, payslip_sssMPF, payslip_phic, payslip_hdmf, payslip_wtax, payslip_salaryLoan, payslip_hdmfSalaryLoan, payslip_smart, payslip_reimbursements, payslip_adjustments, sickLeaveCount, pay_sickLeave, vacationLeaveCount, pay_vacationLeave, pay_referralIncentive, totalAbsences, payslip_absences, totalLateMins, payslip_lateMins, payslip_cashAdvanceDeduction, netPay) VALUES ($payrollID, $counter, $employee_id, $employee_daysWorked, $basePay, $totalNightHours, $nightDiffPay, $totalOvertimeHours, $overtimePay, $totalOvertimeNDHours, $overtimeNDPay, $totalRDOTHours, $RDOTPay, $totalRDOTNDhours, $RDOTNDPay, $totalRDOTOTHours, $RDOTOTPay, $totalRDOTOTNDHours, $RDOTOTNDPay, $totalSpecialHolidayHours, $specialHolidayPay, $totalSpecialHolidayNDHours, $specialHolidayNDPay, $totalSpecialHolidayOTHours, $specialHolidayOTPay, $totalSpecialHolidayOTNDHours, $specialHolidayOTNDPay, $totalSpecialHolidayRDOTHours, $specialHolidayRDOTPay, $totalSpecialHolidayRDOTNDHours, $specialHolidayRDOTNDPay, $totalSpecialHolidayRDOTOTHours, $specialHolidayRDOTOTPay, $totalSpecialHolidayRDOTOTNDHours, $specialHolidayRDOTOTNDPay, $totalRegularHolidayHours, $regularHolidayPay, $totalRegularHolidayNDHours, $regularHolidayNDPay, $totalRegularHolidayOTHours, $regularHolidayOTPay, $totalRegularHolidayOTNDHours, $regularHolidayOTNDPay, $totalRegularHolidayRDOTHours, $regularHolidayRDOTPay, $totalRegularHolidayRDOTNDHours, $regularHolidayRDOTNDPay, $totalRegularHolidayRDOTOTHours, $regularHolidayRDOTOTPay, $totalRegularHolidayRDOTOTNDHours, $regularHolidayRDOTOTNDPay, $totalAllowances, $communication, $grossPay, $sss, $sssmpf, $phic, $hdmf, $wtax, $salaryLoan, $hdmfSalaryLoan, $smart, $totalReimbursements, $totalAdjustments, $totalSickLeaves, $sickLeavePay, $totalVacationLeaves, $vacationLeavePay, $referralIncentivePay, $totalAbsences, $absencesAmt, $totalLateMins, $lateMinsAmt, $cashAdvance, $netPay)");
+                $this->dbConnect()->query("INSERT INTO $this->payslip (payrollID, counter, empID, daysWorked, basePay, regNightDiff, pay_regNightDiff, regOT, pay_regOT, regOTND, pay_regOTND, regRDOT, pay_regRDOT, regRDOTND, pay_regRDOTND, regRDOTOT, pay_regRDOTOT, regRDOTOTND, pay_regRDOTOTND, specialHoliday, pay_specialHoliday, specialHolidayND, pay_specialHolidayND, specialHolidayOT, pay_specialHolidayOT, specialHolidayOTND, pay_specialHolidayOTND, specialHolidayRDOT, pay_specialHolidayRDOT, specialHolidayRDOTND, pay_specialHolidayRDOTND, specialHolidayRDOTOT, pay_specialHolidayRDOTOT, specialHolidayRDOTOTND, pay_specialHolidayRDOTOTND, regularHoliday, pay_regularHoliday, regularHolidayND, pay_regularHolidayND, regularHolidayOT, pay_regularHolidayOT, regularHolidayOTND, pay_regularHolidayOTND, regularHolidayRDOT, pay_regularHolidayRDOT, regularHolidayRDOTND, pay_regularHolidayRDOTND, regularHolidayRDOTOT, pay_regularHolidayRDOTOT, regularHolidayRDOTOTND, pay_regularHolidayRDOTOTND, payslip_allowances, payslip_communication, payslip_otherAllowances, grossPay, payslip_sss, payslip_sssMPF, payslip_phic, payslip_hdmf, payslip_wtax, payslip_salaryLoan, payslip_hdmfSalaryLoan, payslip_smart, payslip_reimbursements, payslip_adjustments, sickLeaveCount, pay_sickLeave, vacationLeaveCount, pay_vacationLeave, pay_referralIncentive, totalAbsences, payslip_absences, totalLateMins, payslip_lateMins, totalUndertimeMins, payslip_undertimeMins, payslip_cashAdvanceDeduction, netPay) VALUES ($payrollID, $counter, $employee_id, $employee_daysWorked, $basePay, $totalNightHours, $nightDiffPay, $totalOvertimeHours, $overtimePay, $totalOvertimeNDHours, $overtimeNDPay, $totalRDOTHours, $RDOTPay, $totalRDOTNDhours, $RDOTNDPay, $totalRDOTOTHours, $RDOTOTPay, $totalRDOTOTNDHours, $RDOTOTNDPay, $totalSpecialHolidayHours, $specialHolidayPay, $totalSpecialHolidayNDHours, $specialHolidayNDPay, $totalSpecialHolidayOTHours, $specialHolidayOTPay, $totalSpecialHolidayOTNDHours, $specialHolidayOTNDPay, $totalSpecialHolidayRDOTHours, $specialHolidayRDOTPay, $totalSpecialHolidayRDOTNDHours, $specialHolidayRDOTNDPay, $totalSpecialHolidayRDOTOTHours, $specialHolidayRDOTOTPay, $totalSpecialHolidayRDOTOTNDHours, $specialHolidayRDOTOTNDPay, $totalRegularHolidayHours, $regularHolidayPay, $totalRegularHolidayNDHours, $regularHolidayNDPay, $totalRegularHolidayOTHours, $regularHolidayOTPay, $totalRegularHolidayOTNDHours, $regularHolidayOTNDPay, $totalRegularHolidayRDOTHours, $regularHolidayRDOTPay, $totalRegularHolidayRDOTNDHours, $regularHolidayRDOTNDPay, $totalRegularHolidayRDOTOTHours, $regularHolidayRDOTOTPay, $totalRegularHolidayRDOTOTNDHours, $regularHolidayRDOTOTNDPay, $basicAllowances, $communication, $otherAllowances, $grossPay, $sss, $sssmpf, $phic, $hdmf, $wtax, $salaryLoan, $hdmfSalaryLoan, $smart, $totalReimbursements, $totalAdjustments, $totalSickLeaves, $sickLeavePay, $totalVacationLeaves, $vacationLeavePay, $referralIncentivePay, $totalAbsences, $absencesAmt, $totalLateMins, $lateMinsAmt, $totalUndertimeMins, $undertimeMinsAmt, $cashAdvance, $netPay)");
 
                 // UPDATE CASH ADVANCE PAYMENT HISTORY
                 if ($remainingBalance > 0) {
@@ -3176,6 +3181,14 @@
             return $viewPayslip;
         }
 
+        public function viewAvailablePayslips() {
+            $availablePayslips = "
+                SELECT * FROM ".$this->payroll." 
+                WHERE YEAR(dateCreated) = YEAR(CURRENT_DATE())
+                ORDER BY payrollCycleID ";
+            return $availablePayslips;
+        }
+
         public function updateEmploymentStatus($id, $dateRegularized) {
             $employee = "
                 UPDATE ".$this->employees." SET 
@@ -3222,11 +3235,6 @@
                 // BEGINNING OF THE YEAR
                 $newYear = date('Y-01-01');
 
-                // END OF THE MONTH DATES
-                // $febMonth = date('Y-02-28');
-                // $febMonthLY = date('Y-02-29');
-                // $thirtyDays = date('Y-m-30');
-                // $thirtyOneDays = date('Y-m-02');
                 $isLastDayOfMonth = (date('Y-m-d') === date('Y-m-t'));
 
                 $employeesQuery = $this->dbConnect()->query("SELECT * FROM ".$this->employees." WHERE designationID != 12 AND e_status = 'Active'");
@@ -3247,8 +3255,7 @@
                         $this->dbConnect()->query($resetQuery);
                     }
                     // LEAVE POINTS ACCUMULATION
-                    // elseif (($currentDate == $febMonth || $currentDate == $febMonthLY || $currentDate == $thirtyDays || $currentDate == $thirtyOneDays) && $employmentStatus == "Regular") {
-                    elseif ($isLastDayOfMonth && $employmentStatus === "Regular") {
+                    else if ($isLastDayOfMonth && $employmentStatus === "Regular") {
                         $vl = $employeeDetails['availableVL'];
                         $addLeavePoints = ($vl == 10) ? 0.83 : 1.25;
                         $addLeavePointsQuery = $this->addLeavePoints($id, $addLeavePoints);
@@ -3269,6 +3276,21 @@
                 $logScriptQuery = "INSERT INTO script_logs (run_date) VALUES ('$currentDate')";
                 $this->dbConnect()->query($logScriptQuery);
             } 
+        }
+
+        public function logBatchUpload($fileName, $uploadedBy_empID, $approvedRows, $errors, $totalRows, $status) {
+            $logBatchUpload = "
+                INSERT INTO ".$this->batchUpload." (fileName, timeStamp, uploadedBy_empID, approvedRows, errors, totalRows, status)
+                VALUES ('$fileName', CURRENT_TIMESTAMP(), '$uploadedBy_empID', '$approvedRows', '$errors', '$totalRows', '$status')";
+            return $logBatchUpload;
+        }
+
+        public function fetchAllBatchUploadHistory() {
+            $fetchAllBatchUploadHistory = "
+                SELECT * FROM {$this->batchUpload} AS batchUpload
+                INNER JOIN {$this->employees} AS employees
+                ON batchUpload.uploadedBy_empID = employees.id";
+            return $fetchAllBatchUploadHistory;
         }
     }
 ?>
