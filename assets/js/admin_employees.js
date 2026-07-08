@@ -2813,13 +2813,6 @@ $(document).ready(function () {
         }
     });
 
-    // // EXPORT CSV TEMPLATE FOR BULK IMPORT OF EMPLOYEE DATA 
-    // $("#exportTemplate").on("click", function (e) {
-    //     e.preventDefault();
-        
-
-    // });
-
     // IMPORT BULK EMPLOYEE DATA 
     $("#importBulkEmployeeForm").on("submit", function (e) {
         e.preventDefault();
@@ -2877,33 +2870,33 @@ $(document).ready(function () {
                                     window.location.reload();
                                 })
                             } else {
-                                Swal.fire({
-                                    icon: "error",
-                                    title: "Error",
-                                    text: message,
-                                });
-
-                                // let errorHtml = `<p>${data.em}</p>`;
-                                // if (data.errorSummary && data.errorSummary.length > 0) {
-                                //     errorHtml += `<div style="text-align:left; max-height:250px; overflow-y:auto;">`;
-                                //     errorHtml += `<ul style="padding-left:18px;">`;
-                                //     data.errorSummary.forEach(function (group) {
-                                //         errorHtml += `<li><strong>${group.reason}</strong> — ${group.count} row(s): 
-                                //                     <em>${group.rows.join(', ')}</em></li>`;
-                                //     });
-                                //     errorHtml += `</ul></div>`;
-                                // }
-
                                 // Swal.fire({
                                 //     icon: "error",
-                                //     title: data.status === 'Failed' ? "Upload Failed" : "Completed with Errors",
-                                //     html: errorHtml,
-                                //     confirmButtonText: "OK"
-                                // }).then(() => {
-                                //     if (data.status !== 'Failed') {
-                                //         window.location.reload(); // reload if partial success, so inserted rows show up
-                                //     }
+                                //     title: "Error",
+                                //     text: message,
                                 // });
+
+                                let errorHtml = `<p>${data.em}</p>`;
+                                if (data.errorSummary && data.errorSummary.length > 0) {
+                                    errorHtml += `<div style="text-align:left; max-height:250px; overflow-y:auto;">`;
+                                    errorHtml += `<ul style="padding-left:18px;">`;
+                                    data.errorSummary.forEach(function (group) {
+                                        errorHtml += `<li><strong>${group.reason}</strong> — ${group.count} row(s): 
+                                                    <em>${group.rows.join(', ')}</em></li>`;
+                                    });
+                                    errorHtml += `</ul></div>`;
+                                }
+
+                                Swal.fire({
+                                    icon: "error",
+                                    title: data.status === 'Failed' ? "Upload Failed" : "Completed with Errors",
+                                    html: errorHtml,
+                                    confirmButtonText: "OK"
+                                }).then(() => {
+                                    if (data.status !== 'Failed') {
+                                        window.location.reload(); 
+                                    }
+                                });
                             }
                         },
                     });

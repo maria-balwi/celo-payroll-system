@@ -115,7 +115,8 @@
 
                             // VALIDATE REQUIRED FIELDS
                             if(empty($rowData['firstName']) || empty($rowData['lastName'])){
-                                $errors[] = "Row $rowIndex: missing first or last name";
+                                // $errors[] = "Row $rowIndex: missing first or last name";
+                                $errors[] = ['row' => $rowIndex, 'reason' => 'Missing first or last name'];
                                 continue;
                             }
 
@@ -129,14 +130,16 @@
                             $checkResult = mysqli_stmt_get_result($checkStmt);
 
                             if (mysqli_num_rows($checkResult) > 0) {
-                                $errors[] = "Row $rowIndex: employee ID '$employeeID' already exists";
+                                // $errors[] = "Row $rowIndex: employee ID '$employeeID' already exists";
+                                $errors[] = ['row' => $rowIndex, 'reason' => 'Employee ID already exists'];
                                 continue;
                             }
 
                             // DEPARTMENT NAME TO ID
                             $deptKey = strtolower(trim($rowData['departmentID']));
                             if (!isset($departmentMap[$deptKey])) {
-                                $errors[] = "Row $rowIndex: department '{$rowData['departmentID']}' not found";
+                                // $errors[] = "Row $rowIndex: department '{$rowData['departmentID']}' not found";
+                                $errors[] = ['row' => $rowIndex, 'reason' => 'Department not found'];
                                 continue;
                             }
                             $departmentID = $departmentMap[$deptKey];
@@ -144,7 +147,8 @@
                             // DESIGNATION TO ID
                             $designationKey = strtolower(trim($rowData['designationID']));
                             if (!isset($designationMap[$designationKey])) {
-                                $errors[] = "Row $rowIndex: designation '{$rowData['designationID']}' not found";
+                                // $errors[] = "Row $rowIndex: designation '{$rowData['designationID']}' not found";
+                                $errors[] = ['row' => $rowIndex, 'reason' => 'Designation not found'];
                                 continue;
                             }
                             $designationID = $designationMap[$designationKey];
@@ -152,14 +156,16 @@
                             // VALIDATE DATE OF BIRTH
                             $dateOfBirth = $rowData['dateOfBirth'] ?? null;
                             if($dateOfBirth && !preg_match('/^\d{4}-\d{2}-\d{2}$/', $dateOfBirth)){
-                                $errors[] = "Row $rowIndex: invalid date format";
+                                // $errors[] = "Row $rowIndex: invalid date format";
+                                $errors[] = ['row' => $rowIndex, 'reason' => 'Invalid date of birth format'];
                                 continue;
                             }
 
                             // VALIDATE DATE HIRED
                             $dateHired = $rowData['dateHired'] ?? null;
                             if($dateHired && !preg_match('/^\d{4}-\d{2}-\d{2}$/', $dateHired)){
-                                $errors[] = "Row $rowIndex: invalid date format";
+                                // $errors[] = "Row $rowIndex: invalid date format";
+                                $errors[] = ['row' => $rowIndex, 'reason' => 'Invalid date hired format'];
                                 continue;
                             }
 
@@ -238,7 +244,8 @@
                                 $e_status
                             );
                             if (!mysqli_stmt_execute($stmt)) {
-                                $errors[] = "Row $rowIndex: database insert failed";
+                                // $errors[] = "Row $rowIndex: database insert failed";
+                                $errors[] = ['row' => $rowIndex, 'reason' => 'Database insert failed'];
                                 continue;
                             }
 
@@ -280,7 +287,8 @@
                                 $wo_sun
                             );
                             if (!mysqli_stmt_execute($stmt)) {
-                                $errors[] = "Row $rowIndex: database insert failed";
+                                // $errors[] = "Row $rowIndex: database insert failed";
+                                $errors[] = ['row' => $rowIndex, 'reason' => 'Database insert failed'];
                                 continue;
                             }
 
@@ -332,14 +340,24 @@
                             $batchUploadStatus = 'Failed';
                         }
 
+                         // GROUP ERRORS BY REASON, REGARDLESS OF ROW COUNT
+                        $errorSummary = groupErrors($errors);
+
                         // LOG BATCH UPLOAD
                         mysqli_query($conn, $payroll->logBatchUpload($fileName, $_SESSION['id'], $inserted, $errorCount, $totalRows, $batchUploadStatus));
                         
+                        // echo json_encode([
+                        //     'error' => 0,
+                        //     'em' => "Inserted $inserted rows successfully",
+                        //     'status' => $batchUploadStatus,
+                        //     'warnings' => $errors
+                        // ]);
+
                         echo json_encode([
-                            'error' => 0,
-                            'em' => "Inserted $inserted rows successfully",
-                            'status' => $batchUploadStatus,
-                            'warnings' => $errors
+                            'error' => $errorCount > 0 ? 1 : 0,
+                            'em' => "Inserted $inserted of $totalRows rows",
+                            'status' => $batchStatus,
+                            'errorSummary' => $errorSummary
                         ]);
 
                         exit;
@@ -347,12 +365,21 @@
                     } catch(Exception $e){
                         mysqli_rollback($conn);
 
+                        $errorCount = count($errors) ?: 1;
+                        $errorSummary = groupErrors($errors);
+
                         // LOG BATCH UPLOAD
                         mysqli_query($conn, $payroll->logBatchUpload($fileName, $_SESSION['id'], 0, count($errors) ? : 1, $totalRows, 'Failed'));
 
+                        // echo json_encode([
+                        //     'error' => 1,
+                        //     'em' => 'Upload failed: ' . $e->getMessage()
+                        // ]);
                         echo json_encode([
                             'error' => 1,
-                            'em' => 'Upload failed: ' . $e->getMessage()
+                            'em' => 'Upload failed: ' . $e->getMessage(),
+                            'status' => 'Failed',
+                            'errorSummary' => $errorSummary
                         ]);
                         exit;
                     }
@@ -366,5 +393,27 @@
                 exit;
             }
         }
+    }
+
+    // HELPER: GROUP FLAT ERROR LIST BY REASON, REGARDLESS OF HOW MANY ROWS SHARE IT
+    function groupErrors($errors){
+        $grouped = [];
+        foreach ($errors as $err) {
+            $reason = $err['reason'];
+            if (!isset($grouped[$reason])) {
+                $grouped[$reason] = [];
+            }
+            $grouped[$reason][] = $err['row'];
+        }
+ 
+        $summary = [];
+        foreach ($grouped as $reason => $rows) {
+            $summary[] = [
+                'reason' => $reason,
+                'rows'   => $rows,
+                'count'  => count($rows)
+            ];
+        }
+        return $summary;
     }
 ?>
