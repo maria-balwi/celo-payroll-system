@@ -334,7 +334,7 @@
                             $batchUploadStatus = 'Completed';
                         }
                         else if ($inserted > 0) {
-                            $batchUploadStatus = 'Completed wtih errors';
+                            $batchUploadStatus = 'Completed with errors';
                         }
                         else {
                             $batchUploadStatus = 'Failed';
@@ -356,7 +356,7 @@
                         echo json_encode([
                             'error' => $errorCount > 0 ? 1 : 0,
                             'em' => "Inserted $inserted of $totalRows rows",
-                            'status' => $batchStatus,
+                            'status' => $batchUploadStatus,
                             'errorSummary' => $errorSummary
                         ]);
 

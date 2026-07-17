@@ -39,7 +39,7 @@ $(document).ready(function () {
         $("#updateEmployeeModal button").prop("disabled", false);
     }
 
-    if ($("#adminID").val() == 9 || $("#adminID").val() == 8) {
+    if ($("#adminID").val() == 9 || $("#adminID").val() == 8 || $("#adminID").val() == 15) {
         $("#btnAddEmployee").show();
         $("#btnUpdateEmployee").show();
         $("#btnResignEmployee").show();
@@ -2887,16 +2887,29 @@ $(document).ready(function () {
                                     errorHtml += `</ul></div>`;
                                 }
 
-                                Swal.fire({
-                                    icon: "error",
-                                    title: data.status === 'Failed' ? "Upload Failed" : "Completed with Errors",
-                                    html: errorHtml,
-                                    confirmButtonText: "OK"
-                                }).then(() => {
-                                    if (data.status !== 'Failed') {
-                                        window.location.reload(); 
-                                    }
-                                });
+                                console.log(data.status);
+                                if (data.status === "Failed") {
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: data.status,
+                                        html: errorHtml,
+                                        confirmButtonText: "OK"
+                                    }).then(() => {
+                                        window.location.reload();
+                                    });
+                                }
+                                else {
+                                    Swal.fire({
+                                        icon: "warning",
+                                        title: data.status,
+                                        html: errorHtml,
+                                        confirmButtonText: "OK"
+                                    }).then(() => {
+                                        window.location.reload();
+                                    });
+                                }
+
+                                
                             }
                         },
                     });
