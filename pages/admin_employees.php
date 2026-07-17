@@ -3313,7 +3313,7 @@
                                             echo "<td class ='whitespace-nowrap'>" . $approvedRows . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $errors . "</td>";
                                             echo "<td class ='whitespace-nowrap'>" . $totalRows . "</td>";
-                                            if ($status == "Pending") {
+                                            if ($status == "Completed with errors") {
                                                 echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $status . "</p></td>";
                                             }
                                             else if ($status == "Completed") {
