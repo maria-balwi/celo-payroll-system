@@ -53,6 +53,14 @@ $(document).ready(function () {
         $(".allAdjustmentsSection").hide();
     }
 
+    if ($("#levelID").val() == 4 || $("#levelID").val() == 5) {
+        $(".employeeSalaryRow").hide();
+    }
+    else {
+        $(".employeeSalaryRow").show();
+    }
+
+
     // iNITIALIZE TABLES
     $("#activeAgentsTable").DataTable();
     $("#inactiveAgentsTable").DataTable();
@@ -641,9 +649,6 @@ $(document).ready(function () {
         designation == "" ||
         employmentStatus == "" ||
         dateHired == "" ||
-        basicPay == "" ||
-        dailyRate == "" ||
-        hourlyRate == "" ||
         vacationLeaves == "" ||
         sickLeaves == ""
         ) {
@@ -663,43 +668,43 @@ $(document).ready(function () {
             confirmButtonText: "Yes",
         }).then((result) => {
             if (result.isConfirmed) {
-            showAddEmployeeSpinner();
-            $.ajax({
-                type: "POST",
-                url: "../backend/admin/addEmployee.php",
-                data: addEmployee,
-                contentType: false,
-                processData: false,
-                success: function (res) {
-                const data = JSON.parse(res);
-                var message = data.em;
-                console.log(message);
-                if (data.error == 0) {
-                    var id = data.id;
-                    loadEmployeeData(id);
-                    Swal.fire({
-                    icon: "success",
-                    title: "Success",
-                    text: message,
-                    timer: 2000,
-                    showConfirmButton: false,
-                    }).then(() => {
-                    // Refresh the View Employee Modal with new added data
-                    $("#addEmployeeModal").modal("hide");
-                    $("#viewEmployeeModal").modal("show");
-                    });
-                } else {
-                    Swal.fire({
-                    icon: "error",
-                    title: "Error",
-                    text: message,
-                    });
-                }
-                },
-                complete: function () {
-                hideAddEmployeeSpinner();
-                },
-            });
+                showAddEmployeeSpinner();
+                $.ajax({
+                    type: "POST",
+                    url: "../backend/admin/addEmployee.php",
+                    data: addEmployee,
+                    contentType: false,
+                    processData: false,
+                    success: function (res) {
+                        const data = JSON.parse(res);
+                        var message = data.em;
+                        console.log(message);
+                        if (data.error == 0) {
+                            var id = data.id;
+                            loadEmployeeData(id);
+                            Swal.fire({
+                                icon: "success",
+                                title: "Success",
+                                text: message,
+                                timer: 2000,
+                                showConfirmButton: false,
+                            }).then(() => {
+                                // Refresh the View Employee Modal with new added data
+                                $("#addEmployeeModal").modal("hide");
+                                $("#viewEmployeeModal").modal("show");
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Error",
+                                text: message,
+                            });
+                        }
+                    },
+                    complete: function () {
+                    hideAddEmployeeSpinner();
+                    },
+                });
             }
         });
         }

@@ -15,6 +15,7 @@
                     Employees
                 </div>  
                 <input type="hidden" id="adminID" name="adminID" value="<?php echo $_SESSION['designationID']; ?>">  
+                <input type="hidden" id="levelID" name="levelID" value="<?php echo $_SESSION['levelID']; ?>">  
             </div>
             
             <!-- CONTENT -->
@@ -1452,7 +1453,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-2">
+                                <div class="row g-2 mb-2 employeeSalaryRow">
                                     <div class="col-4">
                                         <label for="basicPay">Basic Pay:</label>
                                         <input type="number" class="form-control" id="basicPay" name="basicPay" step="0.01">
@@ -1755,7 +1756,7 @@
                                 </div>
                             </div>
 
-                            <div class="row g-2 mb-2">
+                            <div class="row g-2 mb-2 employeeSalaryRow">
                                 <div class="col-4">
                                     <label for="viewBasicPay">Basic Pay:</label>
                                     <input type="number" class="form-control" id="viewBasicPay" name="viewBasicPay" disabled readonly>
@@ -2419,7 +2420,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-1">
+                                <div class="row g-2 mb-1 employeeSalaryRow">
                                     <div class="col-4">
                                         <label for="updateBasicPay">Basic Pay:</label>
                                         <input type="number" class="form-control" id="updateBasicPay" name="updateBasicPay" step="0.01">

@@ -22,9 +22,15 @@
     $shiftID = $_POST['shiftID'];
     $employmentStatus = $_POST['employmentStatus'];
     $dateHired = $_POST['dateHired'];
-    $basicPay = $_POST['basicPay'];
-    $dailyRate = $_POST['dailyRate'];
-    $hourlyRate = $_POST['hourlyRate'];
+    if (isset($_POST['basicPay'])) {
+        $basicPay = $_POST['basicPay'] == '' ? 0.0 : $_POST['basicPay'];
+    }
+    if (isset($_POST['dailyRate'])) {
+        $dailyRate = $_POST['dailyRate'] == '' ? 0.0 : $_POST['dailyRate'];
+    }
+    if (isset($_POST['hourlyRate'])) {
+        $hourlyRate = $_POST['hourlyRate'] == '' ? 0.0 : $_POST['hourlyRate'];
+    }
     $vacationLeaves = $_POST['vacationLeaves'];
     $sickLeaves = $_POST['sickLeaves'];
 
