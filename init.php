@@ -1,5 +1,8 @@
 <?php
 
+    // SET DEFAULT TIMEZONE
+    date_default_timezone_set('Asia/Manila');
+    
     // INCLUDE THE CONFIGURATION FILE
     include 'config/config.php';
 
