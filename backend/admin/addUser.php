@@ -12,7 +12,7 @@
     $departmentID = $employeeResult['departmentID'];
     $designationID = $employeeResult['designationID'];
 
-    if (($departmentID == 4 && $designationID == 11) || ($departmentID == 1 && $designationID == 4))
+    if (($departmentID == 4 && $designationID == 11) || ($departmentID == 1 && ($designationID == 4 || $designationID == 5)))
     {
         $levelID = 2; // TEAM LEAD & IT SUPERVISOR & MANAGER LEVEL
     }
