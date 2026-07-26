@@ -58,6 +58,7 @@
                     $_SESSION['password'] = $pass_word;
                     // $_SESSION['activated'] = $userDetails['activated']; 
                     $_SESSION['gender'] = $userDetails['gender'];
+                    $_SESSION['teamID'] = $userDetails['teamID'];
 
                     // SESSION TIMEOUT 
                     $_SESSION['start'] = time();
