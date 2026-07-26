@@ -29,6 +29,7 @@
         private $disputes = "tbl_disputes";
         private $updateEmpInfo = "tbl_updateempinfo";
         private $transition = "tbl_shiftadjustments";
+        private $operationsTeam = "tbl_operationsteam";
         public function __construct() {
             $this->dbConnect = $this->dbConnect();
         }
@@ -137,6 +138,58 @@
                 INNER JOIN ".$this->department." AS department
                 ON employees.departmentID = department.departmentID
                 WHERE employees.departmentID = 1
+                AND employees.e_status = 'Active'";
+            return $team;
+        }
+
+        public function viewMetropolisTeam() {
+            $team = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->department." AS department
+                ON employees.departmentID = department.departmentID
+                INNER JOIN ".$this->operationsTeam." AS operationsTeam
+                ON employees.teamID = operationsTeam.operationsTeamID
+                WHERE employees.departmentID = 1
+                AND operationsTeamID = 1
+                AND employees.e_status = 'Active'";
+            return $team;
+        }
+
+        public function viewHonkTeam() {
+            $team = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->department." AS department
+                ON employees.departmentID = department.departmentID
+                INNER JOIN ".$this->operationsTeam." AS operationsTeam
+                ON employees.teamID = operationsTeam.operationsTeamID
+                WHERE employees.departmentID = 1
+                AND operationsTeamID = 2
+                AND employees.e_status = 'Active'";
+            return $team;
+        }
+
+        public function viewSPPlusTeam() {
+            $team = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->department." AS department
+                ON employees.departmentID = department.departmentID
+                INNER JOIN ".$this->operationsTeam." AS operationsTeam
+                ON employees.teamID = operationsTeam.operationsTeamID
+                WHERE employees.departmentID = 1
+                AND operationsTeamID = 3
+                AND employees.e_status = 'Active'";
+            return $team;
+        }
+
+        public function viewJohnsonTeam() {
+            $team = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->department." AS department
+                ON employees.departmentID = department.departmentID
+                INNER JOIN ".$this->operationsTeam." AS operationsTeam
+                ON employees.teamID = operationsTeam.operationsTeamID
+                WHERE employees.departmentID = 1
+                AND operationsTeamID = 4
                 AND employees.e_status = 'Active'";
             return $team;
         }
@@ -990,6 +1043,12 @@
             return $user;
         }
 
+        public function viewOperationsTeam() {
+            $allTeams = "
+                SELECT * FROM ".$this->operationsTeam."";
+            return $allTeams;
+        }
+
         public function viewShifts() {
             $allShifts = "
                 SELECT shiftID, 
@@ -1204,7 +1263,7 @@
                 req_medicalExam, req_2x2pic, req_vaccineCard, req_psa, req_validID, req_helloMoney,
                 employmentStatus, dateHired, dateRegularized, leavePoints, clearanceForm, resignationStatus,
                 wo_mon, wo_tue, wo_wed, wo_thu, 
-                wo_fri, wo_sat, wo_sun, renderedDays,
+                wo_fri, wo_sat, wo_sun, renderedDays, teamName, operationsTeamID,
                 DATE_FORMAT(shifts.startTime, '%h:%i %p') AS startTime, 
                 DATE_FORMAT(shifts.endTime, '%h:%i %p') AS endTime
                 FROM ".$this->employees." AS employees
@@ -1218,6 +1277,8 @@
                 ON requirements.empID = employees.id
                 INNER JOIN ".$this->weekOff." AS weekOff
                 ON weekOff.empID = employees.id
+                LEFT JOIN ".$this->operationsTeam." AS operationsTeam
+                ON employees.teamID = operationsTeam.operationsTeamID
                 WHERE employees.id = '$id'";
             return $employeeInfo;
         }
