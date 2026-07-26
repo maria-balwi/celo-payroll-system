@@ -62,7 +62,7 @@ $(document).ready(function() {
                     $("#viewEmailAddress").val(res.data.emailAddress);
                     $("#viewEmployeeID").val(res.data.employeeID);
                     $("#viewMobileNumber").val(res.data.mobileNumber);
-                    $("#viewDepartment").val(res.data.departmentName);
+                    $("#viewDepartment").val(res.data.departmentName + " - " + res.data.teamName);
                     $("#viewDesignation").val(res.data.position);
                     $("#viewShiftID").val(res.data.startTime + " - " + res.data.endTime);
 
@@ -291,7 +291,7 @@ $(document).ready(function() {
                     $("#viewEmailAddress").val(res.data.emailAddress);
                     $("#viewEmployeeID").val(res.data.employeeID);
                     $("#viewMobileNumber").val(res.data.mobileNumber);
-                    $("#viewDepartment").val(res.data.departmentName);
+                    $("#viewDepartment").val(res.data.departmentName + " - " + res.data.teamName);
                     $("#viewDesignation").val(res.data.position);
                     $("#viewShiftID").val(
                         res.data.startTime + " - " + res.data.endTime

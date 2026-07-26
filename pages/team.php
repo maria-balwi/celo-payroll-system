@@ -34,23 +34,61 @@
                             <?php
                                 if ($_SESSION['departmentID'] == 1) 
                                 {
-                                    // OPERATIONS TEAM
-                                    $teamQuery = mysqli_query($conn, $employees->viewTeamOperations());
-                                    while ($teamDetails = mysqli_fetch_array($teamQuery)) {
+                                    if ($_SESSION['designationID'] == 5) { // MANAGER
+                                        // OPERATIONS TEAM
+                                        $teamQuery = mysqli_query($conn, $employees->viewTeamOperations());
+                                        while ($teamDetails = mysqli_fetch_array($teamQuery)) {
 
-                                        $team_id = $teamDetails['id'];
-                                        $team_employeeName = $teamDetails['firstName'] . " " . $teamDetails['lastName'];
-                                        $team_emailAddress = $teamDetails['emailAddress'];
-                                        $team_mobileNumber = $teamDetails['mobileNumber'];
-                                        $team_department = $teamDetails['departmentName'];
+                                            $team_id = $teamDetails['id'];
+                                            $team_employeeName = $teamDetails['firstName'] . " " . $teamDetails['lastName'];
+                                            $team_emailAddress = $teamDetails['emailAddress'];
+                                            $team_mobileNumber = $teamDetails['mobileNumber'];
+                                            $team_department = $teamDetails['departmentName'];
+
+                                            echo "<tr data-id='" . $team_id . "' class='teamView cursor-pointer'>";
+                                            echo "<td class = ' whitespace-nowrap'>" . $team_employeeName . "</td>";
+                                            echo "<td class = ' whitespace-nowrap'>" . $team_emailAddress . "</td>";
+                                            echo "<td class = ' whitespace-nowrap'>" . $team_mobileNumber . "</td>";
+                                            echo "<td class = ' whitespace-nowrap'>" . $team_department . "</td>";
+                                            echo "</tr>";
+                                        }
+                                    }
+                                    else {
+                                        // METROPOLIS
+                                        if ($_SESSION['teamID'] == 1) {
+                                            $teamQuery = mysqli_query($conn, $employees->viewMetropolisTeam());
+                                        }
+
+                                        // HONK
+                                        else if ($_SESSION['teamID'] == 2) {
+                                            $teamQuery = mysqli_query($conn, $employees->viewHonkTeam());
+                                        }
+
+                                        // SP PLUS
+                                        else if ($_SESSION['teamID'] == 3) {
+                                            $teamQuery = mysqli_query($conn, $employees->viewSPPlusTeam());
+                                        }
+
+                                        // JOHNSON
+                                        else if ($_SESSION['teamID'] == 4) {
+                                            $teamQuery = mysqli_query($conn, $employees->viewJohnsonTeam());
+                                        }
+
+                                        while ($teamDetails = mysqli_fetch_array($teamQuery)) {
+                                            $team_id = $teamDetails['id'];
+                                            $team_employeeName = $teamDetails['firstName'] . " " . $teamDetails['lastName'];
+                                            $team_emailAddress = $teamDetails['emailAddress'];
+                                            $team_mobileNumber = $teamDetails['mobileNumber'];
+                                            $team_department = $teamDetails['departmentName'];
 
 
-                                        echo "<tr data-id='" . $team_id . "' class='teamView cursor-pointer'>";
-                                        echo "<td class = ' whitespace-nowrap'>" . $team_employeeName . "</td>";
-                                        echo "<td class = ' whitespace-nowrap'>" . $team_emailAddress . "</td>";
-                                        echo "<td class = ' whitespace-nowrap'>" . $team_mobileNumber . "</td>";
-                                        echo "<td class = ' whitespace-nowrap'>" . $team_department . "</td>";
-                                        echo "</tr>";
+                                            echo "<tr data-id='" . $team_id . "' class='teamView cursor-pointer'>";
+                                            echo "<td class = ' whitespace-nowrap'>" . $team_employeeName . "</td>";
+                                            echo "<td class = ' whitespace-nowrap'>" . $team_emailAddress . "</td>";
+                                            echo "<td class = ' whitespace-nowrap'>" . $team_mobileNumber . "</td>";
+                                            echo "<td class = ' whitespace-nowrap'>" . $team_department . "</td>";
+                                            echo "</tr>";
+                                        }
                                     }
                                 }
                                 else 
@@ -161,7 +199,6 @@
                                     <label for="viewWeekOff">Week Off:</label>
                                 </div>
                                 <div class="col-8">
-                                    <!-- <input type="text" class="form-control" id="viewWeekOff" disabled readonly> -->
                                     <div class="col-12">
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" id="view_wo_monday" name="view_wo_monday" value="view_wo_monday" disabled readonly>
