@@ -250,7 +250,7 @@ $(document).ready(function () {
         }
     });
 
-    // CHECKBOXES FOR REQUIREMENTS - SSS, PAGIBIG, PHILHEALTH, TIN (ADD EMPLOYEE)
+    // CHECKBOXES FOR REQUIREMENTS - SSS, PAGIBIG, PHILHEALTH, TIN (UPDATE EMPLOYEE)
     $("input[id='updateSSS']").on("input", function () {
         if ($(this).val().trim() !== "") {
             $("#update_req_sss").prop("checked", true);
@@ -308,6 +308,32 @@ $(document).ready(function () {
         } else {
             // Re-enable all boxes
         $checkboxes.prop("disabled", false);
+        }
+    });
+
+    // CHECK DEPARTMENT TO SHOW MAKE TEAMS AVAILABLE (ADD EMPLOYEE)
+    $("select[id='department']").on("change", function () {
+        var selectDept = $(this).val();
+
+        if (selectDept == 1) {
+            $("#teamID").prop("disabled", false);
+        }
+        else {
+            $("#teamID").prop("disabled", true);
+            $("#teamID").val("");
+        }
+    });
+
+    // CHECK DEPARTMENT TO SHOW MAKE TEAMS AVAILABLE (UPDATE EMPLOYEE)
+    $("select[id='updateDepartment']").on("change", function () {
+        var selectDept = $(this).val();
+
+        if (selectDept == "Operations") {
+            $("#updateTeamID").prop("disabled", false);
+        }
+        else {
+            $("#updateTeamID").prop("disabled", true);
+            $("#updateTeamID").val("");
         }
     });
 
@@ -721,6 +747,8 @@ $(document).ready(function () {
         }
     });
 
+    $(".operationsRow").hide();
+
     // VIEW, UPDATE, RESIGN ACTIVE EMPLOYEE
     var array = [];
     var referrer_empID;
@@ -758,9 +786,22 @@ $(document).ready(function () {
                     $("#viewEmailAddress").val(res.data.emailAddress);
                     $("#viewEmployeeID").val(res.data.employeeID);
                     $("#viewMobileNumber").val(res.data.mobileNumber);
-                    $("#viewDepartment").val(res.data.departmentName);
-                    $("#viewDesignation").val(res.data.position);
-                    $("#viewShiftID").val(res.data.startTime + " - " + res.data.endTime);
+                    
+                    if (res.data.departmentName == "Operations") {
+                        $("#viewDepartment").val(res.data.departmentName);
+                        $("#viewDesignation").val(res.data.position);
+                        $("#viewShiftID").val(res.data.startTime + " - " + res.data.endTime);
+                        $("#viewOperationsTeam").val(res.data.teamName);
+                        $(".operationsRow").show();
+                        $(".defaultRow").hide();
+                    }
+                    else {
+                        $("#viewDept").val(res.data.departmentName);
+                        $("#viewDesig").val(res.data.position);
+                        $("#viewShift").val(res.data.startTime + " - " + res.data.endTime);
+                        $(".operationsRow").hide();
+                        $(".defaultRow").show();
+                    }
                     $("#viewEmploymentStatus").val(res.data.employmentStatus);
                     $("#viewDateHired").val(res.data.dateHired);
                     $("#viewLeavePoints").val(res.data.leavePoints);
@@ -1105,6 +1146,7 @@ $(document).ready(function () {
                         $("#updateMobileNumber").val(res.data.mobileNumber);
                         $("#updateDepartment").val(res.data.departmentName);
                         $("#updateDesignation").val(res.data.position);
+                        $("#updateTeamID").val(res.data.team);
                         $("#updateShiftID").val(
                         res.data.startTime + " - " + res.data.endTime
                         );
@@ -1445,6 +1487,7 @@ $(document).ready(function () {
         var updateDepartment = $("#updateDepartment").val();
         var updateDesignation = $("#updateDesignation").val();
         var updateShiftID = $("#updateShiftID").val();
+        var updateTeamID = $("#updateTeamID").val();
         var updateBasicPay = $("#updateBasicPay").val();
         var updateDailyRate = $("#updateDailyRate").val();
         var updateHourlyRate = $("#updateHourlyRate").val();
@@ -1639,9 +1682,23 @@ $(document).ready(function () {
                     $("#viewEmailAddress").val(res.data.emailAddress);
                     $("#viewEmployeeID").val(res.data.employeeID);
                     $("#viewMobileNumber").val(res.data.mobileNumber);
-                    $("#viewDepartment").val(res.data.departmentName);
-                    $("#viewDesignation").val(res.data.position);
-                    $("#viewShiftID").val(res.data.startTime + " - " + res.data.endTime);
+                    
+                    if (res.data.departmentName == "Operations") {
+                        $("#viewDepartment").val(res.data.departmentName);
+                        $("#viewDesignation").val(res.data.position);
+                        $("#viewShiftID").val(res.data.startTime + " - " + res.data.endTime);
+                        $("#viewOperationsTeam").val(res.data.teamName);
+                        $(".operationsRow").show();
+                        $(".defaultRow").hide();
+                    }
+                    else {
+                        $("#viewDept").val(res.data.departmentName);
+                        $("#viewDesig").val(res.data.position);
+                        $("#viewShift").val(res.data.startTime + " - " + res.data.endTime);
+                        $(".operationsRow").hide();
+                        $(".defaultRow").show();
+                    }
+
                     $("#viewEmploymentStatus").val(res.data.employmentStatus);
                     $("#viewDateHired").val(res.data.dateHired);
                     $("#viewLeavePoints").val(res.data.leavePoints);
@@ -2922,5 +2979,4 @@ $(document).ready(function () {
             })
         }
     });
-
 });
