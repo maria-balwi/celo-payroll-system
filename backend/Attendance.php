@@ -1007,10 +1007,18 @@
 
         public function getEmployeeID() {
             $lastSync = "
-                SELECT employeeID, id
+                SELECT employeeID, id, shiftID
                 FROM {$this->employees}
                 WHERE e_status = 'Active'";
             return $lastSync;
+        }
+
+        public function getShiftSchedule($shiftID) {
+            $getShift = "
+            SELECT startTime, endTime 
+            FROM ".$this->shifts."
+            WHERE shiftID = '$shiftID";
+            return $getShift;
         }
     }
 
