@@ -1155,8 +1155,11 @@
 
         public function updateEmployeeInfo_reg($updateUserID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
             $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
-            $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, 
+            $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateTeamID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, 
             $updateVacationLeaves, $updateSickLeaves, $updateEmploymentStatus, $updateDateHired, $updateDateRegularized) {
+            
+            $teamIDValue = ($updateTeamID === NULL || $updateTeamID === '') ? "NULL" : "'" . (int)$updateTeamID . "'";
+            
             $updateEmployee = "
                 UPDATE ".$this->employees." AS employees 
                 SET lastName = '$updateLastName',
@@ -1176,6 +1179,7 @@
                 departmentID = '$updateDepartmentID',
                 designationID = '$updateDesignationID',
                 shiftID = '$updateShiftID', 
+                teamID = $teamIDValue,
                 basicPay = '$updateBasicPay',
                 dailyRate = '$updateDailyRate',
                 hourlyRate = '$updateHourlyRate',
@@ -1190,8 +1194,11 @@
 
         public function updateEmployeeInfo_prob($updateUserID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
             $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
-            $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, 
+            $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateTeamID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, 
             $updateVacationLeaves, $updateSickLeaves, $updateEmploymentStatus, $updateDateHired) {
+            
+            $teamIDValue = ($updateTeamID === NULL || $updateTeamID === '') ? "NULL" : "'" . (int)$updateTeamID . "'";
+
             $updateEmployee = "
                 UPDATE ".$this->employees." AS employees 
                 SET lastName = '$updateLastName',
@@ -1211,6 +1218,7 @@
                 departmentID = '$updateDepartmentID',
                 designationID = '$updateDesignationID',
                 shiftID = '$updateShiftID', 
+                teamID = $teamIDValue, 
                 basicPay = '$updateBasicPay',
                 dailyRate = '$updateDailyRate',
                 hourlyRate = '$updateHourlyRate',
