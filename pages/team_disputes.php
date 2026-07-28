@@ -122,7 +122,7 @@
                                                             }
                                                             else if ($_SESSION['designationID'] == 4)
                                                             {
-                                                                $disputeAttendance = mysqli_query($conn, $payroll->pendingDisputesAttendanceOpsTL());
+                                                                $disputeAttendance = mysqli_query($conn, $payroll->pendingDisputesAttendanceOpsTL($_SESSION['teamID']));
                                                                 while ($disputeDetails = mysqli_fetch_array($disputeAttendance)) {
 
                                                                     $disputeID = $disputeDetails['disputeID'];

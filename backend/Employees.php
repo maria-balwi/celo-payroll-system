@@ -142,7 +142,7 @@
             return $team;
         }
 
-        public function viewMetropolisTeam() {
+        public function viewOperationsTLTeam($teamID) {
             $team = "
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->department." AS department
@@ -150,46 +150,8 @@
                 INNER JOIN ".$this->operationsTeam." AS operationsTeam
                 ON employees.teamID = operationsTeam.operationsTeamID
                 WHERE employees.departmentID = 1
-                AND operationsTeamID = 1
-                AND employees.e_status = 'Active'";
-            return $team;
-        }
-
-        public function viewHonkTeam() {
-            $team = "
-                SELECT * FROM ".$this->employees." AS employees
-                INNER JOIN ".$this->department." AS department
-                ON employees.departmentID = department.departmentID
-                INNER JOIN ".$this->operationsTeam." AS operationsTeam
-                ON employees.teamID = operationsTeam.operationsTeamID
-                WHERE employees.departmentID = 1
-                AND operationsTeamID = 2
-                AND employees.e_status = 'Active'";
-            return $team;
-        }
-
-        public function viewSPPlusTeam() {
-            $team = "
-                SELECT * FROM ".$this->employees." AS employees
-                INNER JOIN ".$this->department." AS department
-                ON employees.departmentID = department.departmentID
-                INNER JOIN ".$this->operationsTeam." AS operationsTeam
-                ON employees.teamID = operationsTeam.operationsTeamID
-                WHERE employees.departmentID = 1
-                AND operationsTeamID = 3
-                AND employees.e_status = 'Active'";
-            return $team;
-        }
-
-        public function viewJohnsonTeam() {
-            $team = "
-                SELECT * FROM ".$this->employees." AS employees
-                INNER JOIN ".$this->department." AS department
-                ON employees.departmentID = department.departmentID
-                INNER JOIN ".$this->operationsTeam." AS operationsTeam
-                ON employees.teamID = operationsTeam.operationsTeamID
-                WHERE employees.departmentID = 1
-                AND operationsTeamID = 4
+                AND designationID IN (1,2,3,14)
+                AND teamID  = '$teamID'
                 AND employees.e_status = 'Active'";
             return $team;
         }
@@ -378,11 +340,13 @@
                 ON filedOT.empID = employees.id
                 INNER JOIN ".$this->department." AS department
                 ON department.departmentID = employees.departmentID
-                WHERE employees.designationID IN (4,11)";
+                WHERE employees.departmentID = 1
+                AND employees.designationID != 5
+                AND e_status = 'Active'";
             return $request;
         }
 
-        public function viewTeamOperationsFiledOTTL() {
+        public function viewTeamOperationsFiledOTTL($teamID) {
             $request = "
                 SELECT requestID, dateFiled, otDate, employeeID, otType,
                 CONCAT(firstName , ' ', lastName) AS employeeName,
@@ -394,7 +358,12 @@
                 ON filedOT.empID = employees.id
                 INNER JOIN ".$this->department." AS department
                 ON department.departmentID = employees.departmentID
-                WHERE employees.departmentID = 1 AND employees.designationID IN (1,2,3,14)";
+                INNER JOIN ".$this->operationsTeam." AS operationsTeam
+                ON employees.teamID = operationsTeam.operationsTeamID
+                WHERE employees.departmentID = 1 
+                AND employees.designationID IN (1,2,3,14)
+                AND teamID = '$teamID'
+                AND e_status = 'Active'";
             return $request;
         }
 
@@ -527,12 +496,13 @@
                 ON shift_1.shiftID = employees.shiftID
                 INNER JOIN ".$this->shift." AS shift_2
                 ON shift_2.shiftID = changeShift.requestedShift
-                WHERE employees.designationID IN (4,11)
-                ORDER BY dateFiled DESC";
+                WHERE employees.departmentID = 1
+                AND employees.designationID != 5
+                AND e_status = 'Active'";
             return $request;
         }
 
-        public function viewChangeShiftRequestOperationsTL() {
+        public function viewChangeShiftRequestOperationsTL($teamID) {
             $request = "
                 SELECT requestID, dateFiled, lastName, firstName, effectivityStartDate, remarks, status, effectivityEndDate, 
                 CONCAT(DATE_FORMAT(shift_1.startTime, '%h:%i %p'), ' - ', DATE_FORMAT(shift_1.endTime, '%h:%i %p')) AS currentShift, 
@@ -542,11 +512,16 @@
                 ON changeShift.empID = employees.id
                 INNER JOIN ".$this->department." AS department
                 ON department.departmentID = employees.departmentID
+                INNER JOIN ".$this->operationsTeam." AS operationsTeam
+                ON employees.teamID = operationsTeam.operationsTeamID
                 INNER JOIN ".$this->shift." AS shift_1
                 ON shift_1.shiftID = employees.shiftID
                 INNER JOIN ".$this->shift." AS shift_2
                 ON shift_2.shiftID = changeShift.requestedShift
-                WHERE employees.departmentID = 1 AND employees.designationID IN (1,2,3,14)
+                WHERE employees.departmentID = 1 
+                AND employees.designationID IN (1,2,3,14)
+                AND teamID = '$teamID'
+                AND e_status = 'Active'
                 ORDER BY dateFiled DESC";
             return $request;
         }
@@ -619,16 +594,21 @@
             return $request;
         }
 
-        public function viewLeaveRequestsOperationsTL() {
+        public function viewLeaveRequestsOperationsTL($teamID) {
             $request = "
                 SELECT * FROM ".$this->leaves." AS leaves
                 INNER JOIN ".$this->employees." AS employees
                 ON leaves.empID = employees.id
                 INNER JOIN ".$this->department." AS department
                 ON department.departmentID = employees.departmentID
+                INNER JOIN ".$this->operationsTeam." AS operationsTeam
+                ON employees.teamID = operationsTeam.operationsTeamID
                 INNER JOIN ".$this->leaveType." AS leaveType
                 ON leaveType.leaveTypeID = leaves.leaveTypeID
-                WHERE employees.departmentID = 1 AND employees.designationID IN (1,2,3,14)";
+                WHERE employees.departmentID = 1
+                AND employees.designationID IN (1,2,3,14)
+                AND teamID = '$teamID'
+                AND e_status = 'Active'";
             return $request;
         }
 
@@ -641,7 +621,9 @@
                 ON department.departmentID = employees.departmentID
                 INNER JOIN ".$this->leaveType." AS leaveType
                 ON leaveType.leaveTypeID = leaves.leaveTypeID
-                WHERE employees.designationID IN (4,11)";
+                WHERE employees.departmentID = 1
+                AND employees.designationID != 5
+                AND e_status = 'Active'";
             return $request;
         }
 
@@ -660,18 +642,25 @@
                 ON cashAdvance.empID = employees.id
                 INNER JOIN {$this->department} AS department
                 ON employees.departmentID = department.departmentID
-                WHERE employees.designationID IN (4,11)";
+                WHERE employees.departmentID = 1
+                AND employees.designationID != 5
+                AND e_status = 'Active'";
             return $cashAdvance;
         }
 
-        public function viewCashAdvanceApplicationsOperationsTL() {
+        public function viewCashAdvanceApplicationsOperationsTL($teamID) {
             $cashAdvance = "
                 SELECT * FROM {$this->cashAdvance} AS cashAdvance
                 INNER JOIN {$this->employees} AS employees
                 ON cashAdvance.empID = employees.id
                 INNER JOIN {$this->department} AS department
                 ON employees.departmentID = department.departmentID
-                WHERE employees.departmentID = 1 AND employees.designationID IN (1,2,3,14)";
+                INNER JOIN ".$this->operationsTeam." AS operationsTeam
+                ON employees.teamID = operationsTeam.operationsTeamID
+                WHERE employees.departmentID = 1 
+                AND employees.designationID IN (1,2,3,14)
+                AND teamID = '$teamID'
+                AND e_status = 'Active'";
             return $cashAdvance;
         }
 

@@ -102,7 +102,7 @@
                                         }
                                     }
                                     else if ($_SESSION['designationID'] == 4) {
-                                        $leaveQuery = mysqli_query($conn, $employees->viewLeaveRequestsOperationsTL());
+                                        $leaveQuery = mysqli_query($conn, $employees->viewLeaveRequestsOperationsTL($_SESSION['teamID']));
                                         while ($leaveDetails = mysqli_fetch_array($leaveQuery)) {
 
                                             $leave_id = $leaveDetails['requestID'];

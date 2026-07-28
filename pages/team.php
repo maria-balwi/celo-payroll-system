@@ -54,25 +54,7 @@
                                         }
                                     }
                                     else {
-                                        // METROPOLIS
-                                        if ($_SESSION['teamID'] == 1) {
-                                            $teamQuery = mysqli_query($conn, $employees->viewMetropolisTeam());
-                                        }
-
-                                        // HONK
-                                        else if ($_SESSION['teamID'] == 2) {
-                                            $teamQuery = mysqli_query($conn, $employees->viewHonkTeam());
-                                        }
-
-                                        // SP PLUS
-                                        else if ($_SESSION['teamID'] == 3) {
-                                            $teamQuery = mysqli_query($conn, $employees->viewSPPlusTeam());
-                                        }
-
-                                        // JOHNSON
-                                        else if ($_SESSION['teamID'] == 4) {
-                                            $teamQuery = mysqli_query($conn, $employees->viewJohnsonTeam());
-                                        }
+                                        $teamQuery = mysqli_query($conn, $employees->viewOperationsTLTeam($_SESSION['teamID']));
 
                                         while ($teamDetails = mysqli_fetch_array($teamQuery)) {
                                             $team_id = $teamDetails['id'];

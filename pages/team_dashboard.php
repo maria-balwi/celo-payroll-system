@@ -26,7 +26,13 @@
                             <?php  
                                 if ($_SESSION['departmentID'] == 1) 
                                 {
-                                    $totalOperationsTeamQuery = mysqli_query($conn, $employees->viewTeamOperations());
+                                    if ($_SESSION['designationID'] == 5) {
+                                        $totalOperationsTeamQuery = mysqli_query($conn, $employees->viewTeamOperations());
+                                    }
+                                    else if ($_SESSION['designationID'] == 4) {
+                                        $totalOperationsTeamQuery = mysqli_query($conn, $employees->viewOperationsTLTeam($_SESSION['teamID']));
+                                    }
+                                    
                                     $totalOperationsTeam = mysqli_num_rows($totalOperationsTeamQuery);
                                     echo $totalOperationsTeam;
                                 }
@@ -50,7 +56,13 @@
                             <?php  
                                 if ($_SESSION['departmentID'] == 1) 
                                 {
-                                    $presentOperationsQuery = mysqli_query($conn, $attendance->getPresentOperations());
+                                    if ($_SESSION['designationID'] == 5) {
+                                        $presentOperationsQuery = mysqli_query($conn, $attendance->getPresentOperations());
+                                    }
+                                    else if ($_SESSION['designationID'] == 4) {
+                                        $presentOperationsQuery = mysqli_query($conn, $attendance->getPresentOperationsTeam($_SESSION['teamID']));
+                                    }
+
                                     $presentOperations = mysqli_num_rows($presentOperationsQuery);
                                     echo $presentOperations;
                                 }
@@ -74,7 +86,13 @@
                             <?php  
                                 if ($_SESSION['departmentID'] == 1) 
                                 {
-                                    $absentOperationsQuery = mysqli_query($conn, $attendance->getAbsentOperations());
+                                    if ($_SESSION['designationID'] == 5) {
+                                        $absentOperationsQuery = mysqli_query($conn, $attendance->getAbsentOperations());
+                                    }
+                                    else if ($_SESSION['designationID'] == 4) {
+                                        $absentOperationsQuery = mysqli_query($conn, $attendance->getAbsentOperationsTeam($_SESSION['teamID']));
+                                    }
+
                                     $absentOperations = mysqli_num_rows($absentOperationsQuery);
                                     echo $absentOperations;
                                 }
@@ -98,7 +116,12 @@
                             <?php  
                                 if ($_SESSION['departmentID'] == 1) 
                                 {
-                                    $lateOperationsQuery = mysqli_query($conn, $attendance->getLateOperations());
+                                    if ($_SESSION['designationID'] == 5) {
+                                        $lateOperationsQuery = mysqli_query($conn, $attendance->getLateOperations());
+                                    }
+                                    else if ($_SESSION['designationID'] == 4) {
+                                        $lateOperationsQuery = mysqli_query($conn, $attendance->getLateOperationsTeam($_SESSION['teamID']));
+                                    }
                                     $lateOperations = mysqli_num_rows($lateOperationsQuery);
                                     echo $lateOperations;
                                 }
@@ -122,7 +145,12 @@
                             <?php  
                                 if ($_SESSION['departmentID'] == 1) 
                                 {
-                                    $undertimeOperationsQuery = mysqli_query($conn, $attendance->getUndertimeOperations());
+                                    if ($_SESSION['designationID'] == 5) {
+                                        $undertimeOperationsQuery = mysqli_query($conn, $attendance->getUndertimeOperations());
+                                    }
+                                    else if ($_SESSION['designationID'] == 4) {
+                                        $undertimeOperationsQuery = mysqli_query($conn, $attendance->getUndertimeOperationsTeam($_SESSION['teamID']));
+                                    }
                                     $undertimeOperations = mysqli_num_rows($undertimeOperationsQuery);
                                     echo $undertimeOperations;
                                 }
@@ -167,25 +195,25 @@
                                     $getPendingDisputeOvertime = mysqli_num_rows($getPendingDisputeOvertimeQuery);
                                 }
                                 else {
-                                    $getPendingLeavesQuery = mysqli_query($conn, $attendance->getPendingOperationsLeavesTL());
+                                    $getPendingLeavesQuery = mysqli_query($conn, $attendance->getPendingOperationsLeavesTL($_SESSION['teamID']));
                                     $getPendingLeaves = mysqli_num_rows($getPendingLeavesQuery);
 
-                                    $getPendingChangeShiftQuery = mysqli_query($conn, $attendance->getPendingOperationsChangeShiftTL());
+                                    $getPendingChangeShiftQuery = mysqli_query($conn, $attendance->getPendingOperationsChangeShiftTL($_SESSION['teamID']));
                                     $getPendingChangeShift = mysqli_num_rows($getPendingChangeShiftQuery);
                                     
-                                    $getPendingOvertimeQuery = mysqli_query($conn, $attendance->getPendingOperationsOvertimeTL());
+                                    $getPendingOvertimeQuery = mysqli_query($conn, $attendance->getPendingOperationsOvertimeTL($_SESSION['teamID']));
                                     $getPendingOvertime = mysqli_num_rows($getPendingOvertimeQuery);
 
-                                    $getPendingCashAdvanceQuery = mysqli_query($conn, $attendance->getPendingOperationsCashAdvanceTL());
+                                    $getPendingCashAdvanceQuery = mysqli_query($conn, $attendance->getPendingOperationsCashAdvanceTL($_SESSION['teamID']));
                                     $getPendingCashAdvance = mysqli_num_rows($getPendingCashAdvanceQuery);
 
-                                    $getPendingDisputeAttendanceQuery = mysqli_query($conn, $attendance->getPendingOperationsDisputeAttendanceTL());
+                                    $getPendingDisputeAttendanceQuery = mysqli_query($conn, $attendance->getPendingOperationsDisputeAttendanceTL($_SESSION['teamID']));
                                     $getPendingDisputeAttendance = mysqli_num_rows($getPendingDisputeAttendanceQuery);
                                     
-                                    $getPendingDisputeLeavesQuery = mysqli_query($conn, $attendance->getPendingOperationsDisputeLeavesTL());
+                                    $getPendingDisputeLeavesQuery = mysqli_query($conn, $attendance->getPendingOperationsDisputeLeavesTL($_SESSION['teamID']));
                                     $getPendingDisputeLeaves = mysqli_num_rows($getPendingDisputeLeavesQuery);
                                     
-                                    $getPendingDisputeOvertimeQuery = mysqli_query($conn, $attendance->getPendingOperationsDisputeOvertimeTL());
+                                    $getPendingDisputeOvertimeQuery = mysqli_query($conn, $attendance->getPendingOperationsDisputeOvertimeTL($_SESSION['teamID']));
                                     $getPendingDisputeOvertime = mysqli_num_rows($getPendingDisputeOvertimeQuery);
                                 }
                             }
@@ -399,7 +427,8 @@
                                                 }
                                             }
                                             else if ($_SESSION['designationID'] == 4) {
-                                                $operationsTeamQuery = mysqli_query($conn, $attendance->viewOperationsTeamTL());
+                                                // $operationsTeamQuery = mysqli_query($conn, $attendance->viewOperationsTeamTL());
+                                                $operationsTeamQuery = mysqli_query($conn, $attendance->viewTeamTL($_SESSION['teamID']));
                                                 while ($operationsTeamDetails = mysqli_fetch_array($operationsTeamQuery)) {
                                                     $teamOperations_id = $operationsTeamDetails['id'];
                                                     $teamOperations_employeeName = $operationsTeamDetails['firstName'] . " " . $operationsTeamDetails['lastName'];

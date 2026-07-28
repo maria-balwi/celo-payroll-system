@@ -103,7 +103,7 @@
                                     }
                                     // TEAM LEAD
                                     else if ($_SESSION['designationID'] == 4) { 
-                                        $cashAdvanceQuery = mysqli_query($conn, $employees->viewCashAdvanceApplicationsOperationsTL());
+                                        $cashAdvanceQuery = mysqli_query($conn, $employees->viewCashAdvanceApplicationsOperationsTL($_SESSION['teamID']));
                                         while ($cashAdvanceDetails = mysqli_fetch_array($cashAdvanceQuery)) {
 
                                             $cashAdvance_requestID = $cashAdvanceDetails['requestID'];

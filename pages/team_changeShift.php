@@ -83,7 +83,7 @@
                                         }
                                     }
                                     else if ($_SESSION['designationID'] == 4) {
-                                        $shiftQuery = mysqli_query($conn, $employees->viewChangeShiftRequestOperationsTL());
+                                        $shiftQuery = mysqli_query($conn, $employees->viewChangeShiftRequestOperationsTL($_SESSION['teamID']));
                                         while ($shiftDetails = mysqli_fetch_array($shiftQuery)) {
 
                                             $shift_id = $shiftDetails['requestID'];
