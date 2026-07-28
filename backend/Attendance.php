@@ -347,15 +347,21 @@
 
         public function getAllPendingLeaves() {
             $pendingLeaves = "
-                SELECT * FROM ".$this->leaves."
-                WHERE status = 'Pending'";
+                SELECT * FROM ".$this->leaves." AS leaves
+                INNER JOIN ".$this->employees." AS employees
+                ON employees.id = leaves.empID
+                WHERE status = 'Pending'
+                AND e_status = 'Active'";
             return $pendingLeaves;
         }
 
         public function getAllPendingCashAdvance() {
             $pendingCashAdvance = "
                 SELECT * FROM ".$this->cashAdvance." AS cashAdvance
-                WHERE request_status = 'Pending'";
+                INNER JOIN ".$this->employees." AS employees
+                ON employees.id = cashAdvance.empID
+                WHERE request_status = 'Pending'
+                AND e_status = 'Active'";
             return $pendingCashAdvance;
         }
 
@@ -366,7 +372,8 @@
                 ON disputes.attendanceID = disputeAttendance.attendanceID
                 INNER JOIN {$this->employees} AS employees
                 ON disputeAttendance.empID = employees.id
-                WHERE disputes.status = 'Pending'";
+                WHERE disputes.status = 'Pending'
+                AND e_status = 'Active'";
             return $getPendingDisputeAttendance;
         }
 
@@ -377,7 +384,8 @@
                 ON disputes.leaveID = disputeLeaves.leaveID
                 INNER JOIN {$this->employees} AS employees
                 ON disputeLeaves.empID = employees.id
-                WHERE disputes.status = 'Pending'";
+                WHERE disputes.status = 'Pending'
+                AND e_status = 'Active'";
             return $getPendingDisputeLeave;
         }
 
@@ -388,7 +396,8 @@
                 ON disputes.overtimeID = disputeOvertime.overtimeID
                 INNER JOIN {$this->employees} AS employees
                 ON disputeOvertime.empID = employees.id
-                WHERE disputes.status = 'Pending'";
+                WHERE disputes.status = 'Pending'
+                AND e_status = 'Active'";
             return $getPendingDisputeOvertime;
         }
 
@@ -397,7 +406,9 @@
                 SELECT * FROM ".$this->leaves." AS leaves
                 INNER JOIN ".$this->employees." AS employees
                 ON leaves.empID = employees.id
-                WHERE leaves.status = 'Pending' AND employees.designationID IN (5,8,9)";
+                WHERE leaves.status = 'Pending' 
+                AND employees.designationID IN (5,8,9)
+                AND e_status = 'Active'";
             return $pendingLeaves;
         }
 
@@ -406,7 +417,9 @@
                 SELECT * FROM ".$this->cashAdvance." AS cashAdvance
                 INNER JOIN ".$this->employees." AS employees
                 ON cashAdvance.empID = employees.id
-                WHERE cashAdvance.request_status = 'Pending' AND employees.designationID IN (5,8,9)";
+                WHERE cashAdvance.request_status = 'Pending' 
+                AND employees.designationID IN (5,8,9)
+                AND e_status = 'Active'";
             return $pendingCashAdvance;
         }
         
@@ -417,7 +430,9 @@
                 ON disputes.attendanceID = disputeAttendance.attendanceID
                 INNER JOIN {$this->employees} AS employees
                 ON disputeAttendance.empID = employees.id
-                WHERE disputes.status = 'Pending' AND employees.designationID IN (5,8,9)";
+                WHERE disputes.status = 'Pending' 
+                AND employees.designationID IN (5,8,9)
+                AND e_status = 'Active'";
             return $pendingDisputes;
         }
 
@@ -428,7 +443,9 @@
                 ON disputes.leaveID = disputeLeaves.leaveID
                 INNER JOIN {$this->employees} AS employees
                 ON disputeLeaves.empID = employees.id
-                WHERE disputes.status = 'Pending' AND employees.designationID IN (5,8,9)";
+                WHERE disputes.status = 'Pending' 
+                AND employees.designationID IN (5,8,9)
+                AND e_status = 'Active'";
             return $pendingDisputes;
         }
 
@@ -439,7 +456,9 @@
                 ON disputes.overtimeID = disputeOvertime.overtimeID
                 INNER JOIN {$this->employees} AS employees
                 ON disputeOvertime.empID = employees.id
-                WHERE disputes.status = 'Pending' AND employees.designationID IN (5,8,9)";
+                WHERE disputes.status = 'Pending' 
+                AND employees.designationID IN (5,8,9)
+                AND e_status = 'Active'";
             return $pendingDisputes;
         }
 
@@ -448,7 +467,9 @@
                 SELECT * FROM ".$this->leaves." AS leaves
                 INNER JOIN ".$this->employees." AS employees
                 ON leaves.empID = employees.id
-                WHERE leaves.status = 'Pending' AND employees.designationID != 9";
+                WHERE leaves.status = 'Pending' 
+                AND employees.designationID != 9
+                AND e_status = 'Active'";
             return $pendingLeaves;
         }
 
@@ -457,7 +478,8 @@
                 SELECT * FROM ".$this->changeShift." AS changeShift
                 INNER JOIN ".$this->employees." AS employees
                 ON changeShift.empID = employees.id
-                WHERE changeShift.status = 'Pending'";
+                WHERE changeShift.status = 'Pending'
+                AND e_status = 'Active'";
             return $pendingChangeShifts;
         }
 
@@ -466,7 +488,9 @@
                 SELECT * FROM ".$this->changeShift." AS changeShift
                 INNER JOIN ".$this->employees." AS employees
                 ON changeShift.empID = employees.id
-                WHERE changeShift.status = 'Pending' AND employees.designationID IN (5,8,9)";
+                WHERE changeShift.status = 'Pending' 
+                AND employees.designationID IN (5,8,9)
+                AND e_status = 'Active'";
             return $pendingChangeShifts;
         }
 
@@ -475,7 +499,9 @@
                 SELECT * FROM ".$this->changeShift." AS changeShift
                 INNER JOIN ".$this->employees." AS employees
                 ON changeShift.empID = employees.id
-                WHERE changeShift.status = 'Pending' AND employees.designationID != 9";
+                WHERE changeShift.status = 'Pending' 
+                AND employees.designationID != 9
+                AND e_status = 'Active'";
             return $pendingChangeShifts;
         }
 
@@ -484,7 +510,8 @@
                 SELECT * FROM ".$this->filedOT." AS filedOT
                 INNER JOIN ".$this->employees." AS employees
                 ON filedOT.empID = employees.id
-                WHERE filedOT.status IS NULL";
+                WHERE filedOT.status IS NULL
+                AND e_status = 'Active'";
             return $pendingChangeShifts;
         }
 
@@ -493,7 +520,9 @@
                 SELECT * FROM ".$this->filedOT." AS filedOT
                 INNER JOIN ".$this->employees." AS employees
                 ON filedOT.empID = employees.id
-                WHERE filedOT.status IS NULL AND employees.designationID IN (5,8,9)";
+                WHERE filedOT.status IS NULL 
+                AND employees.designationID IN (5,8,9)
+                AND e_status = 'Active'";
             return $pendingChangeShifts;
         }
 
@@ -502,7 +531,9 @@
                 SELECT * FROM ".$this->filedOT." AS filedOT
                 INNER JOIN ".$this->employees." AS employees
                 ON filedOT.empID = employees.id
-                WHERE filedOT.status IS NULL AND employees.designationID != 9";
+                WHERE filedOT.status IS NULL 
+                AND employees.designationID != 9
+                AND e_status = 'Active'";
             return $pendingChangeShifts;
         }
 
@@ -511,7 +542,8 @@
                 SELECT * FROM {$this->cashAdvance} AS cashAdvance
                 INNER JOIN {$this->employees} AS employees
                 ON cashAdvance.empID = employees.id
-                WHERE cashAdvance.request_status = 'Pending'";
+                WHERE cashAdvance.request_status = 'Pending'
+                AND e_status = 'Active'";
             return $pendingCashAdvance;
         }
 
@@ -522,7 +554,8 @@
                 ON disputes.attendanceID = disputeAttendance.attendanceID
                 INNER JOIN {$this->employees} AS employees
                 ON disputeAttendance.empID = employees.id
-                WHERE disputes.status = 'Pending'";
+                WHERE disputes.status = 'Pending'
+                AND e_status = 'Active'";
             return $pendingDisputes;
         }
 
@@ -533,7 +566,8 @@
                 ON disputes.leaveID = disputeLeaves.leaveID
                 INNER JOIN {$this->employees} AS employees
                 ON disputeLeaves.empID = employees.id
-                WHERE disputes.status = 'Pending'";
+                WHERE disputes.status = 'Pending'
+                AND e_status = 'Active'";
             return $pendingDisputes;
         }
 
@@ -544,7 +578,8 @@
                 ON disputes.overtimeID = disputeOvertime.overtimeID
                 INNER JOIN {$this->employees} AS employees
                 ON disputeOvertime.empID = employees.id
-                WHERE disputes.status = 'Pending'";
+                WHERE disputes.status = 'Pending'
+                AND e_status = 'Active'";
             return $pendingDisputes;
         }
 

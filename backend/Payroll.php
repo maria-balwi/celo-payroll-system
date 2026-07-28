@@ -519,7 +519,8 @@
                 ON dispute.attendanceID = disputeAttendance.attendanceID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeAttendance.empID = employee.id
-                WHERE dispute.status = 'Pending'";
+                WHERE dispute.status = 'Pending'
+                AND e_status = 'Active'";
             return $attendanceDisputes;
         }
 
@@ -604,7 +605,8 @@
                 ON dispute.attendanceID = disputeAttendance.attendanceID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeAttendance.empID = employee.id
-                WHERE dispute.status = 'Approved'";
+                WHERE dispute.status = 'Approved'
+                AND e_status = 'Active'";
             return $attendanceDisputes;
         }
 
@@ -688,7 +690,8 @@
                 ON dispute.attendanceID = disputeAttendance.attendanceID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeAttendance.empID = employee.id
-                WHERE dispute.status = 'Disapproved'";
+                WHERE dispute.status = 'Disapproved'
+                AND e_status = 'Active'";
             return $attendanceDisputes;
         }
 
@@ -772,7 +775,8 @@
                 ON disputeLeaves.leaveTypeID = leaves.leaveTypeID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeLeaves.empID = employee.id
-                WHERE dispute.status = 'Pending'";
+                WHERE dispute.status = 'Pending'
+                AND e_status = 'Active'";
             return $leavesDisputes;
         }
 
@@ -856,7 +860,8 @@
                 ON disputeLeaves.leaveTypeID = leaves.leaveTypeID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeLeaves.empID = employee.id
-                WHERE dispute.status = 'Approved'";
+                WHERE dispute.status = 'Approved'
+                AND e_status = 'Active'";
             return $pendingDisputes;
         }
 
@@ -940,7 +945,8 @@
                 ON disputeLeaves.leaveTypeID = leaves.leaveTypeID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeLeaves.empID = employee.id
-                WHERE dispute.status = 'Disapproved'";
+                WHERE dispute.status = 'Disapproved'
+                AND e_status = 'Active'";
             return $pendingDisputes;
         }
 
@@ -1022,7 +1028,8 @@
                 ON dispute.overtimeID = disputeOvertime.overtimeID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeOvertime.empID = employee.id
-                WHERE dispute.status = 'Pending'";
+                WHERE dispute.status = 'Pending'
+                AND e_status = 'Active'";
             return $overtimeDisputes;
         }
 
@@ -1096,7 +1103,8 @@
                 ON dispute.overtimeID = disputeOvertime.overtimeID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeOvertime.empID = employee.id
-                WHERE dispute.status = 'Approved'";
+                WHERE dispute.status = 'Approved'
+                AND e_status = 'Active'";
             return $overtimeDisputes;
         }
 
@@ -1170,7 +1178,8 @@
                 ON dispute.overtimeID = disputeOvertime.overtimeID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeOvertime.empID = employee.id
-                WHERE dispute.status = 'Disapproved'";
+                WHERE dispute.status = 'Disapproved'
+                AND e_status = 'Active'";
             return $overtimeDisputes;
         }
 

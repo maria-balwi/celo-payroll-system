@@ -279,7 +279,8 @@
                 remarks, status
                 FROM ".$this->filedOT." AS filedOT
                 INNER JOIN ".$this->employees." AS employees
-                ON filedOT.empID = employees.id";
+                ON filedOT.empID = employees.id
+                WHERE e_status = 'Active'";
             return $request;
         }
 
@@ -293,7 +294,8 @@
                 FROM ".$this->filedOT." AS filedOT
                 INNER JOIN ".$this->employees." AS employees
                 ON filedOT.empID = employees.id
-                WHERE employees.designationID IN (5,8,9)";
+                WHERE employees.designationID IN (5,8,9)
+                AND e_status = 'Active'";
             return $request;
         }
 
@@ -308,6 +310,7 @@
                 INNER JOIN ".$this->employees." AS employees
                 ON filedOT.empID = employees.id
                 WHERE employees.designationID NOT IN (8,9)
+                AND e_status = 'Active'
                 ORDER BY dateFiled DESC";
             return $request;
         }
@@ -409,7 +412,8 @@
                 INNER JOIN ".$this->shift." AS shift_1
                 ON shift_1.shiftID = employees.shiftID
                 INNER JOIN ".$this->shift." AS shift_2
-                ON shift_2.shiftID = changeShift.requestedShift";
+                ON shift_2.shiftID = changeShift.requestedShift
+                WHERE e_status = 'Active'";
             return $request;
         }
 
@@ -426,7 +430,8 @@
                 ON shift_1.shiftID = employees.shiftID
                 INNER JOIN ".$this->shift." AS shift_2
                 ON shift_2.shiftID = changeShift.requestedShift
-                WHERE employees.designationID IN (5,8,9)";
+                WHERE employees.designationID IN (5,8,9)
+                AND e_status = 'Active'";
             return $request;
         }
 
@@ -444,6 +449,7 @@
                 INNER JOIN ".$this->shift." AS shift_2
                 ON shift_2.shiftID = changeShift.requestedShift
                 WHERE employees.designationID NOT IN (8,9)
+                AND e_status = 'Active'
                 ORDER BY dateFiled DESC";
             return $request;
         }
@@ -546,6 +552,7 @@
                 INNER JOIN ".$this->leaveType." AS leaveType
                 ON leaveType.leaveTypeID = leaves.leaveTypeID
                 WHERE employees.designationID NOT IN (8,9)
+                AND e_status = 'Active'
                 ORDER BY dateFiled DESC";
             return $request;
         }
@@ -557,7 +564,8 @@
                 ON leaves.empID = employees.id
                 INNER JOIN ".$this->leaveType." AS leaveType
                 ON leaveType.leaveTypeID = leaves.leaveTypeID
-                WHERE employees.designationID IN (5,8,9)";
+                WHERE employees.designationID IN (5,8,9)
+                AND e_status = 'Active'";
             return $request;
         }
 
@@ -567,7 +575,8 @@
                 INNER JOIN ".$this->employees." AS employees
                 ON leaves.empID = employees.id
                 INNER JOIN ".$this->leaveType." AS leaveType
-                ON leaveType.leaveTypeID = leaves.leaveTypeID";
+                ON leaveType.leaveTypeID = leaves.leaveTypeID
+                ";
             return $request;
         }
 
@@ -631,7 +640,8 @@
             $cashAdvance = "
                 SELECT * FROM {$this->cashAdvance} AS cashAdvance
                 INNER JOIN {$this->employees} AS employees
-                ON cashAdvance.empID = employees.id";
+                ON cashAdvance.empID = employees.id
+                WHERE e_status = 'Active'";
             return $cashAdvance;
         }
 
