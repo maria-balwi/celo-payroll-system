@@ -1607,6 +1607,7 @@
                 INNER JOIN ".$this->shifts." AS shifts
                 ON employees.shiftID = shifts.shiftID
                 WHERE designationID != 12
+                AND e_status = 'Active'
                 ORDER BY employeeID ASC";
             return $employeeAttendance;
         }
