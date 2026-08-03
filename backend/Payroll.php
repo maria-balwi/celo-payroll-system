@@ -1851,7 +1851,6 @@
                 AND la.status = 'Approved'
                 AND la.effectivityStartDate <= '$to'
                 AND la.effectivityEndDate   >= '$from'
-                AND la.dateFiled BETWEEN '$from' AND '$to'
             ";
         }
 
