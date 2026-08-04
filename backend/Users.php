@@ -59,6 +59,7 @@
                     // $_SESSION['activated'] = $userDetails['activated']; 
                     $_SESSION['gender'] = $userDetails['gender'];
                     $_SESSION['teamID'] = $userDetails['teamID'];
+                    $_SESSION['shiftID'] = $userDetails['shiftID'];
 
                     // SESSION TIMEOUT 
                     $_SESSION['start'] = time();
@@ -215,31 +216,31 @@
             return $lastUser;
         }
 
-        public function saveDTR($id, $logTypeID, $attendanceDate, $attendanceTime) {
+        public function saveDTR($id, $logTypeID, $shiftID, $attendanceDate, $attendanceTime) {
             $saveDTR = "
-                INSERT INTO ".$this->attendance." (empID, logTypeID, attendanceSource, attendanceDate, attendanceTime)
-                VALUES ('$id', '$logTypeID', 'FACE', '$attendanceDate', '$attendanceTime')";
+                INSERT INTO ".$this->attendance." (empID, logTypeID, shiftID, attendanceSource, attendanceDate, attendanceTime)
+                VALUES ('$id', '$logTypeID', '$shiftID', 'FACE', '$attendanceDate', '$attendanceTime')";
             return $saveDTR;
         }
 
-        public function saveDTRLate($id, $logTypeID, $attendanceDate, $attendanceTime, $lateMins) {
+        public function saveDTRLate($id, $logTypeID, $shiftID, $attendanceDate, $attendanceTime, $lateMins) {
             $saveDTR = "
-                INSERT INTO ".$this->attendance." (empID, logTypeID, attendanceSource, attendanceDate, attendanceTime, lateMins)
-                VALUES ('$id', '$logTypeID', 'FACE', '$attendanceDate', '$attendanceTime', '$lateMins')";
+                INSERT INTO ".$this->attendance." (empID, logTypeID, shiftID, attendanceSource, attendanceDate, attendanceTime, lateMins)
+                VALUES ('$id', '$logTypeID', '$shiftID', 'FACE', '$attendanceDate', '$attendanceTime', '$lateMins')";
             return $saveDTR;
         }
 
-        public function saveDTRUndertime($id, $logTypeID, $attendanceDate, $attendanceTime, $undertimeMins) {
+        public function saveDTRUndertime($id, $logTypeID, $shiftID, $attendanceDate, $attendanceTime, $undertimeMins) {
             $saveDTR = "
-                INSERT INTO ".$this->attendance." (empID, logTypeID, attendanceSource, attendanceDate, attendanceTime, undertimeMins)
-                VALUES ('$id', '$logTypeID', 'FACE', '$attendanceDate', '$attendanceTime', '$undertimeMins')";
+                INSERT INTO ".$this->attendance." (empID, logTypeID, shiftID, attendanceSource, attendanceDate, attendanceTime, undertimeMins)
+                VALUES ('$id', '$logTypeID', '$shiftID', 'FACE', '$attendanceDate', '$attendanceTime', '$undertimeMins')";
             return $saveDTR;
         }
 
-        public function saveMissingDTR($id, $logTypeID, $attendanceDate, $attendanceTime) {
+        public function saveMissingDTR($id, $logTypeID, $shiftID, $attendanceDate, $attendanceTime) {
             $saveDTR = "
-                INSERT INTO ".$this->attendance." (empID, logTypeID, attendanceSource, attendanceDate, attendanceTime)
-                VALUES ('$id', '$logTypeID', 'FACE', '$attendanceDate', '$attendanceTime')";
+                INSERT INTO ".$this->attendance." (empID, logTypeID, shiftID, attendanceSource, attendanceDate, attendanceTime)
+                VALUES ('$id', '$logTypeID', '$shiftID', 'FACE', '$attendanceDate', '$attendanceTime')";
             return $saveDTR;
         }
 
