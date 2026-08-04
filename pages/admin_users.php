@@ -128,7 +128,7 @@
                                                                     $employee_emailAddress = $employeeDetails['emailAddress'];
                                                                     $employee_mobileNumber = $employeeDetails['mobileNumber'];
 
-                                                                    echo "<tr data-id='" . $employee_id . "' class='employeeView cursor-pointer'>";
+                                                                    echo "<tr data-id='" . $employee_id . "' class='userView cursor-pointer'>";
                                                                     echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
                                                                     echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
                                                                     echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
@@ -160,7 +160,7 @@
                                                                     $employee_emailAddress = $employeeDetails['emailAddress'];
                                                                     $employee_mobileNumber = $employeeDetails['mobileNumber'];
 
-                                                                    echo "<tr data-id='" . $employee_id . "' class='resignedView cursor-pointer'>";
+                                                                    echo "<tr data-id='" . $employee_id . "' class='inactiveUserView cursor-pointer'>";
                                                                     echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
                                                                     echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
                                                                     echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
@@ -210,7 +210,7 @@
                                                                     $employee_emailAddress = $employeeDetails['emailAddress'];
                                                                     $employee_mobileNumber = $employeeDetails['mobileNumber'];
 
-                                                                    echo "<tr data-id='" . $employee_id . "' class='employeeView cursor-pointer'>";
+                                                                    echo "<tr data-id='" . $employee_id . "' class='userView cursor-pointer'>";
                                                                     echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
                                                                     echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
                                                                     echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
@@ -242,7 +242,7 @@
                                                                     $employee_emailAddress = $employeeDetails['emailAddress'];
                                                                     $employee_mobileNumber = $employeeDetails['mobileNumber'];
 
-                                                                    echo "<tr data-id='" . $employee_id . "' class='resignedView cursor-pointer'>";
+                                                                    echo "<tr data-id='" . $employee_id . "' class='inactiveUserView cursor-pointer'>";
                                                                     echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
                                                                     echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
                                                                     echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
@@ -292,7 +292,7 @@
                                                                     $employee_emailAddress = $employeeDetails['emailAddress'];
                                                                     $employee_mobileNumber = $employeeDetails['mobileNumber'];
 
-                                                                    echo "<tr data-id='" . $employee_id . "' class='employeeView cursor-pointer'>";
+                                                                    echo "<tr data-id='" . $employee_id . "' class='userView cursor-pointer'>";
                                                                     echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
                                                                     echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
                                                                     echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
@@ -324,7 +324,7 @@
                                                                     $employee_emailAddress = $employeeDetails['emailAddress'];
                                                                     $employee_mobileNumber = $employeeDetails['mobileNumber'];
 
-                                                                    echo "<tr data-id='" . $employee_id . "' class='resignedView cursor-pointer'>";
+                                                                    echo "<tr data-id='" . $employee_id . "' class='inactiveUserView cursor-pointer'>";
                                                                     echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
                                                                     echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
                                                                     echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
@@ -374,7 +374,7 @@
                                                                     $employee_emailAddress = $employeeDetails['emailAddress'];
                                                                     $employee_mobileNumber = $employeeDetails['mobileNumber'];
 
-                                                                    echo "<tr data-id='" . $employee_id . "' class='employeeView cursor-pointer'>";
+                                                                    echo "<tr data-id='" . $employee_id . "' class='userView cursor-pointer'>";
                                                                     echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
                                                                     echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
                                                                     echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
@@ -406,7 +406,7 @@
                                                                     $employee_emailAddress = $employeeDetails['emailAddress'];
                                                                     $employee_mobileNumber = $employeeDetails['mobileNumber'];
 
-                                                                    echo "<tr data-id='" . $employee_id . "' class='resignedView cursor-pointer'>";
+                                                                    echo "<tr data-id='" . $employee_id . "' class='inactiveUserView cursor-pointer'>";
                                                                     echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
                                                                     echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
                                                                     echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
@@ -456,7 +456,7 @@
                                                                     $employee_emailAddress = $employeeDetails['emailAddress'];
                                                                     $employee_mobileNumber = $employeeDetails['mobileNumber'];
 
-                                                                    echo "<tr data-id='" . $employee_id . "' class='employeeView cursor-pointer'>";
+                                                                    echo "<tr data-id='" . $employee_id . "' class='userView cursor-pointer'>";
                                                                     echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
                                                                     echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
                                                                     echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
@@ -488,7 +488,7 @@
                                                                     $employee_emailAddress = $employeeDetails['emailAddress'];
                                                                     $employee_mobileNumber = $employeeDetails['mobileNumber'];
 
-                                                                    echo "<tr data-id='" . $employee_id . "' class='resignedView cursor-pointer'>";
+                                                                    echo "<tr data-id='" . $employee_id . "' class='inactiveUserView cursor-pointer'>";
                                                                     echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
                                                                     echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
                                                                     echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
