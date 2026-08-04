@@ -1479,7 +1479,7 @@
             return $viewPayrollCycle;
         }
 
-        public function calculateNightDifferential($attendanceDateTime, $logTypeID, $lateMins, $payrollCycleFrom, $payrollCycleTo, $attendanceDate, $empID) {
+        public function calculateNightDifferential($attendanceDateTime, $logTypeID, $lateMins, $payrollCycleFrom, $payrollCycleTo, $attendanceDate, $empID, $shiftID) {
             static $timeIn = null;
             static $date_in = null;
             static $static_lateMins = null;
@@ -1523,6 +1523,7 @@
                         $payrollCycleTo,
                         $date_in,
                         $empID,
+                        $shiftID,
                         $totalRegularNightHours,
                         $totalRegularHolidayHours,
                         $totalRegularHolidayNightHours,
@@ -1547,7 +1548,7 @@
             ];
         }
 
-        private function calculateSegmentHours($payrollCycleFrom, $payrollCycleTo, $attendanceDate, $empID, &$totalRegularNightHours, &$totalRegularHolidayHours, &$totalRegularHolidayNightHours, &$totalSpecialHolidayHours, &$totalSpecialHolidayNightHours) {
+        private function calculateSegmentHours($payrollCycleFrom, $payrollCycleTo, $attendanceDate, $empID, $shiftID, &$totalRegularNightHours, &$totalRegularHolidayHours, &$totalRegularHolidayNightHours, &$totalSpecialHolidayHours, &$totalSpecialHolidayNightHours) {
             // -----------------------------
             // 1. LOAD HOLIDAYS
             // -----------------------------
@@ -1570,10 +1571,8 @@
             // -----------------------------
             $sch = $this->dbConnect()->query("
                 SELECT startTime, endTime
-                FROM tbl_employee 
-                INNER JOIN tbl_shiftschedule
-                ON tbl_employee.shiftID = tbl_shiftschedule.shiftID
-                WHERE tbl_employee.id = '$empID'
+                FROM tbl_shiftschedule
+                WHERE shiftID = '$shiftID'
             ")->fetch_assoc();
 
             $scheduledStart = new DateTime($attendanceDate . " " . $sch['startTime']);
@@ -2140,6 +2139,7 @@
                     // FULL DATETIME
                     $attendanceDate = $attendanceLogs['attendanceDate'];
                     $attendanceTime = $attendanceLogs['attendanceTime'];
+                    $shiftID = $attendanceLogs['shiftID'];
                     $fullDateTime = $attendanceDate . ' ' . $attendanceTime;
 
                     $logTypeID = $attendanceLogs['logTypeID'];
@@ -2155,7 +2155,8 @@
                         $payrollCycleFrom,
                         $payrollCycleTo,
                         $attendanceDate,
-                        $employee_id
+                        $employee_id,
+                        $shiftID
                     );
 
                     $totalNightHours += $result['totalRegularNightHours'];
@@ -2746,6 +2747,7 @@
                     // FULL DATETIME
                     $attendanceDate = $attendanceLogs['attendanceDate'];
                     $attendanceTime = $attendanceLogs['attendanceTime'];
+                    $shiftID = $attendanceLogs['shiftID'];
                     $fullDateTime = $attendanceDate . ' ' . $attendanceTime;
 
                     $logTypeID = $attendanceLogs['logTypeID'];
@@ -2761,7 +2763,8 @@
                         $payrollCycleFrom,
                         $payrollCycleTo,
                         $attendanceDate,
-                        $employee_id
+                        $employee_id,
+                        $shiftID
                     );
 
                     $totalNightHours += $result['totalRegularNightHours'];
