@@ -520,7 +520,8 @@
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeAttendance.empID = employee.id
                 WHERE dispute.status = 'Pending'
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $attendanceDisputes;
         }
 
@@ -536,7 +537,8 @@
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeAttendance.empID = employee.id
                 WHERE dispute.status = 'Pending' AND
-                empID = '$id'";
+                empID = '$id'
+                ORDER BY dateFiled DESC";
             return $attendanceDisputes;
         }
 
@@ -553,7 +555,8 @@
                 ON disputeAttendance.empID = employee.id
                 WHERE dispute.status = 'Pending' 
                 AND employee.designationID IN (1,2,3,4,11,14)
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $attendanceDisputes;
         }
 
@@ -572,7 +575,8 @@
                 AND employee.departmentID = 1 
                 AND employee.designationID IN (1,2,3,14)
                 AND teamID = '$teamID'
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $attendanceDisputes;
         }
 
@@ -590,7 +594,8 @@
                 WHERE dispute.status = 'Pending' AND
                 employee.departmentID = 4 
                 AND employee.designationID IN (10, 13, 19)
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $attendanceDisputes;
         }
 
@@ -606,7 +611,8 @@
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeAttendance.empID = employee.id
                 WHERE dispute.status = 'Approved'
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $attendanceDisputes;
         }
 
@@ -622,7 +628,8 @@
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeAttendance.empID = employee.id
                 WHERE dispute.status = 'Approved' AND
-                empID = '$id'";
+                empID = '$id'
+                ORDER BY dateFiled DESC";
             return $attendanceDisputes;
         }
 
@@ -639,7 +646,8 @@
                 ON disputeAttendance.empID = employee.id
                 WHERE dispute.status = 'Approved' 
                 AND employee.designationID IN (1,2,3,4,11,14)
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $attendanceDisputes;
         }
 
@@ -657,7 +665,8 @@
                 WHERE dispute.status = 'Approved' 
                 AND employee.departmentID = 1 
                 AND employee.designationID IN (1,2,3,14)
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $attendanceDisputes;
         }
 
@@ -675,7 +684,8 @@
                 WHERE dispute.status = 'Approved' 
                 AND employee.departmentID = 4 
                 AND employee.designationID IN (10, 13, 19)
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $attendanceDisputes;
         }
 
@@ -691,7 +701,8 @@
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeAttendance.empID = employee.id
                 WHERE dispute.status = 'Disapproved'
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $attendanceDisputes;
         }
 
@@ -707,7 +718,8 @@
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeAttendance.empID = employee.id
                 WHERE dispute.status = 'Disapproved' AND
-                empID = '$id'";
+                empID = '$id'
+                ORDER BY dateFiled DESC";
             return $attendanceDisputes;
         }
 
@@ -724,7 +736,8 @@
                 ON disputeAttendance.empID = employee.id
                 WHERE dispute.status = 'Disapproved' 
                 AND employee.designationID IN (1,2,3,4,11,14)
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $attendanceDisputes;
         }
 
@@ -742,7 +755,8 @@
                 WHERE dispute.status = 'Disapproved' 
                 AND employee.departmentID = 1 
                 AND employee.designationID IN (1,2,3,14)
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $attendanceDisputes;
         }
 
@@ -760,7 +774,8 @@
                 WHERE dispute.status = 'Disapproved' 
                 AND employee.departmentID = 4 
                 AND employee.designationID IN (10, 13, 19)
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $attendanceDisputes;
         }
 
@@ -776,7 +791,8 @@
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeLeaves.empID = employee.id
                 WHERE dispute.status = 'Pending'
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $leavesDisputes;
         }
 
@@ -792,7 +808,8 @@
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeLeaves.empID = employee.id
                 WHERE dispute.status = 'Pending' AND
-                empID = '$id'";
+                empID = '$id'
+                ORDER BY dateFiled DESC";
             return $leavesDisputes;
         }
 
@@ -809,7 +826,8 @@
                 ON disputeLeaves.empID = employee.id
                 WHERE dispute.status = 'Pending' 
                 AND employee.designationID IN (1,2,3,4,11,14)
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $leavesDisputes;
         }
 
@@ -827,7 +845,8 @@
                 WHERE dispute.status = 'Pending' 
                 AND employee.departmentID = 1 
                 AND employee.designationID IN (1,2,3,14)
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $leavesDisputes;
         }
 
@@ -845,7 +864,8 @@
                 WHERE dispute.status = 'Pending' 
                 AND employee.departmentID = 4 
                 AND employee.designationID IN (10, 13, 19)
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $leavesDisputes;
         }
 
@@ -861,7 +881,8 @@
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeLeaves.empID = employee.id
                 WHERE dispute.status = 'Approved'
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $pendingDisputes;
         }
 
@@ -877,7 +898,8 @@
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeLeaves.empID = employee.id
                 WHERE dispute.status = 'Approved' AND
-                empID = '$id'";
+                empID = '$id'
+                ORDER BY dateFiled DESC";
             return $pendingDisputes;
         }
 
@@ -894,7 +916,8 @@
                 ON disputeLeaves.empID = employee.id
                 WHERE dispute.status = 'Approved' 
                 AND employee.designationID IN (1,2,3,4,11,14)
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $pendingDisputes;
         }
 
@@ -912,7 +935,8 @@
                 WHERE dispute.status = 'Approved' 
                 AND employee.departmentID = 1 
                 AND employee.designationID IN (1,2,3,14)
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $pendingDisputes;
         }
 
@@ -930,7 +954,8 @@
                 WHERE dispute.status = 'Approved' 
                 AND employee.departmentID = 4 
                 AND employee.designationID IN (10, 13, 19)
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $pendingDisputes;
         }
 
@@ -946,7 +971,8 @@
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeLeaves.empID = employee.id
                 WHERE dispute.status = 'Disapproved'
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $pendingDisputes;
         }
 
@@ -962,7 +988,8 @@
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeLeaves.empID = employee.id
                 WHERE dispute.status = 'Disapproved' AND
-                empID = '$id'";
+                empID = '$id'
+                ORDER BY dateFiled DESC";
             return $pendingDisputes;
         }
 
@@ -979,7 +1006,8 @@
                 ON disputeLeaves.empID = employee.id
                 WHERE dispute.status = 'Disapproved' 
                 AND employee.designationID IN (1,2,3,4,11,14)
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $pendingDisputes;
         }
 
@@ -997,7 +1025,8 @@
                 WHERE dispute.status = 'Disapproved' 
                 AND employee.departmentID = 1 
                 AND employee.designationID IN (1,2,3,14)
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $pendingDisputes;
         }
 
@@ -1015,7 +1044,8 @@
                 WHERE dispute.status = 'Disapproved' 
                 AND employee.departmentID = 4 
                 AND employee.designationID IN (10, 13, 19)
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $pendingDisputes;
         }
 
@@ -1029,7 +1059,8 @@
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeOvertime.empID = employee.id
                 WHERE dispute.status = 'Pending'
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $overtimeDisputes;
         }
 
@@ -1043,7 +1074,8 @@
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeOvertime.empID = employee.id
                 WHERE dispute.status = 'Pending' AND
-                empID = '$id'";
+                empID = '$id'
+                ORDER BY dateFiled DESC";
             return $overtimeDisputes;
         }
 
@@ -1058,7 +1090,8 @@
                 ON disputeOvertime.empID = employee.id
                 WHERE dispute.status = 'Pending' 
                 AND employee.designationID IN (1,2,3,4,11,14)
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $overtimeDisputes;
         }
 
@@ -1074,7 +1107,8 @@
                 WHERE dispute.status = 'Pending' 
                 AND employee.departmentID = 1 
                 AND employee.designationID IN (1,2,3,14)
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $overtimeDisputes;
         }
 
@@ -1090,7 +1124,8 @@
                 WHERE dispute.status = 'Pending' 
                 AND employee.departmentID = 4 
                 AND employee.designationID IN (10, 13, 19)
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $overtimeDisputes;
         }
 
@@ -1104,7 +1139,8 @@
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeOvertime.empID = employee.id
                 WHERE dispute.status = 'Approved'
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $overtimeDisputes;
         }
 
@@ -1118,7 +1154,8 @@
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeOvertime.empID = employee.id
                 WHERE dispute.status = 'Approved' AND
-                empID = '$id'";
+                empID = '$id'
+                ORDER BY dateFiled DESC";
             return $overtimeDisputes;
         }
 
@@ -1133,7 +1170,8 @@
                 ON disputeOvertime.empID = employee.id
                 WHERE dispute.status = 'Approved' 
                 AND employee.designationID IN (1,2,3,4,11,14)
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $overtimeDisputes;
         }
 
@@ -1149,7 +1187,8 @@
                 WHERE dispute.status = 'Approved' 
                 AND employee.departmentID = 1 
                 AND employee.designationID IN (1,2,3,14)
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $overtimeDisputes;
         }
 
@@ -1165,7 +1204,8 @@
                 WHERE dispute.status = 'Approved' 
                 AND employee.departmentID = 4 
                 AND employee.designationID IN (10, 13, 19)
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $overtimeDisputes;
         }
 
@@ -1179,7 +1219,8 @@
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeOvertime.empID = employee.id
                 WHERE dispute.status = 'Disapproved'
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $overtimeDisputes;
         }
 
@@ -1193,7 +1234,8 @@
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeOvertime.empID = employee.id
                 WHERE dispute.status = 'Disapproved' AND
-                empID = '$id'";
+                empID = '$id'
+                ORDER BY dateFiled DESC";
             return $overtimeDisputes;
         }
 
@@ -1207,8 +1249,9 @@
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeOvertime.empID = employee.id
                 WHERE dispute.status = 'Disapproved' 
-                AND employee.designationID IN (1,2,3,4,11,14
-                AND e_status = 'Active')";
+                AND employee.designationID IN (1,2,3,4,11,14)
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $overtimeDisputes;
         }
 
@@ -1224,7 +1267,8 @@
                 WHERE dispute.status = 'Disapproved' 
                 AND employee.departmentID = 1 
                 AND employee.designationID IN (1,2,3,14)
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $overtimeDisputes;
         }
 
@@ -1240,7 +1284,8 @@
                 WHERE dispute.status = 'Disapproved' 
                 AND employee.departmentID = 4 
                 AND employee.designationID IN (10, 13, 19)
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $overtimeDisputes;
         }
 

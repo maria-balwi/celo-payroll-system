@@ -327,7 +327,8 @@
                 ON filedOT.empID = employees.id
                 INNER JOIN ".$this->department." AS department
                 ON department.departmentID = employees.departmentID
-                WHERE employees.departmentID = 4 AND employees.designationID IN (10, 13, 19)";
+                WHERE employees.departmentID = 4 AND employees.designationID IN (10, 13, 19)
+                ORDER BY dateFiled DESC";
             return $request;
         }
 
@@ -345,7 +346,8 @@
                 ON department.departmentID = employees.departmentID
                 WHERE employees.departmentID = 1
                 AND employees.designationID != 5
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $request;
         }
 
@@ -366,7 +368,8 @@
                 WHERE employees.departmentID = 1 
                 AND employees.designationID IN (1,2,3,14)
                 AND teamID = '$teamID'
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $request;
         }
 
@@ -413,7 +416,8 @@
                 ON shift_1.shiftID = employees.shiftID
                 INNER JOIN ".$this->shift." AS shift_2
                 ON shift_2.shiftID = changeShift.requestedShift
-                WHERE e_status = 'Active'";
+                WHERE e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $request;
         }
 
@@ -431,7 +435,8 @@
                 INNER JOIN ".$this->shift." AS shift_2
                 ON shift_2.shiftID = changeShift.requestedShift
                 WHERE employees.designationID IN (5,8,9)
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $request;
         }
 
@@ -504,7 +509,8 @@
                 ON shift_2.shiftID = changeShift.requestedShift
                 WHERE employees.departmentID = 1
                 AND employees.designationID != 5
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $request;
         }
 
@@ -565,7 +571,8 @@
                 INNER JOIN ".$this->leaveType." AS leaveType
                 ON leaveType.leaveTypeID = leaves.leaveTypeID
                 WHERE employees.designationID IN (5,8,9)
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $request;
         }
 
@@ -576,7 +583,7 @@
                 ON leaves.empID = employees.id
                 INNER JOIN ".$this->leaveType." AS leaveType
                 ON leaveType.leaveTypeID = leaves.leaveTypeID
-                ";
+                ORDER BY dateFiled DESC";
             return $request;
         }
 
@@ -599,7 +606,8 @@
                 ON department.departmentID = employees.departmentID
                 INNER JOIN ".$this->leaveType." AS leaveType
                 ON leaveType.leaveTypeID = leaves.leaveTypeID
-                WHERE employees.departmentID = 4 AND employees.designationID IN (10, 13, 19)";
+                WHERE employees.departmentID = 4 AND employees.designationID IN (10, 13, 19)
+                ORDER BY dateFiled DESC";
             return $request;
         }
 
@@ -617,7 +625,8 @@
                 WHERE employees.departmentID = 1
                 AND employees.designationID IN (1,2,3,14)
                 AND teamID = '$teamID'
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $request;
         }
 
@@ -632,7 +641,8 @@
                 ON leaveType.leaveTypeID = leaves.leaveTypeID
                 WHERE employees.departmentID = 1
                 AND employees.designationID != 5
-                AND e_status = 'Active'";
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $request;
         }
 
