@@ -1788,68 +1788,145 @@
             ];
         }
 
+        // ORIGINAL FUNCTION
+        // public function getCutOffAbsences($id, $cutOffStart, $cutOffEnd) {
+        //     $cutOffAbsences = "
+        //         WITH RECURSIVE calendar_days AS (
+        //             SELECT DATE('$cutOffStart') AS date_day
+
+        //             UNION ALL
+
+        //             SELECT DATE_ADD(date_day, INTERVAL 1 DAY)
+        //             FROM calendar_days
+        //             WHERE date_day < DATE('$cutOffEnd')
+        //         )
+
+        //         SELECT COUNT(*) AS total_absences
+        //         FROM calendar_days cd
+
+        //         LEFT JOIN (
+        //             SELECT
+        //                 attendanceDate,
+
+        //                 SUM(
+        //                     CASE
+        //                         WHEN logTypeID IN (1,2) THEN 1
+        //                         ELSE 0
+        //                     END
+        //                 ) AS total_in,
+
+        //                 SUM(
+        //                     CASE
+        //                         WHEN logTypeID IN (3,4) THEN 1
+        //                         ELSE 0
+        //                     END
+        //                 ) AS total_out
+
+        //             FROM {$this->attendance}
+
+        //             WHERE empID = $id
+
+        //             GROUP BY attendanceDate
+        //         ) att
+        //             ON att.attendanceDate = cd.date_day
+
+        //         LEFT JOIN {$this->leaves} leaves
+        //             ON leaves.empID = $id
+        //             AND leaves.status = 'Approved'
+        //             AND cd.date_day BETWEEN leaves.effectivityStartDate
+        //                                 AND leaves.effectivityEndDate
+
+        //         LEFT JOIN {$this->weekOff} weekoff
+        //             ON weekoff.empID = $id
+
+        //         WHERE
+
+        //             (
+        //                 att.attendanceDate IS NULL
+
+        //                 OR att.total_in = 0
+
+        //                 OR att.total_out = 0
+        //             )
+
+        //             AND leaves.empID IS NULL
+
+        //             AND (
+        //                 CASE DAYNAME(cd.date_day)
+        //                     WHEN 'Monday' THEN weekoff.wo_mon
+        //                     WHEN 'Tuesday' THEN weekoff.wo_tue
+        //                     WHEN 'Wednesday' THEN weekoff.wo_wed
+        //                     WHEN 'Thursday' THEN weekoff.wo_thu
+        //                     WHEN 'Friday' THEN weekoff.wo_fri
+        //                     WHEN 'Saturday' THEN weekoff.wo_sat
+        //                     WHEN 'Sunday' THEN weekoff.wo_sun
+        //                 END
+        //             ) = 0
+        //     ";
+
+        //     return $cutOffAbsences;
+        // }
+
         public function getCutOffAbsences($id, $cutOffStart, $cutOffEnd) {
             $cutOffAbsences = "
                 WITH RECURSIVE calendar_days AS (
                     SELECT DATE('$cutOffStart') AS date_day
-
                     UNION ALL
-
                     SELECT DATE_ADD(date_day, INTERVAL 1 DAY)
                     FROM calendar_days
                     WHERE date_day < DATE('$cutOffEnd')
+                ),
+
+                attendance_normalized AS (
+                    SELECT
+                        att.empID,
+                        att.logTypeID,
+                        att.attendanceDate,
+                        att.attendanceTime,
+                        CASE
+                            -- overnight shift: endTime earlier than startTime means it crosses midnight
+                            WHEN sh.startTime IS NOT NULL
+                                AND sh.endTime < sh.startTime
+                                AND att.logTypeID IN (3,4)
+                                AND att.attendanceTime < sh.startTime
+                            THEN DATE_SUB(att.attendanceDate, INTERVAL 1 DAY)
+                            ELSE att.attendanceDate
+                        END AS shiftDate
+                    FROM {$this->attendance} att
+                    LEFT JOIN {$this->shifts} sh ON sh.shiftID = att.shiftID
+                    WHERE att.empID = $id
+                ),
+
+                att_summary AS (
+                    SELECT
+                        shiftDate,
+                        SUM(CASE WHEN logTypeID IN (1,2) THEN 1 ELSE 0 END) AS total_in,
+                        SUM(CASE WHEN logTypeID IN (3,4) THEN 1 ELSE 0 END) AS total_out
+                    FROM attendance_normalized
+                    GROUP BY shiftDate
                 )
 
                 SELECT COUNT(*) AS total_absences
                 FROM calendar_days cd
 
-                LEFT JOIN (
-                    SELECT
-                        attendanceDate,
-
-                        SUM(
-                            CASE
-                                WHEN logTypeID IN (1,2) THEN 1
-                                ELSE 0
-                            END
-                        ) AS total_in,
-
-                        SUM(
-                            CASE
-                                WHEN logTypeID IN (3,4) THEN 1
-                                ELSE 0
-                            END
-                        ) AS total_out
-
-                    FROM {$this->attendance}
-
-                    WHERE empID = $id
-
-                    GROUP BY attendanceDate
-                ) att
-                    ON att.attendanceDate = cd.date_day
+                LEFT JOIN att_summary att
+                    ON att.shiftDate = cd.date_day
 
                 LEFT JOIN {$this->leaves} leaves
                     ON leaves.empID = $id
                     AND leaves.status = 'Approved'
-                    AND cd.date_day BETWEEN leaves.effectivityStartDate
-                                        AND leaves.effectivityEndDate
+                    AND cd.date_day BETWEEN leaves.effectivityStartDate AND leaves.effectivityEndDate
 
                 LEFT JOIN {$this->weekOff} weekoff
                     ON weekoff.empID = $id
 
                 WHERE
-
                     (
-                        att.attendanceDate IS NULL
-
+                        att.shiftDate IS NULL
                         OR att.total_in = 0
-
                         OR att.total_out = 0
                     )
-
                     AND leaves.empID IS NULL
-
                     AND (
                         CASE DAYNAME(cd.date_day)
                             WHEN 'Monday' THEN weekoff.wo_mon
@@ -1860,9 +1937,7 @@
                             WHEN 'Saturday' THEN weekoff.wo_sat
                             WHEN 'Sunday' THEN weekoff.wo_sun
                         END
-                    ) = 0
-            ";
-
+                    ) = 0";
             return $cutOffAbsences;
         }
 
@@ -2036,16 +2111,30 @@
                 $employee_employmentStatus = $employeeDetails['e_status'];
 
                 // COMPUTE DAYS WORKED
-                $daysWorkedQuery = $this->dbConnect()->query("
-                    SELECT attendanceDate
-                    FROM tbl_attendance
-                    WHERE empID = {$employeeDetails['id']}
-                    AND attendanceDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'
-                    GROUP BY attendanceDate
-                    HAVING
-                        SUM(CASE WHEN logTypeID IN (1,2) THEN 1 ELSE 0 END) > 0
-                        AND
-                        SUM(CASE WHEN logTypeID IN (3,4) THEN 1 ELSE 0 END) > 0
+                // $daysWorkedQuery = $this->dbConnect()->query("
+                //     SELECT attendanceDate
+                //     FROM tbl_attendance
+                //     WHERE empID = {$employeeDetails['id']}
+                //     AND attendanceDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'
+                //     GROUP BY attendanceDate
+                //     HAVING
+                //         SUM(CASE WHEN logTypeID IN (1,2) THEN 1 ELSE 0 END) > 0
+                //         AND
+                //         SUM(CASE WHEN logTypeID IN (3,4) THEN 1 ELSE 0 END) > 0
+                // ");
+               $daysWorkedQuery = $this->dbConnect()->query("
+                    SELECT DISTINCT inLogs.attendanceDate AS workDate
+                    FROM tbl_attendance inLogs
+                    WHERE inLogs.empID = {$employeeDetails['id']}
+                    AND inLogs.attendanceDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'
+                    AND inLogs.logTypeID IN (1,2)
+                    AND EXISTS (
+                        SELECT 1
+                        FROM tbl_attendance outLogs
+                        WHERE outLogs.empID = inLogs.empID
+                        AND outLogs.logTypeID IN (3,4)
+                        AND outLogs.attendanceDate IN (inLogs.attendanceDate, DATE_ADD(inLogs.attendanceDate, INTERVAL 1 DAY))
+                    )
                 ");
 
                 $employee_daysWorked = mysqli_num_rows($daysWorkedQuery);
@@ -2644,16 +2733,30 @@
                 $employee_employmentStatus = $employeeDetails['e_status'];
 
                 // COMPUTE DAYS WORKED
-                $daysWorkedQuery = $this->dbConnect()->query("
-                    SELECT attendanceDate
-                    FROM tbl_attendance
-                    WHERE empID = {$employeeDetails['id']}
-                    AND attendanceDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'
-                    GROUP BY attendanceDate
-                    HAVING
-                        SUM(CASE WHEN logTypeID IN (1,2) THEN 1 ELSE 0 END) > 0
-                        AND
-                        SUM(CASE WHEN logTypeID IN (3,4) THEN 1 ELSE 0 END) > 0
+                // $daysWorkedQuery = $this->dbConnect()->query("
+                //     SELECT attendanceDate
+                //     FROM tbl_attendance
+                //     WHERE empID = {$employeeDetails['id']}
+                //     AND attendanceDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'
+                //     GROUP BY attendanceDate
+                //     HAVING
+                //         SUM(CASE WHEN logTypeID IN (1,2) THEN 1 ELSE 0 END) > 0
+                //         AND
+                //         SUM(CASE WHEN logTypeID IN (3,4) THEN 1 ELSE 0 END) > 0
+                // ");
+               $daysWorkedQuery = $this->dbConnect()->query("
+                    SELECT DISTINCT inLogs.attendanceDate AS workDate
+                    FROM tbl_attendance inLogs
+                    WHERE inLogs.empID = {$employeeDetails['id']}
+                    AND inLogs.attendanceDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'
+                    AND inLogs.logTypeID IN (1,2)
+                    AND EXISTS (
+                        SELECT 1
+                        FROM tbl_attendance outLogs
+                        WHERE outLogs.empID = inLogs.empID
+                        AND outLogs.logTypeID IN (3,4)
+                        AND outLogs.attendanceDate IN (inLogs.attendanceDate, DATE_ADD(inLogs.attendanceDate, INTERVAL 1 DAY))
+                    )
                 ");
 
                 $employee_daysWorked = mysqli_num_rows($daysWorkedQuery);
