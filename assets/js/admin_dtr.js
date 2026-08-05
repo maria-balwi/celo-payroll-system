@@ -15,11 +15,41 @@ $(document).ready(function() {
         return timeOutDate;
     }
 
+    // function formatTimeString(timeString) {
+    //     // Parse the time string
+    //     const [time, modifier] = timeString.split(' ');
+    //     let [hours, minutes] = time.split(':');
+    
+    //     // Convert to 24-hour format
+    //     if (modifier === 'PM' && hours !== '12') {
+    //         hours = parseInt(hours, 10) + 12;
+    //     }
+    //     if (modifier === 'AM' && hours === '12') {
+    //         hours = '00';
+    //     }
+    
+    //     // Ensure minutes are two digits
+    //     minutes = minutes.padStart(2, '0');
+    
+    //     // Return in the desired format (e.g., "HH:MM")
+    //     return `${hours}:${minutes}`;
+    // }
+
     function formatTimeString(timeString) {
+        // Guard: handle missing, empty, or malformed values
+        if (!timeString || typeof timeString !== 'string' || !timeString.includes(':')) {
+            return '--:--';
+        }
+
         // Parse the time string
         const [time, modifier] = timeString.split(' ');
         let [hours, minutes] = time.split(':');
-    
+
+        // Guard: malformed time portion (no minutes found)
+        if (hours === undefined || minutes === undefined) {
+            return '--:--';
+        }
+
         // Convert to 24-hour format
         if (modifier === 'PM' && hours !== '12') {
             hours = parseInt(hours, 10) + 12;
@@ -27,10 +57,10 @@ $(document).ready(function() {
         if (modifier === 'AM' && hours === '12') {
             hours = '00';
         }
-    
+
         // Ensure minutes are two digits
         minutes = minutes.padStart(2, '0');
-    
+
         // Return in the desired format (e.g., "HH:MM")
         return `${hours}:${minutes}`;
     }
