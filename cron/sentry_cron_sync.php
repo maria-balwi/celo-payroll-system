@@ -94,16 +94,17 @@
             }
 
             $attendanceSource = 'SENTRY';
-            $stmt = $conn->prepare("INSERT IGNORE INTO tbl_attendance (empID, logTypeID, attendanceDate, attendanceTime, attendanceSource, lateMins, undertimeMins) VALUES (?,?,?,?,?,?,?)");
+            $stmt = $conn->prepare("INSERT IGNORE INTO tbl_attendance (empID, logTypeID, attendanceDate, attendanceTime, attendanceSource, lateMins, undertimeMins, shiftID) VALUES (?,?,?,?,?,?,?,?)");
             $stmt->bind_param(
-                'iisss', 
+                'iisssiii',
                 $emp['id'],
                 $logTypeID,
                 $date, 
                 $time, 
                 $attendanceSource,
                 $lateMins,
-                $undertimeMins
+                $undertimeMins,
+                $shiftID
             );
 
             $stmt->execute();
