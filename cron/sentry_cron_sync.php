@@ -35,6 +35,10 @@
         // $logs = json_decode($logsJson, true);
         if (!is_array($logs) || empty($logs)) continue;
 
+        // LATE AND UNDERTIME VARIABLES INITIALIZED
+        $lateMins = 0;
+        $undertimeMins = 0;
+
         // GET SHIFT SCHEDULE
         $shiftID = $emp['shiftID'];
         $startTime = "";
@@ -44,6 +48,9 @@
             $startTime = $shift['startTime'];
             $endTime = $shift['endTime'];
         }
+        $startTimeModified = strtotime($startTime);
+        $endTimeModified = strtotime($endTime);
+
         
         // LOOPING THROUGH LOGS
         foreach ($logs as $log) {
@@ -55,12 +62,19 @@
 
             $date = date("Y-m-d", strtotime(($log['logdate'])));
             $time = date("H:i:s", strtotime(($log['logtime'])));   
+            $timeModified = strtotime($time);
 
             // $logTypeID = $log['logtype'] == 0 ? 1 : 4;
             if ($log['logtype'] == 0) {
                 // Time In
                 if ($time > $shiftTimeIn) {
                     $logTypeID = 2; // Late
+                    $late = $timeModified - $startTimeModified;
+                    $lateMins = floor($late / 60); // Get late minutes
+
+                    if ($lateMins < 0) {
+                        $lateMins = 0; // Reset to 0 if negative
+                    }
                 } else {
                     $logTypeID = 1; // Time In
                 }
@@ -68,20 +82,28 @@
                 // Time Out
                 if ($time < $shiftTimeOut) {
                     $logTypeID = 3; // Undertime
+                    $undertime = $endTimeModified - $timeModified;
+                    $undertimeMins = floor($undertime / 60); // Get undertime minutes
+
+                    if ($undertimeMins < 0) {
+                        $undertimeMins = 0; // Reset to 0 if negative
+                    }
                 } else {
                     $logTypeID = 4; // Time Out
                 }
             }
 
             $attendanceSource = 'SENTRY';
-            $stmt = $conn->prepare("INSERT IGNORE INTO tbl_attendance (empID, logTypeID, attendanceDate, attendanceTime, attendanceSource) VALUES (?,?,?,?,?)");
+            $stmt = $conn->prepare("INSERT IGNORE INTO tbl_attendance (empID, logTypeID, attendanceDate, attendanceTime, attendanceSource, lateMins, undertimeMins) VALUES (?,?,?,?,?,?,?)");
             $stmt->bind_param(
                 'iisss', 
                 $emp['id'],
                 $logTypeID,
                 $date, 
                 $time, 
-                $attendanceSource
+                $attendanceSource,
+                $lateMins,
+                $undertimeMins
             );
 
             $stmt->execute();
