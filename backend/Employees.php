@@ -1690,7 +1690,21 @@
                 WHERE id = '$id'";
             return $resignEmployee;
         }
-        
+
+        public function resignEmployeeCashSalary($id) {
+            $resignEmployee = "
+                UPDATE ".$this->requirements." SET 
+                req_helloMoney = 0
+                WHERE empID = '$id'";    
+            return $resignEmployee;
+        }
+
+        public function addResignedEmployee($id, $resignationDate, $lastDayofWork) {
+            $addResignedEmployee = "
+                INSERT INTO ".$this->resignedEmployees." (empID, resignationDate, lastDayofWork, status)
+                VALUES ('$id', '$resignationDate', '$lastDayofWork', 'Hold Salary')";
+            return $addResignedEmployee;
+        }
 
         public function rehireEmployee($id) {
             $employee = "
