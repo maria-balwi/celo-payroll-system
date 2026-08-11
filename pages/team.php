@@ -13,12 +13,27 @@
             <div class="flex flex-1 p-2 text-2xl font-bold justify-between items-center">
                 <div>
                     My Team
-                </div>    
+                </div>
+
+                <div>
+                    <!-- EXPORT TEMPLATE BUTTON -->
+                    <div class="static inline-block text-right">
+                        <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-yellow-500 text-sm font-medium text-white hover:bg-yellow-800 focus:outline-none" data-bs-toggle="modal" data-bs-target="#uploadTeamScheduleModal">
+                            Export Template
+                        </button>
+                    </div>
+
+                    <!-- UPLOAD FILE BUTTON -->
+                    <div class="static inline-block text-right">
+                        <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none" data-bs-toggle="modal" data-bs-target="#uploadTeamScheduleModal">
+                            Upload Team Schedule
+                        </button>
+                    </div>
+                </div>
             </div>
             
             <!-- CONTENT -->
             <div class="p-4 m-1 bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
-                
                 <!-- DATATABLE -->
                 <div class="mx-auto overflow-auto">
                     <table id="teamTable" class="table min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3">
@@ -55,7 +70,6 @@
                                     }
                                     else {
                                         $teamQuery = mysqli_query($conn, $employees->viewOperationsTLTeam($_SESSION['teamID']));
-
                                         while ($teamDetails = mysqli_fetch_array($teamQuery)) {
                                             $team_id = $teamDetails['id'];
                                             $team_employeeName = $teamDetails['firstName'] . " " . $teamDetails['lastName'];
@@ -354,6 +368,47 @@
                     </div>
                 </div>
             </div>
+
+            <!--------------------------------------------------------------------------------------------------------------------------------------------->
+            <!-------------------------------------------------------- UPLOAD TEAM SCHEDULE SECTION ------------------------------------------------------->
+            <form id="uploadTeamScheduleForm" enctype="multipart/form-data">
+                <div class="modal fade" id="uploadTeamScheduleModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="teamScheduleFormLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-none modal-dialog-centered modal-scrollable">
+                        <div class="modal-content" id="uploadTeamScheduleModal">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="teamScheduleFormLabel">Upload Team Schedule</h1>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row g-2 mb-2">
+                                    <div class="col-12">
+                                        <label for="csvFile">CSV File:</label>
+                                        <input type="file" class="form-control" id="csvFile" name="csvFile" accept=".csv">
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <div class="col-12">
+                                        <label for="userPassword">Password:</label>
+                                        <input type="password" class="form-control" id="userPassword" name="userPassword">
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <div class="col-12">
+                                        <label for="userRetypePassword">Retype Password:</label>
+                                        <input type="password" class="form-control" id="userRetypePassword" name="userRetypePassword">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">Submit</button>
+                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </main>
     
         <script src="../assets/js/team.js?v=<?php echo $version; ?>"></script>
