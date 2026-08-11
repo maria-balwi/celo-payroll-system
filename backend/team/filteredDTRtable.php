@@ -54,9 +54,9 @@
                     echo "</tr>";
                 }
             }
-            else // GET TL 
+            else if ($_SESSION['designationID'] == 4) // GET TL 
             {
-                $operationsTeamQuery = mysqli_query($conn, $attendance->viewOperationsTeamTL());
+                $operationsTeamQuery = mysqli_query($conn, $attendance->viewOperationsTeamTL($_SESSION['teamID']));
                 while ($operationsTeamDetails = mysqli_fetch_array($operationsTeamQuery)) {
 
                     $teamOperations_id = $operationsTeamDetails['id'];
