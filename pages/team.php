@@ -386,16 +386,22 @@
                                     </div>
                                 </div>
 
+                                <div class="row g-2 mt-3">
+                                    <div class="col-6">
+                                        <h2 class="text-lg font-semibold">Password for Security</h2>
+                                    </div>
+                                </div>
+
                                 <div class="row g-2 mb-2">
                                     <div class="col-12">
-                                        <label for="userPassword">Password:</label>
+                                        <label for="userPassword">Enter Your Password:</label>
                                         <input type="password" class="form-control" id="userPassword" name="userPassword">
                                     </div>
                                 </div>
 
                                 <div class="row g-2 mb-2">
                                     <div class="col-12">
-                                        <label for="userRetypePassword">Retype Password:</label>
+                                        <label for="userRetypePassword">Retype Your Password:</label>
                                         <input type="password" class="form-control" id="userRetypePassword" name="userRetypePassword">
                                     </div>
                                 </div>
