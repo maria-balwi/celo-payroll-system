@@ -338,6 +338,91 @@ $(document).ready(function() {
         });
     }
 
+    // IMPORT TEAM SCHEDULE
+    $("#importTeamScheduleForm").on("submit", function (e) {
+        e.preventDefault();
+
+        var teamScheduleForm = new FormData(this);
+        var password = $("#password").val();
+        var retypePassword = $("#retypePassword").val();
+        var csvFile = $("#csvFile")[0].files[0];
+
+        if (password == "" || retypePassword == "") {
+            Swal.fire({
+                icon: 'warning', 
+                title: 'Required Information',
+                text: 'Please provide both password and retype password',
+            })
+        }
+        else if (password !== retypePassword) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Password Mismatch',
+                text: 'Passwords do not match',
+            })
+        }
+        else {
+            Swal.fire({
+                icon: 'question',
+                title: 'Import Team Schedule',
+                text: 'Are you sure you want to import this csv file?',
+                showCancelButton: true,
+                cancelButtonColor: '#6c757d',
+                confirmButtonColor: '#28a745',
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                teamScheduleForm.append("password", password);
+                teamScheduleForm.append("retypePassword", retypePassword);
+                teamScheduleForm.append("csvFile", csvFile);
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "../backend/team/processExcelUpload.php",
+                        method: "POST",
+                        data: teamScheduleForm,
+                        contentType: false,
+                        processData: false,
+                        dataType: "json",
+                        success: function (data) {
+                            var message = data.em;
+                            if (data.error == 0) {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Success",
+                                    text: message, 
+                                    timer: 2000, 
+                                    showConfirmButton: false,
+                                }).then(() => {
+                                    window.location.reload();
+                                })
+                            }
+                            else {
+                                let errorHtml = `<p>${data.em}</p>`;
+                                if (data.errorSummary && data.errorSummary.length > 0) {
+                                    errorHtml += `<div style="text-align:left; max-height:250px; overflow-y:auto;">`;
+                                    errorHtml += `<ul style="padding-left:18px;">`;
+                                    data.errorSummary.forEach(function (group) {
+                                        errorHtml += `<li><strong>${group.reason}</strong> — ${group.count} row(s): 
+                                                    <em>${group.rows.join(', ')}</em></li>`;
+                                    });
+                                    errorHtml += `</ul></div>`;
+                                }
+                                
+                                Swal.fire({
+                                    icon: "error",
+                                    title: data.status,
+                                    html: errorHtml,
+                                    confirmButtonText: "OK"
+                                }).then(() => {
+                                    window.location.reload();
+                                });
+                            }
+                        }
+                    })
+                }
+            })
+        }
+    });
+
     $("#btnClose").on("click", function () {
         window.location.reload();
     });

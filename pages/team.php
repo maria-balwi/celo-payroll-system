@@ -18,9 +18,9 @@
                 <div>
                     <!-- EXPORT TEMPLATE BUTTON -->
                     <div class="static inline-block text-right">
-                        <button class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-yellow-500 text-sm font-medium text-white hover:bg-yellow-800 focus:outline-none" data-bs-toggle="modal" data-bs-target="#uploadTeamScheduleModal">
+                        <a href="../backend/team/exportTeamCSV.php" class="no-underline inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-yellow-500 text-sm font-medium text-white hover:bg-yellow-800 focus:outline-none">
                             Export Template
-                        </button>
+                        </a>
                     </div>
 
                     <!-- UPLOAD FILE BUTTON -->
@@ -383,10 +383,11 @@
                                     <div class="col-12">
                                         <label for="csvFile">CSV File:</label>
                                         <input type="file" class="form-control" id="csvFile" name="csvFile" accept=".csv">
+                                        <label for="csvFile"><span class="text-primary">(Make sure the file is saved in CSV format and shift times are in 24-hour format)</span></label>
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mt-3">
+                                <div class="row g-2 mt-2">
                                     <div class="col-6">
                                         <h2 class="text-lg font-semibold">Password for Security</h2>
                                     </div>

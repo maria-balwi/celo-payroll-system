@@ -127,8 +127,11 @@
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->department." AS department
                 ON employees.departmentID = department.departmentID
+                INNER JOIN ".$this->shifts." AS shifts
+                ON employees.shiftID = shifts.shiftID
                 WHERE employees.departmentID = 4
-                AND employees.e_status = 'Active'";
+                AND employees.e_status = 'Active'
+                ORDER BY lastName";
             return $team;
         }
 
@@ -137,8 +140,11 @@
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->department." AS department
                 ON employees.departmentID = department.departmentID
+                INNER JOIN ".$this->shifts." AS shifts
+                ON employees.shiftID = shifts.shiftID
                 WHERE employees.departmentID = 1
-                AND employees.e_status = 'Active'";
+                AND employees.e_status = 'Active'
+                ORDER BY lastName";
             return $team;
         }
 
@@ -149,10 +155,13 @@
                 ON employees.departmentID = department.departmentID
                 INNER JOIN ".$this->operationsTeam." AS operationsTeam
                 ON employees.teamID = operationsTeam.operationsTeamID
+                INNER JOIN ".$this->shifts." AS shifts
+                ON employees.shiftID = shifts.shiftID
                 WHERE employees.departmentID = 1
                 AND designationID IN (1,2,3,14)
                 AND teamID  = '$teamID'
-                AND employees.e_status = 'Active'";
+                AND employees.e_status = 'Active'
+                ORDER BY lastName";
             return $team;
         }
 

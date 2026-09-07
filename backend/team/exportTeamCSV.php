@@ -15,23 +15,31 @@
         $teamQuery = mysqli_query($conn, $employees->viewTeamIT());
     }
 
+    // WIPE OUT ANY OUTPUT THAT LEAKED BEFORE THIS POINT
+    if (ob_get_length()) {
+        ob_end_clean();
+    }
+
     // CSV HEADERS
     header('Content-Type: text/csv; charset=utf-8');
     header('Content-Disposition: attachment; filename=team_export_' . date('Y-m-d') . '.csv');
+    header('Pragma: no-cache');
+    header('Expires: 0');
 
     $output = fopen('php://output', 'w');
 
     // HEADER ROW
-    fputcsv($output, ['Name', 'Email', 'Employee ID']);
-
+    fputcsv($output, ['Name', 'Email', 'Employee ID', 'Shift - In', 'Shift - Out']);
 
     // DATA ROWS
     while ($teamDetails = mysqli_fetch_array($teamQuery)) {
-        $name = $teamDetails['firstName'] . ' ' . $teamDetails['lastName'];
+        $name = $teamDetails['lastName'] . ', ' . $teamDetails['firstName'];
         fputcsv($output, [
             $name, 
-            $teamDetails['email'],, 
-            $teamDetails['employeeID']
+            $teamDetails['emailAddress'],
+            $teamDetails['employeeID'], 
+            $teamDetails['startTime'], 
+            $teamDetails['endTime']
         ]); 
     }
 
