@@ -1233,7 +1233,7 @@
             $getShift = "
             SELECT startTime, endTime 
             FROM ".$this->shifts."
-            WHERE shiftID = '$shiftID";
+            WHERE shiftID = '$shiftID'";
             return $getShift;
         }
     }

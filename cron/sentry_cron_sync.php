@@ -67,7 +67,7 @@
             // $logTypeID = $log['logtype'] == 0 ? 1 : 4;
             if ($log['logtype'] == 0) {
                 // Time In
-                if ($time > $shiftTimeIn) {
+                if ($time > $startTime) {
                     $logTypeID = 2; // Late
                     $late = $timeModified - $startTimeModified;
                     $lateMins = floor($late / 60); // Get late minutes
@@ -80,7 +80,7 @@
                 }
             } else {
                 // Time Out
-                if ($time < $shiftTimeOut) {
+                if ($time < $endTime) {
                     $logTypeID = 3; // Undertime
                     $undertime = $endTimeModified - $timeModified;
                     $undertimeMins = floor($undertime / 60); // Get undertime minutes
