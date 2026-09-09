@@ -337,6 +337,26 @@ $(document).ready(function () {
         }
     });
 
+
+    // ADD LAST DAY OF WORK BASED ON RESIGNATION DATE
+    $('#resignationDate').on('change', function() {
+        const resignationDate = $(this).val();
+        
+        if (resignationDate) {
+            const date = new Date(resignationDate);
+            date.setDate(date.getDate() + 30);
+            
+            // Format back to YYYY-MM-DD for the date input
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            
+            $('#lastDayofWork').val(`${year}-${month}-${day}`);
+        } else {
+            $('#lastDayofWork').val('');
+        }
+    });
+
     // ADD EMPLOYEE - UPLOAD PHOTO
     $("#photo").change(function () {
         const [file] = this.files;
@@ -1588,6 +1608,8 @@ $(document).ready(function () {
         var resignationStatus = $("#resignationStatus").val();
         var renderedDays = $("#renderedDays").val();
         var action = "resign";
+        var resignationDate = $("#resignationDate").val();
+        var lastDayofWork = $("#lastDayofWork").val();
         // var clearanceForm = $("#clearanceForm")[0].files[0];
         var withAttachment = $("#withAttachment").val();
         var withoutAttachment = $("#withoutAttachment").val();
@@ -1604,6 +1626,8 @@ $(document).ready(function () {
             resignEmployee.append("action", action);
             resignEmployee.append("resignationStatus", resignationStatus);
             resignEmployee.append("renderedDays", renderedDays);
+            resignEmployee.append("resignationDate", resignationDate);
+            resignEmployee.append("lastDayofWork", lastDayofWork);
             // resignEmployee.append("clearanceForm", clearanceForm);
             resignEmployee.append("withAttachment", withAttachment);
             resignEmployee.append("withoutAttachment", withoutAttachment);

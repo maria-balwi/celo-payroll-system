@@ -30,6 +30,7 @@
         private $updateEmpInfo = "tbl_updateempinfo";
         private $transition = "tbl_shiftadjustments";
         private $operationsTeam = "tbl_operationsteam";
+        private $resignedEmployees = "tbl_resignedemployees";
         public function __construct() {
             $this->dbConnect = $this->dbConnect();
         }
@@ -1708,7 +1709,7 @@
             return $resignEmployee;
         }
 
-        public function addResignedEmployee($id, $resignationDate, $lastDayofWork) {
+        public function addResignedEmployee($id, $resignationDate, $lastDayofWork, $payrollCycleID) {
             $addResignedEmployee = "
                 INSERT INTO ".$this->resignedEmployees." (empID, resignationDate, lastDayofWork, status)
                 VALUES ('$id', '$resignationDate', '$lastDayofWork', 'Hold Salary')";
@@ -2067,6 +2068,15 @@
                 lastUpdateDate = CURDATE()
                 WHERE empID = '$id'";
             return $updateEmpInfoSchedule;
+        }
+
+        public function getAllResignedEmployeesForThisCutOff($payrollCycleID) {
+            $resignedEmployees = "
+                SELECT * FROM ".$this->resignedEmployees." AS resignedEmployees
+                INNER JOIN ".$this->employees." AS employees
+                ON resignedEmployees.empID = employees.id
+                WHERE resignedEmployees.payrollCycleID = '$payrollCycleID'";
+            return $resignedEmployees;
         }
 
         // NEW CODE

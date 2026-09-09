@@ -2687,6 +2687,20 @@
                                     </div>
                                 </div>
 
+                                <div class="row g-2 mb-2">
+                                    <div class="col-12">
+                                        <label for="resignationDate">Resignation Date:</label>
+                                        <input type="date" class="form-control" id="resignationDate" name="resignationDate" required>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <div class="col-12">
+                                        <label for="lastDayofWork">Last Day of Work:</label>
+                                        <input type="date" class="form-control" id="lastDayofWork" name="lastDayofWork" disabled>
+                                    </div>
+                                </div>
+
                                 <!-- <div class="row g-2 mb-2">
                                     <div class="col-11">
                                         <label for="clearanceForm">Upload Clearance Form:</label>
