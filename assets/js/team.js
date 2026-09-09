@@ -62,7 +62,14 @@ $(document).ready(function() {
                     $("#viewEmailAddress").val(res.data.emailAddress);
                     $("#viewEmployeeID").val(res.data.employeeID);
                     $("#viewMobileNumber").val(res.data.mobileNumber);
-                    $("#viewDepartment").val(res.data.departmentName + " - " + res.data.teamName);
+
+                    if (res.data.departmentName == 'IT') {
+                        $("#viewDepartment").val(res.data.departmentName);
+                    }
+                    else {
+                        $("#viewDepartment").val(res.data.departmentName + " - " + res.data.teamName);
+                    }
+
                     $("#viewDesignation").val(res.data.position);
                     $("#viewShiftID").val(res.data.startTime + " - " + res.data.endTime);
 
@@ -291,7 +298,14 @@ $(document).ready(function() {
                     $("#viewEmailAddress").val(res.data.emailAddress);
                     $("#viewEmployeeID").val(res.data.employeeID);
                     $("#viewMobileNumber").val(res.data.mobileNumber);
-                    $("#viewDepartment").val(res.data.departmentName + " - " + res.data.teamName);
+
+                    if (res.data.departmentName == 'IT') {
+                        $("#viewDepartment").val(res.data.departmentName);
+                    }
+                    else {
+                        $("#viewDepartment").val(res.data.departmentName + " - " + res.data.teamName);
+                    }
+
                     $("#viewDesignation").val(res.data.position);
                     $("#viewShiftID").val(
                         res.data.startTime + " - " + res.data.endTime
@@ -339,12 +353,12 @@ $(document).ready(function() {
     }
 
     // IMPORT TEAM SCHEDULE
-    $("#importTeamScheduleForm").on("submit", function (e) {
+    $("#uploadTeamScheduleForm").submit(function (e) {
         e.preventDefault();
 
         var teamScheduleForm = new FormData(this);
-        var password = $("#password").val();
-        var retypePassword = $("#retypePassword").val();
+        var password = $("#userPassword").val();
+        var retypePassword = $("#userRetypePassword").val();
         var csvFile = $("#csvFile")[0].files[0];
 
         if (password == "" || retypePassword == "") {
@@ -352,14 +366,22 @@ $(document).ready(function() {
                 icon: 'warning', 
                 title: 'Required Information',
                 text: 'Please provide both password and retype password',
-            })
+            }).then(() => {
+                $("#userPassword").val("");
+                $("#userRetypePassword").val("");
+                $("#userPassword").focus();
+            });
         }
         else if (password !== retypePassword) {
             Swal.fire({
                 icon: 'warning',
                 title: 'Password Mismatch',
                 text: 'Passwords do not match',
-            })
+            }).then(() => {
+                $("#userPassword").val("");
+                $("#userRetypePassword").val("");
+                $("#userPassword").focus();
+            });
         }
         else {
             Swal.fire({
@@ -388,7 +410,7 @@ $(document).ready(function() {
                                 Swal.fire({
                                     icon: "success",
                                     title: "Success",
-                                    text: message, 
+                                    text: "Successfully imported the team schedule.", 
                                     timer: 2000, 
                                     showConfirmButton: false,
                                 }).then(() => {
@@ -407,13 +429,22 @@ $(document).ready(function() {
                                     errorHtml += `</ul></div>`;
                                 }
                                 
+                                // Swal.fire({
+                                //     icon: "error",
+                                //     title: data.status,
+                                //     html: errorHtml,
+                                //     confirmButtonText: "OK"
+                                // }).then(() => {
+                                //     window.location.reload();
+                                // });
                                 Swal.fire({
-                                    icon: "error",
-                                    title: data.status,
-                                    html: errorHtml,
-                                    confirmButtonText: "OK"
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: data.em,
                                 }).then(() => {
-                                    window.location.reload();
+                                    $("#userPassword").value("");
+                                    $("#userRetypePassword").value("");
+                                    $("#userPassword").focus();
                                 });
                             }
                         }

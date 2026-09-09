@@ -6,7 +6,9 @@
 
     $password = $_POST['password'];
     $retypePassword = $_POST['retypePassword'];
+    $userHashedPassword = $_POST['userHashedPassword'];
 
+    // CHECK FILE
     if(!isset($_FILES['csvFile'])) {
         echo json_encode([
             'error' => 1,
@@ -27,6 +29,17 @@
         exit;
     }
 
+    // SHFIT SCHEDULE MAPPING 
+    $shiftMap = [];
+
+    $shiftQuery = mysqli_query($conn, "SELECT * FROM tbl_shiftschedule");
+    while ($row = mysqli_fetch_array($shiftQuery)) {
+        $shiftMap[$row['shiftID']] = [
+            'startTime' => $row['startTime'],
+            'endTime' => $row['endTime']
+        ];
+    }
+
     // MAP CSV HEADERS AS FIELDS
     $columnMap = [
         'Name'           => 'name', 
@@ -40,7 +53,56 @@
     $errors = [];
     $totalRows = 0;
 
-    if (md5($retypePassword) == $SESSION['']) {
+    if (md5($password) == $userHashedPassword) {
+        if (($handle = fopen($file, 'r')) !== false) {
+            $header = fgetcsv($handle);
+            $mappedHeader = array_map(function($column) use ($columnMap) {
+                return $columnMap[$column] ?? null;
+            }, $header);
+
+            while (($row = fgetcsv($handle)) !== false) {
+                $totalRows++;
+                $data = array_combine($mappedHeader, $row);
+                if ($data) {
+                    // MAP SHIFT ID BASED ON START AND END TIME
+                    $shiftID = null;
+                    foreach ($shiftMap as $id => $shift) {
+                        if ($shift['startTime'] == $data['startTime'] && $shift['endTime'] == $data['endTime']) {
+                            $shiftID = $id;
+                            break;
+                        }
+                    }
+                    // INSERT STATEMENT
+                    $stmt = $conn->prepare("UPDATE tbl_employee SET shiftID = ? WHERE employeeID = ?");
+                    if ($stmt->execute([$shiftID, $data['employeeID']])) {
+                        $inserted++;
+                    } else {
+                        $errors[] = "Error updating row: " . implode(", ", $row);
+                    }
+                } else {
+                    $errors[] = "Error mapping row: " . implode(", ", $row);
+                }
+            }
+            fclose($handle);
+        } else {
+            echo json_encode([
+                'error' => 1,
+                'em' => 'Unable to open the file'
+            ]);
+            exit;
+        }
+
+        echo json_encode([
+            'error' => 0,
+            'inserted' => $inserted,
+            'totalRows' => $totalRows,
+            'errors' => $errors
+        ]);
+    } else {
+        echo json_encode([
+            'error' => 1,
+            'em' => 'Password incorrect. Please try again.'
+        ]);
         
     }
 

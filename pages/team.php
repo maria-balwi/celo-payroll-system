@@ -244,8 +244,9 @@
                     <div class="modal-dialog modal-none modal-dialog-centered">
                         <div class="modal-content" id="updateTeamModal">
                             <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="userFormLabel">Update Team</h1>
-                            <input type="hidden" id="updateID" name="updateID">
+                                <h1 class="modal-title fs-5" id="userFormLabel">Update Team</h1>
+                                <input type="hidden" id="updateID" name="updateID">
+                            </div>
                         </div>
                         <div class="modal-body">
                             <div class="row g-1 mb-2">
@@ -367,7 +368,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
 
             <!--------------------------------------------------------------------------------------------------------------------------------------------->
             <!-------------------------------------------------------- UPLOAD TEAM SCHEDULE SECTION ------------------------------------------------------->
@@ -377,6 +378,7 @@
                         <div class="modal-content" id="uploadTeamScheduleModal">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="teamScheduleFormLabel">Upload Team Schedule</h1>
+                                <input type="hidden" id="userHashedPassword" name="userHashedPassword" value="<?php echo $_SESSION['hashedPassword']; ?>">
                             </div>
                             <div class="modal-body">
                                 <div class="row g-2 mb-2">
@@ -410,7 +412,7 @@
 
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-success">Submit</button>
-                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#">Cancel</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnClose">Close</button>
                             </div>
                         </div>
                     </div>
