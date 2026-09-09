@@ -33,6 +33,7 @@
         private $disputeLeaves = 'tbl_disputeleaves';
         private $disputeOvertime = 'tbl_disputeovertime';
         private $batchUpload = 'tbl_batchuploadhistory';
+        private $schedUpload = 'tbl_scheduploadhistory';
 
         private $dbConnect = false;
         public function __construct() {
@@ -3490,12 +3491,27 @@
             return $logBatchUpload;
         }
 
+        public function logSchedUpload($fileName, $uploadedBy_empID, $approvedRows, $errors, $totalRows, $status) {
+            $logSchedUpload = "
+                INSERT INTO ".$this->schedUpload." (fileName, timeStamp, uploadedBy_empID, approvedRows, errors, totalRows, status)
+                VALUES ('$fileName', CURRENT_TIMESTAMP(), '$uploadedBy_empID', '$approvedRows', '$errors', '$totalRows', '$status')";
+            return $logSchedUpload;
+        }
+
         public function fetchAllBatchUploadHistory() {
             $fetchAllBatchUploadHistory = "
                 SELECT * FROM {$this->batchUpload} AS batchUpload
                 INNER JOIN {$this->employees} AS employees
                 ON batchUpload.uploadedBy_empID = employees.id";
             return $fetchAllBatchUploadHistory;
+        }
+
+        public function fetchAllSchedUploadHistory() {
+            $fetchAllSchedUploadHistory = "
+                SELECT * FROM {$this->schedUpload} AS schedUpload
+                INNER JOIN {$this->employees} AS employees
+                ON schedUpload.uploadedBy_empID = employees.id";
+            return $fetchAllSchedUploadHistory;
         }
     }
 ?>

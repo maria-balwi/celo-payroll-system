@@ -33,9 +33,182 @@
             </div>
             
             <!-- CONTENT -->
-            <div class="p-4 m-1 bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
+            <div class="bg-white border border-gray-200 rounded-md shadow dark:bg-gray-800 dark:border-gray-700">
+                <div class="card shadow-sm bInfo">
+                    <div class="card-header">
+                        <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <!--TEAM BUTTON-->
+                                <button class="nav-link active uncheck" id="pills-team-tab" data-bs-toggle="pill" data-bs-target="#pills-team" type="button" role="tab" aria-controls="pills-team" aria-selected="true">Team</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <!--BATCH UPLOAD HISTORY BUTTON-->
+                                <button class="nav-link uncheck" id="pills-history-tab" data-bs-toggle="pill" data-bs-target="#pills-history" type="button" role="tab" aria-controls="pills-history" aria-selected="false">Batch Upload History</button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="tab-content" id="pills-tabContent">
+
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <!-- -------------------------------------------- TEAM TAB ------------------------------------------- -->
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <div class="tab-pane fade show active" id="pills-team" role="tabpanel" aria-labelledby="pills-team-tab">
+                                <div class="card border-0">
+                                    <div class="tab-content" id="pills-tabContent">
+                                        <table id="teamTable" class="table table-striped table-bordered table-auto min-w-full divide-y divide-gray-200 text-center pt-3">
+                                            <thead class="bg-gray-50">
+                                                <tr>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="bg-white divide-y divide-gray-200">
+                                                <?php
+                                                    if ($_SESSION['departmentID'] == 1) 
+                                                    {
+                                                        if ($_SESSION['designationID'] == 5) { // MANAGER
+                                                            // OPERATIONS TEAM
+                                                            $teamQuery = mysqli_query($conn, $employees->viewTeamOperations());
+                                                            while ($teamDetails = mysqli_fetch_array($teamQuery)) {
+
+                                                                $team_id = $teamDetails['id'];
+                                                                $team_employeeName = $teamDetails['firstName'] . " " . $teamDetails['lastName'];
+                                                                $team_emailAddress = $teamDetails['emailAddress'];
+                                                                $team_mobileNumber = $teamDetails['mobileNumber'];
+                                                                $team_department = $teamDetails['departmentName'];
+
+                                                                echo "<tr data-id='" . $team_id . "' class='teamView cursor-pointer'>";
+                                                                echo "<td class = ' whitespace-nowrap'>" . $team_employeeName . "</td>";
+                                                                echo "<td class = ' whitespace-nowrap'>" . $team_emailAddress . "</td>";
+                                                                echo "<td class = ' whitespace-nowrap'>" . $team_mobileNumber . "</td>";
+                                                                echo "<td class = ' whitespace-nowrap'>" . $team_department . "</td>";
+                                                                echo "</tr>";
+                                                            }
+                                                        }
+                                                        else {
+                                                            $teamQuery = mysqli_query($conn, $employees->viewOperationsTLTeam($_SESSION['teamID']));
+                                                            while ($teamDetails = mysqli_fetch_array($teamQuery)) {
+                                                                $team_id = $teamDetails['id'];
+                                                                $team_employeeName = $teamDetails['firstName'] . " " . $teamDetails['lastName'];
+                                                                $team_emailAddress = $teamDetails['emailAddress'];
+                                                                $team_mobileNumber = $teamDetails['mobileNumber'];
+                                                                $team_department = $teamDetails['departmentName'];
+
+
+                                                                echo "<tr data-id='" . $team_id . "' class='teamView cursor-pointer'>";
+                                                                echo "<td class = ' whitespace-nowrap'>" . $team_employeeName . "</td>";
+                                                                echo "<td class = ' whitespace-nowrap'>" . $team_emailAddress . "</td>";
+                                                                echo "<td class = ' whitespace-nowrap'>" . $team_mobileNumber . "</td>";
+                                                                echo "<td class = ' whitespace-nowrap'>" . $team_department . "</td>";
+                                                                echo "</tr>";
+                                                            }
+                                                        }
+                                                    }
+                                                    else 
+                                                    {
+                                                        // IT TEAM
+                                                        $teamQuery = mysqli_query($conn, $employees->viewTeamIT());
+                                                        while ($teamDetails = mysqli_fetch_array($teamQuery)) {
+
+                                                            $team_id = $teamDetails['id'];
+                                                            $team_employeeName = $teamDetails['firstName'] . " " . $teamDetails['lastName'];
+                                                            $team_emailAddress = $teamDetails['emailAddress'];
+                                                            $team_mobileNumber = $teamDetails['mobileNumber'];
+                                                            $team_department = $teamDetails['departmentName'];
+
+
+                                                            echo "<tr data-id='" . $team_id . "' class='teamView cursor-pointer'>";
+                                                            echo "<td class = ' whitespace-nowrap'>" . $team_employeeName . "</td>";
+                                                            echo "<td class = ' whitespace-nowrap'>" . $team_emailAddress . "</td>";
+                                                            echo "<td class = ' whitespace-nowrap'>" . $team_mobileNumber . "</td>";
+                                                            echo "<td class = ' whitespace-nowrap'>" . $team_department . "</td>";
+                                                            echo "</tr>";
+                                                        }
+                                                    }
+                                                ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <!-- -------------------------------------- BATCH UPLOAD HISTORY TAB --------------------------------- -->
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <div class="tab-pane fade" id="pills-history" role="tabpanel" aria-labelledby="pills-history-tab">
+                                <div class="card border-0">
+                                    <div class="tab-content" id="pills-tabContent">
+                                        <table id="batchUploadHistory" class="table table-striped table-bordered table-auto min-w-full divide-y divide-gray-200 text-center pt-3">
+                                            <thead class="bg-gray-50">
+                                                <tr>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Batch ID</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">File Name</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Uploaded On</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Uploaded By</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Approved</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Errors</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Total</th>
+                                                    <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider align-middle whitespace-nowrap">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="bg-white divide-y divide-gray-200">
+                                                <?php
+                                                    function formatTimestamp($date) {
+                                                        $dateTime = DateTime::createFromFormat('Y-m-d H:i:s', $date);
+
+                                                        if (!$dateTime) {
+                                                            return $date;
+                                                        }
+
+                                                        return $dateTime->format('M d, Y H:i:s');
+                                                    }
+
+                                                    $batchUplaodQuery = mysqli_query($conn, $payroll->fetchAllSchedUploadHistory());
+                                                    while ($batchUploadDetails = mysqli_fetch_array($batchUplaodQuery)) {
+                                                        $batchID = $batchUploadDetails['batchID'];
+                                                        $fileName = $batchUploadDetails['fileName'];
+                                                        $timeStamp = $batchUploadDetails['timeStamp'];
+                                                        $uploadedBy_empID = $batchUploadDetails['firstName'] . ' ' . $batchUploadDetails['lastName'];
+                                                        $approvedRows = $batchUploadDetails['approvedRows'];
+                                                        $errors = $batchUploadDetails['errors'];
+                                                        $totalRows = $batchUploadDetails['totalRows'];
+                                                        $status = $batchUploadDetails['status'];
+
+                                                        echo "<tr>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $batchID . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $fileName . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . formatTimestamp($timeStamp). "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $uploadedBy_empID . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $approvedRows . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $errors . "</td>";
+                                                        echo "<td class ='whitespace-nowrap'>" . $totalRows . "</td>";
+                                                        if ($status == "Completed with errors") {
+                                                            echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $status . "</p></td>";
+                                                        }
+                                                        else if ($status == "Completed") {
+                                                            echo "<td><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $status . "</p></td>";
+                                                        }
+                                                        else if ($status == "Failed") {
+                                                            echo "<td><p class='inline-block bg-red-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $status . "</p></td>";
+                                                        }
+                                                        echo "</tr>";
+                                                    }
+                                                ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- DATATABLE -->
-                <div class="mx-auto overflow-auto">
+                <!-- <div class="mx-auto overflow-auto">
                     <table id="teamTable" class="table min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3">
                         <thead class="bg-gray-50">
                             <tr>
@@ -111,7 +284,7 @@
                             ?>
                         </tbody>
                     </table>
-                </div>
+                </div> -->
             </div>
             
             <!-- ======================================================================================================================================= -->

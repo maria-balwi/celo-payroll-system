@@ -79,11 +79,27 @@
                     } else {
                         $errors[] = "Error updating row: " . implode(", ", $row);
                     }
+
                 } else {
                     $errors[] = "Error mapping row: " . implode(", ", $row);
                 }
             }
             fclose($handle);
+
+            // DETERMINE BATCH UPLOAD STATUS
+            $errorCount = count($errors);
+            if ($errorCount == 0) {
+                $batchUploadStatus = 'Completed';
+            }
+            else if ($inserted > 0) {
+                $batchUploadStatus = 'Completed with errors';
+            }
+            else {
+                $batchUploadStatus = 'Failed';
+            }
+
+            // LOG BATCH UPLOAD
+            mysqli_query($conn, $payroll->logSchedUpload($fileName, $_SESSION['id'], $inserted, $errorCount, $totalRows, $batchUploadStatus));
         } else {
             echo json_encode([
                 'error' => 1,
@@ -94,7 +110,7 @@
 
         echo json_encode([
             'error' => 0,
-            'inserted' => $inserted,
+            'em' => "Inserted $inserted out of $totalRows rows.",
             'totalRows' => $totalRows,
             'errors' => $errors
         ]);

@@ -2,6 +2,9 @@ $(document).ready(function() {
     $("#teamTable").DataTable({
         order: [], // Disable default sorting
     });
+    $("#batchUploadHistory").DataTable({
+        order: [], // Disable default sorting
+    });
 
     $("#dropdownButton").on("click", function () {
         $("#dropdownMenu").toggleClass("hidden");
