@@ -244,6 +244,7 @@
         </div>
 
         <script src="../assets/js/user_dashboard.js?v=<?php echo $version; ?>"></script>
+        <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
     
         <!-- FOOTER -->
         <?php include('../includes/footer.php'); ?>
