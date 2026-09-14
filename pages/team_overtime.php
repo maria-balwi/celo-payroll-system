@@ -102,7 +102,7 @@
                                         }
                                     }
                                     else if ($_SESSION['designationID'] == 4) {
-                                        $filedOTquery = mysqli_query($conn, $employees->viewTeamOperationsFiledOTTL());
+                                        $filedOTquery = mysqli_query($conn, $employees->viewTeamOperationsFiledOTTL($_SESSION['teamID']));
                                         while ($otDetails = mysqli_fetch_array($filedOTquery)) {
 
                                             $OT_id = $otDetails['requestID'];

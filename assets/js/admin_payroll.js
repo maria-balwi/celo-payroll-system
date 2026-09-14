@@ -340,6 +340,10 @@ $(document).ready(function() {
         XLSX.writeFile(workbook, "payroll.xlsx");
     });
 
+    $(".exportResignedEmployees").click(function () {
+        let payrollCycleID = $(this).data('cycle');
+        window.location.href = "../backend/admin/exportResignedEmployees.php?payrollCycleID=" + payrollCycleID;
+    });
 
     $('#btnBack').click(function(e) {
         e.preventDefault();

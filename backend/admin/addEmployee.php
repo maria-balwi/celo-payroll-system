@@ -22,9 +22,21 @@
     $shiftID = $_POST['shiftID'];
     $employmentStatus = $_POST['employmentStatus'];
     $dateHired = $_POST['dateHired'];
-    $basicPay = $_POST['basicPay'];
-    $dailyRate = $_POST['dailyRate'];
-    $hourlyRate = $_POST['hourlyRate'];
+    if (isset($_POST['basicPay'])) {
+        $basicPay = $_POST['basicPay'] == '' ? 0.0 : $_POST['basicPay'];
+    }
+    if (isset($_POST['dailyRate'])) {
+        $dailyRate = $_POST['dailyRate'] == '' ? 0.0 : $_POST['dailyRate'];
+    }
+    if (isset($_POST['hourlyRate'])) {
+        $hourlyRate = $_POST['hourlyRate'] == '' ? 0.0 : $_POST['hourlyRate'];
+    }
+    if (isset($_POST['teamID'])) {
+        $teamID = $_POST['teamID'];
+    }
+    else {
+        $teamID = NULL;
+    }
     $vacationLeaves = $_POST['vacationLeaves'];
     $sickLeaves = $_POST['sickLeaves'];
 
@@ -222,12 +234,12 @@
             $dateRegularized = new DateTime($dateHired);
             $dateRegularized->modify('+6 months');
             $dateRegularized = $dateRegularized->format('Y-m-d');
-            mysqli_query($conn, $employees->addNewEmployee_reg($lastName, $firstName, $gender, $civilStatus, $address, $dateOfBirth, $placeOfBirth, $sss, $pagIbig, $philhealth, $tin, $emailAddress, $employeeID, $mobileNumber, $departmentID, $designationID, $shiftID, $basicPay, $dailyRate, $hourlyRate, $vacationLeaves, $sickLeaves, $employmentStatus, $dateHired, $dateRegularized));
+            mysqli_query($conn, $employees->addNewEmployee_reg($lastName, $firstName, $gender, $civilStatus, $address, $dateOfBirth, $placeOfBirth, $sss, $pagIbig, $philhealth, $tin, $emailAddress, $employeeID, $mobileNumber, $departmentID, $designationID, $shiftID, $teamID, $basicPay, $dailyRate, $hourlyRate, $vacationLeaves, $sickLeaves, $employmentStatus, $dateHired, $dateRegularized));
         }
         else 
         {
             // ADD PROBATIONARY EMPLOYEE
-            mysqli_query($conn, $employees->addNewEmployee_prob($lastName, $firstName, $gender, $civilStatus, $address, $dateOfBirth, $placeOfBirth, $sss, $pagIbig, $philhealth, $tin, $emailAddress, $employeeID, $mobileNumber, $departmentID, $designationID, $shiftID, $basicPay, $dailyRate, $hourlyRate, $vacationLeaves, $sickLeaves, $employmentStatus, $dateHired));
+            mysqli_query($conn, $employees->addNewEmployee_prob($lastName, $firstName, $gender, $civilStatus, $address, $dateOfBirth, $placeOfBirth, $sss, $pagIbig, $philhealth, $tin, $emailAddress, $employeeID, $mobileNumber, $departmentID, $designationID, $shiftID, $teamID, $basicPay, $dailyRate, $hourlyRate, $vacationLeaves, $sickLeaves, $employmentStatus, $dateHired));
         }
 
         $lastIDQuery = mysqli_query($conn, $employees->viewLastEmployee());

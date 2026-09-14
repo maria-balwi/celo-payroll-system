@@ -142,7 +142,7 @@
                                     }
                                 }
                                 else if ($_SESSION['designationID'] == 4) {
-                                    $operationsTeamQuery = mysqli_query($conn, $attendance->viewOperationsTeamTL());
+                                    $operationsTeamQuery = mysqli_query($conn, $attendance->viewOperationsTeamTL($_SESSION['teamID']));
                                     while ($operationsTeamDetails = mysqli_fetch_array($operationsTeamQuery)) {
 
                                         $teamOperations_id = $operationsTeamDetails['id'];

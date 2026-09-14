@@ -33,6 +33,7 @@
         private $disputeLeaves = 'tbl_disputeleaves';
         private $disputeOvertime = 'tbl_disputeovertime';
         private $batchUpload = 'tbl_batchuploadhistory';
+        private $schedUpload = 'tbl_scheduploadhistory';
 
         private $dbConnect = false;
         public function __construct() {
@@ -519,7 +520,9 @@
                 ON dispute.attendanceID = disputeAttendance.attendanceID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeAttendance.empID = employee.id
-                WHERE dispute.status = 'Pending'";
+                WHERE dispute.status = 'Pending'
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $attendanceDisputes;
         }
 
@@ -535,7 +538,8 @@
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeAttendance.empID = employee.id
                 WHERE dispute.status = 'Pending' AND
-                empID = '$id'";
+                empID = '$id'
+                ORDER BY dateFiled DESC";
             return $attendanceDisputes;
         }
 
@@ -550,12 +554,14 @@
                 ON dispute.attendanceID = disputeAttendance.attendanceID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeAttendance.empID = employee.id
-                WHERE dispute.status = 'Pending' AND
-                employee.designationID IN (1,2,3,4,11,14)";
+                WHERE dispute.status = 'Pending' 
+                AND employee.designationID IN (1,2,3,4,11,14)
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $attendanceDisputes;
         }
 
-        public function pendingDisputesAttendanceOpsTL() {
+        public function pendingDisputesAttendanceOpsTL($teamID) {
             $attendanceDisputes = "
                 SELECT disputeID, employeeID, firstName, lastName,
                 attendanceDate_timeIn, attendanceTime_timeIn,
@@ -566,8 +572,12 @@
                 ON dispute.attendanceID = disputeAttendance.attendanceID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeAttendance.empID = employee.id
-                WHERE dispute.status = 'Pending' AND
-                employee.departmentID = 1 AND employee.designationID IN (1,2,3,14)";
+                WHERE dispute.status = 'Pending' 
+                AND employee.departmentID = 1 
+                AND employee.designationID IN (1,2,3,14)
+                AND teamID = '$teamID'
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $attendanceDisputes;
         }
 
@@ -583,7 +593,10 @@
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeAttendance.empID = employee.id
                 WHERE dispute.status = 'Pending' AND
-                employee.departmentID = 4 AND employee.designationID IN (10, 13, 19)";
+                employee.departmentID = 4 
+                AND employee.designationID IN (10, 13, 19)
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $attendanceDisputes;
         }
 
@@ -598,7 +611,9 @@
                 ON dispute.attendanceID = disputeAttendance.attendanceID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeAttendance.empID = employee.id
-                WHERE dispute.status = 'Approved'";
+                WHERE dispute.status = 'Approved'
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $attendanceDisputes;
         }
 
@@ -614,7 +629,8 @@
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeAttendance.empID = employee.id
                 WHERE dispute.status = 'Approved' AND
-                empID = '$id'";
+                empID = '$id'
+                ORDER BY dateFiled DESC";
             return $attendanceDisputes;
         }
 
@@ -629,8 +645,10 @@
                 ON dispute.attendanceID = disputeAttendance.attendanceID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeAttendance.empID = employee.id
-                WHERE dispute.status = 'Approved' AND 
-                employee.designationID IN (1,2,3,4,11,14)";
+                WHERE dispute.status = 'Approved' 
+                AND employee.designationID IN (1,2,3,4,11,14)
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $attendanceDisputes;
         }
 
@@ -645,8 +663,11 @@
                 ON dispute.attendanceID = disputeAttendance.attendanceID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeAttendance.empID = employee.id
-                WHERE dispute.status = 'Approved' AND 
-                employee.departmentID = 1 AND employee.designationID IN (1,2,3,14)";
+                WHERE dispute.status = 'Approved' 
+                AND employee.departmentID = 1 
+                AND employee.designationID IN (1,2,3,14)
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $attendanceDisputes;
         }
 
@@ -661,8 +682,11 @@
                 ON dispute.attendanceID = disputeAttendance.attendanceID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeAttendance.empID = employee.id
-                WHERE dispute.status = 'Approved' AND 
-                employee.departmentID = 4 AND employee.designationID IN (10, 13, 19)";
+                WHERE dispute.status = 'Approved' 
+                AND employee.departmentID = 4 
+                AND employee.designationID IN (10, 13, 19)
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $attendanceDisputes;
         }
 
@@ -677,7 +701,9 @@
                 ON dispute.attendanceID = disputeAttendance.attendanceID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeAttendance.empID = employee.id
-                WHERE dispute.status = 'Disapproved'";
+                WHERE dispute.status = 'Disapproved'
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $attendanceDisputes;
         }
 
@@ -693,7 +719,8 @@
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeAttendance.empID = employee.id
                 WHERE dispute.status = 'Disapproved' AND
-                empID = '$id'";
+                empID = '$id'
+                ORDER BY dateFiled DESC";
             return $attendanceDisputes;
         }
 
@@ -708,8 +735,10 @@
                 ON dispute.attendanceID = disputeAttendance.attendanceID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeAttendance.empID = employee.id
-                WHERE dispute.status = 'Disapproved' AND
-                employee.designationID IN (1,2,3,4,11,14)";
+                WHERE dispute.status = 'Disapproved' 
+                AND employee.designationID IN (1,2,3,4,11,14)
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $attendanceDisputes;
         }
 
@@ -724,8 +753,11 @@
                 ON dispute.attendanceID = disputeAttendance.attendanceID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeAttendance.empID = employee.id
-                WHERE dispute.status = 'Disapproved' AND
-                employee.departmentID = 1 AND employee.designationID IN (1,2,3,14)";
+                WHERE dispute.status = 'Disapproved' 
+                AND employee.departmentID = 1 
+                AND employee.designationID IN (1,2,3,14)
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $attendanceDisputes;
         }
 
@@ -740,8 +772,11 @@
                 ON dispute.attendanceID = disputeAttendance.attendanceID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeAttendance.empID = employee.id
-                WHERE dispute.status = 'Disapproved' AND
-                employee.departmentID = 4 AND employee.designationID IN (10, 13, 19)";
+                WHERE dispute.status = 'Disapproved' 
+                AND employee.departmentID = 4 
+                AND employee.designationID IN (10, 13, 19)
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $attendanceDisputes;
         }
 
@@ -756,7 +791,9 @@
                 ON disputeLeaves.leaveTypeID = leaves.leaveTypeID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeLeaves.empID = employee.id
-                WHERE dispute.status = 'Pending'";
+                WHERE dispute.status = 'Pending'
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $leavesDisputes;
         }
 
@@ -772,7 +809,8 @@
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeLeaves.empID = employee.id
                 WHERE dispute.status = 'Pending' AND
-                empID = '$id'";
+                empID = '$id'
+                ORDER BY dateFiled DESC";
             return $leavesDisputes;
         }
 
@@ -787,8 +825,10 @@
                 ON disputeLeaves.leaveTypeID = leaves.leaveTypeID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeLeaves.empID = employee.id
-                WHERE dispute.status = 'Pending' AND
-                employee.designationID IN (1,2,3,4,11,14)";
+                WHERE dispute.status = 'Pending' 
+                AND employee.designationID IN (1,2,3,4,11,14)
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $leavesDisputes;
         }
 
@@ -803,8 +843,11 @@
                 ON disputeLeaves.leaveTypeID = leaves.leaveTypeID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeLeaves.empID = employee.id
-                WHERE dispute.status = 'Pending' AND 
-                employee.departmentID = 1 AND employee.designationID IN (1,2,3,14)";
+                WHERE dispute.status = 'Pending' 
+                AND employee.departmentID = 1 
+                AND employee.designationID IN (1,2,3,14)
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $leavesDisputes;
         }
 
@@ -819,8 +862,11 @@
                 ON disputeLeaves.leaveTypeID = leaves.leaveTypeID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeLeaves.empID = employee.id
-                WHERE dispute.status = 'Pending' AND 
-                employee.departmentID = 4 AND employee.designationID IN (10, 13, 19)";
+                WHERE dispute.status = 'Pending' 
+                AND employee.departmentID = 4 
+                AND employee.designationID IN (10, 13, 19)
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $leavesDisputes;
         }
 
@@ -835,7 +881,9 @@
                 ON disputeLeaves.leaveTypeID = leaves.leaveTypeID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeLeaves.empID = employee.id
-                WHERE dispute.status = 'Approved'";
+                WHERE dispute.status = 'Approved'
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $pendingDisputes;
         }
 
@@ -851,7 +899,8 @@
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeLeaves.empID = employee.id
                 WHERE dispute.status = 'Approved' AND
-                empID = '$id'";
+                empID = '$id'
+                ORDER BY dateFiled DESC";
             return $pendingDisputes;
         }
 
@@ -866,8 +915,10 @@
                 ON disputeLeaves.leaveTypeID = leaves.leaveTypeID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeLeaves.empID = employee.id
-                WHERE dispute.status = 'Approved' AND
-                employee.designationID IN (1,2,3,4,11,14)";
+                WHERE dispute.status = 'Approved' 
+                AND employee.designationID IN (1,2,3,4,11,14)
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $pendingDisputes;
         }
 
@@ -882,8 +933,11 @@
                 ON disputeLeaves.leaveTypeID = leaves.leaveTypeID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeLeaves.empID = employee.id
-                WHERE dispute.status = 'Approved' AND 
-                employee.departmentID = 1 AND employee.designationID IN (1,2,3,14)";
+                WHERE dispute.status = 'Approved' 
+                AND employee.departmentID = 1 
+                AND employee.designationID IN (1,2,3,14)
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $pendingDisputes;
         }
 
@@ -898,8 +952,11 @@
                 ON disputeLeaves.leaveTypeID = leaves.leaveTypeID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeLeaves.empID = employee.id
-                WHERE dispute.status = 'Approved' AND 
-                employee.departmentID = 4 AND employee.designationID IN (10, 13, 19)";
+                WHERE dispute.status = 'Approved' 
+                AND employee.departmentID = 4 
+                AND employee.designationID IN (10, 13, 19)
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $pendingDisputes;
         }
 
@@ -914,7 +971,9 @@
                 ON disputeLeaves.leaveTypeID = leaves.leaveTypeID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeLeaves.empID = employee.id
-                WHERE dispute.status = 'Disapproved'";
+                WHERE dispute.status = 'Disapproved'
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $pendingDisputes;
         }
 
@@ -930,7 +989,8 @@
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeLeaves.empID = employee.id
                 WHERE dispute.status = 'Disapproved' AND
-                empID = '$id'";
+                empID = '$id'
+                ORDER BY dateFiled DESC";
             return $pendingDisputes;
         }
 
@@ -945,8 +1005,10 @@
                 ON disputeLeaves.leaveTypeID = leaves.leaveTypeID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeLeaves.empID = employee.id
-                WHERE dispute.status = 'Disapproved' AND
-                employee.designationID IN (1,2,3,4,11,14)";
+                WHERE dispute.status = 'Disapproved' 
+                AND employee.designationID IN (1,2,3,4,11,14)
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $pendingDisputes;
         }
 
@@ -961,8 +1023,11 @@
                 ON disputeLeaves.leaveTypeID = leaves.leaveTypeID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeLeaves.empID = employee.id
-                WHERE dispute.status = 'Disapproved' AND 
-                employee.departmentID = 1 AND employee.designationID IN (1,2,3,14)";
+                WHERE dispute.status = 'Disapproved' 
+                AND employee.departmentID = 1 
+                AND employee.designationID IN (1,2,3,14)
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $pendingDisputes;
         }
 
@@ -977,8 +1042,11 @@
                 ON disputeLeaves.leaveTypeID = leaves.leaveTypeID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeLeaves.empID = employee.id
-                WHERE dispute.status = 'Disapproved' AND 
-                employee.departmentID = 4 AND employee.designationID IN (10, 13, 19)";
+                WHERE dispute.status = 'Disapproved' 
+                AND employee.departmentID = 4 
+                AND employee.designationID IN (10, 13, 19)
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $pendingDisputes;
         }
 
@@ -991,7 +1059,9 @@
                 ON dispute.overtimeID = disputeOvertime.overtimeID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeOvertime.empID = employee.id
-                WHERE dispute.status = 'Pending'";
+                WHERE dispute.status = 'Pending'
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $overtimeDisputes;
         }
 
@@ -1005,7 +1075,8 @@
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeOvertime.empID = employee.id
                 WHERE dispute.status = 'Pending' AND
-                empID = '$id'";
+                empID = '$id'
+                ORDER BY dateFiled DESC";
             return $overtimeDisputes;
         }
 
@@ -1018,8 +1089,10 @@
                 ON dispute.overtimeID = disputeOvertime.overtimeID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeOvertime.empID = employee.id
-                WHERE dispute.status = 'Pending' AND 
-                employee.designationID IN (1,2,3,4,11,14)";
+                WHERE dispute.status = 'Pending' 
+                AND employee.designationID IN (1,2,3,4,11,14)
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $overtimeDisputes;
         }
 
@@ -1032,8 +1105,11 @@
                 ON dispute.overtimeID = disputeOvertime.overtimeID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeOvertime.empID = employee.id
-                WHERE dispute.status = 'Pending' AND 
-                employee.departmentID = 1 AND employee.designationID IN (1,2,3,14)";
+                WHERE dispute.status = 'Pending' 
+                AND employee.departmentID = 1 
+                AND employee.designationID IN (1,2,3,14)
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $overtimeDisputes;
         }
 
@@ -1046,8 +1122,11 @@
                 ON dispute.overtimeID = disputeOvertime.overtimeID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeOvertime.empID = employee.id
-                WHERE dispute.status = 'Pending' AND 
-                employee.departmentID = 4 AND employee.designationID IN (10, 13, 19)";
+                WHERE dispute.status = 'Pending' 
+                AND employee.departmentID = 4 
+                AND employee.designationID IN (10, 13, 19)
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $overtimeDisputes;
         }
 
@@ -1060,7 +1139,9 @@
                 ON dispute.overtimeID = disputeOvertime.overtimeID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeOvertime.empID = employee.id
-                WHERE dispute.status = 'Approved'";
+                WHERE dispute.status = 'Approved'
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $overtimeDisputes;
         }
 
@@ -1074,7 +1155,8 @@
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeOvertime.empID = employee.id
                 WHERE dispute.status = 'Approved' AND
-                empID = '$id'";
+                empID = '$id'
+                ORDER BY dateFiled DESC";
             return $overtimeDisputes;
         }
 
@@ -1087,8 +1169,10 @@
                 ON dispute.overtimeID = disputeOvertime.overtimeID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeOvertime.empID = employee.id
-                WHERE dispute.status = 'Approved' AND 
-                employee.designationID IN (1,2,3,4,11,14)";
+                WHERE dispute.status = 'Approved' 
+                AND employee.designationID IN (1,2,3,4,11,14)
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $overtimeDisputes;
         }
 
@@ -1101,8 +1185,11 @@
                 ON dispute.overtimeID = disputeOvertime.overtimeID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeOvertime.empID = employee.id
-                WHERE dispute.status = 'Approved' AND 
-                employee.departmentID = 1 AND employee.designationID IN (1,2,3,14)";
+                WHERE dispute.status = 'Approved' 
+                AND employee.departmentID = 1 
+                AND employee.designationID IN (1,2,3,14)
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $overtimeDisputes;
         }
 
@@ -1115,8 +1202,11 @@
                 ON dispute.overtimeID = disputeOvertime.overtimeID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeOvertime.empID = employee.id
-                WHERE dispute.status = 'Approved' AND 
-                employee.departmentID = 4 AND employee.designationID IN (10, 13, 19)";
+                WHERE dispute.status = 'Approved' 
+                AND employee.departmentID = 4 
+                AND employee.designationID IN (10, 13, 19)
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $overtimeDisputes;
         }
 
@@ -1129,7 +1219,9 @@
                 ON dispute.overtimeID = disputeOvertime.overtimeID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeOvertime.empID = employee.id
-                WHERE dispute.status = 'Disapproved'";
+                WHERE dispute.status = 'Disapproved'
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $overtimeDisputes;
         }
 
@@ -1143,7 +1235,8 @@
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeOvertime.empID = employee.id
                 WHERE dispute.status = 'Disapproved' AND
-                empID = '$id'";
+                empID = '$id'
+                ORDER BY dateFiled DESC";
             return $overtimeDisputes;
         }
 
@@ -1156,8 +1249,10 @@
                 ON dispute.overtimeID = disputeOvertime.overtimeID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeOvertime.empID = employee.id
-                WHERE dispute.status = 'Disapproved' AND
-                employee.designationID IN (1,2,3,4,11,14)";
+                WHERE dispute.status = 'Disapproved' 
+                AND employee.designationID IN (1,2,3,4,11,14)
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $overtimeDisputes;
         }
 
@@ -1170,8 +1265,11 @@
                 ON dispute.overtimeID = disputeOvertime.overtimeID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeOvertime.empID = employee.id
-                WHERE dispute.status = 'Disapproved' AND 
-                employee.departmentID = 1 AND employee.designationID IN (1,2,3,14)";
+                WHERE dispute.status = 'Disapproved' 
+                AND employee.departmentID = 1 
+                AND employee.designationID IN (1,2,3,14)
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $overtimeDisputes;
         }
 
@@ -1184,8 +1282,11 @@
                 ON dispute.overtimeID = disputeOvertime.overtimeID
                 INNER JOIN ".$this->employees." AS employee
                 ON disputeOvertime.empID = employee.id
-                WHERE dispute.status = 'Disapproved' AND 
-                employee.departmentID = 4 AND employee.designationID IN (10, 13, 19)";
+                WHERE dispute.status = 'Disapproved' 
+                AND employee.departmentID = 4 
+                AND employee.designationID IN (10, 13, 19)
+                AND e_status = 'Active'
+                ORDER BY dateFiled DESC";
             return $overtimeDisputes;
         }
 
@@ -1424,7 +1525,7 @@
             return $viewPayrollCycle;
         }
 
-        public function calculateNightDifferential($attendanceDateTime, $logTypeID, $lateMins, $payrollCycleFrom, $payrollCycleTo, $attendanceDate, $empID) {
+        public function calculateNightDifferential($attendanceDateTime, $logTypeID, $lateMins, $payrollCycleFrom, $payrollCycleTo, $attendanceDate, $empID, $shiftID) {
             static $timeIn = null;
             static $date_in = null;
             static $static_lateMins = null;
@@ -1468,6 +1569,7 @@
                         $payrollCycleTo,
                         $date_in,
                         $empID,
+                        $shiftID,
                         $totalRegularNightHours,
                         $totalRegularHolidayHours,
                         $totalRegularHolidayNightHours,
@@ -1492,7 +1594,7 @@
             ];
         }
 
-        private function calculateSegmentHours($payrollCycleFrom, $payrollCycleTo, $attendanceDate, $empID, &$totalRegularNightHours, &$totalRegularHolidayHours, &$totalRegularHolidayNightHours, &$totalSpecialHolidayHours, &$totalSpecialHolidayNightHours) {
+        private function calculateSegmentHours($payrollCycleFrom, $payrollCycleTo, $attendanceDate, $empID, $shiftID, &$totalRegularNightHours, &$totalRegularHolidayHours, &$totalRegularHolidayNightHours, &$totalSpecialHolidayHours, &$totalSpecialHolidayNightHours) {
             // -----------------------------
             // 1. LOAD HOLIDAYS
             // -----------------------------
@@ -1515,10 +1617,8 @@
             // -----------------------------
             $sch = $this->dbConnect()->query("
                 SELECT startTime, endTime
-                FROM tbl_employee 
-                INNER JOIN tbl_shiftschedule
-                ON tbl_employee.shiftID = tbl_shiftschedule.shiftID
-                WHERE tbl_employee.id = '$empID'
+                FROM tbl_shiftschedule
+                WHERE shiftID = '$shiftID'
             ")->fetch_assoc();
 
             $scheduledStart = new DateTime($attendanceDate . " " . $sch['startTime']);
@@ -1689,68 +1789,145 @@
             ];
         }
 
+        // ORIGINAL FUNCTION
+        // public function getCutOffAbsences($id, $cutOffStart, $cutOffEnd) {
+        //     $cutOffAbsences = "
+        //         WITH RECURSIVE calendar_days AS (
+        //             SELECT DATE('$cutOffStart') AS date_day
+
+        //             UNION ALL
+
+        //             SELECT DATE_ADD(date_day, INTERVAL 1 DAY)
+        //             FROM calendar_days
+        //             WHERE date_day < DATE('$cutOffEnd')
+        //         )
+
+        //         SELECT COUNT(*) AS total_absences
+        //         FROM calendar_days cd
+
+        //         LEFT JOIN (
+        //             SELECT
+        //                 attendanceDate,
+
+        //                 SUM(
+        //                     CASE
+        //                         WHEN logTypeID IN (1,2) THEN 1
+        //                         ELSE 0
+        //                     END
+        //                 ) AS total_in,
+
+        //                 SUM(
+        //                     CASE
+        //                         WHEN logTypeID IN (3,4) THEN 1
+        //                         ELSE 0
+        //                     END
+        //                 ) AS total_out
+
+        //             FROM {$this->attendance}
+
+        //             WHERE empID = $id
+
+        //             GROUP BY attendanceDate
+        //         ) att
+        //             ON att.attendanceDate = cd.date_day
+
+        //         LEFT JOIN {$this->leaves} leaves
+        //             ON leaves.empID = $id
+        //             AND leaves.status = 'Approved'
+        //             AND cd.date_day BETWEEN leaves.effectivityStartDate
+        //                                 AND leaves.effectivityEndDate
+
+        //         LEFT JOIN {$this->weekOff} weekoff
+        //             ON weekoff.empID = $id
+
+        //         WHERE
+
+        //             (
+        //                 att.attendanceDate IS NULL
+
+        //                 OR att.total_in = 0
+
+        //                 OR att.total_out = 0
+        //             )
+
+        //             AND leaves.empID IS NULL
+
+        //             AND (
+        //                 CASE DAYNAME(cd.date_day)
+        //                     WHEN 'Monday' THEN weekoff.wo_mon
+        //                     WHEN 'Tuesday' THEN weekoff.wo_tue
+        //                     WHEN 'Wednesday' THEN weekoff.wo_wed
+        //                     WHEN 'Thursday' THEN weekoff.wo_thu
+        //                     WHEN 'Friday' THEN weekoff.wo_fri
+        //                     WHEN 'Saturday' THEN weekoff.wo_sat
+        //                     WHEN 'Sunday' THEN weekoff.wo_sun
+        //                 END
+        //             ) = 0
+        //     ";
+
+        //     return $cutOffAbsences;
+        // }
+
         public function getCutOffAbsences($id, $cutOffStart, $cutOffEnd) {
             $cutOffAbsences = "
                 WITH RECURSIVE calendar_days AS (
                     SELECT DATE('$cutOffStart') AS date_day
-
                     UNION ALL
-
                     SELECT DATE_ADD(date_day, INTERVAL 1 DAY)
                     FROM calendar_days
                     WHERE date_day < DATE('$cutOffEnd')
+                ),
+
+                attendance_normalized AS (
+                    SELECT
+                        att.empID,
+                        att.logTypeID,
+                        att.attendanceDate,
+                        att.attendanceTime,
+                        CASE
+                            -- overnight shift: endTime earlier than startTime means it crosses midnight
+                            WHEN sh.startTime IS NOT NULL
+                                AND sh.endTime < sh.startTime
+                                AND att.logTypeID IN (3,4)
+                                AND att.attendanceTime < sh.startTime
+                            THEN DATE_SUB(att.attendanceDate, INTERVAL 1 DAY)
+                            ELSE att.attendanceDate
+                        END AS shiftDate
+                    FROM {$this->attendance} att
+                    LEFT JOIN {$this->shifts} sh ON sh.shiftID = att.shiftID
+                    WHERE att.empID = $id
+                ),
+
+                att_summary AS (
+                    SELECT
+                        shiftDate,
+                        SUM(CASE WHEN logTypeID IN (1,2) THEN 1 ELSE 0 END) AS total_in,
+                        SUM(CASE WHEN logTypeID IN (3,4) THEN 1 ELSE 0 END) AS total_out
+                    FROM attendance_normalized
+                    GROUP BY shiftDate
                 )
 
                 SELECT COUNT(*) AS total_absences
                 FROM calendar_days cd
 
-                LEFT JOIN (
-                    SELECT
-                        attendanceDate,
-
-                        SUM(
-                            CASE
-                                WHEN logTypeID IN (1,2) THEN 1
-                                ELSE 0
-                            END
-                        ) AS total_in,
-
-                        SUM(
-                            CASE
-                                WHEN logTypeID IN (3,4) THEN 1
-                                ELSE 0
-                            END
-                        ) AS total_out
-
-                    FROM {$this->attendance}
-
-                    WHERE empID = $id
-
-                    GROUP BY attendanceDate
-                ) att
-                    ON att.attendanceDate = cd.date_day
+                LEFT JOIN att_summary att
+                    ON att.shiftDate = cd.date_day
 
                 LEFT JOIN {$this->leaves} leaves
                     ON leaves.empID = $id
                     AND leaves.status = 'Approved'
-                    AND cd.date_day BETWEEN leaves.effectivityStartDate
-                                        AND leaves.effectivityEndDate
+                    AND cd.date_day BETWEEN leaves.effectivityStartDate AND leaves.effectivityEndDate
 
                 LEFT JOIN {$this->weekOff} weekoff
                     ON weekoff.empID = $id
 
                 WHERE
-
                     (
-                        att.attendanceDate IS NULL
-
+                        att.shiftDate IS NULL
                         OR att.total_in = 0
-
                         OR att.total_out = 0
                     )
-
                     AND leaves.empID IS NULL
-
                     AND (
                         CASE DAYNAME(cd.date_day)
                             WHEN 'Monday' THEN weekoff.wo_mon
@@ -1761,9 +1938,7 @@
                             WHEN 'Saturday' THEN weekoff.wo_sat
                             WHEN 'Sunday' THEN weekoff.wo_sun
                         END
-                    ) = 0
-            ";
-
+                    ) = 0";
             return $cutOffAbsences;
         }
 
@@ -1796,7 +1971,6 @@
                 AND la.status = 'Approved'
                 AND la.effectivityStartDate <= '$to'
                 AND la.effectivityEndDate   >= '$from'
-                AND la.dateFiled BETWEEN '$from' AND '$to'
             ";
         }
 
@@ -1938,16 +2112,30 @@
                 $employee_employmentStatus = $employeeDetails['e_status'];
 
                 // COMPUTE DAYS WORKED
-                $daysWorkedQuery = $this->dbConnect()->query("
-                    SELECT attendanceDate
-                    FROM tbl_attendance
-                    WHERE empID = {$employeeDetails['id']}
-                    AND attendanceDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'
-                    GROUP BY attendanceDate
-                    HAVING
-                        SUM(CASE WHEN logTypeID IN (1,2) THEN 1 ELSE 0 END) > 0
-                        AND
-                        SUM(CASE WHEN logTypeID IN (3,4) THEN 1 ELSE 0 END) > 0
+                // $daysWorkedQuery = $this->dbConnect()->query("
+                //     SELECT attendanceDate
+                //     FROM tbl_attendance
+                //     WHERE empID = {$employeeDetails['id']}
+                //     AND attendanceDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'
+                //     GROUP BY attendanceDate
+                //     HAVING
+                //         SUM(CASE WHEN logTypeID IN (1,2) THEN 1 ELSE 0 END) > 0
+                //         AND
+                //         SUM(CASE WHEN logTypeID IN (3,4) THEN 1 ELSE 0 END) > 0
+                // ");
+               $daysWorkedQuery = $this->dbConnect()->query("
+                    SELECT DISTINCT inLogs.attendanceDate AS workDate
+                    FROM tbl_attendance inLogs
+                    WHERE inLogs.empID = {$employeeDetails['id']}
+                    AND inLogs.attendanceDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'
+                    AND inLogs.logTypeID IN (1,2)
+                    AND EXISTS (
+                        SELECT 1
+                        FROM tbl_attendance outLogs
+                        WHERE outLogs.empID = inLogs.empID
+                        AND outLogs.logTypeID IN (3,4)
+                        AND outLogs.attendanceDate IN (inLogs.attendanceDate, DATE_ADD(inLogs.attendanceDate, INTERVAL 1 DAY))
+                    )
                 ");
 
                 $employee_daysWorked = mysqli_num_rows($daysWorkedQuery);
@@ -2086,6 +2274,7 @@
                     // FULL DATETIME
                     $attendanceDate = $attendanceLogs['attendanceDate'];
                     $attendanceTime = $attendanceLogs['attendanceTime'];
+                    $shiftID = $attendanceLogs['shiftID'];
                     $fullDateTime = $attendanceDate . ' ' . $attendanceTime;
 
                     $logTypeID = $attendanceLogs['logTypeID'];
@@ -2101,7 +2290,8 @@
                         $payrollCycleFrom,
                         $payrollCycleTo,
                         $attendanceDate,
-                        $employee_id
+                        $employee_id,
+                        $shiftID
                     );
 
                     $totalNightHours += $result['totalRegularNightHours'];
@@ -2544,16 +2734,30 @@
                 $employee_employmentStatus = $employeeDetails['e_status'];
 
                 // COMPUTE DAYS WORKED
-                $daysWorkedQuery = $this->dbConnect()->query("
-                    SELECT attendanceDate
-                    FROM tbl_attendance
-                    WHERE empID = {$employeeDetails['id']}
-                    AND attendanceDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'
-                    GROUP BY attendanceDate
-                    HAVING
-                        SUM(CASE WHEN logTypeID IN (1,2) THEN 1 ELSE 0 END) > 0
-                        AND
-                        SUM(CASE WHEN logTypeID IN (3,4) THEN 1 ELSE 0 END) > 0
+                // $daysWorkedQuery = $this->dbConnect()->query("
+                //     SELECT attendanceDate
+                //     FROM tbl_attendance
+                //     WHERE empID = {$employeeDetails['id']}
+                //     AND attendanceDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'
+                //     GROUP BY attendanceDate
+                //     HAVING
+                //         SUM(CASE WHEN logTypeID IN (1,2) THEN 1 ELSE 0 END) > 0
+                //         AND
+                //         SUM(CASE WHEN logTypeID IN (3,4) THEN 1 ELSE 0 END) > 0
+                // ");
+               $daysWorkedQuery = $this->dbConnect()->query("
+                    SELECT DISTINCT inLogs.attendanceDate AS workDate
+                    FROM tbl_attendance inLogs
+                    WHERE inLogs.empID = {$employeeDetails['id']}
+                    AND inLogs.attendanceDate BETWEEN '$payrollCycleFrom' AND '$payrollCycleTo'
+                    AND inLogs.logTypeID IN (1,2)
+                    AND EXISTS (
+                        SELECT 1
+                        FROM tbl_attendance outLogs
+                        WHERE outLogs.empID = inLogs.empID
+                        AND outLogs.logTypeID IN (3,4)
+                        AND outLogs.attendanceDate IN (inLogs.attendanceDate, DATE_ADD(inLogs.attendanceDate, INTERVAL 1 DAY))
+                    )
                 ");
 
                 $employee_daysWorked = mysqli_num_rows($daysWorkedQuery);
@@ -2692,6 +2896,7 @@
                     // FULL DATETIME
                     $attendanceDate = $attendanceLogs['attendanceDate'];
                     $attendanceTime = $attendanceLogs['attendanceTime'];
+                    $shiftID = $attendanceLogs['shiftID'];
                     $fullDateTime = $attendanceDate . ' ' . $attendanceTime;
 
                     $logTypeID = $attendanceLogs['logTypeID'];
@@ -2707,7 +2912,8 @@
                         $payrollCycleFrom,
                         $payrollCycleTo,
                         $attendanceDate,
-                        $employee_id
+                        $employee_id,
+                        $shiftID
                     );
 
                     $totalNightHours += $result['totalRegularNightHours'];
@@ -3285,12 +3491,27 @@
             return $logBatchUpload;
         }
 
+        public function logSchedUpload($fileName, $uploadedBy_empID, $approvedRows, $errors, $totalRows, $status) {
+            $logSchedUpload = "
+                INSERT INTO ".$this->schedUpload." (fileName, timeStamp, uploadedBy_empID, approvedRows, errors, totalRows, status)
+                VALUES ('$fileName', CURRENT_TIMESTAMP(), '$uploadedBy_empID', '$approvedRows', '$errors', '$totalRows', '$status')";
+            return $logSchedUpload;
+        }
+
         public function fetchAllBatchUploadHistory() {
             $fetchAllBatchUploadHistory = "
                 SELECT * FROM {$this->batchUpload} AS batchUpload
                 INNER JOIN {$this->employees} AS employees
                 ON batchUpload.uploadedBy_empID = employees.id";
             return $fetchAllBatchUploadHistory;
+        }
+
+        public function fetchAllSchedUploadHistory() {
+            $fetchAllSchedUploadHistory = "
+                SELECT * FROM {$this->schedUpload} AS schedUpload
+                INNER JOIN {$this->employees} AS employees
+                ON schedUpload.uploadedBy_empID = employees.id";
+            return $fetchAllSchedUploadHistory;
         }
     }
 ?>

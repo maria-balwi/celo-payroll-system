@@ -15,6 +15,7 @@
                     Employees
                 </div>  
                 <input type="hidden" id="adminID" name="adminID" value="<?php echo $_SESSION['designationID']; ?>">  
+                <input type="hidden" id="levelID" name="levelID" value="<?php echo $_SESSION['levelID']; ?>">  
             </div>
             
             <!-- CONTENT -->
@@ -1410,7 +1411,7 @@
                                 </div>
 
                                 <div class="row g-2 mb-2">
-                                    <div class="col-4">
+                                    <div class="col-3">
                                         <label for="department">Department:</label>
                                         <select class="form-select" id="department" name="department">
                                             <option value="" selected disabled>Choose</option>
@@ -1427,13 +1428,30 @@
                                             ?>
                                         </select>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-3">
                                         <label for="designation">Designation:</label>
                                         <select class="form-select" id="designation" name="designation">
                                             <option selected disabled>Choose Department First</option>
                                         </select>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-3">
+                                        <label for="teamID">Team:</label>
+                                        <select type="dropdown" id="teamID" name="teamID" class="form-select" disabled>
+                                            <option value="" selected disabled>Choose</option>
+                                            <?php
+                                                $team = mysqli_query($conn, $employees->viewOperationsTeam());
+                                                while ($teamsResult = mysqli_fetch_array($team)) {
+                                                ?>
+                                                <option value="<?php echo $teamsResult['operationsTeamID']; ?>">
+                                                    <?php echo $teamsResult['teamName']; ?>
+                                                </option>
+                                                
+                                            <?php        
+                                                }
+                                            ?>
+                                        </select>
+                                    </div>
+                                    <div class="col-3">
                                         <label for="shiftID">Shift:</label>
                                         <select type="dropdown" id="shiftID" name="shiftID" class="form-select">
                                             <option value="" selected disabled>Choose</option>
@@ -1452,7 +1470,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-2">
+                                <div class="row g-2 mb-2 employeeSalaryRow">
                                     <div class="col-4">
                                         <label for="basicPay">Basic Pay:</label>
                                         <input type="number" class="form-control" id="basicPay" name="basicPay" step="0.01">
@@ -1740,22 +1758,40 @@
                                 </div>
                             </div>
 
-                            <div class="row g-2 mb-2">
+                            <div class="row g-2 mb-2 defaultRow">
                                 <div class="col-4">
+                                    <label for="viewDept">Department:</label>
+                                    <input type="text" class="form-control" id="viewDept" disabled readonly>
+                                </div>
+                                <div class="col-4">
+                                    <label for="viewDesig">Designation:</label>
+                                    <input type="text" class="form-control" id="viewDesig" disabled readonly>
+                                </div>
+                                <div class="col-4">
+                                    <label for="viewShift">Shift:</label>
+                                    <input type="text" class="form-control" id="viewShift" disabled readonly>
+                                </div>
+                            </div>
+                            <div class="row g-2 mb-2 operationsRow">
+                                <div class="col-3">
                                     <label for="viewDepartment">Department:</label>
                                     <input type="text" class="form-control" id="viewDepartment" disabled readonly>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-3">
                                     <label for="viewDesignation">Designation:</label>
                                     <input type="text" class="form-control" id="viewDesignation" disabled readonly>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-3">
+                                    <label for="viewOperationsTeam">Team:</label>
+                                    <input type="text" class="form-control" id="viewOperationsTeam" disabled readonly>
+                                </div>
+                                <div class="col-3">
                                     <label for="viewShiftID">Shift:</label>
                                     <input type="text" class="form-control" id="viewShiftID" disabled readonly>
                                 </div>
                             </div>
 
-                            <div class="row g-2 mb-2">
+                            <div class="row g-2 mb-2 employeeSalaryRow">
                                 <div class="col-4">
                                     <label for="viewBasicPay">Basic Pay:</label>
                                     <input type="number" class="form-control" id="viewBasicPay" name="viewBasicPay" disabled readonly>
@@ -2366,7 +2402,7 @@
                                 </div>
 
                                 <div class="row g-2 mb-1">
-                                    <div class="col-4">
+                                    <div class="col-3">
                                         <label for="updateDepartment">Department:</label>
                                         <select class="form-select" id="updateDepartment" name="updateDepartment">
                                             <option value="" selected disabled>Choose</option>
@@ -2383,7 +2419,7 @@
                                             ?>
                                         </select>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-3">
                                         <label for="updateDesignation">Designation:</label>
                                         <select class="form-select" id="updateDesignation" name="updateDesignation">
                                             <option disabled selected>Choose</option>
@@ -2400,7 +2436,24 @@
                                             ?>
                                         </select>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-3">
+                                        <label for="updateTeamID">Team:</label>
+                                        <select type="dropdown" id="updateTeamID" name="updateTeamID" class="form-select" disabled>
+                                            <option value="" selected disabled>Choose</option>
+                                            <?php
+                                                $team = mysqli_query($conn, $employees->viewOperationsTeam());
+                                                while ($teamsResult = mysqli_fetch_array($team)) {
+                                                ?>
+                                                <option value="<?php echo $teamsResult['operationsTeamID']; ?>">
+                                                    <?php echo $teamsResult['teamName']; ?>
+                                                </option>
+                                                
+                                            <?php        
+                                                }
+                                            ?>
+                                        </select>
+                                    </div>
+                                    <div class="col-3">
                                         <label for="updateShiftID">Shift:</label>
                                         <select type="dropdown" id="updateShiftID" name="updateShiftID" class="form-select">
                                             <option value="" selected disabled>Choose</option>
@@ -2419,7 +2472,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-1">
+                                <div class="row g-2 mb-1 employeeSalaryRow">
                                     <div class="col-4">
                                         <label for="updateBasicPay">Basic Pay:</label>
                                         <input type="number" class="form-control" id="updateBasicPay" name="updateBasicPay" step="0.01">
@@ -2631,6 +2684,20 @@
                                     <div class="col-12">
                                         <label for="renderedDays">Rendered Days:</label>
                                         <input type="number" class="form-control" id="renderedDays" name="renderedDays">
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <div class="col-12">
+                                        <label for="resignationDate">Resignation Date:</label>
+                                        <input type="date" class="form-control" id="resignationDate" name="resignationDate" required>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <div class="col-12">
+                                        <label for="lastDayofWork">Last Day of Work:</label>
+                                        <input type="date" class="form-control" id="lastDayofWork" name="lastDayofWork" disabled>
                                     </div>
                                 </div>
 

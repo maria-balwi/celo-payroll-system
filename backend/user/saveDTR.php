@@ -81,7 +81,7 @@
                 $lastAttendanceDateModified = $lastAttendanceDateModified->format('Y-m-d');
 
                 // Execute the query
-                mysqli_query($conn, $users->saveMissingDTR($_SESSION['id'], 4, $lastAttendanceDateModified, $lastAttendanceTimeModified));
+                mysqli_query($conn, $users->saveMissingDTR($_SESSION['id'], 4, $_SESSION['shiftID'], $lastAttendanceDateModified, $lastAttendanceTimeModified));
 
                 echo "<br>";
                 echo "Modified Date: " . $lastAttendanceDateModified . "<br>";
@@ -138,13 +138,13 @@
         $fileName = isset($_POST['faceDTR_action']) ? preg_replace('/-/', '', $_SESSION['employeeID']) . '_' . date("Y.m.d") . '_' . $_POST['faceDTR_action'] . '.png' : 'image_' . uniqid() . '.png';
 
         if ($logTypeID == 2) { // LATE
-            mysqli_query($conn, $users->saveDTRLate($_SESSION['id'], $logTypeID, $currentDate, $currentTime, $lateMins));
+            mysqli_query($conn, $users->saveDTRLate($_SESSION['id'], $logTypeID, $_SESSION['shiftID'], $currentDate, $currentTime, $lateMins));
         }
         else if ($logTypeID == 3) { // UNDERTIME
-            mysqli_query($conn, $users->saveDTRUndertime($_SESSION['id'], $logTypeID, $currentDate, $currentTime, $undertimeMins));
+            mysqli_query($conn, $users->saveDTRUndertime($_SESSION['id'], $logTypeID, $_SESSION['shiftID'], $currentDate, $currentTime, $undertimeMins));
         }
         else { // ONTIME
-            mysqli_query($conn, $users->saveDTR($_SESSION['id'], $logTypeID, $currentDate, $currentTime));
+            mysqli_query($conn, $users->saveDTR($_SESSION['id'], $logTypeID, $_SESSION['shiftID'], $currentDate, $currentTime));
         }
         
 
