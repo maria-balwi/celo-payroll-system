@@ -156,7 +156,14 @@
     }
 
     if (isset($_POST['updateTeamID']) && $_POST['updateTeamID'] !== '') {
-        $updateTeamID = (int) $_POST['updateTeamID'];
+        $updateTeamID = $_POST['updateTeamID'];
+        $teamQuery = mysqli_query($conn, $employees->viewOperationsTeam());
+        while ($teamDetails = mysqli_fetch_array($teamQuery)) {
+            if ($teamDetails['teamName'] == $updateTeamID)
+            {
+                $updateTeamID = $teamDetails['operationsTeamID'];
+            }
+        }
     } else {
         $updateTeamID = NULL;
     }
