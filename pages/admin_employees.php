@@ -2438,13 +2438,13 @@
                                     </div>
                                     <div class="col-3">
                                         <label for="updateTeamID">Team:</label>
-                                        <select type="dropdown" id="updateTeamID" name="updateTeamID" class="form-select" disabled>
+                                        <select class="form-select" id="updateTeamID" name="updateTeamID" disabled>
                                             <option value="" selected disabled>Choose</option>
                                             <?php
                                                 $team = mysqli_query($conn, $employees->viewOperationsTeam());
                                                 while ($teamsResult = mysqli_fetch_array($team)) {
                                                 ?>
-                                                <option value="<?php echo $teamsResult['operationsTeamID']; ?>">
+                                                <option value="<?php echo $teamsResult['teamName']; ?>">
                                                     <?php echo $teamsResult['teamName']; ?>
                                                 </option>
                                                 

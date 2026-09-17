@@ -311,31 +311,7 @@ $(document).ready(function () {
         }
     });
 
-    // CHECK DEPARTMENT TO SHOW MAKE TEAMS AVAILABLE (ADD EMPLOYEE)
-    $("select[id='department']").on("change", function () {
-        var selectDept = $(this).val();
-
-        if (selectDept == 1) {
-            $("#teamID").prop("disabled", false);
-        }
-        else {
-            $("#teamID").prop("disabled", true);
-            $("#teamID").val("");
-        }
-    });
-
-    // CHECK DEPARTMENT TO SHOW MAKE TEAMS AVAILABLE (UPDATE EMPLOYEE)
-    $("select[id='updateDepartment']").on("change", function () {
-        var selectDept = $(this).val();
-
-        if (selectDept == "Operations") {
-            $("#updateTeamID").prop("disabled", false);
-        }
-        else {
-            $("#updateTeamID").prop("disabled", true);
-            $("#updateTeamID").val("");
-        }
-    });
+    
 
 
     // ADD LAST DAY OF WORK BASED ON RESIGNATION DATE
@@ -1166,7 +1142,10 @@ $(document).ready(function () {
                         $("#updateMobileNumber").val(res.data.mobileNumber);
                         $("#updateDepartment").val(res.data.departmentName);
                         $("#updateDesignation").val(res.data.position);
-                        $("#updateTeamID").val(res.data.team);
+                        if (res.data.departmentName == "Operations") {
+                            $("#updateTeamID").prop("disabled", false);
+                            $("#updateTeamID").val(res.data.teamName);
+                        }
                         $("#updateShiftID").val(
                         res.data.startTime + " - " + res.data.endTime
                         );
@@ -1510,6 +1489,7 @@ $(document).ready(function () {
         var updateTeamID = $("#updateTeamID").val();
         var updateBasicPay = $("#updateBasicPay").val();
         var updateDailyRate = $("#updateDailyRate").val();
+        console.log(updateTeamID);
         var updateHourlyRate = $("#updateHourlyRate").val();
         var updateVacationLeaves = $("#updateVacationLeaves").val();
         var updateSickLeaves = $("#updateSickLeaves").val();

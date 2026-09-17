@@ -105,4 +105,30 @@ $(document).ready(function() {
             $("#updateDesignation").append(option);
         });
     });
+
+    // CHECK DEPARTMENT TO SHOW MAKE TEAMS AVAILABLE (ADD EMPLOYEE)
+    $("select[id='department']").on("change", function () {
+        var selectDept = $(this).val();
+
+        if (selectDept == 1) {
+            $("#teamID").prop("disabled", false);
+        }
+        else {
+            $("#teamID").prop("disabled", true);
+            $("#teamID").val("");
+        }
+    });
+
+    // CHECK DEPARTMENT TO SHOW MAKE TEAMS AVAILABLE (UPDATE EMPLOYEE)
+    $("select[id='updateDepartment']").on("change", function () {
+        var selectDept = $(this).val();
+
+        if (selectDept == "Operations") {
+            $("#updateTeamID").prop("disabled", false);
+        }
+        else {
+            $("#updateTeamID").prop("disabled", true);
+            $("#updateTeamID").val("");
+        }
+    });
 });
