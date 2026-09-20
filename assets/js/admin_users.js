@@ -11,6 +11,9 @@ $(document).ready(function() {
     $('#qaTable').DataTable();
     $('#inactiveQATable').DataTable();
 
+    $('#workforceTable').DataTable();
+    $('#inactiveWorkforceTable').DataTable();
+
     $('#tlmanTable').DataTable();
     $('#inactiveTLManTable').DataTable();
 
@@ -31,6 +34,9 @@ $(document).ready(function() {
 
     $('#financeTable').DataTable();
     $('#inactiveFinanceTable').DataTable();
+
+    $('#itTable').DataTable();
+    $('#inactiveITTable').DataTable();
 
     $('#adminTable').DataTable();
     $('#inactiveAdminTable').DataTable();

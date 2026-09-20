@@ -70,6 +70,8 @@ $(document).ready(function () {
     $("#inactiveSMETable").DataTable();
     $("#activeQATable").DataTable();
     $("#inactiveQATable").DataTable();
+    $("#activeWorkforceTable").DataTable();
+    $("#inactiveWorkforceTable").DataTable();
     $("#activeTLManTable").DataTable();
     $("#inactiveTLManTable").DataTable();
     $("#activeRecruitmentTable").DataTable();
@@ -86,6 +88,8 @@ $(document).ready(function () {
     $("#inactiveFinanceTable").DataTable();
     $("#activeHRTable").DataTable();
     $("#inactiveHRTable").DataTable();
+    $("#activeAdminTable").DataTable();
+    $("#inactiveAdminTable").DataTable();
 
     $('#batchUploadHistory').DataTable();
     var batchUploadHistory = $('#batchUploadHistory').DataTable();
