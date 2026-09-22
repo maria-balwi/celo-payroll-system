@@ -130,7 +130,7 @@
                                                                 $employeeQuery = mysqli_query($conn, $employees->viewPersonnel());
                                                                 while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
 
-                                                                    $employee_id = $employeeDetails['id'];
+                                                                    $employee_id = $employeeDetails['userID'];
                                                                     $employee_employeeID = $employeeDetails['employeeID'];
                                                                     $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
                                                                     $employee_emailAddress = $employeeDetails['emailAddress'];
@@ -162,7 +162,7 @@
                                                                 $employeeQuery = mysqli_query($conn, $employees->viewInactivePersonnel());
                                                                 while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
 
-                                                                    $employee_id = $employeeDetails['id'];
+                                                                    $employee_id = $employeeDetails['userID'];
                                                                     $employee_employeeID = $employeeDetails['employeeID'];
                                                                     $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
                                                                     $employee_emailAddress = $employeeDetails['emailAddress'];
@@ -212,7 +212,7 @@
                                                                 $employeeQuery = mysqli_query($conn, $employees->viewTrainer());
                                                                 while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
 
-                                                                    $employee_id = $employeeDetails['id'];
+                                                                    $employee_id = $employeeDetails['userID'];
                                                                     $employee_employeeID = $employeeDetails['employeeID'];
                                                                     $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
                                                                     $employee_emailAddress = $employeeDetails['emailAddress'];
@@ -244,7 +244,7 @@
                                                                 $employeeQuery = mysqli_query($conn, $employees->viewInactiveTrainer());
                                                                 while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
 
-                                                                    $employee_id = $employeeDetails['id'];
+                                                                    $employee_id = $employeeDetails['userID'];
                                                                     $employee_employeeID = $employeeDetails['employeeID'];
                                                                     $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
                                                                     $employee_emailAddress = $employeeDetails['emailAddress'];
@@ -294,7 +294,7 @@
                                                                 $employeeQuery = mysqli_query($conn, $employees->viewSME());
                                                                 while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
 
-                                                                    $employee_id = $employeeDetails['id'];
+                                                                    $employee_id = $employeeDetails['userID'];
                                                                     $employee_employeeID = $employeeDetails['employeeID'];
                                                                     $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
                                                                     $employee_emailAddress = $employeeDetails['emailAddress'];
@@ -326,7 +326,7 @@
                                                                 $employeeQuery = mysqli_query($conn, $employees->viewInactiveSME());
                                                                 while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
 
-                                                                    $employee_id = $employeeDetails['id'];
+                                                                    $employee_id = $employeeDetails['userID'];
                                                                     $employee_employeeID = $employeeDetails['employeeID'];
                                                                     $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
                                                                     $employee_emailAddress = $employeeDetails['emailAddress'];
@@ -376,7 +376,7 @@
                                                                 $employeeQuery = mysqli_query($conn, $employees->viewQA());
                                                                 while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
 
-                                                                    $employee_id = $employeeDetails['id'];
+                                                                    $employee_id = $employeeDetails['userID'];
                                                                     $employee_employeeID = $employeeDetails['employeeID'];
                                                                     $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
                                                                     $employee_emailAddress = $employeeDetails['emailAddress'];
@@ -408,7 +408,7 @@
                                                                 $employeeQuery = mysqli_query($conn, $employees->viewInactiveQA());
                                                                 while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
 
-                                                                    $employee_id = $employeeDetails['id'];
+                                                                    $employee_id = $employeeDetails['userID'];
                                                                     $employee_employeeID = $employeeDetails['employeeID'];
                                                                     $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
                                                                     $employee_emailAddress = $employeeDetails['emailAddress'];
@@ -458,7 +458,7 @@
                                                                 $employeeQuery = mysqli_query($conn, $employees->viewWorkforce());
                                                                 while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
 
-                                                                    $employee_id = $employeeDetails['id'];
+                                                                    $employee_id = $employeeDetails['userID'];
                                                                     $employee_employeeID = $employeeDetails['employeeID'];
                                                                     $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
                                                                     $employee_emailAddress = $employeeDetails['emailAddress'];
@@ -490,7 +490,7 @@
                                                                 $employeeQuery = mysqli_query($conn, $employees->viewInactiveWorkforce());
                                                                 while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
 
-                                                                    $employee_id = $employeeDetails['id'];
+                                                                    $employee_id = $employeeDetails['userID'];
                                                                     $employee_employeeID = $employeeDetails['employeeID'];
                                                                     $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
                                                                     $employee_emailAddress = $employeeDetails['emailAddress'];
@@ -540,7 +540,7 @@
                                                                 $employeeQuery = mysqli_query($conn, $employees->viewTLMan());
                                                                 while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
 
-                                                                    $employee_id = $employeeDetails['id'];
+                                                                    $employee_id = $employeeDetails['userID'];
                                                                     $employee_employeeID = $employeeDetails['employeeID'];
                                                                     $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
                                                                     $employee_emailAddress = $employeeDetails['emailAddress'];
@@ -572,7 +572,7 @@
                                                                 $employeeQuery = mysqli_query($conn, $employees->viewInactiveTLMan());
                                                                 while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
 
-                                                                    $employee_id = $employeeDetails['id'];
+                                                                    $employee_id = $employeeDetails['userID'];
                                                                     $employee_employeeID = $employeeDetails['employeeID'];
                                                                     $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
                                                                     $employee_emailAddress = $employeeDetails['emailAddress'];
