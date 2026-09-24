@@ -640,6 +640,7 @@ $(document).ready(function () {
         let addEmployee = new FormData(this);
         var lastName = $("#lastName").val();
         var firstName = $("#firstName").val();
+        var middleName = $("#middleName").val();
         var gender = $("#gender").val();
         var civilStatus = $("#civilStatus").val();
         var address = $("#address").val();
@@ -650,6 +651,7 @@ $(document).ready(function () {
         var mobileNumber = $("#mobileNumber").val();
         var department = $("#department").val();
         var designation = $("#designation").val();
+        var teamID = $("#teamID").val();
         var shiftID = $("#shiftID").val();
         var employmentStatus = $("#employmentStatus").val();
         var dateHired = $("#dateHired").val();
@@ -659,7 +661,7 @@ $(document).ready(function () {
         var hourlyRate = $("#hourlyRate").val();
         var vacationLeaves = $("#vacationLeaves").val();
         var sickLeaves = $("#sickLeaves").val();
-
+        
         if (
         lastName == "" ||
         firstName == "" ||
@@ -774,6 +776,7 @@ $(document).ready(function () {
                     $("#viewID").val(res.data.id);
                     $("#viewLastName").val(res.data.lastName);
                     $("#viewFirstName").val(res.data.firstName);
+                    $("#viewMiddleName").val(res.data.middleName);
                     $("#viewGender").val(res.data.gender);
                     $("#viewCivilStatus").val(res.data.civilStatus);
                     $("#viewAddress").val(res.data.address);
@@ -1132,6 +1135,7 @@ $(document).ready(function () {
                         $("#updateID").val(res.data.id);
                         $("#updateLastName").val(res.data.lastName);
                         $("#updateFirstName").val(res.data.firstName);
+                        $("#updateMiddleName").val(res.data.middleName);
                         $("#updateGender").val(res.data.gender);
                         $("#updateCivilStatus").val(res.data.civilStatus);
                         $("#updateAddress").val(res.data.address);
@@ -1633,29 +1637,29 @@ $(document).ready(function () {
                         processData: false,
                         contentType: false,
                         success: function (response) {
-                        const data = JSON.parse(response);
-                        var message = data.em;
-                        if (data.error == 0) {
-                            Swal.fire({
-                            icon: "success",
-                            title: "Success",
-                            text: message,
-                            timer: 2000,
-                            showConfirmButton: false,
-                            }).then(() => {
-                            // Refresh the View Employee Modal with updated data
-                            loadInactiveEmployeeData(resignEmpID);
-                            $("#resignEmployeeModal").modal("hide");
-                            $("#viewResignedModal").modal("show");
-                            // window.location.reload();
-                            });
-                        } else {
-                            Swal.fire({
-                            icon: "warning",
-                            title: "Warning",
-                            text: message,
-                            });
-                        }
+                            const data = JSON.parse(response);
+                            var message = data.em;
+                            if (data.error == 0) {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Success",
+                                    text: message,
+                                    timer: 2000,
+                                    showConfirmButton: false,
+                                }).then(() => {
+                                    // Refresh the View Employee Modal with updated data
+                                    loadInactiveEmployeeData(resignEmpID);
+                                    $("#resignEmployeeModal").modal("hide");
+                                    $("#viewResignedModal").modal("show");
+                                    // window.location.reload();
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: "warning",
+                                    title: "Warning",
+                                    text: message,
+                                });
+                            }
                         },
                     });
                 }
@@ -1678,6 +1682,7 @@ $(document).ready(function () {
                     $("#viewID").val(res.data.id);
                     $("#viewLastName").val(res.data.lastName);
                     $("#viewFirstName").val(res.data.firstName);
+                    $("#viewMiddleName").val(res.data.middleName);
                     $("#viewGender").val(res.data.gender);
                     $("#viewCivilStatus").val(res.data.civilStatus);
                     $("#viewAddress").val(res.data.address);

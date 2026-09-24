@@ -6,6 +6,7 @@
     $updateID = $_POST['updateID'];
     $updateLastName = $_POST['updateLastName'];
     $updateFirstName = $_POST['updateFirstName'];
+    $updateMiddleName = $_POST['updateMiddleName'] == "" ? NULL : $_POST['updateMiddleName'];
     $updateGender = $_POST['updateGender'];
     $updateCivilStatus = $_POST['updateCivilStatus'];
     $updateAddress = $_POST['updateAddress'];
@@ -242,7 +243,7 @@
                 $updateDateRegularized->modify('+6 months');
                 $updateDateRegularized = $updateDateRegularized->format('Y-m-d');
 
-                mysqli_query($conn, $employees->updateEmployeeInfo_reg($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
+                mysqli_query($conn, $employees->updateEmployeeInfo_reg($updateID, $updateLastName, $updateFirstName, $updateMiddleName, $updateGender, $updateCivilStatus, $updateAddress, 
                 $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
                 $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateTeamID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateEmploymentStatus, $updateDateHired, $updateDateRegularized));
 
@@ -255,7 +256,7 @@
             else 
             {
                 // UPDATE PROBATIONARY EMPLOYEE
-                mysqli_query($conn, $employees->updateEmployeeInfo_prob($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
+                mysqli_query($conn, $employees->updateEmployeeInfo_prob($updateID, $updateLastName, $updateFirstName, $updateMiddleName, $updateGender, $updateCivilStatus, $updateAddress, 
                 $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
                 $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateTeamID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateEmploymentStatus, $updateDateHired));
             
@@ -343,7 +344,7 @@
                     $updateDateRegularized->modify('+6 months');
                     $updateDateRegularized = $updateDateRegularized->format('Y-m-d');
 
-                    mysqli_query($conn, $employees->updateEmployeeInfo_reg($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
+                    mysqli_query($conn, $employees->updateEmployeeInfo_reg($updateID, $updateLastName, $updateFirstName, $updateMiddleName,  $updateGender, $updateCivilStatus, $updateAddress, 
                     $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
                     $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateTeamID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateEmploymentStatus, $updateDateHired, $updateDateRegularized));
 
@@ -355,7 +356,7 @@
                 }
                 else 
                 {
-                    mysqli_query($conn, $employees->updateEmployeeInfo_prob($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
+                    mysqli_query($conn, $employees->updateEmployeeInfo_prob($updateID, $updateLastName, $updateFirstName, $updateMiddleName, $updateGender, $updateCivilStatus, $updateAddress, 
                     $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
                     $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateTeamID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateEmploymentStatus, $updateDateHired));
                 
@@ -458,7 +459,7 @@
                     $updateDateRegularized->modify('+6 months');
                     $updateDateRegularized = $updateDateRegularized->format('Y-m-d');
 
-                    mysqli_query($conn, $employees->updateEmployeeInfo_reg($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
+                    mysqli_query($conn, $employees->updateEmployeeInfo_reg($updateID, $updateLastName, $updateFirstName, $updateMiddleName,  $updateGender, $updateCivilStatus, $updateAddress, 
                     $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
                     $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateTeamID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateEmploymentStatus, $updateDateHired, $updateDateRegularized));
 
@@ -471,7 +472,7 @@
                 else 
                 {
                     // UPDATE PROBATIONARY EMPLOYEE
-                    mysqli_query($conn, $employees->updateEmployeeInfo_prob($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
+                    mysqli_query($conn, $employees->updateEmployeeInfo_prob($updateID, $updateLastName, $updateFirstName, $updateMiddleName, $updateGender, $updateCivilStatus, $updateAddress, 
                     $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
                     $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateTeamID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateEmploymentStatus, $updateDateHired));
                 
@@ -550,7 +551,7 @@
                         $updateDateRegularized->modify('+6 months');
                         $updateDateRegularized = $updateDateRegularized->format('Y-m-d');
 
-                        mysqli_query($conn, $employees->updateEmployeeInfo_reg($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
+                        mysqli_query($conn, $employees->updateEmployeeInfo_reg($updateID, $updateLastName, $updateFirstName, $updateMiddleName,  $updateGender, $updateCivilStatus, $updateAddress, 
                         $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
                         $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateTeamID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateEmploymentStatus, $updateDateHired, $updateDateRegularized));
 
@@ -563,7 +564,7 @@
                     else 
                     {
                         // UPDATE PROBATIONARY EMPLOYEE
-                        mysqli_query($conn, $employees->updateEmployeeInfo_prob($updateID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
+                        mysqli_query($conn, $employees->updateEmployeeInfo_prob($updateID, $updateLastName, $updateFirstName, $updateMiddleName, $updateGender, $updateCivilStatus, $updateAddress, 
                         $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
                         $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateTeamID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, $updateVacationLeaves, $updateSickLeaves, $updateEmploymentStatus, $updateDateHired));
                     

@@ -1163,27 +1163,29 @@
             return $checkEmployeeID;
         }
 
-        public function addNewEmployee_prob($lastName, $firstName, $gender, $civilStatus, $address, $dateOfBirth, $placeOfBirth, 
+        public function addNewEmployee_prob($lastName, $firstName, $middleName, $gender, $civilStatus, $address, $dateOfBirth, $placeOfBirth, 
             $sss, $pagIbig, $philhealth, $tin, $emailAddress, $employeeID, $mobileNumber, $departmentID, $designationID, $shiftID, $teamID,
             $basicPay, $dailyRate, $hourlyRate, $vacationLeaves, $sickLeaves, $employmentStatus, $dateHired) {
+            $teamIDValue = ($teamID === NULL || $teamID === '') ? "NULL" : "'" . (int)$teamID . "'";
             $addEmployee = "
-                INSERT INTO ".$this->employees." (lastName, firstName, gender, civilStatus, address, dateOfBirth, placeOfBirth, 
+                INSERT INTO ".$this->employees." (lastName, firstName, middleName, gender, civilStatus, address, dateOfBirth, placeOfBirth, 
                 sss, pagIbig, philhealth, tin, emailAddress, employeeID, mobileNumber, departmentID, designationID, shiftID, teamID, basicPay, dailyRate, hourlyRate, availableVL, availableSL, employmentStatus, dateHired, e_status)
-                VALUES ('".$lastName."', '".$firstName."', '".$gender."', '".$civilStatus."', '".$address."', '".$dateOfBirth."', '".$placeOfBirth."',
+                VALUES ('".$lastName."', '".$firstName."', '".$middleName."', '".$gender."', '".$civilStatus."', '".$address."', '".$dateOfBirth."', '".$placeOfBirth."',
                 '".$sss."', '".$pagIbig."', '".$philhealth."', '".$tin."', '".$emailAddress."', '".$employeeID."', '".$mobileNumber."', 
-                '".$departmentID."', '".$designationID."', '".$shiftID."', '".$teamID."', '".$basicPay."', '".$dailyRate."', '".$hourlyRate."', '".$vacationLeaves."', '".$sickLeaves."', '".$employmentStatus."', '".$dateHired."', 'Active')";
+                '".$departmentID."', '".$designationID."', '".$shiftID."', ".$teamIDValue.", '".$basicPay."', '".$dailyRate."', '".$hourlyRate."', '".$vacationLeaves."', '".$sickLeaves."', '".$employmentStatus."', '".$dateHired."', 'Active')";
             return $addEmployee;
         }
 
-        public function addNewEmployee_reg($lastName, $firstName, $gender, $civilStatus, $address, $dateOfBirth, $placeOfBirth, 
+        public function addNewEmployee_reg($lastName, $firstName, $middleName, $gender, $civilStatus, $address, $dateOfBirth, $placeOfBirth, 
             $sss, $pagIbig, $philhealth, $tin, $emailAddress, $employeeID, $mobileNumber, $departmentID, $designationID, $shiftID, $teamID,
             $basicPay, $dailyRate, $hourlyRate, $vacationLeaves, $sickLeaves, $employmentStatus, $dateHired, $dateRegularized) {
+            $teamIDValue = ($teamID === NULL || $teamID === '') ? "NULL" : "'" . (int)$teamID . "'";
             $addEmployee = "
-                INSERT INTO ".$this->employees." (lastName, firstName, gender, civilStatus, address, dateOfBirth, placeOfBirth, 
+                INSERT INTO ".$this->employees." (lastName, firstName, middleName, gender, civilStatus, address, dateOfBirth, placeOfBirth, 
                 sss, pagIbig, philhealth, tin, emailAddress, employeeID, mobileNumber, departmentID, designationID, shiftID, teamID, basicPay, dailyRate, hourlyRate, availableVL, availableSL, employmentStatus, dateHired, dateRegularized, e_status)
-                VALUES ('".$lastName."', '".$firstName."', '".$gender."', '".$civilStatus."', '".$address."', '".$dateOfBirth."', '".$placeOfBirth."',
+                VALUES ('".$lastName."', '".$firstName."', '".$middleName."', '".$gender."', '".$civilStatus."', '".$address."', '".$dateOfBirth."', '".$placeOfBirth."',
                 '".$sss."', '".$pagIbig."', '".$philhealth."', '".$tin."', '".$emailAddress."', '".$employeeID."', '".$mobileNumber."', 
-                '".$departmentID."', '".$designationID."', '".$shiftID."', '".$teamID."', '".$basicPay."', '".$dailyRate."', '".$hourlyRate."', '".$vacationLeaves."', '".$sickLeaves."', '".$employmentStatus."', '".$dateHired."', '".$dateRegularized."', 'Active')";
+                '".$departmentID."', '".$designationID."', '".$shiftID."', ".$teamIDValue.", '".$basicPay."', '".$dailyRate."', '".$hourlyRate."', '".$vacationLeaves."', '".$sickLeaves."', '".$employmentStatus."', '".$dateHired."', '".$dateRegularized."', 'Active')";
             return $addEmployee;
         }
 
@@ -1208,7 +1210,7 @@
             return $addWeekOff;
         }
 
-        public function updateEmployeeInfo_reg($updateUserID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
+        public function updateEmployeeInfo_reg($updateUserID, $updateLastName, $updateFirstName, $updateMiddleName, $updateGender, $updateCivilStatus, $updateAddress, 
             $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
             $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateTeamID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, 
             $updateVacationLeaves, $updateSickLeaves, $updateEmploymentStatus, $updateDateHired, $updateDateRegularized) {
@@ -1219,6 +1221,7 @@
                 UPDATE ".$this->employees." AS employees 
                 SET lastName = '$updateLastName',
                 firstName = '$updateFirstName',
+                middleName = '$updateMiddleName',
                 gender = '$updateGender',
                 civilStatus = '$updateCivilStatus',
                 address = '$updateAddress',
@@ -1247,7 +1250,7 @@
             return $updateEmployee;
         }
 
-        public function updateEmployeeInfo_prob($updateUserID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
+        public function updateEmployeeInfo_prob($updateUserID, $updateLastName, $updateFirstName, $updateMiddleName, $updateGender, $updateCivilStatus, $updateAddress, 
             $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
             $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateTeamID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, 
             $updateVacationLeaves, $updateSickLeaves, $updateEmploymentStatus, $updateDateHired) {
@@ -1258,6 +1261,7 @@
                 UPDATE ".$this->employees." AS employees 
                 SET lastName = '$updateLastName',
                 firstName = '$updateFirstName',
+                middleName = '$updateMiddleName',
                 gender = '$updateGender',
                 civilStatus = '$updateCivilStatus',
                 address = '$updateAddress',
@@ -1319,7 +1323,7 @@
 
         public function getEmployeeInfo($id) {
             $employeeInfo = "
-                SELECT id, lastName, firstName, gender, civilStatus, address, dateOfBirth,
+                SELECT id, lastName, firstName, middleName, gender, civilStatus, address, dateOfBirth,
                 placeOfBirth, sss, pagIbig, philhealth, tin, emailAddress, employeeID, 
                 mobileNumber, departmentName, position, basicPay, dailyRate, hourlyRate,
                 availableVL, availableSL, req_sss, req_pagIbig, req_philhealth, req_tin, req_nbi,

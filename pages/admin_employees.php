@@ -1511,13 +1511,17 @@
                                     <div class="col-10">
                                         <!-- Row 1 -->
                                         <div class="row g-2 mb-2">
-                                            <div class="col-4">
+                                            <div class="col-3">
                                                 <label for="lastName">Last Name:</label>
                                                 <input type="text" class="form-control" id="lastName" name="lastName">
                                             </div>
-                                            <div class="col-4">
+                                            <div class="col-3">
                                                 <label for="firstName">First Name:</label>
                                                 <input type="text" class="form-control" id="firstName" name="firstName">
+                                            </div>
+                                            <div class="col-2">
+                                                <label for="middleName">Middle Name:</label>
+                                                <input type="text" class="form-control" id="middleName" name="middleName">
                                             </div>
                                             <div class="col-2">
                                                 <label for="gender">Gender:</label>
@@ -1878,13 +1882,17 @@
                                 <div class="col-10">
                                     <!-- Row 1 -->
                                     <div class="row g-2 mb-2">
-                                        <div class="col-4">
+                                        <div class="col-3">
                                             <label for="viewLastName" class="form-label">Last Name:</label>
                                             <input type="text" class="form-control" id="viewLastName" disabled readonly>
                                         </div>
-                                        <div class="col-4">
+                                        <div class="col-3">
                                             <label for="viewFirstName" class="form-label">First Name:</label>
                                             <input type="text" class="form-control" id="viewFirstName" disabled readonly>
+                                        </div>
+                                        <div class="col-2">
+                                            <label for="viewMiddleName" class="form-label">Middle Name:</label>
+                                            <input type="text" class="form-control" id="viewMiddleName" disabled readonly>
                                         </div>
                                         <div class="col-2">
                                             <label for="viewGender" class="form-label">Gender:</label>
@@ -2502,13 +2510,17 @@
                                     <div class="col-10">
                                         <!-- Row 1 -->
                                          <div class="row g-2 mb-2">
-                                            <div class="col-4">
+                                            <div class="col-3">
                                                 <label for="updateLastName">Last Name:</label>
                                                 <input type="text" class="form-control" id="updateLastName" name="updateLastName">
                                             </div>
-                                            <div class="col-4">
+                                            <div class="col-3">
                                                 <label for="updateFirstName">First Name:</label>
                                                 <input type="text" class="form-control" id="updateFirstName" name="updateFirstName">
+                                            </div>
+                                            <div class="col-2">
+                                                <label for="updateMiddleName">Middle Name:</label>
+                                                <input type="text" class="form-control" id="updateMiddleName" name="updateMiddleName">
                                             </div>
                                             <div class="col-2">
                                                 <label for="updateGender">Gender:</label>
