@@ -11,6 +11,9 @@ $(document).ready(function() {
     $('#qaTable').DataTable();
     $('#inactiveQATable').DataTable();
 
+    $('#workforceTable').DataTable();
+    $('#inactiveWorkforceTable').DataTable();
+
     $('#tlmanTable').DataTable();
     $('#inactiveTLManTable').DataTable();
 
@@ -32,6 +35,9 @@ $(document).ready(function() {
     $('#financeTable').DataTable();
     $('#inactiveFinanceTable').DataTable();
 
+    $('#itTable').DataTable();
+    $('#inactiveITTable').DataTable();
+
     $('#adminTable').DataTable();
     $('#inactiveAdminTable').DataTable();
 
@@ -50,6 +56,9 @@ $(document).ready(function() {
         $('.userDeactivate').hide();
         $('.userReactivate').hide();
     }
+
+    $(".adminView").hide();
+    $("#adminView").hide();
 
     // ADD USER
     $("#addUserForm").submit(function (e) {
@@ -150,10 +159,60 @@ $(document).ready(function() {
                     $('#viewEmailAdd').val(res.data.emailAddress);
                     $('#viewEmployeeID').val(res.data.employeeID);
                     $('#viewDepartment').val(res.data.departmentName+' - '+res.data.position);
+                    $('#viewLevelID').val(res.data.levelID);
+                    $('#viewStatus').val(res.data.activated == 1 ? 'Activated' : 'Not yet Activated');
+                    let adminUserID = $('#adminUserID').val();
+                    if (adminUserID == 14) {
+                        $(".adminView").show();
+                        $("#adminView").show();
+                    }
+                    else {
+                        $(".adminView").hide();
+                        $("#adminView").hide();
+                    }
                     $('#viewUserModal').modal('show');
                 }
             }
         });
+
+        // UPDATE USER
+        $(document).on('click', '.userUpdate', function() {
+            $("#viewUserModal").modal("hide");
+            var id_user = array[array.length - 1];
+
+            $.ajax({
+                type: "GET",
+                url: "../backend/admin/userModal.php?user_ID=" + id_user,
+                success: function(response) {
+
+                    var res = jQuery.parseJSON(response);
+
+                    if (res.status == 404) {
+                        alert(res.message);
+                    } 
+                    // EMPLOYEE
+                    else if (res.status == 200) {
+                        $('#updateUserID').val(res.data.userID);
+                        $('#updateEmployeeName').val(res.data.firstName+' '+res.data.lastName);
+                        $('#updateEmailAdd').val(res.data.emailAddress);
+                        $('#updateEmployeeID').val(res.data.employeeID);
+                        $('#updateDepartment').val(res.data.departmentName+' - '+res.data.position);
+                        $('#updateLevelID').val(res.data.levelID);
+                        $('#updateStatus').val(res.data.activated == 1 ? 'Activated' : 'Not yet Activated');
+                        let adminUserID = $('#adminUserID').val();
+                        if (adminUserID == 14) {
+                            $(".adminView").show();
+                            $("#adminView").show();
+                        }
+                        else {
+                            $(".adminView").hide();
+                            $("#adminView").hide();
+                        }
+                        $('#updateUserModal').modal('show');
+                    }
+                }
+            });
+        })
 
         // DEACTIVATE USER
         $(document).on('click', '.userDeactivate', function() {
@@ -228,6 +287,71 @@ $(document).ready(function() {
                 }
             });
         })
+    });
+
+    // UPDATE USER
+    $("#updateUserForm").submit(function (e) {
+        e.preventDefault();
+        
+        let updateUser = new FormData(this);
+        var updateUserID = $("#updateUserID").val();
+        var updateLevelID = $("#updateLevelID").val();
+        var updateStatus = $("#updateStatus").val();
+
+        if (updateUserID == "" || updateLevelID == "" || updateStatus == "") {
+            Swal.fire({
+                icon: "warning",
+                title: "Required Information",
+                text: "Please fill up all the required Information",
+            });
+        }
+        else {
+            Swal.fire({
+                icon: "question",
+                title: "Update User Information",
+                text: "Are you sure you want to save the changes you made?",
+                showCancelButton: true,
+                cancelButtonColor: "#6c757d",
+                confirmButtonColor: "#28a745",
+                confirmButtonText: "Yes",
+            }).then((result) => {
+                updateUser.append('updateUserID', updateUserID);
+                updateUser.append('updateLevelID', updateLevelID);
+                updateUser.append('updateStatus', updateStatus);
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "../backend/admin/updateUser.php",
+                        type: "POST",
+                        data: updateUser,
+                        contentType: false,
+                        processData: false,
+                        success: function (res) {
+                            const data = JSON.parse(res);
+                            var message = data.em;
+                            if (data.error == 0) {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Success",
+                                    text: message,
+                                    timer: 2000,
+                                    showConfirmButton: false,
+                                }).then(() => {
+                                    $("#updateUserModal").modal("hide");
+                                    window.location.reload();
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: "warning",
+                                    title: "Warning",
+                                    text: message,
+                                });
+                            }
+                        },
+                    });
+                }
+            });
+        }
+
     });
 
     // RESET PASSWORD 

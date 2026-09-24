@@ -56,6 +56,10 @@
                                 <!--HR BUTTON-->
                                 <button class="nav-link uncheck" id="pills-hr-tab" data-bs-toggle="pill" data-bs-target="#pills-hr" type="button" role="tab" aria-controls="pills-hr" aria-selected="false">HR</button>
                             </li>
+                            <li class="nav-item" role="presentation">
+                                <!--ADMIN BUTTON-->
+                                <button class="nav-link uncheck" id="pills-admin-tab" data-bs-toggle="pill" data-bs-target="#pills-admin" type="button" role="tab" aria-controls="pills-admin" aria-selected="false">Admin</button>
+                            </li>
                         </ul>
                     </div>
 
@@ -85,6 +89,10 @@
                                             <button class="nav-link" id="operations-qa-tab" data-bs-toggle="pill" data-bs-target="#operations-qa" type="button" role="tab" aria-controls="operations-qa" aria-selected="false">QA</button>
                                         </li>
                                         <li class="nav-item" role="presentation">
+                                            <!--WORKFORCE SUPERVISOR BUTTON-->
+                                            <button class="nav-link" id="operations-workforce-tab" data-bs-toggle="pill" data-bs-target="#operations-workforce" type="button" role="tab" aria-controls="operations-workforce" aria-selected="false">Workforce Supervisor</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
                                             <!--TL/MANAGER BUTTON-->
                                             <button class="nav-link" id="operations-tlman-tab" data-bs-toggle="pill" data-bs-target="#operations-tlman" type="button" role="tab" aria-controls="operations-tlman" aria-selected="false">TL/Manager</button>
                                         </li>
@@ -112,27 +120,66 @@
                                                     <table id="agentsTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
                                                         <thead class="bg-gray-50">
                                                             <tr>
-                                                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
-                                                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                                <?php
+                                                                    if ($_SESSION['id'] == 14) {
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Employee ID</th>";
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Name</th>";
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Email</th>";
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Level ID</th>";
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Status</th>";
+                                                                    }
+                                                                    else {
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Employee ID</th>";
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Name</th>";
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Email</th>";
+                                                                    }
+                                                                ?>
                                                             </tr>
                                                         </thead>
                                                         <tbody class="bg-white divide-y divide-gray-200">
                                                             <?php
-                                                                $employeeQuery = mysqli_query($conn, $employees->viewPersonnel());
-                                                                while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+                                                                if ($_SESSION['id'] == 14) {
+                                                                    $employeeQuery = mysqli_query($conn, $employees->viewPersonnel());
+                                                                    while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
 
-                                                                    $employee_id = $employeeDetails['id'];
-                                                                    $employee_employeeID = $employeeDetails['employeeID'];
-                                                                    $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
-                                                                    $employee_emailAddress = $employeeDetails['emailAddress'];
-                                                                    $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                                        $employee_id = $employeeDetails['userID'];
+                                                                        $employee_employeeID = $employeeDetails['employeeID'];
+                                                                        $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                                        $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                                        $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                                        $activated = $employeeDetails['activated'];
+                                                                        $levelID = $employeeDetails['levelID']; 
 
-                                                                    echo "<tr data-id='" . $employee_id . "' class='userView cursor-pointer'>";
-                                                                    echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
-                                                                    echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
-                                                                    echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
-                                                                    echo "</td>";
+                                                                        echo "<tr data-id='" . $employee_id . "' class='userView cursor-pointer'>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                                        echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                                        echo "<td class='text-center'>".$levelID."</td>";
+                                                                        if ($activated == 1) {
+                                                                            echo "<td class='text-center'><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Activated</p></td>";
+                                                                        }
+                                                                        else if ($activated == 0) {
+                                                                            echo "<td class='text-center'><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Not yet Activated</p></td>";
+                                                                        }
+                                                                        echo "</td>";
+                                                                    }
+                                                                } 
+                                                                else {
+                                                                    $employeeQuery = mysqli_query($conn, $employees->viewPersonnel());
+                                                                    while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+
+                                                                        $employee_id = $employeeDetails['userID'];
+                                                                        $employee_employeeID = $employeeDetails['employeeID'];
+                                                                        $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                                        $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                                        $employee_mobileNumber = $employeeDetails['mobileNumber'];
+
+                                                                        echo "<tr data-id='" . $employee_id . "' class='userView cursor-pointer'>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                                        echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                                        echo "</td>";
+                                                                    }
                                                                 }
                                                             ?>
                                                         </tbody>
@@ -154,7 +201,7 @@
                                                                 $employeeQuery = mysqli_query($conn, $employees->viewInactivePersonnel());
                                                                 while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
 
-                                                                    $employee_id = $employeeDetails['id'];
+                                                                    $employee_id = $employeeDetails['userID'];
                                                                     $employee_employeeID = $employeeDetails['employeeID'];
                                                                     $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
                                                                     $employee_emailAddress = $employeeDetails['emailAddress'];
@@ -194,27 +241,66 @@
                                                     <table id="trainerTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
                                                         <thead class="bg-gray-50">
                                                             <tr>
-                                                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
-                                                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                                <?php
+                                                                    if ($_SESSION['id'] == 14) {
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Employee ID</th>";
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Name</th>";
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Email</th>";
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Level ID</th>";
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Status</th>";
+                                                                    }
+                                                                    else {
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Employee ID</th>";
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Name</th>";
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Email</th>";
+                                                                    }
+                                                                ?>
                                                             </tr>
                                                         </thead>
                                                         <tbody class="bg-white divide-y divide-gray-200">
                                                             <?php
-                                                                $employeeQuery = mysqli_query($conn, $employees->viewTrainer());
-                                                                while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+                                                                if ($_SESSION['id'] == 14) {
+                                                                    $employeeQuery = mysqli_query($conn, $employees->viewTrainer());
+                                                                    while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
 
-                                                                    $employee_id = $employeeDetails['id'];
-                                                                    $employee_employeeID = $employeeDetails['employeeID'];
-                                                                    $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
-                                                                    $employee_emailAddress = $employeeDetails['emailAddress'];
-                                                                    $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                                        $employee_id = $employeeDetails['userID'];
+                                                                        $employee_employeeID = $employeeDetails['employeeID'];
+                                                                        $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                                        $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                                        $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                                        $activated = $employeeDetails['activated'];
+                                                                        $levelID = $employeeDetails['levelID']; 
 
-                                                                    echo "<tr data-id='" . $employee_id . "' class='userView cursor-pointer'>";
-                                                                    echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
-                                                                    echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
-                                                                    echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
-                                                                    echo "</td>";
+                                                                        echo "<tr data-id='" . $employee_id . "' class='userView cursor-pointer'>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                                        echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                                        echo "<td class='text-center'>".$levelID."</td>";
+                                                                        if ($activated == 1) {
+                                                                            echo "<td class='text-center'><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Activated</p></td>";
+                                                                        }
+                                                                        else if ($activated == 0) {
+                                                                            echo "<td class='text-center'><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Not yet Activated</p></td>";
+                                                                        }
+                                                                        echo "</td>";
+                                                                    }
+                                                                } 
+                                                                else {
+                                                                    $employeeQuery = mysqli_query($conn, $employees->viewTrainer());
+                                                                    while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+
+                                                                        $employee_id = $employeeDetails['userID'];
+                                                                        $employee_employeeID = $employeeDetails['employeeID'];
+                                                                        $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                                        $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                                        $employee_mobileNumber = $employeeDetails['mobileNumber'];
+
+                                                                        echo "<tr data-id='" . $employee_id . "' class='userView cursor-pointer'>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                                        echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                                        echo "</td>";
+                                                                    }
                                                                 }
                                                             ?>
                                                         </tbody>
@@ -236,7 +322,7 @@
                                                                 $employeeQuery = mysqli_query($conn, $employees->viewInactiveTrainer());
                                                                 while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
 
-                                                                    $employee_id = $employeeDetails['id'];
+                                                                    $employee_id = $employeeDetails['userID'];
                                                                     $employee_employeeID = $employeeDetails['employeeID'];
                                                                     $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
                                                                     $employee_emailAddress = $employeeDetails['emailAddress'];
@@ -276,27 +362,66 @@
                                                     <table id="smeTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
                                                         <thead class="bg-gray-50">
                                                             <tr>
-                                                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
-                                                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                                <?php
+                                                                    if ($_SESSION['id'] == 14) {
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Employee ID</th>";
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Name</th>";
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Email</th>";
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Level ID</th>";
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Status</th>";
+                                                                    }
+                                                                    else {
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Employee ID</th>";
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Name</th>";
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Email</th>";
+                                                                    }
+                                                                ?>
                                                             </tr>
                                                         </thead>
                                                         <tbody class="bg-white divide-y divide-gray-200">
                                                             <?php
-                                                                $employeeQuery = mysqli_query($conn, $employees->viewSME());
-                                                                while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+                                                                if ($_SESSION['id'] == 14) {
+                                                                    $employeeQuery = mysqli_query($conn, $employees->viewSME());
+                                                                    while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
 
-                                                                    $employee_id = $employeeDetails['id'];
-                                                                    $employee_employeeID = $employeeDetails['employeeID'];
-                                                                    $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
-                                                                    $employee_emailAddress = $employeeDetails['emailAddress'];
-                                                                    $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                                        $employee_id = $employeeDetails['userID'];
+                                                                        $employee_employeeID = $employeeDetails['employeeID'];
+                                                                        $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                                        $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                                        $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                                        $activated = $employeeDetails['activated'];
+                                                                        $levelID = $employeeDetails['levelID']; 
 
-                                                                    echo "<tr data-id='" . $employee_id . "' class='userView cursor-pointer'>";
-                                                                    echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
-                                                                    echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
-                                                                    echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
-                                                                    echo "</td>";
+                                                                        echo "<tr data-id='" . $employee_id . "' class='userView cursor-pointer'>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                                        echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                                        echo "<td class='text-center'>".$levelID."</td>";
+                                                                        if ($activated == 1) {
+                                                                            echo "<td class='text-center'><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Activated</p></td>";
+                                                                        }
+                                                                        else if ($activated == 0) {
+                                                                            echo "<td class='text-center'><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Not yet Activated</p></td>";
+                                                                        }
+                                                                        echo "</td>";
+                                                                    }
+                                                                } 
+                                                                else {
+                                                                    $employeeQuery = mysqli_query($conn, $employees->viewSME());
+                                                                    while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+
+                                                                        $employee_id = $employeeDetails['userID'];
+                                                                        $employee_employeeID = $employeeDetails['employeeID'];
+                                                                        $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                                        $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                                        $employee_mobileNumber = $employeeDetails['mobileNumber'];
+
+                                                                        echo "<tr data-id='" . $employee_id . "' class='userView cursor-pointer'>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                                        echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                                        echo "</td>";
+                                                                    }
                                                                 }
                                                             ?>
                                                         </tbody>
@@ -318,7 +443,7 @@
                                                                 $employeeQuery = mysqli_query($conn, $employees->viewInactiveSME());
                                                                 while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
 
-                                                                    $employee_id = $employeeDetails['id'];
+                                                                    $employee_id = $employeeDetails['userID'];
                                                                     $employee_employeeID = $employeeDetails['employeeID'];
                                                                     $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
                                                                     $employee_emailAddress = $employeeDetails['emailAddress'];
@@ -358,27 +483,66 @@
                                                     <table id="qaTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
                                                         <thead class="bg-gray-50">
                                                             <tr>
-                                                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
-                                                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                                <?php
+                                                                    if ($_SESSION['id'] == 14) {
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Employee ID</th>";
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Name</th>";
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Email</th>";
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Level ID</th>";
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Status</th>";
+                                                                    }
+                                                                    else {
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Employee ID</th>";
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Name</th>";
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Email</th>";
+                                                                    }
+                                                                ?>
                                                             </tr>
                                                         </thead>
                                                         <tbody class="bg-white divide-y divide-gray-200">
                                                             <?php
-                                                                $employeeQuery = mysqli_query($conn, $employees->viewQA());
-                                                                while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+                                                                if ($_SESSION['id'] == 14) {
+                                                                    $employeeQuery = mysqli_query($conn, $employees->viewQA());
+                                                                    while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
 
-                                                                    $employee_id = $employeeDetails['id'];
-                                                                    $employee_employeeID = $employeeDetails['employeeID'];
-                                                                    $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
-                                                                    $employee_emailAddress = $employeeDetails['emailAddress'];
-                                                                    $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                                        $employee_id = $employeeDetails['userID'];
+                                                                        $employee_employeeID = $employeeDetails['employeeID'];
+                                                                        $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                                        $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                                        $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                                        $activated = $employeeDetails['activated'];
+                                                                        $levelID = $employeeDetails['levelID']; 
 
-                                                                    echo "<tr data-id='" . $employee_id . "' class='userView cursor-pointer'>";
-                                                                    echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
-                                                                    echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
-                                                                    echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
-                                                                    echo "</td>";
+                                                                        echo "<tr data-id='" . $employee_id . "' class='userView cursor-pointer'>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                                        echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                                        echo "<td class='text-center'>".$levelID."</td>";
+                                                                        if ($activated == 1) {
+                                                                            echo "<td class='text-center'><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Activated</p></td>";
+                                                                        }
+                                                                        else if ($activated == 0) {
+                                                                            echo "<td class='text-center'><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Not yet Activated</p></td>";
+                                                                        }
+                                                                        echo "</td>";
+                                                                    }
+                                                                } 
+                                                                else {
+                                                                    $employeeQuery = mysqli_query($conn, $employees->viewQA());
+                                                                    while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+
+                                                                        $employee_id = $employeeDetails['userID'];
+                                                                        $employee_employeeID = $employeeDetails['employeeID'];
+                                                                        $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                                        $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                                        $employee_mobileNumber = $employeeDetails['mobileNumber'];
+
+                                                                        echo "<tr data-id='" . $employee_id . "' class='userView cursor-pointer'>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                                        echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                                        echo "</td>";
+                                                                    }
                                                                 }
                                                             ?>
                                                         </tbody>
@@ -400,7 +564,128 @@
                                                                 $employeeQuery = mysqli_query($conn, $employees->viewInactiveQA());
                                                                 while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
 
-                                                                    $employee_id = $employeeDetails['id'];
+                                                                    $employee_id = $employeeDetails['userID'];
+                                                                    $employee_employeeID = $employeeDetails['employeeID'];
+                                                                    $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                                    $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                                    $employee_mobileNumber = $employeeDetails['mobileNumber'];
+
+                                                                    echo "<tr data-id='" . $employee_id . "' class='inactiveUserView cursor-pointer'>";
+                                                                    echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                                    echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                                    echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                                    echo "</td>";
+                                                                }
+                                                            ?>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- -------------- WORKFORCE SUPERVISOR --------------- -->
+                                    <div class="tab-pane fade" id="operations-workforce" role="tabpanel" aria-labelledby="operations-workforce-tab">
+                                        <div class="card border-0">
+                                            <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                                                <li class="nav-item" role="presentation">
+                                                    <!--ACTIVE BUTTON-->
+                                                    <button class="nav-link active" id="workforce-active-tab" data-bs-toggle="pill" data-bs-target="#workforce-active" type="button" role="tab" aria-controls="workforce-active" aria-selected="true">Active</button>
+                                                </li>
+                                                <li class="nav-item" role="presentation">
+                                                    <!--INACTIVE BUTTON-->
+                                                    <button class="nav-link" id="workforce-inactive-tab" data-bs-toggle="pill" data-bs-target="#workforce-inactive" type="button" role="tab" aria-controls="workforce-inactive" aria-selected="false">Inactive</button>
+                                                </li>
+                                            </ul>
+
+                                            <div class="tab-content mt-2" id="pills-tabContent">
+                                                <!-- ACTIVE WORKFORCE TABLE  -->
+                                                <div class="tab-pane fade show active" id="workforce-active" role="tabpanel" aria-labelledby="workforce-active-tab">
+                                                    <table id="workforceTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                        <thead class="bg-gray-50">
+                                                            <tr>
+                                                                <?php
+                                                                    if ($_SESSION['id'] == 14) {
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Employee ID</th>";
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Name</th>";
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Email</th>";
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Level ID</th>";
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Status</th>";
+                                                                    }
+                                                                    else {
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Employee ID</th>";
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Name</th>";
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Email</th>";
+                                                                    }
+                                                                ?>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="bg-white divide-y divide-gray-200">
+                                                            <?php
+                                                                if ($_SESSION['id'] == 14) {
+                                                                    $employeeQuery = mysqli_query($conn, $employees->viewWorkforce());
+                                                                    while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+
+                                                                        $employee_id = $employeeDetails['userID'];
+                                                                        $employee_employeeID = $employeeDetails['employeeID'];
+                                                                        $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                                        $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                                        $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                                        $activated = $employeeDetails['activated'];
+                                                                        $levelID = $employeeDetails['levelID']; 
+
+                                                                        echo "<tr data-id='" . $employee_id . "' class='userView cursor-pointer'>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                                        echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                                        echo "<td class='text-center'>".$levelID."</td>";
+                                                                        if ($activated == 1) {
+                                                                            echo "<td class='text-center'><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Activated</p></td>";
+                                                                        }
+                                                                        else if ($activated == 0) {
+                                                                            echo "<td class='text-center'><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Not yet Activated</p></td>";
+                                                                        }
+                                                                        echo "</td>";
+                                                                    }
+                                                                } 
+                                                                else {
+                                                                    $employeeQuery = mysqli_query($conn, $employees->viewWorkforce());
+                                                                    while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+
+                                                                        $employee_id = $employeeDetails['userID'];
+                                                                        $employee_employeeID = $employeeDetails['employeeID'];
+                                                                        $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                                        $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                                        $employee_mobileNumber = $employeeDetails['mobileNumber'];
+
+                                                                        echo "<tr data-id='" . $employee_id . "' class='userView cursor-pointer'>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                                        echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                                        echo "</td>";
+                                                                    }
+                                                                }
+                                                            ?>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                                <!-- INACTIVE WORKFORCE TABLE  -->
+                                                <div class="tab-pane fade" id="workforce-inactive" role="tabpanel" aria-labelledby="workforce-inactive-tab">
+                                                    <table id="inactiveWorkforceTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
+                                                        <thead class="bg-gray-50">
+                                                            <tr>
+                                                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+                                                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="bg-white divide-y divide-gray-200">
+                                                            <?php
+                                                                $employeeQuery = mysqli_query($conn, $employees->viewInactiveWorkforce());
+                                                                while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+
+                                                                    $employee_id = $employeeDetails['userID'];
                                                                     $employee_employeeID = $employeeDetails['employeeID'];
                                                                     $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
                                                                     $employee_emailAddress = $employeeDetails['emailAddress'];
@@ -440,27 +725,66 @@
                                                     <table id="tlmanTable" class="table table-auto min-w-full divide-y divide-gray-200 table-striped table-bordered text-center pt-3 mt-2">
                                                         <thead class="bg-gray-50">
                                                             <tr>
-                                                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
-                                                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                                                <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                                <?php
+                                                                    if ($_SESSION['id'] == 14) {
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Employee ID</th>";
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Name</th>";
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Email</th>";
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Level ID</th>";
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Status</th>";
+                                                                    }
+                                                                    else {
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Employee ID</th>";
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Name</th>";
+                                                                        echo "<th class='px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider'>Email</th>";
+                                                                    }
+                                                                ?>
                                                             </tr>
                                                         </thead>
                                                         <tbody class="bg-white divide-y divide-gray-200">
                                                             <?php
-                                                                $employeeQuery = mysqli_query($conn, $employees->viewTLMan());
-                                                                while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+                                                                if ($_SESSION['id'] == 14) {
+                                                                    $employeeQuery = mysqli_query($conn, $employees->viewTLMan());
+                                                                    while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
 
-                                                                    $employee_id = $employeeDetails['id'];
-                                                                    $employee_employeeID = $employeeDetails['employeeID'];
-                                                                    $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
-                                                                    $employee_emailAddress = $employeeDetails['emailAddress'];
-                                                                    $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                                        $employee_id = $employeeDetails['userID'];
+                                                                        $employee_employeeID = $employeeDetails['employeeID'];
+                                                                        $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                                        $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                                        $employee_mobileNumber = $employeeDetails['mobileNumber'];
+                                                                        $activated = $employeeDetails['activated'];
+                                                                        $levelID = $employeeDetails['levelID']; 
 
-                                                                    echo "<tr data-id='" . $employee_id . "' class='userView cursor-pointer'>";
-                                                                    echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
-                                                                    echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
-                                                                    echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
-                                                                    echo "</td>";
+                                                                        echo "<tr data-id='" . $employee_id . "' class='userView cursor-pointer'>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                                        echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                                        echo "<td class='text-center'>".$levelID."</td>";
+                                                                        if ($activated == 1) {
+                                                                            echo "<td class='text-center'><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Activated</p></td>";
+                                                                        }
+                                                                        else if ($activated == 0) {
+                                                                            echo "<td class='text-center'><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Not yet Activated</p></td>";
+                                                                        }
+                                                                        echo "</td>";
+                                                                    }
+                                                                } 
+                                                                else {
+                                                                    $employeeQuery = mysqli_query($conn, $employees->viewTLMan());
+                                                                    while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
+
+                                                                        $employee_id = $employeeDetails['userID'];
+                                                                        $employee_employeeID = $employeeDetails['employeeID'];
+                                                                        $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
+                                                                        $employee_emailAddress = $employeeDetails['emailAddress'];
+                                                                        $employee_mobileNumber = $employeeDetails['mobileNumber'];
+
+                                                                        echo "<tr data-id='" . $employee_id . "' class='userView cursor-pointer'>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_employeeID . "</td>";
+                                                                        echo "<td class =' text-left whitespace-nowrap'>" . $employee_employeeName . "</td>";
+                                                                        echo "<td class ='whitespace-nowrap'>" . $employee_emailAddress . "</td>";
+                                                                        echo "</td>";
+                                                                    }
                                                                 }
                                                             ?>
                                                         </tbody>
@@ -482,7 +806,7 @@
                                                                 $employeeQuery = mysqli_query($conn, $employees->viewInactiveTLMan());
                                                                 while ($employeeDetails = mysqli_fetch_array($employeeQuery)) {
 
-                                                                    $employee_id = $employeeDetails['id'];
+                                                                    $employee_id = $employeeDetails['userID'];
                                                                     $employee_employeeID = $employeeDetails['employeeID'];
                                                                     $employee_employeeName = $employeeDetails['firstName'] . " " . $employeeDetails['lastName'];
                                                                     $employee_emailAddress = $employeeDetails['emailAddress'];
@@ -525,27 +849,66 @@
                                         <div class="tab-pane fade show active" id="recruitment-active" role="tabpanel" aria-labelledby="recruitment-active-tab">
                                             <table class="table table-striped table-bordered pt-2" id="recruitmentTable">
                                                 <thead class="table-light">
-                                                    <th>Employee ID</th>
-                                                    <th>Name</th>
-                                                    <th>Email Address</th>
+                                                    <?php
+                                                        if ($_SESSION['id'] == 14) {
+                                                            echo "<th>Employee ID</th>";
+                                                            echo "<th>Name</th>";
+                                                            echo "<th>Email Address</th>";
+                                                            echo "<th class='text-center'>Level ID</th>";
+                                                            echo "<th class='text-center'>Status</th>";
+                                                        }
+                                                        else {
+                                                            echo "<th>Employee ID</th>";
+                                                            echo "<th>Name</th>";
+                                                            echo "<th>Email Address</th>";
+                                                        }
+                                                    ?>
                                                 </thead>
                                                 <tbody>
                                                     <?php
-                                                        $facilities = mysqli_query($conn, $employees->viewRecruitment());
-                                                        while ($facilitiesDetails = mysqli_fetch_array($facilities)) {
-                                                            
-                                                            $userID = $facilitiesDetails['userID'];
-                                                            $employeeID = $facilitiesDetails['employeeID'];
-                                                            $facilitiesName = $facilitiesDetails['firstName'] . " " . $facilitiesDetails['lastName'];
-                                                            $emailAdd = $facilitiesDetails['emailAddress'];
-                                                
+                                                        if ($_SESSION['id'] == 14) {
+                                                            $facilities = mysqli_query($conn, $employees->viewRecruitment());
+                                                            while ($facilitiesDetails = mysqli_fetch_array($facilities)) {
+                                                                
+                                                                $userID = $facilitiesDetails['userID'];
+                                                                $employeeID = $facilitiesDetails['employeeID'];
+                                                                $facilitiesName = $facilitiesDetails['firstName'] . " " . $facilitiesDetails['lastName'];
+                                                                $emailAdd = $facilitiesDetails['emailAddress'];
+                                                                $activated = $facilitiesDetails['activated'];
+                                                                $levelID = $facilitiesDetails['levelID'];  
 
-                                                            echo "<tr data-id='".$userID."' class='userView cursor-pointer'>";
-                                                            echo "<td>".$employeeID."</td>";
-                                                            echo "<td>".$facilitiesName."</td>";
-                                                            echo "<td>".$emailAdd."</td>";
-                                                            echo "</td>";
+                                                                echo "<tr data-id='".$userID."' class='userView cursor-pointer'>";
+                                                                echo "<td>".$employeeID."</td>";
+                                                                echo "<td>".$facilitiesName."</td>";
+                                                                echo "<td>".$emailAdd."</td>";
+                                                                echo "<td class='text-center'>".$levelID."</td>";
+                                                                if ($activated == 1) {
+                                                                    echo "<td class='text-center'><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Activated</p></td>";
+                                                                }
+                                                                else if ($activated == 0) {
+                                                                    echo "<td class='text-center'><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Not yet Activated</p></td>";
+                                                                }
+                                                                echo "</td>";
 
+                                                            }
+                                                        } 
+                                                        else {
+                                                            $facilities = mysqli_query($conn, $employees->viewRecruitment());
+                                                            while ($facilitiesDetails = mysqli_fetch_array($facilities)) {
+                                                                
+                                                                $userID = $facilitiesDetails['userID'];
+                                                                $employeeID = $facilitiesDetails['employeeID'];
+                                                                $facilitiesName = $facilitiesDetails['firstName'] . " " . $facilitiesDetails['lastName'];
+                                                                $emailAdd = $facilitiesDetails['emailAddress'];
+                                                    
+
+                                                                echo "<tr data-id='".$userID."' class='userView cursor-pointer'>";
+                                                                echo "<td>".$employeeID."</td>";
+                                                                echo "<td>".$facilitiesName."</td>";
+                                                                echo "<td>".$emailAdd."</td>";
+                                                                echo "</td>";
+
+                                                            }
                                                         }
                                                     ?>
                                                 </tbody>
@@ -607,27 +970,66 @@
                                         <div class="tab-pane fade show active" id="business-active" role="tabpanel" aria-labelledby="business-active-tab">
                                             <table class="table table-striped table-bordered pt-2" id="businessTable">
                                                 <thead class="table-light">
-                                                    <th>Employee ID</th>
-                                                    <th>Name</th>
-                                                    <th>Email Address</th>
+                                                    <?php
+                                                        if ($_SESSION['id'] == 14) {
+                                                            echo "<th>Employee ID</th>";
+                                                            echo "<th>Name</th>";
+                                                            echo "<th>Email Address</th>";
+                                                            echo "<th class='text-center'>Level ID</th>";
+                                                            echo "<th class='text-center'>Status</th>";
+                                                        }
+                                                        else {
+                                                            echo "<th>Employee ID</th>";
+                                                            echo "<th>Name</th>";
+                                                            echo "<th>Email Address</th>";
+                                                        }
+                                                    ?>
                                                 </thead>
                                                 <tbody>
                                                     <?php
-                                                        $facilities = mysqli_query($conn, $employees->viewBusinessDev());
-                                                        while ($facilitiesDetails = mysqli_fetch_array($facilities)) {
-                                                            
-                                                            $userID = $facilitiesDetails['userID'];
-                                                            $employeeID = $facilitiesDetails['employeeID'];
-                                                            $facilitiesName = $facilitiesDetails['firstName'] . " " . $facilitiesDetails['lastName'];
-                                                            $emailAdd = $facilitiesDetails['emailAddress'];
-                                                
+                                                        if ($_SESSION['id'] == 14) {
+                                                            $facilities = mysqli_query($conn, $employees->viewBusinessDev());
+                                                            while ($facilitiesDetails = mysqli_fetch_array($facilities)) {
+                                                                
+                                                                $userID = $facilitiesDetails['userID'];
+                                                                $employeeID = $facilitiesDetails['employeeID'];
+                                                                $facilitiesName = $facilitiesDetails['firstName'] . " " . $facilitiesDetails['lastName'];
+                                                                $emailAdd = $facilitiesDetails['emailAddress'];
+                                                                $activated = $facilitiesDetails['activated'];
+                                                                $levelID = $facilitiesDetails['levelID'];    
 
-                                                            echo "<tr data-id='".$userID."' class='userView cursor-pointer'>";
-                                                            echo "<td>".$employeeID."</td>";
-                                                            echo "<td>".$facilitiesName."</td>";
-                                                            echo "<td>".$emailAdd."</td>";
-                                                            echo "</td>";
+                                                                echo "<tr data-id='".$userID."' class='userView cursor-pointer'>";
+                                                                echo "<td>".$employeeID."</td>";
+                                                                echo "<td>".$facilitiesName."</td>";
+                                                                echo "<td>".$emailAdd."</td>";
+                                                                echo "<td class='text-center'>".$levelID."</td>";
+                                                                if ($activated == 1) {
+                                                                    echo "<td class='text-center'><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Activated</p></td>";
+                                                                }
+                                                                else if ($activated == 0) {
+                                                                    echo "<td class='text-center'><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Not yet Activated</p></td>";
+                                                                }
+                                                                echo "</td>";
 
+                                                            }
+                                                        } 
+                                                        else {
+                                                            $facilities = mysqli_query($conn, $employees->viewBusinessDev());
+                                                            while ($facilitiesDetails = mysqli_fetch_array($facilities)) {
+                                                                
+                                                                $userID = $facilitiesDetails['userID'];
+                                                                $employeeID = $facilitiesDetails['employeeID'];
+                                                                $facilitiesName = $facilitiesDetails['firstName'] . " " . $facilitiesDetails['lastName'];
+                                                                $emailAdd = $facilitiesDetails['emailAddress'];
+                                                    
+
+                                                                echo "<tr data-id='".$userID."' class='userView cursor-pointer'>";
+                                                                echo "<td>".$employeeID."</td>";
+                                                                echo "<td>".$facilitiesName."</td>";
+                                                                echo "<td>".$emailAdd."</td>";
+                                                                echo "</td>";
+
+                                                            }
                                                         }
                                                     ?>
                                                 </tbody>
@@ -689,27 +1091,66 @@
                                         <div class="tab-pane fade show active" id="facilities-active" role="tabpanel" aria-labelledby="facilities-active-tab">
                                             <table class="table table-striped table-bordered pt-2" id="facilitiesTable">
                                                 <thead class="table-light">
-                                                    <th>Employee ID</th>
-                                                    <th>Name</th>
-                                                    <th>Email Address</th>
+                                                    <?php
+                                                        if ($_SESSION['id'] == 14) {
+                                                            echo "<th>Employee ID</th>";
+                                                            echo "<th>Name</th>";
+                                                            echo "<th>Email Address</th>";
+                                                            echo "<th class='text-center'>Level ID</th>";
+                                                            echo "<th class='text-center'>Status</th>";
+                                                        }
+                                                        else {
+                                                            echo "<th>Employee ID</th>";
+                                                            echo "<th>Name</th>";
+                                                            echo "<th>Email Address</th>";
+                                                        }
+                                                    ?>
                                                 </thead>
                                                 <tbody>
                                                     <?php
-                                                        $facilities = mysqli_query($conn, $employees->viewFacilities());
-                                                        while ($facilitiesDetails = mysqli_fetch_array($facilities)) {
-                                                            
-                                                            $userID = $facilitiesDetails['userID'];
-                                                            $employeeID = $facilitiesDetails['employeeID'];
-                                                            $facilitiesName = $facilitiesDetails['firstName'] . " " . $facilitiesDetails['lastName'];
-                                                            $emailAdd = $facilitiesDetails['emailAddress'];
-                                                
+                                                    if ($_SESSION['id'] == 14) {
+                                                            $facilities = mysqli_query($conn, $employees->viewFacilities());
+                                                            while ($facilitiesDetails = mysqli_fetch_array($facilities)) {
+                                                                
+                                                                $userID = $facilitiesDetails['userID'];
+                                                                $employeeID = $facilitiesDetails['employeeID'];
+                                                                $facilitiesName = $facilitiesDetails['firstName'] . " " . $facilitiesDetails['lastName'];
+                                                                $emailAdd = $facilitiesDetails['emailAddress'];
+                                                                $activated = $facilitiesDetails['activated'];
+                                                                $levelID = $facilitiesDetails['levelID'];    
 
-                                                            echo "<tr data-id='".$userID."' class='userView cursor-pointer'>";
-                                                            echo "<td>".$employeeID."</td>";
-                                                            echo "<td>".$facilitiesName."</td>";
-                                                            echo "<td>".$emailAdd."</td>";
-                                                            echo "</td>";
+                                                                echo "<tr data-id='".$userID."' class='userView cursor-pointer'>";
+                                                                echo "<td>".$employeeID."</td>";
+                                                                echo "<td>".$facilitiesName."</td>";
+                                                                echo "<td>".$emailAdd."</td>";
+                                                                echo "<td class='text-center'>".$levelID."</td>";
+                                                                if ($activated == 1) {
+                                                                    echo "<td class='text-center'><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Activated</p></td>";
+                                                                }
+                                                                else if ($activated == 0) {
+                                                                    echo "<td class='text-center'><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Not yet Activated</p></td>";
+                                                                }
+                                                                echo "</td>";
 
+                                                            }
+                                                        } 
+                                                        else {
+                                                            $facilities = mysqli_query($conn, $employees->viewFacilities());
+                                                            while ($facilitiesDetails = mysqli_fetch_array($facilities)) {
+                                                                
+                                                                $userID = $facilitiesDetails['userID'];
+                                                                $employeeID = $facilitiesDetails['employeeID'];
+                                                                $facilitiesName = $facilitiesDetails['firstName'] . " " . $facilitiesDetails['lastName'];
+                                                                $emailAdd = $facilitiesDetails['emailAddress'];
+                                                    
+
+                                                                echo "<tr data-id='".$userID."' class='userView cursor-pointer'>";
+                                                                echo "<td>".$employeeID."</td>";
+                                                                echo "<td>".$facilitiesName."</td>";
+                                                                echo "<td>".$emailAdd."</td>";
+                                                                echo "</td>";
+
+                                                            }
                                                         }
                                                     ?>
                                                 </tbody>
@@ -770,27 +1211,66 @@
                                         <div class="tab-pane fade show active" id="logistics-active" role="tabpanel" aria-labelledby="logistics-active-tab">
                                             <table class="table table-striped table-bordered pt-2" id="logisticsTable">
                                                 <thead class="table-light">
-                                                    <th>Employee ID</th>
-                                                    <th>Name</th>
-                                                    <th>Email Address</th>
+                                                    <?php
+                                                        if ($_SESSION['id'] == 14) {
+                                                            echo "<th>Employee ID</th>";
+                                                            echo "<th>Name</th>";
+                                                            echo "<th>Email Address</th>";
+                                                            echo "<th class='text-center'>Level ID</th>";
+                                                            echo "<th class='text-center'>Status</th>";
+                                                        }
+                                                        else {
+                                                            echo "<th>Employee ID</th>";
+                                                            echo "<th>Name</th>";
+                                                            echo "<th>Email Address</th>";
+                                                        }
+                                                    ?>
                                                 </thead>
                                                 <tbody>
                                                     <?php
-                                                        $facilities = mysqli_query($conn, $employees->viewLogistics());
-                                                        while ($facilitiesDetails = mysqli_fetch_array($facilities)) {
-                                                            
-                                                            $userID = $facilitiesDetails['userID'];
-                                                            $employeeID = $facilitiesDetails['employeeID'];
-                                                            $facilitiesName = $facilitiesDetails['firstName'] . " " . $facilitiesDetails['lastName'];
-                                                            $emailAdd = $facilitiesDetails['emailAddress'];
-                                                
+                                                        if ($_SESSION['id'] == 14) {
+                                                            $facilities = mysqli_query($conn, $employees->viewLogistics());
+                                                            while ($facilitiesDetails = mysqli_fetch_array($facilities)) {
+                                                                
+                                                                $userID = $facilitiesDetails['userID'];
+                                                                $employeeID = $facilitiesDetails['employeeID'];
+                                                                $facilitiesName = $facilitiesDetails['firstName'] . " " . $facilitiesDetails['lastName'];
+                                                                $emailAdd = $facilitiesDetails['emailAddress'];
+                                                                $activated = $facilitiesDetails['activated'];
+                                                                $levelID = $facilitiesDetails['levelID']; 
 
-                                                            echo "<tr data-id='".$userID."' class='userView cursor-pointer'>";
-                                                            echo "<td>".$employeeID."</td>";
-                                                            echo "<td>".$facilitiesName."</td>";
-                                                            echo "<td>".$emailAdd."</td>";
-                                                            echo "</td>";
+                                                                echo "<tr data-id='".$userID."' class='userView cursor-pointer'>";
+                                                                echo "<td>".$employeeID."</td>";
+                                                                echo "<td>".$facilitiesName."</td>";
+                                                                echo "<td>".$emailAdd."</td>";
+                                                                echo "<td class='text-center'>".$levelID."</td>";
+                                                                if ($activated == 1) {
+                                                                    echo "<td class='text-center'><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Activated</p></td>";
+                                                                }
+                                                                else if ($activated == 0) {
+                                                                    echo "<td class='text-center'><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Not yet Activated</p></td>";
+                                                                }
+                                                                echo "</td>";
 
+                                                            }
+                                                        } 
+                                                        else {
+                                                            $facilities = mysqli_query($conn, $employees->viewLogistics());
+                                                            while ($facilitiesDetails = mysqli_fetch_array($facilities)) {
+                                                                
+                                                                $userID = $facilitiesDetails['userID'];
+                                                                $employeeID = $facilitiesDetails['employeeID'];
+                                                                $facilitiesName = $facilitiesDetails['firstName'] . " " . $facilitiesDetails['lastName'];
+                                                                $emailAdd = $facilitiesDetails['emailAddress'];
+                                                    
+
+                                                                echo "<tr data-id='".$userID."' class='userView cursor-pointer'>";
+                                                                echo "<td>".$employeeID."</td>";
+                                                                echo "<td>".$facilitiesName."</td>";
+                                                                echo "<td>".$emailAdd."</td>";
+                                                                echo "</td>";
+
+                                                            }
                                                         }
                                                     ?>
                                                 </tbody>
@@ -852,27 +1332,66 @@
                                         <div class="tab-pane fade show active" id="hr-active" role="tabpanel" aria-labelledby="hr-active-tab">
                                             <table class="table table-striped table-bordered pt-2" id="hrTable">
                                                 <thead class="table-light">
-                                                    <th>Employee ID</th>
-                                                    <th>Name</th>
-                                                    <th>Email Address</th>
+                                                    <?php
+                                                        if ($_SESSION['id'] == 14) {
+                                                            echo "<th>Employee ID</th>";
+                                                            echo "<th>Name</th>";
+                                                            echo "<th>Email Address</th>";
+                                                            echo "<th class='text-center'>Level ID</th>";
+                                                            echo "<th class='text-center'>Status</th>";
+                                                        }
+                                                        else {
+                                                            echo "<th>Employee ID</th>";
+                                                            echo "<th>Name</th>";
+                                                            echo "<th>Email Address</th>";
+                                                        }
+                                                    ?>
                                                 </thead>
                                                 <tbody>
                                                     <?php
-                                                        $hr = mysqli_query($conn, $employees->viewHR());
-                                                        while ($hrDetails = mysqli_fetch_array($hr)) {
-                                                            
-                                                            $userID = $hrDetails['userID'];
-                                                            $employeeID = $hrDetails['employeeID'];
-                                                            $hrstaffName = $hrDetails['firstName'] . " " . $hrDetails['lastName'];
-                                                            $emailAdd = $hrDetails['emailAddress'];
-                                                
+                                                        if ($_SESSION['id'] == 14) {
+                                                            $hr = mysqli_query($conn, $employees->viewHR());
+                                                            while ($hrDetails = mysqli_fetch_array($hr)) {
+                                                                
+                                                                $userID = $hrDetails['userID'];
+                                                                $employeeID = $hrDetails['employeeID'];
+                                                                $hrstaffName = $hrDetails['firstName'] . " " . $hrDetails['lastName'];
+                                                                $emailAdd = $hrDetails['emailAddress'];
+                                                                $activated = $hrDetails['activated'];
+                                                                $levelID = $hrDetails['levelID'];     
 
-                                                            echo "<tr data-id='".$userID."' class='userView cursor-pointer'>";
-                                                            echo "<td>".$employeeID."</td>";
-                                                            echo "<td>".$hrstaffName."</td>";
-                                                            echo "<td>".$emailAdd."</td>";
-                                                            echo "</td>";
+                                                                echo "<tr data-id='".$userID."' class='userView cursor-pointer'>";
+                                                                echo "<td>".$employeeID."</td>";
+                                                                echo "<td>".$hrstaffName."</td>";
+                                                                echo "<td>".$emailAdd."</td>";
+                                                                echo "<td class='text-center'>".$levelID."</td>";
+                                                                if ($activated == 1) {
+                                                                    echo "<td class='text-center'><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Activated</p></td>";
+                                                                }
+                                                                else if ($activated == 0) {
+                                                                    echo "<td class='text-center'><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Not yet Activated</p></td>";
+                                                                }
+                                                                echo "</td>";
 
+                                                            }
+                                                        } 
+                                                        else {
+                                                            $hr = mysqli_query($conn, $employees->viewHR());
+                                                            while ($hrDetails = mysqli_fetch_array($hr)) {
+                                                                
+                                                                $userID = $hrDetails['userID'];
+                                                                $employeeID = $hrDetails['employeeID'];
+                                                                $hrstaffName = $hrDetails['firstName'] . " " . $hrDetails['lastName'];
+                                                                $emailAdd = $hrDetails['emailAddress'];
+                                                    
+
+                                                                echo "<tr data-id='".$userID."' class='userView cursor-pointer'>";
+                                                                echo "<td>".$employeeID."</td>";
+                                                                echo "<td>".$hrstaffName."</td>";
+                                                                echo "<td>".$emailAdd."</td>";
+                                                                echo "</td>";
+
+                                                            }
                                                         }
                                                     ?>
                                                 </tbody>
@@ -934,27 +1453,66 @@
                                         <div class="tab-pane fade show active" id="finance-active" role="tabpanel" aria-labelledby="finance-active-tab">
                                             <table class="table table-striped table-bordered pt-2" id="financeTable">
                                                 <thead class="table-light">
-                                                    <th>Employee ID</th>
-                                                    <th>Name</th>
-                                                    <th>Email Address</th>
+                                                    <?php
+                                                        if ($_SESSION['id'] == 14) {
+                                                            echo "<th>Employee ID</th>";
+                                                            echo "<th>Name</th>";
+                                                            echo "<th>Email Address</th>";
+                                                            echo "<th class='text-center'>Level ID</th>";
+                                                            echo "<th class='text-center'>Status</th>";
+                                                        }
+                                                        else {
+                                                            echo "<th>Employee ID</th>";
+                                                            echo "<th>Name</th>";
+                                                            echo "<th>Email Address</th>";
+                                                        }
+                                                    ?>
                                                 </thead>
                                                 <tbody>
                                                     <?php
-                                                        $finance = mysqli_query($conn, $employees->viewFinance());
-                                                        while ($financeDetails = mysqli_fetch_array($finance)) {
-                                                            
-                                                            $userID = $financeDetails['userID'];
-                                                            $employeeID = $financeDetails['employeeID'];
-                                                            $financestaffName = $financeDetails['firstName'] . " " . $financeDetails['lastName'];
-                                                            $emailAdd = $financeDetails['emailAddress'];
-                                                
+                                                        if ($_SESSION['id'] == 14) {
+                                                            $finance = mysqli_query($conn, $employees->viewFinance());
+                                                            while ($financeDetails = mysqli_fetch_array($finance)) {
+                                                                
+                                                                $userID = $financeDetails['userID'];
+                                                                $employeeID = $financeDetails['employeeID'];
+                                                                $financestaffName = $financeDetails['firstName'] . " " . $financeDetails['lastName'];
+                                                                $emailAdd = $financeDetails['emailAddress'];
+                                                                $activated = $financeDetails['activated'];
+                                                                $levelID = $financeDetails['levelID'];
 
-                                                            echo "<tr data-id='".$userID."' class='userView cursor-pointer'>";
-                                                            echo "<td>".$employeeID."</td>";
-                                                            echo "<td>".$financestaffName."</td>";
-                                                            echo "<td>".$emailAdd."</td>";
-                                                            echo "</td>";
+                                                                echo "<tr data-id='".$userID."' class='userView cursor-pointer'>";
+                                                                echo "<td>".$employeeID."</td>";
+                                                                echo "<td>".$financestaffName."</td>";
+                                                                echo "<td>".$emailAdd."</td>";
+                                                                echo "<td class='text-center'>".$levelID."</td>";
+                                                                if ($activated == 1) {
+                                                                    echo "<td class='text-center'><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Activated</p></td>";
+                                                                }
+                                                                else if ($activated == 0) {
+                                                                    echo "<td class='text-center'><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Not yet Activated</p></td>";
+                                                                }
+                                                                echo "</td>";
 
+                                                            }
+                                                        } 
+                                                        else {
+                                                            $finance = mysqli_query($conn, $employees->viewFinance());
+                                                            while ($financeDetails = mysqli_fetch_array($finance)) {
+                                                                
+                                                                $userID = $financeDetails['userID'];
+                                                                $employeeID = $financeDetails['employeeID'];
+                                                                $financestaffName = $financeDetails['firstName'] . " " . $financeDetails['lastName'];
+                                                                $emailAdd = $financeDetails['emailAddress'];
+                                                    
+
+                                                                echo "<tr data-id='".$userID."' class='userView cursor-pointer'>";
+                                                                echo "<td>".$employeeID."</td>";
+                                                                echo "<td>".$financestaffName."</td>";
+                                                                echo "<td>".$emailAdd."</td>";
+                                                                echo "</td>";
+
+                                                            }
                                                         }
                                                     ?>
                                                 </tbody>
@@ -1014,29 +1572,68 @@
                                     <div class="tab-content" id="pills-tabContent">
                                         <!-- ACTIVE IT TABLE  -->
                                         <div class="tab-pane fade show active" id="admin-active" role="tabpanel" aria-labelledby="admin-active-tab">
-                                            <table class="table table-striped table-bordered pt-2" id="adminTable">
+                                            <table class="table table-striped table-bordered pt-2" id="itTable">
                                                 <thead class="table-light">
-                                                    <th>Employee ID</th>
-                                                    <th>Name</th>
-                                                    <th>Email Address</th>
+                                                    <?php
+                                                        if ($_SESSION['id'] == 14) {
+                                                            echo "<th>Employee ID</th>";
+                                                            echo "<th>Name</th>";
+                                                            echo "<th>Email Address</th>";
+                                                            echo "<th class='text-center'>Level ID</th>";
+                                                            echo "<th class='text-center'>Status</th>";
+                                                        }
+                                                        else {
+                                                            echo "<th>Employee ID</th>";
+                                                            echo "<th>Name</th>";
+                                                            echo "<th>Email Address</th>";
+                                                        }
+                                                    ?>
                                                 </thead>
                                                 <tbody>
                                                     <?php
-                                                        $it = mysqli_query($conn, $employees->viewIT());
-                                                        while ($adminDetails = mysqli_fetch_array($it)) {
-                                                            
-                                                            $userID = $adminDetails['userID'];
-                                                            $employeeID = $adminDetails['employeeID'];
-                                                            $itstaffName = $adminDetails['firstName'] . " " . $adminDetails['lastName'];
-                                                            $itEmailAdd = $adminDetails['emailAddress'];
-                                                
+                                                        if ($_SESSION['id'] == 14) {
+                                                            $it = mysqli_query($conn, $employees->viewIT());
+                                                            while ($adminDetails = mysqli_fetch_array($it)) {
+                                                                
+                                                                $userID = $adminDetails['userID'];
+                                                                $employeeID = $adminDetails['employeeID'];
+                                                                $itstaffName = $adminDetails['firstName'] . " " . $adminDetails['lastName'];
+                                                                $itEmailAdd = $adminDetails['emailAddress'];
+                                                                $activated = $adminDetails['activated'];
+                                                                $levelID = $adminDetails['levelID'];
 
-                                                            echo "<tr data-id='".$userID."' class='userView cursor-pointer'>";
-                                                            echo "<td>".$employeeID."</td>";
-                                                            echo "<td>".$itstaffName."</td>";
-                                                            echo "<td>".$itEmailAdd."</td>";
-                                                            echo "</td>";
+                                                                echo "<tr data-id='".$userID."' class='userView cursor-pointer'>";
+                                                                echo "<td>".$employeeID."</td>";
+                                                                echo "<td>".$itstaffName."</td>";
+                                                                echo "<td>".$itEmailAdd."</td>";
+                                                                echo "<td class='text-center'>".$levelID."</td>";
+                                                                if ($activated == 1) {
+                                                                    echo "<td class='text-center'><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Activated</p></td>";
+                                                                }
+                                                                else if ($activated == 0) {
+                                                                    echo "<td class='text-center'><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Not yet Activated</p></td>";
+                                                                }
+                                                                echo "</td>";
 
+                                                            }
+                                                        } 
+                                                        else {
+                                                            $it = mysqli_query($conn, $employees->viewIT());
+                                                            while ($adminDetails = mysqli_fetch_array($it)) {
+                                                                
+                                                                $userID = $adminDetails['userID'];
+                                                                $employeeID = $adminDetails['employeeID'];
+                                                                $itstaffName = $adminDetails['firstName'] . " " . $adminDetails['lastName'];
+                                                                $itEmailAdd = $adminDetails['emailAddress'];
+                                                    
+
+                                                                echo "<tr data-id='".$userID."' class='userView cursor-pointer'>";
+                                                                echo "<td>".$employeeID."</td>";
+                                                                echo "<td>".$itstaffName."</td>";
+                                                                echo "<td>".$itEmailAdd."</td>";
+                                                                echo "</td>";
+
+                                                            }
                                                         }
                                                     ?>
                                                 </tbody>
@@ -1044,6 +1641,127 @@
                                         </div>
 
                                         <!-- INACTIVE IT TABLE  -->
+                                        <div class="tab-pane fade" id="admin-inactive" role="tabpanel" aria-labelledby="admin-inactive-tab">
+                                            <table class="table table-striped table-bordered  pt-2" id="inactiveITTable">
+                                                <thead class="table-light">
+                                                    <th>Employee ID</th>
+                                                    <th>Name</th>
+                                                    <th>Email Address</th>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                        $inactiveAdmin = mysqli_query($conn, $employees->viewInactiveIT());
+                                                        while ($inactiveAdminDetails = mysqli_fetch_array($inactiveAdmin)) {
+                                                            
+                                                            $userID = $inactiveAdminDetails['userID'];
+                                                            $employeeID = $inactiveAdminDetails['employeeID'];
+                                                            $inactiveAdminName = $inactiveAdminDetails['firstName'] . " " . $inactiveAdminDetails['lastName'];
+                                                            $inactiveAdminEmailAdd = $inactiveAdminDetails['emailAddress'];
+                                                
+
+                                                            echo "<tr data-id='".$userID."' class='inactiveUserView cursor-pointer'>";
+                                                            echo "<td>".$employeeID."</td>";
+                                                            echo "<td>".$inactiveAdminName."</td>";
+                                                            echo "<td>".$inactiveAdminEmailAdd."</td>";
+                                                            echo "</td>";
+
+                                                        }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <!-- -------------------------------------------- ADMIN TAB --------------------------------------------- -->
+                            <!-- ------------------------------------------------------------------------------------------------- -->
+                            <div class="tab-pane fade" id="pills-admin" role="tabpanel" aria-labelledby="pills-admin-tab">
+                                <div class="card border-0">
+                                    <ul class="nav nav-pills mt-0 mb-3" id="pills-tab-inactive" role="tablist">
+                                        <!-- ACTIVE BUTTON -->
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link active" id="admin-active-tab" data-bs-toggle="pill" data-bs-target="#admin-active" type="button" role="tab" aria-controls="admin-active" aria-selected="true">Active</button>
+                                        </li>
+                                        <!-- INACTIVE BUTTON -->
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="admin-inactive-tab" data-bs-toggle="pill" data-bs-target="#admin-inactive" type="button" role="tab" aria-controls="admin-inactive" aria-selected="false">Inactive</button>
+                                        </li>
+                                    </ul>
+
+                                    <div class="tab-content" id="pills-tabContent">
+                                        <!-- ACTIVE ADMIN TABLE  -->
+                                        <div class="tab-pane fade show active" id="admin-active" role="tabpanel" aria-labelledby="admin-active-tab">
+                                            <table class="table table-striped table-bordered pt-2" id="adminTable">
+                                                <thead class="table-light">
+                                                    <?php
+                                                        if ($_SESSION['id'] == 14) {
+                                                            echo "<th>Employee ID</th>";
+                                                            echo "<th>Name</th>";
+                                                            echo "<th>Email Address</th>";
+                                                            echo "<th class='text-center'>Level ID</th>";
+                                                            echo "<th class='text-center'>Status</th>";
+                                                        }
+                                                        else {
+                                                            echo "<th>Employee ID</th>";
+                                                            echo "<th>Name</th>";
+                                                            echo "<th>Email Address</th>";
+                                                        }
+                                                    ?>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                        if ($_SESSION['id'] == 14) {
+                                                            $admin = mysqli_query($conn, $employees->viewAdmin());
+                                                            while ($adminDetails = mysqli_fetch_array($admin)) {
+                                                                
+                                                                $userID = $adminDetails['userID'];
+                                                                $employeeID = $adminDetails['employeeID'];
+                                                                $itstaffName = $adminDetails['firstName'] . " " . $adminDetails['lastName'];
+                                                                $itEmailAdd = $adminDetails['emailAddress'];
+                                                                $activated = $adminDetails['activated'];
+                                                                $levelID = $adminDetails['levelID'];                                                    
+
+                                                                echo "<tr data-id='".$userID."' class='userView cursor-pointer'>";
+                                                                echo "<td>".$employeeID."</td>";
+                                                                echo "<td>".$itstaffName."</td>";
+                                                                echo "<td>".$itEmailAdd."</td>";
+                                                                echo "<td class='text-center'>".$levelID."</td>";
+                                                                if ($activated == 1) {
+                                                                    echo "<td class='text-center'><p class='inline-block bg-green-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Activated</p></td>";
+                                                                }
+                                                                else if ($activated == 0) {
+                                                                    echo "<td class='text-center'><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>Not yet Activated</p></td>";
+                                                                }
+                                                                echo "</td>";
+
+                                                            }
+                                                        } 
+                                                        else {
+                                                            $admin = mysqli_query($conn, $employees->viewAdmin());
+                                                            while ($adminDetails = mysqli_fetch_array($admin)) {
+                                                                
+                                                                $userID = $adminDetails['userID'];
+                                                                $employeeID = $adminDetails['employeeID'];
+                                                                $itstaffName = $adminDetails['firstName'] . " " . $adminDetails['lastName'];
+                                                                $itEmailAdd = $adminDetails['emailAddress'];
+                                                    
+
+                                                                echo "<tr data-id='".$userID."' class='userView cursor-pointer'>";
+                                                                echo "<td>".$employeeID."</td>";
+                                                                echo "<td>".$itstaffName."</td>";
+                                                                echo "<td>".$itEmailAdd."</td>";
+                                                                echo "</td>";
+
+                                                            }
+                                                        }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <!-- INACTIVE ADMIN TABLE  -->
                                         <div class="tab-pane fade" id="admin-inactive" role="tabpanel" aria-labelledby="admin-inactive-tab">
                                             <table class="table table-striped table-bordered  pt-2" id="inactiveAdminTable">
                                                 <thead class="table-light">
@@ -1053,7 +1771,7 @@
                                                 </thead>
                                                 <tbody>
                                                     <?php
-                                                        $inactiveAdmin = mysqli_query($conn, $employees->viewInactiveIT());
+                                                        $inactiveAdmin = mysqli_query($conn, $employees->viewInactiveAdmin());
                                                         while ($inactiveAdminDetails = mysqli_fetch_array($inactiveAdmin)) {
                                                             
                                                             $userID = $inactiveAdminDetails['userID'];
@@ -1247,6 +1965,7 @@
                     <div class="modal-content" id="viewUserModal">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="viewUserLabel">View User</h1>
+                            <input type="hidden" id="adminUserID" name="adminUserID" value=<?php echo $_SESSION['id'];  ?>>
                         </div>
                         <div class="modal-body">
                             <form>
@@ -1294,10 +2013,28 @@
                                         <input type="text" class="form-control" id="viewDepartment" disabled>
                                     </div>
                                 </div>
+
+                                <div class="row g-3 mb-2 adminView">
+                                    <div class="col-3">
+                                        <label for="viewLevelID">Level ID</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input type="text" class="form-control" id="viewLevelID" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mb-2 adminView">
+                                    <div class="col-3">
+                                        <label for="viewStatus">Status</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input type="text" class="form-control" id="viewStatus" disabled>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <!-- <button type="button" class="btn btn-primary userUpdate">Update</button> -->
+                            <button type="button" class="btn btn-primary userUpdate" id="adminView">Update</button>
                             <button type="button" class="btn btn-warning userResetPassword">Reset Password</button>
                             <button type="button" class="btn btn-danger userDeactivate">Deactivate</button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -1305,6 +2042,103 @@
                     </div>
                 </div>
             </div>
+
+            <!--------------------------------------------------------------------------------------------------------------------------------------------->
+            <!---------------------------------------------------------------- UPDATE USER FORM ----------------------------------------------------------->
+            <form id="updateUserForm">
+                <div class="modal fade" id="updateUserModal" tabindex="-1" aria-labelledby="viewUserLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-none modal-dialog-centered">
+                        <div class="modal-content" id="updateUserModal">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="viewUserLabel">View User</h1>
+                                <input type="hidden" id="adminUserID" name="adminUserID" value=<?php echo $_SESSION['id'];  ?>>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="row g-3 mb-2">
+                                        <div class="col-3">
+                                            <label for="updateUserID">User ID</label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input type="text" class="form-control" id="updateUserID" disabled readonly>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-3 mb-2">
+                                        <div class="col-3">
+                                            <label for="updateEmployeeName">Name</label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input type="text" class="form-control" id="updateEmployeeName" disabled>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-3 mb-2">
+                                        <div class="col-3">
+                                            <label for="updateEmailAdd">Email</label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input type="email" class="form-control" id="updateEmailAdd" disabled>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-3 mb-2">
+                                        <div class="col-3">
+                                            <label for="updateEmployeeID">Employee ID</label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input type="text" class="form-control" id="updateEmployeeID" disabled>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-3 mb-2">
+                                        <div class="col-3">
+                                            <label for="updateDepartment">Department</label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input type="text" class="form-control" id="updateDepartment" disabled>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-3 mb-2">
+                                        <div class="col-3">
+                                            <label for="updateLevelID">Level ID</label>
+                                        </div>
+                                        <div class="col-9">
+                                            <select id="updateLevelID" name="updateLevelID" class="form-select">
+                                                <option value="" selected disabled>Choose</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-3 mb-2">
+                                        <div class="col-3">
+                                            <label for="updateStatus">Status</label>
+                                        </div>
+                                        <div class="col-9">
+                                            <select id="updateStatus" name="updateStatus" class="form-select">
+                                                <option value="" selected disabled>Choose</option>
+                                                <option value="Activated">Activate</option>
+                                                <option value="Not yet Activated">Not Activate</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form> 
         
             <!--------------------------------------------------------------------------------------------------------------------------------------------->
             <!---------------------------------------------------------------- RESET PASSWORD FORM -------------------------------------------------------->
@@ -1349,10 +2183,7 @@
             </form>
 
             <!--------------------------------------------------------------------------------------------------------------------------------------------->
-            <!------------------------------------------------------------------ INACTIVE USERS ----------------------------------------------------------->
-
-            <!--------------------------------------------------------------------------------------------------------------------------------------------->
-            <!------------------------------------------------------------------ VIEW USER FORM ----------------------------------------------------------->
+            <!------------------------------------------------------------- VIEW INACTIVE USERS ----------------------------------------------------------->
             <div class="modal fade" id="viewInactiveUserModal" tabindex="-1" aria-labelledby="viewInactiveUserLabel" aria-hidden="true">
                 <div class="modal-dialog modal-none modal-dialog-centered">
                     <div class="modal-content" id="viewInactiveUserModal">

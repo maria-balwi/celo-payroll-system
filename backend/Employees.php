@@ -873,6 +873,24 @@
             return $inactivePersonnel;
         }
 
+        public function viewWorkforce() {
+            $allPersonnel = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->users." AS users
+                ON employees.id = users.empID
+                WHERE users.status = 'Active' AND designationID = 30";
+            return $allPersonnel;
+        }
+
+        public function viewInactiveWorkforce() {
+            $inactivePersonnel = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->users." AS users
+                ON employees.id = users.empID
+                WHERE users.status = 'Inactive' AND designationID = 30";
+            return $inactivePersonnel;
+        }
+
         public function viewTLMan() {
             $allTLQA = "
                 SELECT * FROM ".$this->employees." AS employees
@@ -914,7 +932,7 @@
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
                 ON employees.id = users.empID
-                WHERE users.status = 'Active' AND designationID IN (7,9,15,18)";
+                WHERE users.status = 'Active' AND designationID IN (7,18,31,32,33)";
             return $allHR;
         }
 
@@ -923,8 +941,26 @@
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
                 ON employees.id = users.empID
-                WHERE users.status = 'Inactive' AND designationID IN (7,9,15,18)";
+                WHERE users.status = 'Inactive' AND designationID IN (7,18,31,32,33)";
             return $inactiveHR;
+        }
+
+        public function viewAdmin() {
+            $allAdmin = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->users." AS users
+                ON employees.id = users.empID
+                WHERE users.status = 'Active' AND designationID IN (9,34,35)";
+            return $allAdmin;
+        }
+
+        public function viewInactiveAdmin() {
+            $inactiveAdmin = "
+                SELECT * FROM ".$this->employees." AS employees
+                INNER JOIN ".$this->users." AS users
+                ON employees.id = users.empID
+                WHERE users.status = 'Inactive' AND designationID IN (9,34,35)";
+            return $inactiveAdmin;
         }
 
         public function viewFinance() {
@@ -932,7 +968,7 @@
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
                 ON employees.id = users.empID
-                WHERE users.status = 'Active' AND designationID = 8";
+                WHERE users.status = 'Active' AND designationID IN (8,36,37)";
             return $allFinance;
         }
 
@@ -941,7 +977,7 @@
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
                 ON employees.id = users.empID
-                WHERE users.status = 'Inactive' AND designationID = 8";
+                WHERE users.status = 'Inactive' AND designationID IN (8,36,37)";
             return $inactiveFinance;
         }
 
@@ -950,7 +986,7 @@
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
                 ON employees.id = users.empID
-                WHERE users.status = 'Active' AND designationID = 20";
+                WHERE users.status = 'Active' AND designationID IN (20,25)";
             return $allFinance;
         }
 
@@ -959,7 +995,7 @@
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
                 ON employees.id = users.empID
-                WHERE users.status = 'Inactive' AND designationID = 20";
+                WHERE users.status = 'Inactive' AND designationID IN (20,25)";
             return $inactiveFinance;
         }
 
@@ -968,7 +1004,7 @@
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
                 ON employees.id = users.empID
-                WHERE users.status = 'Active' AND designationID IN (21,22,23)";
+                WHERE users.status = 'Active' AND designationID IN (21,22,38,39)";
             return $allFinance;
         }
 
@@ -977,7 +1013,7 @@
                 SELECT * FROM ".$this->employees." AS employees
                 INNER JOIN ".$this->users." AS users
                 ON employees.id = users.empID
-                WHERE users.status = 'Inactive' AND designationID IN (21,22,23)";
+                WHERE users.status = 'Inactive' AND designationID IN (21,22,38,39)";
             return $inactiveFinance;
         }
 
@@ -1127,27 +1163,29 @@
             return $checkEmployeeID;
         }
 
-        public function addNewEmployee_prob($lastName, $firstName, $gender, $civilStatus, $address, $dateOfBirth, $placeOfBirth, 
+        public function addNewEmployee_prob($lastName, $firstName, $middleName, $gender, $civilStatus, $address, $dateOfBirth, $placeOfBirth, 
             $sss, $pagIbig, $philhealth, $tin, $emailAddress, $employeeID, $mobileNumber, $departmentID, $designationID, $shiftID, $teamID,
             $basicPay, $dailyRate, $hourlyRate, $vacationLeaves, $sickLeaves, $employmentStatus, $dateHired) {
+            $teamIDValue = ($teamID === NULL || $teamID === '') ? "NULL" : "'" . (int)$teamID . "'";
             $addEmployee = "
-                INSERT INTO ".$this->employees." (lastName, firstName, gender, civilStatus, address, dateOfBirth, placeOfBirth, 
+                INSERT INTO ".$this->employees." (lastName, firstName, middleName, gender, civilStatus, address, dateOfBirth, placeOfBirth, 
                 sss, pagIbig, philhealth, tin, emailAddress, employeeID, mobileNumber, departmentID, designationID, shiftID, teamID, basicPay, dailyRate, hourlyRate, availableVL, availableSL, employmentStatus, dateHired, e_status)
-                VALUES ('".$lastName."', '".$firstName."', '".$gender."', '".$civilStatus."', '".$address."', '".$dateOfBirth."', '".$placeOfBirth."',
+                VALUES ('".$lastName."', '".$firstName."', '".$middleName."', '".$gender."', '".$civilStatus."', '".$address."', '".$dateOfBirth."', '".$placeOfBirth."',
                 '".$sss."', '".$pagIbig."', '".$philhealth."', '".$tin."', '".$emailAddress."', '".$employeeID."', '".$mobileNumber."', 
-                '".$departmentID."', '".$designationID."', '".$shiftID."', '".$teamID."', '".$basicPay."', '".$dailyRate."', '".$hourlyRate."', '".$vacationLeaves."', '".$sickLeaves."', '".$employmentStatus."', '".$dateHired."', 'Active')";
+                '".$departmentID."', '".$designationID."', '".$shiftID."', ".$teamIDValue.", '".$basicPay."', '".$dailyRate."', '".$hourlyRate."', '".$vacationLeaves."', '".$sickLeaves."', '".$employmentStatus."', '".$dateHired."', 'Active')";
             return $addEmployee;
         }
 
-        public function addNewEmployee_reg($lastName, $firstName, $gender, $civilStatus, $address, $dateOfBirth, $placeOfBirth, 
+        public function addNewEmployee_reg($lastName, $firstName, $middleName, $gender, $civilStatus, $address, $dateOfBirth, $placeOfBirth, 
             $sss, $pagIbig, $philhealth, $tin, $emailAddress, $employeeID, $mobileNumber, $departmentID, $designationID, $shiftID, $teamID,
             $basicPay, $dailyRate, $hourlyRate, $vacationLeaves, $sickLeaves, $employmentStatus, $dateHired, $dateRegularized) {
+            $teamIDValue = ($teamID === NULL || $teamID === '') ? "NULL" : "'" . (int)$teamID . "'";
             $addEmployee = "
-                INSERT INTO ".$this->employees." (lastName, firstName, gender, civilStatus, address, dateOfBirth, placeOfBirth, 
+                INSERT INTO ".$this->employees." (lastName, firstName, middleName, gender, civilStatus, address, dateOfBirth, placeOfBirth, 
                 sss, pagIbig, philhealth, tin, emailAddress, employeeID, mobileNumber, departmentID, designationID, shiftID, teamID, basicPay, dailyRate, hourlyRate, availableVL, availableSL, employmentStatus, dateHired, dateRegularized, e_status)
-                VALUES ('".$lastName."', '".$firstName."', '".$gender."', '".$civilStatus."', '".$address."', '".$dateOfBirth."', '".$placeOfBirth."',
+                VALUES ('".$lastName."', '".$firstName."', '".$middleName."', '".$gender."', '".$civilStatus."', '".$address."', '".$dateOfBirth."', '".$placeOfBirth."',
                 '".$sss."', '".$pagIbig."', '".$philhealth."', '".$tin."', '".$emailAddress."', '".$employeeID."', '".$mobileNumber."', 
-                '".$departmentID."', '".$designationID."', '".$shiftID."', '".$teamID."', '".$basicPay."', '".$dailyRate."', '".$hourlyRate."', '".$vacationLeaves."', '".$sickLeaves."', '".$employmentStatus."', '".$dateHired."', '".$dateRegularized."', 'Active')";
+                '".$departmentID."', '".$designationID."', '".$shiftID."', ".$teamIDValue.", '".$basicPay."', '".$dailyRate."', '".$hourlyRate."', '".$vacationLeaves."', '".$sickLeaves."', '".$employmentStatus."', '".$dateHired."', '".$dateRegularized."', 'Active')";
             return $addEmployee;
         }
 
@@ -1172,7 +1210,7 @@
             return $addWeekOff;
         }
 
-        public function updateEmployeeInfo_reg($updateUserID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
+        public function updateEmployeeInfo_reg($updateUserID, $updateLastName, $updateFirstName, $updateMiddleName, $updateGender, $updateCivilStatus, $updateAddress, 
             $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
             $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateTeamID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, 
             $updateVacationLeaves, $updateSickLeaves, $updateEmploymentStatus, $updateDateHired, $updateDateRegularized) {
@@ -1183,6 +1221,7 @@
                 UPDATE ".$this->employees." AS employees 
                 SET lastName = '$updateLastName',
                 firstName = '$updateFirstName',
+                middleName = '$updateMiddleName',
                 gender = '$updateGender',
                 civilStatus = '$updateCivilStatus',
                 address = '$updateAddress',
@@ -1211,7 +1250,7 @@
             return $updateEmployee;
         }
 
-        public function updateEmployeeInfo_prob($updateUserID, $updateLastName, $updateFirstName, $updateGender, $updateCivilStatus, $updateAddress, 
+        public function updateEmployeeInfo_prob($updateUserID, $updateLastName, $updateFirstName, $updateMiddleName, $updateGender, $updateCivilStatus, $updateAddress, 
             $updateDateOfBirth, $updatePlaceOfBirth, $updateSSS, $updatePagIbig, $updatePhilhealth, $updateTIN, $updateEmailAddress, 
             $updateEmployeeID, $updateMobileNumber, $updateDepartmentID, $updateDesignationID, $updateShiftID, $updateTeamID, $updateBasicPay, $updateDailyRate, $updateHourlyRate, 
             $updateVacationLeaves, $updateSickLeaves, $updateEmploymentStatus, $updateDateHired) {
@@ -1222,6 +1261,7 @@
                 UPDATE ".$this->employees." AS employees 
                 SET lastName = '$updateLastName',
                 firstName = '$updateFirstName',
+                middleName = '$updateMiddleName',
                 gender = '$updateGender',
                 civilStatus = '$updateCivilStatus',
                 address = '$updateAddress',
@@ -1283,7 +1323,7 @@
 
         public function getEmployeeInfo($id) {
             $employeeInfo = "
-                SELECT id, lastName, firstName, gender, civilStatus, address, dateOfBirth,
+                SELECT id, lastName, firstName, middleName, gender, civilStatus, address, dateOfBirth,
                 placeOfBirth, sss, pagIbig, philhealth, tin, emailAddress, employeeID, 
                 mobileNumber, departmentName, position, basicPay, dailyRate, hourlyRate,
                 availableVL, availableSL, req_sss, req_pagIbig, req_philhealth, req_tin, req_nbi,
@@ -1823,6 +1863,30 @@
             return $activeAgents;
         }
 
+        public function viewActiveWorkforce() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 1 AND 
+                designationID = 30 AND
+                employees.e_status = 'Active'";
+            return $activeAgents;
+        }
+
+        public function viewResignedWorkforce() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 1 AND 
+                designationID = 30 AND
+                employees.e_status = 'Inactive'";
+            return $activeAgents;
+        }
+
         public function viewActiveTLMan() {
             $activeAgents = "
                 SELECT * FROM {$this->employees} AS employees
@@ -1878,7 +1942,7 @@
                 ON employees.departmentID = department.departmentID
                 WHERE designationID != 12 AND 
                 department.departmentID = 6 AND 
-                designationID = 20 AND
+                designationID IN (20,25) AND
                 employees.e_status = 'Active'";
             return $activeAgents;
         }
@@ -1890,7 +1954,7 @@
                 ON employees.departmentID = department.departmentID
                 WHERE designationID != 12 AND 
                 department.departmentID = 6 AND 
-                designationID = 20 AND
+                designationID IN (20,25) AND
                 employees.e_status = 'Inactive'";
             return $activeAgents;
         }
@@ -1902,7 +1966,7 @@
                 ON employees.departmentID = department.departmentID
                 WHERE designationID != 12 AND 
                 department.departmentID = 7 AND 
-                designationID IN (21,22,23) AND
+                designationID IN (21,22,38,39) AND
                 employees.e_status = 'Active'";
             return $activeAgents;
         }
@@ -1914,7 +1978,7 @@
                 ON employees.departmentID = department.departmentID
                 WHERE designationID != 12 AND 
                 department.departmentID = 7 AND 
-                designationID IN (21,22,23) AND
+                designationID IN (21,22,38,39) AND
                 employees.e_status = 'Inactive'";
             return $activeAgents;
         }
@@ -1974,7 +2038,7 @@
                 ON employees.departmentID = department.departmentID
                 WHERE designationID != 12 AND 
                 department.departmentID = 3 AND 
-                designationID = 8 AND
+                designationID IN (8,36,37) AND
                 employees.e_status = 'Active'";
             return $activeAgents;
         }
@@ -1986,7 +2050,7 @@
                 ON employees.departmentID = department.departmentID
                 WHERE designationID != 12 AND 
                 department.departmentID = 3 AND 
-                designationID = 8 AND
+                designationID IN (8,36,37) AND
                 employees.e_status = 'Inactive'";
             return $activeAgents;
         }
@@ -1998,7 +2062,7 @@
                 ON employees.departmentID = department.departmentID
                 WHERE designationID != 12 AND 
                 department.departmentID = 3 AND 
-                designationID IN (7,9,15,18) AND
+                designationID IN (7,18,31,32,33) AND
                 employees.e_status = 'Active'";
             return $activeAgents;
         }
@@ -2010,7 +2074,31 @@
                 ON employees.departmentID = department.departmentID
                 WHERE designationID != 12 AND 
                 department.departmentID = 3 AND 
-                designationID IN (7,9,15,18) AND
+                designationID IN (7,18,31,32,33) AND
+                employees.e_status = 'Inactive'";
+            return $activeAgents;
+        }
+
+        public function viewActiveAdmin() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 3 AND 
+                designationID IN (9,34,35) AND
+                employees.e_status = 'Active'";
+            return $activeAgents;
+        }
+
+        public function viewResignedAdmin() {
+            $activeAgents = "
+                SELECT * FROM {$this->employees} AS employees
+                INNER JOIN {$this->department} AS department
+                ON employees.departmentID = department.departmentID
+                WHERE designationID != 12 AND 
+                department.departmentID = 3 AND 
+                designationID IN (9,34,35) AND
                 employees.e_status = 'Inactive'";
             return $activeAgents;
         }

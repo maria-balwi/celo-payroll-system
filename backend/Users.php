@@ -266,6 +266,15 @@
             return $updateUser;
         }
 
+        public function updateUser($userID, $levelID, $activated) {
+            $updateUser = "
+                UPDATE {$this->users} SET
+                levelID = '$levelID', 
+                activated = '$activated' 
+                WHERE userID = '$userID'";
+            return $updateUser;
+        }
+
         public function checkLastDTR($id) {
             $checkLastDTR = "
                 SELECT * FROM ".$this->attendance." AS attendance

@@ -420,124 +420,124 @@
                                 <h1 class="modal-title fs-5" id="userFormLabel">Update Team</h1>
                                 <input type="hidden" id="updateID" name="updateID">
                             </div>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row g-1 mb-2">
-                                <div class="col-4">
-                                    <label for="updateEmployeeName">Name:</label>
-                                </div>
-                                <div class="col-8">
-                                    <input type="text" class="form-control" id="updateEmployeeName" disabled readonly>
-                                </div>
-                            </div> 
+                            <div class="modal-body">
+                                <div class="row g-1 mb-2">
+                                    <div class="col-4">
+                                        <label for="updateEmployeeName">Name:</label>
+                                    </div>
+                                    <div class="col-8">
+                                        <input type="text" class="form-control" id="updateEmployeeName" disabled readonly>
+                                    </div>
+                                </div> 
 
-                            <div class="row g-1 mb-2">
-                                <div class="col-4">
-                                    <label for="updateEmailAddress">Email Address:</label>
+                                <div class="row g-1 mb-2">
+                                    <div class="col-4">
+                                        <label for="updateEmailAddress">Email Address:</label>
+                                    </div>
+                                    <div class="col-8">
+                                        <input type="email" class="form-control" id="updateEmailAddress" disabled readonly>
+                                    </div>
                                 </div>
-                                <div class="col-8">
-                                    <input type="email" class="form-control" id="updateEmailAddress" disabled readonly>
-                                </div>
-                            </div>
 
-                            <div class="row g-1 mb-2">
-                                <div class="col-4">
-                                    <label for="updateEmployeeID">Employee ID:</label>
+                                <div class="row g-1 mb-2">
+                                    <div class="col-4">
+                                        <label for="updateEmployeeID">Employee ID:</label>
+                                    </div>
+                                    <div class="col-8">
+                                        <input type="text" class="form-control" id="updateEmployeeID" disabled readonly>
+                                    </div>
                                 </div>
-                                <div class="col-8">
-                                    <input type="text" class="form-control" id="updateEmployeeID" disabled readonly>
-                                </div>
-                            </div>
 
-                            <div class="row g-1 mb-2">
-                                <div class="col-4">
-                                    <label for="updateMobileNumber">Mobile Number:</label>
+                                <div class="row g-1 mb-2">
+                                    <div class="col-4">
+                                        <label for="updateMobileNumber">Mobile Number:</label>
+                                    </div>
+                                    <div class="col-8">
+                                        <input type="text" class="form-control" id="updateMobileNumber" disabled readonly>
+                                    </div>
                                 </div>
-                                <div class="col-8">
-                                    <input type="text" class="form-control" id="updateMobileNumber" disabled readonly>
-                                </div>
-                            </div>
 
-                            <div class="row g-1 mb-2">
-                                <div class="col-4">
-                                    <label for="updateDepartment">Department:</label>
+                                <div class="row g-1 mb-2">
+                                    <div class="col-4">
+                                        <label for="updateDepartment">Department:</label>
+                                    </div>
+                                    <div class="col-8">
+                                        <input type="text" class="form-control" id="updateDepartment" disabled readonly>
+                                    </div>
                                 </div>
-                                <div class="col-8">
-                                    <input type="text" class="form-control" id="updateDepartment" disabled readonly>
-                                </div>
-                            </div>
 
-                            <div class="row g-1 mb-2">
-                                <div class="col-4">
-                                    <label for="updateDesignation">Designation:</label>
+                                <div class="row g-1 mb-2">
+                                    <div class="col-4">
+                                        <label for="updateDesignation">Designation:</label>
+                                    </div>
+                                    <div class="col-8">
+                                        <input type="text" class="form-control" id="updateDesignation" disabled readonly>
+                                    </div>
                                 </div>
-                                <div class="col-8">
-                                    <input type="text" class="form-control" id="updateDesignation" disabled readonly>
-                                </div>
-                            </div>
-                        
-                            <div class="row g-1 mb-2">
-                                <div class="col-4">
-                                    <label for="updateShiftID">Shift:</label>
-                                </div>
-                                <div class="col-8">
-                                    <select type="dropdown" id="updateShiftID" name="updateShiftID" class="form-select">
-                                        <option value="" selected disabled>Choose</option>
-                                            <?php
-                                                $shift = mysqli_query($conn, $employees->viewShifts());
-                                                while ($shiftResult = mysqli_fetch_array($shift)) {
+                            
+                                <div class="row g-1 mb-2">
+                                    <div class="col-4">
+                                        <label for="updateShiftID">Shift:</label>
+                                    </div>
+                                    <div class="col-8">
+                                        <select type="dropdown" id="updateShiftID" name="updateShiftID" class="form-select">
+                                            <option value="" selected disabled>Choose</option>
+                                                <?php
+                                                    $shift = mysqli_query($conn, $employees->viewShifts());
+                                                    while ($shiftResult = mysqli_fetch_array($shift)) {
+                                                    ?>
+                                                    <option value="<?php echo $shiftResult['startTime'] . " - " . $shiftResult['endTime']; ?>">
+                                                        <?php echo $shiftResult['startTime'] . " - " . $shiftResult['endTime']; ?>
+                                                    </option>
+                                                    
+                                                <?php        
+                                                    }
                                                 ?>
-                                                <option value="<?php echo $shiftResult['startTime'] . " - " . $shiftResult['endTime']; ?>">
-                                                    <?php echo $shiftResult['startTime'] . " - " . $shiftResult['endTime']; ?>
-                                                </option>
-                                                
-                                            <?php        
-                                                }
-                                            ?>
-                                    </select>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row g-1 mb-2">
+                                    <div class="col-4">
+                                        <label for="updateWeekOff">Week Off:</label>
+                                    </div>
+                                    <div class="col-8">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input update_wo_day" type="checkbox" id="update_wo_mon" name="update_wo_mon" value="update_wo_mon">
+                                            <label class="form-check-label" for="update_wo_mon">Mon</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input update_wo_day" type="checkbox" id="update_wo_tue" name="update_wo_tue" value="update_wo_tue">
+                                            <label class="form-check-label" for="update_wo_tue">Tue</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input update_wo_day" type="checkbox" id="update_wo_wed" name="update_wo_wed" value="update_wo_wed">
+                                            <label class="form-check-label" for="update_wo_wed">Wed</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input update_wo_day" type="checkbox" id="update_wo_thu" name="update_wo_thu" value="update_wo_thu">
+                                            <label class="form-check-label" for="update_wo_thu">Thu</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input update_wo_day" type="checkbox" id="update_wo_fri" name="update_wo_fri" value="update_wo_fri">
+                                            <label class="form-check-label" for="update_wo_fri">Fri</label>
+                                        </div>
+                                        <div class="form-check form-check-inline ml-4">
+                                            <input class="form-check-input update_wo_day" type="checkbox" id="update_wo_sat" name="update_wo_sat" value="update_wo_sat">
+                                            <label class="form-check-label" for="update_wo_sat">Sat</label>
+                                        </div>
+                                        <div class="form-check form-check-inline ml-0.5">
+                                            <input class="form-check-input update_wo_day" type="checkbox" id="update_wo_sun" name="update_wo_sun" value="update_wo_sun">
+                                            <label class="form-check-label" for="update_wo_sun">Sun</label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="row g-1 mb-2">
-                                <div class="col-4">
-                                    <label for="updateWeekOff">Week Off:</label>
-                                </div>
-                                <div class="col-8">
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input update_wo_day" type="checkbox" id="update_wo_mon" name="update_wo_mon" value="update_wo_mon">
-                                        <label class="form-check-label" for="update_wo_mon">Mon</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input update_wo_day" type="checkbox" id="update_wo_tue" name="update_wo_tue" value="update_wo_tue">
-                                        <label class="form-check-label" for="update_wo_tue">Tue</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input update_wo_day" type="checkbox" id="update_wo_wed" name="update_wo_wed" value="update_wo_wed">
-                                        <label class="form-check-label" for="update_wo_wed">Wed</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input update_wo_day" type="checkbox" id="update_wo_thu" name="update_wo_thu" value="update_wo_thu">
-                                        <label class="form-check-label" for="update_wo_thu">Thu</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input update_wo_day" type="checkbox" id="update_wo_fri" name="update_wo_fri" value="update_wo_fri">
-                                        <label class="form-check-label" for="update_wo_fri">Fri</label>
-                                    </div>
-                                    <div class="form-check form-check-inline ml-4">
-                                        <input class="form-check-input update_wo_day" type="checkbox" id="update_wo_sat" name="update_wo_sat" value="update_wo_sat">
-                                        <label class="form-check-label" for="update_wo_sat">Sat</label>
-                                    </div>
-                                    <div class="form-check form-check-inline ml-0.5">
-                                        <input class="form-check-input update_wo_day" type="checkbox" id="update_wo_sun" name="update_wo_sun" value="update_wo_sun">
-                                        <label class="form-check-label" for="update_wo_sun">Sun</label>
-                                    </div>
-                                </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">Save Changes</button>
+                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#viewTeamModal">Cancel</button>
                             </div>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-success">Save Changes</button>
-                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#viewTeamModal">Cancel</button>
                         </div>
                     </div>
                 </div>
