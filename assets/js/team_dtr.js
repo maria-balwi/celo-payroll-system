@@ -170,6 +170,11 @@ $(document).ready(function() {
         });
     });
 
+    function locationLink(lat, lng) {
+        if (!lat || !lng) return '<small class="text-muted">No location</small>';
+        return `<a href="https://www.google.com/maps?q=${lat},${lng}" target="_blank" rel="noopener"><small>View location</small></a>`;
+    }
+
     // VIEW TEAM MEMBER DTR 
     var array = [];
     $(document).on('click', '.teamDTRview', function() {
@@ -219,10 +224,17 @@ $(document).ready(function() {
                         var undertimeMins = $teamdtr.undertimeMins;
                         var attendanceSource = $teamdtr.attendanceSource;
                         var transitionType = $teamdtr.type;
+                        var latitude = $teamdtr.latitude;
+                        var longitude = $teamdtr.longitude;
 
                         // Initialize the date entry if it doesn't exist
                         if (!dtrGroupedByDate[date]) {
-                            dtrGroupedByDate[date] = { timeIn: null, timeOut: null, dayOfWeek: dayOfWeek, timeInDate: null, timeOutDate: null, lateMins: lateMins, undertimeMins: undertimeMins, timeInSource: null, timeOutSource: null, transitionType: transitionType };
+                            dtrGroupedByDate[date] = {
+                                timeIn: null, timeOut: null, dayOfWeek: dayOfWeek, timeInDate: null, timeOutDate: null,
+                                lateMins: lateMins, undertimeMins: undertimeMins, timeInSource: null, timeOutSource: null,
+                                transitionType: transitionType,
+                                timeInLat: null, timeInLng: null, timeOutLat: null, timeOutLng: null   // NEW
+                            };
                         }
 
                         // Handle Time In (LogTypeID 1 or 2)
@@ -233,6 +245,8 @@ $(document).ready(function() {
                                 dtrGroupedByDate[date].timeInDate = filterDate;
                                 dtrGroupedByDate[date].lateMins = lateMins;
                                 dtrGroupedByDate[date].timeInSource = attendanceSource;
+                                dtrGroupedByDate[date].timeInLat = latitude;
+                                dtrGroupedByDate[date].timeInLng = longitude;
                             }
                             ongoingShift = { date: date, timeIn: time }; // Start new shift
                         }
@@ -245,12 +259,16 @@ $(document).ready(function() {
                                 dtrGroupedByDate[ongoingShift.date].timeOutDate = filterDate;
                                 dtrGroupedByDate[ongoingShift.date].undertimeMins = undertimeMins;
                                 dtrGroupedByDate[ongoingShift.date].timeOutSource = attendanceSource; 
+                                dtrGroupedByDate[ongoingShift.date].timeOutLat = latitude;
+                                dtrGroupedByDate[ongoingShift.date].timeOutLng = longitude;
                                 ongoingShift = null; // Reset ongoing shift
                             } else {
                                 dtrGroupedByDate[date].timeOut = time;
                                 dtrGroupedByDate[date].timeOutDate = filterDate;
                                 dtrGroupedByDate[date].undertimeMins = undertimeMins;
                                 dtrGroupedByDate[date].timeOutSource = attendanceSource;
+                                dtrGroupedByDate[date].timeOutLat = latitude;
+                                dtrGroupedByDate[date].timeOutLng = longitude;
                             }
                         }
                     });
@@ -318,7 +336,9 @@ $(document).ready(function() {
 
                         // IF NOT WEEK OFF
                         var faceDTRhtml = 
-                            '<button class="whitespace-nowrap viewFaceDTR" data-id="' + timeInDate + '" data-id2="' + timeOutDate + '" data-id3="' + timeIn + '" data-id4="' + timeOut + '">' +
+                            '<button class="whitespace-nowrap viewFaceDTR" data-id="' + timeInDate + '" data-id2="' + timeOutDate + '" data-id3="' + timeIn + '" data-id4="' + timeOut + '"' +
+                            ' data-in-lat="' + (dtrGroupedByDate[date].timeInLat || '') + '" data-in-lng="' + (dtrGroupedByDate[date].timeInLng || '') + '"' +
+                            ' data-out-lat="' + (dtrGroupedByDate[date].timeOutLat || '') + '" data-out-lng="' + (dtrGroupedByDate[date].timeOutLng || '') + '">' +
                             '<svg class="h-6 w-6 text-gray-500 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">' +
                             '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>' +
                             '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>' +
@@ -342,7 +362,7 @@ $(document).ready(function() {
                     }
 
                     // FOR VIEWING FACE DTR
-                    $(document).on('click', '.viewFaceDTR', function() {
+                    $(document).off('click', '.viewFaceDTR').on('click', '.viewFaceDTR', function() {
                         var timeInDate = null;
                         var timeOutDate = null;
                         timeInDate = $(this).data('id');
@@ -350,6 +370,9 @@ $(document).ready(function() {
                         timeIn = formatTimeString($(this).data('id3'));
                         timeOut = formatTimeString($(this).data('id4'));
                         let newTimeOutDate = timeIn >= timeOut ? nightDiffDTR(timeInDate) : timeOutDate;
+
+                        var inLat = $(this).data('in-lat'), inLng = $(this).data('in-lng');
+                        var outLat = $(this).data('out-lat'), outLng = $(this).data('out-lng');
 
                         const timeInImagePath = '../assets/images/attendance/' + employeeID.replace("-", "") + '_' + timeInDate + '_time_in.png'; 
                         const timeOutImagePath = '../assets/images/attendance/' + employeeID.replace("-", "") + '_' + newTimeOutDate + '_time_out.png'; 
@@ -408,6 +431,7 @@ $(document).ready(function() {
                                         <div class="text-center">
                                             <img src="${image1Src}" alt="Log In" style="height:300px; width: 300px">
                                             <p>Time In</p>
+                                            ${locationLink(inLat, inLng)}
                                         </div>
                                     `;
                                 } else {
@@ -420,6 +444,7 @@ $(document).ready(function() {
                                         <div class="text-center">
                                             <img src="${image2Src}" alt="Log Out" style="height:300px; width: 300px">
                                             <p>Time Out</p>
+                                            ${locationLink(outLat, outLng)}
                                         </div>
                                     `;
                                 } else {

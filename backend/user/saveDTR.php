@@ -12,6 +12,18 @@
         $id = $_SESSION['id'];
         $faceDTR_action = $_POST['faceDTR_action'];
 
+        $latitude  = isset($_POST['latitude'])  ? (float)$_POST['latitude']  : null;
+        $longitude = isset($_POST['longitude']) ? (float)$_POST['longitude'] : null;
+        $accuracy  = isset($_POST['accuracy'])  ? (float)$_POST['accuracy']  : null;
+
+        if ($latitude === null || $longitude === null
+            || $latitude < -90 || $latitude > 90
+            || $longitude < -180 || $longitude > 180) {
+            http_response_code(400);
+            echo 'Invalid location.';
+            exit();
+        }
+
         $shiftQuery = mysqli_query($conn, $users->getShiftInfo($id));
         $shiftResult = mysqli_fetch_array($shiftQuery); 
         $startTime = $shiftResult['startTime'];
@@ -137,14 +149,18 @@
         // GENERATE CUSTOM FILE NAME USING USER EMPLOYEE ID, DATE, AND ACTION
         $fileName = isset($_POST['faceDTR_action']) ? preg_replace('/-/', '', $_SESSION['employeeID']) . '_' . date("Y.m.d") . '_' . $_POST['faceDTR_action'] . '.png' : 'image_' . uniqid() . '.png';
 
+        error_log('POST loc: ' . ($_POST['latitude'] ?? 'MISSING') . ',' . ($_POST['longitude'] ?? 'MISSING'));
+        error_log('logTypeID: ' . $logTypeID);
+        error_log('QUERY: ' . $users->saveDTRUndertime($_SESSION['id'], 3, $_SESSION['shiftID'], $currentDate, $currentTime, 0, $latitude, $longitude, $accuracy));
+
         if ($logTypeID == 2) { // LATE
-            mysqli_query($conn, $users->saveDTRLate($_SESSION['id'], $logTypeID, $_SESSION['shiftID'], $currentDate, $currentTime, $lateMins));
+            mysqli_query($conn, $users->saveDTRLate($_SESSION['id'], $logTypeID, $_SESSION['shiftID'], $currentDate, $currentTime, $lateMins, $latitude, $longitude, $accuracy));
         }
         else if ($logTypeID == 3) { // UNDERTIME
-            mysqli_query($conn, $users->saveDTRUndertime($_SESSION['id'], $logTypeID, $_SESSION['shiftID'], $currentDate, $currentTime, $undertimeMins));
+            mysqli_query($conn, $users->saveDTRUndertime($_SESSION['id'], $logTypeID, $_SESSION['shiftID'], $currentDate, $currentTime, $undertimeMins, $latitude, $longitude, $accuracy));
         }
         else { // ONTIME
-            mysqli_query($conn, $users->saveDTR($_SESSION['id'], $logTypeID, $_SESSION['shiftID'], $currentDate, $currentTime));
+            mysqli_query($conn, $users->saveDTR($_SESSION['id'], $logTypeID, $_SESSION['shiftID'], $currentDate, $currentTime, $latitude, $longitude, $accuracy));
         }
         
 

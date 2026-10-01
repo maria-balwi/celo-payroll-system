@@ -91,7 +91,22 @@ $(document).ready(function() {
             faceIsValid = false;
         }
 
-        function captureImage(videoElement, canvasElement, action) {
+        function getLocation() {
+            return new Promise((resolve, reject) => {
+                if (!navigator.geolocation) return reject(new Error('Geolocation not supported'));
+                navigator.geolocation.getCurrentPosition(
+                    pos => resolve({
+                        lat: pos.coords.latitude,
+                        lng: pos.coords.longitude,
+                        acc: pos.coords.accuracy
+                    }),
+                    err => reject(err),
+                    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+                );
+            });
+        }
+
+        async function captureImage(videoElement, canvasElement, action) {
             if (!faceIsValid) {
                 Swal.fire('Face not detected', 'Please align your whole face in the frame.', 'warning');
                 return;
@@ -103,6 +118,16 @@ $(document).ready(function() {
 
             button.disabled = true;
             spinnerLoader.style.display = 'block';
+
+            let loc;
+            try {
+                loc = await getLocation();
+            } catch (e) {
+                button.disabled = false;
+                spinnerLoader.style.display = 'none';
+                Swal.fire('Location required', 'Please allow location access to record your attendance.', 'warning');
+                return;
+            }
 
             const context = canvasElement.getContext('2d');
             context.drawImage(videoElement, 0, 0, 640, 480);
@@ -119,7 +144,10 @@ $(document).ready(function() {
                 url: '../backend/user/saveDTR.php',
                 data: {
                     imgBase64: dataURL,
-                    faceDTR_action: action
+                    faceDTR_action: action,
+                    latitude: loc.lat,
+                    longitude: loc.lng,
+                    accuracy: loc.acc
                 },
                 success: function(response) {
                     Swal.fire({

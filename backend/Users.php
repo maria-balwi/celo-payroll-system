@@ -216,24 +216,36 @@
             return $lastUser;
         }
 
-        public function saveDTR($id, $logTypeID, $shiftID, $attendanceDate, $attendanceTime) {
+        public function saveDTR($id, $logTypeID, $shiftID, $attendanceDate, $attendanceTime, $latitude = null, $longitude = null, $accuracy = null) {
+            $lat = $latitude  !== null ? (float)$latitude  : 'NULL';
+            $lng = $longitude !== null ? (float)$longitude : 'NULL';
+            $acc = $accuracy  !== null ? (float)$accuracy  : 'NULL';
+
             $saveDTR = "
-                INSERT INTO ".$this->attendance." (empID, logTypeID, shiftID, attendanceSource, attendanceDate, attendanceTime)
-                VALUES ('$id', '$logTypeID', '$shiftID', 'FACE', '$attendanceDate', '$attendanceTime')";
+                INSERT INTO ".$this->attendance." (empID, logTypeID, shiftID, attendanceSource, attendanceDate, attendanceTime, latitude, longitude, accuracy)
+                VALUES ('$id', '$logTypeID', '$shiftID', 'FACE', '$attendanceDate', '$attendanceTime', $lat, $lng, $acc)";
             return $saveDTR;
         }
 
-        public function saveDTRLate($id, $logTypeID, $shiftID, $attendanceDate, $attendanceTime, $lateMins) {
+        public function saveDTRLate($id, $logTypeID, $shiftID, $attendanceDate, $attendanceTime, $lateMins, $latitude = null, $longitude = null, $accuracy = null) {
+            $lat = $latitude  !== null ? (float)$latitude  : 'NULL';
+            $lng = $longitude !== null ? (float)$longitude : 'NULL';
+            $acc = $accuracy  !== null ? (float)$accuracy  : 'NULL';
+
             $saveDTR = "
-                INSERT INTO ".$this->attendance." (empID, logTypeID, shiftID, attendanceSource, attendanceDate, attendanceTime, lateMins)
-                VALUES ('$id', '$logTypeID', '$shiftID', 'FACE', '$attendanceDate', '$attendanceTime', '$lateMins')";
+                INSERT INTO ".$this->attendance." (empID, logTypeID, shiftID, attendanceSource, attendanceDate, attendanceTime, lateMins, latitude, longitude, accuracy)
+                VALUES ('$id', '$logTypeID', '$shiftID', 'FACE', '$attendanceDate', '$attendanceTime', '$lateMins', $lat, $lng, $acc)";
             return $saveDTR;
         }
 
-        public function saveDTRUndertime($id, $logTypeID, $shiftID, $attendanceDate, $attendanceTime, $undertimeMins) {
+        public function saveDTRUndertime($id, $logTypeID, $shiftID, $attendanceDate, $attendanceTime, $undertimeMins, $latitude = null, $longitude = null, $accuracy = null) {
+            $lat = $latitude  !== null ? (float)$latitude  : 'NULL';
+            $lng = $longitude !== null ? (float)$longitude : 'NULL';
+            $acc = $accuracy  !== null ? (float)$accuracy  : 'NULL';
+
             $saveDTR = "
-                INSERT INTO ".$this->attendance." (empID, logTypeID, shiftID, attendanceSource, attendanceDate, attendanceTime, undertimeMins)
-                VALUES ('$id', '$logTypeID', '$shiftID', 'FACE', '$attendanceDate', '$attendanceTime', '$undertimeMins')";
+                INSERT INTO ".$this->attendance." (empID, logTypeID, shiftID, attendanceSource, attendanceDate, attendanceTime, undertimeMins, latitude, longitude, accuracy)
+                VALUES ('$id', '$logTypeID', '$shiftID', 'FACE', '$attendanceDate', '$attendanceTime', '$undertimeMins', $lat, $lng, $acc)";
             return $saveDTR;
         }
 
