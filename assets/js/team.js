@@ -200,9 +200,9 @@ $(document).ready(function() {
 
                     const $checkboxes = $("input.update_wo_day[type='checkbox']");
                     if (selectedWeekOffCounter >= 2) {
-                    $checkboxes.not(":checked").prop("disabled", true);
+                        $checkboxes.not(":checked").prop("disabled", true);
                     } else {
-                    checkboxes.prop("disabled", false);
+                        $checkboxes.prop("disabled", false);
                     }
 
                     $("#updateTeamModal").modal("show");
