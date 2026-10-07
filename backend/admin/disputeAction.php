@@ -9,7 +9,7 @@
     if ($action == "fileDispute") {
         $dataType = $_POST['dataType'];
         $empID = $_POST['empID'];
-        $remarks = $_POST['remarks'];
+        $reason = $_POST['reason'];
 
         if ($dataType == 1) {
             $attendanceDate_timeIn = $_POST['attendanceDate_timeIn'];
@@ -20,7 +20,7 @@
             $logTypeID_timeOut = $_POST['logTypeID_timeOut'];
 
             // FILE ATTENDANCE DISPUTE
-            mysqli_query($conn, $payroll->fileAttendanceDispute($empID, $attendanceDate_timeIn, $attendanceTime_timeIn, $logTypeID_timeIn, $attendanceDate_timeOut, $attendanceTime_timeOut, $logTypeID_timeOut, $remarks));
+            mysqli_query($conn, $payroll->fileAttendanceDispute($empID, $attendanceDate_timeIn, $attendanceTime_timeIn, $logTypeID_timeIn, $attendanceDate_timeOut, $attendanceTime_timeOut, $logTypeID_timeOut));
 
             // GET LAST DISPUTE ID
             $lastDisputeIDQuery = mysqli_query($conn, $payroll->viewLastDisputeAttendance());
@@ -28,7 +28,7 @@
             $lastDisputeID = $lastDisputeIDDetails['attendanceID'];
 
             // INSERT INTO DISPUTES TABLE
-            mysqli_query($conn, $payroll->addDispute_attendance($lastDisputeID, $remarks));
+            mysqli_query($conn, $payroll->addDispute_attendance($lastDisputeID, $reason));
 
             $lastIDQuery = mysqli_query($conn, $payroll->viewLastDisputeID());
             $lastIDDetails = mysqli_fetch_array($lastIDQuery);
@@ -71,7 +71,7 @@
             $lastDisputeID = $lastDisputeIDDetails['leaveID'];
 
             // INSERT INTO DISPUTES TABLE
-            mysqli_query($conn, $payroll->addDispute_leave($lastDisputeID, $remarks));
+            mysqli_query($conn, $payroll->addDispute_leave($lastDisputeID, $reason));
 
             // GET LAST DISPUTE ID
             $lastIDQuery = mysqli_query($conn, $payroll->viewLastDisputeID());
@@ -104,7 +104,7 @@
             $lastDisputeID = $lastDisputeIDDetails['overtimeID'];
 
             // INSERT INTO DISPUTES TABLE
-            mysqli_query($conn, $payroll->addDispute_overtime($lastDisputeID, $remarks));
+            mysqli_query($conn, $payroll->addDispute_overtime($lastDisputeID, $reason));
 
             // GET LAST DISPUTE ID
             $lastIDQuery = mysqli_query($conn, $payroll->viewLastDisputeID());
@@ -149,24 +149,28 @@
             $logType_timeOut = $attendance['logTypeID_timeOut'];
             $lateMins = $attendance['lateMins'];
             $undertimeMins = $attendance['undertimeMins'];
+            $remarks = $_POST['remark'];
+
+            $getShiftIDQuery = mysqli_query($conn, $users->getShiftInfo($empID));
+            $shiftID = mysqli_fetch_array($getShiftIDQuery)['shiftID'];
 
             // INSERT INTO DTR TABLE
             if ($logType_timeIn == 2) { // LATE
-                mysqli_query($conn, $users->saveDTRLate($_SESSION['id'], $logTypeID, $currentDate, $currentTime, $lateMins));
+                mysqli_query($conn, $users->saveDTRLate($_SESSION['id'], $logTypeID, $shiftID, $currentDate, $currentTime, $lateMins, $latitude = null, $longitude = null, $accuracy = null));
             }
             else {
-                mysqli_query($conn, $users->saveDTR($empID, $logType_timeIn, $attendanceDate_timeIn, $attendanceTime_timeIn));
+                mysqli_query($conn, $users->saveDTR($empID, $logType_timeIn, $shiftID, $attendanceDate_timeIn, $attendanceTime_timeIn, $latitude = null, $longitude = null, $accuracy = null));
             }
             
             if ($logType_timeOut == 3) { // UNDERTIME
-                mysqli_query($conn, $users->saveDTRUndertime($empID, $logType_timeOut, $attendanceDate_timeOut, $attendanceTime_timeOut, $undertimeMins));
+                mysqli_query($conn, $users->saveDTRUndertime($empID, $logType_timeOut, $shiftID, $attendanceDate_timeOut, $attendanceTime_timeOut, $undertimeMins, $latitude = null, $longitude = null, $accuracy = null));
             }
             else {
-                mysqli_query($conn, $users->saveDTR($empID, $logType_timeOut, $attendanceDate_timeOut, $attendanceTime_timeOut));
+                mysqli_query($conn, $users->saveDTR($empID, $logType_timeOut, $shiftID, $attendanceDate_timeOut, $attendanceTime_timeOut, $latitude = null, $longitude = null, $accuracy = null));
             }
 
             // UPDATE DISPUTE STATUS
-            mysqli_query($conn, $payroll->updateDisputeStatus($disputeID, "Approved"));
+            mysqli_query($conn, $payroll->updateDisputeStatus($disputeID, "Approved", $remarks));
 
             // AUDIT TRAIL
             $at_empID = $_SESSION['id'];
@@ -191,13 +195,13 @@
             $startDate = $leave['effectivityStartDate'];
             $endDate = $leave['effectivityEndDate'];
             $attachment = $leave['attachment'];
-            $remarks = $leave['remarks'] . " - (From Disputes)";
-            $status = "Approved";
-
+            $reason = $leave['remarks'] . " - (From Disputes)";
+            $status = "Approved";  
+            $remarks = "Approved by " . $_SESSION['employeeName'];
             
             // INSERT INTO LEAVE APPLICATIONS TABLE
             if ($leaveType == 1 || $leaveType == 3 || $leaveType == 4 || $leaveType == 5 || $leaveType == 6 || $leaveType == 7 || $leaveType == 8) {
-                mysqli_query($conn, $payroll->fileLeaveWithAttachment($empID, $leaveType, $startDate, $endDate, $remarks, $status, $attachment, $isPaid));
+                mysqli_query($conn, $payroll->fileLeaveWithAttachment($empID, $leaveType, $startDate, $endDate, $reason, $status, $attachment, $isPaid));
                 
                 if ($isPaid == 1) {
                     if ($leaveType == 1) {
@@ -209,7 +213,7 @@
                 }
             }
             else {
-                mysqli_query($conn, $payroll->fileLeave($empID, $leaveType, $startDate, $endDate, $remarks, $status, $isPaid));
+                mysqli_query($conn, $payroll->fileLeave($empID, $leaveType, $startDate, $endDate, $reason, $status, $isPaid));
 
                 if ($isPaid == 1) {
                     if ($leaveType == 1) {
@@ -225,7 +229,7 @@
             mysqli_query($conn, $payroll->updateLeaveStatus($dispute['leaveID'], $isPaid));
 
             // UPDATE DISPUTE STATUS
-            mysqli_query($conn, $payroll->updateDisputeStatus($disputeID, "Approved"));
+            mysqli_query($conn, $payroll->updateDisputeStatus($disputeID, "Approved", $remarks));
 
             // AUDIT TRAIL
             $at_empID = $_SESSION['id'];
@@ -250,17 +254,18 @@
             $otType = $overtime['otType'];
             $fromTime = $overtime['fromTime'];
             $toTime = $overtime['toTime'];
-            $remarks = $overtime['remarks'] . " - (From Disputes)";
+            $reason = $overtime['reason'];
             $status = 1;
+            $remarks = "Approved by " . $_SESSION['employeeName'];
             
             // INSERT INTO OVERTIME TABLE
-            mysqli_query($conn, $payroll->fileOT($empID, $dateFiled, $otDate, $otType, $fromTime, $toTime, $remarks, $status, $isPaid));
+            mysqli_query($conn, $payroll->fileOT($empID, $dateFiled, $otDate, $otType, $fromTime, $toTime, $reason, $status, $isPaid));
 
             // UPDATE ISPAID
             mysqli_query($conn, $payroll->updateOvertimeStatus($dispute['overtimeID'], $isPaid));
             
             // UPDATE DISPUTE STATUS
-            mysqli_query($conn, $payroll->updateDisputeStatus($disputeID, "Approved"));
+            mysqli_query($conn, $payroll->updateDisputeStatus($disputeID, "Approved", $remarks));
             
             // AUDIT TRAIL
             $at_empID = $_SESSION['id'];
@@ -280,6 +285,7 @@
         $getDisputeResult = mysqli_query($conn, $getDisputeQuery);
         $dispute = mysqli_fetch_array($getDisputeResult);
         $type = $_POST['type'];
+        $remarks = "Disapproved by " . $_SESSION['employeeName'];
 
         if ($type == "attendance") {
             $getAttendanceQuery = $payroll->getAttendanceInfo($dispute['attendanceID']);
@@ -289,7 +295,7 @@
             $empID = $attendance['empID'];
 
             // UPDATE DISPUTE STATUS
-            mysqli_query($conn, $payroll->updateDisputeStatus($disputeID, "Disapproved"));
+            mysqli_query($conn, $payroll->updateDisputeStatus($disputeID, "Disapproved", $remarks));
 
             // AUDIT TRAIL
             $at_empID = $_SESSION['id'];
@@ -310,7 +316,7 @@
             $empID = $leave['empID'];
 
             // UPDATE DISPUTE STATUS
-            mysqli_query($conn, $payroll->updateDisputeStatus($disputeID, "Disapproved"));
+            mysqli_query($conn, $payroll->updateDisputeStatus($disputeID, "Disapproved", $remarks));
 
             // AUDIT TRAIL
             $at_empID = $_SESSION['id'];
@@ -331,7 +337,7 @@
             $empID = $overtime['empID'];
 
             // UPDATE DISPUTE STATUS
-            mysqli_query($conn, $payroll->updateDisputeStatus($disputeID, "Disapproved"));
+            mysqli_query($conn, $payroll->updateDisputeStatus($disputeID, "Disapproved", $remarks));
 
             // AUDIT TRAIL
             $at_empID = $_SESSION['id'];

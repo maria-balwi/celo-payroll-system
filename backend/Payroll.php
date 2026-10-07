@@ -514,7 +514,7 @@
                 SELECT disputeID, employeeID, firstName, lastName,
                 attendanceDate_timeIn, attendanceTime_timeIn,
                 attendanceDate_timeOut, attendanceTime_timeOut, 
-                remarks, dispute.status
+                reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
                 ON dispute.attendanceID = disputeAttendance.attendanceID
@@ -531,7 +531,7 @@
                 SELECT disputeID, employeeID, firstName, lastName,
                 attendanceDate_timeIn, attendanceTime_timeIn,
                 attendanceDate_timeOut, attendanceTime_timeOut, 
-                remarks, dispute.status
+                reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
                 ON dispute.attendanceID = disputeAttendance.attendanceID
@@ -548,7 +548,7 @@
                 SELECT disputeID, employeeID, firstName, lastName,
                 attendanceDate_timeIn, attendanceTime_timeIn,
                 attendanceDate_timeOut, attendanceTime_timeOut, 
-                remarks, dispute.status
+                reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
                 ON dispute.attendanceID = disputeAttendance.attendanceID
@@ -566,7 +566,7 @@
                 SELECT disputeID, employeeID, firstName, lastName,
                 attendanceDate_timeIn, attendanceTime_timeIn,
                 attendanceDate_timeOut, attendanceTime_timeOut, 
-                remarks, dispute.status
+                reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
                 ON dispute.attendanceID = disputeAttendance.attendanceID
@@ -586,7 +586,7 @@
                 SELECT disputeID, employeeID, firstName, lastName,
                 attendanceDate_timeIn, attendanceTime_timeIn,
                 attendanceDate_timeOut, attendanceTime_timeOut, 
-                remarks, dispute.status
+                reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
                 ON dispute.attendanceID = disputeAttendance.attendanceID
@@ -605,7 +605,7 @@
                 SELECT disputeID, employeeID, firstName, lastName,
                 attendanceDate_timeIn, attendanceTime_timeIn,
                 attendanceDate_timeOut, attendanceTime_timeOut, 
-                remarks, dispute.status
+                reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
                 ON dispute.attendanceID = disputeAttendance.attendanceID
@@ -622,7 +622,7 @@
                 SELECT disputeID, employeeID, firstName, lastName,
                 attendanceDate_timeIn, attendanceTime_timeIn,
                 attendanceDate_timeOut, attendanceTime_timeOut, 
-                remarks, dispute.status
+                reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
                 ON dispute.attendanceID = disputeAttendance.attendanceID
@@ -639,7 +639,7 @@
                 SELECT disputeID, employeeID, firstName, lastName,
                 attendanceDate_timeIn, attendanceTime_timeIn,
                 attendanceDate_timeOut, attendanceTime_timeOut, 
-                remarks, dispute.status
+                reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
                 ON dispute.attendanceID = disputeAttendance.attendanceID
@@ -657,7 +657,7 @@
                 SELECT disputeID, employeeID, firstName, lastName,
                 attendanceDate_timeIn, attendanceTime_timeIn,
                 attendanceDate_timeOut, attendanceTime_timeOut, 
-                remarks, dispute.status
+                reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
                 ON dispute.attendanceID = disputeAttendance.attendanceID
@@ -676,7 +676,7 @@
                 SELECT disputeID, employeeID, firstName, lastName,
                 attendanceDate_timeIn, attendanceTime_timeIn,
                 attendanceDate_timeOut, attendanceTime_timeOut, 
-                remarks, dispute.status
+                reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
                 ON dispute.attendanceID = disputeAttendance.attendanceID
@@ -695,7 +695,7 @@
                 SELECT disputeID, employeeID, firstName, lastName,
                 attendanceDate_timeIn, attendanceTime_timeIn,
                 attendanceDate_timeOut, attendanceTime_timeOut, 
-                remarks, dispute.status
+                reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
                 ON dispute.attendanceID = disputeAttendance.attendanceID
@@ -712,7 +712,7 @@
                 SELECT disputeID, employeeID, firstName, lastName,
                 attendanceDate_timeIn, attendanceTime_timeIn,
                 attendanceDate_timeOut, attendanceTime_timeOut, 
-                remarks, dispute.status
+                reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
                 ON dispute.attendanceID = disputeAttendance.attendanceID
@@ -729,7 +729,7 @@
                 SELECT disputeID, employeeID, firstName, lastName,
                 attendanceDate_timeIn, attendanceTime_timeIn,
                 attendanceDate_timeOut, attendanceTime_timeOut, 
-                remarks, dispute.status
+                reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
                 ON dispute.attendanceID = disputeAttendance.attendanceID
@@ -747,7 +747,7 @@
                 SELECT disputeID, employeeID, firstName, lastName,
                 attendanceDate_timeIn, attendanceTime_timeIn,
                 attendanceDate_timeOut, attendanceTime_timeOut, 
-                remarks, dispute.status
+                reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
                 ON dispute.attendanceID = disputeAttendance.attendanceID
@@ -766,7 +766,7 @@
                 SELECT disputeID, employeeID, firstName, lastName,
                 attendanceDate_timeIn, attendanceTime_timeIn,
                 attendanceDate_timeOut, attendanceTime_timeOut, 
-                remarks, dispute.status
+                reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
                 ON dispute.attendanceID = disputeAttendance.attendanceID
@@ -783,7 +783,7 @@
         public function pendingDisputesLeaves() {
             $leavesDisputes = "
                 SELECT disputeID, disputeLeaves.dateFiled, firstName, lastName,
-                leaveType, startDate, endDate, remarks, dispute.status
+                leaveType, startDate, endDate, reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
                 ON dispute.leaveID = disputeLeaves.leaveID
@@ -800,7 +800,7 @@
         public function pendingDisputesLeavesUser($id) {
             $leavesDisputes = "
                 SELECT disputeID, disputeLeaves.dateFiled, firstName, lastName,
-                leaveType, startDate, endDate, remarks, dispute.status
+                leaveType, startDate, endDate, reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
                 ON dispute.leaveID = disputeLeaves.leaveID
@@ -817,7 +817,7 @@
         public function pendingDisputesLeavesOpsManager() {
             $leavesDisputes = "
                 SELECT disputeID, disputeLeaves.dateFiled, firstName, lastName,
-                leaveType, startDate, endDate, remarks, dispute.status
+                leaveType, startDate, endDate, reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
                 ON dispute.leaveID = disputeLeaves.leaveID
@@ -835,7 +835,7 @@
         public function pendingDisputesLeavesOpsTL() {
             $leavesDisputes = "
                 SELECT disputeID, disputeLeaves.dateFiled, firstName, lastName,
-                leaveType, startDate, endDate, remarks, dispute.status
+                leaveType, startDate, endDate, reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
                 ON dispute.leaveID = disputeLeaves.leaveID
@@ -854,7 +854,7 @@
         public function pendingDisputesLeavesIT() {
             $leavesDisputes = "
                 SELECT disputeID, disputeLeaves.dateFiled, firstName, lastName,
-                leaveType, startDate, endDate, remarks, dispute.status
+                leaveType, startDate, endDate, reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
                 ON dispute.leaveID = disputeLeaves.leaveID
@@ -873,7 +873,7 @@
         public function approvedDisputesLeaves() {
             $pendingDisputes = "
                 SELECT disputeID, disputeLeaves.dateFiled, firstName, lastName,
-                leaveType, startDate, endDate, remarks, dispute.status
+                leaveType, startDate, endDate, reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
                 ON dispute.leaveID = disputeLeaves.leaveID
@@ -890,7 +890,7 @@
         public function approvedDisputesLeavesUser($id) {
             $pendingDisputes = "
                 SELECT disputeID, disputeLeaves.dateFiled, firstName, lastName,
-                leaveType, startDate, endDate, remarks, dispute.status
+                leaveType, startDate, endDate, reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
                 ON dispute.leaveID = disputeLeaves.leaveID
@@ -907,7 +907,7 @@
         public function approvedDisputesLeavesOpsManager() {
             $pendingDisputes = "
                 SELECT disputeID, disputeLeaves.dateFiled, firstName, lastName,
-                leaveType, startDate, endDate, remarks, dispute.status
+                leaveType, startDate, endDate, reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
                 ON dispute.leaveID = disputeLeaves.leaveID
@@ -925,7 +925,7 @@
         public function approvedDisputesLeavesOpsTL() {
             $pendingDisputes = "
                 SELECT disputeID, disputeLeaves.dateFiled, firstName, lastName,
-                leaveType, startDate, endDate, remarks, dispute.status
+                leaveType, startDate, endDate, reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
                 ON dispute.leaveID = disputeLeaves.leaveID
@@ -944,7 +944,7 @@
         public function approvedDisputesLeavesIT() {
             $pendingDisputes = "
                 SELECT disputeID, disputeLeaves.dateFiled, firstName, lastName,
-                leaveType, startDate, endDate, remarks, dispute.status
+                leaveType, startDate, endDate, reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
                 ON dispute.leaveID = disputeLeaves.leaveID
@@ -963,7 +963,7 @@
         public function disapprovedDisputesLeaves() {
             $pendingDisputes = "
                 SELECT disputeID, disputeLeaves.dateFiled, firstName, lastName,
-                leaveType, startDate, endDate, remarks, dispute.status
+                leaveType, startDate, endDate, reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
                 ON dispute.leaveID = disputeLeaves.leaveID
@@ -980,7 +980,7 @@
         public function disapprovedDisputesLeavesUser($id) {
             $pendingDisputes = "
                 SELECT disputeID, disputeLeaves.dateFiled, firstName, lastName,
-                leaveType, startDate, endDate, remarks, dispute.status
+                leaveType, startDate, endDate, reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
                 ON dispute.leaveID = disputeLeaves.leaveID
@@ -997,7 +997,7 @@
         public function disapprovedDisputesLeavesOpsManager() {
             $pendingDisputes = "
                 SELECT disputeID, disputeLeaves.dateFiled, firstName, lastName,
-                leaveType, startDate, endDate, remarks, dispute.status
+                leaveType, startDate, endDate, reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
                 ON dispute.leaveID = disputeLeaves.leaveID
@@ -1015,7 +1015,7 @@
         public function disapprovedDisputesLeavesOpsTL() {
             $pendingDisputes = "
                 SELECT disputeID, disputeLeaves.dateFiled, firstName, lastName,
-                leaveType, startDate, endDate, remarks, dispute.status
+                leaveType, startDate, endDate, reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
                 ON dispute.leaveID = disputeLeaves.leaveID
@@ -1034,7 +1034,7 @@
         public function disapprovedDisputesLeavesIT() {
             $pendingDisputes = "
                 SELECT disputeID, disputeLeaves.dateFiled, firstName, lastName,
-                leaveType, startDate, endDate, remarks, dispute.status
+                leaveType, startDate, endDate, reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
                 ON dispute.leaveID = disputeLeaves.leaveID
@@ -1053,7 +1053,7 @@
         public function pendingDisputesOvertime() {
             $overtimeDisputes = "
                 SELECT disputeID, disputeOvertime.dateFiled, firstName, lastName,
-                otDate, otType, remarks, dispute.status
+                otDate, otType, reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
                 ON dispute.overtimeID = disputeOvertime.overtimeID
@@ -1068,7 +1068,7 @@
         public function pendingDisputesOvertimeUser($id) {
             $overtimeDisputes = "
                 SELECT disputeID, disputeOvertime.dateFiled, firstName, lastName,
-                otDate, otType, remarks, dispute.status
+                otDate, otType, reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
                 ON dispute.overtimeID = disputeOvertime.overtimeID
@@ -1083,7 +1083,7 @@
         public function pendingDisputesOvertimeOpsManager() {
             $overtimeDisputes = "
                 SELECT disputeID, disputeOvertime.dateFiled, firstName, lastName,
-                otDate, otType, remarks, dispute.status
+                otDate, otType, reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
                 ON dispute.overtimeID = disputeOvertime.overtimeID
@@ -1099,7 +1099,7 @@
         public function pendingDisputesOvertimeOpsTL() {
             $overtimeDisputes = "
                 SELECT disputeID, disputeOvertime.dateFiled, firstName, lastName,
-                otDate, otType, remarks, dispute.status
+                otDate, otType, reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
                 ON dispute.overtimeID = disputeOvertime.overtimeID
@@ -1116,7 +1116,7 @@
         public function pendingDisputesOvertimeIT() {
             $overtimeDisputes = "
                 SELECT disputeID, disputeOvertime.dateFiled, firstName, lastName,
-                otDate, otType, remarks, dispute.status
+                otDate, otType, reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
                 ON dispute.overtimeID = disputeOvertime.overtimeID
@@ -1133,7 +1133,7 @@
         public function approvedDisputesOvertime() {
             $overtimeDisputes = "
                 SELECT disputeID, disputeOvertime.dateFiled, firstName, lastName,
-                otDate, otType, remarks, dispute.status
+                otDate, otType, reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
                 ON dispute.overtimeID = disputeOvertime.overtimeID
@@ -1148,7 +1148,7 @@
         public function approvedDisputesOvertimeUser($id) {
             $overtimeDisputes = "
                 SELECT disputeID, disputeOvertime.dateFiled, firstName, lastName,
-                otDate, otType, remarks, dispute.status
+                otDate, otType, reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
                 ON dispute.overtimeID = disputeOvertime.overtimeID
@@ -1163,7 +1163,7 @@
         public function approvedDisputesOvertimeOpsManager() {
             $overtimeDisputes = "
                 SELECT disputeID, disputeOvertime.dateFiled, firstName, lastName,
-                otDate, otType, remarks, dispute.status
+                otDate, otType, reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
                 ON dispute.overtimeID = disputeOvertime.overtimeID
@@ -1179,7 +1179,7 @@
         public function approvedDisputesOvertimeOpsTL() {
             $overtimeDisputes = "
                 SELECT disputeID, disputeOvertime.dateFiled, firstName, lastName,
-                otDate, otType, remarks, dispute.status
+                otDate, otType, reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
                 ON dispute.overtimeID = disputeOvertime.overtimeID
@@ -1196,7 +1196,7 @@
         public function approvedDisputesOvertimeIT() {
             $overtimeDisputes = "
                 SELECT disputeID, disputeOvertime.dateFiled, firstName, lastName,
-                otDate, otType, remarks, dispute.status
+                otDate, otType, reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
                 ON dispute.overtimeID = disputeOvertime.overtimeID
@@ -1213,7 +1213,7 @@
         public function disapprovedDisputesOvertime() {
             $overtimeDisputes = "
                 SELECT disputeID, disputeOvertime.dateFiled, firstName, lastName,
-                otDate, otType, remarks, dispute.status
+                otDate, otType, reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
                 ON dispute.overtimeID = disputeOvertime.overtimeID
@@ -1228,7 +1228,7 @@
         public function disapprovedDisputesOvertimeUser($id) {
             $overtimeDisputes = "
                 SELECT disputeID, disputeOvertime.dateFiled, firstName, lastName,
-                otDate, otType, remarks, dispute.status
+                otDate, otType, reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
                 ON dispute.overtimeID = disputeOvertime.overtimeID
@@ -1243,7 +1243,7 @@
         public function disapprovedDisputesOvertimeOpsManager() {
             $overtimeDisputes = "
                 SELECT disputeID, disputeOvertime.dateFiled, firstName, lastName,
-                otDate, otType, remarks, dispute.status
+                otDate, otType, reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
                 ON dispute.overtimeID = disputeOvertime.overtimeID
@@ -1259,7 +1259,7 @@
         public function disapprovedDisputesOvertimeOpsTL() {
             $overtimeDisputes = "
                 SELECT disputeID, disputeOvertime.dateFiled, firstName, lastName,
-                otDate, otType, remarks, dispute.status
+                otDate, otType, reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
                 ON dispute.overtimeID = disputeOvertime.overtimeID
@@ -1276,7 +1276,7 @@
         public function disapprovedDisputesOvertimeIT() {
             $overtimeDisputes = "
                 SELECT disputeID, disputeOvertime.dateFiled, firstName, lastName,
-                otDate, otType, remarks, dispute.status
+                otDate, otType, reason, dispute.status
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
                 ON dispute.overtimeID = disputeOvertime.overtimeID
@@ -1335,24 +1335,24 @@
             return $lastID;
         }
 
-        public function addDispute_attendance($attendanceID, $remarks) {
+        public function addDispute_attendance($attendanceID, $reason) {
             $fileDisputeAttendance = "
-                INSERT INTO ".$this->disputes." (attendanceID, remarks, status)
-                VALUES ('$attendanceID', '$remarks', 'Pending')";
+                INSERT INTO ".$this->disputes." (attendanceID, reason, status)
+                VALUES ('$attendanceID', '$reason', 'Pending')";
             return $fileDisputeAttendance;
         }
 
-        public function addDispute_leave($leaveID, $remarks) {
+        public function addDispute_leave($leaveID, $reason) {
             $fileDisputeLeave = "
-                INSERT INTO ".$this->disputes." (leaveID, remarks, status)
-                VALUES ('$leaveID', '$remarks', 'Pending')";
+                INSERT INTO ".$this->disputes." (leaveID, reason, status)
+                VALUES ('$leaveID', '$reason', 'Pending')";
             return $fileDisputeLeave;
         }
 
-        public function addDispute_overtime($overtimeID, $remarks) {
+        public function addDispute_overtime($overtimeID, $reason) {
             $fileDisputeOvertime = "
-                INSERT INTO ".$this->disputes." (overtimeID, remarks, status)
-                VALUES ('$overtimeID', '$remarks', 'Pending')";
+                INSERT INTO ".$this->disputes." (overtimeID, reason, status)
+                VALUES ('$overtimeID', '$reason', 'Pending')";
             return $fileDisputeOvertime;
         }
 
@@ -1370,7 +1370,7 @@
                 DATE_FORMAT(attendanceDate_timeIn, '%M %d, %Y') AS attendanceDate_timeIn,
                 DATE_FORMAT(attendanceDate_timeOut, '%M %d, %Y') AS attendanceDate_timeOut,
                 attendanceTime_timeIn, attendanceTime_timeOut, lateMins, undertimeMins,
-                logTypeID_timeIn, logTypeID_timeOut, remarks, dispute.status
+                logTypeID_timeIn, logTypeID_timeOut, reason, dispute.status, remarks
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeAttendance." AS disputeAttendance
                 ON dispute.attendanceID = disputeAttendance.attendanceID
@@ -1386,7 +1386,7 @@
                 DATE_FORMAT(dateFiled, '%M %d, %Y') AS dateFiled,
                 DATE_FORMAT(startDate, '%M %d, %Y') AS startDate,
                 DATE_FORMAT(endDate, '%M %d, %Y') AS endDate,
-                attachment, leaveType, disputeLeaves.leaveTypeID, remarks, 
+                attachment, leaveType, disputeLeaves.leaveTypeID, reason, remarks,
                 dispute.status, startDate AS effectivityStartDate, endDate AS effectivityEndDate
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeLeaves." AS disputeLeaves
@@ -1404,8 +1404,8 @@
                 SELECT disputeID, empID, employeeID, firstName, lastName,
                 DATE_FORMAT(dateFiled, '%M %d, %Y') AS dateFiled,
                 DATE_FORMAT(otDate, '%M %d, %Y') AS otDate,
-                otType, fromTime, toTime, remarks, dispute.status, 
-                otDate AS overtimeDate, dateFiled AS filedDate
+                otType, fromTime, toTime, reason, dispute.status, 
+                otDate AS overtimeDate, dateFiled AS filedDate, remarks
                 FROM ".$this->disputes." AS dispute
                 INNER JOIN ".$this->disputeOvertime." AS disputeOvertime
                 ON dispute.overtimeID = disputeOvertime.overtimeID
@@ -1436,8 +1436,8 @@
             return $fileLeave;
         }
 
-        public function updateDisputeStatus($disputeID, $status) {
-            $updateDisputeStatus = "UPDATE ".$this->disputes." SET status = '$status' WHERE disputeID = '$disputeID'";
+        public function updateDisputeStatus($disputeID, $status, $remarks) {
+            $updateDisputeStatus = "UPDATE ".$this->disputes." SET status = '$status', remarks = '$remarks' WHERE disputeID = '$disputeID'";
             return $updateDisputeStatus;
         }
 

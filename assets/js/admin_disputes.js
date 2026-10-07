@@ -47,7 +47,7 @@ $(document).ready(function() {
         order: [] 
     });
 
-    // ADD ADJUSTMENT 
+    // HIDE ALL SECTIONS INITIALLY 
     $('.attendanceSection').hide();
     $('.dateFiledSection').hide();
     $('.employeeSection').hide();
@@ -62,7 +62,7 @@ $(document).ready(function() {
             $('.employeeSection').show();
             $('.leaveSection').hide();
             $('.overtimeSection').hide();
-            $('.remarksSection').show();
+            $('.reasonSection').show();
         }
         else if ($(this).val() == 2) {
             $('.leaveSection').show();
@@ -70,7 +70,7 @@ $(document).ready(function() {
             $('.employeeSection').show();
             $('.attendanceSection').hide();
             $('.overtimeSection').hide();
-            $('.remarksSection').show();
+            $('.reasonSection').show();
         }
         else {
             $('.overtimeSection').show();
@@ -78,7 +78,7 @@ $(document).ready(function() {
             $('.employeeSection').show();
             $('.attendanceSection').hide();
             $('.leaveSection').hide();
-            $('.remarksSection').show();
+            $('.reasonSection').show();
         }
     });
 
@@ -272,7 +272,7 @@ $(document).ready(function() {
         }
     });
 
-    // VIEW AND UPDATE ATTENDANCE DISPUTE
+    // VIEW ATTENDANCE DISPUTE
     var array = [];
     $(document).on('click', '.attendanceView', function() {
         var dispute_id = $(this).data('id');
@@ -292,7 +292,7 @@ $(document).ready(function() {
                 $('.employeeSection').show();
                 $('.leaveSection').hide();
                 $('.overtimeSection').hide();
-                $('.remarksSection').show();
+                $('.reasonSection').show();
 
                 if (res.status == 404) {
                     alert(res.message);
@@ -310,10 +310,12 @@ $(document).ready(function() {
                     $('#viewAttendanceDate_timeOut').val(res.data.attendanceDate_timeOut);
                     $('#viewAttendanceTime_timeOut').val(res.data.attendanceTime_timeOut);
                     $('#viewAttendanceLogType_timeOut').val(res.data.logTypeID_timeOut == 3 ? 'Undertime' : 'Time Out');
+                    $('#viewReason').val(res.data.reason);
                     $('#viewRemarks').val(res.data.remarks);
-                    
+
                     $('#approveDispute').hide();
                     $('#disapproveDispute').hide();
+                    $('.remarksSection').show();
 
                     $("#viewModal").modal("show");
                 }
@@ -330,7 +332,7 @@ $(document).ready(function() {
                     $('#viewAttendanceDate_timeOut').val(res.data.attendanceDate_timeOut);
                     $('#viewAttendanceTime_timeOut').val(res.data.attendanceTime_timeOut);
                     $('#viewAttendanceLogType_timeOut').val(res.data.logTypeID_timeOut == 3 ? 'Undertime' : 'Time Out');
-                    $('#viewRemarks').val(res.data.remarks);
+                    $('#viewReason').val(res.data.reason);
                     
                     $('#approveDispute').show();
                     $('#disapproveDispute').show();
@@ -350,7 +352,7 @@ $(document).ready(function() {
                     $('#viewAttendanceDate_timeOut').val(res.data.attendanceDate_timeOut);
                     $('#viewAttendanceTime_timeOut').val(res.data.attendanceTime_timeOut);
                     $('#viewAttendanceLogType_timeOut').val(res.data.logTypeID_timeOut == 3 ? 'Undertime' : 'Time Out');
-                    $('#viewRemarks').val(res.data.remarks);
+                    $('#viewReason').val(res.data.reason);
                     
                     $('#approveDispute').show();
                     $('#disapproveDispute').show();
@@ -359,6 +361,12 @@ $(document).ready(function() {
                 }
             }
         });
+
+        const remarkOptions = {
+            valid: 'Valid timestamp',
+            system_error: 'System error',
+            manual_entry: 'Manual entry approved'
+        };
 
         // APPROVE ATTENDANCE DISPUTE
         $(document).on('click', '.approveDispute', function() {
@@ -378,13 +386,17 @@ $(document).ready(function() {
                             icon: 'question',
                             title: 'Approve Attendance Dispute',
                             text: 'Are you sure you want to approve this attendance dispute?',
+                            input: 'select',
+                            inputOptions: remarkOptions,
+                            inputPlaceholder: 'Select a remark',
+                            inputValidator: (value) => {
+                                if (!value) return 'Please select an option';
+                            }, 
                             showCancelButton: true,
-
                             confirmButtonColor: '#28a745',
                             cancelButtonColor: '#6c757d',
                             confirmButtonText: 'Yes',
                             cancelButtonText: 'Cancel',
-
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 $.ajax({
@@ -393,7 +405,8 @@ $(document).ready(function() {
                                     data: {
                                         id_dispute: id_dispute,
                                         type: 'attendance',
-                                        action: 'approve'
+                                        action: 'approve',
+                                        remark: remarkOptions[result.value]
                                     },
                                     cache: false,
                                     success: function(data) {
@@ -469,84 +482,9 @@ $(document).ready(function() {
                 }
             });
         })
-
-        // // UPDATE ATTENDANCE
-        // $(document).on('click', '.allowanceUpdate', function() {
-        //     $('#viewAllowanceModal').modal('hide');
-        //     var id_allowance = array[array.length - 1];
-
-        //     $.ajax({
-        //         type: "GET",
-        //         url: "../backend/admin/adjustmentModal.php?allowance_id=" + id_allowance,
-        //         success: function(response) {
-
-        //             var res = jQuery.parseJSON(response);
-        //             if (res.status == 404) {
-        //                 alert(res.message);
-        //             } 
-        //             else if (res.status == 200) {
-        //                 $('#updateAllowanceID').val(res.data.allowanceID);
-        //                 $('#updateAllowanceName').val(res.data.allowanceName);
-        //                 $('#updateAllowanceModal').modal('show');
-        //             }
-        //         }
-        //     });
-        // })
-
-        // // DELETE ATTENDANCE
-        // $(document).on('click', '.allowanceDelete', function() {
-        //     var id_allowance = array[array.length - 1];
-
-        //     $.ajax({
-        //         type: "GET",
-        //         url: "../backend/admin/adjustmentModal.php?allowance_id=" + id_allowance,
-        //         success: function(response) {
-
-        //             var res = jQuery.parseJSON(response);
-        //             if (res.status == 404) {
-        //                 alert(res.message);
-        //             } else if (res.status == 200) {
-
-        //                 Swal.fire({
-        //                     icon: 'question',
-        //                     title: 'Delete Allowance',
-        //                     text: 'Are you sure you want to delete this allowance?',
-        //                     showCancelButton: true,
-        //                     cancelButtonColor: '#6c757d',
-        //                     confirmButtonColor: '#28a745',
-        //                     confirmButtonText: 'Yes',
-
-        //                 }).then((result) => {
-        //                     if (result.isConfirmed) {
-
-        //                         $.ajax({
-        //                             url: "../backend/admin/deleteAdjustment.php",
-        //                             type: 'POST',
-        //                             data: {
-        //                                 id_allowance: id_allowance
-        //                             },
-        //                             cache: false,
-        //                             success: function(data) {
-        //                                 Swal.fire({
-        //                                     icon: 'success',
-        //                                     title: 'Success',
-        //                                     text: 'Allowance Deleted Successfully',
-        //                                     timer: 2000,
-        //                                     showConfirmButton: false,
-        //                                 }).then(() => {
-        //                                     window.location.reload();
-        //                                 })
-        //                             }
-        //                         })
-        //                     }
-        //                 })
-        //             }
-        //         }
-        //     });
-        // })
     });
 
-    // VIEW AND UPDATE LEAVE DISPUTE
+    // VIEW LEAVE DISPUTE
     var array = [];
     $(document).on('click', '.leaveView', function() {
         var dispute_id = $(this).data('id');
@@ -566,7 +504,7 @@ $(document).ready(function() {
                 $('.employeeSection').show();
                 $('.attendanceSection').hide();
                 $('.overtimeSection').hide();
-                $('.remarksSection').show();
+                $('.reasonSection').show();
 
                 if (res.status == 404) {
                     alert(res.message);
@@ -580,11 +518,13 @@ $(document).ready(function() {
                     $('#viewLeaveType').val(res.data.leaveType);
                     $('#viewLeaveStartDate').val(res.data.startDate);
                     $('#viewLeaveEndDate').val(res.data.endDate);
-                    $('#viewRemarks').val(res.data.remarks);
+                    $('#viewReason').val(res.data.reason);
                     $('#viewStatus').val(res.data.status);
+                    $('#viewRemarks').val(res.data.remarks);
                     
                     $('#approveDispute').hide();
                     $('#disapproveDispute').hide();
+                    $('.remarksSection').show();
 
                     if (res.data.attachment == 1) {
                         $("#viewWithAttachmentRow").show();
@@ -608,7 +548,7 @@ $(document).ready(function() {
                     $('#viewLeaveType').val(res.data.leaveType);
                     $('#viewLeaveStartDate').val(res.data.startDate);
                     $('#viewLeaveEndDate').val(res.data.endDate);
-                    $('#viewRemarks').val(res.data.remarks);
+                    $('#viewReason').val(res.data.reason);
 
                     $('#approveDispute').show();
                     $('#disapproveDispute').show();
@@ -635,7 +575,7 @@ $(document).ready(function() {
                     $('#viewLeaveType').val(res.data.leaveType);
                     $('#viewLeaveStartDate').val(res.data.startDate);
                     $('#viewLeaveEndDate').val(res.data.endDate);
-                    $('#viewRemarks').val(res.data.remarks);
+                    $('#viewReason').val(res.data.reason);
 
                     $('#approveDispute').show();
                     $('#disapproveDispute').show();
@@ -795,7 +735,7 @@ $(document).ready(function() {
         })
     });
 
-    // VIEW AND UPDATE OVERTIME DISPUTE
+    // VIEW OVERTIME DISPUTE
     var array = [];
     $(document).on('click', '.overtimeView', function() {
         var dispute_id = $(this).data('id');
@@ -815,7 +755,7 @@ $(document).ready(function() {
                 $('.employeeSection').show();
                 $('.attendanceSection').hide();
                 $('.leaveSection').hide();
-                $('.remarksSection').show();
+                $('.reasonSection').show();
 
                 if (res.status == 404) {
                     alert(res.message);
@@ -830,11 +770,13 @@ $(document).ready(function() {
                     $('#viewOtType').val(res.data.otType);
                     $('#viewOvertimeFromTime').val(res.data.fromTime);
                     $('#viewOvertimeToTime').val(res.data.toTime);
-                    $('#viewRemarks').val(res.data.remarks);
+                    $('#viewReason').val(res.data.reason);
                     $('#viewStatus').val(res.data.status);
+                    $('#viewRemarks').val(res.data.remarks);
 
                     $('#approveDispute').hide();
                     $('#disapproveDispute').hide();
+                    $('.remarksSection').show();
 
                     $("#viewModal").modal("show");
                 }
@@ -849,7 +791,7 @@ $(document).ready(function() {
                     $('#viewOtType').val(res.data.otType);
                     $('#viewOvertimeFromTime').val(res.data.fromTime);
                     $('#viewOvertimeToTime').val(res.data.toTime);
-                    $('#viewRemarks').val(res.data.remarks);
+                    $('#viewReason').val(res.data.reason);
                     
                     $('#approveDispute').show();
                     $('#disapproveDispute').show();
@@ -867,7 +809,7 @@ $(document).ready(function() {
                     $('#viewOtType').val(res.data.otType);
                     $('#viewOvertimeFromTime').val(res.data.fromTime);
                     $('#viewOvertimeToTime').val(res.data.toTime);
-                    $('#viewRemarks').val(res.data.remarks);
+                    $('#viewReason').val(res.data.reason);
                     
                     $('#approveDispute').show();
                     $('#disapproveDispute').show();
@@ -1017,72 +959,6 @@ $(document).ready(function() {
         })
     });
 
-    // UPDATE ALLOWANCE
-    $("#updateAllowanceForm").submit(function (e) {
-        
-        e.preventDefault();
-
-        var updateAllowanceID = $("#updateAllowanceID").val();
-        var updateAllowanceName = $("#updateAllowanceName").val();
-
-        if (updateAllowanceName == '') {
-
-            Swal.fire({
-                icon: 'warning',
-                title: 'Required Information',
-                text: 'Please fill up all the required Information',
-
-            })
-
-        } else {
-            Swal.fire({
-                icon: 'question',
-                title: 'Update Allowance Information',
-                text: 'Are you sure you want to save the changes you made?',
-                showCancelButton: true,
-                cancelButtonColor: '#6c757d',
-                confirmButtonColor: '#28a745',
-                confirmButtonText: 'Yes',
-
-            }).then((result) => {
-                if (result.isConfirmed) {
-
-                    $.ajax({
-                        url: '../backend/admin/updateAdjustment.php',
-                        type: 'POST',
-                        data: $(this).serialize(),
-                        cache: false,
-                        success: function(res) {
-                            const data = JSON.parse(res);
-                            if (data.error == 0) {
-                                var message = data.em
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Success',
-                                    text: message,
-                                    timer: 2000, 
-                                    showConfirmButton: false,
-                                }).then(() => {
-                                    loadAllowanceData(updateAllowanceID);
-                                    $('#updateAllowanceModal').modal('hide');
-                                    $('#viewAllowanceModal').modal('show');
-                                })
-                            } else {
-                                var message = data.em
-                                Swal.fire({
-                                    icon: 'warning',
-                                    title: 'Warning', 
-                                    text: message,
-                                })
-                            }
-                        }
-                    })
-                }
-            })
-        }       
-
-    });
-
     function loadAttendanceDispute(id_dispute) {
         $.ajax({
             type: "GET",
@@ -1096,7 +972,7 @@ $(document).ready(function() {
                 $('.employeeSection').show();
                 $('.leaveSection').hide();
                 $('.overtimeSection').hide();
-                $('.remarksSection').show();
+                $('.reasonSection').show();
 
                 if (res.status == 404) {
                     alert(res.message);
@@ -1114,10 +990,12 @@ $(document).ready(function() {
                     $('#viewAttendanceDate_timeOut').val(res.data.attendanceDate_timeOut);
                     $('#viewAttendanceTime_timeOut').val(res.data.attendanceTime_timeOut);
                     $('#viewAttendanceLogType_timeOut').val(res.data.logTypeID_timeOut == 3 ? 'Undertime' : 'Time Out');
+                    $('#viewReason').val(res.data.reason);
                     $('#viewRemarks').val(res.data.remarks);
-                    
+
                     $('#approveDispute').hide();
                     $('#disapproveDispute').hide();
+                    $('.remarksSection').show();
                 }
                 else if (res.status == 200 && (userDept == 3 && res.data.status == "Pending")) {
                     $('#viewDisputeID').val(res.data.disputeID);
@@ -1132,7 +1010,7 @@ $(document).ready(function() {
                     $('#viewAttendanceDate_timeOut').val(res.data.attendanceDate_timeOut);
                     $('#viewAttendanceTime_timeOut').val(res.data.attendanceTime_timeOut);
                     $('#viewAttendanceLogType_timeOut').val(res.data.logTypeID_timeOut == 3 ? 'Undertime' : 'Time Out');
-                    $('#viewRemarks').val(res.data.remarks);
+                    $('#viewReason').val(res.data.reason);
                     
                     $('#approveDispute').show();
                     $('#disapproveDispute').show();
@@ -1150,7 +1028,7 @@ $(document).ready(function() {
                     $('#viewAttendanceDate_timeOut').val(res.data.attendanceDate_timeOut);
                     $('#viewAttendanceTime_timeOut').val(res.data.attendanceTime_timeOut);
                     $('#viewAttendanceLogType_timeOut').val(res.data.logTypeID_timeOut == 3 ? 'Undertime' : 'Time Out');
-                    $('#viewRemarks').val(res.data.remarks);
+                    $('#viewReason').val(res.data.reason);
                     
                     $('#approveDispute').show();
                     $('#disapproveDispute').show();
@@ -1172,7 +1050,7 @@ $(document).ready(function() {
                 $('.employeeSection').show();
                 $('.attendanceSection').hide();
                 $('.overtimeSection').hide();
-                $('.remarksSection').show();
+                $('.reasonSection').show();
 
                 if (res.status == 404) {
                     alert(res.message);
@@ -1186,11 +1064,13 @@ $(document).ready(function() {
                     $('#viewLeaveType').val(res.data.leaveType);
                     $('#viewLeaveStartDate').val(res.data.startDate);
                     $('#viewLeaveEndDate').val(res.data.endDate);
-                    $('#viewRemarks').val(res.data.remarks);
+                    $('#viewReason').val(res.data.reason);
                     $('#viewStatus').val(res.data.status);
+                    $('#viewRemarks').val(res.data.remarks);
                     
                     $('#approveDispute').hide();
                     $('#disapproveDispute').hide();
+                    $('.remarksSection').show();
 
                     if (res.data.attachment == 1) {
                         $("#viewWithAttachmentRow").show();
@@ -1213,7 +1093,7 @@ $(document).ready(function() {
                     $('#viewLeaveType').val(res.data.leaveType);
                     $('#viewLeaveStartDate').val(res.data.startDate);
                     $('#viewLeaveEndDate').val(res.data.endDate);
-                    $('#viewRemarks').val(res.data.remarks);
+                    $('#viewReason').val(res.data.reason);
 
                     $('#approveDispute').show();
                     $('#disapproveDispute').show();
@@ -1239,7 +1119,7 @@ $(document).ready(function() {
                     $('#viewLeaveType').val(res.data.leaveType);
                     $('#viewLeaveStartDate').val(res.data.startDate);
                     $('#viewLeaveEndDate').val(res.data.endDate);
-                    $('#viewRemarks').val(res.data.remarks);
+                    $('#viewReason').val(res.data.reason);
 
                     $('#approveDispute').show();
                     $('#disapproveDispute').show();
@@ -1272,7 +1152,7 @@ $(document).ready(function() {
                 $('.employeeSection').show();
                 $('.attendanceSection').hide();
                 $('.leaveSection').hide();
-                $('.remarksSection').show();
+                $('.reasonSection').show();
 
                 if (res.status == 404) {
                     alert(res.message);
@@ -1287,11 +1167,13 @@ $(document).ready(function() {
                     $('#viewOtType').val(res.data.otType);
                     $('#viewOvertimeFromTime').val(res.data.fromTime);
                     $('#viewOvertimeToTime').val(res.data.toTime);
-                    $('#viewRemarks').val(res.data.remarks);
+                    $('#viewReason').val(res.data.reason);
                     $('#viewStatus').val(res.data.status);
+                    $('#viewRemarks').val(res.data.remarks);
 
                     $('#approveDispute').hide();
                     $('#disapproveDispute').hide();
+                    $('.remarksSection').show();
                 }
                 else if (res.status == 200 && (userDept == 3 && res.data.status == "Pending")) {
                     $('#viewDisputeID').val(res.data.disputeID);
@@ -1304,7 +1186,7 @@ $(document).ready(function() {
                     $('#viewOtType').val(res.data.otType);
                     $('#viewOvertimeFromTime').val(res.data.fromTime);
                     $('#viewOvertimeToTime').val(res.data.toTime);
-                    $('#viewRemarks').val(res.data.remarks);
+                    $('#viewReason').val(res.data.reason);
                     
                     $('#approveDispute').show();
                     $('#disapproveDispute').show();
@@ -1320,7 +1202,7 @@ $(document).ready(function() {
                     $('#viewOtType').val(res.data.otType);
                     $('#viewOvertimeFromTime').val(res.data.fromTime);
                     $('#viewOvertimeToTime').val(res.data.toTime);
-                    $('#viewRemarks').val(res.data.remarks);
+                    $('#viewReason').val(res.data.reason);
                     
                     $('#approveDispute').show();
                     $('#disapproveDispute').show();

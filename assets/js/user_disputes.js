@@ -53,7 +53,7 @@ $(document).ready(function() {
     $('.employeeSection').hide();
     $('.leaveSection').hide();
     $('.overtimeSection').hide();
-    $('.remarksSection').hide();
+    $('.reasonSection').hide();
 
     $('#dataType').change(function() {
         if ($(this).val() == 1) {
@@ -62,7 +62,7 @@ $(document).ready(function() {
             $('.employeeSection').show();
             $('.leaveSection').hide();
             $('.overtimeSection').hide();
-            $('.remarksSection').show();
+            $('.reasonSection').show();
         }
         else if ($(this).val() == 2) {
             $('.leaveSection').show();
@@ -70,7 +70,7 @@ $(document).ready(function() {
             $('.employeeSection').show();
             $('.attendanceSection').hide();
             $('.overtimeSection').hide();
-            $('.remarksSection').show();
+            $('.reasonSection').show();
         }
         else {
             $('.overtimeSection').show();
@@ -78,7 +78,7 @@ $(document).ready(function() {
             $('.employeeSection').show();
             $('.attendanceSection').hide();
             $('.leaveSection').hide();
-            $('.remarksSection').show();
+            $('.reasonSection').show();
         }
     });
 
@@ -125,24 +125,24 @@ $(document).ready(function() {
         var overtimeFromTime = $("#overtimeFromTime").val();
         var overtimeToTime = $("#overtimeToTime").val();
 
-        var remarks = $("#remarks").val();
+        var reason = $("#reason").val();
 
         if (dataType == '') {
-            if (dataType == 1 && empID && (attendanceDate_timeIn == '' || attendanceTime_timeIn == '' || logTypeID_timeIn == '' || attendanceDate_timeOut == '' || attendanceTime_timeOut == '' || logTypeID_timeOut == '' || remarks == '')) {
+            if (dataType == 1 && empID && (attendanceDate_timeIn == '' || attendanceTime_timeIn == '' || logTypeID_timeIn == '' || attendanceDate_timeOut == '' || attendanceTime_timeOut == '' || logTypeID_timeOut == '' || reason == '')) {
                 Swal.fire({
                     icon: 'warning',
                     title: 'Required Information',
                     text: 'Please fill up all the required Information',
                 })
             }
-            else if (dataType == 2 && empID && (leaveType == '' || leaveStartDate == '' || leaveEndDate == '' || withAttachment == '' || withoutAttachment == '' || remarks == '')) {
+            else if (dataType == 2 && empID && (leaveType == '' || leaveStartDate == '' || leaveEndDate == '' || withAttachment == '' || withoutAttachment == '' || reason == '')) {
                 Swal.fire({
                     icon: 'warning',
                     title: 'Required Information',
                     text: 'Please fill up all the required Information',
                 })
             }
-            else if (dataType == 3 && empID && (overtimeOTDate == '' || otType == '' || overtimeFromTime == '' || overtimeToTime == '' || remarks == '')) {
+            else if (dataType == 3 && empID && (overtimeOTDate == '' || otType == '' || overtimeFromTime == '' || overtimeToTime == '' || reason == '')) {
                 Swal.fire({
                     icon: 'warning',
                     title: 'Required Information',
@@ -162,7 +162,7 @@ $(document).ready(function() {
                 if (result.isConfirmed) {
                     fileDispute.append('dataType', dataType);
                     fileDispute.append('empID', empID);
-                    fileDispute.append('remarks', remarks);
+                    fileDispute.append('reason', reason);
                     fileDispute.append('action', action);
 
                     fileDispute.append('attendanceDate_timeIn', attendanceDate_timeIn);
@@ -247,7 +247,7 @@ $(document).ready(function() {
                 $('.employeeSection').show();
                 $('.leaveSection').hide();
                 $('.overtimeSection').hide();
-                $('.remarksSection').show();
+                $('.reasonSection').show();
 
                 if (res.status == 404) {
                     alert(res.message);
@@ -265,7 +265,7 @@ $(document).ready(function() {
                     $('#viewAttendanceDate_timeOut').val(res.data.attendanceDate_timeOut);
                     $('#viewAttendanceTime_timeOut').val(res.data.attendanceTime_timeOut);
                     $('#viewAttendanceLogType_timeOut').val(res.data.logTypeID_timeOut == 3 ? 'Undertime' : 'Time Out');
-                    $('#viewRemarks').val(res.data.remarks);
+                    $('#viewReason').val(res.data.reason);
                     
                     $("#viewModal").modal("show");
                 }
@@ -282,7 +282,7 @@ $(document).ready(function() {
                     $('#viewAttendanceDate_timeOut').val(res.data.attendanceDate_timeOut);
                     $('#viewAttendanceTime_timeOut').val(res.data.attendanceTime_timeOut);
                     $('#viewAttendanceLogType_timeOut').val(res.data.logTypeID_timeOut == 3 ? 'Undertime' : 'Time Out');
-                    $('#viewRemarks').val(res.data.remarks);
+                    $('#viewReason').val(res.data.reason);
 
                     $("#viewModal").modal("show");
                 }
@@ -385,7 +385,7 @@ $(document).ready(function() {
                 $('.employeeSection').show();
                 $('.attendanceSection').hide();
                 $('.overtimeSection').hide();
-                $('.remarksSection').show();
+                $('.reasonSection').show();
 
                 if (res.status == 404) {
                     alert(res.message);
@@ -399,7 +399,7 @@ $(document).ready(function() {
                     $('#viewLeaveType').val(res.data.leaveType);
                     $('#viewLeaveStartDate').val(res.data.startDate);
                     $('#viewLeaveEndDate').val(res.data.endDate);
-                    $('#viewRemarks').val(res.data.remarks);
+                    $('#viewReason').val(res.data.reason);
                     $('#viewStatus').val(res.data.status);
 
                     if (res.data.attachment == 1) {
@@ -424,7 +424,7 @@ $(document).ready(function() {
                     $('#viewLeaveType').val(res.data.leaveType);
                     $('#viewLeaveStartDate').val(res.data.startDate);
                     $('#viewLeaveEndDate').val(res.data.endDate);
-                    $('#viewRemarks').val(res.data.remarks);
+                    $('#viewReason').val(res.data.reason);
                     
                     if (res.data.attachment == 1) {
                         $("#viewWithAttachmentRow").show();
@@ -462,7 +462,7 @@ $(document).ready(function() {
                 $('.employeeSection').show();
                 $('.attendanceSection').hide();
                 $('.leaveSection').hide();
-                $('.remarksSection').show();
+                $('.reasonSection').show();
 
                 if (res.status == 404) {
                     alert(res.message);
@@ -477,7 +477,7 @@ $(document).ready(function() {
                     $('#viewOtType').val(res.data.otType);
                     $('#viewOvertimeFromTime').val(res.data.fromTime);
                     $('#viewOvertimeToTime').val(res.data.toTime);
-                    $('#viewRemarks').val(res.data.remarks);
+                    $('#viewReason').val(res.data.reason);
                     $('#viewStatus').val(res.data.status);
 
                     $("#viewModal").modal("show");
@@ -493,7 +493,7 @@ $(document).ready(function() {
                     $('#viewOtType').val(res.data.otType);
                     $('#viewOvertimeFromTime').val(res.data.fromTime);
                     $('#viewOvertimeToTime').val(res.data.toTime);
-                    $('#viewRemarks').val(res.data.remarks);
+                    $('#viewReason').val(res.data.reason);
 
                     $("#viewModal").modal("show");
                 }
@@ -580,7 +580,7 @@ $(document).ready(function() {
                 $('.employeeSection').show();
                 $('.leaveSection').hide();
                 $('.overtimeSection').hide();
-                $('.remarksSection').show();
+                $('.reasonSection').show();
 
                 if (res.status == 404) {
                     alert(res.message);
@@ -598,7 +598,7 @@ $(document).ready(function() {
                     $('#viewAttendanceDate_timeOut').val(res.data.attendanceDate_timeOut);
                     $('#viewAttendanceTime_timeOut').val(res.data.attendanceTime_timeOut);
                     $('#viewAttendanceLogType_timeOut').val(res.data.logTypeID_timeOut == 3 ? 'Undertime' : 'Time Out');
-                    $('#viewRemarks').val(res.data.remarks);
+                    $('#viewReason').val(res.data.reason);
                 }
                 else if (res.status == 200 && res.data.status == "Pending") {
                     $('#viewDisputeID').val(res.data.disputeID);
@@ -613,7 +613,7 @@ $(document).ready(function() {
                     $('#viewAttendanceDate_timeOut').val(res.data.attendanceDate_timeOut);
                     $('#viewAttendanceTime_timeOut').val(res.data.attendanceTime_timeOut);
                     $('#viewAttendanceLogType_timeOut').val(res.data.logTypeID_timeOut == 3 ? 'Undertime' : 'Time Out');
-                    $('#viewRemarks').val(res.data.remarks);
+                    $('#viewReason').val(res.data.reason);
                 }
             }
         });
@@ -631,7 +631,7 @@ $(document).ready(function() {
                 $('.employeeSection').show();
                 $('.attendanceSection').hide();
                 $('.overtimeSection').hide();
-                $('.remarksSection').show();
+                $('.reasonSection').show();
 
                 if (res.status == 404) {
                     alert(res.message);
@@ -645,7 +645,7 @@ $(document).ready(function() {
                     $('#viewLeaveType').val(res.data.leaveType);
                     $('#viewLeaveStartDate').val(res.data.startDate);
                     $('#viewLeaveEndDate').val(res.data.endDate);
-                    $('#viewRemarks').val(res.data.remarks);
+                    $('#viewReason').val(res.data.reason);
                     $('#viewStatus').val(res.data.status);
 
                     if (res.data.attachment == 1) {
@@ -669,7 +669,7 @@ $(document).ready(function() {
                     $('#viewLeaveType').val(res.data.leaveType);
                     $('#viewLeaveStartDate').val(res.data.startDate);
                     $('#viewLeaveEndDate').val(res.data.endDate);
-                    $('#viewRemarks').val(res.data.remarks);
+                    $('#viewReason').val(res.data.reason);
 
                     if (res.data.attachment == 1) {
                         $("#viewWithAttachmentRow").show();
@@ -699,7 +699,7 @@ $(document).ready(function() {
                 $('.employeeSection').show();
                 $('.attendanceSection').hide();
                 $('.leaveSection').hide();
-                $('.remarksSection').show();
+                $('.reasonSection').show();
 
                 if (res.status == 404) {
                     alert(res.message);
@@ -714,7 +714,7 @@ $(document).ready(function() {
                     $('#viewOtType').val(res.data.otType);
                     $('#viewOvertimeFromTime').val(res.data.fromTime);
                     $('#viewOvertimeToTime').val(res.data.toTime);
-                    $('#viewRemarks').val(res.data.remarks);
+                    $('#viewReason').val(res.data.reason);
                     $('#viewStatus').val(res.data.status);
                 }
                 else if (res.status == 200 && res.data.status == "Pending") {
@@ -728,7 +728,7 @@ $(document).ready(function() {
                     $('#viewOtType').val(res.data.otType);
                     $('#viewOvertimeFromTime').val(res.data.fromTime);
                     $('#viewOvertimeToTime').val(res.data.toTime);
-                    $('#viewRemarks').val(res.data.remarks);
+                    $('#viewReason').val(res.data.reason);
                 }
             }
         });

@@ -6,7 +6,7 @@
 
     $dataType = $_POST['dataType'];
     $empID = $_SESSION['id'];
-    $remarks = $_POST['remarks'];
+    $reason = $_POST['reason'];
 
     if ($dataType == 1) {
         $attendanceDate_timeIn = $_POST['attendanceDate_timeIn'];
@@ -17,7 +17,7 @@
         $logTypeID_timeOut = $_POST['logTypeID_timeOut'];
 
         // FILE ATTENDANCE DISPUTE
-        mysqli_query($conn, $payroll->fileAttendanceDispute($empID, $attendanceDate_timeIn, $attendanceTime_timeIn, $logTypeID_timeIn, $attendanceDate_timeOut, $attendanceTime_timeOut, $logTypeID_timeOut, $remarks));
+        mysqli_query($conn, $payroll->fileAttendanceDispute($empID, $attendanceDate_timeIn, $attendanceTime_timeIn, $logTypeID_timeIn, $attendanceDate_timeOut, $attendanceTime_timeOut, $logTypeID_timeOut));
 
         // GET LAST DISPUTE ID
         $lastDisputeIDQuery = mysqli_query($conn, $payroll->viewLastDisputeAttendance());
@@ -25,7 +25,7 @@
         $lastDisputeID = $lastDisputeIDDetails['attendanceID'];
 
         // INSERT INTO DISPUTES TABLE
-        mysqli_query($conn, $payroll->addDispute_attendance($lastDisputeID, $remarks));
+        mysqli_query($conn, $payroll->addDispute_attendance($lastDisputeID, $reason));
 
         $lastIDQuery = mysqli_query($conn, $payroll->viewLastDisputeID());
         $lastIDDetails = mysqli_fetch_array($lastIDQuery);
@@ -68,7 +68,7 @@
         $lastDisputeID = $lastDisputeIDDetails['leaveID'];
 
         // INSERT INTO DISPUTES TABLE
-        mysqli_query($conn, $payroll->addDispute_leave($lastDisputeID, $remarks));
+        mysqli_query($conn, $payroll->addDispute_leave($lastDisputeID, $reason));
 
         // // AUDIT TRAIL
         // $at_empID = $_SESSION['id'];
@@ -101,7 +101,7 @@
         $lastDisputeID = $lastDisputeIDDetails['overtimeID'];
 
         // INSERT INTO DISPUTES TABLE
-        mysqli_query($conn, $payroll->addDispute_overtime($lastDisputeID, $remarks));
+        mysqli_query($conn, $payroll->addDispute_overtime($lastDisputeID, $reason));
 
         // GET LAST DISPUTE ID
         $lastIDQuery = mysqli_query($conn, $payroll->viewLastDisputeID());

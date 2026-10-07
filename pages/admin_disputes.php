@@ -70,7 +70,7 @@
                                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Time In</th>
                                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Time Out</th>
-                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Remarks</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Reason</th>
                                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                                                     </tr>
                                                 </thead>
@@ -100,7 +100,7 @@
                                                             $timeInTime = $disputeDetails['attendanceTime_timeIn'];
                                                             $timeOutDate = $disputeDetails['attendanceDate_timeOut'];
                                                             $timeOutTime = $disputeDetails['attendanceTime_timeOut'];
-                                                            $remarks = $disputeDetails['remarks'] ?? '';
+                                                            $reason = $disputeDetails['reason'] ?? '';
                                                             $status = $disputeDetails['status'] ?? '';
 
                                                             // FORMAT DATE AND TIME
@@ -112,7 +112,7 @@
                                                             echo "<td class =' text-left whitespace-nowrap'>" . $employeeName . "</td>";
                                                             echo "<td class ='whitespace-nowrap'>" . $attendanceDateTime_in . "</td>";
                                                             echo "<td class ='whitespace-nowrap'>" . $attendanceDateTime_out . "</td>";
-                                                            echo "<td class ='whitespace-nowrap'>" . $remarks . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $reason . "</td>";
                                                             echo "<td class ='whitespace-nowrap'>" . $status . "</td>";
                                                             echo "</tr>";
                                                         }
@@ -130,7 +130,7 @@
                                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Time In</th>
                                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Time Out</th>
-                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Remarks</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Reason</th>
                                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                                                     </tr>
                                                 </thead>
@@ -146,7 +146,7 @@
                                                             $timeInTime = $disputeDetails['attendanceTime_timeIn'];
                                                             $timeOutDate = $disputeDetails['attendanceDate_timeOut'];
                                                             $timeOutTime = $disputeDetails['attendanceTime_timeOut'];
-                                                            $remarks = $disputeDetails['remarks'] ?? '';
+                                                            $reason = $disputeDetails['reason'] ?? '';
                                                             $status = $disputeDetails['status'] ?? '';
 
                                                             // FORMAT DATE AND TIME
@@ -158,7 +158,7 @@
                                                             echo "<td class =' text-left whitespace-nowrap'>" . $employeeName . "</td>";
                                                             echo "<td class ='whitespace-nowrap'>" . $attendanceDateTime_in . "</td>";
                                                             echo "<td class ='whitespace-nowrap'>" . $attendanceDateTime_out . "</td>";
-                                                            echo "<td class ='whitespace-nowrap'>" . $remarks . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $reason . "</td>";
                                                             echo "<td class ='whitespace-nowrap'>" . $status . "</td>";
                                                             echo "</tr>";
                                                         }
@@ -176,7 +176,7 @@
                                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Time In</th>
                                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Time Out</th>
-                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Remarks</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Reason</th>
                                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                                                     </tr>
                                                 </thead>
@@ -192,7 +192,7 @@
                                                             $timeInTime = $disputeDetails['attendanceTime_timeIn'];
                                                             $timeOutDate = $disputeDetails['attendanceDate_timeOut'];
                                                             $timeOutTime = $disputeDetails['attendanceTime_timeOut'];
-                                                            $remarks = $disputeDetails['remarks'] ?? '';
+                                                            $reason = $disputeDetails['reason'] ?? '';
                                                             $status = $disputeDetails['status'] ?? '';
 
                                                             // FORMAT DATE AND TIME
@@ -204,7 +204,7 @@
                                                             echo "<td class =' text-left whitespace-nowrap'>" . $employeeName . "</td>";
                                                             echo "<td class ='whitespace-nowrap'>" . $attendanceDateTime_in . "</td>";
                                                             echo "<td class ='whitespace-nowrap'>" . $attendanceDateTime_out . "</td>";
-                                                            echo "<td class ='whitespace-nowrap'>" . $remarks . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $reason . "</td>";
                                                             echo "<td class ='whitespace-nowrap'>" . $status . "</td>";
                                                             echo "</tr>";
                                                         }
@@ -246,7 +246,7 @@
                                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee</th>
                                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Leave Type</th>
                                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Inclusive Dates</th>
-                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Remarks</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Reason</th>
                                                         <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th> -->
                                                     </tr>
                                                 </thead>
@@ -260,7 +260,7 @@
                                                             $employeeName = $disputeDetails['firstName'] . " " . $disputeDetails['lastName'];
                                                             $leaveType = $disputeDetails['leaveType'] ?? '';
                                                             // $inclusiveDates = formatDate($disputeDetails['startDate']) . " - " . formatDate($disputeDetails['endDate']);
-                                                            $remarks = $disputeDetails['remarks'] ?? '';
+                                                            $reason = $disputeDetails['reason'] ?? '';
                                                             $status = $disputeDetails['status'] ?? '';
                                                             $leave_days = 0;
                                                             $startDate = new DateTime($disputeDetails['startDate']);
@@ -284,7 +284,7 @@
                                                             echo "<td class =' text-left whitespace-nowrap'>" . $employeeName . "</td>";
                                                             echo "<td class ='whitespace-nowrap'>" . $leaveType . "</td>";
                                                             echo "<td class ='whitespace-nowrap'>" . $leave_days . "</td>";
-                                                            echo "<td class ='whitespace-nowrap'>" . $remarks . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $reason . "</td>";
                                                             // if ($status == "Pending") {
                                                             //     echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $status . "</p></td>";
                                                             // }
@@ -310,7 +310,7 @@
                                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee</th>
                                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Leave Type</th>
                                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Inclusive Dates</th>
-                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Remarks</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Reason</th>
                                                         <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th> -->
                                                     </tr>
                                                 </thead>
@@ -324,7 +324,7 @@
                                                             $employeeName = $disputeDetails['firstName'] . " " . $disputeDetails['lastName'];
                                                             $leaveType = $disputeDetails['leaveType'] ?? '';
                                                             // $inclusiveDates = formatDate($disputeDetails['startDate']) . " - " . formatDate($disputeDetails['endDate']);
-                                                            $remarks = $disputeDetails['remarks'] ?? '';
+                                                            $reason = $disputeDetails['reason'] ?? '';
                                                             $status = $disputeDetails['status'] ?? '';
                                                             $leave_days = 0;
                                                             $startDate = new DateTime($disputeDetails['startDate']);
@@ -348,7 +348,7 @@
                                                             echo "<td class =' text-left whitespace-nowrap'>" . $employeeName . "</td>";
                                                             echo "<td class ='whitespace-nowrap'>" . $leaveType . "</td>";
                                                             echo "<td class ='whitespace-nowrap'>" . $leave_days . "</td>";
-                                                            echo "<td class ='whitespace-nowrap'>" . $remarks . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $reason . "</td>";
                                                             // if ($status == "Pending") {
                                                             //     echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $status . "</p></td>";
                                                             // }
@@ -374,7 +374,7 @@
                                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Employee</th>
                                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Leave Type</th>
                                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Inclusive Dates</th>
-                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Remarks</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Reason</th>
                                                         <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th> -->
                                                     </tr>
                                                 </thead>
@@ -388,7 +388,7 @@
                                                             $employeeName = $disputeDetails['firstName'] . " " . $disputeDetails['lastName'];
                                                             $leaveType = $disputeDetails['leaveType'] ?? '';
                                                             // $inclusiveDates = formatDate($disputeDetails['startDate']) . " - " . formatDate($disputeDetails['endDate']);
-                                                            $remarks = $disputeDetails['remarks'] ?? '';
+                                                            $reason = $disputeDetails['reason'] ?? '';
                                                             $status = $disputeDetails['status'] ?? '';
                                                             $leave_days = 0;
                                                             $startDate = new DateTime($disputeDetails['startDate']);
@@ -412,7 +412,7 @@
                                                             echo "<td class =' text-left whitespace-nowrap'>" . $employeeName . "</td>";
                                                             echo "<td class ='whitespace-nowrap'>" . $leaveType . "</td>";
                                                             echo "<td class ='whitespace-nowrap'>" . $leave_days . "</td>";
-                                                            echo "<td class ='whitespace-nowrap'>" . $remarks . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $reason . "</td>";
                                                             // if ($status == "Pending") {
                                                             //     echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $status . "</p></td>";
                                                             // }
@@ -462,7 +462,7 @@
                                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">OT Date</th>
                                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Remarks</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Reason</th>
                                                         <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th> -->
                                                     </tr>
                                                 </thead>
@@ -476,7 +476,7 @@
                                                             $otDate = $disputeDetails['otDate'];
                                                             $employeeName = $disputeDetails['firstName'] . " " . $disputeDetails['lastName'];
                                                             $otType = $disputeDetails['otType'] ?? '';
-                                                            $remarks = $disputeDetails['remarks'] ?? '';
+                                                            $reason = $disputeDetails['reason'] ?? '';
                                                             $status = $disputeDetails['status'] ?? '';
 
 
@@ -485,7 +485,7 @@
                                                             echo "<td class ='whitespace-nowrap'>" . formatDate($otDate) . "</td>";
                                                             echo "<td class =' text-left whitespace-nowrap'>" . $employeeName . "</td>";
                                                             echo "<td class ='whitespace-nowrap'>" . $otType . "</td>";
-                                                            echo "<td class ='whitespace-nowrap'>" . $remarks . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $reason . "</td>";
                                                             // echo "<td class ='whitespace-nowrap'>" . $status . "</td>";
                                                             echo "</tr>";
                                                         }
@@ -503,7 +503,7 @@
                                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">OT Date</th>
                                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Remarks</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Reason</th>
                                                         <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th> -->
                                                     </tr>
                                                 </thead>
@@ -517,7 +517,7 @@
                                                             $otDate = $disputeDetails['otDate'];
                                                             $employeeName = $disputeDetails['firstName'] . " " . $disputeDetails['lastName'];
                                                             $otType = $disputeDetails['otType'] ?? '';
-                                                            $remarks = $disputeDetails['remarks'] ?? '';
+                                                            $reason = $disputeDetails['reason'] ?? '';
                                                             $status = $disputeDetails['status'] ?? '';
 
 
@@ -526,7 +526,7 @@
                                                             echo "<td class ='whitespace-nowrap'>" . formatDate($otDate) . "</td>";
                                                             echo "<td class =' text-left whitespace-nowrap'>" . $employeeName . "</td>";
                                                             echo "<td class ='whitespace-nowrap'>" . $otType . "</td>";
-                                                            echo "<td class ='whitespace-nowrap'>" . $remarks . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $reason . "</td>";
                                                             // echo "<td class ='whitespace-nowrap'>" . $status . "</td>";
                                                             echo "</tr>";
                                                         }
@@ -544,7 +544,7 @@
                                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">OT Date</th>
                                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                                                         <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Remarks</th>
+                                                        <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Reason</th>
                                                         <!-- <th class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th> -->
                                                     </tr>
                                                 </thead>
@@ -558,7 +558,7 @@
                                                             $otDate = $disputeDetails['otDate'];
                                                             $employeeName = $disputeDetails['firstName'] . " " . $disputeDetails['lastName'];
                                                             $otType = $disputeDetails['otType'] ?? '';
-                                                            $remarks = $disputeDetails['remarks'] ?? '';
+                                                            $reason = $disputeDetails['reason'] ?? '';
                                                             $status = $disputeDetails['status'] ?? '';
 
 
@@ -567,7 +567,7 @@
                                                             echo "<td class ='whitespace-nowrap'>" . formatDate($otDate) . "</td>";
                                                             echo "<td class =' text-left whitespace-nowrap'>" . $employeeName . "</td>";
                                                             echo "<td class ='whitespace-nowrap'>" . $otType . "</td>";
-                                                            echo "<td class ='whitespace-nowrap'>" . $remarks . "</td>";
+                                                            echo "<td class ='whitespace-nowrap'>" . $reason . "</td>";
                                                             // echo "<td class ='whitespace-nowrap'>" . $status . "</td>";
                                                             echo "</tr>";
                                                         }
@@ -796,15 +796,15 @@
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-1 remarksSection">
+                                <div class="row g-2 mb-1 reasonSection">
                                     <div class="col-12">
-                                        <label for="remarks">Remarks:</label>
+                                        <label for="reason">Remarks:</label>
                                     </div>
                                 </div>
 
-                                <div class="row g-2 mb-2 remarksSection">
+                                <div class="row g-2 mb-2 reasonSection">
                                     <div class="col-12">
-                                        <textarea type="text" class="form-control" id="remarks" rows="3"></textarea>
+                                        <textarea type="text" class="form-control" id="reason" rows="3"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -997,6 +997,18 @@
                                 </div>
                             </div>
 
+                            <div class="row g-2 mb-1 reasonSection">
+                                <div class="col-12">
+                                    <label for="viewReason">Reason:</label>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-2 reasonSection">
+                                <div class="col-12">
+                                    <textarea type="text" class="form-control" id="viewReason" rows="3" disabled readonly></textarea>
+                                </div>
+                            </div>
+
                             <div class="row g-2 mb-1 remarksSection">
                                 <div class="col-12">
                                     <label for="viewRemarks">Remarks:</label>
@@ -1005,53 +1017,18 @@
 
                             <div class="row g-2 mb-2 remarksSection">
                                 <div class="col-12">
-                                    <textarea type="text" class="form-control" id="viewRemarks" rows="3" disabled readonly></textarea>
+                                    <input type="text" class="form-control" id="viewRemarks" disabled readonly>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-success approveDispute" id="approveDispute">Approve</button>
                             <button type="button" class="btn btn-danger disapproveDispute" id="disapproveDispute">Disapprove</button>
-                            <!-- <button type="button" class="btn btn-primary allowanceUpdate" id="btnAllowanceUpdate">Update</button>
-                            <button type="button" class="btn btn-danger allowanceDelete" id="btnAllowanceDelete">Delete</button> -->
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnClose">Close</button>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!--------------------------------------------------------------------------------------------------------------------------------------------->
-            <!------------------------------------------------------------ UPDATE ALLOWANCE MODAL --------------------------------------------------------->
-            <form id="updateAllowanceForm">
-                <div class="modal fade" id="updateAllowanceModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userFormLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-none modal-sm modal-dialog-centered">
-                        <div class="modal-content" id="updateAllowanceModal">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="userFormLabel">Update Allowance</h1>
-                                <input type="hidden" id="updateAllowanceID" name="updateAllowanceID">
-                            </div>
-                            <div class="modal-body">
-                                <div class="row g-2 mb-1">
-                                    <div class="col-12">
-                                        <label for="updateAllowanceName">Allowance Name:</label>
-                                    </div>
-                                </div>
-
-                                <div class="row g-2 mb-2">
-                                    <div class="col-12">
-                                        <input type="text" class="form-control" id="updateAllowanceName" name="updateAllowanceName">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-success">Save</button>
-                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#viewAllowanceModal">Cancel</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
         </main>
     
         <script src="../assets/js/admin_disputes.js?v=<?php echo $version; ?>"></script>
