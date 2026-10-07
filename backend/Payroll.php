@@ -2702,7 +2702,7 @@
             // DELETE CURRENT PAYSLIP - RE-CALCULATE FUNCTION
             $this->dbConnect()->query($this->deletePayslip($payrollID));
 
-            function formatDate($date) {
+            function dateFormat($date) {
                 // GET CURRENT YEAR
                 $currentYear = date('Y');
 
@@ -2718,8 +2718,8 @@
             // GET PAYROLL CYCLE DETAILS
             $payrollCycleFrom_date = $this->dbConnect()->query("SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleFrom'];
             $payrollCycleTo_date = $this->dbConnect()->query("SELECT * FROM tbl_payrollcycle WHERE payrollCycleID = $payrollCycleID")->fetch_assoc()['payrollCycleTo'];
-            $payrollCycleFrom = formatDate($payrollCycleFrom_date);
-            $payrollCycleTo = formatDate($payrollCycleTo_date);
+            $payrollCycleFrom = dateFormat($payrollCycleFrom_date);
+            $payrollCycleTo = dateFormat($payrollCycleTo_date);
 
             $counter = 0;
 
