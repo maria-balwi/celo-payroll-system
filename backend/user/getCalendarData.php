@@ -175,6 +175,84 @@
         $calendar[$date]['transition'] = $row['type'];
     }
 
+    /* =========================
+    DISPUTES (approved only)
+    ========================= */
+    $q6 = "
+    SELECT 'attendance' AS disputeType, d.status,
+        a.attendanceDate_timeIn AS startDate, a.attendanceDate_timeIn AS endDate
+    FROM tbl_disputes d
+    JOIN tbl_disputeattendance a ON a.attendanceID = d.attendanceID
+    WHERE a.empID = '$employeeID'
+    AND d.status = 'Approved'
+    AND DATE_FORMAT(a.attendanceDate_timeIn, '%Y-%m') = '$month'
+
+    UNION ALL
+
+    SELECT 'leave' AS disputeType, d.status,
+        l.startDate, l.endDate
+    FROM tbl_disputes d
+    JOIN tbl_disputeleaves l ON l.leaveID = d.leaveID
+    WHERE l.empID = '$employeeID'
+    AND d.status = 'Approved'
+    AND l.startDate <= LAST_DAY('$month-01')
+    AND l.endDate >= '$month-01'
+
+    UNION ALL
+
+    SELECT 'overtime' AS disputeType, d.status,
+        o.otDate AS startDate, o.otDate AS endDate
+    FROM tbl_disputes d
+    JOIN tbl_disputeovertime o ON o.overtimeID = d.overtimeID
+    WHERE o.empID = '$employeeID'
+    AND d.status = 'Approved'
+    AND DATE_FORMAT(o.otDate, '%Y-%m') = '$month'
+    ";
+
+    $res = mysqli_query($conn, $q6);
+
+    // while ($row = mysqli_fetch_assoc($res)) {
+    //     // Clamp to the month (leave disputes can span multiple days)
+    //     $start = max(new DateTime($row['startDate']), $monthStart);
+    //     $end   = min(new DateTime($row['endDate']), $monthEnd);
+
+    //     while ($start <= $end) {
+    //         $calendar[$start->format('Y-m-d')]['dispute'][] = [
+    //             'type'   => $row['disputeType'],
+    //             'status' => $row['status']
+    //         ];
+    //         $start->modify('+1 day');
+    //     }
+    // }
+    while ($row = mysqli_fetch_assoc($res)) {
+        $start = max(new DateTime($row['startDate']), $monthStart);
+        $end   = min(new DateTime($row['endDate']), $monthEnd);
+
+        while ($start <= $end) {
+            $dateKey = $start->format('Y-m-d');
+
+            // Skip if this date already has a dispute of the same type
+            $exists = false;
+            if (isset($calendar[$dateKey]['dispute'])) {
+                foreach ($calendar[$dateKey]['dispute'] as $existing) {
+                    if ($existing['type'] === $row['disputeType']) {
+                        $exists = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!$exists) {
+                $calendar[$dateKey]['dispute'][] = [
+                    'type'   => $row['disputeType'],
+                    'status' => $row['status']
+                ];
+            }
+
+            $start->modify('+1 day');
+        }
+    }
+
     echo json_encode([
         'calendar' => $calendar,
         'weekOff' => $weekOff, 

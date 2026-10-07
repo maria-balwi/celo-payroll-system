@@ -13,27 +13,6 @@
                 font-family: Arial;
             }
 
-            /* .legend {
-                margin: 15px 0;
-                display: flex;
-                flex-wrap: wrap;
-                gap: 10px;
-            }
-
-            .legend-item {
-                display: flex;
-                align-items: center;
-                font-size: 12px;
-            }
-
-            .box {
-                width: 15px;
-                height: 15px;
-                display: inline-block;
-                margin-right: 5px;
-                border-radius: 3px;
-            } */
-
             .legend-container {
                 margin-top: 20px;
                 padding: 15px;
@@ -134,6 +113,7 @@
             .off { background: #7f8c8d; }   /* Week Off */
             .ot { background: #FACC15; }    /* Overtime */
             .trans { background: #3df8e8; }    /* Transition */
+            .dispute { background: #0891B2; }   /* Dispute */
         </style>
  
             <!-- MAIN CONTENT -->
@@ -203,6 +183,7 @@
                             <span class="legend-title">Others</span>
                             <div class="legend-items">
                                 <span><i class="box off"></i> Week Off</span>
+                                <span><i class="box dispute"></i> Dispute</span>
                             </div>
                         </div>
                     </div>
