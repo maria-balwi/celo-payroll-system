@@ -17,6 +17,7 @@ $(document).ready(function() {
 
     // $('#approveLeave').hide();
     // $('#disapproveLeave').hide();
+    $('.reviewerSection').hide();
 
     // VIEW LEAVE APPLICATION
     var array = [];
@@ -44,18 +45,30 @@ $(document).ready(function() {
                     $('#viewDateFiled').val(res.data.dateFiled);
                     $('#viewName').val(res.data.employeeName);
                     $('#viewLeaveType').val(res.data.leaveType);
-                    // $('#viewInclusiveDates').val(res.data.effectivityStartDate+' - '+res.data.effectivityEndDate);
                     $('#viewStartDate').val(res.data.effectivityStartDate);
                     $('#viewEndDate').val(res.data.effectivityEndDate);
-                    $('#viewPurpose').val(res.data.remarks);
+                    $('#viewPurpose').val(res.data.reason);
+                    $('#viewReviewedBy').val(res.data.reviewedBy);
+                    $('#viewReviewedAt').val(res.data.reviewedAt);
+                    $('#viewRemarks').val(res.data.remarks);
                     if (res.data.isPaid == 1 && res.data.status == "Approved") {
                         $('#viewStatus').val(res.data.status + ' (Paid)');
                     }
                     else if (res.data.isPaid == 0 && res.data.status == "Approved") {
                         $('#viewStatus').val(res.data.status + ' (Unpaid)');
                     }
+                    else {
+                        $('#viewStatus').val(res.data.status);  
+                    }
                     $('#approveLeave').hide();
                     $('#disapproveLeave').hide();
+                    
+                    if (res.data.reviewedBy == null || res.data.reviewedBy == "") {
+                        $('.reviewerSection').hide();
+                    }
+                    else {
+                        $('.reviewerSection').show();
+                    }
 
                     if (res.data.attachment == 1) {
                         $("#viewWithAttachmentRow").show();
@@ -75,10 +88,9 @@ $(document).ready(function() {
                     $('#viewDateFiled').val(res.data.dateFiled);
                     $('#viewName').val(res.data.employeeName);
                     $('#viewLeaveType').val(res.data.leaveType);
-                    // $('#viewInclusiveDates').val(res.data.effectivityStartDate+' - '+res.data.effectivityEndDate);
                     $('#viewStartDate').val(res.data.effectivityStartDate);
                     $('#viewEndDate').val(res.data.effectivityEndDate);
-                    $('#viewPurpose').val(res.data.remarks);
+                    $('#viewPurpose').val(res.data.reason);
                     $('#viewStatus').val(res.data.status);
                     $('#approveLeave').show();
                     $('#disapproveLeave').show();
@@ -250,18 +262,30 @@ $(document).ready(function() {
                     $('#viewDateFiled').val(res.data.dateFiled);
                     $('#viewName').val(res.data.employeeName);
                     $('#viewLeaveType').val(res.data.leaveType);
-                    // $('#viewInclusiveDates').val(res.data.effectivityStartDate+' - '+res.data.effectivityEndDate);
                     $('#viewStartDate').val(res.data.effectivityStartDate);
                     $('#viewEndDate').val(res.data.effectivityEndDate);
-                    $('#viewPurpose').val(res.data.remarks);
+                    $('#viewPurpose').val(res.data.reason);
+                    $('#viewReviewedBy').val(res.data.reviewedBy);
+                    $('#viewReviewedAt').val(res.data.reviewedAt);
+                    $('#viewRemarks').val(res.data.remarks);
                     if (res.data.isPaid == 1 && res.data.status == "Approved") {
                         $('#viewStatus').val(res.data.status + ' (Paid)');
                     }
                     else if (res.data.isPaid == 0 && res.data.status == "Approved") {
                         $('#viewStatus').val(res.data.status + ' (Unpaid)');
                     }
+                    else {
+                        $('#viewStatus').val(res.data.status);  
+                    }
                     $('#approveLeave').hide();
                     $('#disapproveLeave').hide();
+                    
+                    if (res.data.reviewedBy == null || res.data.reviewedBy == "") {
+                        $('.reviewerSection').hide();
+                    }
+                    else {
+                        $('.reviewerSection').show();
+                    }
 
                     if (res.data.attachment == 1) {
                         $("#viewWithAttachmentRow").show();
@@ -280,10 +304,9 @@ $(document).ready(function() {
                     $('#viewDateFiled').val(res.data.dateFiled);
                     $('#viewName').val(res.data.employeeName);
                     $('#viewLeaveType').val(res.data.leaveType);
-                    // $('#viewInclusiveDates').val(res.data.effectivityStartDate+' - '+res.data.effectivityEndDate);
                     $('#viewStartDate').val(res.data.effectivityStartDate);
                     $('#viewEndDate').val(res.data.effectivityEndDate);
-                    $('#viewPurpose').val(res.data.remarks);
+                    $('#viewPurpose').val(res.data.reason);
                     $('#viewStatus').val(res.data.status);
                     $('#approveLeave').show();
                     $('#disapproveLeave').show();

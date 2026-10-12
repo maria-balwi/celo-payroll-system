@@ -17,7 +17,7 @@ $(document).ready(function() {
     
     $(".viewWithAttachmentRow").hide();
     $(".viewWithoutAttachmentRow").hide();
-
+    $(".reviewerSection").hide();
 
     $("select[id='leaveType']").on("change", function () {
         if ($(this).val() == 2) { // VACATION LEAVE
@@ -308,36 +308,9 @@ $(document).ready(function() {
                     $('#viewLeaveType').val(res.data.leaveType);
                     $('#viewStartDate').val(res.data.effectivityStartDate);
                     $('#viewEndDate').val(res.data.effectivityEndDate);
-                    $('#viewPurpose').val(res.data.remarks);
+                    $('#viewPurpose').val(res.data.reason);
                     $('#viewStatus').val(res.data.status);
                     
-                    // $('#viewPhoto').click(function(event) {
-                    //     event.preventDefault();
-                    //     if (res.data.leaveType == "Sick Leave") {
-                    //         const imagePath = '../assets/images/medicalCertificates/' + res.data.photoUpload; // Set your directory path here
-
-                    //         // VIEW UPLOADED PHOTO IN NEW TAB
-                    //         window.open(imagePath, '_blank');
-                    //     }
-                    //     else if (res.data.leaveType == "Bereavement Leave") {
-                    //         const imagePath = '../assets/images/bereavementLeaves/' + res.data.photoUpload; // Set your directory path here
-
-                    //         // VIEW UPLOADED PHOTO IN NEW TAB
-                    //         window.open(imagePath, '_blank');
-                    //     }
-                    //     else if (res.data.leaveType == "Maternity Leave") {
-                    //         const imagePath = '../assets/images/maternityLeaves/' + res.data.photoUpload; // Set your directory path here
-
-                    //         // VIEW UPLOADED PHOTO IN NEW TAB
-                    //         window.open(imagePath, '_blank');
-                    //     }
-                    //     else {
-                    //         const imagePath = '../assets/images/paternityLeaves/' + res.data.photoUpload; // Set your directory path here
-
-                    //         // VIEW UPLOADED PHOTO IN NEW TAB
-                    //         window.open(imagePath, '_blank');
-                    //     }
-                    // });
                     if (res.data.attachment == 1) {
                         $("#viewWithAttachmentRow").show();
                         $("#viewWithoutAttachmentRow").hide();
@@ -350,6 +323,22 @@ $(document).ready(function() {
                         $("#viewWithAttachmentRow").hide();
                         $("#viewWithoutAttachmentRow").hide();
                     }
+
+                    if (res.data.status == "Pending") { 
+                        $('.reviewerSection').hide();
+                    }
+                    else {
+                        $('#viewReviewedBy').val(res.data.reviewedBy);
+                        $('#viewReviewedAt').val(res.data.reviewedAt);
+                        $('#viewRemarks').val(res.data.remarks);
+                        if (res.data.reviewedBy == null || res.data.reviewedBy == "") {
+                            $('.reviewerSection').hide();
+                        }
+                        else {
+                            $('.reviewerSection').show();
+                        }
+
+                    }
                     $("#viewLeaveModal").modal("show");
                 }
                 else {
@@ -360,10 +349,16 @@ $(document).ready(function() {
                     $('#viewLeaveType').val(res.data.leaveType);
                     $('#viewStartDate').val(res.data.effectivityStartDate);
                     $('#viewEndDate').val(res.data.effectivityEndDate);
-                    $('#viewPurpose').val(res.data.remarks);
+                    $('#viewPurpose').val(res.data.reason);
                     $('#viewStatus').val(res.data.status);
                     $("#viewWithAttachmentRow").hide();
                     $("#viewWithoutAttachmentRow").hide();
+                    if (res.data.status == "Pending") {
+                        $('.reviewerSection').hide();
+                    }
+                    else {
+                        $('.reviewerSection').show();
+                    }
                     $("#viewLeaveModal").modal("show");
                 }
             }
@@ -371,6 +366,7 @@ $(document).ready(function() {
     });
 
     function loadEmployeeData(id_leave) {
+        // VIEW LEAVE
         $.ajax({
             type: "GET",
             url: "../backend/user/leaveModal.php?leave_id=" + id_leave,
@@ -380,78 +376,72 @@ $(document).ready(function() {
 
                 if (res.status == 404) {
                     alert(res.message);
-                } else if (res.status == 200 && (res.data.leaveType == "Sick Leave" || res.data.leaveType == "Bereavement Leave" || res.data.leaveType == "Maternity Leave" || 
-                    res.data.leaveType == "Maternity Leave - Solo Parent" || res.data.leaveType == "Maternity Leave - Miscarriage" || res.data.leaveType == "Paternity Leave" || res.data.leaveType == "Solo Parent Leave")){
-                    $("#viewLeaveID").val(res.data.requestID);
-                    $("#viewEmpID").val(res.data.employeeID);
-                    $("#viewDateFiled").val(res.data.dateFiled);
-                    $("#viewName").val(res.data.employeeName);
-                    $("#viewLeaveType").val(res.data.leaveType);
-                    $("#viewStartDate").val(res.data.effectivityStartDate);
-                    $("#viewEndDate").val(res.data.effectivityEndDate);
-                    $("#viewPurpose").val(res.data.remarks);
-                    $("#viewStatus").val(res.data.status);
-                    // $("#viewPhotoRow").show();
-
-                    // $("#viewPhoto").click(function (event) {
-                    //     event.preventDefault();
-                    //     if (res.data.leaveType == "Sick Leave") {
-                    //     const imagePath =
-                    //         "../assets/images/medicalCertificates/" +
-                    //         res.data.photoUpload; // Set your directory path here
-
-                    //     // VIEW UPLOADED PHOTO IN NEW TAB
-                    //     window.open(imagePath, "_blank");
-                    //     } else if (res.data.leaveType == "Bereavement Leave") {
-                    //     const imagePath =
-                    //         "../assets/images/bereavementLeaves/" +
-                    //         res.data.photoUpload; // Set your directory path here
-
-                    //     // VIEW UPLOADED PHOTO IN NEW TAB
-                    //     window.open(imagePath, "_blank");
-                    //     } else if (res.data.leaveType == "Maternity Leave") {
-                    //     const imagePath =
-                    //         "../assets/images/maternityLeaves/" +
-                    //         res.data.photoUpload; // Set your directory path here
-
-                    //     // VIEW UPLOADED PHOTO IN NEW TAB
-                    //     window.open(imagePath, "_blank");
-                    //     } else {
-                    //     const imagePath =
-                    //         "../assets/images/paternityLeaves/" +
-                    //         res.data.photoUpload; // Set your directory path here
-
-                    //     // VIEW UPLOADED PHOTO IN NEW TAB
-                    //     window.open(imagePath, "_blank");
-                    //     }
-                    // });
+                } 
+                else if (res.status == 200 && (res.data.leaveType == "Sick Leave" || res.data.leaveType == "Bereavement Leave" || res.data.leaveType == "Maternity Leave" || 
+                    res.data.leaveType == "Maternity Leave - Solo Parent" || res.data.leaveType == "Maternity Leave - Miscarriage" || res.data.leaveType == "Paternity Leave" || res.data.leaveType == "Solo Parent Leave")) {
+                    $('#viewLeaveID').val(res.data.requestID);
+                    $('#viewEmpID').val(res.data.employeeID);
+                    $('#viewDateFiled').val(res.data.dateFiled);
+                    $('#viewName').val(res.data.employeeName);
+                    $('#viewLeaveType').val(res.data.leaveType);
+                    $('#viewStartDate').val(res.data.effectivityStartDate);
+                    $('#viewEndDate').val(res.data.effectivityEndDate);
+                    $('#viewPurpose').val(res.data.reason);
+                    $('#viewStatus').val(res.data.status);
+                    
                     if (res.data.attachment == 1) {
                         $("#viewWithAttachmentRow").show();
                         $("#viewWithoutAttachmentRow").hide();
-                    } else if (res.data.attachment == 0) {
+                    }
+                    else if (res.data.attachment == 0) {
                         $("#viewWithAttachmentRow").hide();
                         $("#viewWithoutAttachmentRow").show();
-                    } else {
+                    }
+                    else {
                         $("#viewWithAttachmentRow").hide();
                         $("#viewWithoutAttachmentRow").hide();
                     }
-                } else {
-                    $("#viewLeaveID").val(res.data.requestID);
-                    $("#viewEmpID").val(res.data.employeeID);
-                    $("#viewDateFiled").val(res.data.dateFiled);
-                    $("#viewName").val(res.data.employeeName);
-                    $("#viewLeaveType").val(res.data.leaveType);
-                    $("#viewStartDate").val(res.data.effectivityStartDate);
-                    $("#viewEndDate").val(res.data.effectivityEndDate);
-                    $("#viewPurpose").val(res.data.remarks);
-                    $("#viewStatus").val(res.data.status);
-                    // $("#viewPhotoRow").hide();
+
+                    if (res.data.status == "Pending") { 
+                        $('.reviewerSection').hide();
+                    }
+                    else {
+                        $('#viewReviewedBy').val(res.data.reviewedBy);
+                        $('#viewReviewedAt').val(res.data.reviewedAt);
+                        $('#viewRemarks').val(res.data.remarks);
+                        if (res.data.reviewedBy == null || res.data.reviewedBy == "") {
+                            $('.reviewerSection').hide();
+                        }
+                        else {
+                            $('.reviewerSection').show();
+                        }
+
+                    }
+                }
+                else {
+                    $('#viewLeaveID').val(res.data.requestID);
+                    $('#viewEmpID').val(res.data.employeeID);
+                    $('#viewDateFiled').val(res.data.dateFiled);
+                    $('#viewName').val(res.data.employeeName);
+                    $('#viewLeaveType').val(res.data.leaveType);
+                    $('#viewStartDate').val(res.data.effectivityStartDate);
+                    $('#viewEndDate').val(res.data.effectivityEndDate);
+                    $('#viewPurpose').val(res.data.reason);
+                    $('#viewStatus').val(res.data.status);
+                    $("#viewWithAttachmentRow").hide();
+                    $("#viewWithoutAttachmentRow").hide();
+                    if (res.data.status == "Pending") {
+                        $('.reviewerSection').hide();
+                    }
+                    else {
+                        $('.reviewerSection').show();
+                    }
                 }
             }
         });
-
-        $('#btnClose').on('click', function() {
-            window.location.reload();
-        });
     }
+
+    $('#btnClose').on('click', function() {
+        window.location.reload();
+    });
 });

@@ -9,7 +9,9 @@
     $isPaid = $_POST['isPaid'];
 
     if ($action == "approve" && $isPaid == 1) {
-        mysqli_query($conn, $employees->approvePaidLeave($leave_id));
+        $remarks = "Approved by " . $_SESSION['employeeName'];
+        $reviewedBy = $_SESSION['id'];
+        mysqli_query($conn, $employees->approvePaidLeave($leave_id, $reviewedBy, $remarks));
         
         // GET AFFECTED USER
         $query = mysqli_query($conn, $employees->viewLeaveInfo($leave_id));
@@ -37,7 +39,9 @@
     }
 
     else if ($action == "approve" && $isPaid == 0) {
-        mysqli_query($conn, $employees->approveUnpaidLeave($leave_id));
+        $remarks = "Approved by " . $_SESSION['employeeName'];
+        $reviewedBy = $_SESSION['id'];
+        mysqli_query($conn, $employees->approveUnpaidLeave($leave_id, $reviewedBy, $remarks));
         
         // GET AFFECTED USER
         $query = mysqli_query($conn, $employees->viewLeaveInfo($leave_id));
@@ -57,7 +61,9 @@
     }
 
     else if ($action == "disapprove") {
-        mysqli_query($conn, $employees->disapproveLeave($leave_id));
+        $remarks = "Disapproved by " . $_SESSION['employeeName'];
+        $reviewedBy = $_SESSION['id'];
+        mysqli_query($conn, $employees->disapproveLeave($leave_id, $reviewedBy, $remarks));
         
         // GET AFFECTED USER
         $query = mysqli_query($conn, $employees->viewLeaveInfo($leave_id));

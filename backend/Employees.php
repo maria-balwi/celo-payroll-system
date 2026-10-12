@@ -1371,17 +1371,21 @@
 
         public function getLeaveInfo($leaveID) {
             $request = "
-                SELECT requestID, employeeID, leaves.leaveTypeID,
-                leaveType, remarks, status, attachment, designationID,
-                CONCAT(firstName, ' ', lastName) AS employeeName, isPaid,
+                SELECT requestID, employees.employeeID, leaves.leaveTypeID,
+                leaveType, remarks, status, attachment, employees.designationID,
+                CONCAT(employees.firstName, ' ', employees.lastName) AS employeeName, isPaid,
                 DATE_FORMAT(dateFiled, '%M %d, %Y') AS dateFiled,
                 DATE_FORMAT(effectivityStartDate, '%M %d, %Y') AS effectivityStartDate,
-                DATE_FORMAT(effectivityEndDate, '%M %d, %Y') AS effectivityEndDate
+                DATE_FORMAT(effectivityEndDate, '%M %d, %Y') AS effectivityEndDate, 
+                reason, CONCAT(reviewer.firstName, ' ', reviewer.lastName) AS reviewedBy,
+                DATE_FORMAT(reviewedAt, '%b %d, %Y %h:%i %p') AS reviewedAt
                 FROM ".$this->leaves." AS leaves
                 INNER JOIN ".$this->employees." AS employees
                 ON leaves.empID = employees.id
                 INNER JOIN ".$this->leaveType." AS leaveType
                 ON leaveType.leaveTypeID = leaves.leaveTypeID
+                LEFT JOIN ".$this->employees." AS reviewer
+                ON reviewer.id = leaves.reviewedBy
                 WHERE requestID = '$leaveID'";
             return $request;
         }
@@ -1442,17 +1446,17 @@
             return $request;
         }
 
-        public function fileLeave($employeeID, $leaveTypeID, $effectivityStartDate, $effectivityEndDate, $remarks, $status) {
+        public function fileLeave($employeeID, $leaveTypeID, $effectivityStartDate, $effectivityEndDate, $reason, $status) {
             $fileLeave = "
-                INSERT INTO ".$this->leaves." (empID, dateFiled, leaveTypeID, effectivityStartDate, effectivityEndDate, remarks, status, attachment)
-                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$leaveTypeID', '$effectivityStartDate', '$effectivityEndDate', '$remarks', '$status', NULL)";
+                INSERT INTO ".$this->leaves." (empID, dateFiled, leaveTypeID, effectivityStartDate, effectivityEndDate, reason, status, attachment)
+                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$leaveTypeID', '$effectivityStartDate', '$effectivityEndDate', '$reason', '$status', NULL)";
             return $fileLeave;
         }
 
-        public function fileLeaveWithAttachment($employeeID, $leaveTypeID, $effectivityStartDate, $effectivityEndDate, $remarks, $status, $attachment) {
+        public function fileLeaveWithAttachment($employeeID, $leaveTypeID, $effectivityStartDate, $effectivityEndDate, $reason, $status, $attachment) {
             $fileLeave = "
-                INSERT INTO ".$this->leaves." (empID, dateFiled, leaveTypeID, effectivityStartDate, effectivityEndDate, remarks, status, attachment)
-                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$leaveTypeID', '$effectivityStartDate', '$effectivityEndDate', '$remarks', '$status', '$attachment')";
+                INSERT INTO ".$this->leaves." (empID, dateFiled, leaveTypeID, effectivityStartDate, effectivityEndDate, reason, status, attachment)
+                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$leaveTypeID', '$effectivityStartDate', '$effectivityEndDate', '$reason', '$status', '$attachment')";
             return $fileLeave;
         }
 
@@ -1495,16 +1499,25 @@
             return $request;
         }
 
-        public function approvePaidLeave($requestID) {
+        public function approvePaidLeave($requestID, $reviewedBy, $remarks) {
             $approveRequest = "
-                UPDATE ".$this->leaves." SET status = 'Approved', isPaid = 1
+                UPDATE ".$this->leaves." SET 
+                status = 'Approved', 
+                isPaid = 1, 
+                reviewedBy = '$reviewedBy',
+                reviewedAt = CURRENT_TIMESTAMP, 
+                remarks = '$remarks'
                 WHERE requestID = '$requestID'";
             return $approveRequest;
         }
 
-        public function approveUnpaidLeave($requestID) {
+        public function approveUnpaidLeave($requestID, $reviewedBy, $remarks) {
             $approveRequest = "
-                UPDATE ".$this->leaves." SET status = 'Approved'
+                UPDATE ".$this->leaves." SET 
+                status = 'Approved',
+                reviewedBy = '$reviewedBy', 
+                reviewedAt = CURRENT_TIMESTAMP,
+                remarks = '$remarks'
                 WHERE requestID = '$requestID'";
             return $approveRequest;
         }
@@ -1547,9 +1560,13 @@
             return $disapproveRequest;
         }
 
-        public function disapproveLeave($requestID) {
+        public function disapproveLeave($requestID, $reviewedBy, $remarks) {
             $disapproveRequest = "
-                UPDATE ".$this->leaves." SET status = 'Disapproved'
+                UPDATE ".$this->leaves." SET 
+                status = 'Disapproved',
+                reviewedBy = '$reviewedBy',
+                reviewedAt = CURRENT_TIMESTAMP,
+                remarks = '$remarks'
                 WHERE requestID = '$requestID'";
             return $disapproveRequest;
         }

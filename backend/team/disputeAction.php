@@ -190,13 +190,14 @@
             $startDate = $leave['effectivityStartDate'];
             $endDate = $leave['effectivityEndDate'];
             $attachment = $leave['attachment'];
-            $remarks = $leave['remarks'] . " - (From Disputes)";
+            $reason = $leave['reason']; 
             $status = "Approved";
             $remarks = "Approved by " . $_SESSION['employeeName'];
+            $reviewedBy = $_SESSION['id'];
             
             // INSERT INTO LEAVE APPLICATIONS TABLE
             if ($leaveType == 1 || $leaveType == 3 || $leaveType == 4 || $leaveType == 5 || $leaveType == 6 || $leaveType == 7 || $leaveType == 8) {
-                mysqli_query($conn, $payroll->fileLeaveWithAttachment($empID, $leaveType, $startDate, $endDate, $remarks, $status, $attachment, $isPaid));
+                mysqli_query($conn, $payroll->fileLeaveWithAttachment($empID, $leaveType, $startDate, $endDate, $reason, $status, $attachment, $isPaid));
                 
                 if ($isPaid == 1) {
                     if ($leaveType == 1) {
@@ -208,7 +209,7 @@
                 }
             }
             else {
-                mysqli_query($conn, $payroll->fileLeave($empID, $leaveType, $startDate, $endDate, $remarks, $status, $isPaid));
+                mysqli_query($conn, $payroll->fileLeave($empID, $leaveType, $startDate, $endDate, $reason, $status, $isPaid));
 
                 if ($isPaid == 1) {
                     if ($leaveType == 1) {
@@ -219,6 +220,11 @@
                     }
                 }
             }
+
+            $lastIDQuery = mysqli_query($conn, $employees->viewLastLeave());
+            $lastIDResult = mysqli_fetch_array($lastIDQuery);
+            $lastID = $lastIDResult['requestID'];    
+            mysqli_query($conn, $payroll->addLeaveReviewDetails($lastID, $reviewedBy, $remarks));
 
             // UPDATE ISPAID
             mysqli_query($conn, $payroll->updateLeaveStatus($dispute['leaveID'], $isPaid));

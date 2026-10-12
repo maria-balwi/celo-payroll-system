@@ -1422,18 +1422,28 @@
             return $fileOT;
         }
 
-        public function fileLeaveWithAttachment($employeeID, $leaveTypeID, $effectivityStartDate, $effectivityEndDate, $remarks, $status, $attachment, $isPaid) {
+        public function fileLeaveWithAttachment($employeeID, $leaveTypeID, $effectivityStartDate, $effectivityEndDate, $reason, $status, $attachment, $isPaid) {
             $fileLeave = "
-                INSERT INTO ".$this->leaves." (empID, dateFiled, leaveTypeID, effectivityStartDate, effectivityEndDate, remarks, status, attachment, isPaid)
-                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$leaveTypeID', '$effectivityStartDate', '$effectivityEndDate', '$remarks', '$status', '$attachment', '$isPaid')";
+                INSERT INTO ".$this->leaves." (empID, dateFiled, leaveTypeID, effectivityStartDate, effectivityEndDate, reason, status, attachment, isPaid)
+                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$leaveTypeID', '$effectivityStartDate', '$effectivityEndDate', '$reason', '$status', '$attachment', '$isPaid')";
             return $fileLeave;
         }
 
-        public function fileLeave($employeeID, $leaveTypeID, $effectivityStartDate, $effectivityEndDate, $remarks, $status, $isPaid) {
+        public function fileLeave($employeeID, $leaveTypeID, $effectivityStartDate, $effectivityEndDate, $reason, $status, $isPaid) {
             $fileLeave = "
-                INSERT INTO ".$this->leaves." (empID, dateFiled, leaveTypeID, effectivityStartDate, effectivityEndDate, remarks, status, attachment, isPaid)
-                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$leaveTypeID', '$effectivityStartDate', '$effectivityEndDate', '$remarks', '$status', NULL, '$isPaid')";
+                INSERT INTO ".$this->leaves." (empID, dateFiled, leaveTypeID, effectivityStartDate, effectivityEndDate, reason, status, attachment, isPaid)
+                VALUES ('$employeeID', CURRENT_TIMESTAMP, '$leaveTypeID', '$effectivityStartDate', '$effectivityEndDate', '$reason', '$status', NULL, '$isPaid')";
             return $fileLeave;
+        }
+
+        public function addLeaveReviewDetails($leaveID, $reviewerBy, $remarks) {
+            $addLeaveReviewDetails = "
+                UPDATE ".$this->leaves." SET 
+                reviewedBy = '$reviewerBy', 
+                remarks = '$remarks',
+                reviewedAt = CURRENT_TIMESTAMP
+                WHERE requestID = '$leaveID'";
+            return $addLeaveReviewDetails;
         }
 
         public function updateDisputeStatus($disputeID, $status, $remarks) {

@@ -33,7 +33,7 @@
                                     <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Leave Type</th>
                                     <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Days</th>
                                     <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Inclusive Dates</th>
-                                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Purpose / Remarks</th>
+                                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Purpose / Reason</th>
                                     <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                                 </tr>
                             </thead>
@@ -55,7 +55,7 @@
                                         $leave_leaveType = $leaveDetails['leaveType'];
                                         $leave_effectivityStartDate = $leaveDetails['effectivityStartDate'];
                                         $leave_effectivityEndDate = $leaveDetails['effectivityEndDate'];
-                                        $leave_remarks = $leaveDetails['remarks'];
+                                        $leave_reason = $leaveDetails['reason'];
                                         $leave_status = $leaveDetails['status'];
 
                                         $leave_dateFiled = formatDate($leave_dateFiled);
@@ -85,7 +85,7 @@
                                         echo "<td class = ' whitespace-nowrap'>" . $leave_leaveType . "</td>";
                                         echo "<td class = ' whitespace-nowrap'>" . $leave_days . "</td>";
                                         echo "<td class = ' whitespace-nowrap'>" . $leave_effectivityDate . "</td>";
-                                        echo "<td class = ' whitespace-nowrap'>" . $leave_remarks . "</td>";
+                                        echo "<td class = ' whitespace-nowrap'>" . $leave_reason . "</td>";
                                         if ($leave_status == "Pending") {
                                             echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $leave_status . "</p></td>";
                                         }
@@ -209,13 +209,13 @@
                                     
                                     <div class="row g-3 mb-2">
                                         <div class="col-12">
-                                            <label for="purpose">Purpose / Remarks:</label>
+                                            <label for="purpose">Purpose / Reason:</label>
                                         </div>
                                     </div>
 
                                     <div class="row g-3 mb-2">
                                         <div class="col-12">
-                                            <textarea type="text" id="purpose" name="purpose" placeholder="Purpose / Remarks" rows="3" class="form-control" required></textarea>
+                                            <textarea type="text" id="purpose" name="purpose" placeholder="Purpose / Reason" rows="3" class="form-control" required></textarea>
                                         </div>
                                     </div>
 
@@ -320,7 +320,7 @@
                                     </div>
 
                                     <div class="row g-2 mb-2">
-                                        <div class="col-3">
+                                        <div class="col-12">
                                             <label for="viewStartDate">Inclusive Dates:</label>
                                         </div>
                                     </div>
@@ -335,8 +335,8 @@
                                     </div>
 
                                     <div class="row g-2 mb-2">
-                                        <div class="col-3">
-                                            <label for="viewPurpose">Purpose/Remarks:</label>
+                                        <div class="col-12">
+                                            <label for="viewPurpose">Purpose / Reason:</label>
                                         </div>
                                     </div>
 
@@ -347,11 +347,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- <div class="row g-2" id="viewPhotoRow">
-                                        <div class="col-12">
-                                            <button id="viewPhoto" class="text-blue-500">View Uploaded Photo</button>
-                                        </div>
-                                    </div> -->
                                     <div class="row g-2" id="viewWithAttachmentRow">
                                         <div class="col-12">
                                             <label class="text-blue-500">With Attachment</label>
@@ -362,6 +357,36 @@
                                             <label class="text-blue-500">Without Attachment</label>
                                         </div>
                                     </div>
+
+                                    <div class="row g-2 mb-2 reviewerSection">
+                                    <div class="col-6">
+                                        <label for="viewReviewedBy">Reviewed By:</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="viewReviewedAt">Reviewed At:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2 reviewerSection">
+                                    <div class="col-6">
+                                        <input type="text" class="form-control" id="viewReviewedBy" disabled>
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" class="form-control" id="viewReviewedAt" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-1 reviewerSection">
+                                    <div class="col-12">
+                                        <label for="viewRemarks">Remarks:</label>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2 reviewerSection">
+                                    <div class="col-12">
+                                        <input type="text" class="form-control" id="viewRemarks" disabled>
+                                    </div>
+                                </div>
                                 </form>
                             </div>
                             <div class="modal-footer">
