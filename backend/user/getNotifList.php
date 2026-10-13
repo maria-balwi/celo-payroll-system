@@ -9,17 +9,6 @@
         exit; 
     }
 
-    // LIMITED TO 3 NOTIFS ONLY
-    // $sql = "
-    //     SELECT n.notificationID, n.photo_path, n.created_at, n.title,
-    //             CASE WHEN r.notificationID IS NULL THEN 0 ELSE 1 END AS is_read
-    //     FROM tbl_notifications n
-    //     LEFT JOIN tbl_notification_reads r
-    //         ON r.notificationID = n.notificationID AND r.empID = ?
-    //     ORDER BY n.created_at DESC
-    //     LIMIT 3
-    // ";
-
     $sql = "
         SELECT n.notificationID, n.photo_path, n.created_at, n.title,
                 CASE WHEN r.notificationID IS NULL THEN 0 ELSE 1 END AS is_read
