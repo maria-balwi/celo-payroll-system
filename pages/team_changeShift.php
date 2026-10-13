@@ -53,22 +53,16 @@
                                             $shift_employeeName = $shiftDetails['firstName'] . " " . $shiftDetails['lastName'];
                                             $shift_currentShift = $shiftDetails['currentShift'];
                                             $shift_requestedShift = $shiftDetails['requestedShift'];
-                                            // $shift_effectivityStartDate = $shiftDetails['effectivityStartDate'];
-                                            // $shift_effectivityEndDate = $shiftDetails['effectivityEndDate'];
                                             $shift_remarks = $shiftDetails['remarks'];
                                             $shift_status = $shiftDetails['status'];
 
                                             $shift_dateFiled = formatDate($shift_dateFiled);
-                                            // $shift_effectivityStartDate = formatDate($shift_effectivityStartDate);
-                                            // $shift_effectivityEndDate = formatDate($shift_effectivityEndDate);
-                                            // $shift_effectivityDate = $shift_effectivityStartDate . " - " . $shift_effectivityEndDate;
 
                                             echo "<tr data-id='" . $shift_id . "' class='changeshiftView cursor-pointer'>";
                                             echo "<td class = ' whitespace-nowrap'>" . $shift_dateFiled . "</td>";
                                             echo "<td class = ' whitespace-nowrap'>" . $shift_employeeName . "</td>";
                                             echo "<td class = ' whitespace-nowrap'>" . $shift_currentShift . "</td>";
                                             echo "<td class = ' whitespace-nowrap'>" . $shift_requestedShift . "</td>";
-                                            // echo "<td class = ' whitespace-nowrap'>" . $shift_effectivityDate . "</td>";
                                             echo "<td class = ' whitespace-nowrap'>" . $shift_remarks . "</td>";
                                             if ($shift_status == "Pending") {
                                                 echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $shift_status . "</p></td>";
@@ -91,22 +85,16 @@
                                             $shift_employeeName = $shiftDetails['firstName'] . " " . $shiftDetails['lastName'];
                                             $shift_currentShift = $shiftDetails['currentShift'];
                                             $shift_requestedShift = $shiftDetails['requestedShift'];
-                                            // $shift_effectivityStartDate = $shiftDetails['effectivityStartDate'];
-                                            // $shift_effectivityEndDate = $shiftDetails['effectivityEndDate'];
                                             $shift_remarks = $shiftDetails['remarks'];
                                             $shift_status = $shiftDetails['status'];
 
                                             $shift_dateFiled = formatDate($shift_dateFiled);
-                                            // $shift_effectivityStartDate = formatDate($shift_effectivityStartDate);
-                                            // $shift_effectivityEndDate = formatDate($shift_effectivityEndDate);
-                                            // $shift_effectivityDate = $shift_effectivityStartDate . " - " . $shift_effectivityEndDate;
 
                                             echo "<tr data-id='" . $shift_id . "' class='changeshiftView cursor-pointer'>";
                                             echo "<td class = ' whitespace-nowrap'>" . $shift_dateFiled . "</td>";
                                             echo "<td class = ' whitespace-nowrap'>" . $shift_employeeName . "</td>";
                                             echo "<td class = ' whitespace-nowrap'>" . $shift_currentShift . "</td>";
                                             echo "<td class = ' whitespace-nowrap'>" . $shift_requestedShift . "</td>";
-                                            // echo "<td class = ' whitespace-nowrap'>" . $shift_effectivityDate . "</td>";
                                             echo "<td class = ' whitespace-nowrap'>" . $shift_remarks . "</td>";
                                             if ($shift_status == "Pending") {
                                                 echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $shift_status . "</p></td>";
@@ -131,22 +119,16 @@
                                         $shift_employeeName = $shiftDetails['firstName'] . " " . $shiftDetails['lastName'];
                                         $shift_currentShift = $shiftDetails['currentShift'];
                                         $shift_requestedShift = $shiftDetails['requestedShift'];
-                                        // $shift_effectivityStartDate = $shiftDetails['effectivityStartDate'];
-                                        // $shift_effectivityEndDate = $shiftDetails['effectivityEndDate'];
                                         $shift_remarks = $shiftDetails['remarks'];
                                         $shift_status = $shiftDetails['status'];
 
                                         $shift_dateFiled = formatDate($shift_dateFiled);
-                                        // $shift_effectivityStartDate = formatDate($shift_effectivityStartDate);
-                                        // $shift_effectivityEndDate = formatDate($shift_effectivityEndDate);
-                                        // $shift_effectivityDate = $shift_effectivityStartDate . " - " . $shift_effectivityEndDate;
 
                                         echo "<tr data-id='" . $shift_id . "' class='changeshiftView cursor-pointer'>";
                                         echo "<td class = ' whitespace-nowrap'>" . $shift_dateFiled . "</td>";
                                         echo "<td class = ' whitespace-nowrap'>" . $shift_employeeName . "</td>";
                                         echo "<td class = ' whitespace-nowrap'>" . $shift_currentShift . "</td>";
                                         echo "<td class = ' whitespace-nowrap'>" . $shift_requestedShift . "</td>";
-                                        // echo "<td class = ' whitespace-nowrap'>" . $shift_effectivityDate . "</td>";
                                         echo "<td class = ' whitespace-nowrap'>" . $shift_remarks . "</td>";
                                         if ($shift_status == "Pending") {
                                             echo "<td><p class='inline-block bg-yellow-500 text-white px-3 py-1 my-auto rounded-full text-sm'>". $shift_status . "</p></td>";

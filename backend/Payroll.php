@@ -574,7 +574,7 @@
                 ON disputeAttendance.empID = employee.id
                 WHERE dispute.status = 'Pending' 
                 AND employee.departmentID = 1 
-                AND employee.designationID IN (1,2,3,14)
+                AND employee.designationID IN (1,2,3,14,30)
                 AND teamID = '$teamID'
                 AND e_status = 'Active'
                 ORDER BY dateFiled DESC";
@@ -665,7 +665,7 @@
                 ON disputeAttendance.empID = employee.id
                 WHERE dispute.status = 'Approved' 
                 AND employee.departmentID = 1 
-                AND employee.designationID IN (1,2,3,14)
+                AND employee.designationID IN (1,2,3,14,30)
                 AND e_status = 'Active'
                 ORDER BY dateFiled DESC";
             return $attendanceDisputes;
@@ -755,7 +755,7 @@
                 ON disputeAttendance.empID = employee.id
                 WHERE dispute.status = 'Disapproved' 
                 AND employee.departmentID = 1 
-                AND employee.designationID IN (1,2,3,14)
+                AND employee.designationID IN (1,2,3,14,30)
                 AND e_status = 'Active'
                 ORDER BY dateFiled DESC";
             return $attendanceDisputes;
@@ -845,7 +845,7 @@
                 ON disputeLeaves.empID = employee.id
                 WHERE dispute.status = 'Pending' 
                 AND employee.departmentID = 1 
-                AND employee.designationID IN (1,2,3,14)
+                AND employee.designationID IN (1,2,3,14,30)
                 AND e_status = 'Active'
                 ORDER BY dateFiled DESC";
             return $leavesDisputes;
@@ -935,7 +935,7 @@
                 ON disputeLeaves.empID = employee.id
                 WHERE dispute.status = 'Approved' 
                 AND employee.departmentID = 1 
-                AND employee.designationID IN (1,2,3,14)
+                AND employee.designationID IN (1,2,3,14,30)
                 AND e_status = 'Active'
                 ORDER BY dateFiled DESC";
             return $pendingDisputes;
@@ -1025,7 +1025,7 @@
                 ON disputeLeaves.empID = employee.id
                 WHERE dispute.status = 'Disapproved' 
                 AND employee.departmentID = 1 
-                AND employee.designationID IN (1,2,3,14)
+                AND employee.designationID IN (1,2,3,14,30)
                 AND e_status = 'Active'
                 ORDER BY dateFiled DESC";
             return $pendingDisputes;
@@ -1107,7 +1107,7 @@
                 ON disputeOvertime.empID = employee.id
                 WHERE dispute.status = 'Pending' 
                 AND employee.departmentID = 1 
-                AND employee.designationID IN (1,2,3,14)
+                AND employee.designationID IN (1,2,3,14,30)
                 AND e_status = 'Active'
                 ORDER BY dateFiled DESC";
             return $overtimeDisputes;
@@ -1187,7 +1187,7 @@
                 ON disputeOvertime.empID = employee.id
                 WHERE dispute.status = 'Approved' 
                 AND employee.departmentID = 1 
-                AND employee.designationID IN (1,2,3,14)
+                AND employee.designationID IN (1,2,3,14,30)
                 AND e_status = 'Active'
                 ORDER BY dateFiled DESC";
             return $overtimeDisputes;
@@ -1267,7 +1267,7 @@
                 ON disputeOvertime.empID = employee.id
                 WHERE dispute.status = 'Disapproved' 
                 AND employee.departmentID = 1 
-                AND employee.designationID IN (1,2,3,14)
+                AND employee.designationID IN (1,2,3,14,30)
                 AND e_status = 'Active'
                 ORDER BY dateFiled DESC";
             return $overtimeDisputes;

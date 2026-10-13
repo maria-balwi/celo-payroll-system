@@ -479,19 +479,6 @@
                                                 $team_timeIn = "-";
                                                 $team_timeOut = "-";
 
-                                                // GET ATTENDANCE TIME - TIME IN
-                                                // $dailyAttendanceQuery_timeIn = mysqli_query($conn, $attendance->dailyAttendance_timeIn($teamIT_id));
-                                                // $dailyAttendance_timeInDetails = mysqli_fetch_array($dailyAttendanceQuery_timeIn);
-                                                // $dateTime;
-                                                // if (isset($dailyAttendance_timeInDetails['attendanceTime']))
-                                                // {
-                                                //     $team_timeIn = $dailyAttendance_timeInDetails['attendanceTime'];
-                                                //     $teamIT_status = "Present";
-                                                // }
-                                                // else {
-                                                //     $teamIT_status = "Absent";
-                                                // }
-
                                                 $currentDT = new DateTime();
                                                 // FETCH SHIFT DETAILS
                                                 $getShiftDetailsQuery = mysqli_query($conn, $attendance->getShiftDetails($teamIT_id));

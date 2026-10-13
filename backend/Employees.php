@@ -159,7 +159,7 @@
                 INNER JOIN ".$this->shifts." AS shifts
                 ON employees.shiftID = shifts.shiftID
                 WHERE employees.departmentID = 1
-                AND designationID IN (1,2,3,14)
+                AND designationID IN (1,2,3,14,30)
                 AND teamID  = '$teamID'
                 AND employees.e_status = 'Active'
                 ORDER BY lastName";
@@ -379,7 +379,7 @@
                 INNER JOIN ".$this->operationsTeam." AS operationsTeam
                 ON employees.teamID = operationsTeam.operationsTeamID
                 WHERE employees.departmentID = 1 
-                AND employees.designationID IN (1,2,3,14)
+                AND employees.designationID IN (1,2,3,14,30)
                 AND teamID = '$teamID'
                 AND e_status = 'Active'
                 ORDER BY dateFiled DESC";
@@ -544,7 +544,7 @@
                 INNER JOIN ".$this->shift." AS shift_2
                 ON shift_2.shiftID = changeShift.requestedShift
                 WHERE employees.departmentID = 1 
-                AND employees.designationID IN (1,2,3,14)
+                AND employees.designationID IN (1,2,3,14,30)
                 AND teamID = '$teamID'
                 AND e_status = 'Active'
                 ORDER BY dateFiled DESC";
@@ -636,7 +636,7 @@
                 INNER JOIN ".$this->leaveType." AS leaveType
                 ON leaveType.leaveTypeID = leaves.leaveTypeID
                 WHERE employees.departmentID = 1
-                AND employees.designationID IN (1,2,3,14)
+                AND employees.designationID IN (1,2,3,14,30)
                 AND teamID = '$teamID'
                 AND e_status = 'Active'
                 ORDER BY dateFiled DESC";
@@ -691,7 +691,7 @@
                 INNER JOIN ".$this->operationsTeam." AS operationsTeam
                 ON employees.teamID = operationsTeam.operationsTeamID
                 WHERE employees.departmentID = 1 
-                AND employees.designationID IN (1,2,3,14)
+                AND employees.designationID IN (1,2,3,14,30)
                 AND teamID = '$teamID'
                 AND e_status = 'Active'";
             return $cashAdvance;

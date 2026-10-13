@@ -21,17 +21,6 @@
                     File Overtime
                     </button>
                 </div>
-
-                <!-- <div class="btn-group">
-                    <button type="button" class="dropdown-toggle inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-500 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none" data-bs-toggle="dropdown" aria-expanded="false">
-                        Actions
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#" id="option1">Option 1</a></li>
-                        <li><a class="dropdown-item" href="#" id="option2">Option 2</a></li>
-                    </ul>
-                </div> -->
-
             </div>
             
             <!-- CONTENT -->

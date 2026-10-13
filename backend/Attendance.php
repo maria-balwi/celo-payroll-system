@@ -148,7 +148,7 @@
                 INNER JOIN ".$this->operationsTeam." AS operationsTeam
                 ON employees.teamID = operationsTeam.operationsTeamID
                 WHERE employees.departmentID = 1 
-                AND designationID IN (1,2,3,14)
+                AND designationID IN (1,2,3,14,30)
                 AND attendanceDate = CURRENT_DATE() 
                 AND teamID = '$teamID' 
                 AND logTypeID IN (1, 2)
@@ -230,7 +230,7 @@
                 INNER JOIN ".$this->weekOff." AS weekoff
                 ON weekoff.empID = employees.id
                 WHERE employees.departmentID = 1 
-                AND designationID IN (1,2,3,14)
+                AND designationID IN (1,2,3,14,30)
                 AND employees.id NOT IN 
                 (SELECT empID FROM ".$this->attendance."
                 WHERE attendanceDate = CURRENT_DATE() AND
@@ -291,7 +291,7 @@
                 INNER JOIN ".$this->operationsTeam." AS operationsTeam
                 ON employees.teamID = operationsTeam.operationsTeamID
                 WHERE employees.departmentID = 1 
-                AND designationID IN (1,2,3,14)
+                AND designationID IN (1,2,3,14,30)
                 AND attendanceDate = CURRENT_DATE() 
                 AND logTypeID = 2
                 AND teamID = '$teamID'
@@ -337,7 +337,7 @@
                 INNER JOIN ".$this->operationsTeam." AS operationsTeam
                 ON employees.teamID = operationsTeam.operationsTeamID
                 WHERE employees.departmentID = 1 
-                AND designationID IN (1,2,3,14)
+                AND designationID IN (1,2,3,14,30)
                 AND attendanceDate = CURRENT_DATE() 
                 AND logTypeID = 3
                 AND teamID = '$teamID'
@@ -601,7 +601,7 @@
                 ON leaves.empID = employees.id
                 INNER JOIN ".$this->operationsTeam." AS operationsTeam
                 ON employees.teamID = operationsTeam.operationsTeamID
-                WHERE employees.designationID IN (1,2,3,14) 
+                WHERE employees.designationID IN (1,2,3,14,30) 
                 AND teamID = '$teamID'
                 AND status = 'Pending'
                 AND e_status = 'Active'";
@@ -637,7 +637,7 @@
                 ON changeShift.empID = employees.id
                 INNER JOIN ".$this->operationsTeam." AS operationsTeam
                 ON employees.teamID = operationsTeam.operationsTeamID
-                WHERE employees.designationID IN (1,2,3,14) 
+                WHERE employees.designationID IN (1,2,3,14,30) 
                 AND teamID = '$teamID'
                 AND status = 'Pending'
                 AND e_status = 'Active'";
@@ -673,7 +673,7 @@
                 ON filedOT.empID = employees.id
                 INNER JOIN ".$this->operationsTeam." AS operationsTeam
                 ON employees.teamID = operationsTeam.operationsTeamID
-                WHERE employees.designationID IN (1,2,3,14) 
+                WHERE employees.designationID IN (1,2,3,14,30) 
                 AND teamID = '$teamID'
                 AND status IS NULL
                 AND e_status = 'Active'";
@@ -750,7 +750,7 @@
                 ON employees.departmentID = department.departmentID
                 INNER JOIN ".$this->operationsTeam." AS operationsTeam
                 ON employees.teamID = operationsTeam.operationsTeamID
-                WHERE employees.designationID IN (1,2,3,14) 
+                WHERE employees.designationID IN (1,2,3,14,30) 
                 AND teamID = '$teamID'
                 AND request_status = 'Pending'
                 AND e_status = 'Active'";
@@ -766,7 +766,7 @@
                 ON disputeAttendance.empID = employees.id
                 INNER JOIN ".$this->operationsTeam." AS operationsTeam
                 ON employees.teamID = operationsTeam.operationsTeamID
-                WHERE employees.designationID IN (1,2,3,14) 
+                WHERE employees.designationID IN (1,2,3,14,30) 
                 AND teamID = '$teamID'
                 AND disputes.status = 'Pending'
                 AND e_status = 'Active'";
@@ -782,7 +782,7 @@
                 ON disputeLeaves.empID = employees.id
                 INNER JOIN ".$this->operationsTeam." AS operationsTeam
                 ON employees.teamID = operationsTeam.operationsTeamID
-                WHERE employees.designationID IN (1,2,3,14) 
+                WHERE employees.designationID IN (1,2,3,14,30) 
                 AND teamID = '$teamID'
                 AND disputes.status = 'Pending'
                 AND e_status = 'Active'";
@@ -798,7 +798,7 @@
                 ON disputeOvertime.empID = employees.id
                 INNER JOIN ".$this->operationsTeam." AS operationsTeam
                 ON employees.teamID = operationsTeam.operationsTeamID
-                WHERE employees.designationID IN (1,2,3,14) 
+                WHERE employees.designationID IN (1,2,3,14,30) 
                 AND teamID = '$teamID'
                 AND disputes.status = 'Pending'
                 AND e_status = 'Active'";
@@ -905,7 +905,7 @@
                 INNER JOIN ".$this->shifts." AS shifts
                 ON employees.shiftID = shifts.shiftID
                 WHERE employees.departmentID = 1 
-                AND designationID IN (1,2,3,14)
+                AND designationID IN (1,2,3,14,30)
                 AND teamID = '$teamID'
                 AND e_status = 'Active'
                 ORDER BY employeeID ASC";
@@ -926,7 +926,7 @@
                 INNER JOIN ".$this->shifts." AS shifts
                 ON employees.shiftID = shifts.shiftID
                 WHERE employees.departmentID = 1 
-                AND designationID IN (1,2,3,14)
+                AND designationID IN (1,2,3,14,30)
                 AND teamID = '$teamID'
                 AND employees.e_status = 'Active'
                 ORDER BY employeeID ASC";
