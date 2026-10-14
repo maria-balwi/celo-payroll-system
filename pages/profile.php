@@ -95,13 +95,13 @@
                                             { ?>
                                                 <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 text-sm font-medium bg-blue-500 text-white" data-bs-toggle="modal" data-bs-target="#changePasswordModal">Change Password</button>
                                             <?php }
-                                         } ?>
+                                        } ?>
                                     </div>
                                     <div class="flex gap-2 py-1">
                                         <?php if ($_SESSION['updateEmpInfo'] == 1) { ?>
                                             <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 text-sm font-medium bg-yellow-500 text-white" data-bs-toggle="modal" data-bs-target="#updateVitalInfoModal">Update Vital Information</button>
                                         <?php } 
-                                        else if ($_SESSION['updateEmpInfo'] == 0 && $_SESSION['activated'] == 0) { ?>
+                                        else if ($_SESSION['updateEmpInfo'] == 0 && $_SESSION['activated'] == 0) { ?>   
                                             <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 text-sm font-medium bg-gray-300 text-gray-500" disabled>Update Vital Information</button>
                                         <?php } 
                                         else { ?>
