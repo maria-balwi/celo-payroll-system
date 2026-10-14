@@ -2140,12 +2140,11 @@
             return $activeAgents;
         }
 
-        public function updateMarriedEmpInfo($id, $firstName, $lastName, $gender, $civilStatus, $mobileNumber, $address) {
+        public function updateMarriedEmpInfo($id, $firstName, $lastName, $civilStatus, $mobileNumber, $address) {
             $updateEmpInfo = "
                 UPDATE ".$this->employees." SET 
                 firstName = '$firstName', 
                 lastName = '$lastName', 
-                gender = '$gender', 
                 civilStatus = '$civilStatus', 
                 mobileNumber = '$mobileNumber', 
                 address = '$address' 
@@ -2153,10 +2152,9 @@
             return $updateEmpInfo;
         }
 
-        public function updateEmpInfo($id, $gender, $civilStatus, $mobileNumber, $address) {
+        public function updateEmpInfo($id, $civilStatus, $mobileNumber, $address) {
             $updateEmpInfo = "
                 UPDATE ".$this->employees." SET 
-                gender = '$gender', 
                 civilStatus = '$civilStatus', 
                 mobileNumber = '$mobileNumber', 
                 address = '$address' 

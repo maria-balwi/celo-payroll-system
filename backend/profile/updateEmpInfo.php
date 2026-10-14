@@ -4,7 +4,6 @@
     session_start();
 
     $id = $_SESSION['id'];
-    $gender = $_POST['gender'];
     $civilStatus = $_POST['civilStatus'];
     $mobileNumber = $_POST['mobileNumber'];
     $address = $_POST['address'];
@@ -26,14 +25,13 @@
         $lastName = $_POST['lastName'];
 
         // UPDATE EMPLOYEE INFO
-        mysqli_query($conn, $employees->updateMarriedEmpInfo($id, $firstName, $lastName, $gender, $civilStatus, $mobileNumber, $address));
+        mysqli_query($conn, $employees->updateMarriedEmpInfo($id, $firstName, $lastName, $civilStatus, $mobileNumber, $address));
 
         // UPDATE SCHEDULED EMP INFO TABLE
         mysqli_query($conn, $employees->updateEmpInfoSchedule($id, "Updated", $nextChangeDate));
 
         // UPDATE SESSION
         $_SESSION['employeeName'] = $firstName . ' ' . $lastName;
-        $_SESSION['gender'] = $gender;
         $_SESSION['updateEmpInfo'] = 0;
         $_SESSION['activated'] = $activated;
         
@@ -43,13 +41,12 @@
     else if ($civilStatus != "Married")
     {
         // UPDATE EMPLOYEE INFO
-        mysqli_query($conn, $employees->updateEmpInfo($id, $gender, $civilStatus, $mobileNumber, $address));
+        mysqli_query($conn, $employees->updateEmpInfo($id, $civilStatus, $mobileNumber, $address));
 
         // UPDATE SCHEDULED EMP INFO TABLE
         mysqli_query($conn, $employees->updateEmpInfoSchedule($id, "Updated", $nextChangeDate));
 
         // UPDATE SESSION
-        $_SESSION['gender'] = $gender;
         $_SESSION['updateEmpInfo'] = 0;
         $_SESSION['activated'] = $activated;
         

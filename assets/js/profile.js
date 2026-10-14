@@ -191,12 +191,11 @@ $(document).ready(function() {
         let updateEmpInfo = new FormData();
         var lastName = $("#lastName").val();
         var firstName = $("#firstName").val();
-        var gender = $("#gender").val();
         var civilStatus = $("#civilStatus").val();
         var mobileNumber = $("#mobileNumber").val();
         var address = $("#address").val();
 
-        if (civilStatus == "Married" && (lastName == '' || firstName == '' || gender == '' || mobileNumber == '' || address == '')) {
+        if (civilStatus == "Married" && (lastName == '' || firstName == '' || mobileNumber == '' || address == '')) {
             Swal.fire({
                 icon: 'warning',
                 title: 'Required Information',
@@ -226,7 +225,6 @@ $(document).ready(function() {
                 {
                     updateEmpInfo.append("lastName", lastName);
                     updateEmpInfo.append("firstName", firstName);
-                    updateEmpInfo.append("gender", gender);
                     updateEmpInfo.append("civilStatus", civilStatus);
                     updateEmpInfo.append("mobileNumber", mobileNumber);
                     updateEmpInfo.append("address", address);

@@ -457,7 +457,7 @@
                     <div class="modal-dialog modal-none modal-dialog-centered">
                         <div class="modal-content" id="updateVitalInfoModal">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="resetPassLabel">Update Password</h1>
+                                <h1 class="modal-title fs-5" id="resetPassLabel">Update Vital Information</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
@@ -473,15 +473,7 @@
                                 </div>
 
                                 <div class="row g-2 mb-2">
-                                    <div class="col-4">
-                                        <label for="gender">Gender:</label>
-                                        <select id="gender" name="gender" class="form-select">
-                                            <option value="" selected disabled>Choose</option>
-                                            <option value="Male">Male</option>
-                                            <option value="Female">Female</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-4">
+                                    <div class="col-6">
                                         <label for="civilStatus">Civil Status:</label>
                                         <select id="civilStatus" name="civilStatus" class="form-select">
                                             <option selected disabled>Choose</option>
@@ -493,7 +485,7 @@
                                             <option value="Widowed">Widowed</option>
                                         </select>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-6">
                                         <label for="mobileNumber">Mobile Number:</label>
                                         <input type="text" class="form-control" id="mobileNumber" name="mobileNumber">
                                     </div>
