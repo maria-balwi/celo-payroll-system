@@ -17,6 +17,17 @@
 
     require_once __DIR__ . '/../init.php';
 
+    // VITAL INFO: 3-day reminder + Pending flip on Mar/Jun/Sep/Dec 1
+    try {
+        require __DIR__ . '/notifyVitalInfoUpdate.php';
+    } catch (Throwable $e) {
+        file_put_contents(
+            __DIR__ . '/leave_management_cron.log',
+            date('Y-m-d H:i:s') . " Vital info failed: " . $e->getMessage() . "\n",
+            FILE_APPEND
+        );
+    }
+
     $payroll->runLeaveManagement();
 
     file_put_contents(
