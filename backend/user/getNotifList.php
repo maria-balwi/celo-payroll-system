@@ -4,34 +4,32 @@
     session_start();
 
     $empID = (int)($_SESSION['id'] ?? 0);
-    if ($empID <= 0) { 
-        echo json_encode(['items' => []]); 
-        exit; 
-    }
+    if ($empID <= 0) { echo json_encode(['items' => []]); exit; }
 
     $sql = "
-        SELECT n.notificationID, n.photo_path, n.created_at, n.title,
+        SELECT n.notificationID, n.photo_path, n.caption, n.created_at, n.title,
                 CASE WHEN r.notificationID IS NULL THEN 0 ELSE 1 END AS is_read
         FROM tbl_notifications n
         LEFT JOIN tbl_notification_reads r
             ON r.notificationID = n.notificationID AND r.empID = ?
+        WHERE n.target_empID IS NULL OR n.target_empID = ?
         ORDER BY n.created_at DESC
     ";
-
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $empID);
+    $stmt->bind_param("ii", $empID, $empID);
     $stmt->execute();
     $res = $stmt->get_result();
 
     $items = [];
     while ($r = $res->fetch_assoc()) {
-    $items[] = [
-        'notificationID' => (int)$r['notificationID'],
-        'photo_path' => $r['photo_path'],
-        'title' => $r['title'] ?? '',
-        'created_at' => $r['created_at'],
-        'is_read' => (int)$r['is_read']
-    ];
+        $items[] = [
+            'notificationID' => (int)$r['notificationID'],
+            'photo_path'     => $r['photo_path'] ?? '',
+            'caption'        => $r['caption'] ?? '',
+            'title'          => $r['title'] ?? '',
+            'created_at'     => $r['created_at'],
+            'is_read'        => (int)$r['is_read']
+        ];
     }
     echo json_encode(['items' => $items]);
 ?>

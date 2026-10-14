@@ -1435,7 +1435,8 @@
                     </div>
 
                     <!-- CARD FOOTER DATA ENTRY BUTTON -->
-                    <div class="card-footer d-grid gap-2 d-md-flex justify-content-md-end">
+                    <div class="card-footer d-grid d-md-flex justify-content-md-end">
+                        <button class="btn btn-success me-md-2" type="type" id="btnNotifyMissingRequirements">Notify Missing Requirements</button>
                         <a href="../assets/import_employee_template.csv" download class="btn btn-info me-md-2" id="exportTemplate">Export Template</a>
                         <button class="btn btn-warning me-md-2" type="button" data-bs-toggle="modal" data-bs-target="#importEmployeeModal" id="btnImportEmployee">Import Employees</button>
                         <button class="btn btn-primary me-md-2" type="button" data-bs-toggle="modal" data-bs-target="#addEmployeeModal" id="btnAddEmployee">Add Employee</button>

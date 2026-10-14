@@ -729,6 +729,7 @@
                 SELECT * FROM {$this->notifications} AS notification
                 INNER JOIN {$this->employees} AS employee
                 ON notification.created_by = employee.id
+                WHERE target_empID IS NULL
                 ";
             return $notifications;
         }
@@ -774,6 +775,7 @@
         public function viewLastNotificationAdded() {
             $notification = "
                 SELECT * FROM {$this->notifications}
+                WHERE target_empID IS NULL
                 ORDER BY notificationID DESC
                 LIMIT 1";
             return $notification;

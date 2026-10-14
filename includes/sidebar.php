@@ -279,6 +279,13 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="row g-2 mb-2" id="message_container" style="display:none;">
+                                <div class="col-12">
+                                    <label for="view_caption">Message:</label>
+                                    <textarea class="form-control" id="view_caption" rows="4" disabled readonly></textarea>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="modal-footer">
@@ -383,6 +390,9 @@
                         return;
                     }
 
+                    const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/"/g, '&quot;')
+                                .replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
                     let html = '';
                     items.forEach(item => {
                         const isNew = item.is_read === 0;
@@ -391,12 +401,13 @@
                             <button type="button"
                                     class="notifView w-full text-left px-4 py-3 hover:bg-gray-100 border-b"
                                     data-id="${item.notificationID}"
-                                    data-photo="${item.photo_path}"
+                                    data-photo="${esc(item.photo_path)}"
+                                    data-caption="${esc(item.caption)}"
                                     data-date="${item.created_at}"
-                                    data-title="${item.title}"
+                                    data-title="${esc(item.title)}"
                                     data-bs-toggle="modal" data-bs-target="#viewNotifModal">
                                 <div class="flex items-center justify-between">
-                                    <span class="font-semibold text-sm">${item.title}</span>
+                                    <span class="font-semibold text-sm">${esc(item.title)}</span>
                                     ${isNew ? '<span class="text-xs bg-blue-600 text-white px-2 py-0.5 rounded-full">new</span>' : ''}
                                 </div>
                                 <div class="text-xs text-gray-500 mt-1">${formatDateTime(item.created_at)}</div>
@@ -408,7 +419,7 @@
                 });
             }
 
-            // open/close notif dropdown
+            // OPEN-CLOSE NOTIFICATION DROPDOWN
             $('#notifBtn').on('click', function (e) {
                 e.stopPropagation();
 
@@ -424,16 +435,26 @@
 
             // VIEW NOTIF MODAL - UPON CLICKING ITEM IN NOTIF LIST DROPDOWN
             $(document).on("click", ".notifView", function () {
-                const id = $(this).data("id");
-                const photo = $(this).data("photo");
-                const date = $(this).data("date");
-                const title = $(this).data("title");
+                const id      = $(this).data("id");
+                const photo   = $(this).attr("data-photo") || "";
+                const caption = $(this).attr("data-caption") || "";
+                const date    = $(this).data("date");
+                const title   = $(this).attr("data-title");
 
-                // ASSIGN TO MODAL
                 $("#view_notificationID").val(id);
-                $("#view_dateCreated").val(formatDateTime(date)); 
-                $("#view_title").val(title); 
-                $("#view_profilePhoto").attr("src", photo);
+                $("#view_dateCreated").val(formatDateTime(date));
+                $("#view_title").val(title);
+
+                if (photo) {
+                    $("#view_profilePhoto").attr("src", photo);
+                    $("#photo_container").show();
+                } else {
+                    $("#view_profilePhoto").attr("src", "");
+                    $("#photo_container").hide();
+                }
+
+                $("#view_caption").val(caption);
+                $("#message_container").toggle(!!caption);
 
                 $.ajax({
                     url: "../backend/user/markNotifRead.php",
@@ -455,7 +476,7 @@
                 });
             });
 
-            // close dropdown if click outside
+            // CLOSE DROPDOWN IF CLICKED OUTSIDE
             $(document).on('click', function () {
                 $('#notifDropdown').addClass('hidden');
             });
@@ -466,8 +487,7 @@
                 }
             });
 
-
-            // init + polling
+            // INIT + POLLING
             loadNotifCount();
             setInterval(loadNotifCount, 10000);
 

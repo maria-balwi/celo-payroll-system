@@ -315,8 +315,6 @@ $(document).ready(function () {
         }
     });
 
-    
-
 
     // ADD LAST DAY OF WORK BASED ON RESIGNATION DATE
     $('#resignationDate').on('change', function() {
@@ -402,109 +400,6 @@ $(document).ready(function () {
             img.hide();
         }
     });
-
-  // $('#viewUploadPhoto').click(function() {
-  //     const [file] = updateProfilePicture.files;
-  //     if (file) {
-  //         const reader = new FileReader();
-  //         reader.onload = (e) => {
-  //             Swal.fire({
-  //                 title: 'Profile Picture',
-  //                 imageUrl: e.target.result,
-  //                 imageHeight: 200,
-  //             });
-  //         }
-  //         reader.readAsDataURL(file);
-  //     }
-  // });
-
-  // RESIGNNATION STATUS - UPLOAD CLEARANCE FORM
-  // OLD CODE
-  // $("#viewClearanceForm").hide();
-  // $("#clearanceForm").change(function () {
-  //     const [file] = clearanceForm.files;
-  //     const acceptedImageTypes = ["image/jpeg", "image/jpg", "image/png"];
-  //     if (file) {
-  //         const fileType = file["type"];
-  //         if ($.inArray(fileType, acceptedImageTypes) < 0) {
-  //             Swal.fire({
-  //                 icon: "warning",
-  //                 title: "Invalid Picture",
-  //                 text: "Invalid File only accept (JPG/PNG) file",
-  //             });
-  //         }
-  //         else {
-  //             $("#viewClearanceForm").show(); // Enable the view button
-  //         }
-  //     }
-  // });
-
-  // $("#viewClearanceForm").click(function () {
-  //     const [file] = clearanceForm.files;
-  //     if (file) {
-  //         const reader = new FileReader();
-  //         reader.onload = (e) => {
-  //         Swal.fire({
-  //             title: "Clearance Form",
-  //             imageUrl: e.target.result,
-  //             imageHeight: 500,
-  //         });
-  //         };
-  //         reader.readAsDataURL(file);
-  //     }
-  // });
-
-  // $("#viewClearanceForm").hide();
-
-  // $("#clearanceForm").change(function () {
-  //     const [file] = clearanceForm.files;
-
-  //     const acceptedImageTypes = ["image/jpeg", "image/jpg", "image/png"];
-  //     const acceptedPdfTypes = ["application/pdf"];
-
-  //     if (file) {
-  //         const fileType = file.type;
-
-  //         if ($.inArray(fileType, acceptedImageTypes) < 0 && $.inArray(fileType, acceptedPdfTypes) < 0) {
-  //             Swal.fire({
-  //                 icon: "warning",
-  //                 title: "Invalid File",
-  //                 text: "Only JPG, PNG, or PDF files are allowed",
-  //             });
-  //             $("#viewClearanceForm").hide();
-  //         } else {
-  //             $("#viewClearanceForm").show();
-  //         }
-  //     }
-  // });
-
-  // $("#viewClearanceForm").click(function () {
-  //     const [file] = clearanceForm.files;
-
-  //     if (file) {
-  //         const fileType = file.type;
-
-  //         // If it's an image (JPEG/PNG)
-  //         if (fileType.includes("image")) {
-  //             const reader = new FileReader();
-  //             reader.onload = (e) => {
-  //                 Swal.fire({
-  //                     title: "Clearance Form",
-  //                     imageUrl: e.target.result,
-  //                     imageHeight: 500,
-  //                 });
-  //             };
-  //             reader.readAsDataURL(file);
-  //         }
-
-  //         // If it's a PDF
-  //         else if (fileType === "application/pdf") {
-  //             const fileURL = URL.createObjectURL(file);
-
-  //             window.open(fileURL, "_blank"); // Opens PDF in a new tab
-  //         }
-  //     }
-  // });
 
     $("input.attachment[type='checkbox']").on("change", function () {
         const $checkboxes = $("input.attachment[type='checkbox']");
@@ -1665,6 +1560,52 @@ $(document).ready(function () {
                 }
             });
         }
+    });
+
+    // NOTIFY MISSING REQUIREMENTS
+    $("#btnNotifyMissingRequirements").click(function (e) {
+        Swal.fire({
+            icon: "question",
+            title: "Notify Employees",
+            text: "Are you sure you want to notify the employees with missing requirements?",
+            showCancelButton: true,
+            cancelButtonColor: "#6c757d",
+            confirmButtonColor: "#28a745",
+            confirmButtonText: "Yes",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: "../backend/admin/notifyMissingRequirements.php",
+                    contentType: false,
+                    processData: false,
+                    success: function (res) {
+                        const data = JSON.parse(res);
+                        var message = data.em;
+                        console.log(message);
+                        if (data.error == 0) {
+                            var id = data.id;
+                            loadEmployeeData(id);
+                            Swal.fire({
+                                icon: "success",
+                                title: "Success",
+                                text: message,
+                                timer: 2000,
+                                showConfirmButton: false,
+                            }).then(() => {
+                                $("#addEmployeeModal").modal("hide");
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Error",
+                                text: message,
+                            });
+                        }
+                    },
+                });
+            }
+        });
     });
 
     function loadEmployeeData(id_employee) {
