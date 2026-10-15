@@ -203,7 +203,7 @@ $(document).ready(function() {
             })
             return;
         } 
-        else if (civilStatus != "Married" && (gender == '' || mobileNumber == '' || address == '')) {
+        else if (civilStatus != "Married" && (mobileNumber == '' || address == '')) {
             Swal.fire({
                 icon: 'warning',
                 title: 'Required Information',
@@ -246,7 +246,6 @@ $(document).ready(function() {
                                 })
                                 $("#lastName").val('');
                                 $("#firstName").val('');
-                                $("#gender").val('');
                                 $("#civilStatus").val('');
                                 $("#mobileNumber").val('');
                                 $("#address").val('');
