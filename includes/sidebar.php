@@ -67,6 +67,9 @@
                 <a href="../pages/admin_notifications.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Memo
                 </a>
+                <a href="../pages/admin_id.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
+                    ID
+                </a>
                 <?php
                     if ($_SESSION['departmentID'] == '5' || $_SESSION['levelID'] == '3' || $_SESSION['levelID'] == '0') {
                 ?>
@@ -185,6 +188,9 @@
                 </a>
                 <a href="../pages/user_disputes.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Disputes
+                </a>
+                <a href="../pages/user_faqs.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
+                    FAQs
                 </a>
                 <?php } ?>
             </nav>
