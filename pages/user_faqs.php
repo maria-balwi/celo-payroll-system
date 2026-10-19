@@ -56,7 +56,7 @@
     <body>
         <!-- SIDEBAR -->
         <?php include('../includes/sidebar.php'); ?>	
- 
+
 		<main class="flex-1 p-3 overflow-auto">
             <?php
             // Replace with your own content (or pull from DB)
