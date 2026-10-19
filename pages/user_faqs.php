@@ -105,7 +105,8 @@
                         <?php $i = 0; foreach ($faqs as $category => $items): ?>
                             <div class="faq-panel <?= $i === 0 ? 'active' : '' ?>" id="faq-panel-<?= $i ?>">
                                 <?php foreach ($items as $j => $faq): ?>
-                                    <div class="faq-item <?= $j === 0 ? 'open' : '' ?>">
+                                    <!-- <div class="faq-item <?= $j === 0 ? 'open' : '' ?>"> -->
+									<div class="faq-item">
                                         <button type="button" class="faq-q">
                                             <?= htmlspecialchars($faq[0]) ?>
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M12 5v14M5 12h14"/></svg>
