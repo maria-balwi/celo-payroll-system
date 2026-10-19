@@ -25,6 +25,7 @@
         private $notificationRead = "tbl_notification_reads";
         private $salaryAdj = "tbl_salaryadj";
         private $auditTrail = 'tbl_audittrail';
+        private $employeeAudit = 'tbl_auditTrailEmployee';
         private $dbConnect = false;
         private $disputes = "tbl_disputes";
         private $updateEmpInfo = "tbl_updateempinfo";
@@ -2388,6 +2389,175 @@
             $auditTrail = "
                 INSERT INTO ".$this->auditTrail." (date, empID, module, action)
                 VALUES (CURRENT_TIMESTAMP, '$empID', '$module', '$action')";
+            return $auditTrail;
+        }
+
+        // ===================== EMPLOYEE AUDIT TRAIL DETAILS =====================
+        private function employeeAuditFields() {
+            return [
+                1  => ['Last Name',          'lastname',         'text'],
+                2  => ['First Name',         'firstname',        'text'],
+                3  => ['Middle Name',        'middlename',       'text'],
+                4  => ['Gender',             'gender',           'text'],
+                5  => ['Civil Status',       'civilstatus',      'text'],
+                6  => ['Address',            'address',          'text'],
+                7  => ['Date of Birth',      'dateofbirth',      'text'],
+                8  => ['Place of Birth',     'placeofbirth',     'text'],
+                9  => ['SSS',                'sss',              'text'],
+                10 => ['Pag-IBIG',           'pagibig',          'text'],
+                11 => ['PhilHealth',         'philhealth',       'text'],
+                12 => ['TIN',                'tin',              'text'],
+                13 => ['Email Address',      'emailaddress',     'text'],
+                14 => ['Employee ID',        'employeeid',       'text'],
+                15 => ['Mobile Number',      'mobilenumber',     'text'],
+                16 => ['Department',         'departmentid',     'dept'],
+                17 => ['Designation',        'designationid',    'desig'],
+                18 => ['Shift',              'shiftid',          'shift'],
+                19 => ['Team',               'teamid',           'team'],
+                20 => ['Basic Pay',          'basicpay',         'num'],
+                23 => ['Vacation Leaves',    'availablevl',      'num'],
+                24 => ['Sick Leaves',        'availablesl',      'num'],
+                25 => ['Employment Status',  'employmentstatus', 'text'],
+                26 => ['Date Hired',         'datehired',        'text'],
+                30 => ['Requirement: SSS',          'req_sss',         'req'],
+                31 => ['Requirement: Pag-IBIG',     'req_pagibig',     'req'],
+                32 => ['Requirement: PhilHealth',   'req_philhealth',  'req'],
+                33 => ['Requirement: TIN',          'req_tin',         'req'],
+                34 => ['Requirement: NBI',          'req_nbi',         'req'],
+                35 => ['Requirement: Medical Exam', 'req_medicalexam', 'req'],
+                36 => ['Requirement: 2x2 Picture',  'req_2x2pic',      'req'],
+                37 => ['Requirement: Vaccine Card', 'req_vaccinecard', 'req'],
+                38 => ['Requirement: PSA',          'req_psa',         'req'],
+                39 => ['Requirement: Valid ID',     'req_validid',     'req'],
+                40 => ['Requirement: HelloMoney',   'req_hellomoney',  'req'],
+                60 => ['Week Off: Monday',    'wo_mon', 'wo'],
+                61 => ['Week Off: Tuesday',   'wo_tue', 'wo'],
+                62 => ['Week Off: Wednesday', 'wo_wed', 'wo'],
+                63 => ['Week Off: Thursday',  'wo_thu', 'wo'],
+                64 => ['Week Off: Friday',    'wo_fri', 'wo'],
+                65 => ['Week Off: Saturday',  'wo_sat', 'wo'],
+                66 => ['Week Off: Sunday',    'wo_sun', 'wo'],
+            ];
+        }
+
+        // category => label (use this when displaying the audit trail)
+        public function employeeAuditLabels() {
+            $labels = [];
+            foreach ($this->employeeAuditFields() as $category => $f) {
+                $labels[$category] = $f[0];
+            }
+            return $labels;
+        }
+
+        // current values from employee + requirements + week-off tables, keys in lowercase
+        private function getEmployeeAuditSnapshot($conn, $id) {
+            $sources = [
+                [$this->employees,    'id'],
+                [$this->requirements, 'empID'],
+                [$this->weekOff,      'empID'],
+            ];
+            $snapshot = [];
+            foreach ($sources as $src) {
+                $stmt = $conn->prepare("SELECT * FROM {$src[0]} WHERE {$src[1]} = ?");
+                $stmt->bind_param('i', $id);
+                $stmt->execute();
+                $row = $stmt->get_result()->fetch_assoc() ?: [];
+                $snapshot = array_merge($snapshot, array_change_key_case($row, CASE_LOWER));
+            }
+            if (!isset($snapshot['pagibig']) && isset($snapshot['pagIbig'])) $snapshot['pagibig'] = $snapshot['pagIbig'];
+            return $snapshot;
+        }
+
+        // id => name lookup
+        private function auditLookup($conn, $sql, $idCol, $nameCol) {
+            $map = [];
+            $res = mysqli_query($conn, $sql);
+            while ($row = mysqli_fetch_assoc($res)) {
+                $map[$row[$idCol]] = $row[$nameCol];
+            }
+            return $map;
+        }
+
+        // returns ['category','old','new'] if changed, otherwise null
+        private function auditCompare($category, $oldRaw, $newRaw, $map = null, $numeric = false) {
+            $old = trim((string)($oldRaw ?? ''));
+            $new = trim((string)($newRaw ?? ''));
+
+            if ($numeric && is_numeric($old) && is_numeric($new)) {
+                if (abs((float)$old - (float)$new) < 0.00001) return null;   // 15000 vs 15000.00
+            } elseif ($old === $new) {
+                return null;
+            }
+
+            if ($map) {
+                $old = $map[$old] ?? $old;
+                $new = $map[$new] ?? $new;
+            }
+
+            return ['category' => $category, 'old' => mb_substr($old, 0, 255), 'new' => mb_substr($new, 0, 255)];
+        }
+
+        // compares the employee's current DB values against the new values. Call BEFORE updating
+        public function getEmployeeChanges($conn, $id, array $new) {
+            $old = $this->getEmployeeAuditSnapshot($conn, $id);
+
+            $maps = [
+                'dept'  => $this->auditLookup($conn, $this->viewDepartment(),     'departmentID',     'departmentName'),
+                'desig' => $this->auditLookup($conn, $this->viewDesignation(),    'designationID',    'position'),
+                'shift' => $this->auditLookup($conn, $this->viewAllShifts(),      'shiftID',          'shift'),
+                'team'  => $this->auditLookup($conn, $this->viewOperationsTeam(), 'operationsTeamID', 'teamName'),
+            ];
+
+            $changes = [];
+            foreach ($this->employeeAuditFields() as $category => $f) {
+                $key  = $f[1];
+                $type = $f[2];
+                if (!array_key_exists($key, $new)) continue;
+
+                if ($type === 'req' || $type === 'wo') {
+                    $o = empty($old[$key]) ? 0 : 1;
+                    $n = empty($new[$key]) ? 0 : 1;
+                    if ($o === $n) continue;
+                    $yes = ($type === 'req') ? 'Submitted'     : 'Week off';
+                    $no  = ($type === 'req') ? 'Not submitted' : 'Working day';
+                    $changes[] = ['category' => $category, 'old' => $o ? $yes : $no, 'new' => $n ? $yes : $no];
+                    continue;
+                }
+
+                if (!array_key_exists($key, $old)) {
+                    error_log("Employee audit: column '$key' not found");
+                    continue;
+                }
+
+                $c = $this->auditCompare($category, $old[$key], $new[$key], $maps[$type] ?? null, $type === 'num');
+                if ($c) $changes[] = $c;
+            }
+            return $changes;
+        }
+
+        // one row in tbl_auditTrailEmployee per changed field
+        public function logEmployeeChanges($conn, $auditTrailID, $editorID, $affectedID, array $changes) {
+            if (!$auditTrailID || !$changes) return;
+
+            $stmt = $conn->prepare("
+                INSERT INTO tbl_auditTrailEmployee (auditTrailID, empID, affected_empID, category, oldData, newData)
+                VALUES (?, ?, ?, ?, ?, ?)
+            ");
+            foreach ($changes as $c) {
+                $category = $c['category'];
+                $old = $c['old'];
+                $new = $c['new'];
+                $stmt->bind_param('iiisss', $auditTrailID, $editorID, $affectedID, $category, $old, $new);
+                $stmt->execute();
+            }
+        }
+
+        public function getEmployeeAuditTrail($auditTrailID) {
+            $auditTrail = "
+                SELECT * FROM " . $this->employeeAudit . " AS employeeAudit 
+                INNER JOIN " . $this->auditTrail . " AS auditTrail
+                ON auditTrail.auditTrailID = employeeAudit.auditTrailID
+                WHERE employeeAudit.auditTrailID = '$auditTrailID'";
             return $auditTrail;
         }
     }

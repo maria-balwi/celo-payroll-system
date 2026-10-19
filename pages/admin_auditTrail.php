@@ -126,7 +126,7 @@
                                                         $dateEmployee = formatDate($employeeDate);
                                                         $timeEmployee = formatTime($employeeDate);
 
-                                                        echo "<tr>";
+                                                        echo "<tr data-id='" . $employeeATID . "' class='employeeView cursor-pointer'>";
                                                         echo "<td class ='whitespace-nowrap'>" . $employeeATID . "</td>";
                                                         echo "<td class ='whitespace-nowrap'>" . $dateEmployee . "</td>";
                                                         echo "<td class ='whitespace-nowrap'>" . $timeEmployee . "</td>";

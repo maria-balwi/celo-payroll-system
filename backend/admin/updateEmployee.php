@@ -199,6 +199,10 @@
         }
     }
 
+    // QUERY TO GET OLD DATA
+    $oldDataQuery = mysqli_query($conn, $employees->getEmployeeInfo($updateID));
+    $oldData = mysqli_fetch_array($oldDataQuery);
+    // error_log(print_r($oldData, true));
 
     // UPDATE USER LEVEL
     if (($updateDepartmentID == 4 && $updateDesignationID == 11) || ($updateDepartmentID == 1 && $updateDesignationID == 4))
@@ -207,7 +211,7 @@
     }
     else if (($updateDepartmentID == 3 || $updateDepartmentID == 5) && ($updateDesignationID == 8 || $updateDesignationID == 9 || $updateDesignationID == 12 || $updateDesignationID == 18))
     {
-        $levelID = 3; // ADMIN LEVEL
+        $levelID = 3; // ADMIN LEVEL    
     }
     else if ($updateDepartmentID == 3 && $updateDesignationID == 7)
     {
@@ -229,6 +233,51 @@
 
     // CHECK EMPLOYEE ID 
     $checkEmployeeID = mysqli_query($conn, $employees->checkEmployeeID($updateEmployeeID));
+
+    $changes = [];
+
+    // 'label' => [oldDataKey, newValue]  (adjust keys to your getEmployeeInfo() column names)
+    $fieldMap = [
+        'Last Name'         => ['lastName',        $updateLastName],
+        'First Name'        => ['firstName',       $updateFirstName],
+        'Middle Name'       => ['middleName',      $updateMiddleName],
+        'Gender'            => ['gender',          $updateGender],
+        'Civil Status'      => ['civilStatus',     $updateCivilStatus],
+        'Address'           => ['address',         $updateAddress],
+        'Date of Birth'     => ['dateOfBirth',     $updateDateOfBirth],
+        'Place of Birth'    => ['placeOfBirth',    $updatePlaceOfBirth],
+        'SSS'               => ['sss',             $updateSSS],
+        'Pag-IBIG'          => ['pagIbig',         $updatePagIbig],
+        'PhilHealth'        => ['philhealth',      $updatePhilhealth],
+        'TIN'               => ['tin',             $updateTIN],
+        'Email Address'     => ['emailAddress',    $updateEmailAddress],
+        'Employee ID'       => ['employeeID',      $updateEmployeeID],
+        'Mobile Number'     => ['mobileNumber',    $updateMobileNumber],
+        'Department'        => ['departmentID',    $updateDepartmentID],
+        'Designation'       => ['designationID',   $updateDesignationID],
+        'Shift'             => ['shiftID',         $updateShiftID],
+        'Team'              => ['operationsTeamID',$updateTeamID],
+        'Basic Pay'         => ['basicPay',        $updateBasicPay],
+        'Daily Rate'        => ['dailyRate',       $updateDailyRate],
+        'Hourly Rate'       => ['hourlyRate',      $updateHourlyRate],
+        'Vacation Leaves'   => ['vacationLeaves',  $updateVacationLeaves],
+        'Sick Leaves'       => ['sickLeaves',      $updateSickLeaves],
+        'Employment Status' => ['employmentStatus',$updateEmploymentStatus],
+        'Date Hired'        => ['dateHired',       $updateDateHired],
+    ];
+
+    foreach ($fieldMap as $label => [$oldKey, $newVal]) {
+        if (!array_key_exists($oldKey, $oldData)) continue; // unknown column, don't log
+
+        $oldVal = $oldData[$oldKey];
+        if ((string)$oldVal !== (string)$newVal) {
+            $changes[] = [
+                'category' => $label,
+                'old'      => (string)($oldVal ?? ''),
+                'new'      => (string)($newVal ?? ''),
+            ];
+        }
+    }
 
     // IF SAME EMAIL ADDRESS (OLD AND NEW)
     if ($updateEmailAddress == $oldEmailAddress) 
@@ -252,6 +301,9 @@
                 $at_module = "Admin - Employee List";
                 $at_action = "Updated Employee Information";
                 mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $updateID));
+                if (!empty($changes)) {
+                    $employees->logEmployeeChanges($conn, mysqli_insert_id($conn), $at_empID, $updateID, $changes);
+                }
             }
             else 
             {
@@ -265,6 +317,9 @@
                 $at_module = "Admin - Employee List";
                 $at_action = "Updated Employee Information";
                 mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $updateID));
+                if (!empty($changes)) {
+                    $employees->logEmployeeChanges($conn, mysqli_insert_id($conn), $at_empID, $updateID, $changes);
+                }
             }
             
             mysqli_query($conn, $employees->updateEmployeeRequirements($updateID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi, $req_medicalExam, $req_2x2pic, $req_vaccineCard, $req_psa, $req_validID, $req_helloMoney));
@@ -353,6 +408,9 @@
                     $at_module = "Admin - Employee List";
                     $at_action = "Updated Employee Information";
                     mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $updateID));
+                    if (!empty($changes)) {
+                        $employees->logEmployeeChanges($conn, mysqli_insert_id($conn), $at_empID, $updateID, $changes);
+                    }
                 }
                 else 
                 {
@@ -365,6 +423,9 @@
                     $at_module = "Admin - Employee List";
                     $at_action = "Updated Employee Information";
                     mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $updateID));
+                    if (!empty($changes)) {
+                        $employees->logEmployeeChanges($conn, mysqli_insert_id($conn), $at_empID, $updateID, $changes);
+                    }
                 }
                 
                 mysqli_query($conn, $employees->updateEmployeeRequirements($updateID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi, $req_medicalExam, $req_2x2pic, $req_vaccineCard, $req_psa, $req_validID, $req_helloMoney));
@@ -468,6 +529,9 @@
                     $at_module = "Admin - Employee List";
                     $at_action = "Updated Employee Information";
                     mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $updateID));
+                    if (!empty($changes)) {
+                        $employees->logEmployeeChanges($conn, mysqli_insert_id($conn), $at_empID, $updateID, $changes);
+                    }
                 }
                 else 
                 {
@@ -481,6 +545,9 @@
                     $at_module = "Admin - Employee List";
                     $at_action = "Updated Employee Information";
                     mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $updateID));
+                    if (!empty($changes)) {
+                        $employees->logEmployeeChanges($conn, mysqli_insert_id($conn), $at_empID, $updateID, $changes);
+                    }
                 }
                 
                 mysqli_query($conn, $employees->updateEmployeeRequirements($updateID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi, $req_medicalExam, $req_2x2pic, $req_vaccineCard, $req_psa, $req_validID, $req_helloMoney));
@@ -560,6 +627,9 @@
                         $at_module = "Admin - Employee List";
                         $at_action = "Updated Employee Information";
                         mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $updateID));
+                        if (!empty($changes)) {
+                            $employees->logEmployeeChanges($conn, mysqli_insert_id($conn), $at_empID, $updateID, $changes);
+                        }
                     }
                     else 
                     {
@@ -573,6 +643,9 @@
                         $at_module = "Admin - Employee List";
                         $at_action = "Updated Employee Information";
                         mysqli_query($conn, $employees->auditTrail($at_empID, $at_module, $at_action, $updateID));
+                        if (!empty($changes)) {
+                            $employees->logEmployeeChanges($conn, mysqli_insert_id($conn), $at_empID, $updateID, $changes);
+                        }
                     }
                     
                     mysqli_query($conn, $employees->updateEmployeeRequirements($updateID, $req_sss, $req_pagIbig, $req_philhealth, $req_tin, $req_nbi, $req_medicalExam, $req_2x2pic, $req_vaccineCard, $req_psa, $req_validID, $req_helloMoney));

@@ -54,7 +54,153 @@ $(document).ready(function() {
 
     var logsTable = $("#logsTable").DataTable();
     logsTable.order([[0, "desc"]]).draw();
-	
+
+    // VIEW EMPLOYEE AUDIT TRAIL DETAILS
+    var array = [];
+    // $(document).on('click', '.employeeView', function () {
+    //     var audit_id = $(this).data('id');
+    //     array.push(audit_id);
+    //     var id_audit = array[array.length - 1];
+    //     console.log(id_audit);
+        
+    //     $.ajax({
+    //         type: "GET",
+    //         url: "../backend/admin/employeeAuditTrailModal.php?audit_id=" + id_audit,
+    //         success: function (res) {
+    //             if (res.status === 404) {
+    //                 Swal.fire({
+    //                     icon: 'warning',
+    //                     title: 'Warning',
+    //                     text: res.message,
+    //                     timer: 2000,
+    //                     showConfirmButton: false,
+    //                 })
+    //                 return;
+    //             } 
+    //             if (res.status !== 200) return;
+
+    //             const cells = row.children('td');
+    //             const meta = cells.eq(1).text() + ' ' + cells.eq(2).text() + ' • ' +
+    //                         cells.eq(3).text() + ' updated ' + cells.eq(6).text();
+
+    //             const rows = res.data.map(c =>
+    //                 '<tr><td>' + esc(c.category) + '</td>' +
+    //                 '<td>' + (esc(c.oldData) || '-') + '</td>' +
+    //                 '<td>' + (esc(c.newData) || '-') + '</td></tr>'
+    //             ).join('');
+
+    //             const size = res.data.length > 5 ? 'modal-lg' : '';
+
+    //             // remove any previous modal, then create a fresh one
+    //             $('#auditChangesModal').remove();
+    //             $('body').append(`
+    //                 <div class="modal fade" id="auditChangesModal" tabindex="-1" aria-labelledby="auditChangesLabel" aria-hidden="true">
+    //                     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable ${size}">
+    //                         <div class="modal-content">
+    //                             <div class="modal-header">
+    //                                 <h1 class="modal-title fs-5" id="auditChangesLabel">Employee Changes</h1>
+    //                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    //                             </div>
+    //                             <div class="modal-body">
+    //                                 <p class="mb-2 small text-muted">${esc(meta)}</p>
+    //                                 <table class="table table-bordered table-sm text-center mb-0">
+    //                                     <thead class="bg-gray-50">
+    //                                         <tr><th>Field</th><th>Old Value</th><th>New Value</th></tr>
+    //                                     </thead>
+    //                                     <tbody>${rows}</tbody>
+    //                                 </table>
+    //                             </div>
+    //                             <div class="modal-footer">
+    //                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    //                             </div>
+    //                         </div>
+    //                     </div>
+    //                 </div>
+    //             `);
+
+    //             const modalEl = document.getElementById('auditChangesModal');
+    //             modalEl.addEventListener('hidden.bs.modal', () => modalEl.remove());
+    //             new bootstrap.Modal(modalEl).show();
+
+    //         }
+    //     })
+    // })
+
+    // VIEW EMPLOYEE AUDIT TRAIL DETAILS
+    $(document).on('click', '.employeeView', function () {
+        const row = $(this);
+        const audit_id = row.data('id');
+        const esc = s => $('<div>').text(s ?? '').html();
+
+        $.ajax({
+            type: "GET",
+            url: "../backend/admin/employeeAuditTrailModal.php",
+            data: { audit_id: audit_id },
+            dataType: "json",
+            success: function (res) {
+                if (res.status === 404) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Warning',
+                        text: res.message,
+                        timer: 2000,
+                        showConfirmButton: false,
+                    });
+                    return;
+                }
+                if (res.status !== 200) return;
+
+                const cells = row.children('td');
+                const meta = cells.eq(1).text() + ' ' + cells.eq(2).text() + ' • ' +
+                            cells.eq(3).text() + ' updated ' + cells.eq(6).text();
+
+                const rows = res.data.map(c =>
+                    '<tr><td>' + esc(c.category) + '</td>' +
+                    '<td>' + (esc(c.oldData) || '-') + '</td>' +
+                    '<td>' + (esc(c.newData) || '-') + '</td></tr>'
+                ).join('');
+
+                const size = res.data.length > 5 ? 'modal-lg' : '';
+
+                // remove any previous modal, then create a fresh one
+                $('#auditChangesModal').remove();
+                $('body').append(`
+                    <div class="modal fade" id="auditChangesModal" tabindex="-1" aria-labelledby="auditChangesLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable ${size}">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="auditChangesLabel">Employee Changes</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p class="mb-2 small text-muted">${esc(meta)}</p>
+                                    <table class="table table-bordered table-sm text-center mb-0">
+                                        <thead class="bg-gray-50">
+                                            <tr><th>Field</th>
+                                            <th>Old Value</th>
+                                            <th>New Value</th></tr>
+                                        </thead>
+                                        <tbody>${rows}</tbody>
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `);
+
+                const modalEl = document.getElementById('auditChangesModal');
+                modalEl.addEventListener('hidden.bs.modal', () => modalEl.remove());
+                new bootstrap.Modal(modalEl).show();
+            },
+            error: function (xhr) {
+                console.error('Audit trail request failed:', xhr.status, xhr.responseText);
+            }
+        });
+    });
+    
     // VIEW AND UPDATE SALARY ADJUSTMENTS
     var array = [];
     $(document).on('click', '.salaryAdjustmentView  ', function() {
