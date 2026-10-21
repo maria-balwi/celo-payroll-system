@@ -59,20 +59,91 @@
 
 		<main class="flex-1 p-3 overflow-auto">
             <?php
-            // Replace with your own content (or pull from DB)
-            $faqs = [
-                'General Questions' => [
-                    ['How do I time in using Face DTR?', 'Go to your dashboard, click Face DTR, then Time In and capture your face.'],
-                    ['What if my face is not recognized?', 'Make sure you have good lighting and your face is fully visible. If it still fails, contact HR.'],
-                    ['When is payroll released?', 'Payroll is released every 15th and 30th of the month.'],
-                ],
-                'Support team' => [
-                    ['How do I file a ticket?', 'Open the Ticketing system and click New Ticket.'],
-                ],
-                'Miscellaneous' => [
-                    ['How do I change my password?', 'Go to your profile and choose Change Password.'],
-                ],
-            ];
+                // Replace with your own content (or pull from DB)
+                // $faqs = [
+                //     'General Questions' => [
+                //         ['How do I time in using Face DTR?', 'Under the My Portal, go to the dashboard, click Face DTR, then Time In/Out and capture your face.'],
+                //         ['What if my face is not recognized?', 'Make sure you have good lighting and your face is fully visible. If it still fails, contact HR.'],
+                //         ['When is payroll released?', 'Payroll is released every 15th and 30th of the month.'],
+                //     ],
+                //     'Support team' => [
+                //         ['How do I file a ticket?', 'Open the Ticketing system and click New Ticket.'],
+                //     ],
+                //     'Miscellaneous' => [
+                //         ['How do I change my password?', 'Go to your profile and choose Change Password.'],
+                //     ],
+                // ];
+                $faqs = [
+                    'General Questions' => [
+                        ['How do I time in using Face DTR?', 'Under the My Portal, go to the dashboard, click Face DTR, then Time In/Out and capture your face.'],
+                        ['What if my face is not recognized?', 'Make sure you have good lighting and your face is fully visible. If it still fails, contact HR.'],
+                        ['When is payroll released?', 'Payroll is released every 15th and 30th of the month.'],
+                    ],
+                    'Payroll Computation' => [
+                        ['How is my salary computed for each cutoff?', <<<'HTML'
+                            <p>Your basic salary is computed based on your hourly rate multiplied by the total compensable hours worked during the cutoff.</p>
+                            <p><strong>Formula:</strong></p>
+                            <p>Hourly Rate = Daily Rate ÷ 8 hours<br>
+                            Basic Salary = Hourly Rate × Total Compensable Hours Worked</p>
+                            <p><strong>Example:</strong></p>
+                            <p>If your daily rate is ₱800 and you have completed 80 compensable working hours for the cutoff:</p>
+                            <ul>
+                                <li>Daily Rate: ₱800</li>
+                                <li>Hourly Rate: ₱800 ÷ 8 = ₱100</li>
+                                <li>Total Hours Worked: 80 hours</li>
+                                <li>Computation: ₱100 × 80 hours = <strong>₱8,000</strong></li>
+                            </ul>
+                            <p>Please note that the final salary may vary depending on applicable deductions, overtime pay, night differential, holiday pay, and other salary adjustments.</p>
+                        HTML],
+                        ['How is Night Differential (ND) computed?', <<<'HTML'
+                            <p>Night Differential is an additional 15% of the employee's hourly rate for eligible hours worked during the applicable night shift period, subject to applicable labor regulations and company policy.</p>
+                            <p><strong>Formula:</strong></p>
+                            <p>Night Differential = Hourly Rate × 15% × Eligible Night Hours Worked</p>
+                            <p><strong>Example:</strong></p>
+                            <p>If your hourly rate is ₱100 and you worked 4 eligible night differential hours:</p>
+                            <ul>
+                                <li>Hourly Rate: ₱100</li>
+                                <li>Night Differential Rate: ₱100 × 15% = ₱15 per hour</li>
+                                <li>Eligible Night Hours Worked: 4 hours</li>
+                                <li>Computation: ₱15 × 4 hours = <strong>₱60 Night Differential Pay</strong></li>
+                            </ul>
+                            <p>The night differential amount is added to the employee's applicable salary for the cutoff.</p>
+                        HTML],
+                        ['What are the payroll cutoff dates?', <<<'HTML'
+                            <p>The company follows the following payroll utoff schedule</p>
+                            <ul>
+                                <li><strong>First Cutoff:</strong> Every 26th of the previous month to the 10th of the current month.</li>
+                                <li><strong>Second Cutoff:</strong> Every 11th to the 25th of the current month.</li>
+                            </ul>
+                            <p>Employees are encouraged  familiarize themselves with these cutoff dates o understand which attendance records and work hours are covered by each payroll period.</p>
+                        HTML], 
+                        ['Is payroll processing based on Central Standard Time (CST) or Philippine Time (PHT)?', <<<'HTML'
+                            <p>Payroll processing and attendance verification are based on <strong>Philippine Time (PHT)</strong>. Employees working on CST schedules should be aware that their work 
+                            schedules and attendance records may fall on different calendar dates when converted to PHT. </p>
+                            <p>Employees should refer to the applicable PHT dates when checking their attendance records and payroll coverage. They should also coordinate with their Team Leader or 
+                                HR if they need clarification regarding the conversion of their work schedule from CST to PHT.</p>
+                        HTML],
+                        ['What should I do if I have an attendance or payroll discrepancy?', <<<'HTML'
+                            <p>If you notice a discrepancy in your attendance records or salary, you must first submit a formal report detailing the concern. Please include the specific dates involved, 
+                                the discrepancy identified, and any supporting documents or records available, such as attendance logs, schedules, payslips, or approved OT forms.</p>
+                            <p>The process is as follows:</p>
+                            <ol class="list-decimal pl-6">
+                                <li><strong>Submit a report:</strong> Report the attendance or payroll discrepancy to HR/Payroll, providing the necessary details and supporting documents.</li>
+                                <li><strong>Review and verification:</strong> HR/Payroll will review the submitted report and verify the concern against the available attendance records, 
+                                    supporting documents, and other relevant information.</li>
+                                <li><strong>Adjustment processing:</strong> If the discrepancy is validated and adjustment is warranted, the necessary correction will be processed in coordination
+                                    with the concerned team.</li>
+                                <li><strong>Next Payroll cycle:</strong> Any approved adjustment will be reflected in the employee's next applicable payroll cycle.</li>
+                            </ol>
+                            <p>Please note that the adjustments are subject to verification and approval. Employees are encouraged to submit their concerns promptly and provide complete supporting
+                                documents to help facilitate the review.
+                            </p>
+                        HTML]
+                    ],
+                    'Account & Profile' => [
+                        ['How do I change my password?', 'Go to your profile and choose Change Password.'],
+                    ],
+                ];
             ?>
 
             <div class="faq-wrap">
@@ -99,7 +170,7 @@
                             </button>
                         <?php $i++; endforeach; ?>
                     </div>
-
+					
                     <!-- Questions -->
                     <div class="md:col-span-3">
                         <?php $i = 0; foreach ($faqs as $category => $items): ?>
@@ -111,7 +182,7 @@
                                             <?= htmlspecialchars($faq[0]) ?>
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M12 5v14M5 12h14"/></svg>
                                         </button>
-                                        <div class="faq-a"><?= htmlspecialchars($faq[1]) ?></div>
+                                        <div class="faq-a"><?= $faq[1] ?></div>
                                     </div>
                                 <?php endforeach; ?>
                             </div>
