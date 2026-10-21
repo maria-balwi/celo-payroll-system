@@ -87,7 +87,7 @@
                             Basic Salary = Hourly Rate × Total Compensable Hours Worked</p>
                             <p><strong>Example:</strong></p>
                             <p>If your daily rate is ₱800 and you have completed 80 compensable working hours for the cutoff:</p>
-                            <ul>
+                            <ul class="list-disc pl-6">
                                 <li>Daily Rate: ₱800</li>
                                 <li>Hourly Rate: ₱800 ÷ 8 = ₱100</li>
                                 <li>Total Hours Worked: 80 hours</li>
@@ -101,7 +101,7 @@
                             <p>Night Differential = Hourly Rate × 15% × Eligible Night Hours Worked</p>
                             <p><strong>Example:</strong></p>
                             <p>If your hourly rate is ₱100 and you worked 4 eligible night differential hours:</p>
-                            <ul>
+                            <ul class="list-disc pl-6">
                                 <li>Hourly Rate: ₱100</li>
                                 <li>Night Differential Rate: ₱100 × 15% = ₱15 per hour</li>
                                 <li>Eligible Night Hours Worked: 4 hours</li>
@@ -111,7 +111,7 @@
                         HTML],
                         ['What are the payroll cutoff dates?', <<<'HTML'
                             <p>The company follows the following payroll utoff schedule</p>
-                            <ul>
+                            <ul class="list-disc pl-6">
                                 <li><strong>First Cutoff:</strong> Every 26th of the previous month to the 10th of the current month.</li>
                                 <li><strong>Second Cutoff:</strong> Every 11th to the 25th of the current month.</li>
                             </ul>
