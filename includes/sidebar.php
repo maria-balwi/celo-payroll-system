@@ -67,9 +67,6 @@
                 <a href="../pages/admin_notifications.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Memo
                 </a>
-                <a href="../pages/admin_id.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
-                    ID
-                </a>
                 <?php
                     if ($_SESSION['departmentID'] == '5' || $_SESSION['levelID'] == '3' || $_SESSION['levelID'] == '0') {
                 ?>
@@ -189,9 +186,6 @@
                 <a href="../pages/user_disputes.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
                     Disputes
                 </a>
-                <a href="../pages/user_faqs.php" class="block py-2.5 px-4 text-white rounded transition duration-200 hover:bg-gray-700 no-underline hover:text-white hover:no-underline">
-                    FAQs
-                </a>
                 <?php } ?>
             </nav>
         </div>
@@ -200,41 +194,36 @@
         <div class="flex-1 flex-col overflow-auto">
             
             <!-- Navbar inside Main Content -->
-            <div class="bg-white p-4 flex justify-between items-center shadow md:flex">
-                <button onclick="toggleSidebar()" class="text-gray-800">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-                </button>
+            <div class="bg-white p-4 grid grid-cols-3 items-center shadow">
+                <div></div>
 
-                <div class="text-2xl font-bold px-2">Celo Business Solutions Incorporated</div>
+                <div class="text-2xl font-bold px-2 text-center">Celo Business Solutions Incorporated</div>
 
-                <div class="relative">
+                <div class="relative flex items-center justify-end">
+                    <a href="../pages/user_faqs.php" class="text-gray-800 no-underline font-semibold hover:text-gray-800 hover:no-underline mr-8">FAQs</a>
+
                     <!-- Bell (clickable) -->
                     <button id="notifBtn" type="button" class="relative align-middle text-gray-800 mr-2">
                         <i class="bi bi-bell text-2xl"></i>
-
-                        <!-- badge -->
                         <span id="notifCount"
                             class="absolute -top-1 -right-2 bg-red-600 text-white text-[10px] rounded-full px-1 py-0 hidden">
                             0
                         </span>
                     </button>
 
-                    <!-- Notifications dropdown (hidden by default) -->
+                    <!-- Notifications dropdown (unchanged) -->
                     <div id="notifDropdown"
-                        class="absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg hidden z-50 overflow-hidden">
+                        class="absolute right-0 top-full mt-2 w-80 bg-white rounded-md shadow-lg hidden z-50 overflow-hidden">
                         <div class="px-4 py-2 font-semibold border-b">Notifications</div>
                         <div id="notifList" class="max-h-80 overflow-auto" style="max-height: 200px;">
                             <div class="px-4 py-3 text-sm text-gray-500">Loading...</div>
                         </div>
-                        <!-- <div class="px-4 py-2 text-xs text-gray-500 border-t text-center">
-                            Showing latest 3
-                        </div> -->
                     </div>
-            
-                    <button onclick="toggleDropdown()" class=" text-gray-800 font-bold px-4 py-2">
-                        <?php echo $_SESSION['employeeName']; ?> 
+
+                    <button onclick="toggleDropdown()" class="text-gray-800 font-bold px-4 py-2">
+                        <?php echo $_SESSION['employeeName']; ?>
                     </button>
-                    <div id="dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg hidden">
+                    <div id="dropdown" class="absolute right-0 top-full mt-2 w-48 bg-white rounded-md shadow-lg hidden z-50">
                         <a href="../pages/profile.php" class="block px-4 py-2 text-gray-800 hover:text-gray-800 no-underline hover:bg-gray-200 hover:no-underline">Profile</a>
                         <a class="block px-4 py-2 text-gray-800 no-underline hover:bg-gray-200" id="btnLogout">Logout</a>
                     </div>
